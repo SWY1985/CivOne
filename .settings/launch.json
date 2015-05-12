@@ -1,0 +1,18 @@
+{
+    "version": "0.1.0",
+    // List of configurations.
+    // ONLY "node" and "mono" are supported, change "type" to switch.
+    "configurations": [
+        {
+            // Name of configuration
+            // Appears in the launch configuration drop down menu.
+            "name": "Launch CivOne",
+            // Type of configuration. Possible values: "node", "mono".
+            "type": "mono",
+            // Workspace relative or absolute path to the program.
+            "program": "bin/CivOne.exe",
+            // Automatically stop program after launch.
+            "stopOnEntry": true
+        }
+    ]
+}
