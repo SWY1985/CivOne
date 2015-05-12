@@ -1,0 +1,21 @@
+{
+   "version": "0.1.0",
+   "command" : "build.bat",
+   "args": ["xbuild"],
+   "tasks": [
+      {
+         "taskName": "build",
+         "isBuildCommand": true,
+         "args": [
+            "build"
+         ]
+      },
+      {
+         "taskName": "test",
+         "isTestCommand": true,
+         "args": [
+            "run"
+         ]
+      }
+   ]
+}
