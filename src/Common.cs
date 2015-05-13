@@ -7,12 +7,16 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System.Collections.Generic;
 using System.Drawing;
+using CivOne.Interfaces;
 
 namespace CivOne
 {
 	internal class Common
 	{
+		internal static List<IScreen> Screens = new List<IScreen>();
+		
 		private static Color[] _palette16;
 		public static Color[] GetPalette16
 		{

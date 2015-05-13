@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using CivOne.Enums;
 using CivOne.GFX;
@@ -21,11 +23,69 @@ namespace CivOne
 {
 	internal class Window : Form
 	{
-		private readonly List<IScreen> _screens = new List<IScreen>();
+        private uint _gameTick = 0;
+        private Thread TickThread;
+        private delegate void DelegateRefreshGame();
+        private delegate void DelegateScreenUpdate();
 		
 		private Cursor _hiddenCursor;
 		private Cursor[,] _cursorPointer,_cursorGoto;
 		private MouseCursor _currentCursor = MouseCursor.Pointer;
+		
+        private AutoResetEvent _tickWaiter = new AutoResetEvent(true);
+		
+		private List<IScreen> Screens
+		{
+			get
+			{
+				return Common.Screens;
+			}
+		}
+
+        private void SetGameTick()
+        {
+            while (true)
+            {
+                // if the previous tick is still busy, step out... this will cause the game to slow down a bit
+                if (!_tickWaiter.WaitOne(25)) return;
+                _tickWaiter.Reset();
+
+                RefreshGame();
+                _gameTick++;
+                Thread.Sleep(1000 / 30);
+
+                _tickWaiter.Set();
+            }
+        }
+
+        private void ScreenUpdate()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new DelegateScreenUpdate(ScreenUpdate));
+                return;
+            }
+
+            Refresh();
+        }
+
+        private void RefreshGame()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new DelegateRefreshGame(RefreshGame));
+                return;
+            }
+			
+			// Update cursor
+            if (Screens.Count > 0 && _currentCursor != Screens[0].Cursor)
+            {
+                OnMouseMove(this, new MouseEventArgs(MouseButtons.None, 0, Cursor.Position.X, Cursor.Position.Y, 0));
+            }
+			
+			// Refresh the screen if there's an update
+            if (Screens.Count(x => x.HasUpdate(_gameTick)) > 0) Refresh();
+        }
 		
         private void LoadCursor(ref Cursor[,] cursor, int x, int y)
         {
@@ -48,7 +108,11 @@ namespace CivOne
 		private void OnLoad(object sender, EventArgs args)
 		{
 			// Load the demo
-			_screens.Add(new Demo());
+			Screens.Add(new Demo());
+            
+            // Start tick thread
+            TickThread = new Thread(new ThreadStart(SetGameTick));
+            TickThread.Start();
 			
             // Load cursors
             _hiddenCursor = new Cursor(new Bitmap(16, 16).GetHicon());
@@ -61,7 +125,7 @@ namespace CivOne
 			args.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			args.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
 			
-			foreach (IScreen screen in _screens)
+			foreach (IScreen screen in Screens)
 			{
 				screen.Draw(args.Graphics);
 			}
@@ -110,6 +174,8 @@ namespace CivOne
 		
 		protected override void Dispose(bool disposing)
 		{
+            TickThread.Abort();
+            
 			base.Dispose(disposing);
 		}
 	}

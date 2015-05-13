@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
@@ -32,7 +33,10 @@ namespace CivOne.Screens
 		
 		public override bool HasUpdate(uint gameTick)
 		{
-			return false;
+			if (gameTick % 2 != 0) return false;
+			
+			_logo.Cycle(224, 254);
+			return true;
 		}
 		
 		public override void Draw(Graphics gfx)
