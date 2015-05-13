@@ -18,6 +18,7 @@
 		<Compile Include="src\Interfaces\*.cs" />
 		<Compile Include="src\IO\*.cs" />
 		<Compile Include="src\Screens\*.cs" />
+		<Compile Include="src\Templates\*.cs" />
 		<Compile Include="src\*.cs" />
 	</ItemGroup>
 	<Target Name="Build">
