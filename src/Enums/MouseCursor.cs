@@ -9,7 +9,7 @@
 
 namespace CivOne.Enums
 {
-	internal enum MouseCursor
+	public enum MouseCursor
 	{
 		None,
 		Pointer,
