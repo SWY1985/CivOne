@@ -15,7 +15,7 @@ using CivOne.Enums;
 using CivOne.Interfaces;
 using CivOne.GFX;
 
-namespace CivOne.Screens
+namespace CivOne.Templates
 {
 	internal abstract class BaseScreen : IScreen
 	{

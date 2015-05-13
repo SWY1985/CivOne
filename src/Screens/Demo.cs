@@ -13,6 +13,7 @@ using System.Drawing.Imaging;
 using System.Windows.Forms;
 using CivOne.Enums;
 using CivOne.GFX;
+using CivOne.Templates;
 
 namespace CivOne.Screens
 {
