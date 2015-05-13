@@ -13,7 +13,7 @@ using CivOne.Enums;
 
 namespace CivOne.Interfaces
 {
-	internal interface IScreen
+	public interface IScreen
 	{
 		MouseCursor Cursor { get; }
         bool HasUpdate(uint gameTick);
