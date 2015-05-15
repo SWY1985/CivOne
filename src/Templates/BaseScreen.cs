@@ -18,28 +18,11 @@ using CivOne.GFX;
 namespace CivOne.Templates
 {
 	internal abstract class BaseScreen : IScreen
-	{
-		internal int Scale
-		{
-			get
-			{
-				return Settings.Instance.Scale;
-			}
-		}
-		
+	{		
 		private Picture _canvas;
 		public abstract Picture Canvas { get; }
 		public abstract MouseCursor Cursor { get; }
 		public abstract bool HasUpdate(uint gameTick);
-		internal TextureBrush ScaleTexture(Bitmap texture)
-		{
-			Bitmap textureBitmap = new Bitmap(texture.Width * Scale, texture.Height * Scale);
-			Graphics gfx = Graphics.FromImage(textureBitmap);
-			gfx.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-			gfx.PixelOffsetMode = PixelOffsetMode.Half;
-			gfx.DrawImage(texture, 0, 0, textureBitmap.Width, textureBitmap.Height);
-			return new TextureBrush(textureBitmap);
-		}
 		public abstract bool KeyDown(KeyEventArgs args);
 		public abstract bool MouseDown(MouseEventArgs args);
 	}

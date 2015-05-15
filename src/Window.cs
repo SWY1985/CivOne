@@ -43,7 +43,15 @@ namespace CivOne
 				return Common.Screens;
 			}
 		}
-
+		
+		private IScreen TopScreen
+		{
+			get
+			{
+				return Screens.LastOrDefault();
+			}
+		}
+		
 		private void SetGameTick()
 		{
 			while (true)
@@ -51,7 +59,7 @@ namespace CivOne
 				// if the previous tick is still busy, step out... this will cause the game to slow down a bit
 				if (!_tickWaiter.WaitOne(25)) return;
 				_tickWaiter.Reset();
-
+				
 				RefreshGame();
 				_gameTick++;
 				Thread.Sleep(1000 / 30);
@@ -59,7 +67,7 @@ namespace CivOne
 				_tickWaiter.Set();
 			}
 		}
-
+		
 		private void ScreenUpdate()
 		{
 			if (InvokeRequired)
@@ -70,7 +78,7 @@ namespace CivOne
 
 			Refresh();
 		}
-
+		
 		private void RefreshGame()
 		{
 			if (InvokeRequired)
@@ -91,20 +99,28 @@ namespace CivOne
 		
 		private void LoadCursor(ref Cursor[,] cursor, int x, int y)
 		{
-			int scale = Settings.Instance.Scale;
-			cursor = new Cursor[scale, scale];
+			int sx = (int)Math.Floor((float)ClientSize.Width / 320);
+			int sy = (int)Math.Floor((float)ClientSize.Height / 200);
+			cursor = new Cursor[sx, sy];
 			Bitmap img = Resources.Instance.GetPart("SP257", x, y, 16, 16);
-
-			for (int cx = 0; cx < scale; cx++)
-				for (int cy = 0; cy < scale; cy++)
+			
+			for (int cx = 0; cx < sx; cx++)
+				for (int cy = 0; cy < sy; cy++)
 				{
-					Bitmap res = new Bitmap(32 * scale, 32 * scale, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+					Bitmap res = new Bitmap(32 * sx, 32 * sy, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 					Graphics gfx = Graphics.FromImage(res);
 					gfx.InterpolationMode = InterpolationMode.NearestNeighbor;
 					gfx.PixelOffsetMode = PixelOffsetMode.Half;
-					gfx.DrawImage(img, (15 * scale) - cx, (15 * scale) - cy, 16 * scale, 16 * scale);
+					gfx.DrawImage(img, (15 * sx) - cx, (15 * sy) - cy, 16 * sx, 16 * sy);
 					cursor[cx, cy] = new Cursor(res.GetHicon());
 				}
+		}
+		
+		private void LoadCursors()
+		{
+			_hiddenCursor = new Cursor(new Bitmap(16, 16).GetHicon());
+			LoadCursor(ref _cursorPointer, 112, 32);
+			LoadCursor(ref _cursorGoto, 32, 32);
 		}
 		
 		private void OnLoad(object sender, EventArgs args)
@@ -117,9 +133,7 @@ namespace CivOne
 			TickThread.Start();
 			
 			// Load cursors
-			_hiddenCursor = new Cursor(new Bitmap(16, 16).GetHicon());
-			LoadCursor(ref _cursorPointer, 112, 32);
-			LoadCursor(ref _cursorGoto, 32, 32);
+			LoadCursors();
 		}
 		
 		private void OnPaint(object sender, PaintEventArgs args)
@@ -129,7 +143,7 @@ namespace CivOne
 			
 			if (Screens.Count == 0) return;
 			
-			_canvas = new Picture(320, 200, Screens[Screens.Count - 1].Canvas.Image.Palette.Entries);
+			_canvas = new Picture(320, 200, TopScreen.Canvas.Image.Palette.Entries);
 			foreach (IScreen screen in Screens)
 			{
 				_canvas.AddLayer(screen.Canvas.Image, 0, 0);
@@ -145,19 +159,29 @@ namespace CivOne
 				Cursor = _hiddenCursor;
 				return;
 			}
-
+			
 			// apply cursor correction
-			int s = Settings.Instance.Scale;
+			int sx = (int)Math.Floor((float)ClientSize.Width / 320);
+			int sy = (int)Math.Floor((float)ClientSize.Height / 200);
 			if (args.X < 0 || args.Y < 0) return;
 			switch (_currentCursor)
 			{
 				case MouseCursor.Pointer:
-					Cursor = _cursorPointer[args.X % s, args.Y % s];
+					Cursor = _cursorPointer[args.X % sx, args.Y % sy];
 					break;
 				case MouseCursor.Goto:
-					Cursor = _cursorGoto[args.X % s, args.Y % s];
+					Cursor = _cursorGoto[args.X % sx, args.Y % sy];
 					break;
 			}
+		}
+		
+		private void OnResizeEnd(object sender, EventArgs args)
+		{
+			int width = (int)Math.Round((float)ClientSize.Width / 320) * 320;
+			int height = (int)Math.Round((float)ClientSize.Height / 200) * 200;
+			
+			ClientSize = new Size(width, height);
+			LoadCursors();
 		}
 		
 		public Window()
@@ -166,15 +190,16 @@ namespace CivOne
 			
 			// Set Window properties
 			DoubleBuffered = true;
-			FormBorderStyle = FormBorderStyle.FixedSingle;
+			FormBorderStyle = FormBorderStyle.Sizable;
 			MaximizeBox = false;
-			ClientSize = new Size(320 * Settings.Instance.Scale, 200 * Settings.Instance.Scale);
+			ClientSize = new Size(320 * Settings.Instance.ScaleX, 200 * Settings.Instance.ScaleY);
 			Text = "CivOne";
 			
 			// Set Window events
 			Load += OnLoad;
 			Paint += OnPaint;
 			MouseMove += OnMouseMove;
+			ResizeEnd += OnResizeEnd;
 			
 			ResumeLayout(false);
 		}
