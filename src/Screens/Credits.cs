@@ -16,16 +16,6 @@ namespace CivOne.Screens
 {
 	internal class Credits : BaseScreen
 	{
-		private readonly Picture _canvas;
-		
-		public override Picture Canvas
-		{
-			get
-			{
-				return _canvas;
-			}
-		}
-		
 		public override MouseCursor Cursor
 		{
 			get

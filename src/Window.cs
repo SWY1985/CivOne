@@ -105,15 +105,15 @@ namespace CivOne
 			Bitmap img = Resources.Instance.GetPart("SP257", x, y, 16, 16);
 			
 			for (int cx = 0; cx < sx; cx++)
-				for (int cy = 0; cy < sy; cy++)
-				{
-					Bitmap res = new Bitmap(32 * sx, 32 * sy, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-					Graphics gfx = Graphics.FromImage(res);
-					gfx.InterpolationMode = InterpolationMode.NearestNeighbor;
-					gfx.PixelOffsetMode = PixelOffsetMode.Half;
-					gfx.DrawImage(img, (15 * sx) - cx, (15 * sy) - cy, 16 * sx, 16 * sy);
-					cursor[cx, cy] = new Cursor(res.GetHicon());
-				}
+			for (int cy = 0; cy < sy; cy++)
+			{
+				Bitmap res = new Bitmap(32 * sx, 32 * sy, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+				Graphics gfx = Graphics.FromImage(res);
+				gfx.InterpolationMode = InterpolationMode.NearestNeighbor;
+				gfx.PixelOffsetMode = PixelOffsetMode.Half;
+				gfx.DrawImage(img, (15 * sx) - cx, (15 * sy) - cy, 16 * sx, 16 * sy);
+				cursor[cx, cy] = new Cursor(res.GetHicon());
+			}
 		}
 		
 		private void LoadCursors()
@@ -124,10 +124,7 @@ namespace CivOne
 		}
 		
 		private void OnLoad(object sender, EventArgs args)
-		{
-			// Load the demo
-			Screens.Add(new Demo());
-			
+		{			
 			// Start tick thread
 			TickThread = new Thread(new ThreadStart(SetGameTick));
 			TickThread.Start();
@@ -182,9 +179,10 @@ namespace CivOne
 			
 			ClientSize = new Size(width, height);
 			LoadCursors();
+			Refresh();
 		}
 		
-		public Window()
+		public Window(string screen)
 		{
 			SuspendLayout();
 			
@@ -200,6 +198,22 @@ namespace CivOne
 			Paint += OnPaint;
 			MouseMove += OnMouseMove;
 			ResizeEnd += OnResizeEnd;
+			
+			// Load the first screen
+			IScreen startScreen;
+			switch (screen)
+			{
+				case "demo":
+					startScreen = new Demo();
+					break;
+				case "setup":
+					startScreen = new Setup();
+					break;
+				default:
+					startScreen = new Credits();
+					break;
+			}
+			Screens.Add(startScreen);
 			
 			ResumeLayout(false);
 		}
