@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using CivOne.Enums;
 
 namespace CivOne.GFX
 {
@@ -22,6 +23,15 @@ namespace CivOne.GFX
 		private readonly Dictionary<string, Bitmap> _cache;
 		private readonly Bitmap _image;
 		private readonly byte[,] _bitmap;
+		
+		private int Scale
+		{
+			get
+			{
+				return Settings.Instance.Scale;
+			}
+		}
+		
 		public Bitmap Image
 		{
 			get
@@ -142,6 +152,39 @@ namespace CivOne.GFX
 			}
 			Marshal.Copy(pixels, 0, pointer, pixels.Length);
 			image.UnlockBits(bmpData);
+		}
+		
+		public void DrawText(ColorPalette palette, string text, int font, byte colour, int x, int y, TextAlign align = TextAlign.Left)
+		{
+			DrawText(palette, text, font, colour, colour, x, y, align);
+		}
+		public void DrawText(ColorPalette palette, string text, int font, byte firstLetterColour, byte colour, int x, int y, TextAlign align = TextAlign.Left)
+		{
+			Bitmap textImage = (Bitmap)Resources.Instance.GetText(text, font, firstLetterColour, colour).Clone();
+			textImage.Palette = palette;
+			DrawText(textImage, align, x, y);
+		}
+		public void DrawText(string text, int font, byte colour, int x, int y, TextAlign align = TextAlign.Left)
+		{
+			DrawText(text, font, colour, colour, x, y, align);
+		}
+		public void DrawText(string text, int font, byte firstLetterColour, byte colour, int x, int y, TextAlign align = TextAlign.Left)
+		{
+			Bitmap textImage = Resources.Instance.GetText(text, font, firstLetterColour, colour);
+			DrawText(textImage, align, x, y);
+		}
+		private void DrawText(Bitmap textImage, TextAlign align, int x, int y)
+		{
+			switch (align)
+			{
+				case TextAlign.Center:
+					x -= (textImage.Width / 2);
+					break;
+				case TextAlign.Right:
+					x -= textImage.Width;
+					break;
+			}
+			AddLayer(textImage, x, y);
 		}
 
 		public void ResetPalette()
@@ -282,7 +325,11 @@ namespace CivOne.GFX
 
 			return output;
 		}
-
+		
+		public void AddLayer(Bitmap layer, int x, int y)
+		{
+			AddLayer(layer, new Point(x, y));
+		}
 		public void AddLayer(Bitmap layer, Point offset)
 		{
 			if (offset.X < 0 || offset.Y < 0 || offset.X + layer.Width > _image.Width || offset.Y + layer.Height > _image.Height) return;

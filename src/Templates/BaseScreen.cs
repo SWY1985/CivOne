@@ -35,49 +35,6 @@ namespace CivOne.Templates
 		{
 			gfx.Clear(Color.Black);
 		}
-		internal void DrawText(Graphics gfx, ColorPalette palette, string text, int font, byte colour, int x, int y, TextAlign align = TextAlign.Left)
-		{
-			DrawText(gfx, palette, text, font, colour, colour, x, y, align);
-		}
-		internal void DrawText(Graphics gfx, ColorPalette palette, string text, int font, byte firstLetterColour, byte colour, int x, int y, TextAlign align = TextAlign.Left)
-		{
-			Bitmap textImage = (Bitmap)Resources.Instance.GetText(text, font, firstLetterColour, colour).Clone();
-			textImage.Palette = palette;
-
-			switch (align)
-			{
-				case TextAlign.Left:
-					gfx.DrawImage(textImage, x * Scale, y * Scale, textImage.Width * Scale, textImage.Height * Scale);
-					break;
-				case TextAlign.Center:
-					gfx.DrawImage(textImage, (x - (textImage.Width / 2)) * Scale, y * Scale, textImage.Width * Scale, textImage.Height * Scale);
-					break;
-				case TextAlign.Right:
-					gfx.DrawImage(textImage, (x - textImage.Width) * Scale, y * Scale, textImage.Width * Scale, textImage.Height * Scale);
-					break;
-			}
-		}
-		internal void DrawText(Graphics gfx, string text, int font, byte colour, int x, int y, TextAlign align = TextAlign.Left)
-		{
-			DrawText(gfx, text, font, colour, colour, x, y, align);
-		}
-		internal void DrawText(Graphics gfx, string text, int font, byte firstLetterColour, byte colour, int x, int y, TextAlign align = TextAlign.Left)
-		{
-			Bitmap textImage = Resources.Instance.GetText(text, font, firstLetterColour, colour);
-
-			switch (align)
-			{
-				case TextAlign.Left:
-					gfx.DrawImage(textImage, x * Scale, y * Scale, textImage.Width * Scale, textImage.Height * Scale);
-					break;
-				case TextAlign.Center:
-					gfx.DrawImage(textImage, (x - (textImage.Width / 2)) * Scale, y * Scale, textImage.Width * Scale, textImage.Height * Scale);
-					break;
-				case TextAlign.Right:
-					gfx.DrawImage(textImage, (x - textImage.Width) * Scale, y * Scale, textImage.Width * Scale, textImage.Height * Scale);
-					break;
-			}
-		}
 		internal TextureBrush ScaleTexture(Bitmap texture)
 		{
 			Bitmap textureBitmap = new Bitmap(texture.Width * Scale, texture.Height * Scale);

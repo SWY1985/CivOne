@@ -9,7 +9,7 @@
 
 namespace CivOne.Enums
 {
-	internal enum TextAlign
+	public enum TextAlign
 	{
 		Left,
 		Center,
