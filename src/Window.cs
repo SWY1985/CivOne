@@ -88,8 +88,9 @@ namespace CivOne
 			}
 			
 			// Update cursor
-			if (Screens.Count > 0 && _currentCursor != Screens[0].Cursor)
+			if (Screens.Count > 0 && _currentCursor != TopScreen.Cursor)
 			{
+				_currentCursor = TopScreen.Cursor;
 				OnMouseMove(this, new MouseEventArgs(MouseButtons.None, 0, Cursor.Position.X, Cursor.Position.Y, 0));
 			}
 			
@@ -146,7 +147,29 @@ namespace CivOne
 				_canvas.AddLayer(screen.Canvas.Image, 0, 0);
 			}
 			
+			args.Graphics.Clear(Color.Black);
 			args.Graphics.DrawImage(_canvas.Image, 0, 0, ClientSize.Width, ClientSize.Height);
+		}
+		
+		private void OnKeyDown(object sender, KeyEventArgs args)
+		{
+			if (args.Alt || args.Control)
+			{
+				args.SuppressKeyPress = true;
+				return;
+			}
+			
+			if (TopScreen != null && TopScreen.KeyDown(args)) ScreenUpdate();
+			
+			if (args.KeyCode == Keys.F10)
+			{
+				args.SuppressKeyPress = true;
+			}
+		}
+		
+		private void OnMouseDown(object sender, MouseEventArgs args)
+		{
+			if (TopScreen != null && TopScreen.MouseDown(args)) ScreenUpdate();
 		}
 		
 		private void OnMouseMove(object sender, MouseEventArgs args)
@@ -196,6 +219,8 @@ namespace CivOne
 			// Set Window events
 			Load += OnLoad;
 			Paint += OnPaint;
+			KeyDown += OnKeyDown;
+			MouseDown += OnMouseDown;
 			MouseMove += OnMouseMove;
 			ResizeEnd += OnResizeEnd;
 			
