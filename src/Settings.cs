@@ -15,6 +15,8 @@ namespace CivOne
 {
 	internal class Settings
 	{
+		private readonly GraphicsMode _graphicsMode;
+		
 		internal string BinDirectory
 		{
 			get
@@ -31,11 +33,19 @@ namespace CivOne
 			}
 		}
 		
+		private string SettingsDirectory
+		{
+			get
+			{
+				return Path.Combine(BinDirectory, "settings");
+			}
+		}
+		
 		internal GraphicsMode GraphicsMode
 		{
 			get
 			{
-				return GraphicsMode.Graphics256;
+				return _graphicsMode;
 			}
 		}
 		
@@ -66,9 +76,30 @@ namespace CivOne
 			}
 		}
 		
+		private string GetSetting(string settingName)
+		{
+			string filename = Path.Combine(SettingsDirectory, settingName);
+			if (!File.Exists(filename)) return null;
+			using (StreamReader sr = new StreamReader(filename))
+			{
+				string value = sr.ReadToEnd();
+				
+				Console.WriteLine("[SETTING] {0}: {1}", settingName, value);
+				
+				return value;
+			}
+		}
+		
 		private Settings()
 		{
+			// Set default settings
+			_graphicsMode = GraphicsMode.Graphics256;
 			
+			// Read settings
+			string graphicsMode = GetSetting("GraphicsMode");
+			
+			// Override settings
+			if (graphicsMode != null && graphicsMode == "2") _graphicsMode = GraphicsMode.Graphics16;
 		}
 	}
 }
