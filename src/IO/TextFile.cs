@@ -20,7 +20,7 @@ namespace CivOne.IO
 
         public string[] LoadArray(string filename)
         {
-			filename += ".txt";
+			filename += ".TXT";
 			
             Regex rgx = new Regex("[^a-zA-Z0-9 -_]");
             List<string> textLines = new List<string>();
