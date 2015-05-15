@@ -19,10 +19,16 @@ namespace CivOne.Screens
 {
 	internal class Demo : BaseScreen
 	{
-		private readonly Picture _background;
-		private readonly Picture _logo;
-		private readonly ColorPalette _palette;
+		private readonly Picture _canvas;
 		private readonly byte[] _textColours;
+		
+		public override Picture Canvas
+		{
+			get
+			{
+				return _canvas;
+			}
+		}
 		
 		public override MouseCursor Cursor
 		{
@@ -36,20 +42,19 @@ namespace CivOne.Screens
 		{
 			if (gameTick % 2 != 0) return false;
 			
-			_logo.Cycle(224, 254);
+			_canvas.Cycle(224, 254);
 			return true;
 		}
 		
 		public override void Draw(Graphics gfx)
 		{
 			base.Draw(gfx);
-
-			gfx.DrawImage(_background.Image, 0, 0, 320 * Scale, 200 * Scale);
-			gfx.DrawImage(_logo.Image, 0, 0, 320 * Scale, 200 * Scale);
 			
-			DrawText(gfx, _palette, "One more turn...", 3, _textColours[0], 160, 160, TextAlign.Center);
-			DrawText(gfx, _palette, "One more turn...", 3, _textColours[2], 160, 162, TextAlign.Center);
-			DrawText(gfx, _palette, "One more turn...", 3, _textColours[1], 160, 161, TextAlign.Center);
+			gfx.DrawImage(Canvas.Image, 0, 0, 320 * Scale, 200 * Scale);
+			
+			DrawText(gfx, _canvas.Image.Palette, "One more turn...", 3, _textColours[0], 160, 160, TextAlign.Center);
+			DrawText(gfx, _canvas.Image.Palette, "One more turn...", 3, _textColours[2], 160, 162, TextAlign.Center);
+			DrawText(gfx, _canvas.Image.Palette, "One more turn...", 3, _textColours[1], 160, 161, TextAlign.Center);
 		}
 		
 		public override bool KeyDown(KeyEventArgs args)
@@ -64,9 +69,8 @@ namespace CivOne.Screens
 		
 		public Demo()
 		{
-			_background = Resources.Instance.LoadPIC("BIRTH1");
-			_logo = Resources.Instance.LoadPIC("LOGO");
-			_palette = _logo.Image.Palette;
+			Picture background = Resources.Instance.LoadPIC("BIRTH1");
+			Picture logo = Resources.Instance.LoadPIC("LOGO");
 			switch (Settings.Instance.GraphicsMode)
 			{
 				case GraphicsMode.Graphics256:
@@ -76,6 +80,10 @@ namespace CivOne.Screens
 					_textColours = new byte[] { 15, 15, 7, 5, 8 };
 					break;
 			}
+			
+			_canvas = new Picture(320, 200, background.Image.Palette.Entries);
+			_canvas.AddLayer(background.Image, new Point(0, 0));
+			_canvas.AddLayer(logo.Image, new Point(0, 0));
 		}
 	}
 }
