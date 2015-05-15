@@ -17,14 +17,6 @@ namespace CivOne.Screens
 {
 	internal class Setup : BaseScreen
 	{		
-		public override MouseCursor Cursor
-		{
-			get
-			{
-				return MouseCursor.Pointer;
-			}
-		}
-		
 		public override bool HasUpdate(uint gameTick)
 		{
 			return false;
@@ -42,11 +34,13 @@ namespace CivOne.Screens
 		
 		public Setup()
 		{
+			Cursor = MouseCursor.Pointer;
+			
             Color[] palette = Resources.Instance.LoadPIC("SP257").Image.Palette.Entries;
 			
 			_canvas = new Picture(320, 200, palette);
 			_canvas.FillRectangle(1, 0, 0, 320, 200);
-			_canvas.DrawText(_canvas.Image.Palette, "CivOne Setup", 3, 14, 4, 4, TextAlign.Left);
+			_canvas.DrawText("CivOne Setup", 3, 14, 4, 4, TextAlign.Left);
 		}
 	}
 }
