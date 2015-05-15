@@ -27,6 +27,8 @@ namespace CivOne.Templates
 			}
 		}
 		
+		private Picture _canvas;
+		public abstract Picture Canvas { get; }
 		public abstract MouseCursor Cursor { get; }
 		public abstract bool HasUpdate(uint gameTick);
 		public virtual void Draw(Graphics gfx)

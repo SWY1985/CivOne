@@ -15,7 +15,7 @@ using System.Runtime.InteropServices;
 
 namespace CivOne.GFX
 {
-	internal class Picture
+	public class Picture
 	{
 		private readonly Color[] _originalColours;
 		private readonly ColorPalette _palette;

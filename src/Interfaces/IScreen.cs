@@ -10,11 +10,13 @@
 using System.Drawing;
 using System.Windows.Forms;
 using CivOne.Enums;
+using CivOne.GFX;
 
 namespace CivOne.Interfaces
 {
 	public interface IScreen
 	{
+		Picture Canvas { get; }
 		MouseCursor Cursor { get; }
         bool HasUpdate(uint gameTick);
         void Draw(Graphics gfx);
