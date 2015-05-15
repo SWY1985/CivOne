@@ -46,13 +46,6 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override void Draw(Graphics gfx)
-		{
-			base.Draw(gfx);
-			
-			gfx.DrawImage(Canvas.Image, 0, 0, 320 * Scale, 200 * Scale);
-		}
-		
 		public override bool KeyDown(KeyEventArgs args)
 		{
 			return false;
