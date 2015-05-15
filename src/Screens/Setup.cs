@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System.Drawing;
 using System.Windows.Forms;
 using CivOne.Enums;
 using CivOne.GFX;
@@ -15,17 +16,7 @@ using CivOne.Templates;
 namespace CivOne.Screens
 {
 	internal class Setup : BaseScreen
-	{
-		private readonly Picture _canvas;
-		
-		public override Picture Canvas
-		{
-			get
-			{
-				return _canvas;
-			}
-		}
-		
+	{		
 		public override MouseCursor Cursor
 		{
 			get
@@ -47,6 +38,15 @@ namespace CivOne.Screens
 		public override bool MouseDown(MouseEventArgs args)
 		{
 			return false;
+		}
+		
+		public Setup()
+		{
+            Color[] palette = Resources.Instance.LoadPIC("SP257").Image.Palette.Entries;
+			
+			_canvas = new Picture(320, 200, palette);
+			_canvas.FillRectangle(1, 0, 0, 320, 200);
+			_canvas.DrawText(_canvas.Image.Palette, "CivOne Setup", 3, 14, 4, 4, TextAlign.Left);
 		}
 	}
 }

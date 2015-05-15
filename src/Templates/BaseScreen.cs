@@ -19,7 +19,15 @@ namespace CivOne.Templates
 {
 	internal abstract class BaseScreen : IScreen
 	{
-		public abstract Picture Canvas { get; }
+		protected Picture _canvas = new Picture(320, 200);
+		
+		public virtual Picture Canvas
+		{
+			get
+			{
+				return _canvas;
+			}
+		}
 		public abstract MouseCursor Cursor { get; }
 		public abstract bool HasUpdate(uint gameTick);
 		public abstract bool KeyDown(KeyEventArgs args);

@@ -15,10 +15,24 @@ namespace CivOne
 	class Program
 	{
 		[STAThread]
-		private static void Main()
+		private static void Main(string[] args)
 		{
+			string screen = null;
+			if (args.Length > 0)
+			{
+				switch (args[0])
+				{
+					case "demo":
+						screen = "demo";
+						break;
+					case "setup":
+						screen = "setup";
+						break;
+				}
+			}
+			
 			Console.WriteLine("Game Start");
-			Application.Run(new Window());
+			Application.Run(new Window(screen));
 			Console.WriteLine("Game End");
 		}
 	}

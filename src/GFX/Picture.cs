@@ -318,7 +318,7 @@ namespace CivOne.GFX
 			return output;
 		}
 		
-		public void AddLayer(Bitmap layer, int x, int y)
+		public void AddLayer(Bitmap layer, int x = 0, int y = 0)
 		{
 			AddLayer(layer, new Point(x, y));
 		}
@@ -420,6 +420,21 @@ namespace CivOne.GFX
 			for (int i = 0; i < colours.Length; i++)
 				_palette.Entries[i] = colours[i];
 			_image.Palette = _palette;
+		}
+		
+		private static Color[] EmptyPalette
+		{
+			get
+			{
+				Color[] colours = new Color[256];
+				for (int i = 0; i < colours.Length; i++)
+					colours[i] = Color.Black;
+				return colours;
+			}
+		}
+		
+		public Picture(int width, int height) : this(width, height, EmptyPalette)
+		{
 		}
 
 		public Picture(int width, int height, Color[] colours)
