@@ -18,8 +18,7 @@ using CivOne.GFX;
 namespace CivOne.Templates
 {
 	internal abstract class BaseScreen : IScreen
-	{		
-		private Picture _canvas;
+	{
 		public abstract Picture Canvas { get; }
 		public abstract MouseCursor Cursor { get; }
 		public abstract bool HasUpdate(uint gameTick);
