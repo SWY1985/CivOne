@@ -28,7 +28,7 @@ namespace CivOne.Templates
 				return _canvas;
 			}
 		}
-		public abstract MouseCursor Cursor { get; }
+		public virtual MouseCursor Cursor { get; protected set; }
 		public abstract bool HasUpdate(uint gameTick);
 		public abstract bool KeyDown(KeyEventArgs args);
 		public abstract bool MouseDown(MouseEventArgs args);
