@@ -31,10 +31,6 @@ namespace CivOne.Templates
 		public abstract Picture Canvas { get; }
 		public abstract MouseCursor Cursor { get; }
 		public abstract bool HasUpdate(uint gameTick);
-		public virtual void Draw(Graphics gfx)
-		{
-			gfx.Clear(Color.Black);
-		}
 		internal TextureBrush ScaleTexture(Bitmap texture)
 		{
 			Bitmap textureBitmap = new Bitmap(texture.Width * Scale, texture.Height * Scale);
