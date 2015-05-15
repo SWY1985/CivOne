@@ -23,15 +23,7 @@ namespace CivOne.GFX
 		private readonly Dictionary<string, Bitmap> _cache;
 		private readonly Bitmap _image;
 		private readonly byte[,] _bitmap;
-		
-		private int Scale
-		{
-			get
-			{
-				return Settings.Instance.Scale;
-			}
-		}
-		
+				
 		public Bitmap Image
 		{
 			get

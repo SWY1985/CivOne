@@ -39,7 +39,15 @@ namespace CivOne
 			}
 		}
 		
-		internal int Scale
+		internal int ScaleX
+		{
+			get
+			{
+				return 2;
+			}
+		}
+		
+		internal int ScaleY
 		{
 			get
 			{
