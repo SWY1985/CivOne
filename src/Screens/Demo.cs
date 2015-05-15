@@ -20,15 +20,7 @@ namespace CivOne.Screens
 	internal class Demo : BaseScreen
 	{
 		private readonly byte[] _textColours;
-		
-		public override MouseCursor Cursor
-		{
-			get
-			{
-				return MouseCursor.Pointer;
-			}
-		}
-		
+				
 		public override bool HasUpdate(uint gameTick)
 		{
 			if (gameTick % 2 != 0) return false;
@@ -49,6 +41,7 @@ namespace CivOne.Screens
 		
 		public Demo()
 		{
+			Cursor = MouseCursor.Pointer;
 			Picture background = Resources.Instance.LoadPIC("BIRTH1");
 			Picture logo = Resources.Instance.LoadPIC("LOGO");
 			switch (Settings.Instance.GraphicsMode)
@@ -61,13 +54,13 @@ namespace CivOne.Screens
 					break;
 			}
 			
-			_canvas = new Picture(320, 200, background.Image.Palette.Entries);
+			_canvas = new Picture(320, 200, logo.Image.Palette.Entries);
 			_canvas.AddLayer(background.Image, 0, 0);
 			_canvas.AddLayer(logo.Image, 0, 0);
 			
-			_canvas.DrawText(_canvas.Image.Palette, "One more turn...", 3, _textColours[0], 160, 160, TextAlign.Center);
-			_canvas.DrawText(_canvas.Image.Palette, "One more turn...", 3, _textColours[2], 160, 162, TextAlign.Center);
-			_canvas.DrawText(_canvas.Image.Palette, "One more turn...", 3, _textColours[1], 160, 161, TextAlign.Center);
+			_canvas.DrawText("One more turn...", 3, _textColours[0], 160, 160, TextAlign.Center);
+			_canvas.DrawText("One more turn...", 3, _textColours[2], 160, 162, TextAlign.Center);
+			_canvas.DrawText("One more turn...", 3, _textColours[1], 160, 161, TextAlign.Center);
 		}
 	}
 }
