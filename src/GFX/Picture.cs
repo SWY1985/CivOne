@@ -146,16 +146,6 @@ namespace CivOne.GFX
 			image.UnlockBits(bmpData);
 		}
 		
-		public void DrawText(ColorPalette palette, string text, int font, byte colour, int x, int y, TextAlign align = TextAlign.Left)
-		{
-			DrawText(palette, text, font, colour, colour, x, y, align);
-		}
-		public void DrawText(ColorPalette palette, string text, int font, byte firstLetterColour, byte colour, int x, int y, TextAlign align = TextAlign.Left)
-		{
-			Bitmap textImage = (Bitmap)Resources.Instance.GetText(text, font, firstLetterColour, colour).Clone();
-			textImage.Palette = palette;
-			DrawText(textImage, align, x, y);
-		}
 		public void DrawText(string text, int font, byte colour, int x, int y, TextAlign align = TextAlign.Left)
 		{
 			DrawText(text, font, colour, colour, x, y, align);
