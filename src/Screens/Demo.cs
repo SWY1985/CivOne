@@ -51,10 +51,6 @@ namespace CivOne.Screens
 			base.Draw(gfx);
 			
 			gfx.DrawImage(Canvas.Image, 0, 0, 320 * Scale, 200 * Scale);
-			
-			DrawText(gfx, _canvas.Image.Palette, "One more turn...", 3, _textColours[0], 160, 160, TextAlign.Center);
-			DrawText(gfx, _canvas.Image.Palette, "One more turn...", 3, _textColours[2], 160, 162, TextAlign.Center);
-			DrawText(gfx, _canvas.Image.Palette, "One more turn...", 3, _textColours[1], 160, 161, TextAlign.Center);
 		}
 		
 		public override bool KeyDown(KeyEventArgs args)
@@ -84,6 +80,10 @@ namespace CivOne.Screens
 			_canvas = new Picture(320, 200, background.Image.Palette.Entries);
 			_canvas.AddLayer(background.Image, new Point(0, 0));
 			_canvas.AddLayer(logo.Image, new Point(0, 0));
+			
+			_canvas.DrawText(_canvas.Image.Palette, "One more turn...", 3, _textColours[0], 160, 160, TextAlign.Center);
+			_canvas.DrawText(_canvas.Image.Palette, "One more turn...", 3, _textColours[2], 160, 162, TextAlign.Center);
+			_canvas.DrawText(_canvas.Image.Palette, "One more turn...", 3, _textColours[1], 160, 161, TextAlign.Center);
 		}
 	}
 }
