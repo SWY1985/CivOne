@@ -24,9 +24,9 @@ namespace CivOne.Screens
 		private readonly int[] HIDE_INTRO_LINE = new[] { 287, 229, -29, -87, -315 };
 		
 		private readonly byte[] _textColours;
+		private readonly byte[] _menuColours;
 		private readonly string[] _introText;
 		private readonly Picture[] _pictures;
-		private readonly ColorPalette _palette;
 		private readonly byte[,] _noiseMap;
 		
 		private int _introLeft = 320;
@@ -34,6 +34,7 @@ namespace CivOne.Screens
 		private int _cycleCounter = 0;
 		private int _noiseCounter = 33;
 		
+		private bool _done = false;
 		private bool _showIntroLine = false;
 		private bool _introSkipped = false;
 		private int _introLine = -1;
@@ -54,7 +55,7 @@ namespace CivOne.Screens
 		
 		public override bool HasUpdate(uint gameTick)
 		{
-            if (gameTick % 2 == 0 || _noiseCounter == 0) return false;	
+            if (_done) return false;	
 			
 			// Updates
             if (_introLeft > -320)
@@ -74,6 +75,11 @@ namespace CivOne.Screens
 			else if (_noiseCounter > 0)
 			{
 				_pictures[1].ApplyNoise(_noiseMap, --_noiseCounter);
+			}
+			
+			if (_noiseCounter == 0)
+			{
+				Common.AddScreen(new Menu(Canvas.Image.Palette.Entries));
 			}
 			
 			// Drawing
@@ -113,6 +119,13 @@ namespace CivOne.Screens
 			else if (_noiseCounter == 0)
 			{
 				_canvas.AddLayer(_pictures[2].Image);
+				_canvas.ResetPalette();
+				_done = true;
+				
+				// Draw menu background
+				_canvas.FillRectangle(_menuColours[0], 101, 141, 120, 47);
+				_canvas.FillRectangle(_menuColours[1], 101, 142, 119, 46);
+				_canvas.FillRectangle(_menuColours[2], 102, 142, 118, 45);
 			}
 			return true;
 		}
@@ -147,7 +160,6 @@ namespace CivOne.Screens
             for (int i = 0; i < 2; i++)
                 _pictures[i] = Resources.Instance.LoadPIC(string.Format("BIRTH{0}", i));
             _pictures[2] = Resources.Instance.LoadPIC("LOGO");
-            _palette = _pictures[0].Image.Palette;
             _noiseMap = new byte[320, 200];
             for (int x = 0; x < 320; x++)
             {
@@ -159,10 +171,12 @@ namespace CivOne.Screens
 			switch (Settings.Instance.GraphicsMode)
 			{
 				case GraphicsMode.Graphics256:
-					_textColours = new byte[] { 247, 252, 250, 5, 229 };
+					_textColours = new byte[] { 247, 252, 250 };
+					_menuColours = new byte[] { 247, 252, 250 };
 					break;
 				case GraphicsMode.Graphics16:
-					_textColours = new byte[] { 15, 15, 7, 5, 8 };
+					_textColours = new byte[] { 15, 15, 7 };
+					_menuColours = new byte[] { 8, 15, 7 };
 					break;
 			}
 			
