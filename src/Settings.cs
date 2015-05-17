@@ -17,7 +17,8 @@ namespace CivOne
 	{
 		// Set default settings
 		private readonly GraphicsMode _graphicsMode = GraphicsMode.Graphics256;
-		private readonly byte _framesPerSecond = 15; 
+		private readonly byte _framesPerSecond = 15;
+		private readonly bool _fullScreen = false;
 		
 		internal string BinDirectory
 		{
@@ -59,6 +60,14 @@ namespace CivOne
 			}
 		}
 		
+		internal bool FullScreen
+		{
+			get
+			{
+				return _fullScreen;
+			}
+		}
+		
 		internal int ScaleX
 		{
 			get
@@ -96,7 +105,7 @@ namespace CivOne
 				
 				Console.WriteLine("[SETTING] {0}: {1}", settingName, value);
 				
-				return value;
+				return value.Trim();
 			}
 		}
 		
@@ -104,14 +113,17 @@ namespace CivOne
 		{
 			int graphicsMode = (int)_graphicsMode;
 			byte framesPerSecond = _framesPerSecond;
+			bool fullScreen = _fullScreen;
 						
 			// Read settings
 			Int32.TryParse(GetSetting("GraphicsMode"), out graphicsMode);
 			Byte.TryParse(GetSetting("FramesPerSecond"), out framesPerSecond);
+			fullScreen = (GetSetting("FullScreen") == "1");
 						
 			// Set settings
 			if (graphicsMode > 0 && graphicsMode < 3) _graphicsMode = (GraphicsMode)graphicsMode;
 			if (framesPerSecond > 5 && framesPerSecond < 61) _framesPerSecond = framesPerSecond;
+			_fullScreen = fullScreen;
 		}
 	}
 }
