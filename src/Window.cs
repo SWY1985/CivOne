@@ -157,15 +157,15 @@ namespace CivOne
 			if (WindowState == FormWindowState.Maximized)
 			{
 				Console.WriteLine("Full screen off");
-				WindowState = FormWindowState.Normal;
 				FormBorderStyle = FormBorderStyle.Sizable;
+				WindowState = FormWindowState.Normal;
 				LoadCursors();
 				return;
 			}
 			
 			Console.WriteLine("Full screen on");
-			WindowState = FormWindowState.Maximized;
 			FormBorderStyle = FormBorderStyle.None;
+			WindowState = FormWindowState.Maximized;
 			LoadCursors();
 		}
 		
@@ -260,9 +260,10 @@ namespace CivOne
 			
 			// Set Window properties
 			DoubleBuffered = true;
-			FormBorderStyle = FormBorderStyle.Sizable;
 			MaximizeBox = false;
 			ClientSize = new Size(320 * Settings.Instance.ScaleX, 200 * Settings.Instance.ScaleY);
+			FormBorderStyle = Settings.Instance.FullScreen ? FormBorderStyle.None : FormBorderStyle.Sizable;
+			WindowState = Settings.Instance.FullScreen ? FormWindowState.Maximized : FormWindowState.Normal;
 			Text = "CivOne";
 			
 			// Set Window events
