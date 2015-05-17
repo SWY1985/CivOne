@@ -44,6 +44,38 @@ namespace CivOne
 			}
 		}
 		
+		private int CanvasX
+		{
+			get
+			{
+				return (ClientSize.Width - CanvasWidth) / 2;
+			}
+		}
+		
+		private int CanvasY
+		{
+			get
+			{
+				return (ClientSize.Height - CanvasHeight) / 2;
+			}
+		}
+		
+		private int CanvasWidth
+		{
+			get
+			{
+				return (int)Math.Floor((float)ClientSize.Width / 320) * 320;
+			}
+		}
+		
+		private int CanvasHeight
+		{
+			get
+			{
+				return (int)Math.Floor((float)ClientSize.Height / 200) * 200;
+			}
+		}
+		
 		private void GameTick()
 		{
 			RefreshGame();
@@ -56,7 +88,7 @@ namespace CivOne
 			while (true)
 			{
 				// if the previous tick is still busy, step out... this will cause the game to slow down a bit
-				if (!_tickWaiter.WaitOne(25)) continue;//return;
+				if (!_tickWaiter.WaitOne(25)) continue;
 				_tickWaiter.Reset();
 				
 				new Thread(new ThreadStart(GameTick)).Start();
@@ -120,6 +152,23 @@ namespace CivOne
 			LoadCursor(ref _cursorGoto, 32, 32);
 		}
 		
+		private void ToggleFullScreen()
+		{
+			if (WindowState == FormWindowState.Maximized)
+			{
+				Console.WriteLine("Full screen off");
+				WindowState = FormWindowState.Normal;
+				FormBorderStyle = FormBorderStyle.Sizable;
+				LoadCursors();
+				return;
+			}
+			
+			Console.WriteLine("Full screen on");
+			WindowState = FormWindowState.Maximized;
+			FormBorderStyle = FormBorderStyle.None;
+			LoadCursors();
+		}
+		
 		private void OnLoad(object sender, EventArgs args)
 		{			
 			// Start tick thread
@@ -144,13 +193,17 @@ namespace CivOne
 			}
 			
 			args.Graphics.Clear(Color.Black);
-			args.Graphics.DrawImage(_canvas.Image, 0, 0, ClientSize.Width, ClientSize.Height);
+			args.Graphics.DrawImage(_canvas.Image, CanvasX, CanvasY, CanvasWidth, CanvasHeight);
 		}
 		
 		private void OnKeyDown(object sender, KeyEventArgs args)
 		{
 			if (args.Alt || args.Control)
 			{
+				if (args.KeyCode == Keys.Enter)
+				{
+					ToggleFullScreen();
+				}
 				args.SuppressKeyPress = true;
 				return;
 			}
