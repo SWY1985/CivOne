@@ -18,7 +18,19 @@ namespace CivOne
 	{
         public static Random Random = new Random((int)DateTime.Now.Ticks);
 		
-		internal static List<IScreen> Screens = new List<IScreen>();
+		private static List<IScreen> _screens = new List<IScreen>();
+		internal static IScreen[] Screens
+		{
+			get
+			{
+				return _screens.ToArray();
+			}
+		}
+		
+		internal static void AddScreen(IScreen screen)
+		{
+			_screens.Add(screen);
+		}
 		
 		private static Color[] _palette16;
 		public static Color[] GetPalette16
