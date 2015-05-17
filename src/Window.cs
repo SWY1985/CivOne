@@ -35,21 +35,20 @@ namespace CivOne
 		private MouseCursor _currentCursor = MouseCursor.Pointer;
 		
 		private AutoResetEvent _tickWaiter = new AutoResetEvent(true);
-		
-		private List<IScreen> Screens
-		{
-			get
-			{
-				return Common.Screens;
-			}
-		}
-		
+				
 		private IScreen TopScreen
 		{
 			get
 			{
-				return Screens.LastOrDefault();
+				return Common.Screens.LastOrDefault();
 			}
+		}
+		
+		private void GameTick()
+		{
+			RefreshGame();
+			_gameTick++;
+			_tickWaiter.Set();
 		}
 		
 		private void SetGameTick()
@@ -57,14 +56,11 @@ namespace CivOne
 			while (true)
 			{
 				// if the previous tick is still busy, step out... this will cause the game to slow down a bit
-				if (!_tickWaiter.WaitOne(25)) return;
+				if (!_tickWaiter.WaitOne(25)) continue;//return;
 				_tickWaiter.Reset();
 				
-				RefreshGame();
-				_gameTick++;
-				Thread.Sleep(1000 / 30);
-				
-				_tickWaiter.Set();
+				new Thread(new ThreadStart(GameTick)).Start();
+				Thread.Sleep(1000 / Settings.Instance.FramesPerSecond);
 			}
 		}
 		
@@ -88,14 +84,14 @@ namespace CivOne
 			}
 			
 			// Update cursor
-			if (Screens.Count > 0 && _currentCursor != TopScreen.Cursor)
+			if (Common.Screens.Length > 0 && _currentCursor != TopScreen.Cursor)
 			{
 				_currentCursor = TopScreen.Cursor;
 				OnMouseMove(this, new MouseEventArgs(MouseButtons.None, 0, Cursor.Position.X, Cursor.Position.Y, 0));
 			}
 			
 			// Refresh the screen if there's an update
-			if (Screens.Count(x => x.HasUpdate(_gameTick)) > 0) Refresh();
+			if (Common.Screens.Count(x => x.HasUpdate(_gameTick)) > 0) Refresh();
 		}
 		
 		private void LoadCursor(ref Cursor[,] cursor, int x, int y)
@@ -139,10 +135,10 @@ namespace CivOne
 			args.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			args.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
 			
-			if (Screens.Count == 0) return;
+			if (Common.Screens.Length == 0) return;
 			
 			_canvas = new Picture(320, 200, TopScreen.Canvas.Image.Palette.Entries);
-			foreach (IScreen screen in Screens)
+			foreach (IScreen screen in Common.Screens)
 			{
 				_canvas.AddLayer(screen.Canvas.Image, 0, 0);
 			}
@@ -238,7 +234,7 @@ namespace CivOne
 					startScreen = new Credits();
 					break;
 			}
-			Screens.Add(startScreen);
+			Common.AddScreen(startScreen);
 			
 			ResumeLayout(false);
 		}
