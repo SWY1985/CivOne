@@ -16,7 +16,7 @@ using CivOne.Templates;
 namespace CivOne.Screens
 {
 	internal class Setup : BaseScreen
-	{		
+	{
 		public override bool HasUpdate(uint gameTick)
 		{
 			return false;
