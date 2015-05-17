@@ -15,7 +15,9 @@ namespace CivOne
 {
 	internal class Settings
 	{
-		private readonly GraphicsMode _graphicsMode;
+		// Set default settings
+		private readonly GraphicsMode _graphicsMode = GraphicsMode.Graphics256;
+		private readonly byte _framesPerSecond = 15; 
 		
 		internal string BinDirectory
 		{
@@ -46,6 +48,14 @@ namespace CivOne
 			get
 			{
 				return _graphicsMode;
+			}
+		}
+		
+		internal byte FramesPerSecond
+		{
+			get
+			{
+				return _framesPerSecond;
 			}
 		}
 		
@@ -92,14 +102,16 @@ namespace CivOne
 		
 		private Settings()
 		{
-			// Set default settings
-			_graphicsMode = GraphicsMode.Graphics256;
-			
+			int graphicsMode = (int)_graphicsMode;
+			byte framesPerSecond = _framesPerSecond;
+						
 			// Read settings
-			string graphicsMode = GetSetting("GraphicsMode");
-			
-			// Override settings
-			if (graphicsMode != null && graphicsMode == "2") _graphicsMode = GraphicsMode.Graphics16;
+			Int32.TryParse(GetSetting("GraphicsMode"), out graphicsMode);
+			Byte.TryParse(GetSetting("FramesPerSecond"), out framesPerSecond);
+						
+			// Set settings
+			if (graphicsMode > 0 && graphicsMode < 3) _graphicsMode = (GraphicsMode)graphicsMode;
+			if (framesPerSecond > 5 && framesPerSecond < 61) _framesPerSecond = framesPerSecond;
 		}
 	}
 }
