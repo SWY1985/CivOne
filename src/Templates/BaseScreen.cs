@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Drawing;
+using System.Collections.Generic;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
@@ -19,6 +20,7 @@ namespace CivOne.Templates
 {
 	internal abstract class BaseScreen : IScreen
 	{
+		protected readonly List<Screens.Menu> Menus = new List<Screens.Menu>();
 		protected Picture _canvas = new Picture(320, 200);
 		
 		public virtual Picture Canvas
@@ -32,5 +34,18 @@ namespace CivOne.Templates
 		public abstract bool HasUpdate(uint gameTick);
 		public abstract bool KeyDown(KeyEventArgs args);
 		public abstract bool MouseDown(MouseEventArgs args);
+		
+		protected void CloseMenus()
+		{
+			foreach (Screens.Menu menu in Menus)
+			{
+				menu.Close();
+			}
+		}
+		protected void Destroy()
+		{
+			CloseMenus();
+			Common.DestroyScreen(this);
+		}
 	}
 }
