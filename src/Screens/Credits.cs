@@ -147,18 +147,21 @@ namespace CivOne.Screens
 		{
 			Destroy();
 			Common.AddScreen(new Demo());
+			Console.WriteLine("Main Menu: Start a New Game");
 		}
 		
 		private void Earth(object sender, EventArgs args)
 		{
 			Destroy();
 			Common.AddScreen(new Demo());
+			Console.WriteLine("Main Menu: EARTH");
 		}
 		
 		private void CustomizeWorld(object sender, EventArgs args)
 		{
 			Destroy();
 			Common.AddScreen(new CustomizeWorld());
+			Console.WriteLine("Main Menu: Customize World");
 		}
 		
 		public override bool KeyDown(KeyEventArgs args)
