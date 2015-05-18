@@ -115,6 +115,12 @@ namespace CivOne
 				return;
 			}
 			
+			if (!TickThread.IsAlive)
+			{
+				Close();
+				return;
+			}
+			
 			// Update cursor
 			if (Common.Screens.Length > 0 && _currentCursor != TopScreen.Cursor)
 			{
@@ -167,6 +173,15 @@ namespace CivOne
 			FormBorderStyle = FormBorderStyle.None;
 			WindowState = FormWindowState.Maximized;
 			LoadCursors();
+		}
+		
+		private void OnFormClosing(object sender, FormClosingEventArgs args)
+		{
+			if (TickThread.IsAlive)
+			{
+				TickThread.Abort();
+				args.Cancel = true;
+			}
 		}
 		
 		private void OnLoad(object sender, EventArgs args)
@@ -267,6 +282,7 @@ namespace CivOne
 			Text = "CivOne";
 			
 			// Set Window events
+			FormClosing += OnFormClosing;
 			Load += OnLoad;
 			Paint += OnPaint;
 			KeyDown += OnKeyDown;
@@ -295,8 +311,6 @@ namespace CivOne
 		
 		protected override void Dispose(bool disposing)
 		{
-			TickThread.Abort();
-			
 			base.Dispose(disposing);
 		}
 	}
