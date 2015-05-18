@@ -83,7 +83,10 @@ namespace CivOne.Screens
 				{
 					X = 103,
 					Y = 144,
-					Width = 116
+					Width = 116,
+					ActiveColour = 11,
+					TextColour = 5,
+					DisabledColour = 8
 				};
 				menu.Items.Add(new Menu.Item("Start a New Game"));
 				menu.Items.Add(new Menu.Item("Load a Saved Game") { Enabled = false });
@@ -182,14 +185,13 @@ namespace CivOne.Screens
 			switch (Settings.Instance.GraphicsMode)
 			{
 				case GraphicsMode.Graphics256:
-					_textColours = new byte[] { 247, 252, 250 };
-					_menuColours = new byte[] { 247, 252, 250 };
+					_textColours = new byte[] { 248, 242, 244 };
 					break;
 				case GraphicsMode.Graphics16:
 					_textColours = new byte[] { 15, 15, 7 };
-					_menuColours = new byte[] { 8, 15, 7 };
 					break;
 			}
+			_menuColours = new byte[] { 8, 15, 7 };
 			
 			_canvas = new Picture(320, 200, _pictures[2].Image.Palette.Entries);
 		}
