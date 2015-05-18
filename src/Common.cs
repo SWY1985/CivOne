@@ -32,6 +32,11 @@ namespace CivOne
 			_screens.Add(screen);
 		}
 		
+		internal static void DestroyScreen(IScreen screen)
+		{
+			_screens.Remove(screen);
+		}
+		
 		private static Color[] _palette16;
 		public static Color[] GetPalette16
 		{
