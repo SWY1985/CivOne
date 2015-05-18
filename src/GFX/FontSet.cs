@@ -27,15 +27,23 @@ namespace CivOne.GFX
 		private readonly Color[] _colours;
 		private Dictionary<char, byte> _charWidths = new Dictionary<char, byte>();
 		private Dictionary<char, byte[]> _characters = new Dictionary<char, byte[]>();
-
+		
+		public int FontHeight
+		{
+			get
+			{
+				return 1 + _charBottomRow - _charTopRow;
+			}
+		}
+		
 		public Bitmap GetLetter(char character, byte colour)
 		{
 			if (!_charWidths.ContainsKey(character) || !_characters.ContainsKey(character)) return new Bitmap(8, 8);
-			int ww = _charWidths[character], hh = 1 + _charBottomRow - _charTopRow;
+			int ww = _charWidths[character];
 
-			byte[] pixels = new byte[ww * hh];
+			byte[] pixels = new byte[ww * FontHeight];
 			int index = 0, b = 0, bit = 0;;
-			for (int y = 0; y < 1 + _charBottomRow - _charTopRow; y++)
+			for (int y = 0; y < FontHeight; y++)
 			{
 				if (bit > 0)
 				{
@@ -67,8 +75,8 @@ namespace CivOne.GFX
 				}
 			}
 			
-			Bitmap output = new Bitmap(ww, hh, System.Drawing.Imaging.PixelFormat.Format8bppIndexed);
-			for (int y = 0; y < hh; y++)
+			Bitmap output = new Bitmap(ww, FontHeight, System.Drawing.Imaging.PixelFormat.Format8bppIndexed);
+			for (int y = 0; y < FontHeight; y++)
 			{
 				BitmapData bmpData = output.LockBits(new Rectangle(0, y, ww, 1), ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
 				Marshal.Copy(pixels, (ww * y), bmpData.Scan0, ww);
