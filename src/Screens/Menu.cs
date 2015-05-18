@@ -111,19 +111,47 @@ namespace CivOne.Screens
 			return false;
 		}
 		
+		private int MouseOverItem(MouseEventArgs args)
+		{
+			int fontHeight = Resources.Instance.GetFontHeight(FontId);
+			int yy = Y;
+			
+			if (Title != null) yy += fontHeight;
+			for (int i = 0; i < Items.Count; i++)
+			{
+				if (new Rectangle(X, yy, Width, fontHeight).Contains(args.Location)) return i;
+				yy += fontHeight;
+			}
+			
+			return -1;
+		}
+		
 		public override bool MouseDown(MouseEventArgs args)
 		{
-			return false;
+			int index = MouseOverItem(args);
+			if (index < 0 || index == _activeItem) return false;
+			ActiveItem = index;
+			_change = true;
+			return true;
 		}
 		
 		public override bool MouseUp(MouseEventArgs args)
 		{
-			return false;
+			int index = MouseOverItem(args);
+			if (index < 0) return false;
+			ActiveItem = index;
+			Items[_activeItem].Select();
+			_change = true;
+			return true;
 		}
 		
 		public override bool MouseDrag(MouseEventArgs args)
 		{
-			return false;
+			int index = MouseOverItem(args);
+			if (index < 0 || index == _activeItem) return false;
+			ActiveItem = index;
+			_change = true;
+			return true;
 		}
 		
 		public void Close()
