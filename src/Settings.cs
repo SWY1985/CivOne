@@ -103,7 +103,7 @@ namespace CivOne
 			{
 				string value = sr.ReadToEnd();
 				
-				Console.WriteLine("[SETTING] {0}: {1}", settingName, value);
+				Console.WriteLine("Settings - {0}: {1}", settingName, value);
 				
 				return value.Trim();
 			}
