@@ -193,7 +193,7 @@ namespace CivOne
 		
 		private void ScaleMouseEventArgs(ref MouseEventArgs args)
 		{
-			args = new MouseEventArgs(args.Button, args.Clicks, (int)Math.Floor((float)args.X * ScaleX), (int)Math.Floor((float)args.Y * ScaleY), args.Delta);
+			args = new MouseEventArgs(args.Button, args.Clicks, (int)Math.Floor((float)args.X / ScaleX), (int)Math.Floor((float)args.Y / ScaleY), args.Delta);
 		}
 		
 		private void OnFormClosing(object sender, FormClosingEventArgs args)
