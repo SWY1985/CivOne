@@ -78,23 +78,8 @@ namespace CivOne.Screens
 			}
 			
 			if (_noiseCounter == 0)
-			{
-				Menu menu = new Menu(Canvas.Image.Palette.Entries)
-				{
-					X = 103,
-					Y = 144,
-					Width = 116,
-					ActiveColour = 11,
-					TextColour = 5,
-					DisabledColour = 8,
-					FontId = 0
-				};
-				menu.Items.Add(new Menu.Item("Start a New Game"));
-				menu.Items.Add(new Menu.Item("Load a Saved Game") { Enabled = false });
-				menu.Items.Add(new Menu.Item("EARTH"));
-				menu.Items.Add(new Menu.Item("Customize World"));
-				menu.Items.Add(new Menu.Item("View Hall of Fame") { Enabled = false });
-				Common.AddScreen(menu);
+			{				
+				Common.AddScreen(Menus[0]);
 			}
 			
 			// Drawing
@@ -158,6 +143,24 @@ namespace CivOne.Screens
 			return true;
 		}
 		
+		private void StartNewGame(object sender, EventArgs args)
+		{
+			Destroy();
+			Common.AddScreen(new Demo());
+		}
+		
+		private void Earth(object sender, EventArgs args)
+		{
+			Destroy();
+			Common.AddScreen(new Demo());
+		}
+		
+		private void CustomizeWorld(object sender, EventArgs args)
+		{
+			Destroy();
+			Common.AddScreen(new CustomizeWorld());
+		}
+		
 		public override bool KeyDown(KeyEventArgs args)
 		{
 			return SkipIntro();
@@ -173,8 +176,8 @@ namespace CivOne.Screens
             _introText = TextFile.Instance.LoadArray("credits");
             _pictures = new Picture[3];
             for (int i = 0; i < 2; i++)
-                _pictures[i] = Resources.Instance.LoadPIC(string.Format("BIRTH{0}", i));
-            _pictures[2] = Resources.Instance.LoadPIC("LOGO");
+                _pictures[i] = Resources.Instance.LoadPIC(string.Format("BIRTH{0}", i), true);
+            _pictures[2] = Resources.Instance.LoadPIC("LOGO", true);
             _noiseMap = new byte[320, 200];
             for (int x = 0; x < 320; x++)
             {
@@ -195,6 +198,29 @@ namespace CivOne.Screens
 			_menuColours = new byte[] { 8, 15, 7 };
 			
 			_canvas = new Picture(320, 200, _pictures[2].Image.Palette.Entries);
+			
+			Menu menu = new Menu(Canvas.Image.Palette.Entries)
+			{
+				X = 103,
+				Y = 144,
+				Width = 116,
+				ActiveColour = 11,
+				TextColour = 5,
+				DisabledColour = 8,
+				FontId = 0
+			};
+			Menu.Item[] menuItems = new Menu.Item[5];
+			menu.Items.Add(menuItems[0] = new Menu.Item("Start a New Game"));
+			menu.Items.Add(menuItems[1] = new Menu.Item("Load a Saved Game") { Enabled = false });
+			menu.Items.Add(menuItems[2] = new Menu.Item("EARTH"));
+			menu.Items.Add(menuItems[3] = new Menu.Item("Customize World"));
+			menu.Items.Add(menuItems[4] = new Menu.Item("View Hall of Fame") { Enabled = false });
+			
+			menuItems[0].Selected += StartNewGame;
+			menuItems[2].Selected += Earth;
+			menuItems[3].Selected += CustomizeWorld;
+			
+			Menus.Add(menu);
 		}
 	}
 }
