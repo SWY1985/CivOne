@@ -58,15 +58,16 @@ namespace CivOne.Screens
 		
 		public override bool HasUpdate(uint gameTick)
 		{
+			int fontHeight = Resources.Instance.GetFontHeight(FontId);
 			if (_change)
 			{
-				int yy = Y + (_selectedItem * 8);
+				int yy = Y + (_selectedItem * fontHeight);
 				
 				_canvas.FillRectangle(0, 0, 0, 320, 200);
-				_canvas.FillRectangle(ActiveColour, X, yy, Width, 8);
+				_canvas.FillRectangle(ActiveColour, X, yy, Width, fontHeight);
 				for (int i = 0; i < Items.Count; i++)
 				{
-					yy = Y + (i * 8);
+					yy = Y + (i * fontHeight);
 					_canvas.DrawText(Items[i].Text, FontId, (byte)(Items[i].Enabled ? TextColour : DisabledColour), X + 8, yy + 1);
 				}				
 				_change = false;

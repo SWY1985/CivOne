@@ -86,7 +86,8 @@ namespace CivOne.Screens
 					Width = 116,
 					ActiveColour = 11,
 					TextColour = 5,
-					DisabledColour = 8
+					DisabledColour = 8,
+					FontId = 0
 				};
 				menu.Items.Add(new Menu.Item("Start a New Game"));
 				menu.Items.Add(new Menu.Item("Load a Saved Game") { Enabled = false });
