@@ -35,6 +35,9 @@ namespace CivOne.Screens
 		public int X { get; set; }
 		public int Y { get; set; }
 		public int Width { get; set; }
+		public byte ActiveColour { get; set; }
+		public byte TextColour { get; set; }
+		public byte DisabledColour { get; set; }
 		
 		private bool _change = true;
 		private int _selectedItem = 0;
@@ -60,11 +63,11 @@ namespace CivOne.Screens
 				int yy = Y + (_selectedItem * 8);
 				
 				_canvas.FillRectangle(0, 0, 0, 320, 200);
-				_canvas.FillRectangle(1, X, yy, Width, 8);
+				_canvas.FillRectangle(ActiveColour, X, yy, Width, 8);
 				for (int i = 0; i < Items.Count; i++)
 				{
 					yy = Y + (i * 8);
-					_canvas.DrawText(Items[i].Text, FontId, (byte)(Items[i].Enabled ? 2 : 3), X + 8, yy + 1);
+					_canvas.DrawText(Items[i].Text, FontId, (byte)(Items[i].Enabled ? TextColour : DisabledColour), X + 8, yy + 1);
 				}				
 				_change = false;
 				return true;
