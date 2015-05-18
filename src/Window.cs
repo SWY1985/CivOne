@@ -323,6 +323,7 @@ namespace CivOne
 			Paint += OnPaint;
 			KeyDown += OnKeyDown;
 			MouseDown += OnMouseDown;
+			MouseUp += OnMouseUp;
 			MouseMove += OnMouseMove;
 			ResizeEnd += OnResizeEnd;
 			
