@@ -37,6 +37,16 @@ namespace CivOne.Screens
 			return false;
 		}
 		
+		public override bool MouseUp(MouseEventArgs args)
+		{
+			return false;
+		}
+		
+		public override bool MouseDrag(MouseEventArgs args)
+		{
+			return false;
+		}
+		
 		public Demo()
 		{
 			Cursor = MouseCursor.Pointer;

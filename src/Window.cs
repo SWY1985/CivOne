@@ -64,7 +64,7 @@ namespace CivOne
 		{
 			get
 			{
-				return (int)Math.Floor((float)ClientSize.Width / 320) * 320;
+				return ScaleX * 320;
 			}
 		}
 		
@@ -72,7 +72,23 @@ namespace CivOne
 		{
 			get
 			{
-				return (int)Math.Floor((float)ClientSize.Height / 200) * 200;
+				return ScaleY * 200;
+			}
+		}
+		
+		private int ScaleX
+		{
+			get
+			{
+				return (int)Math.Floor((float)ClientSize.Width / 320);
+			}
+		}
+		
+		private int ScaleY
+		{
+			get
+			{
+				return (int)Math.Floor((float)ClientSize.Height / 200);
 			}
 		}
 		
@@ -175,6 +191,11 @@ namespace CivOne
 			LoadCursors();
 		}
 		
+		private void ScaleMouseEventArgs(ref MouseEventArgs args)
+		{
+			args = new MouseEventArgs(args.Button, args.Clicks, (int)Math.Floor((float)args.X * ScaleX), (int)Math.Floor((float)args.Y * ScaleY), args.Delta);
+		}
+		
 		private void OnFormClosing(object sender, FormClosingEventArgs args)
 		{
 			if (TickThread.IsAlive)
@@ -233,11 +254,26 @@ namespace CivOne
 		
 		private void OnMouseDown(object sender, MouseEventArgs args)
 		{
+			ScaleMouseEventArgs(ref args);
 			if (TopScreen != null && TopScreen.MouseDown(args)) ScreenUpdate();
+		}
+		
+		private void OnMouseUp(object sender, MouseEventArgs args)
+		{
+			ScaleMouseEventArgs(ref args);
+			if (TopScreen != null && TopScreen.MouseUp(args)) ScreenUpdate();
+		}
+		
+		private void MouseDrag(MouseEventArgs args)
+		{
+			ScaleMouseEventArgs(ref args);
+			if (TopScreen != null && TopScreen.MouseDrag(args)) ScreenUpdate();
 		}
 		
 		private void OnMouseMove(object sender, MouseEventArgs args)
 		{
+			if (args.Button > 0) MouseDrag(args);
+			
 			if (_currentCursor == MouseCursor.None)
 			{
 				Cursor = _hiddenCursor;
@@ -261,8 +297,8 @@ namespace CivOne
 		
 		private void OnResizeEnd(object sender, EventArgs args)
 		{
-			int width = (int)Math.Round((float)ClientSize.Width / 320) * 320;
-			int height = (int)Math.Round((float)ClientSize.Height / 200) * 200;
+			int width = CanvasWidth * 320;
+			int height = CanvasHeight * 200;
 			
 			ClientSize = new Size(width, height);
 			LoadCursors();
