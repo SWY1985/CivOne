@@ -79,7 +79,18 @@ namespace CivOne.Screens
 			
 			if (_noiseCounter == 0)
 			{
-				Common.AddScreen(new Menu(Canvas.Image.Palette.Entries));
+				Menu menu = new Menu(Canvas.Image.Palette.Entries)
+				{
+					X = 103,
+					Y = 144,
+					Width = 116
+				};
+				menu.Items.Add(new Menu.Item("Start a New Game"));
+				menu.Items.Add(new Menu.Item("Load a Saved Game") { Enabled = false });
+				menu.Items.Add(new Menu.Item("EARTH"));
+				menu.Items.Add(new Menu.Item("Customize World"));
+				menu.Items.Add(new Menu.Item("View Hall of Fame") { Enabled = false });
+				Common.AddScreen(menu);
 			}
 			
 			// Drawing

@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using CivOne.Enums;
@@ -18,13 +19,63 @@ namespace CivOne.Screens
 {
 	internal class Menu : BaseScreen
 	{
+		internal class Item
+		{
+			public bool Enabled = true;
+			public string Text;
+			
+			public Item(string text)
+			{
+				Text = text;
+			}
+		}
+		
+		public readonly List<Item> Items = new List<Item>(); 
+		public int FontId { get; set; }
+		public int X { get; set; }
+		public int Y { get; set; }
+		public int Width { get; set; }
+		
+		private bool _change = true;
+		private int _selectedItem = 0;
+		public int SelectedItem
+		{
+			get
+			{
+				return _selectedItem;
+			}
+			private set
+			{
+				_change = true;
+				_selectedItem = value;
+				if (_selectedItem < 0) _selectedItem = 0;
+				if (_selectedItem >= Items.Count) _selectedItem = (Items.Count - 1);
+			}
+		}
+		
 		public override bool HasUpdate(uint gameTick)
 		{
+			if (_change)
+			{
+				int yy = Y + (_selectedItem * 8);
+				
+				_canvas.FillRectangle(0, 0, 0, 320, 200);
+				_canvas.FillRectangle(1, X, yy, Width, 8);
+				for (int i = 0; i < Items.Count; i++)
+				{
+					yy = Y + (i * 8);
+					_canvas.DrawText(Items[i].Text, FontId, (byte)(Items[i].Enabled ? 2 : 3), X + 8, yy + 1);
+				}				
+				_change = false;
+				return true;
+			}
 			return false;
 		}
 		
 		public override bool KeyDown(KeyEventArgs args)
 		{
+			if (args.KeyCode == Keys.Up) { SelectedItem--; return true; }
+			if (args.KeyCode == Keys.Down) { SelectedItem++; return true; }
 			return false;
 		}
 		
