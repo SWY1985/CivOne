@@ -35,7 +35,7 @@ namespace CivOne
 		private MouseCursor _currentCursor = MouseCursor.Pointer;
 		
 		private AutoResetEvent _tickWaiter = new AutoResetEvent(true);
-				
+		
 		private IScreen TopScreen
 		{
 			get
@@ -297,8 +297,8 @@ namespace CivOne
 		
 		private void OnResizeEnd(object sender, EventArgs args)
 		{
-			int width = CanvasWidth * 320;
-			int height = CanvasHeight * 200;
+			int width = ScaleX * 320;
+			int height = ScaleY * 200;
 			
 			ClientSize = new Size(width, height);
 			LoadCursors();
