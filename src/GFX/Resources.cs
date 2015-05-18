@@ -142,7 +142,7 @@ namespace CivOne.GFX
 				output = new Picture(picFile.GetPicture16, picFile.GetPalette16);
 			}
 
-			_cache.Add(key, output);
+			if (!noCache) _cache.Add(key, output);
 			return output;
 		}
 		
