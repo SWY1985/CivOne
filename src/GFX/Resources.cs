@@ -101,6 +101,11 @@ namespace CivOne.GFX
 		{
 			return GetLetter(5, font, letter).Size;
 		}
+		
+		public int GetFontHeight(int font)
+		{
+			return _fonts[font].FontHeight;
+		}
 
 		private Bitmap GetLetter(byte colour, int font, char letter)
 		{
