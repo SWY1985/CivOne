@@ -20,5 +20,7 @@ namespace CivOne.Interfaces
         bool HasUpdate(uint gameTick);
         bool KeyDown(KeyEventArgs args);
 		bool MouseDown(MouseEventArgs args);
+		bool MouseUp(MouseEventArgs args);
+		bool MouseDrag(MouseEventArgs args);
 	}
 }

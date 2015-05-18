@@ -174,6 +174,16 @@ namespace CivOne.Screens
 			return SkipIntro();
 		}
 		
+		public override bool MouseUp(MouseEventArgs args)
+		{
+			return false;
+		}
+		
+		public override bool MouseDrag(MouseEventArgs args)
+		{
+			return false;
+		}
+		
 		public Credits()
 		{
             _introText = TextFile.Instance.LoadArray("credits");
