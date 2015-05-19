@@ -98,7 +98,7 @@ namespace CivOne.Screens
 			else
 			{
 				Destroy();
-				Common.AddScreen(new Demo());
+				Common.AddScreen(new Intro());
 			}
 			
 			_hasUpdate = false;
