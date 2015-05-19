@@ -50,6 +50,7 @@ namespace CivOne.Screens
 		public byte TextColour { get; set; }
 		public byte DisabledColour { get; set; }
 		public int IndentTitle { get; set; }
+		public int RowHeight { get; set; }
 		
 		private bool _change = true;
 		private int _activeItem = 0;
@@ -71,6 +72,7 @@ namespace CivOne.Screens
 		public override bool HasUpdate(uint gameTick)
 		{
 			int fontHeight = Resources.Instance.GetFontHeight(FontId);
+			if (RowHeight != 0) fontHeight = RowHeight;
 			if (_change)
 			{
 				int yy = Y + (_activeItem * fontHeight);
@@ -115,6 +117,7 @@ namespace CivOne.Screens
 		private int MouseOverItem(MouseEventArgs args)
 		{
 			int fontHeight = Resources.Instance.GetFontHeight(FontId);
+			if (RowHeight != 0) fontHeight = RowHeight;
 			int yy = Y;
 			
 			if (Title != null) yy += fontHeight;
