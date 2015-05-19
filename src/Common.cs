@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using CivOne.Civilizations;
 using CivOne.Interfaces;
 
 namespace CivOne
@@ -17,6 +18,8 @@ namespace CivOne
 	internal class Common
 	{
         public static Random Random = new Random((int)DateTime.Now.Ticks);
+		
+		public static ICivilization[] Civilizations = new ICivilization[] { new Roman(), new Babylonian(), new German(), new Egyptian(), new American(), new Greek(), new Indian(), new Russian(), new Zulu(), new French(), new Aztec(), new Chinese(), new English(), new Mongol() };
 		
 		private static List<IScreen> _screens = new List<IScreen>();
 		internal static IScreen[] Screens
