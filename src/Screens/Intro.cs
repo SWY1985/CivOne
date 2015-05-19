@@ -220,6 +220,12 @@ namespace CivOne.Screens
 					return true;
 				}
 			}
+			if (args.KeyCode == Keys.Space || args.KeyCode == Keys.Enter)
+			{
+				Destroy();
+				Common.AddScreen(new Demo());
+				return true;
+			}
 			return false;
 		}
 		
