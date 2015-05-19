@@ -16,9 +16,9 @@ namespace CivOne
 	internal class Settings
 	{
 		// Set default settings
-		private readonly GraphicsMode _graphicsMode = GraphicsMode.Graphics256;
-		private readonly byte _framesPerSecond = 15;
-		private readonly bool _fullScreen = false;
+		private GraphicsMode _graphicsMode = GraphicsMode.Graphics256;
+		private byte _framesPerSecond = 15;
+		private bool _fullScreen = false;
 		
 		internal string BinDirectory
 		{
@@ -50,6 +50,13 @@ namespace CivOne
 			{
 				return _graphicsMode;
 			}
+			set
+			{
+				_graphicsMode = value;
+				string saveValue = _graphicsMode == GraphicsMode.Graphics256 ? "1" : "2";
+				SetSetting("GraphicsMode", saveValue);
+				Common.ReloadSettings = true;
+			}
 		}
 		
 		internal byte FramesPerSecond
@@ -58,6 +65,13 @@ namespace CivOne
 			{
 				return _framesPerSecond;
 			}
+			set
+			{
+				if (value < 5 || value > 60) return;
+				_framesPerSecond = value;
+				SetSetting("FramesPerSecond", _framesPerSecond.ToString());
+				Common.ReloadSettings = true;
+			}
 		}
 		
 		internal bool FullScreen
@@ -65,6 +79,12 @@ namespace CivOne
 			get
 			{
 				return _fullScreen;
+			}
+			set
+			{
+				_fullScreen = value;
+				SetSetting("FullScreen", _fullScreen ? "1" : "0");
+				Common.ReloadSettings = true;
 			}
 		}
 		
@@ -103,9 +123,20 @@ namespace CivOne
 			{
 				string value = sr.ReadToEnd();
 				
-				Console.WriteLine("Settings - {0}: {1}", settingName, value);
+				Console.WriteLine("Setting Loaded - {0}: {1}", settingName, value);
 				
 				return value.Trim();
+			}
+		}
+		
+		private void SetSetting(string settingName, string value)
+		{
+			string filename = Path.Combine(SettingsDirectory, settingName);
+			using (StreamWriter sw = new StreamWriter(filename, false))
+			{
+				sw.Write(value);
+				
+				Console.WriteLine("Setting Saved - {0}: {1}", settingName, value);
 			}
 		}
 		
