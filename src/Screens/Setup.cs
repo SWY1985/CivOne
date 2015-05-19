@@ -22,26 +22,6 @@ namespace CivOne.Screens
 			return false;
 		}
 		
-		public override bool KeyDown(KeyEventArgs args)
-		{
-			return false;
-		}
-		
-		public override bool MouseDown(MouseEventArgs args)
-		{
-			return false;
-		}
-		
-		public override bool MouseUp(MouseEventArgs args)
-		{
-			return false;
-		}
-		
-		public override bool MouseDrag(MouseEventArgs args)
-		{
-			return false;
-		}
-		
 		public Setup()
 		{
 			Cursor = MouseCursor.Pointer;
