@@ -19,7 +19,7 @@ namespace CivOne.Screens
 {
 	internal class Setup : BaseScreen
 	{
-		private const int MenuFont = 0;
+		private const int MenuFont = 6;
 		
 		private bool _update = true;
 		
@@ -67,7 +67,8 @@ namespace CivOne.Screens
 				ActiveColour = 11,
 				TextColour = 5,
 				DisabledColour = 8,
-				FontId = MenuFont
+				FontId = MenuFont,
+				IndentTitle = 2
 			};
 			
 			Menu.Item menuItem;
