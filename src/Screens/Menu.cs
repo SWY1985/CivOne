@@ -49,6 +49,7 @@ namespace CivOne.Screens
 		public byte ActiveColour { get; set; }
 		public byte TextColour { get; set; }
 		public byte DisabledColour { get; set; }
+		public int IndentTitle { get; set; }
 		
 		private bool _change = true;
 		private int _activeItem = 0;
@@ -78,7 +79,7 @@ namespace CivOne.Screens
 				_canvas.FillRectangle(0, 0, 0, 320, 200);
 				if (Title != null)
 				{
-					_canvas.DrawText(Title, FontId, TitleColour, X + 8, Y + 1);
+					_canvas.DrawText(Title, FontId, TitleColour, X + IndentTitle, Y + 1);
 					offsetY = fontHeight;
 				}				
 				_canvas.FillRectangle(ActiveColour, X, yy + offsetY, Width, fontHeight);
@@ -162,6 +163,7 @@ namespace CivOne.Screens
 		public Menu(Color[] colours)
 		{
 			Cursor = MouseCursor.Pointer;
+			IndentTitle = 8;
 			
 			_canvas = new Picture(320, 200, colours);
 		}
