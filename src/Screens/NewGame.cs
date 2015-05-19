@@ -70,12 +70,14 @@ namespace CivOne.Screens
 		{
 			_difficulty = (sender as Menu.Item).Value;
 			CloseMenus();
+			Console.WriteLine("Difficulty: {0}", MenuItemsDifficulty[_difficulty]);
 		}
 		
 		private void SetCompetition(object sender, EventArgs args)
 		{
 			_competition = (7 - (sender as Menu.Item).Value);
 			CloseMenus();
+			Console.WriteLine("Competition: {0} Civilizations", _competition);
 			
 			MenuItemsTribes = Common.Civilizations.Where(c => c.PreferredPlayerNumber <= _competition).Select(civ => civ.Name).ToArray();
 		}
@@ -84,6 +86,7 @@ namespace CivOne.Screens
 		{
 			_tribe = (sender as Menu.Item).Value;
 			CloseMenus();
+			Console.WriteLine("Tribe: {0}", MenuItemsTribes[_tribe]);
 		}
 		
 		private Bitmap DifficultyPicture
