@@ -140,7 +140,7 @@ namespace CivOne.Screens
 			int index = MouseOverItem(args);
 			if (index < 0) return false;
 			ActiveItem = index;
-			Items[_activeItem].Select();
+			if (Items[_activeItem].Enabled) Items[_activeItem].Select();
 			_change = true;
 			return true;
 		}
