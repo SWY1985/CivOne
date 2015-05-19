@@ -46,6 +46,7 @@ namespace CivOne.Screens
 			{
 				_showIntroLine = true;
 				_introLine++;
+				Console.WriteLine(@"Credits: ""{0}""", _introText[_introLine]);
 			}
 			else if (HIDE_INTRO_LINE.Contains(_introLeft))
 			{
