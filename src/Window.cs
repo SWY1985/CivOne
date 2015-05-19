@@ -131,6 +131,19 @@ namespace CivOne
 				return;
 			}
 			
+			if (Common.ReloadSettings)
+			{
+				FormBorderStyle = Settings.Instance.FullScreen ? FormBorderStyle.None : FormBorderStyle.Sizable;
+				WindowState = Settings.Instance.FullScreen ? FormWindowState.Maximized : FormWindowState.Normal;
+				LoadCursors();
+				return;
+			}
+			
+			if (TickThread.IsAlive && Common.EndGame)
+			{
+				TickThread.Abort();
+			}
+			
 			if (!TickThread.IsAlive)
 			{
 				Close();
