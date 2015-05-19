@@ -243,10 +243,6 @@ namespace CivOne.Screens
 			
 			_canvas = new Picture(320, 200, palette);
 			_canvas.FillRectangle(3, 0, 0, 320, 200);
-			
-			// Setup menus
-			
-			
 		}
 	}
 }
