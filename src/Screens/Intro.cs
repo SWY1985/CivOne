@@ -135,7 +135,7 @@ namespace CivOne.Screens
 					if (_introLine >= _introText.Length)
 					{
 						Destroy();
-						Common.AddScreen(new Demo());
+						Common.AddScreen(new NewGame());
 						return true;
 					}
 					if (_introText[_introLine] == "_")
@@ -223,7 +223,7 @@ namespace CivOne.Screens
 			if (args.KeyCode == Keys.Space || args.KeyCode == Keys.Enter)
 			{
 				Destroy();
-				Common.AddScreen(new Demo());
+				Common.AddScreen(new NewGame());
 				return true;
 			}
 			return false;
