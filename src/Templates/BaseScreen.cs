@@ -32,10 +32,22 @@ namespace CivOne.Templates
 		}
 		public virtual MouseCursor Cursor { get; protected set; }
 		public abstract bool HasUpdate(uint gameTick);
-		public abstract bool KeyDown(KeyEventArgs args);
-		public abstract bool MouseDown(MouseEventArgs args);
-		public abstract bool MouseUp(MouseEventArgs args);
-		public abstract bool MouseDrag(MouseEventArgs args);
+		public virtual bool KeyDown(KeyEventArgs args)
+		{
+			return false;
+		}
+		public virtual bool MouseDown(MouseEventArgs args)
+		{
+			return false;
+		}
+		public virtual bool MouseUp(MouseEventArgs args)
+		{
+			return false;
+		}
+		public virtual bool MouseDrag(MouseEventArgs args)
+		{
+			return false;
+		}
 		
 		protected void CloseMenus()
 		{

@@ -105,26 +105,6 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool KeyDown(KeyEventArgs args)
-		{
-			return false;
-		}
-		
-		public override bool MouseDown(MouseEventArgs args)
-		{
-			return false;
-		}
-		
-		public override bool MouseUp(MouseEventArgs args)
-		{
-			return false;
-		}
-		
-		public override bool MouseDrag(MouseEventArgs args)
-		{
-			return false;
-		}
-		
 		public CustomizeWorld()
 		{
 			Cursor = MouseCursor.Pointer;
