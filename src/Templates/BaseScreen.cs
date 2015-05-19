@@ -55,6 +55,7 @@ namespace CivOne.Templates
 			{
 				menu.Close();
 			}
+			Menus.Clear();
 		}
 		protected void Destroy()
 		{
