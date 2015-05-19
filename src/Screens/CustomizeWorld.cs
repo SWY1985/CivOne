@@ -63,28 +63,28 @@ namespace CivOne.Screens
 		{
 			_landMass = (sender as Menu.Item).Value;
 			_hasUpdate = true;
-			Console.WriteLine(string.Format("Customize World - Land Mass: {0}", _landMass));
+			Console.WriteLine("Customize World - Land Mass: {0}", _landMass);
 		}
 		
 		private void SetTemperature(object sender, EventArgs args)
 		{
 			_temperature = (sender as Menu.Item).Value;
 			_hasUpdate = true;
-			Console.WriteLine(string.Format("Customize World - Temperature: {0}", _temperature));
+			Console.WriteLine("Customize World - Temperature: {0}", _temperature);
 		}
 		
 		private void SetClimate(object sender, EventArgs args)
 		{
 			_climate = (sender as Menu.Item).Value;
 			_hasUpdate = true;
-			Console.WriteLine(string.Format("Customize World - Climate: {0}", _climate));
+			Console.WriteLine("Customize World - Climate: {0}", _climate);
 		}
 		
 		private void SetAge(object sender, EventArgs args)
 		{
 			_age = (sender as Menu.Item).Value;
 			_hasUpdate = true;
-			Console.WriteLine(string.Format("Customize World - Age: {0}", _age));
+			Console.WriteLine("Customize World - Age: {0}", _age);
 		}
 		
 		public override bool HasUpdate(uint gameTick)
