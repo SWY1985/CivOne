@@ -22,7 +22,12 @@ namespace CivOne.GFX
 		private readonly Dictionary<string, Picture> _cache = new Dictionary<string, Picture>();
 		private readonly Dictionary<string, Bitmap> _textCache = new Dictionary<string, Bitmap>();
 		private readonly List<Fontset> _fonts = new List<Fontset>();
-
+		
+		internal void ClearTextCache()
+		{
+			_textCache.Clear();
+		}
+		
 		private void LoadFonts()
 		{
 			byte[] file;
