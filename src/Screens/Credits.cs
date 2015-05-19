@@ -146,14 +146,14 @@ namespace CivOne.Screens
 		private void StartNewGame(object sender, EventArgs args)
 		{
 			Destroy();
-			Common.AddScreen(new Demo());
+			Common.AddScreen(new Intro());
 			Console.WriteLine("Main Menu: Start a New Game");
 		}
 		
 		private void Earth(object sender, EventArgs args)
 		{
 			Destroy();
-			Common.AddScreen(new Demo());
+			Common.AddScreen(new Intro());
 			Console.WriteLine("Main Menu: EARTH");
 		}
 		
