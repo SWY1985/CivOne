@@ -50,6 +50,7 @@ namespace CivOne.Screens
 			else if (HIDE_INTRO_LINE.Contains(_introLeft))
 			{
 				_showIntroLine = false;
+				Resources.Instance.ClearTextCache();
 			}
 		}
 		
