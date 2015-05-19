@@ -20,6 +20,8 @@ namespace CivOne.Screens
 {
 	internal class Intro : BaseScreen
 	{
+		private const float FADE_STEP = 0.0625F;
+		
 		private readonly string[] _introText;
 		private readonly Picture[] _pictures;
 		
@@ -74,29 +76,57 @@ namespace CivOne.Screens
 			_canvas.SetPalette(palette);
 		}
 		
-		public override bool HasUpdate(uint gameTick)
+		private bool HandleScreenFadeIn()
 		{
-			bool update = true;
-			if (_introPicture == _introPictureNext && FadeStep < 1.0F)
+			if (FadeStep >= 1.0F) return false;
+			FadeStep += FADE_STEP;
+			FadeColours();
+			return true;
+		}
+		
+		private bool HandleScreenFadeOut()
+		{
+			if (_introPicture == _introPictureNext) return false;
+			if (FadeStep > 0.0F)
 			{
-				FadeStep += 0.0625F;
+				FadeStep -= FADE_STEP;
 				FadeColours();
 			}
-			else if (_introPicture != _introPictureNext)
+			else
 			{
-				if (FadeStep > 0.0F)
-				{
-					FadeStep -= 0.0625F;
-					FadeColours();
-				}
-				else
-				{
-					_introPicture = _introPictureNext;
-					_canvas = new Picture(320, 200, _pictures[_introPicture].Image.Palette.Entries);
-					FadeColours();
-				}
+				_introPicture = _introPictureNext;
+				_canvas = new Picture(320, 200, _pictures[_introPicture].Image.Palette.Entries);
+				FadeColours();
 			}
-			else if (gameTick % 2 == 0)
+			return true;
+		}
+		
+		private bool HandleScreenFade()
+		{
+			if (_introPicture == _introPictureNext && HandleScreenFadeIn())
+				return true;
+			return HandleScreenFadeOut();
+		}
+		
+		private void LogIntroText()
+		{
+			Console.WriteLine(@"Intro: ""{0}""", _introText[_introLine]);
+		}
+		
+		private byte TextColour
+		{
+			get
+			{
+				if (_introTicks % 30 > 1 && _introTicks % 30 < 29 || ((_introLine + 1) < _introText.Length && _introText[_introLine + 1] == string.Empty)) return 11;
+				if (_introTicks % 30 == 1 || _introTicks % 30 == 29) return 3;
+				return 0;
+			}
+		}
+		
+		public override bool HasUpdate(uint gameTick)
+		{
+			bool update = HandleScreenFade();
+			if (!update && gameTick % 2 == 0)
 			{
 				_introTicks++;
 				if (_introTicks % 30 == 0)
@@ -127,11 +157,10 @@ namespace CivOne.Screens
 					case 7: _canvas.Cycle(132, 134).Cycle(208, 210).Cycle(246, 249); break;
 				}
 			}
-			else
+			else if (!update)
 			{
-				update = false;
+				return false;
 			}
-			if (!update) return false;
 			
 			_canvas.AddLayer(_pictures[_introPicture].Image);
 			
@@ -141,19 +170,9 @@ namespace CivOne.Screens
 			string introLine = _introText[_introLine];
 			while (introLine == string.Empty)
 				introLine = _introText[_introLine - (++previousText)];
-			byte textColour = 0;
-			if (_introTicks % 30 > 1 && _introTicks % 30 < 29 || ((_introLine + 1) < _introText.Length && _introText[_introLine + 1] == string.Empty))
-			{
-				textColour = 11;
-			}
-			else if (_introTicks % 30 == 1 || _introTicks % 30 == 29)
-			{
-				if (_introTicks % 30 == 1) Console.WriteLine(_introText[_introLine]);
-				textColour = 3;
-			}
-			if (textColour > 0)
-				_canvas.DrawText(introLine, 6, textColour, 160, 160, TextAlign.Center);
+			_canvas.DrawText(introLine, 6, TextColour, 160, 160, TextAlign.Center);
 			
+			if (_introTicks % 30 == 1) LogIntroText();
 			return true;
 		}
 		
@@ -166,12 +185,18 @@ namespace CivOne.Screens
 				{
 					if (_introLine <= 1) return false;
 					
+					Console.WriteLine("Intro: <<");
+					
 					_introLine--;
 					if (_introText[_introLine] == "_")
 					{
 						_introLine--;
-						_introTicks = 1;
+						_introTicks = 0;
 						IntroPicture--;
+					}
+					else
+					{
+						LogIntroText();
 					}
 					return true;
 				}
@@ -179,12 +204,18 @@ namespace CivOne.Screens
 				{
 					if (_introLine >= _introText.Length - 1) return false;
 					
+					Console.WriteLine("Intro: >>");
+					
 					_introLine++;
 					if (_introText[_introLine] == "_")
 					{
 						_introLine++;
-						_introTicks = 1;
+						_introTicks = 0;
 						IntroPicture++;
+					}
+					else
+					{
+						LogIntroText();	
 					}
 					return true;
 				}
@@ -202,7 +233,6 @@ namespace CivOne.Screens
 				_pictures[i] = Resources.Instance.LoadPIC(string.Format("BIRTH{0}", i + 1), true);
 			
 			_canvas = new Picture(320, 200, _pictures[0].Image.Palette.Entries);
-			_canvas.FillRectangle(1, 0, 0, 320, 200);
 		}
 	}
 }
