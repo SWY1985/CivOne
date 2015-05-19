@@ -37,6 +37,33 @@ namespace CivOne
 			_screens.Remove(screen);
 		}
 		
+		internal static bool EndGame
+		{
+			get; private set;
+		}
+		internal static void Quit()
+		{
+			EndGame = true;
+		}
+		
+		private static bool _reloadSettings;
+		internal static bool ReloadSettings
+		{
+			get
+			{
+				if (_reloadSettings)
+				{
+					_reloadSettings = false;
+					return true;
+				}
+				return false;
+			}
+			set
+			{
+				_reloadSettings = value;
+			}
+		}
+		
 		private static Color[] _palette16;
 		public static Color[] GetPalette16
 		{
