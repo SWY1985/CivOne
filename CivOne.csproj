@@ -22,6 +22,7 @@
 		<Reference Include="System.Windows.Forms" />
 	</ItemGroup>
 	<ItemGroup>
+		<Compile Include="src\Civilizations\*.cs" />
 		<Compile Include="src\Enums\*.cs" />
 		<Compile Include="src\GFX\*.cs" />
 		<Compile Include="src\Interfaces\*.cs" />
