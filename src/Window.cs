@@ -236,6 +236,7 @@ namespace CivOne
 			if (Common.Screens.Length == 0) return;
 			
 			_canvas = new Picture(320, 200, TopScreen.Canvas.Image.Palette.Entries);
+			_canvas.FillRectangle(5, 0, 0, 320, 200);
 			foreach (IScreen screen in Common.Screens)
 			{
 				_canvas.AddLayer(screen.Canvas.Image, 0, 0);
