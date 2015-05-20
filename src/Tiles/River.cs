@@ -14,7 +14,7 @@ namespace CivOne.Tiles
 {
 	internal class River : BaseTile
 	{
-		public River(int x, int y, bool special) : base(x, y, special)
+		public River(int x, int y) : base(x, y, false)
 		{
 			Type = Terrain.River;
 			Name = "River";
