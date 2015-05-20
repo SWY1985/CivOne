@@ -393,7 +393,8 @@ namespace CivOne.GFX
 		{
 			_cache = new Dictionary<string, Bitmap>();
 			_originalColours = colours;
-
+			_bitmap = bytes;
+			
 			_image = new Bitmap(bytes.GetLength(0), bytes.GetLength(1), PixelFormat.Format8bppIndexed);
 			for (int y = 0; y < _image.Height; y++)
 			{
