@@ -288,6 +288,12 @@ namespace CivOne
 		{
 			if (args.Button > 0) MouseDrag(args);
 			
+			if (Environment.OSVersion.Platform == PlatformID.Unix)
+			{
+				// Linux does not support the custom cursors. This is a temporary fix.
+				return;
+			}
+			
 			if (_currentCursor == MouseCursor.None)
 			{
 				Cursor = _hiddenCursor;
