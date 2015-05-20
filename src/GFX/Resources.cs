@@ -138,7 +138,7 @@ namespace CivOne.GFX
 			
 			Picture output = null;
 			PicFile picFile = new PicFile(filename);
-			if (Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 || picFile.GetPicture16 == null)
+			if (Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 && picFile.GetPicture256 != null)
 			{
 				output = new Picture(picFile.GetPicture256, picFile.GetPalette256);
 			}
