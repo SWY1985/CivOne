@@ -31,6 +31,38 @@ namespace CivOne
 		
 		public bool Ready { get; private set; }
 		
+		public ITile[,] GetMapPart(int x, int y, int width, int height)
+		{
+			ITile[,] area = new ITile[width, height];
+			
+			for (int xx = x; xx < x + width; xx++)
+			for (int yy = y; yy < y + height; yy++)
+			{
+				if (yy < 0 || yy > 49)
+				{
+					area[xx - x, yy - y] = null;
+					continue;
+				}
+				
+				int mx = xx;
+				while (mx < 0) mx += 80;
+				while (mx > 79) mx -= 80;
+				
+				area[xx - x, yy - y] = _tiles[mx, yy];
+			}
+			
+			return area;
+		}
+		
+		private bool NearOcean(int x, int y)
+		{
+			var map = GetMapPart(x - 1, y - 1, 3, 3);
+			return ((_tiles[1, 0] != null && _tiles[1, 0].Type == Terrain.Ocean) ||
+					(_tiles[2, 1] != null && _tiles[2, 1].Type == Terrain.Ocean) ||
+					(_tiles[1, 2] != null && _tiles[1, 2].Type == Terrain.Ocean) ||
+					(_tiles[0, 1] != null && _tiles[0, 1].Type == Terrain.Ocean));
+		}
+		
 		private int ModGrid(int x, int y)
 		{
 			return (x % 4) * 4 + (y % 4);
@@ -304,6 +336,71 @@ namespace CivOne
 			}
 		}
 		
+		private void CreateRivers()
+		{
+			Console.WriteLine("Map: Stage 6 - Create rivers");
+			
+			int rivers = 0;
+			for (int i = 0; i < 256 && rivers < ((_climate + _landMass) * 2) + 6; i++)
+			{
+				ITile[,] tilesBackup = (ITile[,])_tiles.Clone();
+				
+				int riverLength = 0;
+				int varA = Common.Random.Next(0, 4) * 2;
+				bool nearOcean = false;
+				
+				ITile tile = null;
+				while (tile == null)
+				{
+					int x = Common.Random.Next(0, WIDTH);
+					int y = Common.Random.Next(0, HEIGHT);
+					if (_tiles[x, y].Type == Terrain.Hills) tile = _tiles[x, y];
+				}
+				do
+				{
+					_tiles[tile.X, tile.Y] = new River(tile.X, tile.Y);
+					int varB = varA;
+					int varC = Common.Random.Next(0, 2);
+					varA = (((varC - riverLength % 2) * 2 + varA) & 0x07);
+					varB = 7 - varB;
+					
+					riverLength++;
+					
+					nearOcean = NearOcean(tile.X, tile.Y);
+					switch (varA)
+					{
+						case 0:
+						case 1: tile = _tiles[tile.X, tile.Y - 1]; break;
+						case 2:
+						case 3: tile = _tiles[tile.X + 1, tile.Y]; break;
+						case 4:
+						case 5: tile = _tiles[tile.X, tile.Y + 1]; break;
+						case 6:
+						case 7: tile = _tiles[tile.X - 1, tile.Y]; break;
+					}
+				}
+				while (!nearOcean && (tile.GetType() != typeof(Ocean) && tile.GetType() != typeof(River) && tile.GetType() != typeof(Mountains)));
+				
+				if ((nearOcean || tile.Type == Terrain.River) && riverLength > 5)
+				{
+					rivers++;
+					ITile[,] mapPart = GetMapPart(tile.X - 3, tile.Y - 3, 7, 7);
+					for (int x = 0; x < 7; x++)
+					for (int y = 0; y < 7; y++)
+					{
+						if (mapPart[x, y] == null) continue;
+						int xx = mapPart[x, y].X, yy = mapPart[x, y].Y;
+						if (_tiles[xx, yy].Type == Terrain.Forest)
+							_tiles[xx, yy] = new Jungle(xx, yy, TileIsSpecial(x, y));
+					}
+				}
+				else
+				{
+					_tiles = (ITile[,])tilesBackup.Clone(); ;
+				}
+			}
+		}
+		
 		private void CreatePoles()
 		{
 			Console.WriteLine("Map: Creating poles");
@@ -369,14 +466,14 @@ namespace CivOne
 			MergeElevationAndLatitude(elevation, latitude);
 			ClimateAdjustments();
 			AgeAdjustments();
-			// TODO: Rivers
+			CreateRivers();
 			
 			CreatePoles();
 			PlaceHuts();
 			
 			Ready = true;
 			Console.WriteLine("Map: Ready");
-			//SaveBitmap();
+			SaveBitmap();
 		}
 		
 		private void LoadMapThread()
