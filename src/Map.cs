@@ -8,8 +8,14 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
 using System.Threading;
 using CivOne.Interfaces;
+using CivOne.Enums;
+using CivOne.GFX;
 using CivOne.Tiles;
 
 namespace CivOne
@@ -19,32 +25,403 @@ namespace CivOne
 		public const int WIDTH = 80;
 		public const int HEIGHT = 50;
 		
+		private readonly int _terrainMasterWord;
 		private int _landMass, _temperature, _climate, _age;
 		private ITile[,] _tiles;
 		
 		public bool Ready { get; private set; }
 		
+		private int ModGrid(int x, int y)
+		{
+			return (x % 4) * 4 + (y % 4);
+		}
+		
+		private bool TileIsSpecial(int x, int y)
+		{
+			if (y < 2 || y > (HEIGHT - 3)) return false;
+			return ModGrid(x, y) == ((x / 4) * 13 + (y / 4) * 11 + _terrainMasterWord) % 16;
+		}
+		
+		private bool TileHasHut(int x, int y)
+		{
+			if (y < 2 || y > (HEIGHT - 3)) return false;
+			return ModGrid(x, y) == ((x / 4) * 13 + (y / 4) * 11 + _terrainMasterWord + 8) % 32;
+		}
+		
+		private bool[,] GenerateLandChunk()
+		{
+			bool[,] stencil = new bool[WIDTH, HEIGHT];
+
+			int x = Common.Random.Next(4, WIDTH - 4);
+			int y = Common.Random.Next(8, HEIGHT - 8);
+			int pathLength = Common.Random.Next(1, 64);
+
+			for (int i = 0; i < pathLength; i++)
+			{
+				stencil[x, y] = true;
+				stencil[x + 1, y] = true;
+				stencil[x, y + 1] = true;
+				switch (Common.Random.Next(0, 4))
+				{
+					case 0: y--; break;
+					case 1: x++; break;
+					case 2: y++; break;
+					default: x--; break;
+				}
+
+				if (x < 3 || y < 3 || x > (WIDTH - 4) || y > (HEIGHT - 5)) break;
+			}
+
+			return stencil;
+		}
+		
+		private int[,] GenerateLandMass()
+		{
+			Console.WriteLine("Map: Stage 1 - Generate land mass");
+			
+			int[,] elevation = new int[WIDTH, HEIGHT];
+			int landMassSize = (int)((WIDTH * HEIGHT) / 12.5) * (_landMass + 2);
+			
+			// Generate the landmass
+			while ((from int tile in elevation where tile > 0 select 1).Sum() < landMassSize)
+			{
+				bool[,] chunk = GenerateLandChunk();
+				for (int y = 0; y < HEIGHT; y++)
+				for (int x = 0; x < WIDTH; x++)
+				{
+					if (chunk[x, y]) elevation[x, y]++;
+				}
+			}
+			
+			// remove narrow passages
+			for (int y = 0; y < (HEIGHT - 1); y++)
+			for (int x = 0; x < (WIDTH - 1); x++)
+			{
+				if ((elevation[x, y] > 0 && elevation[x + 1, y + 1] > 0) && (elevation[x + 1, y] == 0 && elevation[x, y + 1] == 0))
+				{
+					elevation[x + 1, y]++;
+					elevation[x, y + 1]++;
+				}
+				else if ((elevation[x, y] == 0 && elevation[x + 1, y + 1] == 0) && (elevation[x + 1, y] > 0 && elevation[x, y + 1] > 0))
+				{
+					elevation[x + 1, y + 1]++;
+				}
+			}
+			
+			return elevation;
+		}
+		
+		private int[,] TemperatureAdjustments()
+		{
+			Console.WriteLine("Map: Stage 2 - Temperature adjustments");
+			
+			int[,] latitude = new int[WIDTH, HEIGHT];
+			
+			for (int y = 0; y < HEIGHT; y++)
+			for (int x = 0; x < WIDTH; x++)
+			{
+				int l = (int)(((float)y / HEIGHT) * 50) - 29;
+				l += Common.Random.Next(0, 7);
+				if (l < 0) l = -l;
+				l += 1 - _temperature;
+				
+				l = (l / 6) + 1;
+				
+				switch (l)
+				{
+					case 0:
+					case 1: latitude[x, y] = 0; break;
+					case 2:
+					case 3: latitude[x, y] = 1; break;
+					case 4:
+					case 5: latitude[x, y] = 2; break;
+					case 6:
+					default: latitude[x, y] = 3; break;
+				}
+			}
+			
+			return latitude;
+		}
+		
+		private void MergeElevationAndLatitude(int[,] elevation, int[,] latitude)
+		{
+			Console.WriteLine("Map: Stage 3 - Merge elevation and latitude into the map");
+			
+			// merge elevation and latitude into the map
+			for (int y = 0; y < HEIGHT; y++)
+			for (int x = 0; x < WIDTH; x++)
+			{
+				bool special = TileIsSpecial(x, y);
+				switch (elevation[x, y])
+				{
+					case 0: _tiles[x, y] = new Ocean(x, y, special); break;
+					case 1:
+						{
+							switch (latitude[x, y])
+							{
+								case 0: _tiles[x, y] = new Desert(x, y, special); break;
+								case 1: _tiles[x, y] = new Plains(x, y, special); break;
+								case 2: _tiles[x, y] = new Tundra(x, y, special); break;
+								case 3: _tiles[x, y] = new Arctic(x, y, special); break;
+							}
+						}
+						break;
+					case 2: _tiles[x, y] = new Hills(x, y, special); break;
+					default: _tiles[x, y] = new Mountains(x, y, special); break;
+				}
+			}
+		}
+		
+		private void ClimateAdjustments()
+		{
+			Console.WriteLine("Map: Stage 4 - Climate adjustments");
+			
+			int wetness, latitude;
+			
+			for (int y = 0; y < HEIGHT; y++)
+			{
+				int yy = (int)(((float)y / HEIGHT) * 50);
+				
+				wetness = 0;
+				latitude = Math.Abs(25 - yy);
+				
+				for (int x = 0; x < WIDTH; x++)
+				{
+					if (_tiles[x, y].Type == Terrain.Ocean)
+					{
+						// wetness yield
+						int wy = latitude - 12;
+						if (wy < 0) wy = -wy;
+						wy += (_climate * 4);
+						
+						if (wy > wetness) wetness++;
+					}
+					else if (wetness > 0)
+					{
+						bool special = TileIsSpecial(x, y);
+						int rainfall = Common.Random.Next(0, 7 - (_climate * 2));
+						wetness -= rainfall;
+						
+						switch (_tiles[x, y].Type)
+						{
+							case Terrain.Plains: _tiles[x, y] = new Grassland(x, y); break;
+							case Terrain.Tundra: _tiles[x, y] = new Arctic(x, y, special); break;
+							case Terrain.Hills: _tiles[x, y] = new Forest(x, y, special); break;
+							case Terrain.Desert: _tiles[x, y] = new Plains(x, y, special); break;
+							case Terrain.Mountains: wetness -= 3; break;
+						}
+					}
+				}
+				
+				wetness = 0;
+				latitude = Math.Abs(25 - yy);
+				
+				// reset row wetness to 0
+				for (int x = WIDTH - 1; x >= 0; x--)
+				{
+					if (_tiles[x, y].Type == Terrain.Ocean)
+					{
+						// wetness yield
+						int wy = (latitude / 2) + _climate;
+						if (wy > wetness) wetness++;
+					}
+					else if (wetness > 0)
+					{
+						bool special = TileIsSpecial(x, y);
+						int rainfall = Common.Random.Next(0, 7 - (_climate * 2));
+						wetness -= rainfall;
+						
+						switch (_tiles[x, y].Type)
+						{
+							case Terrain.Swamp: _tiles[x, y] = new Forest(x, y, special); break;
+							case Terrain.Plains: new Grassland(x, y); break;
+							case Terrain.Grassland1:
+							case Terrain.Grassland2: _tiles[x, y] = new Jungle(x, y, special); break;
+							case Terrain.Hills: _tiles[x, y] = new Forest(x, y, special); break;
+							case Terrain.Mountains: _tiles[x, y] = new Forest(x, y, special); wetness -= 3; break;
+							case Terrain.Desert: _tiles[x, y] = new Plains(x, y, special); break;
+						}
+					}
+				}
+			}
+		}
+		
+		private void AgeAdjustments()
+		{
+			Console.WriteLine("Map: Stage 5 - Age adjustments");
+			
+			int x = 0;
+			int y = 0;
+			int ageRepeat = (int)(((float)800 * (1 + _age) / (80 * 50)) * (WIDTH * HEIGHT));
+			for (int i = 0; i < ageRepeat; i++)
+			{
+				if (i % 2 == 0)
+				{
+					x = Common.Random.Next(0, WIDTH);
+					y = Common.Random.Next(0, HEIGHT);
+				}
+				else
+				{
+					switch (Common.Random.Next(0, 8))
+					{
+						case 0: { x--; y--; break; }
+						case 1: { y--; break; }
+						case 2: { x++; y--; break; }
+						case 3: { x--; break; }
+						case 4: { x++; break; }
+						case 5: { x--; y++; break; }
+						case 6: { y++; break; }
+						default: { x++; y++; break; }
+					}
+					if (x < 0) x = 1;
+					if (y < 0) y = 1;
+					if (x >= WIDTH) x = WIDTH - 2;
+					if (y >= HEIGHT) y = HEIGHT - 2;
+				}
+				
+				bool special = TileIsSpecial(x, y);
+				switch (_tiles[x, y].Type)
+				{
+					case Terrain.Forest: _tiles[x, y] = new Jungle(x, y, special); break;
+					case Terrain.Swamp: _tiles[x, y] = new Grassland(x, y); break;
+					case Terrain.Plains: _tiles[x, y] = new Hills(x, y, special); break;
+					case Terrain.Tundra: _tiles[x, y] = new Hills(x, y, special); break;
+					case Terrain.River: _tiles[x, y] = new Forest(x, y, special); break;
+					case Terrain.Grassland1:
+					case Terrain.Grassland2: _tiles[x, y] = new Forest(x, y, special); break;
+					case Terrain.Jungle: _tiles[x, y] = new Swamp(x, y, special); break;
+					case Terrain.Hills: _tiles[x, y] = new Mountains(x, y, special); break;
+					case Terrain.Mountains:
+						if ((x == 0 || _tiles[x - 1, y - 1].Type != Terrain.Ocean) &&
+						    (y == 0 || _tiles[x + 1, y - 1].Type != Terrain.Ocean) &&
+							(x == (WIDTH - 1) || _tiles[x + 1, y + 1].Type != Terrain.Ocean) &&
+							(y == (HEIGHT - 1) || _tiles[x - 1, y + 1].Type != Terrain.Ocean))
+						_tiles[x, y] = new Ocean(x, y, special);
+						break;
+					case Terrain.Desert: _tiles[x, y] = new Plains(x, y, special); break;
+					case Terrain.Arctic: _tiles[x, y] = new Mountains(x, y, special); break;
+				}
+			}
+		}
+		
+		private void CreatePoles()
+		{
+			Console.WriteLine("Map: Creating poles");
+			
+			for (int x = 0; x < WIDTH; x++)
+			foreach (int y in new int[] { 0, (HEIGHT - 1) })
+			{
+				_tiles[x, y] = new Arctic(x, y, false);
+			}
+			
+			for (int i = 0; i < (WIDTH / 4); i++)
+			foreach (int y in new int[] { 0, 1, (HEIGHT - 2), (HEIGHT - 1) })
+			{
+				int x = Common.Random.Next(0, WIDTH);
+				_tiles[x, y] = new Tundra(x, y, false);
+			}
+		}
+		
+		private void PlaceHuts()
+		{
+			Console.WriteLine("Map: Placing goody huts (not yet implemented)");
+		}
+		
+		private void SaveBitmap()
+		{
+			Console.WriteLine("DEBUG: Save map as bitmap");
+			Bitmap bmp = new Bitmap(WIDTH, HEIGHT);
+			
+			for (int x = 0; x < WIDTH; x++)
+			for (int y = 0; y < HEIGHT; y++)
+			{
+				Color color = Color.Black;
+				switch (_tiles[x, y].Type)
+				{
+					case Terrain.Ocean: color = Common.GetPalette16[1]; break;
+					case Terrain.Forest: color = Common.GetPalette16[2]; break;
+					case Terrain.Swamp: color = Common.GetPalette16[3]; break;
+					case Terrain.Plains: color = Common.GetPalette16[6]; break;
+					case Terrain.Tundra: color = Common.GetPalette16[7]; break;
+					case Terrain.River: color = Common.GetPalette16[9]; break;
+					case Terrain.Grassland1:
+					case Terrain.Grassland2: color = Common.GetPalette16[10]; break;
+					case Terrain.Jungle: color = Common.GetPalette16[11]; break;
+					case Terrain.Hills: color = Common.GetPalette16[12]; break;
+					case Terrain.Mountains: color = Common.GetPalette16[13]; break;
+					case Terrain.Desert: color = Common.GetPalette16[14]; break;
+					case Terrain.Arctic: color = Common.GetPalette16[15]; break;
+				}
+				bmp.SetPixel(x, y, color);
+			}
+			
+			bmp.Save("map.png", ImageFormat.Png);
+		}
+		
 		private void GenerateThread()
 		{
 			Console.WriteLine("Generating map (Land Mass: {0}, Temperature: {1}, Climate: {2}, Age: {3})", _landMass, _temperature, _climate, _age);
 			
-			Ready = true;
-			Console.WriteLine("DEBUG: Map generating not yet implemented...");
-		}
-		
-		private void LoadThread()
-		{
-			Console.WriteLine("Loading MAP.PIC");
+			_tiles = new ITile[WIDTH, HEIGHT];
+			
+			int[,] elevation = GenerateLandMass();
+			int[,] latitude = TemperatureAdjustments();
+			MergeElevationAndLatitude(elevation, latitude);
+			ClimateAdjustments();
+			AgeAdjustments();
+			// TODO: Rivers
+			
+			CreatePoles();
+			PlaceHuts();
 			
 			Ready = true;
-			Console.WriteLine("DEBUG: Map loading not yet implemented...");
+			Console.WriteLine("Map: Ready");
+			//SaveBitmap();
+		}
+		
+		private void LoadMapThread()
+		{
+			Console.WriteLine("Map: Loading MAP.PIC");
+			
+			byte[,] bitmap = Resources.Instance.LoadPIC("MAP", true).GetBitmap;
+			_tiles = new ITile[WIDTH, HEIGHT];
+			
+			for (int x = 0; x < WIDTH; x++)
+			for (int y = 0; y < HEIGHT; y++)
+			{
+				ITile tile;
+				bool special = TileIsSpecial(x, y);
+				switch (bitmap[x, y])
+				{
+					case 2: tile = new Forest(x, y, special); break;
+					case 3: tile = new Swamp(x, y, special); break;
+					case 6: tile = new Plains(x, y, special); break;
+					case 7: tile = new Tundra(x, y, special); break;
+					case 9: tile = new River(x, y); break;
+					case 10: tile = new Grassland(x, y); break;
+					case 11: tile = new Jungle(x, y, special); break;
+					case 12: tile = new Hills(x, y, special); break;
+					case 13: tile = new Mountains(x, y, special); break;
+					case 14: tile = new Desert(x, y, special); break;
+					case 15: tile = new Arctic(x, y, special); break;
+					default: tile = new Ocean(x, y, special); break;
+				}
+				_tiles[x, y] = tile;
+			}
+			
+			CreatePoles();
+			PlaceHuts();
+			
+			Ready = true;
+			Console.WriteLine("Map: Ready");
+			//SaveBitmap();
 		}
 		
 		public void Generate(int landMass = 1, int temperature = 1, int climate = 1, int age = 1)
 		{
 			if (Ready || _tiles != null)
 			{
-				Console.WriteLine("ERROR: Map is already generat{0}", (Ready ? "ed" : "ing"));
+				Console.WriteLine("ERROR: Map is already load{0}/generat{0}", (Ready ? "ed" : "ing"));
 				return;
 			}
 			
@@ -60,7 +437,7 @@ namespace CivOne
 		{
 			if (Ready || _tiles != null)
 			{
-				Console.WriteLine("ERROR: Map is already generat{0}", (Ready ? "ed" : "ing"));
+				Console.WriteLine("ERROR: Map is already load{0}/generat{0}", (Ready ? "ed" : "ing"));
 				return;
 			}
 			
@@ -69,7 +446,7 @@ namespace CivOne
 			_climate = -1;
 			_age = -1;
 			
-			new Thread(new ThreadStart(LoadThread)).Start();
+			new Thread(new ThreadStart(LoadMapThread)).Start();
 		}
 		
 		private static Map _instance;
@@ -85,6 +462,7 @@ namespace CivOne
 		
 		private Map()
 		{
+			_terrainMasterWord = Common.Random.Next(0, 16);
 			Ready = false;
 			
 			Console.WriteLine("Map instance created");
