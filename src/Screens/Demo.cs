@@ -20,9 +20,9 @@ namespace CivOne.Screens
 	internal class Demo : BaseScreen
 	{
 		private readonly byte[] _textColours;
-				
+		
 		public override bool HasUpdate(uint gameTick)
-		{			
+		{
 			_canvas.Cycle(224, 254);
 			return true;
 		}
