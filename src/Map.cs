@@ -473,7 +473,7 @@ namespace CivOne
 			
 			Ready = true;
 			Console.WriteLine("Map: Ready");
-			SaveBitmap();
+			//SaveBitmap();
 		}
 		
 		private void LoadMapThread()
