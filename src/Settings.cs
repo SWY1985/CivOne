@@ -142,6 +142,11 @@ namespace CivOne
 		
 		private Settings()
 		{
+			if (!Directory.Exists(SettingsDirectory))
+			{
+				Directory.CreateDirectory(SettingsDirectory);
+			}
+			
 			int graphicsMode = (int)_graphicsMode;
 			byte framesPerSecond = _framesPerSecond;
 			bool fullScreen = _fullScreen;
