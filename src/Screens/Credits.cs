@@ -148,6 +148,7 @@ namespace CivOne.Screens
 		private void StartNewGame(object sender, EventArgs args)
 		{
 			Destroy();
+			Map.Instance.Generate();
 			Common.AddScreen(new Intro());
 			Console.WriteLine("Main Menu: Start a New Game");
 		}
@@ -155,6 +156,7 @@ namespace CivOne.Screens
 		private void Earth(object sender, EventArgs args)
 		{
 			Destroy();
+			Map.Instance.LoadMap();
 			Common.AddScreen(new Intro());
 			Console.WriteLine("Main Menu: EARTH");
 		}
