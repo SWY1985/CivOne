@@ -1,0 +1,9 @@
+// These are the settings for editing CivOne in Visual Studio Code.
+// Please do not change them! 
+{
+	// Controls if the editor will insert spaces for tabs. If set to auto, the value will be guessed based on the opened file.
+	"editor.insertSpaces": "false",
+	
+	// Controls whether the editor should render whitespace characters
+	"editor.renderWhitespace": true
+}
