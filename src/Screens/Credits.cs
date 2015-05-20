@@ -57,17 +57,17 @@ namespace CivOne.Screens
 		
 		public override bool HasUpdate(uint gameTick)
 		{
-            if (_done) return false;	
+			if (_done) return false;	
 			
 			// Updates
-            if (_introLeft > -320)
+			if (_introLeft > -320)
 			{
 				HandleIntroText();
 			}
 			else if (_logoSwipe < 320)
 			{
 				_canvas.Cycle(224, 254);
-                _logoSwipe += 16;
+				_logoSwipe += 16;
 			}
 			else if (_cycleCounter < 98)
 			{
@@ -86,7 +86,7 @@ namespace CivOne.Screens
 			
 			// Drawing
 			_canvas.FillRectangle(0, 0, 0, 320, 200);
-            if (_introLeft < 320 && _introLeft > 0)
+			if (_introLeft < 320 && _introLeft > 0)
 			{
 				_canvas.AddLayer(_pictures[0].GetPart(0, 0, 320 - _introLeft, 200), _introLeft);
 			}
@@ -117,7 +117,7 @@ namespace CivOne.Screens
 					_canvas.AddLayer(_pictures[2].Image);	
 				}
 				if (_introSkipped) _canvas.AddLayer(_pictures[1].Image);
-            }
+			}
 			else if (_noiseCounter == 0)
 			{
 				_canvas.AddLayer(_pictures[2].Image);
