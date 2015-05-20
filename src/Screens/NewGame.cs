@@ -13,6 +13,7 @@ using System.Linq;
 using System.Windows.Forms;
 using CivOne.Enums;
 using CivOne.GFX;
+using CivOne.IO;
 using CivOne.Templates;
 
 namespace CivOne.Screens
@@ -23,6 +24,7 @@ namespace CivOne.Screens
 		
 		private readonly Picture _background;
 		private int _difficulty = -1, _competition = -1, _tribe = -1;
+		private bool _done = false, _showIntroText = false;
 		
 		private Menu AddMenu(string title, EventHandler setChoice, params string[] menuTexts)
 		{
@@ -106,10 +108,58 @@ namespace CivOne.Screens
 				if (_difficulty == -1) MenuDifficulty();
 				else if (_competition == -1) MenuCompetition();
 				else if (_tribe == -1) MenuTribe();
+				else if (!_done)
+				{
+					if (_showIntroText) return false;
+					
+					Bitmap[] borders = new Bitmap[8];
+					int index = 0;
+					for (int y = 0; y < 2; y++)
+					{
+						for (int x = 0; x < 4; x++)
+						{
+							borders[index] = (Bitmap)Resources.Instance.GetPart("SP299", 192 + (8 * x), 120 + (8 * y), 8, 8).Clone();
+							Picture.ReplaceColours(borders[index], 15, 16);
+							index++;
+						}
+					}
+					
+					_canvas.FillRectangle(15, 0, 0, 320, 200);
+					for (int x = 8; x < 312; x += 8)
+					{
+						_canvas.AddLayer(borders[4], x, 0);
+						_canvas.AddLayer(borders[6], x, 192);
+					}
+					for (int y = 8; y < 192; y += 8)
+					{
+						_canvas.AddLayer(borders[5], 0, y);
+						_canvas.AddLayer(borders[7], 312, y);
+					}
+					_canvas.AddLayer(borders[0], 0, 0);
+					_canvas.AddLayer(borders[1], 312, 0);
+					_canvas.AddLayer(borders[2], 0, 192);
+					_canvas.AddLayer(borders[3], 312, 192);
+					
+					_canvas.AddLayer(DifficultyPicture, 134, 20);
+					
+					int yy = 81;
+					foreach (string textLine in TextFile.Instance.GetGameText("INIT"))
+					{
+						string line = textLine.Replace("$RPLC1", "<leader>").Replace("$US", "<tribe>").Replace("^", "");
+						_canvas.DrawText(line, 0, 5, 88, yy);
+						yy += 8;
+						Console.WriteLine(line);
+					}
+					_canvas.DrawText("and Roads.", 0, 5, 88, yy);
+					Console.WriteLine("and Roads.");
+					
+					_showIntroText = true;
+					return true;
+				}
 				else
 				{
 					Destroy();
-					Common.AddScreen(new Demo());
+					Common.AddScreen(new GamePlay());
 					return true;
 				}
 				
@@ -132,6 +182,20 @@ namespace CivOne.Screens
 				return true;
 			}
 			return false;
+		}
+		
+		public override bool KeyDown(KeyEventArgs args)
+		{
+			if (_difficulty > -1 && _competition > -1 && _tribe > -1 && !_done)
+				_done = true;
+			return _done;
+		}
+		
+		public override bool MouseDown(MouseEventArgs args)
+		{
+			if (_difficulty > -1 && _competition > -1 && _tribe > -1 && !_done)
+				_done = true;
+			return _done;
 		}
 		
 		public NewGame()
