@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using CivOne.Enums;
+using CivOne.Interfaces;
 using CivOne.GFX;
 using CivOne.IO;
 using CivOne.Templates;
@@ -20,7 +21,8 @@ namespace CivOne.Screens
 {
 	internal class NewGame : BaseScreen
 	{
-		private string[] MenuItemsDifficulty, MenuItemsCompetition, MenuItemsTribes;
+		private ICivilization[] _tribesAvailable;
+		private string[] _menuItemsDifficulty, _menuItemsCompetition, _menuItemsTribes;
 		
 		private readonly Picture _background;
 		private int _difficulty = -1, _competition = -1, _tribe = -1;
@@ -55,24 +57,24 @@ namespace CivOne.Screens
 		
 		private void MenuDifficulty()
 		{
-			Common.AddScreen(AddMenu("Difficulty Level...", SetDifficulty, MenuItemsDifficulty));
+			Common.AddScreen(AddMenu("Difficulty Level...", SetDifficulty, _menuItemsDifficulty));
 		}
 		
 		private void MenuCompetition()
 		{
-			Common.AddScreen(AddMenu("Level of Competition...", SetCompetition, MenuItemsCompetition));
+			Common.AddScreen(AddMenu("Level of Competition...", SetCompetition, _menuItemsCompetition));
 		}
 		
 		private void MenuTribe()
 		{
-			Common.AddScreen(AddMenu("Pick your tribe...", SetTribe, MenuItemsTribes));
+			Common.AddScreen(AddMenu("Pick your tribe...", SetTribe, _menuItemsTribes));
 		}
 		
 		private void SetDifficulty(object sender, EventArgs args)
 		{
 			_difficulty = (sender as Menu.Item).Value;
 			CloseMenus();
-			Console.WriteLine("Difficulty: {0}", MenuItemsDifficulty[_difficulty]);
+			Console.WriteLine("Difficulty: {0}", _menuItemsDifficulty[_difficulty]);
 		}
 		
 		private void SetCompetition(object sender, EventArgs args)
@@ -81,14 +83,15 @@ namespace CivOne.Screens
 			CloseMenus();
 			Console.WriteLine("Competition: {0} Civilizations", _competition);
 			
-			MenuItemsTribes = Common.Civilizations.Where(c => c.PreferredPlayerNumber <= _competition).Select(civ => civ.Name).ToArray();
+			_tribesAvailable = Common.Civilizations.Where(c => c.PreferredPlayerNumber <= _competition).ToArray();
+			_menuItemsTribes = _tribesAvailable.Select(c => c.Name).ToArray();
 		}
 		
 		private void SetTribe(object sender, EventArgs args)
 		{
 			_tribe = (sender as Menu.Item).Value;
 			CloseMenus();
-			Console.WriteLine("Tribe: {0}", MenuItemsTribes[_tribe]);
+			Console.WriteLine("Tribe: {0}", _menuItemsTribes[_tribe]);
 		}
 		
 		private Bitmap DifficultyPicture
@@ -145,7 +148,8 @@ namespace CivOne.Screens
 					int yy = 81;
 					foreach (string textLine in TextFile.Instance.GetGameText("INIT"))
 					{
-						string line = textLine.Replace("$RPLC1", "<leader>").Replace("$US", "<tribe>").Replace("^", "");
+						ICivilization civ = _tribesAvailable[_tribe];
+						string line = textLine.Replace("$RPLC1", civ.LeaderName).Replace("$US", civ.NamePlural).Replace("^", "");
 						_canvas.DrawText(line, 0, 5, 88, yy);
 						yy += 8;
 						Console.WriteLine(line);
@@ -207,8 +211,8 @@ namespace CivOne.Screens
 			_canvas = new Picture(320, 200, _background.Image.Palette.Entries);
 			_canvas.AddLayer(_background.Image);
 			
-			MenuItemsDifficulty = new[] { "Chieftain (easiest)", "Warlock", "Prince", "King", "Emperor (toughest)" };
-			MenuItemsCompetition = Enumerable.Range(3, 5).Reverse().Select(i => string.Format("{0} Civilizations", i)).ToArray();
+			_menuItemsDifficulty = new[] { "Chieftain (easiest)", "Warlock", "Prince", "King", "Emperor (toughest)" };
+			_menuItemsCompetition = Enumerable.Range(3, 5).Reverse().Select(i => string.Format("{0} Civilizations", i)).ToArray();
 		}
 	}
 }
