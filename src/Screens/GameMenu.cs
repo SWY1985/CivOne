@@ -14,28 +14,22 @@ using CivOne.Templates;
 
 namespace CivOne.Screens
 {
-	internal class GamePlay : BaseScreen
+	internal class GameMenu : BaseScreen
 	{
-		private readonly GameMenu _gameMenu;
-		
 		public override bool HasUpdate(uint gameTick)
 		{
-			_canvas.AddLayer(_gameMenu.Canvas.Image);
-			
-			return true;
+			return false;
 		}
 		
-		public GamePlay()
+		public GameMenu(Color[] palette)
 		{
-			Cursor = MouseCursor.Pointer;
-			
-			Color[] palette = Resources.Instance.LoadPIC("SP257").Image.Palette.Entries;
-			
-			_canvas = new Picture(320, 200, palette);
-			_canvas.FillRectangle(1, 0, 0, 320, 200);
-			_canvas.DrawText("Gameplay placeholder", 3, 15, 160, 160, TextAlign.Center);
-			
-			_gameMenu = new GameMenu(palette);
+			_canvas = new Picture(320, 9, palette);
+			_canvas.FillRectangle(5, 0, 0, 320, 8);
+			_canvas.DrawText("GAME", 0, 15, 7, 8, 1, TextAlign.Left);
+			_canvas.DrawText("ORDERS", 0, 15, 7, 64, 1, TextAlign.Left);
+			_canvas.DrawText("ADVISORS", 0, 15, 7, 128, 1, TextAlign.Left);
+			_canvas.DrawText("WORLD", 0, 15, 7, 192, 1, TextAlign.Left);
+			_canvas.DrawText("CIVILOPEDIA", 0, 15, 7, 240, 1, TextAlign.Left);
 		}
 	}
 }
