@@ -23,6 +23,11 @@ namespace CivOne.Templates
 		protected readonly List<Screens.Menu> Menus = new List<Screens.Menu>();
 		protected Picture _canvas = new Picture(320, 200);
 		
+		protected void MouseArgsOffset(ref MouseEventArgs args, int offsetX, int offsetY)
+		{
+			args = new MouseEventArgs(args.Button, args.Clicks, args.X - offsetX, args.Y - offsetY, args.Delta);
+		}
+		
 		public virtual Picture Canvas
 		{
 			get
