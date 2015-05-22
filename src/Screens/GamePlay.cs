@@ -25,6 +25,7 @@ namespace CivOne.Screens
 		private int _menuX, _menuY;
 		private bool _update = true;
 		private bool _redraw = false;
+		private bool _rightSideBar = Settings.Instance.RightSideBar;
 		
 		private void MenuBarGame(object sender, EventArgs args)
 		{
@@ -125,10 +126,10 @@ namespace CivOne.Screens
 		{
 			if (!_update && !_redraw) return false;
 			
-			_canvas.FillRectangle(5, 80, 8, 240, 192);
+			_canvas.FillRectangle(5, _rightSideBar ? 0 : 80, 8, 240, 192);
 			
 			DrawLayer(_menuBar, gameTick, 0, 0);
-			DrawLayer(_sideBar, gameTick, 0, 8);
+			DrawLayer(_sideBar, gameTick, _rightSideBar ? 240 : 0, 8);
 			DrawLayer(_gameMenu, gameTick, _menuX, _menuY);
 			
 			_redraw = false;
@@ -170,8 +171,7 @@ namespace CivOne.Screens
 			Color[] palette = Resources.Instance.LoadPIC("SP257").Image.Palette.Entries;
 			
 			_canvas = new Picture(320, 200, palette);
-			_canvas.FillRectangle(1, 0, 0, 320, 200);
-			_canvas.DrawText("Gameplay placeholder", 3, 15, 160, 160, TextAlign.Center);
+			_canvas.FillRectangle(5, 0, 0, 320, 200);
 			
 			_menuBar = new MenuBar(palette);
 			_sideBar = new SideBar(palette);

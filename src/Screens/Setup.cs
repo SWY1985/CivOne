@@ -93,7 +93,7 @@ namespace CivOne.Screens
 		private void SettingsMenu(int activeItem = 0)
 		{
 			Settings settings = Settings.Instance; 
-			string graphicsMode, fullScreen, framesPerSecond;
+			string graphicsMode, fullScreen, framesPerSecond, sideBar;
 			switch (settings.GraphicsMode)
 			{
 				case GraphicsMode.Graphics256: graphicsMode = "256 colors"; break;
@@ -104,8 +104,9 @@ namespace CivOne.Screens
 			graphicsMode = string.Format("Graphics Mode: {0}", graphicsMode);
 			fullScreen = string.Format("Full Screen: {0}", settings.FullScreen ? "yes" : "no");
 			framesPerSecond = string.Format("Frames per second: {0}", settings.FramesPerSecond);
+			sideBar = string.Format("Side bar location: {0}", settings.RightSideBar ? "right" : "left");
 			
-			Menu menu = AddMenu("SETTINGS:", SettingsChoice, graphicsMode, fullScreen, framesPerSecond, "Back");
+			Menu menu = AddMenu("SETTINGS:", SettingsChoice, graphicsMode, fullScreen, framesPerSecond, sideBar, "Back");
 			menu.ActiveItem = activeItem;
 			Common.AddScreen(menu);
 		}
@@ -144,6 +145,13 @@ namespace CivOne.Screens
 			{
 				menu.ActiveItem = 12;
 			}
+			Common.AddScreen(menu);
+		}
+		
+		private void SideBarMenu()
+		{
+			Menu menu = AddMenu("SIDE BAR LOCATION:", SideBarChoice, "Left (default)", "Right", "Back");
+			menu.ActiveItem = Settings.Instance.RightSideBar ? 1 : 0;
 			Common.AddScreen(menu);
 		}
 		
@@ -186,7 +194,10 @@ namespace CivOne.Screens
 				case 2: // Frames per second
 					FramesPerSecondMenu();
 					break;
-				case 3: // Back
+				case 3: // Side bar
+					SideBarMenu();
+					break;
+				case 4: // Back
 					MainMenu();
 					break;
 			}
@@ -234,6 +245,22 @@ namespace CivOne.Screens
 			}
 			CloseMenus();
 			SettingsMenu(2);
+		}
+		
+		private void SideBarChoice(object sender, EventArgs args)
+		{
+			int choice = (sender as Menu.Item).Value;
+			switch (choice)
+			{
+				case 0: // left
+					Settings.Instance.RightSideBar = false;
+					break;
+				case 1: // right
+					Settings.Instance.RightSideBar = true;
+					break;
+			}
+			CloseMenus();
+			SettingsMenu(3);
 		}
 		
 		public Setup()
