@@ -52,7 +52,7 @@ namespace CivOne
 		public Player(ICivilization civilization, string customLeaderName = null, string customCivilizationName = null)
 		{
 			// TODO: Implement custom leader name and custom civilization name
-			
+			_civilization = civilization;
 		}
 	}
 }

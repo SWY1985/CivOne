@@ -14,9 +14,15 @@ namespace CivOne
 {
 	internal class Game
 	{
+		internal Player HumanPlayer
+		{
+			get;
+			private set;
+		}
+		
 		public static void CreateGame(int difficulty, int competition, ICivilization tribe)
 		{
-			if (_instance == null)
+			if (_instance != null)
 			{
 				Console.WriteLine("ERROR: Game instance already exists");
 				return;
@@ -40,6 +46,7 @@ namespace CivOne
 		private Game(int difficulty, int competition, ICivilization tribe)
 		{
 			Console.WriteLine("Game instance created");
+			HumanPlayer = new Player(tribe);
 		}
 	}
 }
