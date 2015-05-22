@@ -14,7 +14,7 @@ using CivOne.Templates;
 
 namespace CivOne.Screens
 {
-	internal class GameMenu : BaseScreen
+	internal class MenuBar : BaseScreen
 	{
 		public override bool HasUpdate(uint gameTick)
 		{

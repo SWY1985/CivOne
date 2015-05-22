@@ -16,12 +16,12 @@ namespace CivOne.Screens
 {
 	internal class GamePlay : BaseScreen
 	{
-		private readonly GameMenu _gameMenu;
+		private readonly MenuBar _menuBar;
 		private readonly SideBar _sideBar;
 		
 		public override bool HasUpdate(uint gameTick)
 		{
-			_canvas.AddLayer(_gameMenu.Canvas.Image, 0, 0);
+			_canvas.AddLayer(_menuBar.Canvas.Image, 0, 0);
 			_canvas.AddLayer(_sideBar.Canvas.Image, 0, 8);
 			
 			return true;
@@ -37,7 +37,7 @@ namespace CivOne.Screens
 			_canvas.FillRectangle(1, 0, 0, 320, 200);
 			_canvas.DrawText("Gameplay placeholder", 3, 15, 160, 160, TextAlign.Center);
 			
-			_gameMenu = new GameMenu(palette);
+			_menuBar = new MenuBar(palette);
 			_sideBar = new SideBar(palette);
 		}
 	}
