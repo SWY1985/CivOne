@@ -15,15 +15,24 @@ namespace CivOne.Screens
 {
 	internal class SideBar : BaseScreen
 	{
+		private bool _update = true;
+		
 		public override bool HasUpdate(uint gameTick)
 		{
+			if (_update)
+			{
+				_update = false;
+				return true;
+			}
 			return false;
 		}
 		
 		public SideBar(Color[] palette)
 		{
+			Bitmap background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
+			
 			_canvas = new Picture(80, 192, palette);
-			_canvas.FillRectangle(9, 0, 0, 80, 192);
+			_canvas.FillLayerTile(background);
 		}
 	}
 }
