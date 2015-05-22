@@ -106,16 +106,8 @@ namespace CivOne.Screens
 			if (ow != ww)
 				_canvas.FillRectangle(0, ow, 0, 4 - (ow % 4), hh);
 			
-			//TODO: Add border function to Picture
-			_canvas.FillRectangle(5, 0, 0, ow, 1);
-			_canvas.FillRectangle(5, 0, 0, 1, hh);
-			_canvas.FillRectangle(5, ow - 1, 0, 1, hh);
-			_canvas.FillRectangle(5, 0, hh - 1, ow, 1);
-			
-			_canvas.FillRectangle(15, 1, 1, 1, hh - 2);
-			_canvas.FillRectangle(15, 1, hh - 2, ow - 2, 1);
-			_canvas.FillRectangle(8, 1, 1, ow - 2, 1);
-			_canvas.FillRectangle(8, ow - 2, 1, 1, hh - 2);
+			_canvas.AddBorder(5, 5, 0, 0, ow, hh);
+			_canvas.AddBorder(15, 8, 0, 0, ow, hh, 1);
 			
 			int i = 0;
 			int yy = 5;
