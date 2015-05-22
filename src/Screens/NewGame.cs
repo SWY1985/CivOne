@@ -115,6 +115,9 @@ namespace CivOne.Screens
 				{
 					if (_showIntroText) return false;
 					
+					ICivilization civ = _tribesAvailable[_tribe];
+					Game.CreateGame(_difficulty, _competition, civ);
+					
 					Bitmap[] borders = new Bitmap[8];
 					int index = 0;
 					for (int y = 0; y < 2; y++)
@@ -148,7 +151,6 @@ namespace CivOne.Screens
 					int yy = 81;
 					foreach (string textLine in TextFile.Instance.GetGameText("INIT"))
 					{
-						ICivilization civ = _tribesAvailable[_tribe];
 						string line = textLine.Replace("$RPLC1", civ.LeaderName).Replace("$US", civ.NamePlural).Replace("^", "");
 						_canvas.DrawText(line, 0, 5, 88, yy);
 						yy += 8;
