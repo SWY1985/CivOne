@@ -20,7 +20,7 @@ namespace CivOne.Screens
 	internal class Menu : BaseScreen
 	{
 		internal class Item
-		{ 
+		{
 			public event EventHandler Selected;
 			public bool Enabled = true;
 			public string Text;
