@@ -21,7 +21,7 @@ namespace CivOne.Screens
 			return false;
 		}
 		
-		public GameMenu(Color[] palette)
+		public MenuBar(Color[] palette)
 		{
 			_canvas = new Picture(320, 8, palette);
 			_canvas.FillRectangle(5, 0, 0, 320, 8);
