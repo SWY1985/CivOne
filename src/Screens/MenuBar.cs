@@ -18,6 +18,8 @@ namespace CivOne.Screens
 {
 	internal class MenuBar : BaseScreen
 	{
+		private const int FONT_ID = 0;
+		
 		public event EventHandler GameSelected;
 		public event EventHandler OrdersSelected;
 		public event EventHandler AdvisorsSelected;
@@ -58,18 +60,18 @@ namespace CivOne.Screens
 		{
 			_canvas = new Picture(320, 8, palette);
 			_canvas.FillRectangle(5, 0, 0, 320, 8);
-			_canvas.DrawText("GAME", 0, 15, 7, 8, 1, TextAlign.Left);
-			_canvas.DrawText("ORDERS", 0, 15, 7, 64, 1, TextAlign.Left);
-			_canvas.DrawText("ADVISORS", 0, 15, 7, 128, 1, TextAlign.Left);
-			_canvas.DrawText("WORLD", 0, 15, 7, 192, 1, TextAlign.Left);
-			_canvas.DrawText("CIVILOPEDIA", 0, 15, 7, 240, 1, TextAlign.Left);
+			_canvas.DrawText("GAME", FONT_ID, 15, 7, 8, 1, TextAlign.Left);
+			_canvas.DrawText("ORDERS", FONT_ID, 15, 7, 64, 1, TextAlign.Left);
+			_canvas.DrawText("ADVISORS", FONT_ID, 15, 7, 128, 1, TextAlign.Left);
+			_canvas.DrawText("WORLD", FONT_ID, 15, 7, 192, 1, TextAlign.Left);
+			_canvas.DrawText("CIVILOPEDIA", FONT_ID, 15, 7, 240, 1, TextAlign.Left);
 			
 			_rectMenus = new Rectangle[5];
-			_rectMenus[0] = new Rectangle(8, 0, Resources.Instance.GetTextSize(0, "GAME").Width, 8);
-			_rectMenus[1] = new Rectangle(64, 0, Resources.Instance.GetTextSize(0, "ORDERS").Width, 8);
-			_rectMenus[2] = new Rectangle(128, 0, Resources.Instance.GetTextSize(0, "ADVISORS").Width, 8);
-			_rectMenus[3] = new Rectangle(192, 0, Resources.Instance.GetTextSize(0, "WORLD").Width, 8);
-			_rectMenus[4] = new Rectangle(240, 0, Resources.Instance.GetTextSize(0, "CIVILOPEDIA").Width, 8);
+			_rectMenus[0] = new Rectangle(0, 0, 56, 8);
+			_rectMenus[1] = new Rectangle(56, 0, 64, 8);
+			_rectMenus[2] = new Rectangle(120, 0, 64, 8);
+			_rectMenus[3] = new Rectangle(184, 0, 48, 8);
+			_rectMenus[4] = new Rectangle(232, 0, 88, 8);
 		}
 	}
 }
