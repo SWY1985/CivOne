@@ -23,7 +23,7 @@ namespace CivOne.Screens
 		
 		public GameMenu(Color[] palette)
 		{
-			_canvas = new Picture(320, 9, palette);
+			_canvas = new Picture(320, 8, palette);
 			_canvas.FillRectangle(5, 0, 0, 320, 8);
 			_canvas.DrawText("GAME", 0, 15, 7, 8, 1, TextAlign.Left);
 			_canvas.DrawText("ORDERS", 0, 15, 7, 64, 1, TextAlign.Left);
