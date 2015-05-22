@@ -318,6 +318,17 @@ namespace CivOne.GFX
 			}
 		}
 		
+		public void AddBorder(byte colourLight, byte colourDark, int x, int y, int width, int height, int depth = 0)
+		{
+			int w = x + (width - 1);
+			int h = y + (height - 1);
+			
+			FillRectangle(colourLight, x + depth, y + depth, 1, h - (depth * 2));
+			FillRectangle(colourLight, x + depth, h - depth, w - (depth * 2), 1);
+			FillRectangle(colourDark, x + depth, y + depth, w - (depth * 2), 1);
+			FillRectangle(colourDark, w - depth, y + depth, 1, h - (depth * 2) + 1);
+		}
+		
 		public void AddLayer(Bitmap layer, int x = 0, int y = 0)
 		{
 			AddLayer(layer, new Point(x, y));
