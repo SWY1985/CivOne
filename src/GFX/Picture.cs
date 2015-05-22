@@ -309,6 +309,15 @@ namespace CivOne.GFX
 			return output;
 		}
 		
+		public void FillLayerTile(Bitmap layer, int x = 0, int y = 0)
+		{
+			for (int xx = x; xx < _image.Width; xx += layer.Width)
+			for (int yy = y; yy < _image.Height; yy += layer.Height)
+			{
+				AddLayer(layer, new Point(xx, yy));
+			}
+		}
+		
 		public void AddLayer(Bitmap layer, int x = 0, int y = 0)
 		{
 			AddLayer(layer, new Point(x, y));
@@ -357,6 +366,32 @@ namespace CivOne.GFX
 			}
 			
 			bmpData = _image.LockBits(new Rectangle(0, 0, imageWidth, imageHeight), ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
+			Marshal.Copy(imgData, 0, bmpData.Scan0, imgData.Length);
+			_image.UnlockBits(bmpData);
+		}
+		
+		public void ColourReplace(byte colourFrom, byte colourTo, int x, int y, int width, int height)
+		{
+			BitmapData bmpData;
+			byte[] imgData = new byte[_image.Width * _image.Height];
+			for (int yy = 0; yy < _image.Height; yy++)
+			{
+				bmpData = _image.LockBits(new Rectangle(0, yy, _image.Width, 1), ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed);
+				Marshal.Copy(bmpData.Scan0, imgData, _image.Width * yy, _image.Width);
+				_image.UnlockBits(bmpData);
+			}
+			
+			for (int yy = y; yy < (y + height); yy++)
+			{
+				int index = (yy * _image.Width);
+				for (int xx = x; xx < (x + width); xx++)
+				{
+					if (imgData[index + xx] != colourFrom) continue;
+					imgData[index + xx] = colourTo;
+				}
+			}
+			
+			bmpData = _image.LockBits(new Rectangle(0, 0, _image.Width, _image.Height), ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
 			Marshal.Copy(imgData, 0, bmpData.Scan0, imgData.Length);
 			_image.UnlockBits(bmpData);
 		}
