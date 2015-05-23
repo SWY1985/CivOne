@@ -83,7 +83,7 @@ namespace CivOne.Screens
 			CloseMenus();
 			Console.WriteLine("Competition: {0} Civilizations", _competition);
 			
-			_tribesAvailable = Common.Civilizations.Where(c => c.PreferredPlayerNumber <= _competition).ToArray();
+			_tribesAvailable = Common.Civilizations.Where(c => c.PreferredPlayerNumber > 0 && c.PreferredPlayerNumber <= _competition).ToArray();
 			_menuItemsTribes = _tribesAvailable.Select(c => c.Name).ToArray();
 		}
 		
