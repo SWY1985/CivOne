@@ -13,6 +13,7 @@ using System.Linq;
 using System.Windows.Forms;
 using CivOne.Enums;
 using CivOne.GFX;
+using CivOne.Interfaces;
 using CivOne.IO;
 using CivOne.Templates;
 
@@ -39,6 +40,9 @@ namespace CivOne.Screens
 		private bool _introSkipped = false;
 		private int _introLine = -1;
 		
+		private IScreen _overlay = null;
+		private bool _loadGame = false;
+		
 		private void HandleIntroText()
 		{
 			_introLeft--;
@@ -54,10 +58,18 @@ namespace CivOne.Screens
 				Resources.Instance.ClearTextCache();
 			}
 		}
+
+        private bool LoadGameCancel
+        {
+            get
+            {
+                return _overlay != null && (_overlay.GetType() == typeof(LoadGame) && ((LoadGame)_overlay).Cancel);
+            }
+        }
 		
 		public override bool HasUpdate(uint gameTick)
 		{
-			if (_done) return false;	
+			if (_done && (_overlay == null || !_overlay.HasUpdate(gameTick))) return false;	
 			
 			// Updates
 			if (_introLeft > -320)
@@ -79,8 +91,8 @@ namespace CivOne.Screens
 				_pictures[1].ApplyNoise(_noiseMap, --_noiseCounter);
 			}
 			
-			if (_noiseCounter == 0)
-			{				
+			if (_noiseCounter == 0 && Menus.Count > 0 && !Common.HasScreenType(typeof(Menu)) && (_overlay == null || LoadGameCancel))
+			{
 				Common.AddScreen(Menus[0]);
 			}
 			
@@ -124,6 +136,19 @@ namespace CivOne.Screens
 				_canvas.ResetPalette();
 				_done = true;
 				
+				if (_overlay != null)
+				{
+					_canvas.AddLayer(_overlay.Canvas.Image);
+					if (_overlay.GetType() == typeof(LoadGame) && ((LoadGame)_overlay).Cancel)
+					{
+						if (Menus.Count == 0)
+						{
+							CreateMenu();
+						}
+					}
+					if (Menus.Count == 0) return true;
+				}
+				
 				// Draw menu background
 				_canvas.FillRectangle(_menuColours[0], 101, 141, 120, 47);
 				_canvas.FillRectangle(_menuColours[1], 101, 142, 119, 46);
@@ -145,12 +170,49 @@ namespace CivOne.Screens
 			return true;
 		}
 		
+		private void CreateMenu()
+		{
+			Menu menu = new Menu(Canvas.Image.Palette.Entries)
+			{
+				X = 103,
+				Y = 144,
+				Width = 116,
+				ActiveColour = 11,
+				TextColour = 5,
+				DisabledColour = 8,
+				FontId = 0
+			};
+			Menu.Item[] menuItems = new Menu.Item[5];
+			menu.Items.Add(menuItems[0] = new Menu.Item("Start a New Game"));
+			menu.Items.Add(menuItems[1] = new Menu.Item("Load a Saved Game"));
+			menu.Items.Add(menuItems[2] = new Menu.Item("EARTH"));
+			menu.Items.Add(menuItems[3] = new Menu.Item("Customize World"));
+			menu.Items.Add(menuItems[4] = new Menu.Item("View Hall of Fame") { Enabled = false });
+			
+			menuItems[0].Selected += StartNewGame;
+			menuItems[1].Selected += LoadSavedGame;
+			menuItems[2].Selected += Earth;
+			menuItems[3].Selected += CustomizeWorld;
+			
+			Menus.Add(menu);
+		}
+		
 		private void StartNewGame(object sender, EventArgs args)
 		{
 			Console.WriteLine("Main Menu: Start a New Game");
 			Destroy();
 			Map.Instance.Generate();
 			Common.AddScreen(new Intro());
+		}
+		
+		private void LoadSavedGame(object sender, EventArgs args)
+		{
+			_overlay = null;
+			Console.WriteLine("Main Menu: Load a Saved Game");
+			CloseMenus();
+			
+			_loadGame = true;
+			_overlay = new LoadGame(_canvas.Image.Palette.Entries);
 		}
 		
 		private void Earth(object sender, EventArgs args)
@@ -170,6 +232,8 @@ namespace CivOne.Screens
 		
 		public override bool KeyDown(KeyEventArgs args)
 		{
+			if (_done && _overlay != null)
+				return _overlay.KeyDown(args);
 			return SkipIntro();
 		}
 		
@@ -180,19 +244,17 @@ namespace CivOne.Screens
 		
 		public Credits()
 		{
-            _introText = TextFile.Instance.LoadArray("CREDITS");
-            _pictures = new Picture[3];
-            for (int i = 0; i < 2; i++)
-                _pictures[i] = Resources.Instance.LoadPIC(string.Format("BIRTH{0}", i), true);
-            _pictures[2] = Resources.Instance.LoadPIC("LOGO", true);
-            _noiseMap = new byte[320, 200];
-            for (int x = 0; x < 320; x++)
-            {
-                for (int y = 0; y < 200; y++)
-                {
-                    _noiseMap[x, y] = (byte)Common.Random.Next(1, _noiseCounter);
-                }
-            }
+			_introText = TextFile.Instance.LoadArray("CREDITS");
+			_pictures = new Picture[3];
+			for (int i = 0; i < 2; i++)
+				_pictures[i] = Resources.Instance.LoadPIC(string.Format("BIRTH{0}", i), true);
+			_pictures[2] = Resources.Instance.LoadPIC("LOGO", true);
+			_noiseMap = new byte[320, 200];
+			for (int x = 0; x < 320; x++)
+			for (int y = 0; y < 200; y++)
+			{
+				_noiseMap[x, y] = (byte)Common.Random.Next(1, _noiseCounter);
+			}
 			switch (Settings.Instance.GraphicsMode)
 			{
 				case GraphicsMode.Graphics256:
@@ -206,28 +268,7 @@ namespace CivOne.Screens
 			
 			_canvas = new Picture(320, 200, _pictures[2].Image.Palette.Entries);
 			
-			Menu menu = new Menu(Canvas.Image.Palette.Entries)
-			{
-				X = 103,
-				Y = 144,
-				Width = 116,
-				ActiveColour = 11,
-				TextColour = 5,
-				DisabledColour = 8,
-				FontId = 0
-			};
-			Menu.Item[] menuItems = new Menu.Item[5];
-			menu.Items.Add(menuItems[0] = new Menu.Item("Start a New Game"));
-			menu.Items.Add(menuItems[1] = new Menu.Item("Load a Saved Game") { Enabled = false });
-			menu.Items.Add(menuItems[2] = new Menu.Item("EARTH"));
-			menu.Items.Add(menuItems[3] = new Menu.Item("Customize World"));
-			menu.Items.Add(menuItems[4] = new Menu.Item("View Hall of Fame") { Enabled = false });
-			
-			menuItems[0].Selected += StartNewGame;
-			menuItems[2].Selected += Earth;
-			menuItems[3].Selected += CustomizeWorld;
-			
-			Menus.Add(menu);
+			CreateMenu();
 		}
 	}
 }

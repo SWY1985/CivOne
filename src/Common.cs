@@ -17,7 +17,7 @@ namespace CivOne
 {
 	internal class Common
 	{
-        public static Random Random = new Random((int)DateTime.Now.Ticks);
+		public static Random Random = new Random((int)DateTime.Now.Ticks);
 		
 		public static ICivilization[] Civilizations = new ICivilization[] { new Barbarian(), new Roman(), new Babylonian(), new German(), new Egyptian(), new American(), new Greek(), new Indian(), new Russian(), new Zulu(), new French(), new Aztec(), new Chinese(), new English(), new Mongol() };
 		
@@ -38,6 +38,15 @@ namespace CivOne
 		internal static void DestroyScreen(IScreen screen)
 		{
 			_screens.Remove(screen);
+		}
+		
+		internal static bool HasScreenType(Type type)
+		{
+			foreach (IScreen screen in _screens)
+			{
+				if (screen.GetType() == type) return true;
+			}
+			return false;
 		}
 		
 		internal static bool EndGame
