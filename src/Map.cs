@@ -38,7 +38,7 @@ namespace CivOne
 			for (int xx = x; xx < x + width; xx++)
 			for (int yy = y; yy < y + height; yy++)
 			{
-				if (yy < 0 || yy > 49)
+				if (yy < 0 || yy >= HEIGHT)
 				{
 					area[xx - x, yy - y] = null;
 					continue;
@@ -46,7 +46,7 @@ namespace CivOne
 				
 				int mx = xx;
 				while (mx < 0) mx += 80;
-				while (mx > 79) mx -= 80;
+				while (mx >= WIDTH) mx -= WIDTH;
 				
 				area[xx - x, yy - y] = _tiles[mx, yy];
 			}
