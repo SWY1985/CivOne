@@ -20,6 +20,60 @@ namespace CivOne.Templates
 		public int Y { get; private set; }
 		public bool Special { get; private set; }
 		
+		private Terrain GetBorderType(Direction direction)
+		{
+			Map map = Map.Instance;
+			ITile tile = null;
+			switch (direction)
+			{
+				case Direction.North: tile = map.GetTile(X, Y - 1); break;
+				case Direction.East: tile = map.GetTile(X + 1, Y); break;
+				case Direction.South: tile = map.GetTile(X, Y + 1); break;
+				case Direction.West: tile = map.GetTile(X - 1, Y); break;
+			}
+			if (tile == null) return Terrain.None;
+			if (tile.Type == Terrain.Grassland2) return Terrain.Grassland1;
+			return tile.Type;
+		}
+		
+		public byte Borders
+		{
+			get
+			{
+				Terrain type = Type;
+				if (type == Terrain.Grassland2) type = Terrain.Grassland1;
+				
+				byte output = 0;
+				ITile tile = null;
+				switch (type)
+				{
+					case Terrain.Ocean:
+						foreach (Direction direction in new[] { Direction.North, Direction.East, Direction.South, Direction.West })
+						{
+							if (GetBorderType(direction) != Terrain.Ocean)
+								output += (byte)direction;
+						}
+						break;
+					case Terrain.River:
+						foreach (Direction direction in new[] { Direction.North, Direction.East, Direction.South, Direction.West })
+						{
+							Terrain borderType;
+							if ((borderType = GetBorderType(direction)) == type || borderType == Terrain.Ocean)
+								output += (byte)direction;
+						}
+						break;
+					default:
+						foreach (Direction direction in new[] { Direction.North, Direction.East, Direction.South, Direction.West })
+						{
+							if (GetBorderType(direction) == type)
+								output += (byte)direction;
+						}
+						break;
+				}
+				return output;
+			}
+		}
+		
 		public BaseTile(int x, int y, bool special = false)
 		{
 			X = x;
