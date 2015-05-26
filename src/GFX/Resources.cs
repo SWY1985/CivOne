@@ -227,6 +227,12 @@ namespace CivOne.GFX
 				Picture.ReplaceColours(resource, 3, 0);
 				output.AddLayer(resource);
 			}
+			else if (tile.Type == Terrain.Grassland2)
+			{
+				Bitmap resource = Resources.Instance.GetPart("SP257", 152, 40, 8, 8);
+				Picture.ReplaceColours(resource, 3, 0);
+				output.AddLayer(resource, 4, 4);
+			}
 			
 			return output.Image;
 		}
