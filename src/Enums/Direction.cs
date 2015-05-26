@@ -15,5 +15,9 @@ namespace CivOne.Enums
 		East = 2,
 		South = 4,
 		West = 8,
+		NorthWest = 16,
+		NorthEast = 32,
+		SouthWest = 64,
+		SouthEast = 128
 	}
 }

@@ -18,5 +18,6 @@ namespace CivOne.Interfaces
 		Terrain Type { get; }
 		bool Special { get; }
 		byte Borders { get; }
+		Terrain GetBorderType(Direction direction);
 	}
 }
