@@ -128,8 +128,6 @@ namespace CivOne.Screens
 		{
 			if (!_update && !_redraw) return false;
 			
-			_canvas.FillRectangle(5, _rightSideBar ? 0 : 80, 8, 240, 192);
-			
 			DrawLayer(_menuBar, gameTick, 0, 0);
 			DrawLayer(_sideBar, gameTick, _rightSideBar ? 240 : 0, 8);
 			DrawLayer(_gameMap, gameTick, _rightSideBar ? 0 : 80, 8);
