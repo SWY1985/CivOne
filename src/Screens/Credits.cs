@@ -261,7 +261,7 @@ namespace CivOne.Screens
 					_textColours = new byte[] { 248, 242, 244 };
 					break;
 				case GraphicsMode.Graphics16:
-					_textColours = new byte[] { 15, 15, 7 };
+					_textColours = new byte[] { 15, 7, 15 };
 					break;
 			}
 			_menuColours = new byte[] { 8, 15, 7 };
