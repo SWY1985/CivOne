@@ -180,6 +180,15 @@ namespace CivOne.GFX
 					break;
 			}
 			
+			// Add special resources
+			if (tile.Special)
+			{
+				int terrainId = (int)tile.Type;
+				Bitmap resource = GetPart("SPRITES", terrainId * 16, 112, 16, 16);
+				Picture.ReplaceColours(resource, 3, 0);
+				output.AddLayer(resource);
+			}
+			
 			return output.Image;
 		}
 		
@@ -210,6 +219,15 @@ namespace CivOne.GFX
 					break;
 			}
 			
+			// Add special resources
+			if (tile.Special)
+			{
+				int terrainId = (int)tile.Type;
+				Bitmap resource = GetPart("SP257", terrainId * 16, 112, 16, 16);
+				Picture.ReplaceColours(resource, 3, 0);
+				output.AddLayer(resource);
+			}
+			
 			return output.Image;
 		}
 		
@@ -220,34 +238,6 @@ namespace CivOne.GFX
 				return GetTile16(tile);
 			}
 			return GetTile256(tile);
-			
-			bool altTile = ((tile.X + tile.Y) % 2 == 1);
-			
-			Picture output = new Picture(16, 16);
-			
-			// Set tile base
-			switch (tile.Type)
-			{
-				case Terrain.Ocean: output.AddLayer(GetPart("TER257", 0, 160, 16, 16)); break;
-				default: output.AddLayer(GetPart("SP257", 0, 64, 16, 16)); break;
-			}
-			
-			// Add tile terrain
-			switch (tile.Type)
-			{
-				case Terrain.Ocean:
-					break;
-				case Terrain.River:
-					break;
-				default:
-					int terrainId = (int)tile.Type;
-					if (tile.Type == Terrain.Grassland1) altTile = false;
-					else if (tile.Type == Terrain.Grassland2) { altTile = true; terrainId = (int)Terrain.Grassland1; }
-					output.AddLayer(GetPart("SP257", terrainId * 16, (altTile ? 0 : 16), 16, 16));
-					break;
-			}
-			
-			return output.Image;
 		}
 		
 		private static Resources _instance;
