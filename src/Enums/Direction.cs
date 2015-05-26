@@ -7,16 +7,13 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using CivOne.Enums;
-
-namespace CivOne.Interfaces
+namespace CivOne.Enums
 {
-	public interface ITile : ICivilopedia
+	public enum Direction
 	{
-		int X { get; }
-		int Y { get; }
-		Terrain Type { get; }
-		bool Special { get; }
-		byte Borders { get; }
+		North = 1,
+		East = 2,
+		South = 4,
+		West = 8,
 	}
 }

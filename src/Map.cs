@@ -56,6 +56,10 @@ namespace CivOne
 		
 		public ITile GetTile(int x, int y)
 		{
+			while (x < 0) x += WIDTH;
+			while (x >= WIDTH) x-= WIDTH;
+			if (y < 0) return null;
+			if (y >= HEIGHT) return null; 
 			return _tiles[x, y];
 		}
 		

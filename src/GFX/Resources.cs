@@ -137,15 +137,8 @@ namespace CivOne.GFX
 				_cache.Remove(key);
 			}
 			
-			string palette16 = null;
-			if (filename == "SP257" || filename == "TER257")
-			{
-				// Apply different palette to terrain files in 16 colour mode
-				palette16 = "SP299";
-			}
-			
 			Picture output = null;
-			PicFile picFile = new PicFile(filename, palette16);
+			PicFile picFile = new PicFile(filename);
 			if ((Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 && picFile.GetPicture256 != null) || picFile.GetPicture16 == null)
 			{
 				output = new Picture(picFile.GetPicture256, picFile.GetPalette256);
@@ -159,9 +152,45 @@ namespace CivOne.GFX
 			return output;
 		}
 		
+		private Bitmap GetTile16(ITile tile)
+		{
+			Picture output = new Picture(16, 16);
+			
+			bool altTile = ((tile.X + tile.Y) % 2 == 1);
+			
+			// Set tile base
+			switch (tile.Type)
+			{
+				case Terrain.Ocean: output.AddLayer(GetPart("SPRITES", 0, 64, 16, 16)); break;
+				default: output.AddLayer(GetPart("SPRITES", 0, 80, 16, 16)); break;
+			}
+			
+			// Add tile terrain
+			switch (tile.Type)
+			{
+				case Terrain.Ocean:
+				case Terrain.River:
+					bool ocean = (tile.Type == Terrain.Ocean);
+					output.AddLayer(GetPart("SPRITES", tile.Borders * 16, (ocean ? 64 : 80), 16, 16));
+					break;
+				default:
+					int terrainId = (int)tile.Type;
+					if (tile.Type == Terrain.Grassland1) altTile = false;
+					else if (tile.Type == Terrain.Grassland2) { altTile = true; terrainId = (int)Terrain.Grassland1; }
+					output.AddLayer(GetPart("SPRITES", terrainId * 16, (altTile ? 0 : 16), 16, 16));
+					break;
+			}
+			
+			return output.Image;
+		}
+		
 		public Bitmap GetTile(ITile tile)
 		{
-			bool graphics16 = true; //(Settings.Instance.GraphicsMode == GraphicsMode.Graphics16);
+			if (Settings.Instance.GraphicsMode == GraphicsMode.Graphics16)
+			{
+				return GetTile16(tile);
+			}
+			
 			bool altTile = ((tile.X + tile.Y) % 2 == 1);
 			
 			Picture output = new Picture(16, 16);
@@ -181,18 +210,10 @@ namespace CivOne.GFX
 				case Terrain.River:
 					break;
 				default:
-					if (graphics16)
-					{
-						int terrainId = (int)tile.Type;
-						if (tile.Type == Terrain.Grassland1) altTile = false;
-						else if (tile.Type == Terrain.Grassland2) { altTile = true; terrainId = (int)Terrain.Grassland1; }
-						output.AddLayer(GetPart("SP257", terrainId * 16, (altTile ? 0 : 16), 16, 16));
-						break;
-					}
-					else
-					{
-						
-					}
+					int terrainId = (int)tile.Type;
+					if (tile.Type == Terrain.Grassland1) altTile = false;
+					else if (tile.Type == Terrain.Grassland2) { altTile = true; terrainId = (int)Terrain.Grassland1; }
+					output.AddLayer(GetPart("SP257", terrainId * 16, (altTile ? 0 : 16), 16, 16));
 					break;
 			}
 			

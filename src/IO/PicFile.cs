@@ -231,7 +231,7 @@ namespace CivOne.IO
 			}
 		}
 		
-		public PicFile(string filename, string palette16 = null)
+		public PicFile(string filename)
 		{
 			// fix for case sensitive file systems
 			foreach (string fileEntry in Directory.GetFiles(Settings.Instance.DataDirectory))
@@ -254,11 +254,6 @@ namespace CivOne.IO
 				{
 					_bytes[i] = (byte)fs.ReadByte();
 				}
-			}
-			
-			if (palette16 != null)
-			{
-				_colourTable = new PicFile(palette16)._colourTable;
 			}
 			
 			int index = 0;
