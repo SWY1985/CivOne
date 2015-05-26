@@ -152,98 +152,13 @@ namespace CivOne.GFX
 			return output;
 		}
 		
-		private Bitmap GetTile16(ITile tile)
-		{
-			Picture output = new Picture(16, 16);
-			
-			bool altTile = ((tile.X + tile.Y) % 2 == 1);
-			
-			// Set tile base
-			if (tile.Type != Terrain.Ocean)
-			{
-				output.AddLayer(GetPart("SPRITES", 0, 80, 16, 16));
-			}
-			
-			// Add tile terrain
-			switch (tile.Type)
-			{
-				case Terrain.Ocean:
-				case Terrain.River:
-					bool ocean = (tile.Type == Terrain.Ocean);
-					output.AddLayer(GetPart("SPRITES", tile.Borders * 16, (ocean ? 64 : 80), 16, 16));
-					break;
-				default:
-					int terrainId = (int)tile.Type;
-					if (tile.Type == Terrain.Grassland1) altTile = false;
-					else if (tile.Type == Terrain.Grassland2) { altTile = true; terrainId = (int)Terrain.Grassland1; }
-					output.AddLayer(GetPart("SPRITES", terrainId * 16, (altTile ? 0 : 16), 16, 16));
-					break;
-			}
-			
-			// Add special resources
-			if (tile.Special)
-			{
-				int terrainId = (int)tile.Type;
-				Bitmap resource = GetPart("SPRITES", terrainId * 16, 112, 16, 16);
-				Picture.ReplaceColours(resource, 3, 0);
-				output.AddLayer(resource);
-			}
-			
-			return output.Image;
-		}
-		
-		private Bitmap GetTile256(ITile tile)
-		{
-			Picture output = new Picture(16, 16);
-			
-			// Set tile base
-			switch (tile.Type)
-			{
-				case Terrain.Ocean: output.AddLayer(GetPart("TER257", 0, 160, 16, 16)); break;
-				default: output.AddLayer(GetPart("SP257", 0, 64, 16, 16)); break;
-			}
-			
-			// Add tile terrain
-			switch (tile.Type)
-			{
-				case Terrain.Ocean:
-					output.AddLayer(GetPart("TER257", tile.Borders * 16, 160, 16, 16));
-					break;
-				case Terrain.River:
-					output.AddLayer(GetPart("SP257", tile.Borders * 16, 80, 16, 16));
-					break;
-				default:
-					int terrainId = (int)tile.Type;
-					if (tile.Type == Terrain.Grassland2) { terrainId = (int)Terrain.Grassland1; }
-					output.AddLayer(GetPart("TER257", tile.Borders * 16, terrainId * 16, 16, 16));
-					break;
-			}
-			
-			// Add special resources
-			if (tile.Special)
-			{
-				int terrainId = (int)tile.Type;
-				Bitmap resource = GetPart("SP257", terrainId * 16, 112, 16, 16);
-				Picture.ReplaceColours(resource, 3, 0);
-				output.AddLayer(resource);
-			}
-			else if (tile.Type == Terrain.Grassland2)
-			{
-				Bitmap resource = Resources.Instance.GetPart("SP257", 152, 40, 8, 8);
-				Picture.ReplaceColours(resource, 3, 0);
-				output.AddLayer(resource, 4, 4);
-			}
-			
-			return output.Image;
-		}
-		
 		public Bitmap GetTile(ITile tile)
 		{
 			if (Settings.Instance.GraphicsMode == GraphicsMode.Graphics16)
 			{
-				return GetTile16(tile);
+				return TileResources.GetTile16(tile);
 			}
-			return GetTile256(tile);
+			return TileResources.GetTile256(tile);
 		}
 		
 		private static Resources _instance;
