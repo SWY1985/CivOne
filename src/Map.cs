@@ -54,6 +54,11 @@ namespace CivOne
 			return area;
 		}
 		
+		public ITile GetTile(int x, int y)
+		{
+			return _tiles[x, y];
+		}
+		
 		private bool NearOcean(int x, int y)
 		{
 			var map = GetMapPart(x - 1, y - 1, 3, 3);

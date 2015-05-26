@@ -16,6 +16,7 @@ namespace CivOne.IO
 	internal class PicFile
 	{
 		private readonly byte[] _bytes;
+        private readonly byte[,] _colourTable = null;
 		private readonly Color[] _palette16 = Common.GetPalette16;
 		private readonly Color[] _palette256 = new Color[256];
 		private byte[,] _picture16;
@@ -88,6 +89,11 @@ namespace CivOne.IO
 				colourTable[i, 1] = (byte)(_bytes[index] & 0x0F);
 				index++;
 			}
+			
+			// This is a fix for transparency in 16 colour mode
+			colourTable[0, 0] = 0;
+			colourTable[0, 1] = 0;
+			
 			return colourTable;
 		}
 
@@ -150,11 +156,11 @@ namespace CivOne.IO
 					}
 				}
 			}
-
+			
 			index += (int)(length - 5);
 			return output;
 		}
-
+		
 		/// <summary>
 		/// Read the 8-bit image into a 2D byte array.
 		/// </summary>
@@ -164,9 +170,9 @@ namespace CivOne.IO
 			uint length = BitConverter.ToUInt16(_bytes, index); index += 2;
 			uint width = BitConverter.ToUInt16(_bytes, index); index += 2;
 			uint height = BitConverter.ToUInt16(_bytes, index); index += 2;
-
+			
 			_picture256 = new byte[width, height];
-
+			
 			byte[] image = DecodePicture(ref index, length);
 			int c = 0;
 			for (int y = 0; y < height; y++)
@@ -177,7 +183,7 @@ namespace CivOne.IO
 				}
 			}
 		}
-
+		
 		/// <summary>
 		/// Read the 4-bit image into a 2D byte array.
 		/// </summary>
@@ -201,7 +207,7 @@ namespace CivOne.IO
 				}
 			}
 		}
-
+		
 		/// <summary>
 		/// Generate a 4-bit image from the 8-bit image and colourtable.
 		/// </summary>
@@ -209,12 +215,12 @@ namespace CivOne.IO
 		private void ConvertPictureX0(byte[,] colourTable)
 		{
 			if (colourTable == null) return;
-
+			
 			int width = _picture256.GetLength(0);
 			int height = _picture256.GetLength(1);
-
+			
 			_picture16 = new byte[width, height];
-
+			
 			for (int y = 0; y < height; y++)
 			{
 				for (int x = 0; x < width; x++)
@@ -224,8 +230,8 @@ namespace CivOne.IO
 				}
 			}
 		}
-
-		public PicFile(string filename)
+		
+		public PicFile(string filename, string palette16 = null)
 		{
 			// fix for case sensitive file systems
 			foreach (string fileEntry in Directory.GetFiles(Settings.Instance.DataDirectory))
@@ -249,8 +255,12 @@ namespace CivOne.IO
 					_bytes[i] = (byte)fs.ReadByte();
 				}
 			}
-
-			byte[,] colourTable = null;
+			
+			if (palette16 != null)
+			{
+				_colourTable = new PicFile(palette16)._colourTable;
+			}
+			
 			int index = 0;
 			while (index < (_bytes.Length - 1))
 			{
@@ -258,14 +268,14 @@ namespace CivOne.IO
 				switch (magicCode)
 				{
 					case 0x3045:
-						colourTable = ReadColourTable(ref index);
+						_colourTable = ReadColourTable(ref index);
 						break;
 					case 0x304D:
 						ReadColourPalette(ref index);
 						break;
 					case 0x3058:
 						ReadPictureX0(ref index);
-						ConvertPictureX0(colourTable);
+						ConvertPictureX0(_colourTable);
 						break;
 					case 0x3158:
 						ReadPictureX1(ref index);
