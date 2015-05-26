@@ -21,6 +21,8 @@ namespace CivOne.Screens
 	{
 		private readonly MenuBar _menuBar;
 		private readonly SideBar _sideBar;
+		private readonly GameMap _gameMap;
+		
 		private GameMenu _gameMenu = null;
 		private int _menuX, _menuY;
 		private bool _update = true;
@@ -130,6 +132,7 @@ namespace CivOne.Screens
 			
 			DrawLayer(_menuBar, gameTick, 0, 0);
 			DrawLayer(_sideBar, gameTick, _rightSideBar ? 240 : 0, 8);
+			DrawLayer(_gameMap, gameTick, _rightSideBar ? 0 : 80, 8);
 			DrawLayer(_gameMenu, gameTick, _menuX, _menuY);
 			
 			_redraw = false;
@@ -143,7 +146,32 @@ namespace CivOne.Screens
 			{
 				return _menuBar.MouseDown(args);
 			}
-			return false;
+			if (_rightSideBar)
+			{
+				if (args.X > 240)
+				{
+					MouseArgsOffset(ref args, 240, 8);
+					return _sideBar.MouseDown(args);
+				}
+				else
+				{
+					MouseArgsOffset(ref args, 0, 8);
+					return (_update = _gameMap.MouseDown(args));
+				}
+			}
+			else
+			{
+				if (args.X < 80)
+				{
+					MouseArgsOffset(ref args, 0, 8);
+					return _sideBar.MouseDown(args);
+				}
+				else
+				{
+					MouseArgsOffset(ref args, 80, 8);
+					return (_update = _gameMap.MouseDown(args));
+				}
+			}
 		}
 		
 		public override bool MouseUp(MouseEventArgs args)
@@ -175,6 +203,7 @@ namespace CivOne.Screens
 			
 			_menuBar = new MenuBar(palette);
 			_sideBar = new SideBar(palette);
+			_gameMap = new GameMap();
 			
 			_menuBar.GameSelected += MenuBarGame;
 			_menuBar.OrdersSelected += MenuBarOrders;

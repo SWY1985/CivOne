@@ -13,6 +13,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using CivOne.Enums;
+using CivOne.Interfaces;
 using CivOne.IO;
 
 namespace CivOne.GFX
@@ -136,8 +137,15 @@ namespace CivOne.GFX
 				_cache.Remove(key);
 			}
 			
+			string palette16 = null;
+			if (filename == "SP257" || filename == "TER257")
+			{
+				// Apply different palette to terrain files in 16 colour mode
+				palette16 = "SP299";
+			}
+			
 			Picture output = null;
-			PicFile picFile = new PicFile(filename);
+			PicFile picFile = new PicFile(filename, palette16);
 			if ((Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 && picFile.GetPicture256 != null) || picFile.GetPicture16 == null)
 			{
 				output = new Picture(picFile.GetPicture256, picFile.GetPalette256);
@@ -149,6 +157,46 @@ namespace CivOne.GFX
 
 			if (!noCache) _cache.Add(key, output);
 			return output;
+		}
+		
+		public Bitmap GetTile(ITile tile)
+		{
+			bool graphics16 = true; //(Settings.Instance.GraphicsMode == GraphicsMode.Graphics16);
+			bool altTile = ((tile.X + tile.Y) % 2 == 1);
+			
+			Picture output = new Picture(16, 16);
+			
+			// Set tile base
+			switch (tile.Type)
+			{
+				case Terrain.Ocean: output.AddLayer(GetPart("TER257", 0, 160, 16, 16)); break;
+				default: output.AddLayer(GetPart("SP257", 0, 64, 16, 16)); break;
+			}
+			
+			// Add tile terrain
+			switch (tile.Type)
+			{
+				case Terrain.Ocean:
+					break;
+				case Terrain.River:
+					break;
+				default:
+					if (graphics16)
+					{
+						int terrainId = (int)tile.Type;
+						if (tile.Type == Terrain.Grassland1) altTile = false;
+						else if (tile.Type == Terrain.Grassland2) { altTile = true; terrainId = (int)Terrain.Grassland1; }
+						output.AddLayer(GetPart("SP257", terrainId * 16, (altTile ? 0 : 16), 16, 16));
+						break;
+					}
+					else
+					{
+						
+					}
+					break;
+			}
+			
+			return output.Image;
 		}
 		
 		private static Resources _instance;
