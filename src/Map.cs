@@ -435,33 +435,16 @@ namespace CivOne
 		
 		private void SaveBitmap()
 		{
-			Console.WriteLine("DEBUG: Save map as bitmap");
-			Bitmap bmp = new Bitmap(WIDTH, HEIGHT);
+			Picture bmp = new Picture(WIDTH * 16, HEIGHT * 16, Resources.Instance.LoadPIC("SP257").Image.Palette.Entries);
 			
 			for (int x = 0; x < WIDTH; x++)
 			for (int y = 0; y < HEIGHT; y++)
 			{
-				Color color = Color.Black;
-				switch (_tiles[x, y].Type)
-				{
-					case Terrain.Ocean: color = Common.GetPalette16[1]; break;
-					case Terrain.Forest: color = Common.GetPalette16[2]; break;
-					case Terrain.Swamp: color = Common.GetPalette16[3]; break;
-					case Terrain.Plains: color = Common.GetPalette16[6]; break;
-					case Terrain.Tundra: color = Common.GetPalette16[7]; break;
-					case Terrain.River: color = Common.GetPalette16[9]; break;
-					case Terrain.Grassland1:
-					case Terrain.Grassland2: color = Common.GetPalette16[10]; break;
-					case Terrain.Jungle: color = Common.GetPalette16[11]; break;
-					case Terrain.Hills: color = Common.GetPalette16[12]; break;
-					case Terrain.Mountains: color = Common.GetPalette16[13]; break;
-					case Terrain.Desert: color = Common.GetPalette16[14]; break;
-					case Terrain.Arctic: color = Common.GetPalette16[15]; break;
-				}
-				bmp.SetPixel(x, y, color);
+				bmp.AddLayer(Resources.Instance.GetTile(_tiles[x, y]), x * 16, y * 16);
 			}
 			
-			bmp.Save("map.png", ImageFormat.Png);
+			bmp.Image.Save("map.png", ImageFormat.Png);
+			Console.WriteLine("DEBUG: Map saved as bitmap");
 		}
 		
 		private void GenerateThread()
