@@ -66,10 +66,10 @@ namespace CivOne
 		private bool NearOcean(int x, int y)
 		{
 			var map = GetMapPart(x - 1, y - 1, 3, 3);
-			return ((_tiles[1, 0] != null && _tiles[1, 0].Type == Terrain.Ocean) ||
-					(_tiles[2, 1] != null && _tiles[2, 1].Type == Terrain.Ocean) ||
-					(_tiles[1, 2] != null && _tiles[1, 2].Type == Terrain.Ocean) ||
-					(_tiles[0, 1] != null && _tiles[0, 1].Type == Terrain.Ocean));
+			return ((map[1, 0] != null && map[1, 0].Type == Terrain.Ocean) ||
+					(map[2, 1] != null && map[2, 1].Type == Terrain.Ocean) ||
+					(map[1, 2] != null && map[1, 2].Type == Terrain.Ocean) ||
+					(map[0, 1] != null && map[0, 1].Type == Terrain.Ocean));
 		}
 		
 		private int ModGrid(int x, int y)
