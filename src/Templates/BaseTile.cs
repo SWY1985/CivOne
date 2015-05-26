@@ -20,7 +20,7 @@ namespace CivOne.Templates
 		public int Y { get; private set; }
 		public bool Special { get; private set; }
 		
-		private Terrain GetBorderType(Direction direction)
+		public Terrain GetBorderType(Direction direction)
 		{
 			Map map = Map.Instance;
 			ITile tile = null;
@@ -30,6 +30,10 @@ namespace CivOne.Templates
 				case Direction.East: tile = map.GetTile(X + 1, Y); break;
 				case Direction.South: tile = map.GetTile(X, Y + 1); break;
 				case Direction.West: tile = map.GetTile(X - 1, Y); break;
+				case Direction.NorthWest: tile = map.GetTile(X - 1, Y - 1); break;
+				case Direction.NorthEast: tile = map.GetTile(X + 1, Y - 1); break;
+				case Direction.SouthWest: tile = map.GetTile(X - 1, Y + 1); break;
+				case Direction.SouthEast: tile = map.GetTile(X + 1, Y + 1); break;
 			}
 			if (tile == null) return Terrain.None;
 			if (tile.Type == Terrain.Grassland2) return Terrain.Grassland1;
