@@ -202,8 +202,8 @@ namespace CivOne.IO
 			{
 				for (int x = 0; x < width; x++)
 				{
-					_picture16[x++, y] = (byte)((image[c] & 0xF0) >> 4);
-					_picture16[x, y] = (byte)(image[c++] & 0x0F);
+					_picture16[x++, y] = (byte)(image[c] & 0x0F);
+					_picture16[x, y] = (byte)((image[c++] & 0xF0) >> 4);
 				}
 			}
 		}
