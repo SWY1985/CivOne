@@ -127,7 +127,7 @@ namespace CivOne.GFX
 		{
 			return LoadPIC(filename).GetPart(x, y, width, height);
 		}
-
+		
 		public Picture LoadPIC(string filename, bool noCache = false)
 		{
 			string key = filename.ToUpper();
@@ -147,7 +147,7 @@ namespace CivOne.GFX
 			{
 				output = new Picture(picFile.GetPicture16, picFile.GetPalette16);
 			}
-
+			
 			if (!noCache) _cache.Add(key, output);
 			return output;
 		}
