@@ -1,4 +1,6 @@
 bin/**
+capture/**
 data/**
+saves/**
 settings/**
 obj/**

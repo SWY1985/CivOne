@@ -29,11 +29,27 @@ namespace CivOne
 			}
 		}
 		
+		internal string CaptureDirectory
+		{
+			get
+			{
+				return Path.Combine(BinDirectory, "capture");
+			}
+		}
+		
 		internal string DataDirectory
 		{
 			get
 			{
 				return Path.Combine(BinDirectory, "data");
+			}
+		}
+		
+		internal string SavesDirectory
+		{
+			get
+			{
+				return Path.Combine(BinDirectory, "saves");
 			}
 		}
 		
@@ -155,12 +171,27 @@ namespace CivOne
 			}
 		}
 		
+		private void CreateDirectories()
+		{
+			foreach (string dir in new[] { CaptureDirectory, SavesDirectory, SettingsDirectory })
+			if (!Directory.Exists(dir))
+			{
+				Directory.CreateDirectory(dir);
+			}
+			
+			for (char c = 'a'; c <= 'z'; c++)
+			{
+				string dir = Path.Combine(SavesDirectory, c.ToString());
+				if (!Directory.Exists(dir))
+				{
+					Directory.CreateDirectory(dir);
+				}
+			}
+		}
+		
 		private Settings()
 		{
-			if (!Directory.Exists(SettingsDirectory))
-			{
-				Directory.CreateDirectory(SettingsDirectory);
-			}
+			CreateDirectories();
 			
 			int graphicsMode = (int)_graphicsMode;
 			byte framesPerSecond = _framesPerSecond;
