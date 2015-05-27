@@ -58,14 +58,14 @@ namespace CivOne.Screens
 				Resources.Instance.ClearTextCache();
 			}
 		}
-
-        private bool LoadGameCancel
-        {
-            get
-            {
-                return _overlay != null && (_overlay.GetType() == typeof(LoadGame) && ((LoadGame)_overlay).Cancel);
-            }
-        }
+		
+		private bool LoadGameCancel
+		{
+			get
+			{
+				return _overlay != null && (_overlay.GetType() == typeof(LoadGame) && ((LoadGame)_overlay).Cancel);
+			}
+		}
 		
 		public override bool HasUpdate(uint gameTick)
 		{
@@ -239,7 +239,33 @@ namespace CivOne.Screens
 		
 		public override bool MouseDown(MouseEventArgs args)
 		{
+			if (_done && _overlay != null)
+				return _overlay.MouseDown(args);
 			return SkipIntro();
+		}
+		
+		public override bool MouseUp(MouseEventArgs args)
+		{
+			if (_done && _overlay != null)
+				return _overlay.MouseUp(args);
+			return false;
+		}
+		
+		public override bool MouseDrag(MouseEventArgs args)
+		{
+			if (_done && _overlay != null)
+				return _overlay.MouseDrag(args);
+			return false;
+		}
+		
+		public override MouseCursor Cursor
+		{
+			get
+			{
+				if (_overlay != null && !LoadGameCancel)
+					return _overlay.Cursor;
+				return base.Cursor;
+			}
 		}
 		
 		public Credits()

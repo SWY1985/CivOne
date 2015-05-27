@@ -76,6 +76,25 @@ namespace CivOne
 			}
 		}
 		
+		public static int TurnToYear(ushort turn)
+		{
+			if (turn < 200) return -(200 - turn) * 20;
+			else if (turn == 200) return 1;
+			else if (turn < 250) return (turn - 200) * 20;
+			else if (turn < 300) return ((turn - 250) * 10) + 1000;
+			else if (turn < 350) return ((turn - 300) * 5) + 1500;
+			else if (turn < 400) return ((turn - 350) * 2) + 1750;
+			return (turn - 400) + 1850;
+		}
+		
+		public static string YearString(ushort turn)
+		{
+			int year = TurnToYear(turn);
+			if (year < 0)
+				return string.Format("{0} B.C.", -year);
+			return string.Format("{0} A.D.", year);
+		}
+		
 		private static Color[] _palette16;
 		public static Color[] GetPalette16
 		{
