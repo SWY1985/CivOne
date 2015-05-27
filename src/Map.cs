@@ -92,11 +92,11 @@ namespace CivOne
 		private bool[,] GenerateLandChunk()
 		{
 			bool[,] stencil = new bool[WIDTH, HEIGHT];
-
+			
 			int x = Common.Random.Next(4, WIDTH - 4);
 			int y = Common.Random.Next(8, HEIGHT - 8);
 			int pathLength = Common.Random.Next(1, 64);
-
+			
 			for (int i = 0; i < pathLength; i++)
 			{
 				stencil[x, y] = true;
