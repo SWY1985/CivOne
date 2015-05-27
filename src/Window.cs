@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -204,6 +206,22 @@ namespace CivOne
 			LoadCursors();
 		}
 		
+		private void SaveScreen()
+		{
+			for (int i = 1; i < 99999; i++)
+			{
+				string filename = Path.Combine(Settings.Instance.CaptureDirectory, string.Format("capture{0:00000}.png", i));
+				if (File.Exists(filename)) continue;
+				
+				using (Bitmap capture = (Bitmap)_canvas.Image.Clone())
+				{
+					Picture.ReplaceColours(capture, 0, 5); 
+					capture.Save(filename, ImageFormat.Png);
+				}
+				return;
+			}
+		}
+		
 		private void ScaleMouseEventArgs(ref MouseEventArgs args)
 		{
 			int xx = args.X - CanvasX, yy = args.Y - CanvasY;
@@ -258,6 +276,10 @@ namespace CivOne
 				if (args.KeyCode == Keys.Enter)
 				{
 					ToggleFullScreen();
+				}
+				if (args.Control && args.KeyCode == Keys.F5)
+				{
+					SaveScreen();
 				}
 				args.SuppressKeyPress = true;
 				return;
