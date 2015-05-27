@@ -468,11 +468,8 @@ namespace CivOne
 			//SaveBitmap();
 		}
 		
-		private void LoadMapThread()
+		private void LoadMap(byte[,] bitmap)
 		{
-			Console.WriteLine("Map: Loading MAP.PIC");
-			
-			byte[,] bitmap = Resources.Instance.LoadPIC("MAP", true).GetBitmap;
 			_tiles = new ITile[WIDTH, HEIGHT];
 			
 			for (int x = 0; x < WIDTH; x++)
@@ -497,6 +494,15 @@ namespace CivOne
 				}
 				_tiles[x, y] = tile;
 			}
+		}
+		
+		private void LoadMapThread()
+		{
+			Console.WriteLine("Map: Loading MAP.PIC");
+			
+			byte[,] bitmap = Resources.Instance.LoadPIC("MAP", true).GetBitmap;
+			
+			LoadMap(bitmap);
 			
 			CreatePoles();
 			PlaceHuts();
@@ -504,6 +510,19 @@ namespace CivOne
 			Ready = true;
 			Console.WriteLine("Map: Ready");
 			//SaveBitmap();
+		}
+		
+		public void LoadSaveGame(string filename)
+		{
+			Console.WriteLine("Map: Loading {0}", filename);
+			
+			byte[,] bitmap = Resources.Instance.LoadPIC(filename, true).GetBitmap;
+			_tiles = new ITile[WIDTH, HEIGHT];
+			
+			LoadMap(bitmap);
+			
+			Ready = true;
+			Console.WriteLine("Map: Ready");
 		}
 		
 		public void Generate(int landMass = 1, int temperature = 1, int climate = 1, int age = 1)

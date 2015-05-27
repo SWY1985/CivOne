@@ -233,11 +233,14 @@ namespace CivOne.IO
 		
 		public PicFile(string filename)
 		{
-			// fix for case sensitive file systems
-			foreach (string fileEntry in Directory.GetFiles(Settings.Instance.DataDirectory))
+			if (!filename.ToLower().EndsWith(".map"))
 			{
-				if (Path.GetFileName(fileEntry).ToLower() != string.Format("{0}.pic", filename.ToLower())) continue;
-				filename = fileEntry;
+				// fix for case sensitive file systems
+				foreach (string fileEntry in Directory.GetFiles(Settings.Instance.DataDirectory))
+				{
+					if (Path.GetFileName(fileEntry).ToLower() != string.Format("{0}.pic", filename.ToLower())) continue;
+					filename = fileEntry;
+				}
 			}
 
 			// generate an exception if the file is not found

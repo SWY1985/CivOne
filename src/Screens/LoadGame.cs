@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using CivOne.Enums;
@@ -30,6 +31,7 @@ namespace CivOne.Screens
 			public bool ValidFile { get; private set; }
 			public string SveFile { get; private set; }
 			public string MapFile { get; private set; }
+			public int Difficulty { get; private set; }
 			
 			public string Name { get; private set; }
 			
@@ -54,7 +56,6 @@ namespace CivOne.Screens
 				Name = "(EMPTY)";
 				SveFile = string.Format("{0}.SVE", filename);
 				MapFile = string.Format("{0}.MAP", filename);
-				Console.WriteLine(SveFile);
 				if (!File.Exists(SveFile) || !File.Exists(MapFile)) return;
 				
 				using (BinaryReader br = new BinaryReader(File.Open(SveFile, FileMode.Open)))
@@ -84,6 +85,7 @@ namespace CivOne.Screens
 					}
 					
 					Name = string.Format("{0} {1}, {2}/{3}", title, leaderName, tribeName, Common.YearString(gameTurn).Replace(".", ""));
+					Difficulty = (int)difficultyLevel;
 				}
 				ValidFile = true;
 				//TODO: Handle invalid save files
@@ -105,6 +107,27 @@ namespace CivOne.Screens
 				string filename = Path.Combine(path, string.Format("CIVIL{0}", i));
 				yield return new SaveGameFile(filename);
 			}
+		}
+		
+		private void LoadSaveFile(object sender, EventArgs args)
+		{
+			int item = (sender as Menu.Item).Value;
+			
+			SaveGameFile file = GetSaveGames().ToArray()[item];
+			
+			Console.WriteLine("Load game: {0}", file.Name);
+			
+			Destroy();
+			Map.Instance.LoadSaveGame(file.MapFile);
+			Game.CreateGame(file.Difficulty, 0, Common.Civilizations[0]);
+			Common.AddScreen(new GamePlay());
+		}
+		
+		private void LoadEmptyFile(object sender, EventArgs args)
+		{
+			Console.WriteLine("Empty save file, cancel");
+			Cancel = true;
+			_update = true;
 		}
 		
 		private void DrawDriveQuestion()
@@ -130,7 +153,6 @@ namespace CivOne.Screens
 					_canvas = new Picture(320, 200, _palette);
 					_canvas.FillRectangle(15, 0, 0, 320, 200);
 					_canvas.AddLayer(_menu.Canvas.Image);
-					_canvas.DrawText("Work in progress, press ESCAPE to return to menu", 0, 4, 160, 192, TextAlign.Center);
 					return true;
 				}
 				return Cancel;
@@ -147,7 +169,7 @@ namespace CivOne.Screens
 		public override bool KeyDown(KeyEventArgs args)
 		{
 			if (Cancel) return false;
-						
+			
 			char c = Char.ToUpper((char)args.KeyCode);
 			if (args.KeyCode == Keys.Escape)
 			{
@@ -182,6 +204,14 @@ namespace CivOne.Screens
 				foreach (SaveGameFile file in GetSaveGames())
 				{
 					_menu.Items.Add(menuItem = new Menu.Item(file.Name, i++));
+					if (file.ValidFile)
+					{
+						menuItem.Selected += LoadSaveFile;
+					}
+					else
+					{
+						menuItem.Selected += LoadEmptyFile;
+					}
 				}
 				Cursor = MouseCursor.Pointer;
 			}
