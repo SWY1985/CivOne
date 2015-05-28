@@ -14,6 +14,10 @@ namespace CivOne
 	internal class Player
 	{
 		private readonly ICivilization _civilization;
+		private readonly string _leaderName, _tribeName, _tribeNamePlural;
+		
+		private short _gold;
+				
 		public ICivilization Civilization
 		{
 			get
@@ -26,8 +30,7 @@ namespace CivOne
 		{
 			get
 			{
-				// TODO: Implement custom leader name
-				return _civilization.LeaderName;
+				return _leaderName;
 			}
 		}
 		
@@ -35,8 +38,7 @@ namespace CivOne
 		{
 			get
 			{
-				// TODO: Implement custom civilization name
-				return _civilization.Name;
+				return _tribeName;
 			}
 		}
 		
@@ -44,15 +46,28 @@ namespace CivOne
 		{
 			get
 			{
-				// TODO: Implement custom civilization name
-				return _civilization.NamePlural;
+				return _tribeNamePlural;
 			}
 		}
 		
-		public Player(ICivilization civilization, string customLeaderName = null, string customCivilizationName = null)
+		public short Gold
 		{
-			// TODO: Implement custom leader name and custom civilization name
+			get
+			{
+				return _gold;
+			}
+			internal set
+			{
+				_gold = value;
+			}
+		}
+		
+		public Player(ICivilization civilization, string customLeaderName = null, string customTribeName = null, string customTribeNamePlural = null)
+		{
 			_civilization = civilization;
+			_leaderName = customLeaderName ?? _civilization.LeaderName;
+			_tribeName = customTribeName ?? _civilization.Name;
+			_tribeNamePlural = customTribeNamePlural ?? _civilization.NamePlural;
 		}
 	}
 }
