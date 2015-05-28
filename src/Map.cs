@@ -102,7 +102,7 @@ namespace CivOne
 				stencil[x, y] = true;
 				stencil[x + 1, y] = true;
 				stencil[x, y + 1] = true;
-				switch (Common.Random.Next(0, 4))
+				switch (Common.Random.Next(4))
 				{
 					case 0: y--; break;
 					case 1: x++; break;
@@ -162,7 +162,7 @@ namespace CivOne
 			for (int x = 0; x < WIDTH; x++)
 			{
 				int l = (int)(((float)y / HEIGHT) * 50) - 29;
-				l += Common.Random.Next(0, 7);
+				l += Common.Random.Next(7);
 				if (l < 0) l = -l;
 				l += 1 - _temperature;
 				
@@ -240,7 +240,7 @@ namespace CivOne
 					else if (wetness > 0)
 					{
 						bool special = TileIsSpecial(x, y);
-						int rainfall = Common.Random.Next(0, 7 - (_climate * 2));
+						int rainfall = Common.Random.Next(7 - (_climate * 2));
 						wetness -= rainfall;
 						
 						switch (_tiles[x, y].Type)
@@ -269,7 +269,7 @@ namespace CivOne
 					else if (wetness > 0)
 					{
 						bool special = TileIsSpecial(x, y);
-						int rainfall = Common.Random.Next(0, 7 - (_climate * 2));
+						int rainfall = Common.Random.Next(7 - (_climate * 2));
 						wetness -= rainfall;
 						
 						switch (_tiles[x, y].Type)
@@ -298,12 +298,12 @@ namespace CivOne
 			{
 				if (i % 2 == 0)
 				{
-					x = Common.Random.Next(0, WIDTH);
-					y = Common.Random.Next(0, HEIGHT);
+					x = Common.Random.Next(WIDTH);
+					y = Common.Random.Next(HEIGHT);
 				}
 				else
 				{
-					switch (Common.Random.Next(0, 8))
+					switch (Common.Random.Next(8))
 					{
 						case 0: { x--; y--; break; }
 						case 1: { y--; break; }
@@ -355,21 +355,21 @@ namespace CivOne
 				ITile[,] tilesBackup = (ITile[,])_tiles.Clone();
 				
 				int riverLength = 0;
-				int varA = Common.Random.Next(0, 4) * 2;
+				int varA = Common.Random.Next(4) * 2;
 				bool nearOcean = false;
 				
 				ITile tile = null;
 				while (tile == null)
 				{
-					int x = Common.Random.Next(0, WIDTH);
-					int y = Common.Random.Next(0, HEIGHT);
+					int x = Common.Random.Next(WIDTH);
+					int y = Common.Random.Next(HEIGHT);
 					if (_tiles[x, y].Type == Terrain.Hills) tile = _tiles[x, y];
 				}
 				do
 				{
 					_tiles[tile.X, tile.Y] = new River(tile.X, tile.Y);
 					int varB = varA;
-					int varC = Common.Random.Next(0, 2);
+					int varC = Common.Random.Next(2);
 					varA = (((varC - riverLength % 2) * 2 + varA) & 0x07);
 					varB = 7 - varB;
 					
@@ -423,7 +423,7 @@ namespace CivOne
 			for (int i = 0; i < (WIDTH / 4); i++)
 			foreach (int y in new int[] { 0, 1, (HEIGHT - 2), (HEIGHT - 1) })
 			{
-				int x = Common.Random.Next(0, WIDTH);
+				int x = Common.Random.Next(WIDTH);
 				_tiles[x, y] = new Tundra(x, y, false);
 			}
 		}
@@ -570,7 +570,7 @@ namespace CivOne
 		
 		private Map()
 		{
-			_terrainMasterWord = Common.Random.Next(0, 16);
+			_terrainMasterWord = Common.Random.Next(16);
 			Ready = false;
 			
 			Console.WriteLine("Map instance created");
