@@ -35,19 +35,14 @@ namespace CivOne.Screens
 			
 			public string Name { get; private set; }
 			
-			private string[] BytesToArray(byte[] bytes, int maxLength)
+			private ushort ReadUShort(BinaryReader reader, int position)
 			{
-				List<string> output = new List<string>();
-				StringBuilder sb = new StringBuilder();
-				foreach (byte b in bytes)
-				{
-					sb.Append((char)b);
-					if (sb.Length != maxLength) continue;
-					
-					output.Add(sb.ToString().Split((char)0)[0].Trim());
-					sb.Clear();
-				}
-				return output.ToArray();
+				return Common.BinaryReadUShort(reader, position);
+			}
+			
+			private string[] ReadStrings(BinaryReader reader, int position, int length, int itemLength)
+			{
+				return Common.BinaryReadStrings(reader, position, length, itemLength);
 			}
 			
 			public SaveGameFile(string filename)
@@ -60,31 +55,23 @@ namespace CivOne.Screens
 				
 				using (BinaryReader br = new BinaryReader(File.Open(SveFile, FileMode.Open)))
 				{
-					ushort gameTurn = br.ReadUInt16();
-					ushort humanPlayer = br.ReadUInt16();
-					ushort humanPlayerBitflag = br.ReadUInt16();
-					ushort randomMapSeed = br.ReadUInt16();
-					ushort currentYear = br.ReadUInt16();
-					ushort difficultyLevel = br.ReadUInt16();
-					ushort activeCivilizations = br.ReadUInt16();
-					ushort currentResearched = br.ReadUInt16();
-					string[] leaderNames = BytesToArray(br.ReadBytes(112), 14);
-					string[] civNames = BytesToArray(br.ReadBytes(96), 12);
-					//
+					string turn = Common.YearString(ReadUShort(br, 0)).Replace(".", "");
+					ushort humanPlayer = ReadUShort(br, 2);
+					ushort difficultyLevel = ReadUShort(br, 10);
+					string leaderName = ReadStrings(br, 16, 112, 14)[humanPlayer];
+					string civName = ReadStrings(br, 128, 96, 12)[humanPlayer];
+					string tribeName = ReadStrings(br, 224, 88, 11)[humanPlayer];
 					
-					string title;
-					string leaderName = leaderNames[humanPlayer];
-					string tribeName = civNames[humanPlayer];
+					string title = "Chief";
 					switch (difficultyLevel)
 					{
-						case 0: title = "Chief"; break;
 						case 1: title = "Lord"; break;
 						case 2: title = "Prince"; break;
 						case 3: title = "King"; break;
-						default: title = "Emperor"; break;
+						case 4: title = "Emperor"; break;
 					}
 					
-					Name = string.Format("{0} {1}, {2}/{3}", title, leaderName, tribeName, Common.YearString(gameTurn).Replace(".", ""));
+					Name = string.Format("{0} {1}, {2}/{3}", title, leaderName, civName, turn);
 					Difficulty = (int)difficultyLevel;
 				}
 				ValidFile = true;

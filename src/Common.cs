@@ -10,6 +10,8 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.Text;
 using CivOne.Civilizations;
 using CivOne.Interfaces;
 
@@ -93,6 +95,35 @@ namespace CivOne
 			if (year < 0)
 				return string.Format("{0} B.C.", -year);
 			return string.Format("{0} A.D.", year);
+		}
+		
+		public static ushort BinaryReadUShort(BinaryReader reader, int position)
+		{
+			if (reader.BaseStream.Position != position)
+				reader.BaseStream.Seek(position, SeekOrigin.Begin);
+			return reader.ReadUInt16();
+		}
+		
+		private static string[] BytesToArray(byte[] bytes, int maxLength)
+		{
+			List<string> output = new List<string>();
+			StringBuilder sb = new StringBuilder();
+			foreach (byte b in bytes)
+			{
+				sb.Append((char)b);
+				if (sb.Length != maxLength) continue;
+				
+				output.Add(sb.ToString().Split((char)0)[0].Trim());
+				sb.Clear();
+			}
+			
+			return output.ToArray();
+		}
+		public static string[] BinaryReadStrings(BinaryReader reader, int position, int length, int itemLength)
+		{
+			if (reader.BaseStream.Position != position)
+				reader.BaseStream.Seek(position, SeekOrigin.Begin);
+			return BytesToArray(reader.ReadBytes(length), itemLength);
 		}
 		
 		private static Color[] _palette16;
