@@ -66,7 +66,7 @@ namespace CivOne
 				}
 				
 				ICivilization[] civs = Common.Civilizations.Where(civ => civ.PreferredPlayerNumber == i).ToArray();
-				int r = Common.Random.Next(0, civs.Length);
+				int r = Common.Random.Next(civs.Length);
 				
 				_players[i] = new Player(civs[r]);
 				Console.WriteLine("- Player {0} is {1} of the {2}", i, _players[i].Civilization.LeaderName, _players[i].Civilization.NamePlural);
