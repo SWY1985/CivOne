@@ -24,10 +24,6 @@ namespace CivOne.Screens
 	{
 		private class SaveGameFile
 		{
-			// TODO: Implement full save file configuration
-			// - http://forums.civfanatics.com/showthread.php?p=12422448
-			// - http://forums.civfanatics.com/showthread.php?t=493581
-			
 			public bool ValidFile { get; private set; }
 			public string SveFile { get; private set; }
 			public string MapFile { get; private set; }
@@ -55,7 +51,7 @@ namespace CivOne.Screens
 				
 				using (BinaryReader br = new BinaryReader(File.Open(SveFile, FileMode.Open)))
 				{
-					string turn = Common.YearString(ReadUShort(br, 0)).Replace(".", "");
+					string turn = Common.YearString(ReadUShort(br, 0));
 					ushort humanPlayer = ReadUShort(br, 2);
 					ushort difficultyLevel = ReadUShort(br, 10);
 					string leaderName = ReadStrings(br, 16, 112, 14)[humanPlayer];
@@ -105,8 +101,9 @@ namespace CivOne.Screens
 			Console.WriteLine("Load game: {0}", file.Name);
 			
 			Destroy();
-			Map.Instance.LoadSaveGame(file.MapFile);
-			Game.CreateGame(file.Difficulty, 0, Common.Civilizations[0]);
+			//Map.Instance.LoadMap(file.MapFile);
+			//Game.CreateGame(file.Difficulty, 0, Common.Civilizations[0]);
+			Game.LoadGame(file.SveFile, file.MapFile);
 			Common.AddScreen(new GamePlay());
 		}
 		

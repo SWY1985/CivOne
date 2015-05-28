@@ -25,7 +25,7 @@ namespace CivOne
 		public const int WIDTH = 80;
 		public const int HEIGHT = 50;
 		
-		private readonly int _terrainMasterWord;
+		private int _terrainMasterWord;
 		private int _landMass, _temperature, _climate, _age;
 		private ITile[,] _tiles;
 		
@@ -496,6 +496,20 @@ namespace CivOne
 			}
 		}
 		
+		public void LoadMap(string filename, int randomSeed)
+		{
+			Console.WriteLine("Map: Loading {0} - Random seed: {1}", filename, randomSeed);
+			_terrainMasterWord = randomSeed;
+			
+			byte[,] bitmap = Resources.Instance.LoadPIC(filename, true).GetBitmap;
+			_tiles = new ITile[WIDTH, HEIGHT];
+			
+			LoadMap(bitmap);
+			
+			Ready = true;
+			Console.WriteLine("Map: Ready");
+		}
+		
 		private void LoadMapThread()
 		{
 			Console.WriteLine("Map: Loading MAP.PIC");
@@ -510,19 +524,6 @@ namespace CivOne
 			Ready = true;
 			Console.WriteLine("Map: Ready");
 			//SaveBitmap();
-		}
-		
-		public void LoadSaveGame(string filename)
-		{
-			Console.WriteLine("Map: Loading {0}", filename);
-			
-			byte[,] bitmap = Resources.Instance.LoadPIC(filename, true).GetBitmap;
-			_tiles = new ITile[WIDTH, HEIGHT];
-			
-			LoadMap(bitmap);
-			
-			Ready = true;
-			Console.WriteLine("Map: Ready");
 		}
 		
 		public void Generate(int landMass = 1, int temperature = 1, int climate = 1, int age = 1)
