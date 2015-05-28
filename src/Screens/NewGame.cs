@@ -26,6 +26,7 @@ namespace CivOne.Screens
 		
 		private readonly Picture _background;
 		private int _difficulty = -1, _competition = -1, _tribe = -1;
+		private string _leaderName = null;
 		private bool _done = false, _showIntroText = false;
 		
 		private Menu AddMenu(string title, EventHandler setChoice, params string[] menuTexts)
@@ -70,6 +71,11 @@ namespace CivOne.Screens
 			Common.AddScreen(AddMenu("Pick your tribe...", SetTribe, _menuItemsTribes));
 		}
 		
+		private void InputLeaderName()
+		{
+			
+		}
+		
 		private void SetDifficulty(object sender, EventArgs args)
 		{
 			_difficulty = (sender as Menu.Item).Value;
@@ -106,92 +112,117 @@ namespace CivOne.Screens
 		
 		public override bool HasUpdate(uint gameTick)
 		{
-			if (Menus.Count == 0)
+			if (Menus.Count != 0) return false;
+			
+			if (_difficulty == -1) MenuDifficulty();
+			else if (_competition == -1) MenuCompetition();
+			else if (_tribe == -1) MenuTribe();
+			else if (_leaderName == null) InputLeaderName();
+			else if (!_done)
 			{
-				if (_difficulty == -1) MenuDifficulty();
-				else if (_competition == -1) MenuCompetition();
-				else if (_tribe == -1) MenuTribe();
-				else if (!_done)
-				{
-					if (_showIntroText) return false;
-					
-					ICivilization civ = _tribesAvailable[_tribe];
-					Game.CreateGame(_difficulty, _competition, civ);
-					
-					Bitmap[] borders = new Bitmap[8];
-					int index = 0;
-					for (int y = 0; y < 2; y++)
-					{
-						for (int x = 0; x < 4; x++)
-						{
-							borders[index] = (Bitmap)Resources.Instance.GetPart("SP299", 224 + (8 * x), 120 + (8 * y), 8, 8).Clone();
-							Picture.ReplaceColours(borders[index], 15, 16);
-							index++;
-						}
-					}
-					
-					_canvas.FillRectangle(15, 0, 0, 320, 200);
-					for (int x = 8; x < 312; x += 8)
-					{
-						_canvas.AddLayer(borders[4], x, 0);
-						_canvas.AddLayer(borders[6], x, 192);
-					}
-					for (int y = 8; y < 192; y += 8)
-					{
-						_canvas.AddLayer(borders[5], 0, y);
-						_canvas.AddLayer(borders[7], 312, y);
-					}
-					_canvas.AddLayer(borders[0], 0, 0);
-					_canvas.AddLayer(borders[1], 312, 0);
-					_canvas.AddLayer(borders[2], 0, 192);
-					_canvas.AddLayer(borders[3], 312, 192);
-					
-					_canvas.AddLayer(DifficultyPicture, 134, 20);
-					
-					int yy = 81;
-					foreach (string textLine in TextFile.Instance.GetGameText("INIT"))
-					{
-						string line = textLine.Replace("$RPLC1", civ.LeaderName).Replace("$US", civ.NamePlural).Replace("^", "");
-						_canvas.DrawText(line, 0, 5, 88, yy);
-						yy += 8;
-						Console.WriteLine(line);
-					}
-					_canvas.DrawText("and Roads.", 0, 5, 88, yy);
-					Console.WriteLine("and Roads.");
-					
-					_showIntroText = true;
-					return true;
-				}
-				else
-				{
-					Destroy();
-					Common.AddScreen(new GamePlay());
-					return true;
-				}
+				if (_showIntroText) return false;
 				
-				// Draw background
-				_canvas = new Picture(320, 200, _background.Image.Palette.Entries);
-				if (_difficulty == -1)
+				ICivilization civ = _tribesAvailable[_tribe];
+				Game.CreateGame(_difficulty, _competition, civ, _leaderName);
+				
+				Bitmap[] borders = new Bitmap[8];
+				int index = 0;
+				for (int y = 0; y < 2; y++)
 				{
-					_canvas.AddLayer(_background.Image);
-				}
-				else
-				{
-					_canvas.AddLayer(_background.GetPart(140, 0, 180, 200), 140);
-					int pictureStack = (_competition <= 0) ? 1 : _competition;
-					for (int i = pictureStack; i > 0; i--)
+					for (int x = 0; x < 4; x++)
 					{
-						_canvas.AddLayer(DifficultyPicture, 20 + (i * 2), 100 + (i * 3));
+						borders[index] = (Bitmap)Resources.Instance.GetPart("SP299", 224 + (8 * x), 120 + (8 * y), 8, 8).Clone();
+						Picture.ReplaceColours(borders[index], 15, 16);
+						index++;
 					}
 				}
 				
+				_canvas.FillRectangle(15, 0, 0, 320, 200);
+				for (int x = 8; x < 312; x += 8)
+				{
+					_canvas.AddLayer(borders[4], x, 0);
+					_canvas.AddLayer(borders[6], x, 192);
+				}
+				for (int y = 8; y < 192; y += 8)
+				{
+					_canvas.AddLayer(borders[5], 0, y);
+					_canvas.AddLayer(borders[7], 312, y);
+				}
+				_canvas.AddLayer(borders[0], 0, 0);
+				_canvas.AddLayer(borders[1], 312, 0);
+				_canvas.AddLayer(borders[2], 0, 192);
+				_canvas.AddLayer(borders[3], 312, 192);
+				
+				_canvas.AddLayer(DifficultyPicture, 134, 20);
+				
+				int yy = 81;
+				foreach (string textLine in TextFile.Instance.GetGameText("INIT"))
+				{
+					string line = textLine.Replace("$RPLC1", Game.Instance.HumanPlayer.LeaderName).Replace("$US", civ.NamePlural).Replace("^", "");
+					_canvas.DrawText(line, 0, 5, 88, yy);
+					yy += 8;
+					Console.WriteLine(line);
+				}
+				_canvas.DrawText("and Roads.", 0, 5, 88, yy);
+				Console.WriteLine("and Roads.");
+				
+				_showIntroText = true;
 				return true;
 			}
-			return false;
+			else
+			{
+				Destroy();
+				Common.AddScreen(new GamePlay());
+				return true;
+			}
+			
+			// Draw background
+			_canvas = new Picture(320, 200, _background.Image.Palette.Entries);
+			if (_difficulty == -1)
+			{
+				_canvas.AddLayer(_background.Image);
+			}
+			else
+			{
+				if (_tribe == -1)
+					_canvas.AddLayer(_background.GetPart(140, 0, 180, 200), 140);
+				int pictureStack = (_competition <= 0) ? 0 : _competition;
+				for (int i = pictureStack; i >= 0; i--)
+				{
+					_canvas.AddLayer(DifficultyPicture, 22 + (i * 2), 100 + (i * 3));
+				}
+				
+				if (_tribe != -1 && _leaderName == null)
+				{
+					ICivilization civ = _tribesAvailable[_tribe];
+					
+					_canvas.DrawText(civ.NamePlural, 6, 15, 47, 92, TextAlign.Center);
+					_canvas.FillRectangle(11, 158, 88, 161, 33);
+					_canvas.FillRectangle(15, 159, 89, 159, 31);
+					_canvas.DrawText("Your Name...", 6, 5, 166, 90);
+					_canvas.FillRectangle(5, 166, 103, 113, 14);
+					_canvas.FillRectangle(15, 167, 104, 111, 12);
+					
+					//TODO: Add input box (position 168x105 - 109x10)
+					_canvas.DrawText(civ.LeaderName, 6, 5, 168, 106);
+				}
+			}
+			
+			return true;
 		}
 		
 		public override bool KeyDown(KeyEventArgs args)
 		{
+			if (_tribe != -1 && _leaderName == null)
+			{
+				if (args.KeyCode == Keys.Enter)
+				{
+					ICivilization civ = _tribesAvailable[_tribe];
+					_leaderName = civ.LeaderName;
+					return true;
+				}
+				return false;
+			}
 			if (_difficulty > -1 && _competition > -1 && _tribe > -1 && !_done)
 				_done = true;
 			return _done;
