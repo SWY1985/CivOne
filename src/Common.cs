@@ -32,6 +32,11 @@ namespace CivOne
 			}
 		}
 		
+		internal static void SetRandomSeed(short seed)
+		{
+			Random = new Random(seed);
+		}
+		
 		internal static void AddScreen(IScreen screen)
 		{
 			_screens.Add(screen);
@@ -93,8 +98,8 @@ namespace CivOne
 		{
 			int year = TurnToYear(turn);
 			if (year < 0)
-				return string.Format("{0} B.C.", -year);
-			return string.Format("{0} A.D.", year);
+				return string.Format("{0} BC", -year);
+			return string.Format("{0} AD", year);
 		}
 		
 		public static ushort BinaryReadUShort(BinaryReader reader, int position)
