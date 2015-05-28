@@ -36,14 +36,14 @@ namespace CivOne
 			private set;
 		}
 		
-		public static void CreateGame(int difficulty, int competition, ICivilization tribe)
+		public static void CreateGame(int difficulty, int competition, ICivilization tribe, string leaderName = null, string tribeName = null)
 		{
 			if (_instance != null)
 			{
 				Console.WriteLine("ERROR: Game instance already exists");
 				return;
 			}
-			_instance = new Game(difficulty, competition, tribe);
+			_instance = new Game(difficulty, competition, tribe, leaderName, tribeName);
 		}
 		
 		public static void LoadGame(string sveFile, string mapFile)
@@ -106,7 +106,7 @@ namespace CivOne
 			_players = new Player[competition + 1];
 		}
 		
-		private Game(int difficulty, int competition, ICivilization tribe)
+		private Game(int difficulty, int competition, ICivilization tribe, string leaderName, string tribeName)
 		{
 			_difficulty = difficulty;
 			_competition = competition;
@@ -117,7 +117,7 @@ namespace CivOne
 			{
 				if (i == tribe.PreferredPlayerNumber)
 				{
-					_players[i] = new Player(tribe);
+					_players[i] = new Player(tribe, leaderName, tribeName);
 					HumanPlayer = _players[i];
 					Console.WriteLine("- Player {0} is {1} of the {2} (human)", i, _players[i].LeaderName, _players[i].TribeNamePlural);
 					continue;
