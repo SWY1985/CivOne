@@ -73,7 +73,13 @@ namespace CivOne.Screens
 		
 		private void InputLeaderName()
 		{
-			
+			if (Common.HasScreenType(typeof(Input))) return;
+			//TODO: Add input box (position 168x105 - 109x10)
+			ICivilization civ = _tribesAvailable[_tribe];
+			Input input = new Input(_canvas.Image.Palette.Entries, civ.LeaderName, 6, 5, 11, 168, 105, 109, 10, 13);
+			input.Accept += LeaderName_Accept;
+			input.Cancel += LeaderName_Cancel;
+			Common.AddScreen(input);
 		}
 		
 		private void SetDifficulty(object sender, EventArgs args)
@@ -98,6 +104,21 @@ namespace CivOne.Screens
 			_tribe = (sender as Menu.Item).Value;
 			CloseMenus();
 			Console.WriteLine("Tribe: {0}", _menuItemsTribes[_tribe]);
+		}
+		
+		private void LeaderName_Accept(object sender, EventArgs args)
+		{
+			if (sender.GetType() != typeof(Input)) return;
+			_leaderName = ((Input)sender).Text;
+			((Input)sender).Close();
+		}
+		
+		private void LeaderName_Cancel(object sender, EventArgs args)
+		{
+			if (sender.GetType() != typeof(Input)) return;
+			ICivilization civ = _tribesAvailable[_tribe];
+			_leaderName = civ.LeaderName;
+			((Input)sender).Close();
 		}
 		
 		private Bitmap DifficultyPicture
@@ -202,9 +223,6 @@ namespace CivOne.Screens
 					_canvas.DrawText("Your Name...", 6, 5, 166, 90);
 					_canvas.FillRectangle(5, 166, 103, 113, 14);
 					_canvas.FillRectangle(15, 167, 104, 111, 12);
-					
-					//TODO: Add input box (position 168x105 - 109x10)
-					_canvas.DrawText(civ.LeaderName, 6, 5, 168, 106);
 				}
 			}
 			
