@@ -39,6 +39,8 @@ namespace CivOne.Screens
 			}
 		}
 		
+		public event EventHandler Cancel;
+		
 		public readonly List<Item> Items = new List<Item>();
 		public string Title { get; set; }
 		public int FontId { get; set; }
@@ -84,7 +86,7 @@ namespace CivOne.Screens
 					_canvas.DrawText(Title, FontId, TitleColour, X + IndentTitle, Y + 1);
 					offsetY = fontHeight;
 				}				
-				_canvas.FillRectangle(ActiveColour, X, yy + offsetY, Width, fontHeight);
+				if (_activeItem >= 0) _canvas.FillRectangle(ActiveColour, X, yy + offsetY, Width, fontHeight);
 				for (int i = 0; i < Items.Count; i++)
 				{
 					yy = Y + (i * fontHeight) + offsetY;
@@ -110,6 +112,15 @@ namespace CivOne.Screens
 					if (!Items[_activeItem].Enabled) return false;
 					Items[_activeItem].Select();
 					return true;
+				case Keys.Escape:
+					if (Cancel != null)
+					{
+						_activeItem = -1;
+						_change = true;
+						HasUpdate(0);
+						Cancel(this, null);
+					}
+					break;
 			}
 			return false;
 		}
