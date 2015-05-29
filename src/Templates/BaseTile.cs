@@ -86,6 +86,7 @@ namespace CivOne.Templates
 		public virtual bool Road { get; set; }
 		public virtual bool Irrigation { get; set; }
 		public virtual bool Mine { get; set; }
+		public virtual bool Hut { get; set; }
 		
 		public BaseTile(int x, int y, bool special = false)
 		{
