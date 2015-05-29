@@ -26,7 +26,7 @@ namespace CivOne.Screens
 		
 		private readonly Picture _background;
 		private int _difficulty = -1, _competition = -1, _tribe = -1;
-		private string _leaderName = null;
+		private string _leaderName = null, _tribeName = null, _tribeNamePlural = null;
 		private bool _done = false, _showIntroText = false;
 		
 		private Menu AddMenu(string title, EventHandler setChoice, params string[] menuTexts)
@@ -35,7 +35,7 @@ namespace CivOne.Screens
 			{
 				Title = title,
 				X = 163,
-				Y = 40,
+				Y = 39,
 				Width = 114,
 				TitleColour = 3,
 				ActiveColour = 11,
@@ -68,7 +68,9 @@ namespace CivOne.Screens
 		
 		private void MenuTribe()
 		{
-			Common.AddScreen(AddMenu("Pick your tribe...", SetTribe, _menuItemsTribes));
+			Menu menu = AddMenu("Pick your tribe...", SetTribe, _menuItemsTribes);
+			menu.Cancel += SetTribe_Cancel;
+			Common.AddScreen(menu);
 		}
 		
 		private void InputLeaderName()
@@ -78,7 +80,7 @@ namespace CivOne.Screens
 			ICivilization civ = _tribesAvailable[_tribe];
 			Input input = new Input(_canvas.Image.Palette.Entries, civ.LeaderName, 6, 5, 11, 168, 105, 109, 10, 13);
 			input.Accept += LeaderName_Accept;
-			input.Cancel += LeaderName_Cancel;
+			input.Cancel += LeaderName_Accept;
 			Common.AddScreen(input);
 		}
 		
@@ -102,8 +104,27 @@ namespace CivOne.Screens
 		private void SetTribe(object sender, EventArgs args)
 		{
 			_tribe = (sender as Menu.Item).Value;
+			
+			ICivilization civ = _tribesAvailable[_tribe];
+			_tribeName = civ.Name;
+			_tribeNamePlural = civ.NamePlural;
 			CloseMenus();
 			Console.WriteLine("Tribe: {0}", _menuItemsTribes[_tribe]);
+		}
+		
+		private void SetTribe_Cancel(object sender, EventArgs args)
+		{
+			if (sender.GetType() != typeof(Menu)) return;
+			
+			_tribe = Common.Random.Next(_competition);
+			_canvas.AddLayer(((Menu)sender).Canvas.Image);
+			CloseMenus();
+			
+			ICivilization civ = _tribesAvailable[_tribe];
+			Input input = new Input(_canvas.Image.Palette.Entries, civ.NamePlural, 6, 5, 11, 168, 105, 109, 10, 11);
+			input.Accept += TribeName_Accept;
+			input.Cancel += TribeName_Accept;
+			Common.AddScreen(input);
 		}
 		
 		private void LeaderName_Accept(object sender, EventArgs args)
@@ -114,12 +135,12 @@ namespace CivOne.Screens
 			((Input)sender).Close();
 		}
 		
-		private void LeaderName_Cancel(object sender, EventArgs args)
+		private void TribeName_Accept(object sender, EventArgs args)
 		{
 			if (sender.GetType() != typeof(Input)) return;
 			
-			ICivilization civ = _tribesAvailable[_tribe];
-			_leaderName = civ.LeaderName;
+			_tribeNamePlural = ((Input)sender).Text;
+			_tribeName = ((Input)sender).Text;
 			((Input)sender).Close();
 		}
 		
@@ -131,6 +152,15 @@ namespace CivOne.Screens
 				int y = 6 + (35 * _difficulty);
 				return _background.GetPart(x, y, 53, 47);
 			}
+		}
+		
+		private void DrawInputBox(string text)
+		{
+			_canvas.FillRectangle(11, 158, 88, 161, 33);
+			_canvas.FillRectangle(15, 159, 89, 159, 31);
+			_canvas.DrawText(text, 6, 5, 166, 90);
+			_canvas.FillRectangle(5, 166, 103, 113, 14);
+			_canvas.FillRectangle(15, 167, 104, 111, 12);
 		}
 		
 		public override bool HasUpdate(uint gameTick)
@@ -146,7 +176,7 @@ namespace CivOne.Screens
 				if (_showIntroText) return false;
 				
 				ICivilization civ = _tribesAvailable[_tribe];
-				Game.CreateGame(_difficulty, _competition, civ, _leaderName);
+				Game.CreateGame(_difficulty, _competition, civ, _leaderName, _tribeName, _tribeNamePlural);
 				
 				Bitmap[] borders = new Bitmap[8];
 				int index = 0;
@@ -181,7 +211,7 @@ namespace CivOne.Screens
 				int yy = 81;
 				foreach (string textLine in TextFile.Instance.GetGameText("INIT"))
 				{
-					string line = textLine.Replace("$RPLC1", Game.Instance.HumanPlayer.LeaderName).Replace("$US", civ.NamePlural).Replace("^", "");
+					string line = textLine.Replace("$RPLC1", Game.Instance.HumanPlayer.LeaderName).Replace("$US", Game.Instance.HumanPlayer.TribeNamePlural).Replace("^", "");
 					_canvas.DrawText(line, 0, 5, 88, yy);
 					yy += 8;
 					Console.WriteLine(line);
@@ -196,6 +226,12 @@ namespace CivOne.Screens
 			{
 				Destroy();
 				Common.AddScreen(new GamePlay());
+				return true;
+			}
+			
+			if (_tribe != -1 && _tribeName == null)
+			{
+				DrawInputBox("Name of your Tribe...");
 				return true;
 			}
 			
@@ -217,14 +253,8 @@ namespace CivOne.Screens
 				
 				if (_tribe != -1 && _leaderName == null)
 				{
-					ICivilization civ = _tribesAvailable[_tribe];
-					
-					_canvas.DrawText(civ.NamePlural, 6, 15, 47, 92, TextAlign.Center);
-					_canvas.FillRectangle(11, 158, 88, 161, 33);
-					_canvas.FillRectangle(15, 159, 89, 159, 31);
-					_canvas.DrawText("Your Name...", 6, 5, 166, 90);
-					_canvas.FillRectangle(5, 166, 103, 113, 14);
-					_canvas.FillRectangle(15, 167, 104, 111, 12);
+					_canvas.DrawText(_tribeNamePlural, 6, 15, 47, 92, TextAlign.Center);
+					DrawInputBox("Your Name...");
 				}
 			}
 			
