@@ -430,7 +430,14 @@ namespace CivOne
 		
 		private void PlaceHuts()
 		{
-			Console.WriteLine("Map: Placing goody huts (not yet implemented)");
+			Console.WriteLine("Map: Placing goody huts");
+			
+			for (int y = 0; y < HEIGHT; y++)
+			for (int x = 0; x < WIDTH; x++)
+			{
+				if (_tiles[x, y].Type == Terrain.Ocean) continue;
+				_tiles[x, y].Hut = TileHasHut(x, y);
+			}
 		}
 		
 		private void SaveBitmap()
@@ -494,17 +501,6 @@ namespace CivOne
 				}
 				_tiles[x, y] = tile;
 			}
-			
-			// Load improvement layer
-			for (int x = 0; x < WIDTH; x++)
-			for (int y = 0; y < HEIGHT; y++)
-			{
-				byte b = bitmap[x, y + (HEIGHT * 2)];
-				// 0x01 = CITY ?
-				_tiles[x, y].Irrigation = (b & 0x02) > 0;
-				_tiles[x, y].Mine = (b & 0x04) > 0;
-				_tiles[x, y].Road = (b & 0x08) > 0;
-			}
 		}
 		
 		public void LoadMap(string filename, int randomSeed)
@@ -516,6 +512,27 @@ namespace CivOne
 			_tiles = new ITile[WIDTH, HEIGHT];
 			
 			LoadMap(bitmap);
+			PlaceHuts();
+			
+			// Load improvement layer
+			for (int x = 0; x < WIDTH; x++)
+			for (int y = 0; y < HEIGHT; y++)
+			{
+				byte b = bitmap[x, y + (HEIGHT * 2)];
+				// 0x01 = CITY ?
+				_tiles[x, y].Irrigation = (b & 0x02) > 0;
+				_tiles[x, y].Mine = (b & 0x04) > 0;
+				_tiles[x, y].Road = (b & 0x08) > 0;
+			}
+			
+			// Remove huts
+			for (int x = 0; x < WIDTH; x++)
+			for (int y = 0; y < HEIGHT; y++)
+			{
+				if (!_tiles[x, y].Hut) continue;
+				byte b = bitmap[x + (WIDTH * 2), y];
+				_tiles[x, y].Hut = (b == 0);
+			}
 			
 			Ready = true;
 			Console.WriteLine("Map: Ready");
