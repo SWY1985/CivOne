@@ -173,7 +173,7 @@ namespace CivOne.GFX
 				return _instance;
 			}
 		}
-
+		
 		private Resources()
 		{
 			LoadFonts();
