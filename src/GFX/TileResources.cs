@@ -176,6 +176,15 @@ namespace CivOne.GFX
 			output.FillRectangle(6, 7, 7, 2, 2);
 		}
 		
+		private static void DrawHut(ref Picture output, ITile tile, bool graphics16 = false)
+		{
+			if (!tile.Hut) return;
+			
+			Bitmap resource = Res.GetPart(graphics16 ? "SPRITES" : "SP257", 240, 112, 16, 16);
+			Picture.ReplaceColours(resource, 3, 0);
+			output.AddLayer(resource, 0, 0);
+		}
+		
 		internal static Bitmap GetTile16(ITile tile)
 		{
 			Picture output = new Picture(16, 16);
@@ -220,6 +229,7 @@ namespace CivOne.GFX
 				DrawMine(ref output, tile, true);
 			}
 			DrawRoad(ref output, tile, true);
+			DrawHut(ref output, tile, true);
 			
 			return output.Image;
 		}
@@ -284,6 +294,7 @@ namespace CivOne.GFX
 				DrawMine(ref output, tile);
 			}
 			DrawRoad(ref output, tile);
+			DrawHut(ref output, tile);
 			
 			return output.Image;
 		}
