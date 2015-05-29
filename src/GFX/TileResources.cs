@@ -144,6 +144,38 @@ namespace CivOne.GFX
 			if (south && east && (tile.GetBorderType(Direction.SouthEast) != Terrain.Ocean)) output.AddLayer(Res.GetPart("TER257", 40, 184, 8, 8), 8, 8);
 		}
 		
+		private static void DrawIrrigation(ref Picture output, ITile tile, bool graphics16 = false)
+		{
+			if (!tile.Irrigation) return;
+			
+			output.AddLayer(Res.GetPart(graphics16 ? "SPRITES" : "SP257", 64, 32, 16, 16), 0, 0);
+		}
+		
+		private static void DrawMine(ref Picture output, ITile tile, bool graphics16 = false)
+		{
+			if (!tile.Mine) return;
+			
+			output.AddLayer(Res.GetPart(graphics16 ? "SPRITES" : "SP257", 80, 32, 16, 16), 0, 0);
+		}
+		
+		private static void DrawRoad(ref Picture output, ITile tile, bool graphics16 = false)
+		{
+			if (!tile.Road) return;
+						
+			bool connected = false;
+			ITile borderTile = null;
+			Direction[] directions = new [] { Direction.North, Direction.NorthEast, Direction.East, Direction.SouthEast, Direction.South, Direction.SouthWest, Direction.West, Direction.NorthWest };
+			for (int i = 0; i < directions.Length; i++)
+			{
+				if ((borderTile = tile.GetBorderTile(directions[i])) == null) continue;
+				if (!borderTile.Road) continue;
+				output.AddLayer(Res.GetPart(graphics16 ? "SPRITES" : "SP257", (i * 16), 48, 16, 16), 0, 0);
+				connected = true;
+			}
+			if (connected) return;
+			output.FillRectangle(6, 7, 7, 2, 2);
+		}
+		
 		internal static Bitmap GetTile16(ITile tile)
 		{
 			Picture output = new Picture(16, 16);
@@ -181,6 +213,14 @@ namespace CivOne.GFX
 				output.AddLayer(resource);
 			}
 			
+			// Add tile improvements
+			if (tile.Type != Terrain.River)
+			{
+				DrawIrrigation(ref output, tile, true);
+				DrawMine(ref output, tile, true);
+			}
+			DrawRoad(ref output, tile, true);
+			
 			return output.Image;
 		}
 		
@@ -211,6 +251,8 @@ namespace CivOne.GFX
 					if (tile.GetBorderType(Direction.West) == Terrain.River) output.AddLayer(Res.GetPart("TER257", 176, 176, 16, 16));
 					break;
 				case Terrain.River:
+					DrawIrrigation(ref output, tile);
+					DrawMine(ref output, tile);
 					output.AddLayer(Res.GetPart("SP257", tile.Borders * 16, 80, 16, 16));
 					break;
 				default:
@@ -234,6 +276,14 @@ namespace CivOne.GFX
 				Picture.ReplaceColours(resource, 3, 0);
 				output.AddLayer(resource, 4, 4);
 			}
+			
+			// Add tile improvements
+			if (tile.Type != Terrain.River)
+			{
+				DrawIrrigation(ref output, tile);
+				DrawMine(ref output, tile);
+			}
+			DrawRoad(ref output, tile);
 			
 			return output.Image;
 		}
