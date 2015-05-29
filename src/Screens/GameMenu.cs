@@ -146,19 +146,6 @@ namespace CivOne.Screens
 			int index = MouseOverItem(args);
 			if (index < 0 || index == _activeItem) return false;
 			
-			//ReplaceColoursClip(Bitmap image, byte colourFrom, byte colourTo, int top, int right, int bottom, int left)
-			/*if (_activeItem > 0)
-			{
-				int yy = 4 + (Resources.Instance.GetFontHeight(0) * _activeItem);
-				//Picture.ReplaceColoursClip(_canvas.Image, 8, 11, 3, yy, 3 + (MaxItemWidth + 8), yy + Resources.Instance.GetFontHeight(0));
-				_canvas.ColourReplace(8, 3, 11, yy, 8, 8);
-			}
-			if (index > 0)
-			{
-				int yy = 4 + (Resources.Instance.GetFontHeight(0) * index);
-				//Picture.ReplaceColoursClip(_canvas.Image, 11, 3, 3, yy, 3 + (MaxItemWidth + 8), yy + Resources.Instance.GetFontHeight(0));
-				_canvas.ColourReplace(8, 11, 3, yy, 8, 8);
-			}*/
 			_activeItem = index;
 			
 			_update = true;
