@@ -162,7 +162,7 @@ namespace CivOne.Screens
 				return false;
 			}
 			
-			_canvas.AddLayer(_pictures[_introPicture].Image);
+			AddLayer(_pictures[_introPicture]);
 			
 			if (_fadeStep < 1.0F) return true;
 			

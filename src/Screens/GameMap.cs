@@ -72,7 +72,7 @@ namespace CivOne.Screens
 				_canvas = new Picture(240, 192, _palette);
 				foreach (RenderTile t in RenderTiles)
 				{
-					_canvas.AddLayer(t.Image, t.Position);
+					AddLayer(t.Image, t.Position);
 				}
 				
 				_update = false;

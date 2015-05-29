@@ -121,7 +121,7 @@ namespace CivOne.Screens
 		{
 			if (layer == null) return;
 			if (!layer.HasUpdate(gameTick) && !_redraw) return;
-			_canvas.AddLayer(layer.Canvas.Image, x, y);
+			AddLayer(layer, x, y);
 		}
 		
 		public override bool HasUpdate(uint gameTick)

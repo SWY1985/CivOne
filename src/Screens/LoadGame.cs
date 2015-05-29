@@ -136,7 +136,7 @@ namespace CivOne.Screens
 				{
 					_canvas = new Picture(320, 200, _palette);
 					_canvas.FillRectangle(15, 0, 0, 320, 200);
-					_canvas.AddLayer(_menu.Canvas.Image);
+					AddLayer(_menu);
 					return true;
 				}
 				return Cancel;

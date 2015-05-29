@@ -23,6 +23,31 @@ namespace CivOne.Templates
 		protected readonly List<Screens.Menu> Menus = new List<Screens.Menu>();
 		protected Picture _canvas = new Picture(320, 200);
 		
+		protected void AddLayer(IScreen screen, Point point)
+		{
+			AddLayer(screen, point.X, point.Y);
+		}
+		protected void AddLayer(IScreen screen, int x = 0, int y = 0)
+		{
+			_canvas.AddLayer(screen.Canvas.Image, x, y);
+		}
+		protected void AddLayer(Picture picture, Point point)
+		{
+			AddLayer(picture, point.X, point.Y);
+		}
+		protected void AddLayer(Picture picture, int x = 0, int y = 0)
+		{
+			_canvas.AddLayer(picture.Image, x, y);
+		}
+		protected void AddLayer(Bitmap bitmap, Point point)
+		{
+			AddLayer(bitmap, point.X, point.Y);
+		}
+		protected void AddLayer(Bitmap bitmap, int x = 0, int y = 0)
+		{
+			_canvas.AddLayer(bitmap, x, y);
+		}
+		
 		protected void MouseArgsOffset(ref MouseEventArgs args, int offsetX, int offsetY)
 		{
 			args = new MouseEventArgs(args.Button, args.Clicks, args.X - offsetX, args.Y - offsetY, args.Delta);
