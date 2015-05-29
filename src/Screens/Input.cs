@@ -39,8 +39,6 @@ namespace CivOne.Screens
 		
 		public override bool HasUpdate(uint gameTick)
 		{
-			if (!_update) return false;
-			
 			_canvas.FillRectangle(0, 0, 0, 320, 200);
 			int fontHeight = Resources.Instance.GetFontHeight(_fontId);
 			int cursorPosition = _cursorPosition;
@@ -49,17 +47,20 @@ namespace CivOne.Screens
 			int xx = _x;
 			int yy = _y + (int)Math.Ceiling((float)(_height - fontHeight) / 2);
 			
-			for (int i = 0; i <= _text.Length; i++)
+			if (gameTick % 4 < 2)
 			{
-				int letterWidth = (_text.Length <= i) ? 7 : Resources.Instance.GetLetterSize(_fontId, _text[i]).Width;
-				
-				if (i == cursorPosition)
+				for (int i = 0; i <= _text.Length; i++)
 				{
-					_canvas.FillRectangle(_cursorColour, xx, _y, letterWidth + 1, _height);
-					break;
+					int letterWidth = (_text.Length <= i) ? 7 : Resources.Instance.GetLetterSize(_fontId, _text[i]).Width;
+					
+					if (i == cursorPosition)
+					{
+						_canvas.FillRectangle(_cursorColour, xx, _y, letterWidth + 1, _height);
+						break;
+					}
+					
+					xx += letterWidth + 1;
 				}
-				
-				xx += letterWidth + 1;
 			}
 			if (_text.Length > 0)
 				_canvas.DrawText(_text, _fontId, _textColour, _x, yy);
