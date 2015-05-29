@@ -21,6 +21,8 @@ namespace CivOne.Screens
 {
 	internal class Credits : BaseScreen
 	{
+		private const int NOISE_COUNT = 20;
+		
 		private readonly int[] SHOW_INTRO_LINE = new[] { 312, 279, 254, 221, 196, 171, 146, 121, 96, 71, 46, 21, -4, -37, -62, -95, -120, -145, -170, -195, -220, -245, -270, -295 };
 		private readonly int[] HIDE_INTRO_LINE = new[] { 287, 229, -29, -87, -315 };
 		
@@ -33,7 +35,7 @@ namespace CivOne.Screens
 		private int _introLeft = 320;
 		private int _logoSwipe = 0;
 		private int _cycleCounter = 0;
-		private int _noiseCounter = 33;
+		private int _noiseCounter = NOISE_COUNT;
 		
 		private bool _done = false;
 		private bool _showIntroLine = false;
@@ -150,6 +152,7 @@ namespace CivOne.Screens
 				}
 				
 				// Draw menu background
+				_canvas.FillRectangle(5, 100, 140, 122, 49);
 				_canvas.FillRectangle(_menuColours[0], 101, 141, 120, 47);
 				_canvas.FillRectangle(_menuColours[1], 101, 142, 119, 46);
 				_canvas.FillRectangle(_menuColours[2], 102, 142, 118, 45);
@@ -159,7 +162,7 @@ namespace CivOne.Screens
 		
 		public bool SkipIntro()
 		{
-			if (_introSkipped || _noiseCounter < 33) return false;
+			if (_introSkipped || _noiseCounter < NOISE_COUNT) return false;
 			
 			_showIntroLine = false;
 			_introLeft = -320;
