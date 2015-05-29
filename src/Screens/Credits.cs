@@ -102,13 +102,13 @@ namespace CivOne.Screens
 			_canvas.FillRectangle(0, 0, 0, 320, 200);
 			if (_introLeft < 320 && _introLeft > 0)
 			{
-				_canvas.AddLayer(_pictures[0].GetPart(0, 0, 320 - _introLeft, 200), _introLeft);
+				AddLayer(_pictures[0].GetPart(0, 0, 320 - _introLeft, 200), _introLeft);
 			}
 			if (_introLeft > -320 && _introLeft <= 0)
 			{
-				_canvas.AddLayer(_pictures[0].GetPart(-_introLeft, 0, 320 + _introLeft, 200), 0);
+				AddLayer(_pictures[0].GetPart(-_introLeft, 0, 320 + _introLeft, 200), 0);
 				if (_introLeft < 0)
-					_canvas.AddLayer(_pictures[1].GetPart(0, 0, -_introLeft, 200), _introLeft + 320);
+					AddLayer(_pictures[1].GetPart(0, 0, -_introLeft, 200), _introLeft + 320);
 			}
 			if (_introLeft > -320 && _showIntroLine)
 			{
@@ -118,29 +118,29 @@ namespace CivOne.Screens
 			}
 			if (_introLeft == -320 && _noiseCounter > 0)
             {
-                if (!_introSkipped) _canvas.AddLayer(_pictures[1].Image);
+                if (!_introSkipped) AddLayer(_pictures[1]);
 				if (_logoSwipe < 320)
 				{
 					if (_logoSwipe > 0)
 					{
-						_canvas.AddLayer(_pictures[2].GetPart(0, 0, _logoSwipe, 200));
+						AddLayer(_pictures[2].GetPart(0, 0, _logoSwipe, 200));
 					}
 				}
 				else
 				{
-					_canvas.AddLayer(_pictures[2].Image);	
+					AddLayer(_pictures[2].Image);	
 				}
-				if (_introSkipped) _canvas.AddLayer(_pictures[1].Image);
+				if (_introSkipped) AddLayer(_pictures[1]);
 			}
 			else if (_noiseCounter == 0)
 			{
-				_canvas.AddLayer(_pictures[2].Image);
+				AddLayer(_pictures[2]);
 				_canvas.ResetPalette();
 				_done = true;
 				
 				if (_overlay != null)
 				{
-					_canvas.AddLayer(_overlay.Canvas.Image);
+					AddLayer(_overlay);
 					if (_overlay.GetType() == typeof(LoadGame) && ((LoadGame)_overlay).Cancel)
 					{
 						if (Menus.Count == 0)

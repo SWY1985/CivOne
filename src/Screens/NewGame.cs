@@ -117,7 +117,7 @@ namespace CivOne.Screens
 			if (sender.GetType() != typeof(Menu)) return;
 			
 			_tribe = Common.Random.Next(_competition);
-			_canvas.AddLayer(((Menu)sender).Canvas.Image);
+			AddLayer((Menu)sender);
 			CloseMenus();
 			
 			ICivilization civ = _tribesAvailable[_tribe];
@@ -193,20 +193,20 @@ namespace CivOne.Screens
 				_canvas.FillRectangle(15, 0, 0, 320, 200);
 				for (int x = 8; x < 312; x += 8)
 				{
-					_canvas.AddLayer(borders[4], x, 0);
-					_canvas.AddLayer(borders[6], x, 192);
+					AddLayer(borders[4], x, 0);
+					AddLayer(borders[6], x, 192);
 				}
 				for (int y = 8; y < 192; y += 8)
 				{
-					_canvas.AddLayer(borders[5], 0, y);
-					_canvas.AddLayer(borders[7], 312, y);
+					AddLayer(borders[5], 0, y);
+					AddLayer(borders[7], 312, y);
 				}
-				_canvas.AddLayer(borders[0], 0, 0);
-				_canvas.AddLayer(borders[1], 312, 0);
-				_canvas.AddLayer(borders[2], 0, 192);
-				_canvas.AddLayer(borders[3], 312, 192);
+				AddLayer(borders[0], 0, 0);
+				AddLayer(borders[1], 312, 0);
+				AddLayer(borders[2], 0, 192);
+				AddLayer(borders[3], 312, 192);
 				
-				_canvas.AddLayer(DifficultyPicture, 134, 20);
+				AddLayer(DifficultyPicture, 134, 20);
 				
 				int yy = 81;
 				foreach (string textLine in TextFile.Instance.GetGameText("INIT"))
@@ -239,16 +239,16 @@ namespace CivOne.Screens
 			_canvas = new Picture(320, 200, _background.Image.Palette.Entries);
 			if (_difficulty == -1)
 			{
-				_canvas.AddLayer(_background.Image);
+				AddLayer(_background);
 			}
 			else
 			{
 				if (_tribe == -1)
-					_canvas.AddLayer(_background.GetPart(140, 0, 180, 200), 140);
+					AddLayer(_background.GetPart(140, 0, 180, 200), 140);
 				int pictureStack = (_competition <= 0) ? 0 : _competition;
 				for (int i = pictureStack; i >= 0; i--)
 				{
-					_canvas.AddLayer(DifficultyPicture, 22 + (i * 2), 100 + (i * 3));
+					AddLayer(DifficultyPicture, 22 + (i * 2), 100 + (i * 3));
 				}
 				
 				if (_tribe != -1 && _leaderName == null)
@@ -292,7 +292,7 @@ namespace CivOne.Screens
 			_background = Resources.Instance.LoadPIC("DIFFS");
 			
 			_canvas = new Picture(320, 200, _background.Image.Palette.Entries);
-			_canvas.AddLayer(_background.Image);
+			AddLayer(_background);
 			
 			_menuItemsDifficulty = new[] { "Chieftain (easiest)", "Warlock", "Prince", "King", "Emperor (toughest)" };
 			_menuItemsCompetition = Enumerable.Range(3, 5).Reverse().Select(i => string.Format("{0} Civilizations", i)).ToArray();

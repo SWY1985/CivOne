@@ -57,9 +57,9 @@ namespace CivOne.Screens
 			_gameInfo.DrawText("(Plains)", 0, 5, 4, 34, TextAlign.Left);
 			
 			_canvas = new Picture(80, 192, palette);
-			_canvas.AddLayer(_miniMap.Image, 0, 0);
-			_canvas.AddLayer(_demographics.Image, 0, 50);
-			_canvas.AddLayer(_gameInfo.Image, 0, 89);
+			AddLayer(_miniMap, 0, 0);
+			AddLayer(_demographics, 0, 50);
+			AddLayer(_gameInfo, 0, 89);
 		}
 	}
 }
