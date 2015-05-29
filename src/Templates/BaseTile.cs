@@ -20,21 +20,26 @@ namespace CivOne.Templates
 		public int Y { get; private set; }
 		public bool Special { get; private set; }
 		
-		public Terrain GetBorderType(Direction direction)
+		public ITile GetBorderTile(Direction direction)
 		{
 			Map map = Map.Instance;
-			ITile tile = null;
 			switch (direction)
 			{
-				case Direction.North: tile = map.GetTile(X, Y - 1); break;
-				case Direction.East: tile = map.GetTile(X + 1, Y); break;
-				case Direction.South: tile = map.GetTile(X, Y + 1); break;
-				case Direction.West: tile = map.GetTile(X - 1, Y); break;
-				case Direction.NorthWest: tile = map.GetTile(X - 1, Y - 1); break;
-				case Direction.NorthEast: tile = map.GetTile(X + 1, Y - 1); break;
-				case Direction.SouthWest: tile = map.GetTile(X - 1, Y + 1); break;
-				case Direction.SouthEast: tile = map.GetTile(X + 1, Y + 1); break;
+				case Direction.North: return map.GetTile(X, Y - 1);
+				case Direction.East: return map.GetTile(X + 1, Y);
+				case Direction.South: return map.GetTile(X, Y + 1);
+				case Direction.West: return map.GetTile(X - 1, Y);
+				case Direction.NorthWest: return map.GetTile(X - 1, Y - 1);
+				case Direction.NorthEast: return map.GetTile(X + 1, Y - 1);
+				case Direction.SouthWest: return map.GetTile(X - 1, Y + 1);
+				case Direction.SouthEast: return map.GetTile(X + 1, Y + 1);
 			}
+			return null;
+		}
+		
+		public Terrain GetBorderType(Direction direction)
+		{
+			ITile tile = GetBorderTile(direction);
 			if (tile == null) return Terrain.None;
 			if (tile.Type == Terrain.Grassland2) return Terrain.Grassland1;
 			return tile.Type;
@@ -77,6 +82,10 @@ namespace CivOne.Templates
 				return output;
 			}
 		}
+		
+		public virtual bool Road { get; set; }
+		public virtual bool Irrigation { get; set; }
+		public virtual bool Mine { get; set; }
 		
 		public BaseTile(int x, int y, bool special = false)
 		{
