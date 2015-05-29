@@ -65,7 +65,7 @@ namespace CivOne
 				string[] leaderNames = Common.BinaryReadStrings(br, 16, 112, 14);
 				string[] tribeNamesPlural = Common.BinaryReadStrings(br, 128, 96, 12);
 				string[] tribeNames = Common.BinaryReadStrings(br, 224, 88, 11);
-				ushort competition = Common.BinaryReadUShort(br, 37820);
+				ushort competition = (ushort)(Common.BinaryReadUShort(br, 37820) + 1);
 				ushort civIdentity = Common.BinaryReadUShort(br, 37854);
 				
 				Map.Instance.LoadMap(mapFile, randomSeed);
