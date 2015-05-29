@@ -36,6 +36,22 @@ namespace CivOne.GFX
 			}
 		}
 		
+		public byte FirstChar
+		{
+			get
+			{
+				return _fontAsciiFirst;
+			}
+		}
+		
+		public byte LastChar
+		{
+			get
+			{
+				return _fontAsciiLast;
+			}
+		}
+		
 		public Bitmap GetLetter(char character, byte colour)
 		{
 			if (!_charWidths.ContainsKey(character) || !_characters.ContainsKey(character)) return new Bitmap(8, 8);
