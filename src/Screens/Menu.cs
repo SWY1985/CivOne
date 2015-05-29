@@ -89,7 +89,7 @@ namespace CivOne.Screens
 				{
 					yy = Y + (i * fontHeight) + offsetY;
 					_canvas.DrawText(Items[i].Text, FontId, (byte)(Items[i].Enabled ? TextColour : DisabledColour), X + 8, yy + 1);
-				}				
+				}
 				_change = false;
 				return true;
 			}

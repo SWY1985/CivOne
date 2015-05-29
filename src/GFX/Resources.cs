@@ -54,7 +54,13 @@ namespace CivOne.GFX
 				_fonts.Add(new Fontset(file, offset, LoadPIC("SP257").Image.Palette.Entries));
 			}
 		}
-
+		
+		public bool ValidCharacter(int fontId, char c)
+		{
+			byte asciiChar = (byte)c;
+			return (asciiChar >= _fonts[fontId].FirstChar && asciiChar <= _fonts[fontId].LastChar);
+		}
+		
 		public Size GetTextSize(int font, string text)
 		{
 			int width = 0, height = 0;
@@ -103,7 +109,7 @@ namespace CivOne.GFX
 			return output;
 		}
 
-		private Size GetLetterSize(int font, char letter)
+		internal Size GetLetterSize(int font, char letter)
 		{
 			return GetLetter(5, font, letter).Size;
 		}
