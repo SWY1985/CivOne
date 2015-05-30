@@ -95,6 +95,8 @@ namespace CivOne.Screens
 			_gameMenu.Items.Add(new GameMenu.Item("Demographics"));
 			_gameMenu.Items.Add(new GameMenu.Item("SpaceShips") { Enabled = false });
 			
+			_gameMenu.Items[3].Selected += (s, a) => Common.AddScreen(new WorldMap());
+			
 			_menuX = 144;
 			_menuY = 8;
 			
@@ -139,6 +141,17 @@ namespace CivOne.Screens
 			return true;
 		}
 		
+		public override bool KeyDown(KeyEventArgs args)
+		{
+			switch (args.KeyCode)
+			{
+				case Keys.F10:
+					Common.AddScreen(new WorldMap());
+					return true;
+			}
+			return false;
+		}
+		
 		public override bool MouseDown(MouseEventArgs args)
 		{
 			if (args.Y < 8)
@@ -177,6 +190,7 @@ namespace CivOne.Screens
 		{
 			if (_gameMenu == null) return false;
 			
+			_gameMenu.MouseUp(args);
 			_gameMenu = null;
 			_redraw = true;
 			return true;
