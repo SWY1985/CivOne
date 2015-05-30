@@ -145,10 +145,18 @@ namespace CivOne.Screens
 		{
 			int index = MouseOverItem(args);
 			if (index < 0 || index == _activeItem) return false;
-			
+						
 			_activeItem = index;
 			
 			_update = true;
+			return true;
+		}
+		
+		public override bool MouseUp(MouseEventArgs args)
+		{			
+			if (_activeItem < 0) return false;
+			Items[_activeItem].Select();
+			
 			return true;
 		}
 		
