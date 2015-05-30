@@ -131,6 +131,42 @@ namespace CivOne.GFX
 			}
 		}
 		
+		private static bool DrawOceanCorners(ref Picture output, ITile tile)
+		{
+			int borders = 0;
+			if (tile.GetBorderType(Direction.North) != Terrain.Ocean) borders += 1;
+			if (tile.GetBorderType(Direction.East) != Terrain.Ocean) borders += 2;
+			if (tile.GetBorderType(Direction.South) != Terrain.Ocean) borders += 4;
+			if (tile.GetBorderType(Direction.West) != Terrain.Ocean) borders += 8;
+			
+			if (borders == 12) // South East
+			{
+				if (tile.GetBorderType(Direction.NorthEast) != Terrain.Ocean) return false;
+				if (tile.GetBorderType(Direction.SouthWest) != Terrain.Ocean) return false;
+				output.AddLayer(Res.GetPart("SP299", 224, 100, 16, 16), 0, 0);
+			}
+			if (borders == 9) // North West
+			{
+				if (tile.GetBorderType(Direction.NorthEast) != Terrain.Ocean) return false;
+				if (tile.GetBorderType(Direction.SouthWest) != Terrain.Ocean) return false;
+				output.AddLayer(Res.GetPart("SP299", 240, 100, 16, 16), 0, 0);
+			}
+			else if (borders == 3) // North East
+			{
+				if (tile.GetBorderType(Direction.NorthWest) != Terrain.Ocean) return false;
+				if (tile.GetBorderType(Direction.SouthEast) != Terrain.Ocean) return false;
+				output.AddLayer(Res.GetPart("SP299", 256, 100, 16, 16), 0, 0);
+			}
+			else if (borders == 12) // South West
+			{
+				if (tile.GetBorderType(Direction.NorthWest) != Terrain.Ocean) return false;
+				if (tile.GetBorderType(Direction.SouthEast) != Terrain.Ocean) return false;
+				output.AddLayer(Res.GetPart("SP299", 272, 100, 16, 16), 0, 0);
+			}
+			else return false;
+			return true;
+		}
+		
 		private static void DrawDiagonalCoast(ref Picture output, ITile tile)
 		{
 			bool north = (tile.GetBorderType(Direction.North) == Terrain.Ocean);
@@ -249,11 +285,14 @@ namespace CivOne.GFX
 			switch (tile.Type)
 			{
 				case Terrain.Ocean:
-					DrawOceanBorderNorth(ref output, tile);
-					DrawOceanBorderEast(ref output, tile);
-					DrawOceanBorderSouth(ref output, tile);
-					DrawOceanBorderWest(ref output, tile);
-					DrawDiagonalCoast(ref output, tile);
+					if (!DrawOceanCorners(ref output, tile))
+					{
+						DrawOceanBorderNorth(ref output, tile);
+						DrawOceanBorderEast(ref output, tile);
+						DrawOceanBorderSouth(ref output, tile);
+						DrawOceanBorderWest(ref output, tile);
+						DrawDiagonalCoast(ref output, tile);
+					}
 					
 					if (tile.GetBorderType(Direction.North) == Terrain.River) output.AddLayer(Res.GetPart("TER257", 128, 176, 16, 16));
 					if (tile.GetBorderType(Direction.East) == Terrain.River) output.AddLayer(Res.GetPart("TER257", 144, 176, 16, 16));

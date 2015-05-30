@@ -126,7 +126,8 @@ namespace CivOne.Screens
 		
 		public override bool HasUpdate(uint gameTick)
 		{
-			if (!_update && !_redraw) return false;
+			if (gameTick % 3 == 0) _canvas.Cycle(96, 103).Cycle(104, 111);//_canvas.Cycle(96, 111);
+			if (!_update && !_redraw) return (gameTick % 3 == 0);
 			
 			DrawLayer(_menuBar, gameTick, 0, 0);
 			DrawLayer(_sideBar, gameTick, _rightSideBar ? 240 : 0, 8);
