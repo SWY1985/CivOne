@@ -40,10 +40,8 @@ namespace CivOne.Screens
 		
 		public WorldMap()
 		{
-			Picture sprites = Resources.Instance.LoadPIC("SP299");
-			_canvas = new Picture(320, 200, sprites.Image.Palette.Entries);
+			_canvas = new Picture(320, 200, Resources.WorldMapTiles.Image.Palette.Entries);
 			
-			// 160x111
 			for (int x = 0; x < Map.WIDTH; x++)
 			for (int y = 0; y < Map.HEIGHT; y++)
 			{
@@ -51,10 +49,10 @@ namespace CivOne.Screens
 				Terrain type = tile.Type;
 				if (type == Terrain.Grassland2) type = Terrain.Grassland1;
 				bool altTile = ((x + y) % 2 == 1);
-				int xx = 160 + (((int)type) * 4);
-				int yy = altTile ? 115 : 111;
+				int xx = (((int)type) * 4);
+				int yy = altTile ? 4 : 0;
 				
-				AddLayer(sprites.GetPart(xx, yy, 4, 4), x * 4, y * 4);
+				AddLayer(Resources.WorldMapTiles.GetPart(xx, yy, 4, 4), x * 4, y * 4);
 			}
 		}
 	}
