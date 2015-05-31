@@ -158,6 +158,21 @@ namespace CivOne.GFX
 			return output;
 		}
 		
+		private static Picture _worldMapTiles;
+		public static Picture WorldMapTiles
+		{
+			get
+			{
+				if (_worldMapTiles == null)
+				{
+					Picture sp299 = Resources.Instance.LoadPIC("SP299");
+					_worldMapTiles = new Picture(48, 8, sp299.Image.Palette.Entries);
+					_worldMapTiles.AddLayer(sp299.GetPart(160, 111, 48, 8));
+				}
+				return _worldMapTiles;
+			}
+		}
+		
 		public Bitmap GetTile(ITile tile)
 		{
 			if (Settings.Instance.GraphicsMode == GraphicsMode.Graphics16)
