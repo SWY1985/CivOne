@@ -8,12 +8,14 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using CivOne.Enums;
+using CivOne.GFX;
 using CivOne.Interfaces;
 
 namespace CivOne.Templates
 {
 	internal abstract class BaseTile : ITile
 	{
+		public Picture Icon { get; protected set; }
 		public Terrain Type { get; protected set; }
 		public string Name { get; protected set; }
 		public int X { get; private set; }

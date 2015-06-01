@@ -471,6 +471,11 @@ namespace CivOne.GFX
 			}
 		}
 		
+		public Picture(Bitmap bitmap) : this(bitmap.Width, bitmap.Height, bitmap.Palette.Entries)
+		{
+			AddLayer(bitmap);
+		}
+		
 		public Picture(int width, int height) : this(width, height, EmptyPalette)
 		{
 		}
