@@ -85,7 +85,7 @@ namespace CivOne
 					byte y = Common.BinaryReadByte(br, i + 5);
 					byte actualSize = Common.BinaryReadByte(br, i + 7);
 					byte owner = Common.BinaryReadByte(br, i + 11);
-					byte nameId = Common.BinaryReadByte(br, i + 16);
+					byte nameId = Common.BinaryReadByte(br, i + 22);
 					string name = cityNames[nameId];
 					
 					if (x == 0 && y == 0 && actualSize == 0 && owner == 0 && nameId == 0) continue;
