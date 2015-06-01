@@ -183,6 +183,7 @@ namespace CivOne.GFX
 		private static void DrawIrrigation(ref Picture output, ITile tile, bool graphics16 = false)
 		{
 			if (!tile.Irrigation) return;
+			if (Game.Instance != null && Game.Instance.GetCity(tile.X, tile.Y) == null)
 			
 			output.AddLayer(Res.GetPart(graphics16 ? "SPRITES" : "SP257", 64, 32, 16, 16), 0, 0);
 		}

@@ -37,18 +37,18 @@ namespace CivOne.GFX
 				file = new byte[fs.Length];
 				for (int i = 0; i < fs.Length; i++) file[i] = (byte)fs.ReadByte();
 			}
-
+			
 			List<ushort> fontOffsets = new List<ushort>();
 			int index = 0;
 			uint fontCount = BitConverter.ToUInt16(file, index);
 			index += 2;
-
+			
 			for (int i = 0; i < fontCount; i++)
 			{
 				fontOffsets.Add(BitConverter.ToUInt16(file, index));
 				index += 2;
 			}
-
+			
 			foreach (ushort offset in fontOffsets)
 			{
 				_fonts.Add(new Fontset(file, offset, LoadPIC("SP257").Image.Palette.Entries));
@@ -72,12 +72,12 @@ namespace CivOne.GFX
 			}
 			return new Size(width, height);
 		}
-
+		
 		public Bitmap GetText(string text, int font, byte colour)
 		{
 			return GetText(text, font, colour, colour);
 		}
-
+		
 		public Bitmap GetText(string text, int font, byte colourFirstLetter, byte colour)
 		{
 			List<Bitmap> letters = new List<Bitmap>();
@@ -87,28 +87,28 @@ namespace CivOne.GFX
 				letters.Add(GetLetter(isFirstLetter ? colourFirstLetter : colour, font, c));
 				isFirstLetter = false;
 			}
-
+			
 			int width = 0, height = 0;
 			foreach (Bitmap letter in letters)
 			{
 				width += letter.Width + 1;
 				if (height < letter.Height) height = letter.Height;
 			}
-
+			
 			Bitmap output = new Bitmap(width, height, PixelFormat.Format8bppIndexed);
-
+			
 			int xx = 0;
 			foreach (Bitmap letter in letters)
 			{
 				output = Picture.Combine(output, letter, new Point(xx, 0));
 				xx += letter.Width + 1;
 			}
-
+			
 			output.Palette = letters[0].Palette;
-
+			
 			return output;
 		}
-
+		
 		internal Size GetLetterSize(int font, char letter)
 		{
 			return GetLetter(5, font, letter).Size;
@@ -118,7 +118,7 @@ namespace CivOne.GFX
 		{
 			return _fonts[font].FontHeight;
 		}
-
+		
 		private Bitmap GetLetter(byte colour, int font, char letter)
 		{
 			string key = string.Format("letter{0}|{1}|{2}", colour, font, letter);
