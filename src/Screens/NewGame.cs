@@ -185,7 +185,6 @@ namespace CivOne.Screens
 					for (int x = 0; x < 4; x++)
 					{
 						borders[index] = (Bitmap)Resources.Instance.GetPart("SP299", 224 + (8 * x), 120 + (8 * y), 8, 8).Clone();
-						Picture.ReplaceColours(borders[index], 15, 16);
 						index++;
 					}
 				}
