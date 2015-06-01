@@ -148,7 +148,7 @@ namespace CivOne.Screens
 				}
 			}
 			
-			_canvas.FillRectangle(16, 0, 0, 320, 200);
+			_canvas.FillRectangle((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 16 : 15), 0, 0, 320, 200);
 			for (int x = 8; x < 312; x += 8)
 			{
 				AddLayer(borders[4], x, 0);

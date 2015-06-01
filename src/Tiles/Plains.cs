@@ -26,7 +26,7 @@ namespace CivOne.Tiles
 			Name = "Plains";
 			
 			Bitmap icon = Resources.Instance.LoadPIC("ICONPGT2", true).GetPart(1, 88, 108, 86);
-			Picture.ReplaceColours(icon, 253, 0);
+			Picture.ReplaceColours(icon, (byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
 			Icon = new Picture(icon);
 			Icon.FillRectangle(0, 106, 0, 2, 86);
 		}

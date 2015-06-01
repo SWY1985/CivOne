@@ -26,7 +26,7 @@ namespace CivOne.Tiles
 			Name = "Arctic";
 			
 			Bitmap icon = Resources.Instance.LoadPIC("ICONPGT1", true).GetPart(108, 1, 108, 86);
-			Picture.ReplaceColours(icon, 253, 0);
+			Picture.ReplaceColours(icon, (byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
 			Icon = new Picture(icon);
 			Icon.FillRectangle(0, 106, 0, 2, 86);
 		}
