@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using CivOne.Enums;
 using CivOne.GFX;
@@ -75,7 +76,7 @@ namespace CivOne.Screens
 					AddLayer(t.Image, t.Position);
 				}
 				
-				foreach (RenderTile t in RenderTiles)
+				foreach (RenderTile t in RenderTiles.Reverse())
 				{
 					City city = Game.Instance.GetCity(t.Tile.X, t.Tile.Y);
 					if (city == null) continue;
@@ -89,6 +90,12 @@ namespace CivOne.Screens
 					Picture.ReplaceColours(resource, 5, Common.ColourDark[city.Owner]);
 					AddLayer(resource, t.Position);
 					_canvas.DrawText(city.Size.ToString(), 0, 5, 5, t.Position.X + 9, t.Position.Y + 5, TextAlign.Center);
+					
+					if (t.Y == 11) continue;
+					int labelX = (t.X == 0) ? t.Position.X : t.Position.X - 8;
+					int labelY = t.Position.Y + 16;
+					_canvas.DrawText(city.Name, 0, 5, labelX, labelY + 1, TextAlign.Left);
+					_canvas.DrawText(city.Name, 0, 11, labelX, labelY, TextAlign.Left);
 				}
 				
 				_update = false;
