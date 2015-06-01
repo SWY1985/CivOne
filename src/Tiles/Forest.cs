@@ -19,5 +19,8 @@ namespace CivOne.Tiles
 			Type = Terrain.Forest;
 			Name = "Forest";
 		}
+		public Forest()
+		{
+		}
 	}
 }

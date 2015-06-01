@@ -88,11 +88,14 @@ namespace CivOne.Templates
 		public virtual bool Mine { get; set; }
 		public virtual bool Hut { get; set; }
 		
-		public BaseTile(int x, int y, bool special = false)
+		protected BaseTile(int x, int y, bool special = false)
 		{
 			X = x;
 			Y = y;
 			Special = special;
+		}
+		protected BaseTile()
+		{
 		}
 	}
 }

@@ -19,5 +19,8 @@ namespace CivOne.Tiles
 			Type = Terrain.Jungle;
 			Name = "Jungle";
 		}
+		public Jungle()
+		{
+		}
 	}
 }

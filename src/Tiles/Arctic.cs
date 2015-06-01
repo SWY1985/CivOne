@@ -19,5 +19,8 @@ namespace CivOne.Tiles
 			Type = Terrain.Arctic;
 			Name = "Arctic";
 		}
+		public Arctic()
+		{
+		}
 	}
 }

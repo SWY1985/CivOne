@@ -19,5 +19,8 @@ namespace CivOne.Tiles
 			Type = Terrain.Ocean;
 			Name = "Ocean";
 		}
+		public Ocean()
+		{
+		}
 	}
 }

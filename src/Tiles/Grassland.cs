@@ -26,5 +26,8 @@ namespace CivOne.Tiles
 			Type = CalculateTileType();
 			Name = "Grassland";
 		}
+		public Grassland()
+		{
+		}
 	}
 }

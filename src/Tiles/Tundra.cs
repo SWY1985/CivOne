@@ -19,5 +19,8 @@ namespace CivOne.Tiles
 			Type = Terrain.Tundra;
 			Name = "Tundra";
 		}
+		public Tundra()
+		{
+		}
 	}
 }
