@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using CivOne.Civilizations;
@@ -19,6 +20,7 @@ namespace CivOne
 	{
 		private readonly int _difficulty, _competition;
 		private readonly Player[] _players;
+		private readonly List<City> _cities;
 		
 		internal ushort GameTurn { get; private set; }
 		
@@ -34,6 +36,15 @@ namespace CivOne
 		{
 			get;
 			private set;
+		}
+		
+		public City GetCity(int x, int y)
+		{
+			while (x < 0) x += Map.WIDTH;
+			while (x >= Map.WIDTH) x-= Map.WIDTH;
+			if (y < 0) return null;
+			if (y >= Map.HEIGHT) return null; 
+			return _cities.Where(c => c.X == x && c.Y == y && c.Size > 0).FirstOrDefault();
 		}
 		
 		public static void CreateGame(int difficulty, int competition, ICivilization tribe, string leaderName = null, string tribeName = null, string tribeNamePlural = null)
@@ -65,6 +76,30 @@ namespace CivOne
 				string[] leaderNames = Common.BinaryReadStrings(br, 16, 112, 14);
 				string[] tribeNamesPlural = Common.BinaryReadStrings(br, 128, 96, 12);
 				string[] tribeNames = Common.BinaryReadStrings(br, 224, 88, 11);
+				string[] cityNames = Common.BinaryReadStrings(br, 26992, 3328, 13);
+				int cc = 0;
+				List<City> cities = new List<City>();
+				for (int i = 5384; i < 8968; i+= 28)
+				{
+					byte x = Common.BinaryReadByte(br, i + 4);
+					byte y = Common.BinaryReadByte(br, i + 5);
+					byte actualSize = Common.BinaryReadByte(br, i + 7);
+					byte owner = Common.BinaryReadByte(br, i + 11);
+					byte nameId = Common.BinaryReadByte(br, i + 16);
+					string name = cityNames[nameId];
+					
+					if (x == 0 && y == 0 && actualSize == 0 && owner == 0 && nameId == 0) continue;
+					
+					City city = new City()
+					{
+						X = x,
+						Y = y,
+						Owner = owner,
+						Name = name,
+						Size = actualSize
+					};
+					cities.Add(city);
+				}
 				ushort competition = (ushort)(Common.BinaryReadUShort(br, 37820) + 1);
 				ushort civIdentity = Common.BinaryReadUShort(br, 37854);
 				
@@ -83,6 +118,11 @@ namespace CivOne
 				}
 				_instance.GameTurn = Common.BinaryReadUShort(br, 0);
 				_instance.HumanPlayer = _instance._players[humanPlayer];
+				
+				foreach (City city in cities)
+				{
+					_instance._cities.Add(city);
+				}
 			}
 		}
 		
@@ -104,6 +144,7 @@ namespace CivOne
 			_difficulty = difficulty;
 			_competition = competition;
 			_players = new Player[competition + 1];
+			_cities = new List<City>();
 		}
 		
 		private Game(int difficulty, int competition, ICivilization tribe, string leaderName, string tribeName, string tribeNamePlural)
@@ -129,6 +170,8 @@ namespace CivOne
 				_players[i] = new Player(civs[r]);
 				Console.WriteLine("- Player {0} is {1} of the {2}", i, _players[i].LeaderName, _players[i].TribeNamePlural);
 			}
+			
+			_cities = new List<City>();
 		}
 	}
 }

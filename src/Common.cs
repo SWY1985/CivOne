@@ -22,6 +22,8 @@ namespace CivOne
 		public static Random Random = new Random((int)DateTime.Now.Ticks);
 		
 		public static ICivilization[] Civilizations = new ICivilization[] { new Barbarian(), new Roman(), new Babylonian(), new German(), new Egyptian(), new American(), new Greek(), new Indian(), new Russian(), new Zulu(), new French(), new Aztec(), new Chinese(), new English(), new Mongol() };
+		public static byte[] ColourLight = new byte[] { 12, 15, 10, 9, 14, 11, 13, 7 };
+		public static byte[] ColourDark = new byte[] { 4, 7, 2, 1, 10, 3, 4, 8 };
 		
 		private static List<IScreen> _screens = new List<IScreen>();
 		internal static IScreen[] Screens
@@ -100,6 +102,13 @@ namespace CivOne
 			if (year < 0)
 				return string.Format("{0} BC", -year);
 			return string.Format("{0} AD", year);
+		}
+		
+		public static byte BinaryReadByte(BinaryReader reader, int position)
+		{
+			if (reader.BaseStream.Position != position)
+				reader.BaseStream.Seek(position, SeekOrigin.Begin);
+			return reader.ReadByte();
 		}
 		
 		public static ushort BinaryReadUShort(BinaryReader reader, int position)
