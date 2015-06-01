@@ -45,6 +45,7 @@ namespace CivOne.Screens
 			for (int x = 0; x < Map.WIDTH; x++)
 			for (int y = 0; y < Map.HEIGHT; y++)
 			{
+				City city = null;
 				ITile tile = Map.Instance.GetTile(x, y);
 				Terrain type = tile.Type;
 				if (type == Terrain.Grassland2) type = Terrain.Grassland1;
@@ -53,6 +54,11 @@ namespace CivOne.Screens
 				int yy = altTile ? 4 : 0;
 				
 				AddLayer(Resources.WorldMapTiles.GetPart(xx, yy, 4, 4), x * 4, y * 4);
+				
+				if ((city = Game.Instance.GetCity(x, y)) != null)
+				{
+					_canvas.FillRectangle(Common.ColourLight[city.Owner], x * 4, y * 4, 4, 4);
+				}
 			}
 		}
 	}

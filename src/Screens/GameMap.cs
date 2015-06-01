@@ -75,6 +75,22 @@ namespace CivOne.Screens
 					AddLayer(t.Image, t.Position);
 				}
 				
+				foreach (RenderTile t in RenderTiles)
+				{
+					City city = Game.Instance.GetCity(t.Tile.X, t.Tile.Y);
+					if (city == null) continue;
+					
+					_canvas.FillRectangle(15, t.Position.X + 1, t.Position.Y + 1, 14, 14);
+					_canvas.FillRectangle(Common.ColourDark[city.Owner], t.Position.X + 2, t.Position.Y + 1, 13, 13);
+					_canvas.FillRectangle(Common.ColourLight[city.Owner], t.Position.X + 2, t.Position.Y + 2, 12, 12);
+					
+					Bitmap resource = (Bitmap)Resources.Instance.GetPart("SP257", 192, 112, 16, 16).Clone();
+					Picture.ReplaceColours(resource, 3, 0);
+					Picture.ReplaceColours(resource, 5, Common.ColourDark[city.Owner]);
+					AddLayer(resource, t.Position);
+					_canvas.DrawText(city.Size.ToString(), 0, 5, 5, t.Position.X + 9, t.Position.Y + 5, TextAlign.Center);
+				}
+				
 				_update = false;
 				return true;
 			}
