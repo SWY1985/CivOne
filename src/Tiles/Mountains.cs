@@ -19,5 +19,8 @@ namespace CivOne.Tiles
 			Type = Terrain.Mountains;
 			Name = "Mountains";
 		}
+		public Mountains()
+		{
+		}
 	}
 }

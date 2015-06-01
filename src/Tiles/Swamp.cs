@@ -19,5 +19,8 @@ namespace CivOne.Tiles
 			Type = Terrain.Swamp;
 			Name = "Swamp";
 		}
+		public Swamp()
+		{
+		}
 	}
 }

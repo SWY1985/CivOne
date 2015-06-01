@@ -19,5 +19,8 @@ namespace CivOne.Tiles
 			Type = Terrain.Hills;
 			Name = "Hills";
 		}
+		public Hills()
+		{
+		}
 	}
 }

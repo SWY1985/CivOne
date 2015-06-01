@@ -19,5 +19,8 @@ namespace CivOne.Tiles
 			Type = Terrain.River;
 			Name = "River";
 		}
+		public River()
+		{
+		}
 	}
 }

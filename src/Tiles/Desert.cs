@@ -19,5 +19,8 @@ namespace CivOne.Tiles
 			Type = Terrain.Desert;
 			Name = "Desert";
 		}
+		public Desert()
+		{
+		}
 	}
 }

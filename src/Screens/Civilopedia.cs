@@ -7,16 +7,19 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using CivOne.Enums;
+using System;
+using System.Windows.Forms;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Templates;
-using System.Windows.Forms;
+using CivOne.Tiles;
 
 namespace CivOne.Screens
 {
-	internal class WorldMap : BaseScreen
+	internal class Civilopedia : BaseScreen
 	{
+		internal static ICivilopedia[] Terrain = new ICivilopedia[] { new Arctic(), new Desert(), new Forest(), new Grassland(), new Hills(), new Jungle(), new Mountains(), new Ocean(), new Plains(), new River(), new Swamp(), new Tundra() }; 
+		
 		private bool _update = true;
 		
 		public override bool HasUpdate(uint gameTick)
@@ -38,28 +41,16 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public WorldMap()
+		public Civilopedia(params ICivilopedia[] pages)
 		{
 			_canvas = new Picture(320, 200, Resources.WorldMapTiles.Image.Palette.Entries);
 			
-			for (int x = 0; x < Map.WIDTH; x++)
-			for (int y = 0; y < Map.HEIGHT; y++)
-			{
-				City city = null;
-				ITile tile = Map.Instance.GetTile(x, y);
-				Terrain type = tile.Type;
-				if (type == Terrain.Grassland2) type = Terrain.Grassland1;
-				bool altTile = ((x + y) % 2 == 1);
-				int xx = (((int)type) * 4);
-				int yy = altTile ? 4 : 0;
-				
-				AddLayer(Resources.WorldMapTiles.GetPart(xx, yy, 4, 4), x * 4, y * 4);
-				
-				if ((city = Game.Instance.GetCity(x, y)) != null)
-				{
-					_canvas.FillRectangle(Common.ColourLight[city.Owner], x * 4, y * 4, 4, 4);
-				}
-			}
+			_canvas.FillRectangle(14, 0, 0, 320, 200);
+			_canvas.FillRectangle(15, 60, 2, 200, 9);
+			_canvas.FillRectangle(15, 2, 14, 316, 184);
+			
+			_canvas.DrawText("ENCYCLOPEDIA of CIVILIZATION", 0, 5, 67, 4);
+			_canvas.DrawText("ENCYCLOPEDIA of CIVILIZATION", 0, 10, 66, 3);
 		}
 	}
 }
