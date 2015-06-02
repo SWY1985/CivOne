@@ -23,20 +23,10 @@ namespace CivOne.Tiles
 			return Terrain.Grassland1;
 		}
 		
-		public Grassland(int x, int y) : base(x, y, false)
+		public Grassland(int x = -1, int y = -1) : base(x, y, false)
 		{
 			Type = CalculateTileType();
 			Name = "Grassland";
-		}
-		public Grassland()
-		{
-			Type = CalculateTileType();
-			Name = "Grassland";
-			
-			Bitmap icon = Resources.Instance.LoadPIC("ICONPGT2", true).GetPart(108, 1, 108, 86);
-			Picture.ReplaceColours(icon, (byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
-			Icon = new Picture(icon);
-			Icon.FillRectangle(0, 106, 0, 2, 86);
 		}
 	}
 }

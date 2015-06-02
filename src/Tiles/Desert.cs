@@ -16,20 +16,10 @@ namespace CivOne.Tiles
 {
 	internal class Desert : BaseTile
 	{
-		public Desert(int x, int y, bool special) : base(x, y, special)
+		public Desert(int x = -1, int y = -1, bool special = false) : base(x, y, special)
 		{
 			Type = Terrain.Desert;
 			Name = "Desert";
-		}
-		public Desert()
-		{
-			Type = Terrain.Desert;
-			Name = "Desert";
-			
-			Bitmap icon = Resources.Instance.LoadPIC("ICONPGT2", true).GetPart(1, 1, 108, 86);
-			Picture.ReplaceColours(icon, (byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
-			Icon = new Picture(icon);
-			Icon.FillRectangle(0, 106, 0, 2, 86);
 		}
 	}
 }

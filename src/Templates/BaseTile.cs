@@ -15,7 +15,13 @@ namespace CivOne.Templates
 {
 	internal abstract class BaseTile : ITile
 	{
-		public Picture Icon { get; protected set; }
+		public virtual Picture Icon
+		{
+			get
+			{
+				return TileResources.GetIcon(Type);
+			}
+		}
 		public Terrain Type { get; protected set; }
 		public string Name { get; protected set; }
 		public int X { get; private set; }
@@ -95,9 +101,6 @@ namespace CivOne.Templates
 			X = x;
 			Y = y;
 			Special = special;
-		}
-		protected BaseTile()
-		{
 		}
 	}
 }

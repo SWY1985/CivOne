@@ -16,19 +16,10 @@ namespace CivOne.Tiles
 {
 	internal class Forest : BaseTile
 	{
-		public Forest(int x, int y, bool special) : base(x, y, special)
+		public Forest(int x = -1, int y = -1, bool special = false) : base(x, y, special)
 		{
 			Type = Terrain.Forest;
 			Name = "Forest";
-		}
-		public Forest()
-		{
-			Type = Terrain.Forest;
-			Name = "Forest";
-			
-			Bitmap icon = Resources.Instance.LoadPIC("ICONPGT2", true).GetPart(215, 1, 104, 86);
-			Picture.ReplaceColours(icon, (byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
-			Icon = new Picture(icon);
 		}
 	}
 }

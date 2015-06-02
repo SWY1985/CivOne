@@ -109,8 +109,16 @@ namespace CivOne.Screens
 		{
 			int x = (int)Math.Floor((float)args.X / 16);
 			int y = (int)Math.Floor((float)args.Y / 16);
-						
-			if (args.Button == MouseButtons.Left)
+			
+			if (args.Button == MouseButtons.Right)
+			{
+				Console.WriteLine(_x.ToString() + "-" + _y.ToString());
+				if (Game.Instance.GetCity(_x + x, _y + y) == null)
+				{
+					Common.AddScreen(new Civilopedia(Map.Instance.GetTile(_x + x, _y + y)));
+				}
+			}
+			if (args.Button == MouseButtons.Left || args.Button == MouseButtons.Right)
 			{
 				_x += x - 8;
 				_y += y - 6;

@@ -16,20 +16,10 @@ namespace CivOne.Tiles
 {
 	internal class Arctic : BaseTile
 	{
-		public Arctic(int x, int y, bool special) : base(x, y, special)
+		public Arctic(int x = -1, int y = -1, bool special = false) : base(x, y, special)
 		{
 			Type = Terrain.Arctic;
 			Name = "Arctic";
-		}
-		public Arctic()
-		{
-			Type = Terrain.Arctic;
-			Name = "Arctic";
-			
-			Bitmap icon = Resources.Instance.LoadPIC("ICONPGT1", true).GetPart(108, 1, 108, 86);
-			Picture.ReplaceColours(icon, (byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
-			Icon = new Picture(icon);
-			Icon.FillRectangle(0, 106, 0, 2, 86);
 		}
 	}
 }
