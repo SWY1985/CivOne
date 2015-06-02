@@ -40,6 +40,8 @@
 		<Reference Include="System.Windows.Forms" />
 	</ItemGroup>
 	<ItemGroup Condition="$(Configuration.EndsWith('Gtk'))">
+		<Reference Include="atk-sharp" />
+		<Reference Include="glib-sharp" />
 		<Reference Include="gtk-sharp" />
 	</ItemGroup>
 	<ItemGroup>

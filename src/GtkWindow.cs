@@ -15,9 +15,16 @@ namespace CivOne
 {
 	internal class GtkWindow : IDisposable
 	{
+		private readonly Window window;
+		
 		internal GtkWindow()
 		{
+			window = new Window("CivOne");
+			window.Resize(640, 400);
 			
+			window.Add(test);
+			
+			window.ShowAll();
 		}
 		
 		public void Dispose()
