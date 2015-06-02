@@ -16,20 +16,10 @@ namespace CivOne.Tiles
 {
 	internal class Hills : BaseTile
 	{
-		public Hills(int x, int y, bool special) : base(x, y, special)
+		public Hills(int x = -1, int y = -1, bool special = false) : base(x, y, special)
 		{
 			Type = Terrain.Hills;
 			Name = "Hills";
-		}
-		public Hills()
-		{
-			Type = Terrain.Hills;
-			Name = "Hills";
-			
-			Bitmap icon = Resources.Instance.LoadPIC("ICONPGT2", true).GetPart(108, 88, 108, 86);
-			Picture.ReplaceColours(icon, (byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
-			Icon = new Picture(icon);
-			Icon.FillRectangle(0, 106, 0, 2, 86);
 		}
 	}
 }

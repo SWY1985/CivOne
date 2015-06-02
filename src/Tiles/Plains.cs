@@ -16,20 +16,10 @@ namespace CivOne.Tiles
 {
 	internal class Plains : BaseTile
 	{
-		public Plains(int x, int y, bool special) : base(x, y, special)
+		public Plains(int x = -1, int y = -1, bool special = false) : base(x, y, special)
 		{
 			Type = Terrain.Plains;
 			Name = "Plains";
-		}
-		public Plains()
-		{
-			Type = Terrain.Plains;
-			Name = "Plains";
-			
-			Bitmap icon = Resources.Instance.LoadPIC("ICONPGT2", true).GetPart(1, 88, 108, 86);
-			Picture.ReplaceColours(icon, (byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
-			Icon = new Picture(icon);
-			Icon.FillRectangle(0, 106, 0, 2, 86);
 		}
 	}
 }

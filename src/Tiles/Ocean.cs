@@ -16,20 +16,10 @@ namespace CivOne.Tiles
 {
 	internal class Ocean : BaseTile
 	{
-		public Ocean(int x, int y, bool special) : base(x, y, special)
+		public Ocean(int x = -1, int y = -1, bool special = false) : base(x, y, special)
 		{
 			Type = Terrain.Ocean;
 			Name = "Ocean";
-		}
-		public Ocean()
-		{
-			Type = Terrain.Ocean;
-			Name = "Ocean";
-			
-			Bitmap icon = Resources.Instance.LoadPIC("ICONPGT1", true).GetPart(108, 88, 108, 86);
-			Picture.ReplaceColours(icon, (byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
-			Icon = new Picture(icon);
-			Icon.FillRectangle(0, 106, 0, 2, 86);
 		}
 	}
 }

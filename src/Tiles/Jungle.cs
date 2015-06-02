@@ -16,20 +16,10 @@ namespace CivOne.Tiles
 {
 	internal class Jungle : BaseTile
 	{
-		public Jungle(int x, int y, bool special) : base(x, y, special)
+		public Jungle(int x = -1, int y = -1, bool special = false) : base(x, y, special)
 		{
 			Type = Terrain.Jungle;
 			Name = "Jungle";
-		}
-		public Jungle()
-		{
-			Type = Terrain.Jungle;
-			Name = "Jungle";
-			
-			Bitmap icon = Resources.Instance.LoadPIC("ICONPGT1", true).GetPart(1, 88, 108, 86);
-			Picture.ReplaceColours(icon, (byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
-			Icon = new Picture(icon);
-			Icon.FillRectangle(0, 106, 0, 2, 86);
 		}
 	}
 }
