@@ -33,6 +33,7 @@
 	<PropertyGroup Condition="$(Configuration.EndsWith('Gtk'))">
 		<DefineConstants Condition="$(Configuration.StartsWith('Debug'))">DEBUG;GTK</DefineConstants>
 		<DefineConstants Condition="$(Configuration.StartsWith('Release'))">RELEASE;GTK</DefineConstants>
+		<PlatformTarget>x86</PlatformTarget>
 	</PropertyGroup>
 	<ItemGroup>
 		<Reference Include="System" />
@@ -42,6 +43,8 @@
 	<ItemGroup Condition="$(Configuration.EndsWith('Gtk'))">
 		<Reference Include="atk-sharp" />
 		<Reference Include="glib-sharp" />
+		<Reference Include="gdk-sharp" />
+		<Reference Include="gtk-dotnet" />
 		<Reference Include="gtk-sharp" />
 	</ItemGroup>
 	<ItemGroup>

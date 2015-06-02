@@ -39,11 +39,9 @@ namespace CivOne
 			Console.WriteLine("Game Start");
 #if GTK
 			Application.Init();
-			using (GtkWindow window = new GtkWindow())
+			using (GtkWindow window = new GtkWindow(screen))
 			{
-				Console.WriteLine("BeforeRun");
 				Application.Run();
-				Console.WriteLine("AfterRun");
 			}
 #else
 			Application.Run(new Window(screen));
