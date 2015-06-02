@@ -32,7 +32,11 @@ namespace CivOne
 			}
 			
 			Console.WriteLine("Game Start");
+#if GTK
+			
+#else
 			Application.Run(new Window(screen));
+#endif
 			Console.WriteLine("Game End");
 		}
 	}
