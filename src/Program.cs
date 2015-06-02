@@ -7,8 +7,13 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+#if GTK
+using Gtk;
+#endif
 using System;
+#if !GTK
 using System.Windows.Forms;
+#endif
 
 namespace CivOne
 {
@@ -33,7 +38,13 @@ namespace CivOne
 			
 			Console.WriteLine("Game Start");
 #if GTK
-			
+			Application.Init();
+			using (GtkWindow window = new GtkWindow())
+			{
+				Console.WriteLine("BeforeRun");
+				Application.Run();
+				Console.WriteLine("AfterRun");
+			}
 #else
 			Application.Run(new Window(screen));
 #endif
