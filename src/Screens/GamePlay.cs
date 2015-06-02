@@ -117,7 +117,7 @@ namespace CivOne.Screens
 			_gameMenu.Items[1].Selected += (s, a) => Common.AddScreen(new Civilopedia(Civilopedia.Advances));
 			_gameMenu.Items[2].Selected += (s, a) => Common.AddScreen(new Civilopedia(Civilopedia.Improvements));
 			_gameMenu.Items[3].Selected += (s, a) => Common.AddScreen(new Civilopedia(Civilopedia.Units));
-			_gameMenu.Items[4].Selected += (s, a) => Common.AddScreen(new Civilopedia(Civilopedia.Terrain));
+			_gameMenu.Items[4].Selected += (s, a) => Common.AddScreen(new Civilopedia(Civilopedia.TerrainType));
 			_gameMenu.Items[5].Selected += (s, a) => Common.AddScreen(new Civilopedia(Civilopedia.Misc));
 			
 			_menuX = 182;

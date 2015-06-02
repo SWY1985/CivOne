@@ -24,14 +24,14 @@ namespace CivOne.Screens
 		internal static ICivilopedia[] Advances = new ICivilopedia[0];
 		internal static ICivilopedia[] Improvements = new ICivilopedia[0];
 		internal static ICivilopedia[] Units = new ICivilopedia[0];
-		internal static ICivilopedia[] Terrain = new ICivilopedia[] { new Arctic(), new Desert(), new Forest(), new Grassland(), new Hills(), new Jungle(), new Mountains(), new Ocean(), new Plains(), new River(), new Swamp(), new Tundra() };
+		internal static ICivilopedia[] TerrainType = new ICivilopedia[] { new Arctic(), new Desert(), new Forest(), new Grassland(), new Hills(), new Jungle(), new Mountains(), new Ocean(), new Plains(), new River(), new Swamp(), new Tundra() };
 		internal static ICivilopedia[] Misc = new ICivilopedia[0]; 
 		internal static ICivilopedia[] Complete
 		{
 			get
 			{
 				ICivilopedia[] output = new ICivilopedia[0];
-				output = output.Concat(Terrain).ToArray();
+				output = output.Concat(TerrainType).ToArray();
 				return output.OrderBy(x => x.Name).ToArray();
 			}
 		}
@@ -129,6 +129,135 @@ namespace CivOne.Screens
 				yy = 16;
 			}
 		}
+		
+		private void DrawTerrainTextValues(ref int y, string name, string food = null, string production = null, string trade = null, string foodIrrigation = null, string productionMining = null, string tradeRoads = null)
+		{
+			string foodFormat = "Food: {0} units.";
+			string productionFormat = "Production: {0} units.";
+			string tradeFormat = "Trade: {0}";
+			
+			_canvas.DrawText(name, 6, 1, 12, y);
+			y += 8;
+			if (food != null)
+			{
+				if (foodIrrigation != null)
+					food = string.Format("{0} ({1} with Irrigation)", food, foodIrrigation);
+				_canvas.DrawText(string.Format(foodFormat, food), 6, 9, 16, y);
+				y += 8;
+			}
+			if (production != null)
+			{
+				if (productionMining != null)
+					production = string.Format("{0} ({1} with Mining)", production, productionMining);
+				_canvas.DrawText(string.Format(productionFormat, production), 6, 9, 16, y);
+				y += 8;
+			}
+			if (trade != null)
+			{
+				if (tradeRoads != null)
+					trade = string.Format("{0} ({1} with Roads)", trade, tradeRoads);
+				_canvas.DrawText(string.Format(tradeFormat, trade), 6, 9, 16, y);
+				y += 8;
+			}			
+			if (food == null && production == null && trade == null)
+			{
+				_canvas.DrawText("nothing", 6, 9, 16, y);
+				y += 8;
+			}
+			y += 4;
+		}
+		
+		private void DrawTerrainText()
+		{
+			if (!typeof(ITile).IsAssignableFrom(_singlePage.GetType())) return;
+			
+			string foodFormat = "Food: {0} units.";
+			string productionFormat = "Production: {0} units.";
+			string tradeFormat = "Trade: {0}";
+			
+			ITile tile = (ITile)_singlePage;
+			int move = 1, defense = 0;
+			
+			int yy = 84;
+			
+			switch (tile.Type)
+			{
+				case Terrain.Arctic:
+					DrawTerrainTextValues(ref yy, "Arctic");
+					DrawTerrainTextValues(ref yy, "Seals", "2");
+					move = 2;
+					break;
+				case Terrain.Desert:
+					DrawTerrainTextValues(ref yy, "Desert", "0", "1", "0", "1", "2", "1%");
+					DrawTerrainTextValues(ref yy, "Oasis", "3*", "1", "0", "4*", "2", "1%");
+					break;
+				case Terrain.Forest:
+					DrawTerrainTextValues(ref yy, "Forest", "1", "2");
+					DrawTerrainTextValues(ref yy, "Game", "3*", "2");
+					move = 2;
+					defense = 50;
+					break;
+				case Terrain.Grassland1:
+				case Terrain.Grassland2:
+					DrawTerrainTextValues(ref yy, "Grassland", "2", "0/1", "0", "3*", null, "1%");
+					break;
+				case Terrain.Hills:
+					DrawTerrainTextValues(ref yy, "Hills", "1", "0", null, "2", "3*");
+					DrawTerrainTextValues(ref yy, "Coal", "1", "2", null, "2", "5*");
+					move = 2;
+					defense = 100;
+					break;
+				case Terrain.Jungle:
+					DrawTerrainTextValues(ref yy, "Jungle", "1");
+					DrawTerrainTextValues(ref yy, "Gems", "1", null, "4%*");
+					move = 2;
+					defense = 50;
+					break;
+				case Terrain.Mountains:
+					DrawTerrainTextValues(ref yy, "Mountains", null, "1", null, null, "2");
+					DrawTerrainTextValues(ref yy, "Gold", null, "1", "6%*", null, "2");
+					move = 3;
+					defense = 200;
+					break;
+				case Terrain.Ocean:
+					DrawTerrainTextValues(ref yy, "Ocean", "1", null, "2%");
+					DrawTerrainTextValues(ref yy, "Fish", "3*", null, "2%");
+					break;
+				case Terrain.Plains:
+					DrawTerrainTextValues(ref yy, "Plains", "1", "1", "0", "2", null, "1%");
+					DrawTerrainTextValues(ref yy, "Horses", "1", "3", "0", "2", null, "1%");
+					break;
+				case Terrain.River:
+					DrawTerrainTextValues(ref yy, "River", "2", "0/1", "1%", "3*");
+					defense = 50;
+					break;
+				case Terrain.Swamp:
+					DrawTerrainTextValues(ref yy, "Swamp", "1");
+					DrawTerrainTextValues(ref yy, "Oil", "1", "4");
+					move = 2;
+					defense = 50;
+					break;
+				case Terrain.Tundra:
+					DrawTerrainTextValues(ref yy, "Tundra", "1");
+					DrawTerrainTextValues(ref yy, "Game", "3*");
+					break;
+			}
+			
+			_canvas.DrawText("*  -1 if government is Despotism/Anarchy.", 6, 9, 16, yy); yy += 8;
+			_canvas.DrawText("%  +1 if government is Republic/Democracy.", 6, 9, 16, yy); yy += 12;
+			
+			_canvas.DrawText(string.Format("Movement cost: {0} MP", move), 6, 12, 12, yy); yy += 8;
+			_canvas.DrawText(string.Format("Defense bonus: +{0}%", defense), 6, 12, 12, yy);
+			
+			/*
+			_canvas.DrawText(name, 6, 1, 12, (yy += 8));
+			if (food != null) _canvas.DrawText(string.Format(foodFormat, food), 6, 9, 16, (yy += 8));
+			if (production != null) _canvas.DrawText(string.Format(productionFormat, production), 6, 9, 16, (yy += 8));
+			if (trade != null) _canvas.DrawText(string.Format(tradeFormat, trade), 6, 9, 16, (yy += 8));
+			if (food == null && production == null && trade == null) _canvas.DrawText("nothing", 6, 9, 16, (yy += 8));
+			yy += 10;*/
+		}
+		
 		public Civilopedia(ICivilopedia page)
 		{
 			_singlePage = page;
@@ -171,6 +300,8 @@ namespace CivOne.Screens
 			_canvas.DrawText(category, 6, 7, 204, 36, TextAlign.Center);
 			if (page.Icon != null)
 				AddLayer(page.Icon, 23, 4);
+			
+			DrawTerrainText();
 		}
 	}
 }

@@ -30,6 +30,7 @@ namespace CivOne.Tiles
 		}
 		public Grassland()
 		{
+			Type = CalculateTileType();
 			Name = "Grassland";
 			
 			Bitmap icon = Resources.Instance.LoadPIC("ICONPGT2", true).GetPart(108, 1, 108, 86);
