@@ -23,6 +23,7 @@ namespace CivOne.Tiles
 		}
 		public Tundra()
 		{
+			Type = Terrain.Tundra;
 			Name = "Tundra";
 			
 			Bitmap icon = Resources.Instance.LoadPIC("ICONPGT1", true).GetPart(1, 1, 108, 86);

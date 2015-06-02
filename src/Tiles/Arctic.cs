@@ -23,6 +23,7 @@ namespace CivOne.Tiles
 		}
 		public Arctic()
 		{
+			Type = Terrain.Arctic;
 			Name = "Arctic";
 			
 			Bitmap icon = Resources.Instance.LoadPIC("ICONPGT1", true).GetPart(108, 1, 108, 86);

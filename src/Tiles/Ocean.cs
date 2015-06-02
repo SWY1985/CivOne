@@ -23,6 +23,7 @@ namespace CivOne.Tiles
 		}
 		public Ocean()
 		{
+			Type = Terrain.Ocean;
 			Name = "Ocean";
 			
 			Bitmap icon = Resources.Instance.LoadPIC("ICONPGT1", true).GetPart(108, 88, 108, 86);

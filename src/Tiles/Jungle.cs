@@ -23,6 +23,7 @@ namespace CivOne.Tiles
 		}
 		public Jungle()
 		{
+			Type = Terrain.Jungle;
 			Name = "Jungle";
 			
 			Bitmap icon = Resources.Instance.LoadPIC("ICONPGT1", true).GetPart(1, 88, 108, 86);

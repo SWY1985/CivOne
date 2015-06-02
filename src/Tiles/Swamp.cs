@@ -23,6 +23,7 @@ namespace CivOne.Tiles
 		}
 		public Swamp()
 		{
+			Type = Terrain.Swamp;
 			Name = "Swamp";
 			
 			Bitmap icon = Resources.Instance.LoadPIC("ICONPGT1", true).GetPart(215, 1, 104, 86);

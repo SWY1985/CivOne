@@ -23,6 +23,7 @@ namespace CivOne.Tiles
 		}
 		public Forest()
 		{
+			Type = Terrain.Forest;
 			Name = "Forest";
 			
 			Bitmap icon = Resources.Instance.LoadPIC("ICONPGT2", true).GetPart(215, 1, 104, 86);

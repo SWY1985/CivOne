@@ -23,6 +23,7 @@ namespace CivOne.Tiles
 		}
 		public Hills()
 		{
+			Type = Terrain.Hills;
 			Name = "Hills";
 			
 			Bitmap icon = Resources.Instance.LoadPIC("ICONPGT2", true).GetPart(108, 88, 108, 86);

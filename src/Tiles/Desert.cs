@@ -23,6 +23,7 @@ namespace CivOne.Tiles
 		}
 		public Desert()
 		{
+			Type = Terrain.Desert;
 			Name = "Desert";
 			
 			Bitmap icon = Resources.Instance.LoadPIC("ICONPGT2", true).GetPart(1, 1, 108, 86);

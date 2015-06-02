@@ -23,6 +23,7 @@ namespace CivOne.Tiles
 		}
 		public River()
 		{
+			Type = Terrain.River;
 			Name = "River";
 			
 			Bitmap icon = Resources.Instance.LoadPIC("ICONPGT1", true).GetPart(215, 88, 104, 86);
