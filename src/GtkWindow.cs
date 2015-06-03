@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Threading;
+using System.Windows.Forms;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Screens;
@@ -139,6 +140,31 @@ namespace CivOne
 			if (Common.Screens.Count(x => x.HasUpdate(_gameTick)) > 0) ScreenUpdate();
 		}
 		
+		private void ScaleMouseEventArgs(ref MouseEventArgs args)
+		{
+			int xx = args.X - CanvasX, yy = args.Y - CanvasY;
+			args = new MouseEventArgs(args.Button, args.Clicks, (int)Math.Floor((float)xx / ScaleX), (int)Math.Floor((float)yy / ScaleY), args.Delta);
+		}
+		
+		private void SendMouseDown(MouseEventArgs args)
+		{
+			if (TopScreen == null) return;
+			ScaleMouseEventArgs(ref args);
+			TopScreen.MouseDown(args);
+		}
+		
+		private void SendMouseUp(MouseEventArgs args)
+		{
+			if (TopScreen == null) return;
+			ScaleMouseEventArgs(ref args);
+			TopScreen.MouseUp(args);
+		}
+		
+		private void OnDelete(object sender, EventArgs args)
+		{
+			Common.Quit();
+		}
+		
 		private void OnPaint(object sender, System.Windows.Forms.PaintEventArgs args)
 		{
 			args.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
@@ -159,9 +185,26 @@ namespace CivOne
 			args.Graphics.DrawImage(_canvas.Image, CanvasX, CanvasY, CanvasWidth, CanvasHeight);
 		}
 		
-		private void OnDelete(object sender, EventArgs args)
+		private void OnButtonPress(object sender, ButtonPressEventArgs args)
 		{
-			Common.Quit();
+			MouseButtons buttons = MouseButtons.None;
+			switch (args.Event.Button)
+			{
+				case 1: buttons = MouseButtons.Left; break;
+				case 3: buttons = MouseButtons.Right; break;
+			}
+			SendMouseDown(new MouseEventArgs(buttons, 1, (int)args.Event.X, (int)args.Event.Y, 0));
+		}
+		
+		private void OnButtonRelease(object sender, ButtonReleaseEventArgs args)
+		{
+			MouseButtons buttons = MouseButtons.None;
+			switch (args.Event.Button)
+			{
+				case 1: buttons = MouseButtons.Left; break;
+				case 3: buttons = MouseButtons.Right; break;
+			}
+			SendMouseUp(new MouseEventArgs(buttons, 1, (int)args.Event.X, (int)args.Event.Y, 0));
 		}
 		
 		internal GtkWindow(string screen)
@@ -171,12 +214,15 @@ namespace CivOne
 			_window.Resize(320 * Settings.Instance.ScaleX, 200 * Settings.Instance.ScaleY);
 			
 			_graphics = new GtkGraphics();
+			_graphics.AddEvents((int)(Gdk.EventMask.ButtonPressMask | Gdk.EventMask.ButtonReleaseMask | Gdk.EventMask.ButtonMotionMask));
 			_window.Add(_graphics);
 			
 			// Set Window/Canvas events
 			_window.DeleteEvent += OnDelete;
 			_graphics.Paint += OnPaint;
-						
+			_graphics.ButtonPressEvent += OnButtonPress;
+			_graphics.ButtonReleaseEvent += OnButtonRelease;
+			
 			// Load the first screen
 			IScreen startScreen;
 			switch (screen)
