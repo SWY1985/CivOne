@@ -294,13 +294,14 @@ namespace CivOne.GFX
 						DrawOceanBorderEast(ref output, tile);
 						DrawOceanBorderSouth(ref output, tile);
 						DrawOceanBorderWest(ref output, tile);
-						DrawDiagonalCoast(ref output, tile);
 					}
 					
 					if (tile.GetBorderType(Direction.North) == Terrain.River) output.AddLayer(Res.GetPart("TER257", 128, 176, 16, 16));
 					if (tile.GetBorderType(Direction.East) == Terrain.River) output.AddLayer(Res.GetPart("TER257", 144, 176, 16, 16));
 					if (tile.GetBorderType(Direction.South) == Terrain.River) output.AddLayer(Res.GetPart("TER257", 160, 176, 16, 16));
 					if (tile.GetBorderType(Direction.West) == Terrain.River) output.AddLayer(Res.GetPart("TER257", 176, 176, 16, 16));
+					
+					DrawDiagonalCoast(ref output, tile);
 					break;
 				case Terrain.River:
 					DrawIrrigation(ref output, tile);
