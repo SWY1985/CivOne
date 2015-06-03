@@ -160,6 +160,34 @@ namespace CivOne
 			TopScreen.MouseUp(args);
 		}
 		
+		private void SendKeyDown(System.Windows.Forms.Keys keys)
+		{
+			System.Windows.Forms.KeyEventArgs args = new System.Windows.Forms.KeyEventArgs(keys);
+			
+			if (args.Alt || args.Control)
+			{
+				if (args.KeyCode == System.Windows.Forms.Keys.Enter)
+				{
+					Console.WriteLine("TODO: Toggle full screen");
+					//ToggleFullScreen();
+				}
+				if (args.Control && args.KeyCode == System.Windows.Forms.Keys.F5)
+				{
+					Console.WriteLine("TODO: Save screen");
+					//SaveScreen();
+				}
+				args.SuppressKeyPress = true;
+				return;
+			}
+			
+			if (TopScreen != null && TopScreen.KeyDown(args)) ;// ScreenUpdate();
+			
+			if (args.KeyCode == System.Windows.Forms.Keys.F10)
+			{
+				args.SuppressKeyPress = true;
+			}
+		}
+		
 		private void OnDelete(object sender, EventArgs args)
 		{
 			Common.Quit();
@@ -185,7 +213,7 @@ namespace CivOne
 			args.Graphics.DrawImage(_canvas.Image, CanvasX, CanvasY, CanvasWidth, CanvasHeight);
 		}
 		
-		private void OnButtonPress(object sender, ButtonPressEventArgs args)
+		private void OnMouseDown(object sender, ButtonPressEventArgs args)
 		{
 			MouseButtons buttons = MouseButtons.None;
 			switch (args.Event.Button)
@@ -196,7 +224,7 @@ namespace CivOne
 			SendMouseDown(new MouseEventArgs(buttons, 1, (int)args.Event.X, (int)args.Event.Y, 0));
 		}
 		
-		private void OnButtonRelease(object sender, ButtonReleaseEventArgs args)
+		private void OnMouseUp(object sender, ButtonReleaseEventArgs args)
 		{
 			MouseButtons buttons = MouseButtons.None;
 			switch (args.Event.Button)
@@ -205,6 +233,34 @@ namespace CivOne
 				case 3: buttons = MouseButtons.Right; break;
 			}
 			SendMouseUp(new MouseEventArgs(buttons, 1, (int)args.Event.X, (int)args.Event.Y, 0));
+		}
+		
+		[GLib.ConnectBefore()]
+		private void OnKeyPress(object sender, Gtk.KeyPressEventArgs args)
+		{
+			switch (args.Event.Key)
+			{
+				case Gdk.Key.Return:
+				case Gdk.Key.KP_Enter:
+					SendKeyDown(System.Windows.Forms.Keys.Enter);
+					return;
+				case Gdk.Key.space:
+				case Gdk.Key.KP_Space:
+					SendKeyDown(System.Windows.Forms.Keys.Space);
+					return;
+				case Gdk.Key.Up:
+					SendKeyDown(System.Windows.Forms.Keys.Up);
+					return;
+				case Gdk.Key.Down:
+					SendKeyDown(System.Windows.Forms.Keys.Down);
+					return;
+				case Gdk.Key.Left:
+					SendKeyDown(System.Windows.Forms.Keys.Left);
+					return;
+				case Gdk.Key.Right:
+					SendKeyDown(System.Windows.Forms.Keys.Right);
+					return;
+			}
 		}
 		
 		internal GtkWindow(string screen)
@@ -216,12 +272,14 @@ namespace CivOne
 			_graphics = new GtkGraphics();
 			_graphics.AddEvents((int)(Gdk.EventMask.ButtonPressMask | Gdk.EventMask.ButtonReleaseMask | Gdk.EventMask.ButtonMotionMask));
 			_window.Add(_graphics);
+			_window.AddEvents((int)(Gdk.EventMask.KeyPressMask));
 			
 			// Set Window/Canvas events
 			_window.DeleteEvent += OnDelete;
 			_graphics.Paint += OnPaint;
-			_graphics.ButtonPressEvent += OnButtonPress;
-			_graphics.ButtonReleaseEvent += OnButtonRelease;
+			_graphics.ButtonPressEvent += OnMouseDown;
+			_graphics.ButtonReleaseEvent += OnMouseUp;
+			_window.KeyPressEvent += OnKeyPress;
 			
 			// Load the first screen
 			IScreen startScreen;
