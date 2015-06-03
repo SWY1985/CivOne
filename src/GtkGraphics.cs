@@ -10,6 +10,7 @@
 #if GTK
 using Gtk;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace CivOne
@@ -20,7 +21,9 @@ namespace CivOne
 		
 		public void Refresh()
 		{
+			Gdk.Threads.Enter();
 			QueueDraw();
+			Gdk.Threads.Leave();
 		}
 		
 		protected override bool OnExposeEvent(Gdk.EventExpose args)
@@ -31,6 +34,11 @@ namespace CivOne
 				Paint(this, new PaintEventArgs(g, new Rectangle(0, 0, 320, 200)));
 			}
 			return true;
+		}
+		
+		internal GtkGraphics()
+		{
+			
 		}
 	}
 }
