@@ -11,6 +11,7 @@
 using Gtk;
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Threading;
 using CivOne.GFX;
@@ -119,7 +120,6 @@ namespace CivOne
 		private void ScreenUpdate()
 		{
 			_graphics.Refresh();
-			//Graphics graphics = Gtk.DotNet.Graphics.FromDrawable(_graphics);
 		}
 		
 		private void RefreshGame()
@@ -141,17 +141,15 @@ namespace CivOne
 		
 		private void OnPaint(object sender, System.Windows.Forms.PaintEventArgs args)
 		{
-			//args.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-			//args.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
+			args.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+			args.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
 			
 			if (Common.Screens.Length == 0) return;
 			
-			_canvas = new Picture(320, 200, TopScreen.Canvas.Image.Palette.Entries);
-			if (Environment.OSVersion.Platform == PlatformID.Unix)
-			{
-				// This is a workaround/fix for Linux. It causes artifacts on Windows.
-				_canvas.FillRectangle(5, 0, 0, 320, 200);
-			}
+			Color[] colours = TopScreen.Canvas.Image.Palette.Entries;
+			colours[0] = Color.Black;
+			
+			_canvas = new Picture(320, 200, colours);
 			foreach (IScreen screen in Common.Screens)
 			{
 				_canvas.AddLayer(screen.Canvas.Image, 0, 0);

@@ -38,10 +38,13 @@ namespace CivOne
 			
 			Console.WriteLine("Game Start");
 #if GTK
+			Gdk.Threads.Init();
 			Application.Init();
 			using (GtkWindow window = new GtkWindow(screen))
 			{
+				Gdk.Threads.Enter();
 				Application.Run();
+				Gdk.Threads.Leave();
 			}
 #else
 			Application.Run(new Window(screen));
