@@ -12,6 +12,8 @@ using Gtk;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -32,6 +34,9 @@ namespace CivOne
 		private Thread TickThread;
 		
 		private AutoResetEvent _tickWaiter = new AutoResetEvent(true);
+		
+		private bool _forceUpdate = false;
+		private bool _fullScreen = false;
 		
 		private IScreen TopScreen
 		{
@@ -137,7 +142,38 @@ namespace CivOne
 			}
 			
 			// Refresh the screen if there's an update
-			if (Common.Screens.Count(x => x.HasUpdate(_gameTick)) > 0) ScreenUpdate();
+			if (_forceUpdate || Common.Screens.Count(x => x.HasUpdate(_gameTick)) > 0) ScreenUpdate();
+			_forceUpdate = false;
+		}
+		
+		private void ToggleFullScreen()
+		{
+			if (_fullScreen)
+			{
+				Console.WriteLine("Full screen off");
+				_window.Unfullscreen();
+				_fullScreen = false;
+				return;
+			}
+			Console.WriteLine("Full screen on");
+			_window.Fullscreen();
+			_fullScreen = true;
+		}
+		
+		private void SaveScreen()
+		{
+			for (int i = 1; i < 99999; i++)
+			{
+				string filename = Path.Combine(Settings.Instance.CaptureDirectory, string.Format("capture{0:00000}.png", i));
+				if (File.Exists(filename)) continue;
+				
+				using (Bitmap capture = (Bitmap)_canvas.Image.Clone())
+				{
+					Picture.ReplaceColours(capture, 0, 5); 
+					capture.Save(filename, ImageFormat.Png);
+				}
+				return;
+			}
 		}
 		
 		private void ScaleMouseEventArgs(ref MouseEventArgs args)
@@ -150,14 +186,14 @@ namespace CivOne
 		{
 			if (TopScreen == null) return;
 			ScaleMouseEventArgs(ref args);
-			TopScreen.MouseDown(args);
+			_forceUpdate = TopScreen.MouseDown(args);
 		}
 		
 		private void SendMouseUp(MouseEventArgs args)
 		{
 			if (TopScreen == null) return;
 			ScaleMouseEventArgs(ref args);
-			TopScreen.MouseUp(args);
+			_forceUpdate = TopScreen.MouseUp(args);
 		}
 		
 		private void SendKeyDown(System.Windows.Forms.Keys keys)
@@ -166,21 +202,20 @@ namespace CivOne
 			
 			if (args.Alt || args.Control)
 			{
-				if (args.KeyCode == System.Windows.Forms.Keys.Enter)
+				if (args.Alt && args.KeyCode == System.Windows.Forms.Keys.Enter)
 				{
-					Console.WriteLine("TODO: Toggle full screen");
-					//ToggleFullScreen();
+					ToggleFullScreen();
 				}
 				if (args.Control && args.KeyCode == System.Windows.Forms.Keys.F5)
 				{
 					Console.WriteLine("TODO: Save screen");
-					//SaveScreen();
+					SaveScreen();
 				}
 				args.SuppressKeyPress = true;
 				return;
 			}
 			
-			if (TopScreen != null && TopScreen.KeyDown(args)) ;// ScreenUpdate();
+			if (TopScreen != null && TopScreen.KeyDown(args)) _forceUpdate = true;// ScreenUpdate();
 			
 			if (args.KeyCode == System.Windows.Forms.Keys.F10)
 			{
@@ -238,27 +273,65 @@ namespace CivOne
 		[GLib.ConnectBefore()]
 		private void OnKeyPress(object sender, Gtk.KeyPressEventArgs args)
 		{
+			System.Windows.Forms.Keys modifier = System.Windows.Forms.Keys.None;
+			if ((args.Event.State & Gdk.ModifierType.ControlMask) > 0) modifier |= System.Windows.Forms.Keys.Control;
+			if ((args.Event.State & Gdk.ModifierType.ShiftMask) > 0) modifier |= System.Windows.Forms.Keys.Shift;
+			if ((args.Event.State & Gdk.ModifierType.Mod1Mask) > 0) modifier |= System.Windows.Forms.Keys.Alt;
+						
 			switch (args.Event.Key)
 			{
 				case Gdk.Key.Return:
 				case Gdk.Key.KP_Enter:
-					SendKeyDown(System.Windows.Forms.Keys.Enter);
+					SendKeyDown(System.Windows.Forms.Keys.Enter | modifier);
 					return;
 				case Gdk.Key.space:
 				case Gdk.Key.KP_Space:
-					SendKeyDown(System.Windows.Forms.Keys.Space);
+					SendKeyDown(System.Windows.Forms.Keys.Space | modifier);
 					return;
 				case Gdk.Key.Up:
-					SendKeyDown(System.Windows.Forms.Keys.Up);
+					SendKeyDown(System.Windows.Forms.Keys.Up | modifier);
 					return;
 				case Gdk.Key.Down:
-					SendKeyDown(System.Windows.Forms.Keys.Down);
+					SendKeyDown(System.Windows.Forms.Keys.Down | modifier);
 					return;
 				case Gdk.Key.Left:
-					SendKeyDown(System.Windows.Forms.Keys.Left);
+					SendKeyDown(System.Windows.Forms.Keys.Left | modifier);
 					return;
 				case Gdk.Key.Right:
-					SendKeyDown(System.Windows.Forms.Keys.Right);
+					SendKeyDown(System.Windows.Forms.Keys.Right | modifier);
+					return;
+				case Gdk.Key.F1:
+					SendKeyDown(System.Windows.Forms.Keys.F1 | modifier);
+					return;
+				case Gdk.Key.F2:
+					SendKeyDown(System.Windows.Forms.Keys.F2 | modifier);
+					return;
+				case Gdk.Key.F3:
+					SendKeyDown(System.Windows.Forms.Keys.F3 | modifier);
+					return;
+				case Gdk.Key.F4:
+					SendKeyDown(System.Windows.Forms.Keys.F4 | modifier);
+					return;
+				case Gdk.Key.F5:
+					SendKeyDown(System.Windows.Forms.Keys.F5 | modifier);
+					return;
+				case Gdk.Key.F6:
+					SendKeyDown(System.Windows.Forms.Keys.F6 | modifier);
+					return;
+				case Gdk.Key.F7:
+					SendKeyDown(System.Windows.Forms.Keys.F7 | modifier);
+					return;
+				case Gdk.Key.F8:
+					SendKeyDown(System.Windows.Forms.Keys.F8 | modifier);
+					return;
+				case Gdk.Key.F9:
+					SendKeyDown(System.Windows.Forms.Keys.F9 | modifier);
+					return;
+				case Gdk.Key.F10:
+					SendKeyDown(System.Windows.Forms.Keys.F10 | modifier);
+					return;
+				default:
+					SendKeyDown((System.Windows.Forms.Keys)char.ToUpper((char)args.Event.Key) | modifier);
 					return;
 			}
 		}
