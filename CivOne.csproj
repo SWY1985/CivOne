@@ -48,6 +48,7 @@
 		<Reference Include="gtk-sharp" />
 	</ItemGroup>
 	<ItemGroup>
+		<Compile Include="src\Buildings\*.cs" />
 		<Compile Include="src\Civilizations\*.cs" />
 		<Compile Include="src\Enums\*.cs" />
 		<Compile Include="src\GFX\*.cs" />
