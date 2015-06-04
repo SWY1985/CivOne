@@ -81,7 +81,6 @@ namespace CivOne.Templates
 		
 		protected void CloseMenus()
 		{
-			System.Console.WriteLine("Close menus");
 			foreach (Screens.Menu menu in Menus)
 			{
 				menu.Close();
