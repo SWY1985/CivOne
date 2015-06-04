@@ -13,5 +13,8 @@ namespace CivOne.Interfaces
 {
 	public interface IWonder : ICivilopedia
 	{
+		IAdvance RequiredTech { get; }
+		IAdvance ObsoleteTech { get; }
+		byte Price { get; }
 	}
 }
