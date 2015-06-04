@@ -16,10 +16,13 @@ namespace CivOne.Tiles
 {
 	internal class Jungle : BaseTile
 	{
-		public Jungle(int x = -1, int y = -1, bool special = false) : base(x, y, special)
+		public Jungle(int x, int y, bool special) : base(x, y, special)
 		{
 			Type = Terrain.Jungle;
 			Name = "Jungle";
+		}
+		public Jungle() : this(-1, -1, false)
+		{
 		}
 	}
 }

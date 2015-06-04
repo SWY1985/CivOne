@@ -16,10 +16,13 @@ namespace CivOne.Tiles
 {
 	internal class Swamp : BaseTile
 	{
-		public Swamp(int x = -1, int y = -1, bool special = false) : base(x, y, special)
+		public Swamp(int x, int y, bool special) : base(x, y, special)
 		{
 			Type = Terrain.Swamp;
 			Name = "Swamp";
+		}
+		public Swamp() : this(-1, -1, false)
+		{
 		}
 	}
 }

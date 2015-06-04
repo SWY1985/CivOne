@@ -23,10 +23,13 @@ namespace CivOne.Tiles
 			return Terrain.Grassland1;
 		}
 		
-		public Grassland(int x = -1, int y = -1) : base(x, y, false)
+		public Grassland(int x, int y) : base(x, y, false)
 		{
 			Type = CalculateTileType();
 			Name = "Grassland";
+		}
+		public Grassland() : this(-1, -1)
+		{
 		}
 	}
 }

@@ -23,20 +23,11 @@ namespace CivOne.Screens
 	internal class Civilopedia : BaseScreen
 	{
 		internal static ICivilopedia[] Advances = new ICivilopedia[0];
-		internal static ICivilopedia[] Improvements = new ICivilopedia[] { new Aqueduct(), new Bank(), new Barracks(), new Cathedral(), new CityWalls(), new Colosseum(), new Courthouse(), new Factory(), new Granary(), new HydroPlant(), new Library(), new Marketplace(), new MassTransit(), new MfgPlant(), new NuclearPlant(), new Palace(), new PowerPlant(), new RecyclingCenter(), new SdiDefense(), new Temple(), new University() };
+		internal static ICivilopedia[] Improvements = Reflect.GetCivilopediaCityImprovements().OrderBy(x => x.Name).ToArray();
 		internal static ICivilopedia[] Units = new ICivilopedia[0];
-		internal static ICivilopedia[] TerrainType = new ICivilopedia[] { new Arctic(), new Desert(), new Forest(), new Grassland(), new Hills(), new Jungle(), new Mountains(), new Ocean(), new Plains(), new River(), new Swamp(), new Tundra() };
+		internal static ICivilopedia[] TerrainType = Reflect.GetCivilopediaTerrainTypes().OrderBy(x => x.Name).ToArray();
 		internal static ICivilopedia[] Misc = new ICivilopedia[0]; 
-		internal static ICivilopedia[] Complete
-		{
-			get
-			{
-				ICivilopedia[] output = new ICivilopedia[0];
-				output = output.Concat(Improvements).ToArray();
-				output = output.Concat(TerrainType).ToArray();
-				return output.OrderBy(x => x.Name).ToArray();
-			}
-		}
+		internal static ICivilopedia[] Complete = Reflect.GetCivilopediaAll().OrderBy(x => x.Name).ToArray();
 		
 		private readonly ICivilopedia[] _pages;
 		private readonly ICivilopedia _singlePage;
@@ -84,7 +75,7 @@ namespace CivOne.Screens
 			int columnWidth = (columns < 3) ? 150 : 100;
 			for (int i = 0; i < _pages.Length; i++)
 			{
-				if (args.X > xx + columnWidth) { i += 26; xx += columnWidth; continue; }
+				if (args.X > xx + columnWidth) { i += 25; xx += columnWidth; continue; }
 				if (args.Y >= yy && args.Y <= yy + 7)
 				{
 					Console.WriteLine("Opening Civilopedia page: {0}", _pages[i].Name);
@@ -122,7 +113,9 @@ namespace CivOne.Screens
 			int columns = (int)Math.Ceiling((float)_pages.Length / 26);
 			for (int i = 0; i < _pages.Length; i++)
 			{
-				_canvas.DrawText(_pages[i].Name, 0, 5, xx, yy);
+				string name = _pages[i].Name;
+				if (columns >= 3 && name.Length >= 18) name = string.Format("{0}.", name.Substring(0, 17)); 
+				_canvas.DrawText(name, 0, 5, xx, yy);
 				
 				yy += 7;
 				if (yy <= 192) continue;
@@ -287,13 +280,14 @@ namespace CivOne.Screens
 			AddLayer(borders[2], 0, 192);
 			AddLayer(borders[3], 312, 192);
 			
+			int titleX = 204;
 			string category = "(unknown)";
 			if (typeof(ITile).IsAssignableFrom(_singlePage.GetType())) category = "Terrain Type";
 			if (typeof(IBuilding).IsAssignableFrom(_singlePage.GetType())) category = "City Improvement";
-			if (typeof(IWonder).IsAssignableFrom(_singlePage.GetType())) category = "Wonder of the World";
+			if (typeof(IWonder).IsAssignableFrom(_singlePage.GetType())) { category = "Wonder of the World"; titleX = 160; }
 			
-			_canvas.DrawText(page.Name.ToUpper(), 5, 5, 204, 20, TextAlign.Center);
-			_canvas.DrawText(category, 6, 7, 204, 36, TextAlign.Center);
+			_canvas.DrawText(page.Name.ToUpper(), 5, 5, titleX, 20, TextAlign.Center);
+			_canvas.DrawText(category, 6, 7, titleX, 36, TextAlign.Center);
 			if (page.Icon != null)
 				AddLayer(page.Icon, 23, 4);
 			
