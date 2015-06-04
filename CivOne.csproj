@@ -56,6 +56,7 @@
 		<Compile Include="src\Screens\*.cs" />
 		<Compile Include="src\Templates\*.cs" />
 		<Compile Include="src\Tiles\*.cs" />
+		<Compile Include="src\Units\*.cs" />
 		<Compile Include="src\Wonders\*.cs" />
 		<Compile Include="src\*.cs" />
 	</ItemGroup>
