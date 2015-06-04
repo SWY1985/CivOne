@@ -24,7 +24,7 @@ namespace CivOne.Screens
 	{
 		internal static ICivilopedia[] Advances = new ICivilopedia[0];
 		internal static ICivilopedia[] Improvements = Reflect.GetCivilopediaCityImprovements().OrderBy(x => x.Name).ToArray();
-		internal static ICivilopedia[] Units = new ICivilopedia[0];
+		internal static ICivilopedia[] Units = Reflect.GetCivilopediaUnits().OrderBy(x => x.Name).ToArray();
 		internal static ICivilopedia[] TerrainType = Reflect.GetCivilopediaTerrainTypes().OrderBy(x => x.Name).ToArray();
 		internal static ICivilopedia[] Misc = new ICivilopedia[0]; 
 		internal static ICivilopedia[] Complete = Reflect.GetCivilopediaAll().OrderBy(x => x.Name).ToArray();
@@ -33,10 +33,46 @@ namespace CivOne.Screens
 		private readonly ICivilopedia _singlePage;
 		
 		private bool _update = true;
+		private int _startIndex = 0;
 		
 		public override bool HasUpdate(uint gameTick)
 		{
-			if (_update) return false;
+			if (!_update) return false;
+			
+			if (_singlePage == null)
+			{
+				_canvas = new Picture(320, 200, Resources.WorldMapTiles.Image.Palette.Entries);
+				
+				_canvas.FillRectangle(14, 0, 0, 320, 200);
+				_canvas.FillRectangle(15, 60, 2, 200, 9);
+				_canvas.FillRectangle(15, 2, 14, 316, 184);
+				
+				_canvas.DrawText("ENCYCLOPEDIA of CIVILIZATION", 0, 5, 67, 4);
+				_canvas.DrawText("ENCYCLOPEDIA of CIVILIZATION", 0, 10, 66, 3);
+				
+				if (_pages.Length > 78)
+				{
+					_canvas.DrawText("MORE", 0, 12, 8, 4);
+				}
+				_canvas.DrawText("EXIT", 0, 12, 286, 4);
+				
+				int xx = 10, yy = 16;
+				int columns = (int)Math.Ceiling((float)_pages.Length / 26);
+				for (int i = _startIndex; i < _pages.Length; i++)
+				{
+					string name = _pages[i].Name;
+					if (columns >= 3 && name.Length >= 18) name = string.Format("{0}.", name.Substring(0, 17)); 
+					_canvas.DrawText(name, 0, 5, xx, yy);
+					
+					yy += 7;
+					if (yy <= 192) continue;
+					
+					xx += (columns < 3) ? 150 : 100;
+					if (xx >= 300) break;
+					yy = 16;
+				}
+			}
+			
 			_update = false;
 			return true;
 		}
@@ -59,7 +95,10 @@ namespace CivOne.Screens
 			{
 				if (args.X < 160)
 				{
-					// MORE
+					if (_pages.Length <= 78) return false;
+					_startIndex += 78;
+					if (_startIndex >= _pages.Length) _startIndex = 0;
+					_update = true;
 					return true;
 				}
 				else
@@ -73,7 +112,7 @@ namespace CivOne.Screens
 			int xx = 10, yy = 16;
 			int columns = (int)Math.Ceiling((float)_pages.Length / 26);
 			int columnWidth = (columns < 3) ? 150 : 100;
-			for (int i = 0; i < _pages.Length; i++)
+			for (int i = _startIndex; i < _pages.Length; i++)
 			{
 				if (args.X > xx + columnWidth) { i += 25; xx += columnWidth; continue; }
 				if (args.Y >= yy && args.Y <= yy + 7)
@@ -87,42 +126,10 @@ namespace CivOne.Screens
 				if (yy <= 192) continue;
 				
 				xx += (columns < 3) ? 150 : 100;
+				if (xx >= 300) break;
 				yy = 16;
 			}
 			return false;
-		}
-		
-		public Civilopedia(ICivilopedia[] pages)
-		{
-			Cursor = MouseCursor.Pointer;
-			
-			_pages = pages;
-			
-			_canvas = new Picture(320, 200, Resources.WorldMapTiles.Image.Palette.Entries);
-			
-			_canvas.FillRectangle(14, 0, 0, 320, 200);
-			_canvas.FillRectangle(15, 60, 2, 200, 9);
-			_canvas.FillRectangle(15, 2, 14, 316, 184);
-			
-			_canvas.DrawText("ENCYCLOPEDIA of CIVILIZATION", 0, 5, 67, 4);
-			_canvas.DrawText("ENCYCLOPEDIA of CIVILIZATION", 0, 10, 66, 3);
-			
-			_canvas.DrawText("EXIT", 0, 12, 286, 4);
-			
-			int xx = 10, yy = 16;
-			int columns = (int)Math.Ceiling((float)_pages.Length / 26);
-			for (int i = 0; i < _pages.Length; i++)
-			{
-				string name = _pages[i].Name;
-				if (columns >= 3 && name.Length >= 18) name = string.Format("{0}.", name.Substring(0, 17)); 
-				_canvas.DrawText(name, 0, 5, xx, yy);
-				
-				yy += 7;
-				if (yy <= 192) continue;
-				
-				xx += (columns < 3) ? 150 : 100;
-				yy = 16;
-			}
 		}
 		
 		private void DrawTerrainTextValues(ref int y, string name, string food = null, string production = null, string trade = null, string foodIrrigation = null, string productionMining = null, string tradeRoads = null)
@@ -245,8 +252,16 @@ namespace CivOne.Screens
 			_canvas.DrawText(string.Format("Defense bonus: +{0}%", defense), 6, 12, 12, yy);
 		}
 		
+		public Civilopedia(ICivilopedia[] pages)
+		{
+			Cursor = MouseCursor.Pointer;
+			
+			_pages = pages;
+		}
+		
 		public Civilopedia(ICivilopedia page)
 		{
+			_update = false;
 			_singlePage = page;
 			Color[] palette = Resources.WorldMapTiles.Image.Palette.Entries;
 			if (page.Icon != null) palette = page.Icon.Image.Palette.Entries;
@@ -285,6 +300,7 @@ namespace CivOne.Screens
 			if (typeof(ITile).IsAssignableFrom(_singlePage.GetType())) category = "Terrain Type";
 			if (typeof(IBuilding).IsAssignableFrom(_singlePage.GetType())) category = "City Improvement";
 			if (typeof(IWonder).IsAssignableFrom(_singlePage.GetType())) { category = "Wonder of the World"; titleX = 160; }
+			if (typeof(IUnit).IsAssignableFrom(_singlePage.GetType())) category = "Military Units";
 			
 			_canvas.DrawText(page.Name.ToUpper(), 5, 5, titleX, 20, TextAlign.Center);
 			_canvas.DrawText(category, 6, 7, titleX, 36, TextAlign.Center);
