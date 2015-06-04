@@ -252,26 +252,6 @@ namespace CivOne
 			Common.Quit();
 		}
 		
-		private void OnPaint(object sender, System.Windows.Forms.PaintEventArgs args)
-		{
-			args.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-			args.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
-			
-			if (Common.Screens.Length == 0) return;
-			
-			Color[] colours = TopScreen.Canvas.Image.Palette.Entries;
-			colours[0] = Color.Black;
-			
-			_canvas = new Picture(320, 200, colours);
-			foreach (IScreen screen in Common.Screens)
-			{
-				_canvas.AddLayer(screen.Canvas.Image, 0, 0);
-			}
-			
-			args.Graphics.Clear(Color.Black);
-			args.Graphics.DrawImage(_canvas.Image, CanvasX, CanvasY, CanvasWidth, CanvasHeight);
-		}
-		
 		private void OnMouseDown(object sender, ButtonPressEventArgs args)
 		{
 			MouseButtons buttons = MouseButtons.None;

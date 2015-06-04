@@ -255,12 +255,10 @@ namespace CivOne
 			
 			if (Common.Screens.Length == 0) return;
 			
-			_canvas = new Picture(320, 200, TopScreen.Canvas.Image.Palette.Entries);
-			if (Environment.OSVersion.Platform == PlatformID.Unix)
-			{
-				// This is a workaround/fix for Linux. It causes artifacts on Windows.
-				_canvas.FillRectangle(5, 0, 0, 320, 200);
-			}
+			Color[] colours = TopScreen.Canvas.Image.Palette.Entries;
+			colours[0] = Color.Black;
+			
+			_canvas = new Picture(320, 200, colours);
 			foreach (IScreen screen in Common.Screens)
 			{
 				_canvas.AddLayer(screen.Canvas.Image, 0, 0);
