@@ -26,7 +26,6 @@ namespace CivOne
 	internal class GtkWindow : IDisposable
 	{
 		private readonly Window _window;
-		private readonly GtkGraphics _graphics;
 		
 		private Picture _canvas = null;
 		
@@ -123,9 +122,33 @@ namespace CivOne
 			}
 		}
 		
+		private static Gdk.Pixbuf GetPixbuf(Bitmap image)
+		{
+			using (MemoryStream ms = new MemoryStream())
+			{
+				image.Save(ms, ImageFormat.Bmp);
+				ms.Position = 0;
+				Gdk.Pixbuf output = new Gdk.Pixbuf(ms);
+				return output;
+			}
+		}
+		
 		private void ScreenUpdate()
 		{
-			_graphics.Refresh();
+			if (Common.Screens.Length == 0) return;
+			
+			Color[] colours = TopScreen.Canvas.Image.Palette.Entries;
+			colours[0] = Color.Black;
+			
+			_canvas = new Picture(320, 200, colours);
+			foreach (IScreen screen in Common.Screens)
+			{
+				_canvas.AddLayer(screen.Canvas.Image, 0, 0);
+			}
+			
+			Gdk.Threads.Enter();
+			_window.QueueDraw();
+			Gdk.Threads.Leave();
 		}
 		
 		private void RefreshGame()
@@ -153,11 +176,13 @@ namespace CivOne
 				Console.WriteLine("Full screen off");
 				_window.Unfullscreen();
 				_fullScreen = false;
+				_forceUpdate = true;
 				return;
 			}
 			Console.WriteLine("Full screen on");
 			_window.Fullscreen();
 			_fullScreen = true;
+			_forceUpdate = true;
 		}
 		
 		private void SaveScreen()
@@ -208,7 +233,6 @@ namespace CivOne
 				}
 				if (args.Control && args.KeyCode == System.Windows.Forms.Keys.F5)
 				{
-					Console.WriteLine("TODO: Save screen");
 					SaveScreen();
 				}
 				args.SuppressKeyPress = true;
@@ -336,22 +360,29 @@ namespace CivOne
 			}
 		}
 		
+		protected void OnExpose(object sender, ExposeEventArgs args)
+		{
+			//args.Graphics.DrawImage(_canvas.Image, CanvasX, CanvasY, CanvasWidth, CanvasHeight);
+			
+			if (_canvas == null) return;
+			
+			Gdk.Pixbuf canvas = GetPixbuf(_canvas.Image).ScaleSimple(CanvasWidth, CanvasHeight, Gdk.InterpType.Nearest);
+			canvas.RenderToDrawable(args.Event.Window, _window.Style.BaseGC(StateType.Normal), 0, 0, CanvasX, CanvasY, -1, -1, Gdk.RgbDither.None, 0, 0);
+		}
+		
 		internal GtkWindow(string screen)
 		{
 			// Set Window properties
 			_window = new Window("CivOne");
 			_window.Resize(320 * Settings.Instance.ScaleX, 200 * Settings.Instance.ScaleY);
+			_window.AddEvents((int)(Gdk.EventMask.KeyPressMask | Gdk.EventMask.ButtonPressMask | Gdk.EventMask.ButtonReleaseMask | Gdk.EventMask.ButtonMotionMask));
+			_window.ModifyBg(StateType.Normal, Gdk.Color.Zero);
 			
-			_graphics = new GtkGraphics();
-			_graphics.AddEvents((int)(Gdk.EventMask.ButtonPressMask | Gdk.EventMask.ButtonReleaseMask | Gdk.EventMask.ButtonMotionMask));
-			_window.Add(_graphics);
-			_window.AddEvents((int)(Gdk.EventMask.KeyPressMask));
-			
-			// Set Window/Canvas events
+			// Set Window events
 			_window.DeleteEvent += OnDelete;
-			_graphics.Paint += OnPaint;
-			_graphics.ButtonPressEvent += OnMouseDown;
-			_graphics.ButtonReleaseEvent += OnMouseUp;
+			_window.ExposeEvent += OnExpose;
+			_window.ButtonPressEvent += OnMouseDown;
+			_window.ButtonReleaseEvent += OnMouseUp;
 			_window.KeyPressEvent += OnKeyPress;
 			
 			// Load the first screen

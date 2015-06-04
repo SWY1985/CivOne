@@ -44,7 +44,6 @@
 		<Reference Include="atk-sharp" />
 		<Reference Include="glib-sharp" />
 		<Reference Include="gdk-sharp" />
-		<Reference Include="gtk-dotnet" />
 		<Reference Include="gtk-sharp" />
 	</ItemGroup>
 	<ItemGroup>
