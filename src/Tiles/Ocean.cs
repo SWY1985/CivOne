@@ -16,10 +16,13 @@ namespace CivOne.Tiles
 {
 	internal class Ocean : BaseTile
 	{
-		public Ocean(int x = -1, int y = -1, bool special = false) : base(x, y, special)
+		public Ocean(int x, int y, bool special) : base(x, y, special)
 		{
 			Type = Terrain.Ocean;
 			Name = "Ocean";
+		}
+		public Ocean() : this(-1, -1, false)
+		{
 		}
 	}
 }

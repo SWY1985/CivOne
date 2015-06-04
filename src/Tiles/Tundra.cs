@@ -16,10 +16,13 @@ namespace CivOne.Tiles
 {
 	internal class Tundra : BaseTile
 	{
-		public Tundra(int x = -1, int y = -1, bool special = false) : base(x, y, special)
+		public Tundra(int x, int y, bool special) : base(x, y, special)
 		{
 			Type = Terrain.Tundra;
 			Name = "Tundra";
+		}
+		public Tundra() : this(-1, -1, false)
+		{
 		}
 	}
 }

@@ -16,10 +16,13 @@ namespace CivOne.Tiles
 {
 	internal class Plains : BaseTile
 	{
-		public Plains(int x = -1, int y = -1, bool special = false) : base(x, y, special)
+		public Plains(int x, int y, bool special) : base(x, y, special)
 		{
 			Type = Terrain.Plains;
 			Name = "Plains";
+		}
+		public Plains() : this(-1, -1, false)
+		{
 		}
 	}
 }

@@ -16,10 +16,13 @@ namespace CivOne.Tiles
 {
 	internal class River : BaseTile
 	{
-		public River(int x = -1, int y = -1) : base(x, y, false)
+		public River(int x, int y) : base(x, y, false)
 		{
 			Type = Terrain.River;
 			Name = "River";
+		}
+		public River() : this(-1, -1)
+		{
 		}
 	}
 }
