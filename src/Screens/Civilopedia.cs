@@ -11,6 +11,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using CivOne.Buildings;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
@@ -22,7 +23,7 @@ namespace CivOne.Screens
 	internal class Civilopedia : BaseScreen
 	{
 		internal static ICivilopedia[] Advances = new ICivilopedia[0];
-		internal static ICivilopedia[] Improvements = new ICivilopedia[0];
+		internal static ICivilopedia[] Improvements = new ICivilopedia[] { new Aqueduct(), new Bank(), new Barracks(), new Cathedral(), new CityWalls(), new Colosseum(), new Courthouse(), new Factory(), new Granary(), new HydroPlant(), new Library(), new Marketplace(), new MassTransit(), new MfgPlant(), new NuclearPlant(), new Palace(), new PowerPlant(), new RecyclingCenter(), new SdiDefense(), new Temple(), new University() };
 		internal static ICivilopedia[] Units = new ICivilopedia[0];
 		internal static ICivilopedia[] TerrainType = new ICivilopedia[] { new Arctic(), new Desert(), new Forest(), new Grassland(), new Hills(), new Jungle(), new Mountains(), new Ocean(), new Plains(), new River(), new Swamp(), new Tundra() };
 		internal static ICivilopedia[] Misc = new ICivilopedia[0]; 
@@ -31,6 +32,7 @@ namespace CivOne.Screens
 			get
 			{
 				ICivilopedia[] output = new ICivilopedia[0];
+				output = output.Concat(Improvements).ToArray();
 				output = output.Concat(TerrainType).ToArray();
 				return output.OrderBy(x => x.Name).ToArray();
 			}
@@ -248,14 +250,6 @@ namespace CivOne.Screens
 			
 			_canvas.DrawText(string.Format("Movement cost: {0} MP", move), 6, 12, 12, yy); yy += 8;
 			_canvas.DrawText(string.Format("Defense bonus: +{0}%", defense), 6, 12, 12, yy);
-			
-			/*
-			_canvas.DrawText(name, 6, 1, 12, (yy += 8));
-			if (food != null) _canvas.DrawText(string.Format(foodFormat, food), 6, 9, 16, (yy += 8));
-			if (production != null) _canvas.DrawText(string.Format(productionFormat, production), 6, 9, 16, (yy += 8));
-			if (trade != null) _canvas.DrawText(string.Format(tradeFormat, trade), 6, 9, 16, (yy += 8));
-			if (food == null && production == null && trade == null) _canvas.DrawText("nothing", 6, 9, 16, (yy += 8));
-			yy += 10;*/
 		}
 		
 		public Civilopedia(ICivilopedia page)
@@ -295,6 +289,8 @@ namespace CivOne.Screens
 			
 			string category = "(unknown)";
 			if (typeof(ITile).IsAssignableFrom(_singlePage.GetType())) category = "Terrain Type";
+			if (typeof(IBuilding).IsAssignableFrom(_singlePage.GetType())) category = "City Improvement";
+			if (typeof(IWonder).IsAssignableFrom(_singlePage.GetType())) category = "Wonder of the World";
 			
 			_canvas.DrawText(page.Name.ToUpper(), 5, 5, 204, 20, TextAlign.Center);
 			_canvas.DrawText(category, 6, 7, 204, 36, TextAlign.Center);
