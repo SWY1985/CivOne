@@ -52,6 +52,11 @@ namespace CivOne
 				yield return civilopedia;
 		}
 		
+		internal static IEnumerable<ICivilopedia> GetCivilopediaUnits()
+		{
+			return GetTypes<IUnit>();
+		}
+		
 		internal static IEnumerable<ICivilopedia> GetCivilopediaTerrainTypes()
 		{
 			return GetTypes<ITile>();
