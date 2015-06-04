@@ -7,18 +7,12 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using CivOne.Enums;
-
-namespace CivOne.Interfaces
+namespace CivOne.Enums
 {
-	public interface IUnit : ICivilopedia
+	public enum UnitClass
 	{
-		IAdvance RequiredTech { get; }
-		IAdvance ObsoleteTech { get; }
-		UnitClass Class { get; }
-		byte Price { get; }
-		byte Attack { get; }
-		byte Defense { get; }
-		byte Move { get; }
+		Land,
+		Water,
+		Air
 	}
 }
