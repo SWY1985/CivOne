@@ -22,7 +22,7 @@ namespace CivOne.Screens
 {
 	internal class Civilopedia : BaseScreen
 	{
-		internal static ICivilopedia[] Advances = new ICivilopedia[0];
+		internal static ICivilopedia[] Advances = Reflect.GetCivilopediaAdvances().OrderBy(x => x.Name).ToArray();
 		internal static ICivilopedia[] Improvements = Reflect.GetCivilopediaCityImprovements().OrderBy(x => x.Name).ToArray();
 		internal static ICivilopedia[] Units = Reflect.GetCivilopediaUnits().OrderBy(x => x.Name).ToArray();
 		internal static ICivilopedia[] TerrainType = Reflect.GetCivilopediaTerrainTypes().OrderBy(x => x.Name).ToArray();
@@ -301,6 +301,7 @@ namespace CivOne.Screens
 			if (typeof(IBuilding).IsAssignableFrom(_singlePage.GetType())) category = "City Improvement";
 			if (typeof(IWonder).IsAssignableFrom(_singlePage.GetType())) { category = "Wonder of the World"; titleX = 160; }
 			if (typeof(IUnit).IsAssignableFrom(_singlePage.GetType())) { category = "Military Units"; titleX = 224; }
+			if (typeof(IAdvance).IsAssignableFrom(_singlePage.GetType())) { category = "Civilization Advance"; titleX = 224; }
 			
 			_canvas.DrawText(page.Name.ToUpper(), 5, 5, titleX, 20, TextAlign.Center);
 			_canvas.DrawText(category, 6, 7, titleX, 36, TextAlign.Center);
