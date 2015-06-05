@@ -7,7 +7,6 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-#if GTK
 using Gtk;
 using System;
 using System.Drawing;
@@ -25,7 +24,7 @@ namespace CivOne
 {
 	internal class GtkWindow : IDisposable
 	{
-		private readonly Window _window;
+		private readonly Gtk.Window _window;
 		
 		private Picture _canvas = null;
 		
@@ -350,10 +349,19 @@ namespace CivOne
 			canvas.RenderToDrawable(args.Event.Window, _window.Style.BaseGC(StateType.Normal), 0, 0, CanvasX, CanvasY, -1, -1, Gdk.RgbDither.None, 0, 0);
 		}
 		
+		internal void Run()
+		{
+			Gtk.Application.Run();
+		}
+		
 		internal GtkWindow(string screen)
 		{
+			Gdk.Threads.Init();
+			Gtk.Application.Init();
+			Gdk.Threads.Enter();
+			
 			// Set Window properties
-			_window = new Window("CivOne");
+			_window = new Gtk.Window("CivOne");
 			_window.Resize(320 * Settings.Instance.ScaleX, 200 * Settings.Instance.ScaleY);
 			_window.AddEvents((int)(Gdk.EventMask.KeyPressMask | Gdk.EventMask.ButtonPressMask | Gdk.EventMask.ButtonReleaseMask | Gdk.EventMask.ButtonMotionMask));
 			_window.ModifyBg(StateType.Normal, Gdk.Color.Zero);
@@ -395,8 +403,8 @@ namespace CivOne
 				TickThread.Abort();
 			}
 			
+			Gdk.Threads.Leave();
 			Gtk.Application.Quit();
 		}
 	}
 }
-#endif
