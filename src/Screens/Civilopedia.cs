@@ -263,8 +263,8 @@ namespace CivOne.Screens
 		{
 			_update = false;
 			_singlePage = page;
-			Color[] palette = Resources.WorldMapTiles.Image.Palette.Entries;
-			if (page.Icon != null) palette = page.Icon.Image.Palette.Entries;
+			Color[] palette = Resources.Instance.LoadPIC("SP257").Image.Palette.Entries;
+			if (page.Icon != null) palette = Resources.PaletteCombine(palette, page.Icon.Image.Palette.Entries);
 			_canvas = new Picture(320, 200, palette);
 			
 			int border = Common.Random.Next(2);
@@ -295,17 +295,17 @@ namespace CivOne.Screens
 			AddLayer(borders[2], 0, 192);
 			AddLayer(borders[3], 312, 192);
 			
-			int titleX = 204;
+			int titleX = 204, iconX = 8, iconY = 8;
 			string category = "(unknown)";
-			if (typeof(ITile).IsAssignableFrom(_singlePage.GetType())) category = "Terrain Type";
+			if (typeof(ITile).IsAssignableFrom(_singlePage.GetType())) { category = "Terrain Type"; iconX = 23; iconY = 4; }
 			if (typeof(IBuilding).IsAssignableFrom(_singlePage.GetType())) category = "City Improvement";
 			if (typeof(IWonder).IsAssignableFrom(_singlePage.GetType())) { category = "Wonder of the World"; titleX = 160; }
-			if (typeof(IUnit).IsAssignableFrom(_singlePage.GetType())) category = "Military Units";
+			if (typeof(IUnit).IsAssignableFrom(_singlePage.GetType())) { category = "Military Units"; titleX = 224; }
 			
 			_canvas.DrawText(page.Name.ToUpper(), 5, 5, titleX, 20, TextAlign.Center);
 			_canvas.DrawText(category, 6, 7, titleX, 36, TextAlign.Center);
 			if (page.Icon != null)
-				AddLayer(page.Icon, 23, 4);
+				AddLayer(page.Icon, iconX, iconY);
 			
 			DrawTerrainText();
 		}

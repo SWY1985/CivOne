@@ -22,6 +22,7 @@ namespace CivOne.Units
 			Name = "Caravan";
 			RequiredTech = null;
 			ObsoleteTech = null;
+			SetIcon('E', 0, 1);
 		}
 	}
 }

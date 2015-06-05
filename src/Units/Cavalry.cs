@@ -22,6 +22,7 @@ namespace CivOne.Units
 			Name = "Cavalry";
 			RequiredTech = null;
 			ObsoleteTech = null;
+			SetIcon('C', 1, 1);
 		}
 	}
 }

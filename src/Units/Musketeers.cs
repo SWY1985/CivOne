@@ -22,6 +22,7 @@ namespace CivOne.Units
 			Name = "Musketeers";
 			RequiredTech = null;
 			ObsoleteTech = null;
+			SetIcon('A', 0, 0);
 		}
 	}
 }

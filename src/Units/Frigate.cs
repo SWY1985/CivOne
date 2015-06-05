@@ -22,6 +22,7 @@ namespace CivOne.Units
 			Name = "Frigate";
 			RequiredTech = null;
 			ObsoleteTech = null;
+			SetIcon('B', 1, 0);
 		}
 	}
 }

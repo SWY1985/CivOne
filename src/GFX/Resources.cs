@@ -173,6 +173,17 @@ namespace CivOne.GFX
 			}
 		}
 		
+		public static Color[] PaletteCombine(Color[] palette1, Color[] palette2)
+		{
+			Color invisible = Color.FromArgb(252, 84, 252);
+			for (int i = 0; i < palette2.Length; i++)
+			{
+				if (palette2[i] == invisible) continue;
+				palette1[i] = palette2[i];
+			}
+			return palette1;
+		}
+		
 		public Bitmap GetTile(ITile tile)
 		{
 			if (Settings.Instance.GraphicsMode == GraphicsMode.Graphics16)

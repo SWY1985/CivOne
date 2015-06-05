@@ -22,6 +22,7 @@ namespace CivOne.Units
 			Name = "Riflemen";
 			RequiredTech = null;
 			ObsoleteTech = null;
+			SetIcon('D', 1, 2);
 		}
 	}
 }

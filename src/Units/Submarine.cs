@@ -22,6 +22,7 @@ namespace CivOne.Units
 			Name = "Submarine";
 			RequiredTech = null;
 			ObsoleteTech = null;
+			SetIcon('C', 1, 2);
 		}
 	}
 }

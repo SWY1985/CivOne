@@ -22,6 +22,7 @@ namespace CivOne.Units
 			Name = "Phalanx";
 			RequiredTech = null;
 			ObsoleteTech = null;
+			SetIcon('E', 0, 0);
 		}
 	}
 }

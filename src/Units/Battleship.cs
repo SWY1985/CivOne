@@ -22,6 +22,7 @@ namespace CivOne.Units
 			Name = "Battleship";
 			RequiredTech = null;
 			ObsoleteTech = null;
+			SetIcon('A', 1, 0);
 		}
 	}
 }

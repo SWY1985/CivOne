@@ -22,6 +22,7 @@ namespace CivOne.Units
 			Name = "Sail";
 			RequiredTech = null;
 			ObsoleteTech = null;
+			SetIcon('B', 1, 1);
 		}
 	}
 }

@@ -22,6 +22,7 @@ namespace CivOne.Units
 			Name = "Legion";
 			RequiredTech = null;
 			ObsoleteTech = null;
+			SetIcon('E', 1, 0);
 		}
 	}
 }

@@ -22,6 +22,7 @@ namespace CivOne.Units
 			Name = "Knights";
 			RequiredTech = null;
 			ObsoleteTech = null;
+			SetIcon('E', 1, 1);
 		}
 	}
 }
