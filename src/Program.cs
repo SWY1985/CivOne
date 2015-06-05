@@ -7,18 +7,35 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-#if GTK
-using Gtk;
-#endif
 using System;
-#if !GTK
 using System.Windows.Forms;
-#endif
 
 namespace CivOne
 {
 	class Program
 	{
+		private static void RunGtk(string screen)
+		{
+			using (GtkWindow window = new GtkWindow(screen))
+			{
+				window.Run();
+			}
+			/*
+			Gdk.Threads.Init();
+			Gtk.Application.Init();
+			using (GtkWindow window = new GtkWindow(screen))
+			{
+				Gdk.Threads.Enter();
+				Gtk.Application.Run();
+				Gdk.Threads.Leave();
+			}*/
+		}
+		
+		private static void RunForms(string screen)
+		{
+			Application.Run(new Window(screen));
+		}
+		
 		[STAThread]
 		private static void Main(string[] args)
 		{
@@ -37,18 +54,19 @@ namespace CivOne
 			}
 			
 			Console.WriteLine("Game Start");
-#if GTK
-			Gdk.Threads.Init();
-			Application.Init();
-			using (GtkWindow window = new GtkWindow(screen))
+			
+			switch (Environment.OSVersion.Platform)
 			{
-				Gdk.Threads.Enter();
-				Application.Run();
-				Gdk.Threads.Leave();
+				case PlatformID.Unix:
+				case PlatformID.MacOSX:
+					RunGtk(screen);
+					break;
+				default:
+					RunGtk(screen);
+					//RunForms(screen);
+					break;
 			}
-#else
-			Application.Run(new Window(screen));
-#endif
+			
 			Console.WriteLine("Game End");
 		}
 	}
