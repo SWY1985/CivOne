@@ -22,6 +22,7 @@ namespace CivOne.Units
 			Name = "Armor";
 			RequiredTech = null;
 			ObsoleteTech = null;
+			SetIcon('D', 0, 1);
 		}
 	}
 }

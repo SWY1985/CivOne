@@ -22,6 +22,7 @@ namespace CivOne.Units
 			Name = "Chariot";
 			RequiredTech = null;
 			ObsoleteTech = null;
+			SetIcon('D', 0, 2);
 		}
 	}
 }

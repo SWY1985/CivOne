@@ -22,6 +22,7 @@ namespace CivOne.Units
 			Name = "Settlers";
 			RequiredTech = null;
 			ObsoleteTech = null;
+			SetIcon('D', 1, 1);
 		}
 	}
 }

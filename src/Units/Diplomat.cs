@@ -22,6 +22,7 @@ namespace CivOne.Units
 			Name = "Diplomat";
 			RequiredTech = null;
 			ObsoleteTech = null;
+			SetIcon('C', 1, 0);
 		}
 	}
 }

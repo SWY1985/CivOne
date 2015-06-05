@@ -22,6 +22,7 @@ namespace CivOne.Units
 			Name = "Mech. Inf.";
 			RequiredTech = null;
 			ObsoleteTech = null;
+			SetIcon('C', 0, 0);
 		}
 	}
 }

@@ -22,6 +22,7 @@ namespace CivOne.Units
 			Name = "Cannon";
 			RequiredTech = null;
 			ObsoleteTech = null;
+			SetIcon('B', 1, 2);
 		}
 	}
 }

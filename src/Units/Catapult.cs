@@ -22,6 +22,7 @@ namespace CivOne.Units
 			Name = "Catapult";
 			RequiredTech = null;
 			ObsoleteTech = null;
+			SetIcon('B', 0, 2);
 		}
 	}
 }

@@ -22,6 +22,7 @@ namespace CivOne.Units
 			Name = "Ironclad";
 			RequiredTech = null;
 			ObsoleteTech = null;
+			SetIcon('A', 0, 1);
 		}
 	}
 }

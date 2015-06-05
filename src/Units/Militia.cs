@@ -22,6 +22,7 @@ namespace CivOne.Units
 			Name = "Militia";
 			RequiredTech = null;
 			ObsoleteTech = null;
+			SetIcon('C', 0, 2);
 		}
 	}
 }

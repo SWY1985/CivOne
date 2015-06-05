@@ -22,6 +22,7 @@ namespace CivOne.Units
 			Name = "Artillery";
 			RequiredTech = null;
 			ObsoleteTech = null;
+			SetIcon('B', 0, 0);
 		}
 	}
 }

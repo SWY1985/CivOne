@@ -22,6 +22,7 @@ namespace CivOne.Units
 			Name = "Cruiser";
 			RequiredTech = null;
 			ObsoleteTech = null;
+			SetIcon('C', 0, 1);
 		}
 	}
 }

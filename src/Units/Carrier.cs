@@ -22,6 +22,7 @@ namespace CivOne.Units
 			Name = "Carrier";
 			RequiredTech = null;
 			ObsoleteTech = null;
+			SetIcon('D', 1, 0);
 		}
 	}
 }
