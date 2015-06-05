@@ -62,8 +62,7 @@ namespace CivOne
 					RunGtk(screen);
 					break;
 				default:
-					RunGtk(screen);
-					//RunForms(screen);
+					RunForms(screen);
 					break;
 			}
 			
