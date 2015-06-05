@@ -13,5 +13,7 @@ namespace CivOne.Interfaces
 {
 	public interface IAdvance : ICivilopedia
 	{
+		byte Id { get; }
+		IAdvance[] RequiredTechs { get; }
 	}
 }
