@@ -220,6 +220,13 @@ namespace CivOne
 			_forceUpdate = TopScreen.MouseUp(args);
 		}
 		
+		private void SendMouseDrag(MouseEventArgs args)
+		{
+			if (TopScreen == null);
+			ScaleMouseEventArgs(ref args);
+			_forceUpdate = TopScreen.MouseDrag(args);
+		}
+		
 		private void SendKeyDown(System.Windows.Forms.Keys keys)
 		{
 			System.Windows.Forms.KeyEventArgs args = new System.Windows.Forms.KeyEventArgs(keys);
@@ -233,6 +240,11 @@ namespace CivOne
 				if (args.Control && args.KeyCode == System.Windows.Forms.Keys.F5)
 				{
 					SaveScreen();
+				}
+				if (args.Alt && args.KeyCode == System.Windows.Forms.Keys.Q)
+				{
+					Common.Quit();
+					Dispose();
 				}
 				args.SuppressKeyPress = true;
 				return;
@@ -273,6 +285,22 @@ namespace CivOne
 			SendMouseUp(new MouseEventArgs(buttons, 1, (int)args.Event.X, (int)args.Event.Y, 0));
 		}
 		
+		private void OnMouseDrag(MotionNotifyEventArgs args)
+		{
+			MouseButtons buttons = MouseButtons.None;
+			if ((args.Event.State & Gdk.ModifierType.Button1Mask) > 0) buttons |= MouseButtons.Left;
+			if ((args.Event.State & Gdk.ModifierType.Button3Mask) > 0) buttons |= MouseButtons.Right;
+			
+			SendMouseDrag(new MouseEventArgs(buttons, 1, (int)args.Event.X, (int)args.Event.Y, 0));
+		}
+		
+		private void OnMouseMove(object sender, MotionNotifyEventArgs args)
+		{
+			if ((args.Event.State & (Gdk.ModifierType.Button1Mask | Gdk.ModifierType.Button3Mask)) > 0) OnMouseDrag(args);
+			
+			// TODO: Implement cursor
+		}
+		
 		[GLib.ConnectBefore()]
 		private void OnKeyPress(object sender, Gtk.KeyPressEventArgs args)
 		{
@@ -280,7 +308,7 @@ namespace CivOne
 			if ((args.Event.State & Gdk.ModifierType.ControlMask) > 0) modifier |= System.Windows.Forms.Keys.Control;
 			if ((args.Event.State & Gdk.ModifierType.ShiftMask) > 0) modifier |= System.Windows.Forms.Keys.Shift;
 			if ((args.Event.State & Gdk.ModifierType.Mod1Mask) > 0) modifier |= System.Windows.Forms.Keys.Alt;
-						
+			
 			switch (args.Event.Key)
 			{
 				case Gdk.Key.Return:
@@ -363,7 +391,7 @@ namespace CivOne
 			// Set Window properties
 			_window = new Gtk.Window("CivOne");
 			_window.Resize(320 * Settings.Instance.ScaleX, 200 * Settings.Instance.ScaleY);
-			_window.AddEvents((int)(Gdk.EventMask.KeyPressMask | Gdk.EventMask.ButtonPressMask | Gdk.EventMask.ButtonReleaseMask | Gdk.EventMask.ButtonMotionMask));
+			_window.AddEvents((int)(Gdk.EventMask.KeyPressMask | Gdk.EventMask.ButtonPressMask | Gdk.EventMask.ButtonReleaseMask | Gdk.EventMask.ButtonMotionMask | Gdk.EventMask.PointerMotionMask));
 			_window.ModifyBg(StateType.Normal, Gdk.Color.Zero);
 			
 			// Set Window events
@@ -371,6 +399,7 @@ namespace CivOne
 			_window.ExposeEvent += OnExpose;
 			_window.ButtonPressEvent += OnMouseDown;
 			_window.ButtonReleaseEvent += OnMouseUp;
+			_window.MotionNotifyEvent += OnMouseMove;
 			_window.KeyPressEvent += OnKeyPress;
 			
 			// Load the first screen
