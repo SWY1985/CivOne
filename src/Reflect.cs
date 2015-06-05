@@ -34,6 +34,11 @@ namespace CivOne
 			}
 		}
 		
+		internal static IEnumerable<IAdvance> GetAdvances()
+		{
+			return GetTypes<IAdvance>();
+		}
+		
 		internal static IEnumerable<ICivilopedia> GetCivilopediaAll()
 		{
 			return GetTypes<ICivilopedia>();
