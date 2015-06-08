@@ -34,6 +34,45 @@ namespace CivOne.Screens
 		
 		private bool _update = true;
 		private int _startIndex = 0;
+		private byte _pageNumber = 1;
+		
+		private void DrawPageTitle()
+		{
+			if (_singlePage == null) return;
+			
+			int titleX = 204, iconX = 8, iconY = 8;
+			string category = "(unknown)";
+			if (typeof(ITile).IsAssignableFrom(_singlePage.GetType())) { category = "Terrain Type"; iconX = 23; iconY = 4; }
+			if (typeof(IBuilding).IsAssignableFrom(_singlePage.GetType())) category = "City Improvement";
+			if (typeof(IWonder).IsAssignableFrom(_singlePage.GetType())) { category = "Wonder of the World"; titleX = 160; }
+			if (typeof(IUnit).IsAssignableFrom(_singlePage.GetType())) { category = "Military Units"; titleX = 224; }
+			if (typeof(IAdvance).IsAssignableFrom(_singlePage.GetType())) { category = "Civilization Advance"; titleX = 224; }
+			
+			_canvas.DrawText(_singlePage.Name.ToUpper(), 5, 5, titleX, 20, TextAlign.Center);
+			_canvas.DrawText(category, 6, 7, titleX, 36, TextAlign.Center);
+			if (_singlePage.Icon != null)
+				AddLayer(_singlePage.Icon, iconX, iconY);
+		}
+		
+		private void DrawPage(byte pageNumber)
+		{
+			if (_singlePage == null) return;
+			
+			DrawTerrainText();
+			AddLayer(_singlePage.DrawPage(pageNumber));
+		}
+		
+		private bool NextPage()
+		{
+			if (_singlePage != null && _pageNumber < _singlePage.PageCount)
+			{
+				_canvas.FillRectangle(15, 8, 8, 304, 184);
+				DrawPageTitle();
+				DrawPage(++_pageNumber);
+				return true;
+			}
+			return false;
+		}
 		
 		public override bool HasUpdate(uint gameTick)
 		{
@@ -79,6 +118,10 @@ namespace CivOne.Screens
 		
 		public override bool KeyDown(KeyEventArgs args)
 		{
+			if (_singlePage != null && NextPage())
+			{
+				return true;
+			}
 			Destroy();
 			return true;
 		}
@@ -87,7 +130,7 @@ namespace CivOne.Screens
 		{
 			if (_singlePage != null)
 			{
-				Destroy();
+				if (!NextPage()) Destroy();
 				return true;
 			}
 			
@@ -279,7 +322,7 @@ namespace CivOne.Screens
 				}
 			}
 			
-			_canvas.FillRectangle((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 16 : 15), 0, 0, 320, 200);
+			_canvas.FillRectangle(15, 0, 0, 320, 200);
 			for (int x = 8; x < 312; x += 8)
 			{
 				AddLayer(borders[4], x, 0);
@@ -295,20 +338,8 @@ namespace CivOne.Screens
 			AddLayer(borders[2], 0, 192);
 			AddLayer(borders[3], 312, 192);
 			
-			int titleX = 204, iconX = 8, iconY = 8;
-			string category = "(unknown)";
-			if (typeof(ITile).IsAssignableFrom(_singlePage.GetType())) { category = "Terrain Type"; iconX = 23; iconY = 4; }
-			if (typeof(IBuilding).IsAssignableFrom(_singlePage.GetType())) category = "City Improvement";
-			if (typeof(IWonder).IsAssignableFrom(_singlePage.GetType())) { category = "Wonder of the World"; titleX = 160; }
-			if (typeof(IUnit).IsAssignableFrom(_singlePage.GetType())) { category = "Military Units"; titleX = 224; }
-			if (typeof(IAdvance).IsAssignableFrom(_singlePage.GetType())) { category = "Civilization Advance"; titleX = 224; }
-			
-			_canvas.DrawText(page.Name.ToUpper(), 5, 5, titleX, 20, TextAlign.Center);
-			_canvas.DrawText(category, 6, 7, titleX, 36, TextAlign.Center);
-			if (page.Icon != null)
-				AddLayer(page.Icon, iconX, iconY);
-			
-			DrawTerrainText();
+			DrawPageTitle();
+			DrawPage(_pageNumber);
 		}
 	}
 }

@@ -35,6 +35,17 @@ namespace CivOne.Templates
 		}
 		
 		public string Name { get; protected set; }
+		public byte PageCount
+		{
+			get
+			{
+				return 2;
+			}
+		}
+		public Picture DrawPage(byte pageNumber)
+		{
+			return new Picture(320, 200);
+		}
 		
 		protected Advance Type { get; set; }
 		

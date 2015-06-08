@@ -158,6 +158,35 @@ namespace CivOne.GFX
 			return output;
 		}
 		
+		internal string[] GetCivilopediaText(string name)
+		{
+			List<string> textLines = new List<string>();
+			string text = string.Join(" ", TextFile.Instance.GetGameText(name));
+			string t = "";
+			while (text.Length > 0)
+			{
+				if (text.IndexOf(' ') == -1)
+				{
+					if (t.Length > 0 && GetTextSize(6, string.Join(" ", t, text)).Width < 280)
+						text = string.Join(" ", t, text);
+					else if (t.Length > 0)
+						textLines.Add(t);
+					t = text;
+					text = "";
+				}
+				else if (GetTextSize(6, t + text.Substring(0, text.IndexOf(' '))).Width < 292)
+				{
+					if (t.Length > 0) t += " ";
+					t += text.Substring(0, text.IndexOf(' '));
+					text = text.Substring(text.IndexOf(' ')).Trim();
+					continue;
+				}
+				textLines.Add(t);
+				t = "";
+			}
+			return textLines.ToArray();
+		}
+		
 		private static Picture _worldMapTiles;
 		public static Picture WorldMapTiles
 		{
