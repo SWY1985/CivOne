@@ -15,6 +15,7 @@ namespace CivOne.Interfaces
 	public interface IUnit : ICivilopedia
 	{
 		IAdvance RequiredTech { get; }
+		IWonder RequiredWonder { get; }
 		IAdvance ObsoleteTech { get; }
 		UnitClass Class { get; }
 		byte Price { get; }
