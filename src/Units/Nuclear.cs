@@ -7,9 +7,11 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Interfaces;
 using CivOne.Templates;
+using CivOne.Wonders;
 
 namespace CivOne.Units
 {
@@ -20,7 +22,8 @@ namespace CivOne.Units
 			Class = UnitClass.Air;
 			Type = Unit.Nuclear;
 			Name = "Nuclear";
-			RequiredTech = null;
+			RequiredTech = new Rocketry();
+			RequiredWonder = new ManhattanProject();
 			ObsoleteTech = null;
 			SetIcon('D', 0, 0);
 		}
