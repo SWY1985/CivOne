@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using CivOne.Enums;
+using CivOne.GFX;
 
 namespace CivOne.Interfaces
 {
@@ -20,5 +21,10 @@ namespace CivOne.Interfaces
 		byte Attack { get; }
 		byte Defense { get; }
 		byte Move { get; }
+		int X { get; set; }
+		int Y { get; set; }
+		byte Owner { get; set; }
+		byte Status { get; set; }
+		Picture GetUnit(byte colour);
 	}
 }
