@@ -7,16 +7,17 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using CivOne.Advances;
 using CivOne.Templates;
 
-namespace CivOne.Buildings
+namespace CivOne.Wonders
 {
 	internal class ManhattanProject : BaseWonder
 	{
 		public ManhattanProject() : base(60)
 		{
 			Name = "Manhattan Project";
-			RequiredTech = null;
+			RequiredTech = new NuclearFission();
 			ObsoleteTech = null;
 		}
 	}

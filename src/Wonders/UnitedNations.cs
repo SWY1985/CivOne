@@ -9,7 +9,7 @@
 
 using CivOne.Templates;
 
-namespace CivOne.Buildings
+namespace CivOne.Wonders
 {
 	internal class UnitedNations : BaseWonder
 	{
