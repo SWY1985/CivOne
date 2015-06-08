@@ -65,6 +65,17 @@ namespace CivOne.Templates
 			{
 				string requiredTech = "";
 				if (RequiredTech != null) requiredTech = RequiredTech.Name;
+				if (RequiredWonder != null && RequiredWonder.RequiredTech != null)
+				{
+					if (RequiredTech == null)
+					{
+						requiredTech = RequiredWonder.RequiredTech.Name;
+					}
+					else
+					{
+						requiredTech = string.Join(" and ", requiredTech, RequiredWonder.RequiredTech.Name);
+					}
+				}
 				output.DrawText(string.Format("Requires {0}", requiredTech), 6, 9, 100, 120);
 				output.DrawText(string.Format("Cost: {0}0 resources.", Price), 6, 9, 100, 129);
 				output.DrawText(string.Format("Attack Strength: {0}", Attack), 6, 12, 100, 138);
@@ -76,6 +87,7 @@ namespace CivOne.Templates
 		}
 		
 		public IAdvance RequiredTech { get; protected set; }
+		public IWonder RequiredWonder { get; protected set; }
 		public IAdvance ObsoleteTech { get; protected set; }
 		public UnitClass Class { get; protected set; }
 		public Unit Type { get; protected set; }
@@ -127,6 +139,7 @@ namespace CivOne.Templates
 			Y = -1;
 			Owner = 0;
 			Status = 0;
+			RequiredWonder = null;
 		}
 	}
 }
