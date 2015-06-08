@@ -15,5 +15,7 @@ namespace CivOne.Interfaces
 	{
 		string Name { get; }
 		Picture Icon { get; }
+		byte PageCount { get; }
+		Picture DrawPage(byte pageNumber);
 	}
 }

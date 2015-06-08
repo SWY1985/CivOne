@@ -14,6 +14,7 @@ namespace CivOne.Templates
 {
 	internal abstract class BaseWonder : IWonder
 	{
+		public string Name { get; protected set; }
 		public virtual Picture Icon
 		{
 			get
@@ -21,7 +22,18 @@ namespace CivOne.Templates
 				return null;
 			}
 		}
-		public string Name { get; protected set; }
+		public byte PageCount
+		{
+			get
+			{
+				return 1;
+			}
+		}
+		public Picture DrawPage(byte pageNumber)
+		{
+			return new Picture(320, 200);
+		}
+		
 		public IAdvance RequiredTech { get; protected set; }
 		public IAdvance ObsoleteTech { get; protected set; }
 		public byte Price { get; protected set; }

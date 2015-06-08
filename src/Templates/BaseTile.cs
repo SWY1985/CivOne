@@ -24,6 +24,18 @@ namespace CivOne.Templates
 		}
 		public Terrain Type { get; protected set; }
 		public string Name { get; protected set; }
+		public byte PageCount
+		{
+			get
+			{
+				return 1;
+			}
+		}
+		public Picture DrawPage(byte pageNumber)
+		{
+			return new Picture(320, 200);
+		}
+		
 		public int X { get; private set; }
 		public int Y { get; private set; }
 		public bool Special { get; private set; }
