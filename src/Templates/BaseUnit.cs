@@ -83,6 +83,10 @@ namespace CivOne.Templates
 		public byte Attack { get; protected set; }
 		public byte Defense { get; protected set; }
 		public byte Move { get; protected set; }
+		public int X { get; set; }
+		public int Y { get; set; }
+		public byte Owner { get; set; }
+		public byte Status { get; set; }
 		
 		protected void SetIcon(char page, int col, int row)
 		{
@@ -95,16 +99,15 @@ namespace CivOne.Templates
 			Icon = _iconCache[(int)Type];
 		}
 		
-		protected Picture GetUnit(byte colour)
+		public Picture GetUnit(byte colour)
 		{
-			//0, 160
 			int unitId = (int)Type;
 			if (_unitCache[unitId, colour] == null)
 			{
 				int xx = (unitId % 20) * 16;
 				int yy = unitId < 20 ? 160 : 176;
 				
-				Bitmap image = (Bitmap)Resources.Instance.GetPart((Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? "SP257" : "SPRITES"), xx, yy, 16, 16);
+				Bitmap image = (Bitmap)Resources.Instance.GetPart((Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? "SP257" : "SPRITES"), xx, yy, 16, 16).Clone();
 				if (Common.ColourLight[colour] == 15) Picture.ReplaceColours(image, new byte[] { 3, 15, 10, 2 }, new byte[] { 0, 11, Common.ColourLight[colour], Common.ColourDark[colour] });
 				else if (Common.ColourDark[colour] == 8) Picture.ReplaceColours(image, new byte[] { 3, 7, 10, 2 }, new byte[] { 0, 3, Common.ColourLight[colour], Common.ColourDark[colour] });
 				else Picture.ReplaceColours(image, new byte[] { 3, 10, 2 }, new byte[] { 0, Common.ColourLight[colour], Common.ColourDark[colour] });
@@ -120,6 +123,10 @@ namespace CivOne.Templates
 			Attack = attack;
 			Defense = defense;
 			Move = move;
+			X = -1;
+			Y = -1;
+			Owner = 0;
+			Status = 0;
 		}
 	}
 }
