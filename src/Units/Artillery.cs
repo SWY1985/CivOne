@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Interfaces;
 using CivOne.Templates;
@@ -20,7 +21,7 @@ namespace CivOne.Units
 			Class = UnitClass.Land;
 			Type = Unit.Artillery;
 			Name = "Artillery";
-			RequiredTech = null;
+			RequiredTech = new Robotics();
 			ObsoleteTech = null;
 			SetIcon('B', 0, 0);
 		}
