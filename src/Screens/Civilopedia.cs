@@ -46,7 +46,7 @@ namespace CivOne.Screens
 			if (typeof(IBuilding).IsAssignableFrom(_singlePage.GetType())) { category = "City Improvement"; iconX = 36; iconY = 16; }
 			if (typeof(IWonder).IsAssignableFrom(_singlePage.GetType())) { category = "Wonder of the World"; titleX = 160; }
 			if (typeof(IUnit).IsAssignableFrom(_singlePage.GetType())) { category = "Military Units"; titleX = 224; }
-			if (typeof(IAdvance).IsAssignableFrom(_singlePage.GetType())) { category = "Civilization Advance"; titleX = 224; }
+			if (typeof(IAdvance).IsAssignableFrom(_singlePage.GetType())) { category = "Civilization Advance"; }
 			
 			_canvas.DrawText(_singlePage.Name.ToUpper(), 5, 5, titleX, 20, TextAlign.Center);
 			_canvas.DrawText(category, 6, 7, titleX, 36, TextAlign.Center);
