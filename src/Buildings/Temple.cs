@@ -17,6 +17,7 @@ namespace CivOne.Buildings
 		{
 			Name = "Temple";
 			RequiredTech = null;
+			SetIcon(0, 2, true);
 		}
 	}
 }

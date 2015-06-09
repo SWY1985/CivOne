@@ -17,6 +17,7 @@ namespace CivOne.Buildings
 		{
 			Name = "Mass Transit";
 			RequiredTech = null;
+			SetIcon(2, 3, false);
 		}
 	}
 }

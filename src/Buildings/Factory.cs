@@ -17,6 +17,7 @@ namespace CivOne.Buildings
 		{
 			Name = "Factory";
 			RequiredTech = null;
+			SetIcon(3, 1, true);
 		}
 	}
 }

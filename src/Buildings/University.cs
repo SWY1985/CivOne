@@ -17,6 +17,7 @@ namespace CivOne.Buildings
 		{
 			Name = "University";
 			RequiredTech = null;
+			SetIcon(2, 2, false);
 		}
 	}
 }

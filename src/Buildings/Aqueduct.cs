@@ -17,6 +17,7 @@ namespace CivOne.Buildings
 		{
 			Name = "Aqueduct";
 			RequiredTech = null;
+			SetIcon(1, 3, false);
 		}
 	}
 }

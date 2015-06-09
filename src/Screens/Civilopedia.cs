@@ -43,7 +43,7 @@ namespace CivOne.Screens
 			int titleX = 204, iconX = 8, iconY = 8;
 			string category = "(unknown)";
 			if (typeof(ITile).IsAssignableFrom(_singlePage.GetType())) { category = "Terrain Type"; iconX = 23; iconY = 4; }
-			if (typeof(IBuilding).IsAssignableFrom(_singlePage.GetType())) category = "City Improvement";
+			if (typeof(IBuilding).IsAssignableFrom(_singlePage.GetType())) { category = "City Improvement"; iconX = 36; iconY = 16; }
 			if (typeof(IWonder).IsAssignableFrom(_singlePage.GetType())) { category = "Wonder of the World"; titleX = 160; }
 			if (typeof(IUnit).IsAssignableFrom(_singlePage.GetType())) { category = "Military Units"; titleX = 224; }
 			if (typeof(IAdvance).IsAssignableFrom(_singlePage.GetType())) { category = "Civilization Advance"; titleX = 224; }
@@ -307,7 +307,7 @@ namespace CivOne.Screens
 			_update = false;
 			_singlePage = page;
 			Color[] palette = Resources.Instance.LoadPIC("SP257").Image.Palette.Entries;
-			if (page.Icon != null) palette = Resources.PaletteCombine(palette, page.Icon.Image.Palette.Entries);
+			if (page.Icon != null) palette = Resources.PaletteCombine(palette, page.Icon.Image.Palette.Entries, 16);
 			_canvas = new Picture(320, 200, palette);
 			
 			int border = Common.Random.Next(2);

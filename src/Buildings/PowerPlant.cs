@@ -7,16 +7,29 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using CivOne.GFX;
 using CivOne.Templates;
 
 namespace CivOne.Buildings
 {
 	internal class PowerPlant : BaseBuilding
 	{
+		private static Picture _iconCache = null;
+		
 		public PowerPlant() : base(16, 4)
 		{
 			Name = "Power Plant";
 			RequiredTech = null;
+			if (_iconCache == null)
+			{
+				SetIcon(4, 1, false);
+				Picture icon = new Picture(52, 50, Icon.Image.Palette.Entries);
+				icon.AddLayer(Icon.GetPart(31, 0, 20, 50), 1);
+				icon.AddLayer(Icon.GetPart(0, 0, 32, 50), 19);
+				icon.FillRectangle(0, 50, 0, 2, 50);
+				_iconCache = icon;
+			}
+			Icon = _iconCache;
 		}
 	}
 }

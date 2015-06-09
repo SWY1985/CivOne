@@ -17,6 +17,7 @@ namespace CivOne.Buildings
 		{
 			Name = "Hydro Plant";
 			RequiredTech = null;
+			SetIcon(4, 2, false);
 		}
 	}
 }

@@ -17,6 +17,7 @@ namespace CivOne.Buildings
 		{
 			Name = "Recycling Center";
 			RequiredTech = null;
+			SetIcon(4, 0, true);
 		}
 	}
 }

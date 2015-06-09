@@ -17,6 +17,7 @@ namespace CivOne.Buildings
 		{
 			Name = "Library";
 			RequiredTech = null;
+			SetIcon(1, 0, true);
 		}
 	}
 }

@@ -17,6 +17,7 @@ namespace CivOne.Buildings
 		{
 			Name = "Mfg. Plant";
 			RequiredTech = null;
+			SetIcon(3, 2, true);
 		}
 	}
 }

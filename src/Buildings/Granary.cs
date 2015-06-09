@@ -17,6 +17,7 @@ namespace CivOne.Buildings
 		{
 			Name = "Granary";
 			RequiredTech = null;
+			SetIcon(0, 1, true);
 		}
 	}
 }
