@@ -52,7 +52,6 @@ namespace CivOne.Templates
 			
 			output.AddLayer(GetUnit(1).Image, 215, 47);
 			
-			//12 76
 			int yy = 76;
 			foreach (string line in text)
 			{
@@ -63,24 +62,14 @@ namespace CivOne.Templates
 			
 			if (pageNumber == 2)
 			{
+				yy += 8;
 				string requiredTech = "";
 				if (RequiredTech != null) requiredTech = RequiredTech.Name;
-				if (RequiredWonder != null && RequiredWonder.RequiredTech != null)
-				{
-					if (RequiredTech == null)
-					{
-						requiredTech = RequiredWonder.RequiredTech.Name;
-					}
-					else
-					{
-						requiredTech = string.Join(" and ", requiredTech, RequiredWonder.RequiredTech.Name);
-					}
-				}
-				output.DrawText(string.Format("Requires {0}", requiredTech), 6, 9, 100, 120);
-				output.DrawText(string.Format("Cost: {0}0 resources.", Price), 6, 9, 100, 129);
-				output.DrawText(string.Format("Attack Strength: {0}", Attack), 6, 12, 100, 138);
-				output.DrawText(string.Format("Defense Strength: {0}", Defense), 6, 12, 100, 147);
-				output.DrawText(string.Format("Movement Rate: {0}", Move), 6, 5, 100, 156);
+				output.DrawText(string.Format("Requires {0}", requiredTech), 6, 9, 100, yy); yy += 8;
+				output.DrawText(string.Format("Cost: {0}0 resources.", Price), 6, 9, 100, yy); yy += 8;
+				output.DrawText(string.Format("Attack Strength: {0}", Attack), 6, 12, 100, yy); yy += 8;
+				output.DrawText(string.Format("Defense Strength: {0}", Defense), 6, 12, 100, yy); yy += 8;
+				output.DrawText(string.Format("Movement Rate: {0}", Move), 6, 5, 100, yy);
 			}
 			
 			return output;
