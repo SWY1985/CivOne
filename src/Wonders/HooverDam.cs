@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using CivOne.Advances;
 using CivOne.Templates;
 
 namespace CivOne.Wonders
@@ -16,7 +17,7 @@ namespace CivOne.Wonders
 		public HooverDam() : base(60)
 		{
 			Name = "Hoover Dam";
-			RequiredTech = null;
+			RequiredTech = new Electronics();
 			ObsoleteTech = null;
 		}
 	}
