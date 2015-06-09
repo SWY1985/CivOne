@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using CivOne.Advances;
 using CivOne.Templates;
 
 namespace CivOne.Wonders
@@ -16,8 +17,8 @@ namespace CivOne.Wonders
 		public ShakespearesTheatre() : base(40)
 		{
 			Name = "Shakespeare's Theatre";
-			RequiredTech = null;
-			ObsoleteTech = null;
+			RequiredTech = new Medicine();
+			ObsoleteTech = new Electronics();
 		}
 	}
 }
