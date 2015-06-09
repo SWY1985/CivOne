@@ -17,6 +17,7 @@ namespace CivOne.Buildings
 		{
 			Name = "City Walls";
 			RequiredTech = null;
+			SetIcon(1, 2, false);
 		}
 	}
 }

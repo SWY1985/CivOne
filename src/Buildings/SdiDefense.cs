@@ -17,6 +17,7 @@ namespace CivOne.Buildings
 		{
 			Name = "SDI Defense";
 			RequiredTech = null;
+			SetIcon(3, 3, true);
 		}
 	}
 }

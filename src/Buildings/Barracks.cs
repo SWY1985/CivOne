@@ -17,6 +17,7 @@ namespace CivOne.Buildings
 		{
 			Name = "Barracks";
 			RequiredTech = null;
+			SetIcon(0, 0, true);
 		}
 	}
 }

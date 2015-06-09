@@ -202,10 +202,10 @@ namespace CivOne.GFX
 			}
 		}
 		
-		public static Color[] PaletteCombine(Color[] palette1, Color[] palette2)
+		public static Color[] PaletteCombine(Color[] palette1, Color[] palette2, byte start = 0, byte end = 255)
 		{
 			Color invisible = Color.FromArgb(252, 84, 252);
-			for (int i = 0; i < palette2.Length; i++)
+			for (int i = start; i < end; i++)
 			{
 				if (palette2[i] == invisible) continue;
 				palette1[i] = palette2[i];

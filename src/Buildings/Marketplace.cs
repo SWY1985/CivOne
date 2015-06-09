@@ -17,6 +17,7 @@ namespace CivOne.Buildings
 		{
 			Name = "Marketplace";
 			RequiredTech = null;
+			SetIcon(0, 3, true);
 		}
 	}
 }

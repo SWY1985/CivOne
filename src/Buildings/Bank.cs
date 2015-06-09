@@ -17,6 +17,7 @@ namespace CivOne.Buildings
 		{
 			Name = "Bank";
 			RequiredTech = null;
+			SetIcon(2, 0, true);
 		}
 	}
 }

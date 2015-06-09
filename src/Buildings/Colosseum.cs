@@ -17,6 +17,7 @@ namespace CivOne.Buildings
 		{
 			Name = "Colosseum";
 			RequiredTech = null;
+			SetIcon(3, 0, false);
 		}
 	}
 }

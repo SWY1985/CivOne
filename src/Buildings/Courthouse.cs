@@ -17,6 +17,7 @@ namespace CivOne.Buildings
 		{
 			Name = "Courthouse";
 			RequiredTech = null;
+			SetIcon(1, 1, true);
 		}
 	}
 }
