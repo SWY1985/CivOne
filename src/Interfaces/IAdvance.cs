@@ -15,5 +15,6 @@ namespace CivOne.Interfaces
 	{
 		byte Id { get; }
 		IAdvance[] RequiredTechs { get; }
+		bool Requires(byte id);
 	}
 }
