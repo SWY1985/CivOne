@@ -7,6 +7,8 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using CivOne.Advances;
+using CivOne.Enums;
 using CivOne.Templates;
 
 namespace CivOne.Buildings
@@ -16,8 +18,10 @@ namespace CivOne.Buildings
 		public SdiDefense() : base(20, 4)
 		{
 			Name = "SDI Defense";
-			RequiredTech = null;
+			RequiredTech = new SuperConductor();
 			SetIcon(3, 3, true);
+			SetSmallIcon(3, 1);
+			Type = Building.SdiDefense;
 		}
 	}
 }

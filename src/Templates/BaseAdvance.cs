@@ -94,6 +94,18 @@ namespace CivOne.Templates
 							output.AddLayer(unit.GetUnit(Game.Instance.PlayerNumber(Game.Instance.HumanPlayer)).Image, 40, yy - 5);
 							output.DrawText(string.Format("{0} unit", unit.Name), 6, 12, 60, yy); yy += 12;
 						}
+						foreach (IBuilding building in Reflect.GetBuildings().Where(b => b.RequiredTech != null && b.RequiredTech.Id == Id))
+						{
+							if (building.SmallIcon != null)
+								output.AddLayer(building.SmallIcon.Image, 39, yy - 2);
+							output.DrawText(string.Format("{0} improvement", building.Name), 6, 2, 60, yy); yy += 12;
+						}
+						foreach (IWonder wonder in Reflect.GetWonders().Where(w => w.RequiredTech != null && w.RequiredTech.Id == Id))
+						{
+							if (wonder.SmallIcon != null)
+								output.AddLayer(wonder.SmallIcon.Image, 39, yy - 2);
+							output.DrawText(string.Format("{0} Wonder", wonder.Name), 6, 2, 60, yy); yy += 12;
+						}
 					}
 					break;
 				default:

@@ -7,6 +7,8 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using CivOne.Advances;
+using CivOne.Enums;
 using CivOne.Templates;
 
 namespace CivOne.Buildings
@@ -16,8 +18,10 @@ namespace CivOne.Buildings
 		public Colosseum() : base(10, 4)
 		{
 			Name = "Colosseum";
-			RequiredTech = null;
+			RequiredTech = new Construction();
 			SetIcon(3, 0, false);
+			SetSmallIcon(2, 3);
+			Type = Building.Colosseum;
 		}
 	}
 }

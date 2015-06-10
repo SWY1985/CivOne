@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using CivOne.Enums;
 using CivOne.Templates;
 
 namespace CivOne.Buildings
@@ -18,6 +19,8 @@ namespace CivOne.Buildings
 			Name = "Barracks";
 			RequiredTech = null;
 			SetIcon(0, 0, true);
+			SetSmallIcon(0, 1);
+			Type = Building.Barracks;
 		}
 	}
 }

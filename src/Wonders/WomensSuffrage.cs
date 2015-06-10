@@ -8,17 +8,20 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using CivOne.Advances;
+using CivOne.Enums;
 using CivOne.Templates;
 
 namespace CivOne.Wonders
 {
-	internal class WomansSuffrage : BaseWonder
+	internal class WomensSuffrage : BaseWonder
 	{
-		public WomansSuffrage() : base(60)
+		public WomensSuffrage() : base(60)
 		{
 			Name = "Women's Suffrage";
 			RequiredTech = new Industrialization();
 			ObsoleteTech = null;
+			SetSmallIcon(7, 1);
+			Type = Wonder.WomensSuffrage;
 		}
 	}
 }
