@@ -17,39 +17,39 @@ namespace CivOne.IO
 	{
 		private readonly string[] TEXT_FILES = new[] { "BLURB0", "BLURB1", "BLURB2", "BLURB3", "BLURB4", "ERROR", "HELP", "KING", "PRODUCE" };
 		private readonly Dictionary<string, string[]> _gameTexts = new Dictionary<string,string[]>();
-
-        public string[] LoadArray(string filename)
-        {
+		
+		public string[] LoadArray(string filename)
+		{
 			filename += ".TXT";
 			
-            Regex rgx = new Regex("[^a-zA-Z0-9 -_]");
-            List<string> textLines = new List<string>();
+			Regex rgx = new Regex("[^a-zA-Z0-9 -_]");
+			List<string> textLines = new List<string>();
 			using (StreamReader sr = new StreamReader(Path.Combine(Settings.Instance.DataDirectory, filename)))
-                while (!sr.EndOfStream)
+				while (!sr.EndOfStream)
 					textLines.Add(rgx.Replace(sr.ReadLine(), "").Trim());
-            return textLines.ToArray();
-        }
-
+			return textLines.ToArray();
+		}
+		
 		public string[] GetGameText(string key)
 		{
 			if (_gameTexts.ContainsKey(key))
 				return _gameTexts[key];
 			return new string[0];
 		}
-
-        private static TextFile _instance;
-        public static TextFile Instance
-        {
-            get
-            {
-                if (_instance == null)
-                    _instance = new TextFile();
-                return _instance;
-            }
-        }
-
-        private TextFile()
-        {
+		
+		private static TextFile _instance;
+		public static TextFile Instance
+		{
+			get
+			{
+				if (_instance == null)
+					_instance = new TextFile();
+				return _instance;
+			}
+		}
+		
+		private TextFile()
+		{
 			//foreach (string file in new[] { "BLURB0", "BLURB1", "BLURB2", "BLURB3", "BLURB4", "ERROR", "HELP", "KING", "PRODUCE" })
 			foreach (string file in TEXT_FILES)
 			{
@@ -64,17 +64,19 @@ namespace CivOne.IO
 					lines.Clear();
 					while (textfile.Length > i && textfile[i].StartsWith("*"))
 						keys.Add(textfile[i++].Substring(1));
-					while (textfile.Length > i && textfile[i].Length > 0)
+					while (textfile.Length > i && textfile[i].Length > 0 && !textfile[i].StartsWith("*"))
 						lines.Add(textfile[i++]);
-
+					
 					if (lines.Count == 0) continue;
 					foreach (string key in keys)
 					{
-						if (!_gameTexts.ContainsKey(key))
+						string ckey = string.Format("{0}/{1}", file, key);
+						if (!_gameTexts.ContainsKey(ckey))
 						{
-							_gameTexts.Add(key, lines.ToArray());
+							_gameTexts.Add(ckey, lines.ToArray());
 						}
 					}
+					if (textfile[i].StartsWith("*")) i--;
 				}
 			}
         }

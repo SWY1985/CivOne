@@ -38,10 +38,10 @@ namespace CivOne.Templates
 			switch (pageNumber)
 			{
 				case 1:
-					text = Resources.Instance.GetCivilopediaText(Name.ToUpper());
+					text = Resources.Instance.GetCivilopediaText("BLURB2/" + Name.ToUpper());
 					break;
 				case 2:
-					text = Resources.Instance.GetCivilopediaText(Name.ToUpper() + "2");
+					text = Resources.Instance.GetCivilopediaText("BLURB2/" + Name.ToUpper() + "2");
 					break;
 				default:
 					Console.WriteLine("Invalid page number: {0}", pageNumber);
