@@ -43,6 +43,7 @@
 		<Compile Include="src\Advances\*.cs" />
 		<Compile Include="src\Buildings\*.cs" />
 		<Compile Include="src\Civilizations\*.cs" />
+		<Compile Include="src\Concepts\*.cs" />
 		<Compile Include="src\Enums\*.cs" />
 		<Compile Include="src\GFX\*.cs" />
 		<Compile Include="src\Interfaces\*.cs" />
