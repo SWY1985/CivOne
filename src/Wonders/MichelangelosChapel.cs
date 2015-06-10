@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using CivOne.Advances;
+using CivOne.Enums;
 using CivOne.Templates;
 
 namespace CivOne.Wonders
@@ -19,6 +20,8 @@ namespace CivOne.Wonders
 			Name = "Michelangelo's Chapel";
 			RequiredTech = new Religion();
 			ObsoleteTech = new Communism();
+			SetSmallIcon(5, 4);
+			Type = Wonder.MichelangelosChapel;
 		}
 	}
 }

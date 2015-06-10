@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using CivOne.Advances;
+using CivOne.Enums;
 using CivOne.Templates;
 
 namespace CivOne.Wonders
@@ -19,6 +20,8 @@ namespace CivOne.Wonders
 			Name = "Colossus";
 			RequiredTech = new BronzeWorking();
 			ObsoleteTech = new Electricity();
+			SetSmallIcon(4, 3);
+			Type = Wonder.Colossus;
 		}
 	}
 }

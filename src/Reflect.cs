@@ -36,12 +36,22 @@ namespace CivOne
 		
 		internal static IEnumerable<IAdvance> GetAdvances()
 		{
-			return GetTypes<IAdvance>();
+			return GetTypes<IAdvance>().OrderBy(x => x.Id);
 		}
 		
 		internal static IEnumerable<IUnit> GetUnits()
 		{
 			return GetTypes<IUnit>();
+		}
+		
+		internal static IEnumerable<IBuilding> GetBuildings()
+		{
+			return GetTypes<IBuilding>().OrderBy(x => x.Id);
+		}
+		
+		internal static IEnumerable<IWonder> GetWonders()
+		{
+			return GetTypes<IWonder>().OrderBy(x => x.Id);
 		}
 		
 		internal static IEnumerable<ICivilopedia> GetCivilopediaAll()

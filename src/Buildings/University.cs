@@ -7,6 +7,8 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using CivOne.Advances;
+using CivOne.Enums;
 using CivOne.Templates;
 
 namespace CivOne.Buildings
@@ -16,8 +18,10 @@ namespace CivOne.Buildings
 		public University() : base(16, 3)
 		{
 			Name = "University";
-			RequiredTech = null;
+			RequiredTech = new Advances.University();
 			SetIcon(2, 2, false);
+			SetSmallIcon(2, 1);
+			Type = Building.University;
 		}
 	}
 }

@@ -8,13 +8,16 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using CivOne.Enums;
+using CivOne.GFX;
 
 namespace CivOne.Interfaces
 {
 	public interface IBuilding : ICivilopedia
 	{
+		byte Id { get; }
 		IAdvance RequiredTech { get; }
 		byte Price { get; }
 		byte Maintainance { get; }
+		Picture SmallIcon { get; }
 	}
 }

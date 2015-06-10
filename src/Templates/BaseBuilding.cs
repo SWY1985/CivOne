@@ -9,6 +9,7 @@
 
 using System;
 using System.Drawing;
+using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
 
@@ -19,6 +20,7 @@ namespace CivOne.Templates
 		private static Picture[,] _iconsCache = new Picture[6, 4], _iconsCacheGrass = new Picture[6, 4];
 		
 		public virtual Picture Icon { get; protected set; }
+		public virtual Picture SmallIcon { get; protected set; }
 		public string Name { get; protected set; }
 		public byte PageCount
 		{
@@ -66,6 +68,8 @@ namespace CivOne.Templates
 			return output;
 		}
 		
+		protected Building Type { get; set; }
+		
 		public IAdvance RequiredTech { get; protected set; }
 		public byte Price { get; protected set; }
 		public byte Maintainance { get; protected set; }
@@ -92,6 +96,25 @@ namespace CivOne.Templates
 				else _iconsCache[col, row] = Icon;
 			}
 			Icon = (grassTile ? _iconsCacheGrass[col, row] : _iconsCache[col, row]);
+		}
+		
+		protected void SetSmallIcon(int col, int row)
+		{
+			Bitmap icon = (Bitmap)Resources.Instance.LoadPIC((Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? "SP299" : "SPRITES")).GetPart(160 + (19 * col), 50 + (10 * row), 20, 10).Clone();
+			Picture.ReplaceColours(icon, 0, 5);
+			SmallIcon = new Picture(20, 10);
+			SmallIcon.FillRectangle(5, 0, 0, 20, 10);
+			SmallIcon.AddLayer(icon);
+			SmallIcon.FillRectangle(0, 0, 0, 1, 10);
+			SmallIcon.FillRectangle(0, 19, 0, 1, 10);
+		}
+		
+		public byte Id
+		{
+			get
+			{
+				return (byte)Type;
+			}
 		}
 		
 		protected BaseBuilding(byte price = 1, byte maintainance = 0)
