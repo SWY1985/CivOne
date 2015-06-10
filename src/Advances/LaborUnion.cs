@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Labor Union";
 			Type = Advance.LaborUnion;
+			SetIcon(1, 0, 1);
 		}
 	}
 }

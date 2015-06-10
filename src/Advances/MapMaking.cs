@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "MapMaking";
 			Type = Advance.MapMaking;
+			SetIcon(7, 1, 2);
 		}
 	}
 }

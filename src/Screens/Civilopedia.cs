@@ -48,10 +48,10 @@ namespace CivOne.Screens
 			if (typeof(IUnit).IsAssignableFrom(_singlePage.GetType())) { category = "Military Units"; titleX = 224; }
 			if (typeof(IAdvance).IsAssignableFrom(_singlePage.GetType())) { category = "Civilization Advance"; }
 			
-			_canvas.DrawText(_singlePage.Name.ToUpper(), 5, 5, titleX, 20, TextAlign.Center);
-			_canvas.DrawText(category, 6, 7, titleX, 36, TextAlign.Center);
 			if (_singlePage.Icon != null)
 				AddLayer(_singlePage.Icon, iconX, iconY);
+			_canvas.DrawText(_singlePage.Name.ToUpper(), 5, 5, titleX, 20, TextAlign.Center);
+			_canvas.DrawText(category, 6, 7, titleX, 36, TextAlign.Center);
 		}
 		
 		private void DrawPage(byte pageNumber)

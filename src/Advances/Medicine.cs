@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Medicine";
 			Type = Advance.Medicine;
+			SetIcon(3, 1, 2);
 		}
 	}
 }

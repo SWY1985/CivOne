@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Nuclear Fission";
 			Type = Advance.NuclearFission;
+			SetIcon(5, 0, 1);
 		}
 	}
 }

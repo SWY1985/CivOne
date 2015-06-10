@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Mass Production";
 			Type = Advance.MassProduction;
+			SetIcon(5, 1, 0);
 		}
 	}
 }

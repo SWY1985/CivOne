@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Philosophy";
 			Type = Advance.Philosophy;
+			SetIcon(8, 1, 0);
 		}
 	}
 }

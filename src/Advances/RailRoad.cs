@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "RailRoad";
 			Type = Advance.RailRoad;
+			SetIcon(3, 0, 1);
 		}
 	}
 }

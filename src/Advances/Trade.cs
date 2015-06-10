@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Trade";
 			Type = Advance.Trade;
+			SetIcon(1, 0, 0);
 		}
 	}
 }

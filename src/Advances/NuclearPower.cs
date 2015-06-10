@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Nuclear Power";
 			Type = Advance.NuclearPower;
+			SetIcon(2, 2, 2);
 		}
 	}
 }

@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Feudalism";
 			Type = Advance.Feudalism;
+			SetIcon(1, 1, 0);
 		}
 	}
 }

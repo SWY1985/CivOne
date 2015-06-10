@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Magnetism";
 			Type = Advance.Magnetism;
+			SetIcon(6, 0, 1);
 		}
 	}
 }

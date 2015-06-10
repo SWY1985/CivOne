@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Religion";
 			Type = Advance.Religion;
+			SetIcon(3, 2, 0);
 		}
 	}
 }

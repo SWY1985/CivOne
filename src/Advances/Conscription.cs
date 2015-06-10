@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Conscription";
 			Type = Advance.Conscription;
+			SetIcon(7, 0, 0);
 		}
 	}
 }

@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Communism";
 			Type = Advance.Communism;
+			SetIcon(4, 0, 2);
 		}
 	}
 }

@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Genetic Engineering";
 			Type = Advance.GeneticEngineering;
+			SetIcon(1, 1, 2);
 		}
 	}
 }

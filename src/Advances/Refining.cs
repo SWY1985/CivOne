@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Refining";
 			Type = Advance.Refining;
+			SetIcon(6, 2, 0);
 		}
 	}
 }

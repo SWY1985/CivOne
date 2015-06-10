@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Pottery";
 			Type = Advance.Pottery;
+			SetIcon(7, 0, 2);
 		}
 	}
 }

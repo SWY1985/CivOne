@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Writing";
 			Type = Advance.Writing;
+			SetIcon(3, 1, 1);
 		}
 	}
 }

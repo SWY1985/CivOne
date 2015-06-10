@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Computers";
 			Type = Advance.Computers;
+			SetIcon(3, 0, 2);
 		}
 	}
 }

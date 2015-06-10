@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Industrialization";
 			Type = Advance.Industrialization;
+			SetIcon(2, 0, 2);
 		}
 	}
 }

@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Engineering";
 			Type = Advance.Engineering;
+			SetIcon(4, 1, 1);
 		}
 	}
 }

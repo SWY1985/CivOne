@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Democracy";
 			Type = Advance.Democracy;
+			SetIcon(2, 2, 1);
 		}
 	}
 }
