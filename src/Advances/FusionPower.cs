@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Fusion Power";
 			Type = Advance.FusionPower;
+			SetIcon(7, 1, 0);
 		}
 	}
 }

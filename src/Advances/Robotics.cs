@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Robotics";
 			Type = Advance.Robotics;
+			SetIcon(7, 2, 0);
 		}
 	}
 }

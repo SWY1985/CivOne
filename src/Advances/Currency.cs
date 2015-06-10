@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Currency";
 			Type = Advance.Currency;
+			SetIcon(5, 0, 0);
 		}
 	}
 }

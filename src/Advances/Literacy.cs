@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Literacy";
 			Type = Advance.Literacy;
+			SetIcon(4, 1, 2);
 		}
 	}
 }

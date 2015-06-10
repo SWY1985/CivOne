@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Combustion";
 			Type = Advance.Combustion;
+			SetIcon(4, 2, 0);
 		}
 	}
 }

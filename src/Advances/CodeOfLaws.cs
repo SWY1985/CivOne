@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Code of Laws";
 			Type = Advance.CodeOfLaws;
+			SetIcon(2, 0, 1);
 		}
 	}
 }

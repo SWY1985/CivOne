@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Mathematics";
 			Type = Advance.Mathematics;
+			SetIcon(7, 1, 1);
 		}
 	}
 }

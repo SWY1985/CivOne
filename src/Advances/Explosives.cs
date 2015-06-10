@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Explosives";
 			Type = Advance.Explosives;
+			SetIcon(5, 1, 2);
 		}
 	}
 }

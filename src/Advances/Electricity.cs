@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Electricity";
 			Type = Advance.Electricity;
+			SetIcon(8, 0, 0);
 		}
 	}
 }

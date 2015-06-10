@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Astronomy";
 			Type = Advance.Astronomy;
+			SetIcon(6, 0, 0);
 		}
 	}
 }

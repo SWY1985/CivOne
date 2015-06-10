@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Theory of Gravity";
 			Type = Advance.TheoryOfGravity;
+			SetIcon(2, 1, 1);
 		}
 	}
 }

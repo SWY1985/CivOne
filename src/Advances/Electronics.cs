@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Electronics";
 			Type = Advance.Electronics;
+			SetIcon(4, 2, 1);
 		}
 	}
 }

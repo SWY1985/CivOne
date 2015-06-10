@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Alphabet";
 			Type = Advance.Alphabet;
+			SetIcon(3, 2, 1);
 		}
 	}
 }

@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using CivOne.Enums;
@@ -28,13 +29,7 @@ namespace CivOne.Templates
 			}
 		}
 		
-		public virtual Picture Icon
-		{
-			get
-			{
-				return null;
-			}
-		}
+		public virtual Picture Icon { get; protected set; }
 		
 		public string Name { get; protected set; }
 		public byte PageCount
@@ -124,6 +119,20 @@ namespace CivOne.Templates
 			{
 				return GetRequiredTechs().ToArray();
 			}
+		}
+		
+		protected void SetIcon(int page, int col, int row)
+		{
+			int xx = 1 + (111 * col);
+			int yy = 1 + (69 * row);
+			int ww = col < 2 ? 112 : 96;
+			int hh = row < 2 ? 68 : 60;
+			
+			Bitmap icon = Resources.Instance.GetPart(string.Format("ICONPG{0}", page), xx, yy, ww, hh);
+			
+			Icon = new Picture(112, 68, icon.Palette.Entries);
+			Icon.AddLayer(icon, col < 2 ? 0 : 7, row < 2 ? 0 : 4);
+			Icon.FillRectangle(0, 110, 0, 2, 68);
 		}
 		
 		public byte Id

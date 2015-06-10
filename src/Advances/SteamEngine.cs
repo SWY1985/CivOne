@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Steam Engine";
 			Type = Advance.SteamEngine;
+			SetIcon(6, 1, 2);
 		}
 	}
 }

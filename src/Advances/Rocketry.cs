@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Rocketry";
 			Type = Advance.Rocketry;
+			SetIcon(8, 0, 1);
 		}
 	}
 }

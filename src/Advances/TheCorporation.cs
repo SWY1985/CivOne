@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "The Corporation";
 			Type = Advance.TheCorporation;
+			SetIcon(7, 2, 2);
 		}
 	}
 }

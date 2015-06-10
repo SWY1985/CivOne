@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Atomic Theory";
 			Type = Advance.AtomicTheory;
+			SetIcon(5, 2, 1);
 		}
 	}
 }

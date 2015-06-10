@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Automobile";
 			Type = Advance.Automobile;
+			SetIcon(6, 0, 2);
 		}
 	}
 }

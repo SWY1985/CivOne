@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Monarchy";
 			Type = Advance.Monarchy;
+			SetIcon(2, 2, 0);
 		}
 	}
 }

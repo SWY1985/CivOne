@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Chemistry";
 			Type = Advance.Chemistry;
+			SetIcon(1, 2, 1);
 		}
 	}
 }

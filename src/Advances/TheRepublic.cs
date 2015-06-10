@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "The Republic";
 			Type = Advance.TheRepublic;
+			SetIcon(2, 0, 0);
 		}
 	}
 }

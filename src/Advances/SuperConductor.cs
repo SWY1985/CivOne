@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "SuperConductor";
 			Type = Advance.SuperConductor;
+			SetIcon(5, 2, 2);
 		}
 	}
 }

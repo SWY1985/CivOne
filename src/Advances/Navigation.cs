@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Navigation";
 			Type = Advance.Navigation;
+			SetIcon(6, 2, 2);
 		}
 	}
 }

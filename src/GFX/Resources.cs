@@ -167,14 +167,14 @@ namespace CivOne.GFX
 			{
 				if (text.IndexOf(' ') == -1)
 				{
-					if (t.Length > 0 && GetTextSize(6, string.Join(" ", t, text)).Width < 280)
+					if (t.Length > 0 && GetTextSize(6, string.Join(" ", t, text)).Width < 294)
 						text = string.Join(" ", t, text);
 					else if (t.Length > 0)
 						textLines.Add(t);
 					t = text;
 					text = "";
 				}
-				else if (GetTextSize(6, t + text.Substring(0, text.IndexOf(' '))).Width < 292)
+				else if (GetTextSize(6, t + text.Substring(0, text.IndexOf(' '))).Width < 294)
 				{
 					if (t.Length > 0) t += " ";
 					t += text.Substring(0, text.IndexOf(' '));

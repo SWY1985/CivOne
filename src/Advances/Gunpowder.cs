@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Gunpowder";
 			Type = Advance.Gunpowder;
+			SetIcon(6, 1, 0);
 		}
 	}
 }

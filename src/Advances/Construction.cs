@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Construction";
 			Type = Advance.Construction;
+			SetIcon(4, 0, 1);
 		}
 	}
 }

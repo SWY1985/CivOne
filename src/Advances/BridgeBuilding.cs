@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Bridge Building";
 			Type = Advance.BridgeBuilding;
+			SetIcon(4, 1, 0);
 		}
 	}
 }

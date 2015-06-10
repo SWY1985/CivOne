@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Space Flight";
 			Type = Advance.SpaceFlight;
+			SetIcon(4, 2, 2);
 		}
 	}
 }

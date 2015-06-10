@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "The Wheel";
 			Type = Advance.TheWheel;
+			SetIcon(3, 2, 2);
 		}
 	}
 }

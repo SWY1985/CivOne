@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Masonry";
 			Type = Advance.Masonry;
+			SetIcon(2, 1, 2);
 		}
 	}
 }

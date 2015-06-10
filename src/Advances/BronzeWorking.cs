@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Bronze Working";
 			Type = Advance.BronzeWorking;
+			SetIcon(5, 2, 0);
 		}
 	}
 }

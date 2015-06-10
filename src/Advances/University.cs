@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "University";
 			Type = Advance.University;
+			SetIcon(1, 0, 2);
 		}
 	}
 }

@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Flight";
 			Type = Advance.Flight;
+			SetIcon(3, 1, 0);
 		}
 	}
 }

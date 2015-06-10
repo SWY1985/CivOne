@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Physics";
 			Type = Advance.Physics;
+			SetIcon(1, 2, 0);
 		}
 	}
 }

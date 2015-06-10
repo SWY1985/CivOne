@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Chivalry";
 			Type = Advance.Chivalry;
+			SetIcon(6, 1, 1);
 		}
 	}
 }

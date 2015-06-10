@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Ceremonial Burial";
 			Type = Advance.CeremonialBurial;
+			SetIcon(8, 2, 0);
 		}
 	}
 }

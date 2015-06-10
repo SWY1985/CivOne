@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Steel";
 			Type = Advance.Steel;
+			SetIcon(3, 0, 0);
 		}
 	}
 }

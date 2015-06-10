@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Mysticism";
 			Type = Advance.Mysticism;
+			SetIcon(1, 1, 1);
 		}
 	}
 }

@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Horseback Riding";
 			Type = Advance.HorsebackRiding;
+			SetIcon(7, 0, 1);
 		}
 	}
 }

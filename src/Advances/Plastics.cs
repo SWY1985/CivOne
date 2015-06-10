@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Plastics";
 			Type = Advance.Plastics;
+			SetIcon(4, 0, 0);
 		}
 	}
 }

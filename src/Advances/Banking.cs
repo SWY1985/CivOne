@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Banking";
 			Type = Advance.Banking;
+			SetIcon(1, 2, 2);
 		}
 	}
 }

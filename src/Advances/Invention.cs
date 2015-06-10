@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Invention";
 			Type = Advance.Invention;
+			SetIcon(6, 2, 1);
 		}
 	}
 }

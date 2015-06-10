@@ -18,6 +18,7 @@ namespace CivOne.Advances
 		{
 			Name = "Recycling";
 			Type = Advance.Recycling;
+			SetIcon(5, 0, 2);
 		}
 	}
 }
