@@ -26,7 +26,7 @@ namespace CivOne.Screens
 		internal static ICivilopedia[] Improvements = Reflect.GetCivilopediaCityImprovements().OrderBy(x => x.Name).ToArray();
 		internal static ICivilopedia[] Units = Reflect.GetCivilopediaUnits().OrderBy(x => x.Name).ToArray();
 		internal static ICivilopedia[] TerrainType = Reflect.GetCivilopediaTerrainTypes().OrderBy(x => x.Name).ToArray();
-		internal static ICivilopedia[] Misc = new ICivilopedia[0]; 
+		internal static ICivilopedia[] Misc = Reflect.GetConcepts().OrderBy(x => x.Name).ToArray();
 		internal static ICivilopedia[] Complete = Reflect.GetCivilopediaAll().OrderBy(x => x.Name).ToArray();
 		
 		private readonly ICivilopedia[] _pages;
@@ -43,10 +43,11 @@ namespace CivOne.Screens
 			int titleX = 204, iconX = 8, iconY = 8;
 			string category = "(unknown)";
 			if (typeof(ITile).IsAssignableFrom(_singlePage.GetType())) { category = "Terrain Type"; iconX = 23; iconY = 4; }
-			if (typeof(IBuilding).IsAssignableFrom(_singlePage.GetType())) { category = "City Improvement"; iconX = 36; iconY = 16; }
-			if (typeof(IWonder).IsAssignableFrom(_singlePage.GetType())) { category = "Wonder of the World"; titleX = 160; }
-			if (typeof(IUnit).IsAssignableFrom(_singlePage.GetType())) { category = "Military Units"; titleX = 224; }
-			if (typeof(IAdvance).IsAssignableFrom(_singlePage.GetType())) { category = "Civilization Advance"; }
+			else if (typeof(IBuilding).IsAssignableFrom(_singlePage.GetType())) { category = "City Improvement"; iconX = 36; iconY = 16; }
+			else if (typeof(IWonder).IsAssignableFrom(_singlePage.GetType())) { category = "Wonder of the World"; titleX = 160; }
+			else if (typeof(IUnit).IsAssignableFrom(_singlePage.GetType())) { category = "Military Units"; titleX = 224; }
+			else if (typeof(IAdvance).IsAssignableFrom(_singlePage.GetType())) { category = "Civilization Advance"; }
+			else if (typeof(IConcept).IsAssignableFrom(_singlePage.GetType())) { category = "Game Concepts"; titleX = 160; }
 			
 			if (_singlePage.Icon != null)
 				AddLayer(_singlePage.Icon, iconX, iconY);
