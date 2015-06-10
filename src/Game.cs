@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using CivOne.Civilizations;
 using CivOne.Enums;
 using CivOne.Interfaces;
@@ -216,6 +217,18 @@ namespace CivOne
 			}
 		}
 		
+		private void PreloadCivilopediaThread()
+		{
+			Console.WriteLine("Civilopedia: Preloading articles...");
+			foreach (ICivilopedia article in Reflect.GetCivilopediaAll());
+			Console.WriteLine("Civilopedia: Preloading done!");
+		}
+		
+		private void PreloadCivilopedia()
+		{
+			new Thread(new ThreadStart(PreloadCivilopediaThread)).Start();
+		}
+		
 		private static Game _instance;
 		public static Game Instance
 		{
@@ -231,6 +244,7 @@ namespace CivOne
 		
 		private Game(int difficulty, int competition)
 		{
+			PreloadCivilopedia();
 			_difficulty = difficulty;
 			_competition = competition;
 			_players = new Player[competition + 1];
@@ -240,6 +254,7 @@ namespace CivOne
 		
 		private Game(int difficulty, int competition, ICivilization tribe, string leaderName, string tribeName, string tribeNamePlural)
 		{
+			PreloadCivilopedia();
 			_difficulty = difficulty;
 			_competition = competition;
 			Console.WriteLine("Game instance created (difficulty: {0}, competition: {1})", _difficulty, _competition);
