@@ -217,16 +217,11 @@ namespace CivOne
 			}
 		}
 		
-		private void PreloadCivilopediaThread()
+		private void PreloadCivilopedia()
 		{
 			Console.WriteLine("Civilopedia: Preloading articles...");
 			foreach (ICivilopedia article in Reflect.GetCivilopediaAll());
 			Console.WriteLine("Civilopedia: Preloading done!");
-		}
-		
-		private void PreloadCivilopedia()
-		{
-			new Thread(new ThreadStart(PreloadCivilopediaThread)).Start();
 		}
 		
 		private static Game _instance;
