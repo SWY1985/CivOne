@@ -208,7 +208,7 @@ namespace CivOne.Screens
 				AddLayer(DifficultyPicture, 134, 20);
 				
 				int yy = 81;
-				foreach (string textLine in TextFile.Instance.GetGameText("INIT"))
+				foreach (string textLine in TextFile.Instance.GetGameText("KING/INIT"))
 				{
 					string line = textLine.Replace("$RPLC1", Game.Instance.HumanPlayer.LeaderName).Replace("$US", Game.Instance.HumanPlayer.TribeNamePlural).Replace("^", "");
 					_canvas.DrawText(line, 0, 5, 88, yy);
