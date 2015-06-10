@@ -54,9 +54,20 @@ namespace CivOne
 			return GetTypes<IWonder>().OrderBy(x => x.Id);
 		}
 		
+		internal static IEnumerable<IConcept> GetConcepts()
+		{
+			return GetTypes<IConcept>();
+		}
+		
 		internal static IEnumerable<ICivilopedia> GetCivilopediaAll()
 		{
-			return GetTypes<ICivilopedia>();
+			List<string> articles = new List<string>();
+			foreach (ICivilopedia article in GetTypes<ICivilopedia>())
+			{
+				if (articles.Contains(article.Name)) continue;
+				articles.Add(article.Name);
+				yield return article;
+			}
 		}
 		
 		internal static IEnumerable<ICivilopedia> GetCivilopediaAdvances()
