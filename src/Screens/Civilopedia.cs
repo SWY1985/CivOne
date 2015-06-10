@@ -331,8 +331,8 @@ namespace CivOne.Screens
 			}
 			for (int y = 8; y < 192; y += 8)
 			{
-				AddLayer(borders[5], 0, y);
-				AddLayer(borders[7], 312, y);
+				AddLayer(borders[7], 0, y);
+				AddLayer(borders[5], 312, y);
 			}
 			AddLayer(borders[0], 0, 0);
 			AddLayer(borders[1], 312, 0);
