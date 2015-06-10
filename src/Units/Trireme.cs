@@ -23,7 +23,7 @@ namespace CivOne.Units
 			Name = "Trireme";
 			RequiredTech = new MapMaking();
 			ObsoleteTech = new Navigation();
-			SetIcon('A', 0, 1);
+			SetIcon('B', 0, 1);
 		}
 	}
 }
