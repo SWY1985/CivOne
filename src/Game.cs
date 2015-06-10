@@ -81,6 +81,18 @@ namespace CivOne
 			private set;
 		}
 		
+		internal byte PlayerNumber(Player player)
+		{
+			byte i = 0;
+			foreach (Player p in _players)
+			{
+				if (p == player)
+					return i;
+				i++;
+			}
+			return 0;
+		}
+		
 		public City GetCity(int x, int y)
 		{
 			while (x < 0) x += Map.WIDTH;
