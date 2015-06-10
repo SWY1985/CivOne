@@ -88,6 +88,12 @@ namespace CivOne.Templates
 								allows += string.Format(" (with {0})", at.Name);
 							output.DrawText(allows, 6, 9, 40, yy); yy += 8;
 						}
+						yy += 4;
+						foreach (IUnit unit in Reflect.GetUnits().Where(u => u.RequiredTech != null && u.RequiredTech.Id == Id))
+						{
+							output.AddLayer(unit.GetUnit(Game.Instance.PlayerNumber(Game.Instance.HumanPlayer)).Image, 40, yy - 5);
+							output.DrawText(string.Format("{0} unit", unit.Name), 6, 12, 60, yy); yy += 12;
+						}
 					}
 					break;
 				default:
