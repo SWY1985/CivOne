@@ -40,6 +40,7 @@ namespace CivOne.Screens
 		}
 		
 		public event EventHandler Cancel;
+		public event EventHandler MissClick;
 		
 		public readonly List<Item> Items = new List<Item>();
 		public string Title { get; set; }
@@ -144,6 +145,11 @@ namespace CivOne.Screens
 		public override bool MouseDown(MouseEventArgs args)
 		{
 			int index = MouseOverItem(args);
+			if (index < 0 && MissClick != null)
+			{
+				MissClick(this, null);
+				return true;
+			}
 			if (index < 0 || index == _activeItem) return false;
 			ActiveItem = index;
 			_change = true;
