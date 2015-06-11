@@ -79,6 +79,13 @@ namespace CivOne.Screens
 			_gameMenu.Items.Add(new GameMenu.Item("Trade Advisor (F5)"));
 			_gameMenu.Items.Add(new GameMenu.Item("Science Advisor (F6)"));
 			
+			_gameMenu.Items[0].Selected += (s, a) => Common.AddScreen(new CityStatus());
+			_gameMenu.Items[1].Selected += (s, a) => { Common.AddScreen(new MilitaryLosses()); Common.AddScreen(new MilitaryStatus()); };
+			_gameMenu.Items[2].Selected += (s, a) => Common.AddScreen(new IntelligenceReport());
+			_gameMenu.Items[3].Selected += (s, a) => Common.AddScreen(new AttitudeSurvey());
+			_gameMenu.Items[4].Selected += (s, a) => Common.AddScreen(new TradeReport());
+			_gameMenu.Items[5].Selected += (s, a) => Common.AddScreen(new ScienceReport());
+			
 			_menuX = 112;
 			_menuY = 8;
 			
@@ -95,6 +102,7 @@ namespace CivOne.Screens
 			_gameMenu.Items.Add(new GameMenu.Item("Demographics"));
 			_gameMenu.Items.Add(new GameMenu.Item("SpaceShips") { Enabled = false });
 			
+			_gameMenu.Items[2].Selected += (s, a) => Common.AddScreen(new CivilizationScore());
 			_gameMenu.Items[3].Selected += (s, a) => Common.AddScreen(new WorldMap());
 			
 			_menuX = 144;
@@ -152,6 +160,28 @@ namespace CivOne.Screens
 		{
 			switch (args.KeyCode)
 			{
+				case Keys.F1:
+					Common.AddScreen(new CityStatus());
+					return true;
+				case Keys.F2:
+					Common.AddScreen(new MilitaryLosses());
+					Common.AddScreen(new MilitaryStatus());
+					return true;
+				case Keys.F3:
+					Common.AddScreen(new IntelligenceReport());
+					return true;
+				case Keys.F4:
+					Common.AddScreen(new AttitudeSurvey());
+					return true;
+				case Keys.F5:
+					Common.AddScreen(new TradeReport());
+					return true;
+				case Keys.F6:
+					Common.AddScreen(new ScienceReport());
+					return true;
+				case Keys.F9:
+					Common.AddScreen(new CivilizationScore());
+					return true;
 				case Keys.F10:
 					Common.AddScreen(new WorldMap());
 					return true;
