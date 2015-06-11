@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Drawing;
+using System.Windows.Forms;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Templates;
@@ -28,6 +29,16 @@ namespace CivOne.Screens
 				return true;
 			}
 			return false;
+		}
+		
+		public override bool MouseDown(MouseEventArgs args)
+		{
+			if (args.Y > 50 && args.Y < 62)
+			{
+				System.Console.WriteLine("Sidebar: Palace View");
+				Common.AddScreen(new PalaceView());
+			}
+			return true;
 		}
 		
 		public SideBar(Color[] palette)
