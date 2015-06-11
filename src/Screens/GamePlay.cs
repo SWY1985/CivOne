@@ -23,11 +23,68 @@ namespace CivOne.Screens
 		private readonly SideBar _sideBar;
 		private readonly GameMap _gameMap;
 		
+		private readonly Bitmap _menuBackground = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
+		
 		private GameMenu _gameMenu = null;
 		private int _menuX, _menuY;
 		private bool _update = true;
 		private bool _redraw = false;
 		private bool _rightSideBar = Settings.Instance.RightSideBar;
+		
+		private Point _menuLocation = Point.Empty;
+		private Picture _menuGraphics = null;
+		
+		private void MenuCancel(object sender, EventArgs args)
+		{
+			CloseMenus();
+			_menuLocation = Point.Empty;
+			_menuGraphics = null;
+			_update = true;
+			_redraw = true;
+		}
+		
+		private void MenuQuitChoice(object sender, EventArgs args)
+		{
+			switch ((sender as Menu.Item).Value)
+			{
+				case 0:
+					break;
+				case 1:
+					Common.Quit();
+					break;
+			}
+			MenuCancel(sender, args);
+		}
+		
+		private void MenuQuit()
+		{
+			_menuLocation = new Point(101, 81);
+			_menuGraphics = new Picture(104, 39);
+			_menuGraphics.FillLayerTile(_menuBackground);
+			_menuGraphics.AddBorder(15, 8, 0, 0, 104, 39);
+			_menuGraphics.DrawText("Are you sure you", 0, 15, 4, 4);
+			_menuGraphics.DrawText("want to Quit?", 0, 15, 4, 12);
+			Menu menu = new Menu(Canvas.Image.Palette.Entries)
+			{
+				X = 103,
+				Y = 100,
+				Width = 100,
+				ActiveColour = 11,
+				TextColour = 5,
+				FontId = 0
+			};
+			Menu.Item menuItem;
+			int i = 0;
+			foreach (string choice in new [] { "Keep Playing", "Yes, Quit" })
+			{
+				menu.Items.Add(menuItem = new Menu.Item(choice, i++));
+				menuItem.Selected += MenuQuitChoice;
+			}
+			menu.MissClick += MenuCancel;
+			menu.Cancel += MenuCancel;
+			Menus.Add(menu);
+			Common.AddScreen(menu);
+		}
 		
 		private void MenuBarGame(object sender, EventArgs args)
 		{
@@ -41,6 +98,8 @@ namespace CivOne.Screens
 			_gameMenu.Items.Add(new GameMenu.Item(null));
 			_gameMenu.Items.Add(new GameMenu.Item("Retire"));
 			_gameMenu.Items.Add(new GameMenu.Item("QUIT to DOS"));
+			
+			_gameMenu.Items[8].Selected += (s, a) => MenuQuit();
 			
 			_menuX = 16;
 			_menuY = 8;
@@ -150,6 +209,12 @@ namespace CivOne.Screens
 			DrawLayer(_sideBar, gameTick, _rightSideBar ? 240 : 0, 8);
 			DrawLayer(_gameMap, gameTick, _rightSideBar ? 0 : 80, 8);
 			DrawLayer(_gameMenu, gameTick, _menuX, _menuY);
+			
+			if (_menuLocation != Point.Empty && _menuGraphics != null)
+			{
+				_canvas.FillRectangle(5, _menuLocation.X - 1, _menuLocation.Y - 1, _menuGraphics.Image.Width + 2, _menuGraphics.Image.Height + 2);
+				AddLayer(_menuGraphics, _menuLocation.X, _menuLocation.Y);
+			}
 			
 			_redraw = false;
 			_update = false;
