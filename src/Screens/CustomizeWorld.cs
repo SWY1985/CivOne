@@ -111,7 +111,7 @@ namespace CivOne.Screens
 			Cursor = MouseCursor.Pointer;
 			
 			Picture background = Resources.Instance.LoadPIC("CUSTOM");
-						
+			
 			_canvas = new Picture(320, 200, background.Image.Palette.Entries);
 			AddLayer(background, 0, 0);
 		}
