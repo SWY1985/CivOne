@@ -1,5 +1,5 @@
 {
-	"version": "0.1.0",
+	"version": "0.2.0",
 	// List of configurations.
 	// ONLY "node" and "mono" are supported, change "type" to switch.
 	"configurations": [
@@ -10,9 +10,7 @@
 			// Type of configuration. Possible values: "node", "mono".
 			"type": "mono",
 			// Workspace relative or absolute path to the program.
-			"program": "bin/CivOne.exe",
-			// Automatically stop program after launch.
-			"stopOnEntry": true
+			"program": "${workspaceRoot}/bin/CivOne.exe"
 		}
 	]
 }
