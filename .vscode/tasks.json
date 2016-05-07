@@ -1,21 +1,27 @@
 {
 	"version": "0.1.0",
-	"command" : "build.bat",
-	"args": ["xbuild"],
-	"tasks": [
-		{
-			"taskName": "build",
-			"isBuildCommand": true,
-			"args": [
-				"build", "Debug"
-			]
-		},
-		{
-			"taskName": "run",
-			"isTestCommand": true,
-			"args": [
-				"run"
-			]
-		}
-	]
+	"linux": {
+		"command": "xbuild",
+		"args": ["CivOne.csproj"]
+	},
+	"windows": {
+		"command": "build.bat",
+		"args": ["xbuild"],
+		"tasks": [
+			{
+				"taskName": "build",
+				"isBuildCommand": true,
+				"args": [
+					"build", "Debug"
+				]
+			},
+			{
+				"taskName": "run",
+				"isTestCommand": true,
+				"args": [
+					"run"
+				]
+			}
+		]
+	}
 }
