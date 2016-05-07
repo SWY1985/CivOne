@@ -11,7 +11,7 @@
 			]
 		},
 		{
-			"taskName": "test",
+			"taskName": "run",
 			"isTestCommand": true,
 			"args": [
 				"run"
