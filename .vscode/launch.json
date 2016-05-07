@@ -8,10 +8,33 @@
 			"name": "Launch CivOne",
 			// Type of configuration.
 			"type": "mono",
+			// Request type of configuration.
+			"request": "launch",
 			// Absolute path to the program.
 			"program": "${workspaceRoot}/bin/CivOne.exe",
 			// Absolute path to the runtime executable to be used.
-			"runtimeExecutable": "${workspaceRoot}/bin/CivOne.exe"
+			"runtimeExecutable": null,
+			// Launch debug target in external console.
+			"externalConsole": true,
+			// Command line arugments passed to the program.
+			"args": ["setup"]
+		},
+		{
+			// Name of configuration
+			// Appears in the launch configuration drop down menu.
+			"name": "Setup CivOne",
+			// Type of configuration.
+			"type": "mono",
+			// Request type of configuration.
+			"request": "launch",
+			// Absolute path to the program.
+			"program": "${workspaceRoot}/bin/CivOne.exe",
+			// Absolute path to the runtime executable to be used.
+			"runtimeExecutable": null,
+			// Launch debug target in external console.
+			"externalConsole": true,
+			// Command line arugments passed to the program.
+			"args": ["setup"]
 		}
 	]
 }
