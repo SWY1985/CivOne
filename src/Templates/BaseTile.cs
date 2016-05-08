@@ -38,7 +38,37 @@ namespace CivOne.Templates
 		
 		public int X { get; private set; }
 		public int Y { get; private set; }
-		public bool Special { get; private set; }
+		public bool Special { get; protected set; }
+		public byte LandValue { get; set; }
+		public byte LandScore
+		{
+			get
+			{
+				sbyte score = (sbyte)(Trade + (3 * Food));
+				if (!Map.TileIsType(this, Terrain.River, Terrain.Grassland1, Terrain.Grassland2))
+				{
+					score += (sbyte)(2 * Shield);
+				}
+				if (MiningShieldBonus < 0)
+				{
+					score -= (sbyte)(MiningShieldBonus + 1);
+				}
+				else if (IrrigationFoodBonus < 0)
+				{
+					score -= (sbyte)(2 * (IrrigationFoodBonus + 1));
+				}
+				return (byte)score;
+			}
+		}
+		public abstract byte Movement { get; }
+		public abstract byte Defense { get; }
+		public abstract sbyte Food { get; }
+		public abstract sbyte Shield { get; }
+		public abstract sbyte Trade { get; }
+		public abstract sbyte IrrigationFoodBonus { get; }
+		public abstract byte IrrigationCost { get; }
+		public abstract sbyte MiningShieldBonus { get; }
+		public abstract byte MiningCost { get; }
 		
 		public ITile GetBorderTile(Direction direction)
 		{

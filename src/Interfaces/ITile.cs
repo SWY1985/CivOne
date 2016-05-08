@@ -17,6 +17,17 @@ namespace CivOne.Interfaces
 		int Y { get; }
 		Terrain Type { get; }
 		bool Special { get; }
+		byte LandValue { get; set; }
+		byte LandScore { get; }
+		byte Movement { get; }
+		byte Defense { get; }
+		sbyte Food { get; }
+		sbyte Shield { get; }
+		sbyte Trade { get; }
+		sbyte IrrigationFoodBonus { get; }
+		byte IrrigationCost { get; }
+		sbyte MiningShieldBonus { get; }
+		byte MiningCost { get; }
 		byte Borders { get; }
 		ITile GetBorderTile(Direction direction);
 		Terrain GetBorderType(Direction direction);

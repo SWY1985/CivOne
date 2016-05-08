@@ -72,6 +72,11 @@ namespace CivOne
 					(map[0, 1] != null && map[0, 1].Type == Terrain.Ocean));
 		}
 		
+		internal static bool TileIsType(ITile tile, params Terrain[] terrain)
+		{
+			return terrain.Any(x => tile.Type == x);
+		}
+		
 		private int ModGrid(int x, int y)
 		{
 			return (x % 4) * 4 + (y % 4);
@@ -440,6 +445,22 @@ namespace CivOne
 			}
 		}
 		
+		private void CalculateLandValue()
+		{
+			Console.WriteLine("Map: Calculating land value");
+			
+			for (int y = 0; y < HEIGHT; y++)
+			for (int x = 0; x < WIDTH; x++)
+			{
+				_tiles[x, y].LandValue = 0;
+				if (x < 2 || y < 2 || x >= (WIDTH - 2) || y >= (HEIGHT - 2)) continue;
+				if (TileIsType(_tiles[x, y], Terrain.Plains, Terrain.Grassland1, Terrain.Grassland2, Terrain.River))
+				{
+					// TODO: Finish the code
+				}
+			}
+		}
+		
 		private void SaveBitmap()
 		{
 			Picture bmp = new Picture(WIDTH * 16, HEIGHT * 16, Resources.Instance.LoadPIC("SP257").Image.Palette.Entries);
@@ -469,6 +490,7 @@ namespace CivOne
 			
 			CreatePoles();
 			PlaceHuts();
+			CalculateLandValue();
 			
 			Ready = true;
 			Console.WriteLine("Map: Ready");
@@ -513,6 +535,7 @@ namespace CivOne
 			
 			LoadMap(bitmap);
 			PlaceHuts();
+			CalculateLandValue();
 			
 			// Load improvement layer
 			for (int x = 0; x < WIDTH; x++)
@@ -548,6 +571,7 @@ namespace CivOne
 			
 			CreatePoles();
 			PlaceHuts();
+			CalculateLandValue();
 			
 			Ready = true;
 			Console.WriteLine("Map: Ready");

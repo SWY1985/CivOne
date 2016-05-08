@@ -16,6 +16,78 @@ namespace CivOne.Tiles
 {
 	internal class Grassland : BaseTile
 	{
+		public override byte Movement
+		{
+			get
+			{
+				return 1;
+			}
+		}
+		
+		public override byte Defense
+		{
+			get
+			{
+				return 2;
+			}
+		}
+		
+		public override sbyte Food
+		{
+			get
+			{
+				return (sbyte)(Special ? 2 : 1); 
+			}
+		}
+		
+		public override sbyte Shield
+		{
+			get
+			{
+				return 1;
+			}
+		}
+		
+		public override sbyte Trade
+		{
+			get
+			{
+				return 0;
+			}
+		}
+		
+		public override sbyte IrrigationFoodBonus
+		{
+			get
+			{
+				return -2;
+			}
+		}
+		
+		public override byte IrrigationCost
+		{
+			get
+			{
+				return 5;
+			}
+		}
+		
+		public override sbyte MiningShieldBonus
+		{
+			get
+			{
+				return 2;
+			}
+		}
+		
+		public override byte MiningCost
+		{
+			get
+			{
+				return 10;
+			}
+		}
+		
 		private Terrain CalculateTileType()
 		{
 			if ((((X * 7) + (Y * 11)) & 0x02) == 0)
@@ -26,6 +98,7 @@ namespace CivOne.Tiles
 		public Grassland(int x, int y) : base(x, y, false)
 		{
 			Type = CalculateTileType();
+			Special = (Type == Terrain.Grassland2);
 			Name = "Grassland";
 		}
 		public Grassland() : this(-1, -1)
