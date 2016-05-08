@@ -1,9 +1,16 @@
 // These are the settings for editing CivOne in Visual Studio Code.
 // Please do not change them! 
 {
+	// Controls if the editor should automatically close brackets after opening them.
+	"editor.autoClosingBrackets": false,
 	// Controls if the editor will insert spaces for tabs. If set to auto, the value will be guessed based on the opened file.
 	"editor.insertSpaces": false,
-	
 	// Controls whether the editor should render whitespace characters
-	"editor.renderWhitespace": true
+	"editor.renderWhitespace": true,
+	// The number of spaces a tab is equal to.
+	"editor.tabSize": 4,
+	// The default character set encoding to use when reading and writing files.
+	"files.encoding": "utf8",
+	// The default end of line character.
+	"files.eol": "\n"
 }

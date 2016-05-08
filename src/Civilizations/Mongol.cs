@@ -1,4 +1,4 @@
-﻿// CivOne
+// CivOne
 //
 // To the extent possible under law, the person who associated CC0 with
 // CivOne has waived all copyright and related or neighboring rights
