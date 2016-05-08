@@ -449,15 +449,48 @@ namespace CivOne
 		{
 			Console.WriteLine("Map: Calculating land value");
 			
+			// This code is a translation of Darkpanda's forum post here: http://forums.civfanatics.com/showthread.php?t=498532
 			for (int y = 0; y < HEIGHT; y++)
 			for (int x = 0; x < WIDTH; x++)
 			{
 				_tiles[x, y].LandValue = 0;
 				if (x < 2 || y < 2 || x >= (WIDTH - 2) || y >= (HEIGHT - 2)) continue;
-				if (TileIsType(_tiles[x, y], Terrain.Plains, Terrain.Grassland1, Terrain.Grassland2, Terrain.River))
+				if (!TileIsType(_tiles[x, y], Terrain.Plains, Terrain.Grassland1, Terrain.Grassland2, Terrain.River)) continue;
+				
+				int landValue = 0;
+				for (int yy = -2; yy <= 2; yy++)
+				for (int xx = -2; xx <= 2; xx++)
 				{
-					// TODO: Finish the code
+					int val = 0;
+					if (Math.Abs(xx) == 2 && Math.Abs(yy) == 2) continue;
+					ITile tile = _tiles[x + xx, y + yy];
+					if (tile.Special && TileIsType(tile, Terrain.Grassland2, Terrain.River))
+					{
+						val += 2;
+						if (tile.Type == Terrain.Grassland2) val += (new Grassland()).LandScore;
+						else if (tile.Type == Terrain.River) val += (new River()).LandScore;
+					}
+					else
+					{
+						val += tile.LandScore;
+					}
+					if (Math.Abs(xx) == 1 && Math.Abs(yy) == 1) val *= 2;
+					// This is probably a bug in the original Civilization code:
+					if (xx == 0 && yy == -1) val *= 2;
+					//
+					landValue += val;
 				}
+				if (!_tiles[x, y].Special && TileIsType(_tiles[x, y], Terrain.Grassland1, Terrain.River)) landValue -= 16;
+				landValue -= 120;
+				bool negative = (landValue < 0);
+				landValue = Math.Abs(landValue);
+				landValue /= 8;
+				if (negative) landValue = 1 - landValue;
+				if (landValue < 1) landValue = 1;
+				if (landValue > 15) landValue = 15;
+				landValue /= 2;
+				landValue += 8;
+				_tiles[x, y].LandValue = (byte)landValue;
 			}
 		}
 		
