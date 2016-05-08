@@ -16,6 +16,78 @@ namespace CivOne.Tiles
 {
 	internal class Forest : BaseTile
 	{
+		public override byte Movement
+		{
+			get
+			{
+				return 2;
+			}
+		}
+		
+		public override byte Defense
+		{
+			get
+			{
+				return 3;
+			}
+		}
+		
+		public override sbyte Food
+		{
+			get
+			{
+				return (sbyte)(Special ? 3 : 1); 
+			}
+		}
+		
+		public override sbyte Shield
+		{
+			get
+			{
+				return 2;
+			}
+		}
+		
+		public override sbyte Trade
+		{
+			get
+			{
+				return 0;
+			}
+		}
+		
+		public override sbyte IrrigationFoodBonus
+		{
+			get
+			{
+				return 6;
+			}
+		}
+		
+		public override byte IrrigationCost
+		{
+			get
+			{
+				return 5;
+			}
+		}
+		
+		public override sbyte MiningShieldBonus
+		{
+			get
+			{
+				return -1;
+			}
+		}
+		
+		public override byte MiningCost
+		{
+			get
+			{
+				return 0;
+			}
+		}
+		
 		public Forest(int x, int y, bool special) : base(x, y, special)
 		{
 			Type = Terrain.Forest;
