@@ -17,6 +17,7 @@ namespace CivOne.Interfaces
 		int Y { get; }
 		Terrain Type { get; }
 		bool Special { get; }
+		byte ContinentId { get; set; }
 		byte LandValue { get; set; }
 		byte LandScore { get; }
 		byte Movement { get; }
@@ -35,5 +36,6 @@ namespace CivOne.Interfaces
 		bool Irrigation { get; set; }
 		bool Mine { get; set; }
 		bool Hut { get; set; }
+		bool IsOcean { get; }
 	}
 }

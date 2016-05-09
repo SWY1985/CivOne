@@ -88,6 +88,14 @@ namespace CivOne.Tiles
 			}
 		}
 		
+		public override bool IsOcean
+		{
+			get
+			{
+				return true;
+			}
+		}
+		
 		public Ocean(int x, int y, bool special) : base(x, y, special)
 		{
 			Type = Terrain.Ocean;
