@@ -98,7 +98,7 @@ namespace CivOne.Tiles
 		public Grassland(int x, int y) : base(x, y, false)
 		{
 			Type = CalculateTileType();
-			Special = (Type == Terrain.Grassland2);
+			Special = AlternateSpecial();
 			Name = "Grassland";
 		}
 		public Grassland() : this(-1, -1)

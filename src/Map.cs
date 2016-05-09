@@ -475,13 +475,15 @@ namespace CivOne
 					int val = 0;
 					
 					ITile tile = _tiles[x + xx, y + yy];
-					if (tile.Special && TileIsType(tile, Terrain.Grassland2, Terrain.River))
+					if (tile.Special && TileIsType(tile, Terrain.Grassland1, Terrain.Grassland2, Terrain.River))
 					{
 						// If the neighbour square type is Grassland special or River special, add 2,
 						// then add the non-special Grassland or River terrain type score to the neighbour value
 						val += 2;
-						if (tile.Type == Terrain.Grassland2) val += (new Grassland()).LandScore;
-						else if (tile.Type == Terrain.River) val += (new River()).LandScore;
+						if (tile.Type == Terrain.River)
+							val += (new River()).LandScore;
+						else
+							val += (new Grassland()).LandScore;
 					}
 					else
 					{

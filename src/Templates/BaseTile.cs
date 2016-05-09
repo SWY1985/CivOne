@@ -138,6 +138,12 @@ namespace CivOne.Templates
 		public virtual bool Mine { get; set; }
 		public virtual bool Hut { get; set; }
 		
+		// This method is used to calculate whether a river or grassland tile is special.
+		protected bool AlternateSpecial()
+		{
+			return ((X + Y) % 4 == 0) || ((X + Y) % 4 == 3);
+		}
+		
 		protected BaseTile(int x, int y, bool special = false)
 		{
 			X = x;

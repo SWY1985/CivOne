@@ -91,6 +91,7 @@ namespace CivOne.Tiles
 		public River(int x, int y) : base(x, y, false)
 		{
 			Type = Terrain.River;
+			Special = AlternateSpecial();
 			Name = "River";
 		}
 		public River() : this(-1, -1)
