@@ -484,7 +484,6 @@ namespace CivOne
 				ITile[] continent = continents.OrderByDescending(x => x.Length).FirstOrDefault();
 				if (continent == null) break;
 				
-				Console.WriteLine("Max {0}: {1}", i, continent.Length);
 				continents.Remove(continent);
 				foreach (ITile tile in continent)
 				{
@@ -496,8 +495,6 @@ namespace CivOne
 			{
 				tile.ContinentId = 15;
 			}
-			
-			Console.WriteLine(AllTiles().Count(x => x.ContinentId > 15));
 			
 			// Enable this line to visualize the result
 			//SaveContinentBitmap();
