@@ -675,6 +675,28 @@ namespace CivOne
 			new Thread(new ThreadStart(LoadMapThread)).Start();
 		}
 		
+		public ITile this[int x, int y]
+		{
+			get
+			{
+				while (x < 0) x += WIDTH;
+				while (y < 0) y += HEIGHT;
+				x = (x % WIDTH);
+				y = (y % HEIGHT);
+				
+				return _tiles[x, y];
+			}
+			private set
+			{
+				while (x < 0) x += WIDTH;
+				while (y < 0) y += HEIGHT;
+				x = (x % WIDTH);
+				y = (y % HEIGHT);
+				
+				_tiles[x, y] = value;
+			}
+		}
+		
 		private static Map _instance;
 		public static Map Instance
 		{
