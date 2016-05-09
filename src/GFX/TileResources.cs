@@ -316,7 +316,7 @@ namespace CivOne.GFX
 			}
 			
 			// Add special resources
-			if (tile.Special)
+			if (!Map.TileIsType(tile, Terrain.Grassland1, Terrain.Grassland2) && tile.Special)
 			{
 				int terrainId = (int)tile.Type;
 				Bitmap resource = Res.GetPart("SP257", terrainId * 16, 112, 16, 16);
