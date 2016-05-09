@@ -432,8 +432,8 @@ namespace CivOne
 			
 			// Initial continents
 			byte continentId = 0;
-			for (int x = 0; x < WIDTH; x++)
 			for (int y = 0; y < HEIGHT; y++)
+			for (int x = 0; x < WIDTH; x++)
 			{
 				ITile tile = this[x, y], north = this[x, y - 1], west = this[x - 1, y];
 				
@@ -451,11 +451,39 @@ namespace CivOne
 				}
 				
 				if (north == null || west == null) continue;
+				if (north.IsOcean != west.IsOcean) continue;
 				
 				// Merge continents
-				if (north.IsOcean == west.IsOcean && north.ContinentId > 0 && west.ContinentId > 0)
+				if (north.ContinentId != west.ContinentId && north.ContinentId > 0 && west.ContinentId > 0)
 				{
-					if (north.ContinentId == west.ContinentId) continue;
+					int northCount = AllTiles().Count(t => t.ContinentId == north.ContinentId);
+					int westCount = AllTiles().Count(t => t.ContinentId == west.ContinentId);
+					if (northCount > westCount)
+					{
+						foreach (ITile westTile in AllTiles().Where(t => t.ContinentId == west.ContinentId))
+						{
+							westTile.ContinentId = north.ContinentId;
+						}
+						continue;
+					}
+					foreach (ITile northTile in AllTiles().Where(t => t.ContinentId == north.ContinentId))
+					{
+						northTile.ContinentId = west.ContinentId;
+					}
+				}
+			}
+			
+			for (int x = 0; x < WIDTH; x++)
+			for (int y = 0; y < HEIGHT; y++)
+			{
+				ITile tile = this[x, y], north = this[x, y - 1], west = this[x - 1, y];
+				
+				if (north == null || west == null) continue;
+				if (north.IsOcean != west.IsOcean) continue;
+				
+				// Merge continents
+				if (north.ContinentId != west.ContinentId && north.ContinentId > 0 && west.ContinentId > 0)
+				{
 					int northCount = AllTiles().Count(t => t.ContinentId == north.ContinentId);
 					int westCount = AllTiles().Count(t => t.ContinentId == west.ContinentId);
 					if (northCount > westCount)
@@ -635,7 +663,12 @@ namespace CivOne
 			for (int y = 0; y < HEIGHT; y++)
 			{
 				bmp.AddLayer(Resources.Instance.GetTile(_tiles[x, y]), x * 16, y * 16);
-				bmp.FillRectangle(_tiles[x, y].ContinentId, (x * 16) + 4, (y * 16) + 4, 8, 8);
+				//bmp.FillRectangle(_tiles[x, y].ContinentId, (x * 16) + 4, (y * 16) + 4, 8, 8);
+				bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, 5, (x * 16 + 8), (y * 16 + 3), TextAlign.Center);
+				bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, 5, (x * 16 + 7), (y * 16 + 4), TextAlign.Center);
+				bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, 5, (x * 16 + 9), (y * 16 + 4), TextAlign.Center);
+				bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, 5, (x * 16 + 8), (y * 16 + 5), TextAlign.Center);
+				bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, _tiles[x, y].ContinentId, (x * 16 + 8), (y * 16 + 4), TextAlign.Center);
 			}
 			
 			bmp.Image.Save("capture/map.png", ImageFormat.Png);
