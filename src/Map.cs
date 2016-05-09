@@ -523,8 +523,6 @@ namespace CivOne
 				landValue /= 2; // Divide the land value by 2
 				landValue += 8; // And finally, add 8 to the land value
 				_tiles[x, y].LandValue = (byte)landValue;
-				
-				Console.WriteLine(_tiles[x, y].LandValue.ToString());
 			}
 		}
 		
