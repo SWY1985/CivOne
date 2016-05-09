@@ -39,6 +39,7 @@ namespace CivOne.Templates
 		public int X { get; private set; }
 		public int Y { get; private set; }
 		public bool Special { get; protected set; }
+		public byte ContinentId { get; set; }
 		public byte LandValue { get; set; }
 		public byte LandScore
 		{
@@ -137,6 +138,13 @@ namespace CivOne.Templates
 		public virtual bool Irrigation { get; set; }
 		public virtual bool Mine { get; set; }
 		public virtual bool Hut { get; set; }
+		public virtual bool IsOcean
+		{
+			get
+			{
+				return false;
+			}
+		}
 		
 		// This method is used to calculate whether a river or grassland tile is special.
 		protected bool AlternateSpecial()

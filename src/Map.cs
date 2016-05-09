@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -61,6 +62,15 @@ namespace CivOne
 			if (y < 0) return null;
 			if (y >= HEIGHT) return null; 
 			return _tiles[x, y];
+		}
+		
+		public IEnumerable<ITile> AllTiles()
+		{
+			for (int y = 0; y < HEIGHT; y++)
+			for (int x = 0; x < WIDTH; x++)
+			{
+				yield return this[x, y];
+			}
 		}
 		
 		private bool NearOcean(int x, int y)
@@ -415,6 +425,84 @@ namespace CivOne
 			}
 		}
 		
+		private void CalculateContinentSize()
+		{
+			// TODO: This function needs to be been checked against the original function. It does not yet work as intended.
+			Console.WriteLine("Map: Calculate continent and ocean sizes");
+			
+			// Initial continents
+			byte continentId = 0;
+			for (int x = 0; x < WIDTH; x++)
+			for (int y = 0; y < HEIGHT; y++)
+			{
+				ITile tile = this[x, y], north = this[x, y - 1], west = this[x - 1, y];
+				
+				if (north != null && (north.IsOcean == tile.IsOcean) && north.ContinentId > 0)
+				{
+					tile.ContinentId = north.ContinentId;
+				}
+				else if (west != null && (west.IsOcean == tile.IsOcean) && west.ContinentId > 0)
+				{
+					tile.ContinentId = west.ContinentId;
+				}
+				else
+				{
+					tile.ContinentId = ++continentId;
+				}
+				
+				if (north == null || west == null) continue;
+				
+				// Merge continents
+				if (north.IsOcean == west.IsOcean && north.ContinentId > 0 && west.ContinentId > 0)
+				{
+					if (north.ContinentId == west.ContinentId) continue;
+					int northCount = AllTiles().Count(t => t.ContinentId == north.ContinentId);
+					int westCount = AllTiles().Count(t => t.ContinentId == west.ContinentId);
+					if (northCount > westCount)
+					{
+						foreach (ITile westTile in AllTiles().Where(t => t.ContinentId == west.ContinentId))
+						{
+							westTile.ContinentId = north.ContinentId;
+						}
+						continue;
+					}
+					foreach (ITile northTile in AllTiles().Where(t => t.ContinentId == north.ContinentId))
+					{
+						northTile.ContinentId = west.ContinentId;
+					}
+				}
+			}
+			
+			List<ITile[]> continents = new List<ITile[]>();
+			for (int i = 0; i <= 255; i++)
+			{
+				if (!AllTiles().Any(x => x.ContinentId == i)) continue;
+				continents.Add(AllTiles().Where(x => x.ContinentId == i).ToArray());
+			}
+			for (byte i = 1; i < 15; i++)
+			{
+				ITile[] continent = continents.OrderByDescending(x => x.Length).FirstOrDefault();
+				if (continent == null) break;
+				
+				Console.WriteLine("Max {0}: {1}", i, continent.Length);
+				continents.Remove(continent);
+				foreach (ITile tile in continent)
+				{
+					tile.ContinentId = i;
+				}
+			}
+			foreach (ITile[] continent in continents)
+			foreach (ITile tile in continent)
+			{
+				tile.ContinentId = 15;
+			}
+			
+			Console.WriteLine(AllTiles().Count(x => x.ContinentId > 15));
+			
+			// Enable this line to visualize the result
+			//SaveContinentBitmap();
+		}
+		
 		private void CreatePoles()
 		{
 			Console.WriteLine("Map: Creating poles");
@@ -538,7 +626,22 @@ namespace CivOne
 				bmp.AddLayer(Resources.Instance.GetTile(_tiles[x, y]), x * 16, y * 16);
 			}
 			
-			bmp.Image.Save("map.png", ImageFormat.Png);
+			bmp.Image.Save("capture/map.png", ImageFormat.Png);
+			Console.WriteLine("DEBUG: Map saved as bitmap");
+		}
+		
+		private void SaveContinentBitmap()
+		{
+			Picture bmp = new Picture(WIDTH * 16, HEIGHT * 16, Resources.Instance.LoadPIC("SP257").Image.Palette.Entries);
+			
+			for (int x = 0; x < WIDTH; x++)
+			for (int y = 0; y < HEIGHT; y++)
+			{
+				bmp.AddLayer(Resources.Instance.GetTile(_tiles[x, y]), x * 16, y * 16);
+				bmp.FillRectangle(_tiles[x, y].ContinentId, (x * 16) + 4, (y * 16) + 4, 8, 8);
+			}
+			
+			bmp.Image.Save("capture/map.png", ImageFormat.Png);
 			Console.WriteLine("DEBUG: Map saved as bitmap");
 		}
 		
@@ -555,6 +658,7 @@ namespace CivOne
 			AgeAdjustments();
 			CreateRivers();
 			
+			CalculateContinentSize();
 			CreatePoles();
 			PlaceHuts();
 			CalculateLandValue();
@@ -681,10 +785,10 @@ namespace CivOne
 		{
 			get
 			{
+				if (y < 0 || y >= HEIGHT) return null;
+				
 				while (x < 0) x += WIDTH;
-				while (y < 0) y += HEIGHT;
 				x = (x % WIDTH);
-				y = (y % HEIGHT);
 				
 				return _tiles[x, y];
 			}
