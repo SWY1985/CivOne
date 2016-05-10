@@ -21,6 +21,12 @@
 				"args": [
 					"run"
 				]
+			},
+			{
+				"taskName": "setup",
+				"args": [
+					"setup"
+				]
 			}
 		]
 	}

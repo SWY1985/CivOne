@@ -2,6 +2,7 @@
 
 IF(%2)==(build) GOTO Build:
 IF(%2)==(run) GOTO Run:
+IF(%2)==(setup) GOTO Setup:
 
 GOTO Error:
 
@@ -11,6 +12,10 @@ GOTO End:
 
 :Run
 bin\CivOne.exe
+GOTO End:
+
+:Setup
+bin\CivOne.exe setup
 GOTO End:
 
 :Error
