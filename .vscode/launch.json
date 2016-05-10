@@ -17,7 +17,7 @@
 			// Launch debug target in external console.
 			"externalConsole": true,
 			// Command line arugments passed to the program.
-			"args": ["setup"]
+			"args": []
 		},
 		{
 			// Name of configuration
