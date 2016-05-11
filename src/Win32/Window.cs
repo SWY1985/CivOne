@@ -350,7 +350,12 @@ namespace CivOne
 			Refresh();
 		}
 		
-		public Window(string screen)
+		public static void CreateWindow(string screen)
+		{
+			Application.Run(new Window(screen));
+		}
+		
+		private Window(string screen)
 		{
 			SuspendLayout();
 			

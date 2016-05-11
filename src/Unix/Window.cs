@@ -22,7 +22,7 @@ using CivOne.Screens;
 
 namespace CivOne
 {
-	internal class GtkWindow : IDisposable
+	internal class Window : IDisposable
 	{
 		private readonly Gtk.Window _window;
 		
@@ -382,7 +382,15 @@ namespace CivOne
 			Gtk.Application.Run();
 		}
 		
-		internal GtkWindow(string screen)
+		public static CreateWindow(string screen)
+		{
+			using (Window window = new Window(screen))
+			{
+				window.Run();
+			}
+		}
+		
+		private  Window(string screen)
 		{
 			Gdk.Threads.Init();
 			Gtk.Application.Init();

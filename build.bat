@@ -7,7 +7,7 @@ IF(%2)==(setup) GOTO Setup:
 GOTO Error:
 
 :Build
-%1 CivOne.csproj /t:Rebuild /p:Configuration=%3
+%1 CivOne.Win32.csproj /t:Rebuild /p:Configuration=%3
 GOTO End:
 
 :Run

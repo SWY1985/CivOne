@@ -2,11 +2,11 @@
 	"version": "0.1.0",
 	"linux": {
 		"command": "xbuild",
-		"args": ["CivOne.csproj"]
+		"args": ["CivOne.Unix.csproj"]
 	},
 	"osx": {
 		"command": "xbuild",
-		"args": ["CivOne.csproj"]
+		"args": ["CivOne.Unix.csproj"]
 	},
 	"windows": {
 		"command": "build.bat",
