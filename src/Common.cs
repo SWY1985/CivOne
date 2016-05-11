@@ -106,6 +106,11 @@ namespace CivOne
 			return string.Format("{0} AD", year);
 		}
 		
+		public static bool InCityRange(int x1, int y1, int x2, int y2)
+		{
+			return new Rectangle(x2 - 2, y2 - 2, 5, 5).IntersectsWith(new Rectangle(x1, y1, 1, 1));
+		}
+		
 		public static byte BinaryReadByte(BinaryReader reader, int position)
 		{
 			if (reader.BaseStream.Position != position)
