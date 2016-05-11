@@ -382,7 +382,7 @@ namespace CivOne
 			Gtk.Application.Run();
 		}
 		
-		public static CreateWindow(string screen)
+		public static void CreateWindow(string screen)
 		{
 			using (Window window = new Window(screen))
 			{
