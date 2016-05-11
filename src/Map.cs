@@ -641,8 +641,11 @@ namespace CivOne
 			}
 		}
 		
-		private void SaveBitmap()
+		public void SaveBitmap()
 		{
+			string filename = Common.CaptureFilename;
+			if (filename == null) return;
+			
 			Picture bmp = new Picture(WIDTH * 16, HEIGHT * 16, Resources.Instance.LoadPIC("SP257").Image.Palette.Entries);
 			
 			for (int x = 0; x < WIDTH; x++)
@@ -651,7 +654,7 @@ namespace CivOne
 				bmp.AddLayer(Resources.Instance.GetTile(_tiles[x, y]), x * 16, y * 16);
 			}
 			
-			bmp.Image.Save("capture/map.png", ImageFormat.Png);
+			bmp.Image.Save(filename, ImageFormat.Png);
 			Console.WriteLine("DEBUG: Map saved as bitmap");
 		}
 		

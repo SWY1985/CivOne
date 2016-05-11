@@ -60,6 +60,22 @@ namespace CivOne
 			return false;
 		}
 		
+		internal static string CaptureFilename
+		{
+			get
+			{
+				for (int i = 1; i < 99999; i++)
+				{
+					string filename = Path.Combine(Settings.Instance.CaptureDirectory, string.Format("capture{0:00000}.png", i));
+					if (File.Exists(filename)) continue;
+					return filename;
+				}
+				
+				Console.WriteLine("Error: Capture folder is full.");
+				return null;
+			}
+		}
+		
 		internal static bool EndGame
 		{
 			get; private set;
