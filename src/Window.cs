@@ -208,17 +208,13 @@ namespace CivOne
 		
 		private void SaveScreen()
 		{
-			for (int i = 1; i < 99999; i++)
+			string filename = Common.CaptureFilename;
+			if (filename == null) return;
+			
+			using (Bitmap capture = (Bitmap)_canvas.Image.Clone())
 			{
-				string filename = Path.Combine(Settings.Instance.CaptureDirectory, string.Format("capture{0:00000}.png", i));
-				if (File.Exists(filename)) continue;
-				
-				using (Bitmap capture = (Bitmap)_canvas.Image.Clone())
-				{
-					Picture.ReplaceColours(capture, 0, 5); 
-					capture.Save(filename, ImageFormat.Png);
-				}
-				return;
+				Picture.ReplaceColours(capture, 0, 5); 
+				capture.Save(filename, ImageFormat.Png);
 			}
 		}
 		
@@ -278,6 +274,10 @@ namespace CivOne
 				if (args.Control && args.KeyCode == Keys.F5)
 				{
 					SaveScreen();
+				}
+				if (args.Control && args.KeyCode == Keys.F6 && Game.Instance != null)
+				{
+					Map.Instance.SaveBitmap();
 				}
 				args.SuppressKeyPress = true;
 				return;
