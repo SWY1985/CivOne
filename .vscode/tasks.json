@@ -4,6 +4,10 @@
 		"command": "xbuild",
 		"args": ["CivOne.csproj"]
 	},
+	"osx": {
+		"command": "xbuild",
+		"args": ["CivOne.csproj"]
+	},
 	"windows": {
 		"command": "build.bat",
 		"args": ["xbuild"],
