@@ -9,55 +9,118 @@
 
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using System.Threading;
 using MonoMac.AppKit;
 using MonoMac.Foundation;
+using CivOne.GFX;
+using CivOne.Interfaces;
+using CivOne.Screens;
 
 namespace CivOne
 {
-	internal class Window : NSApplicationDelegate
+	internal class Window : NSWindow
 	{
-		private static NSApplication _app;
-		private NSWindow _window;
+		private static NSApplicationDelegate _app;
 		
-		private void CreateMenu()
+		private Picture _canvas = null;
+		
+		private uint _gameTick = 0;
+		private Thread TickThread;
+		private delegate void DelegateRefreshGame();
+		private delegate void DelegateScreenUpdate();
+		
+		private AutoResetEvent _tickWaiter = new AutoResetEvent(true);
+		
+		private bool _forceUpdate = false;
+		
+		private IScreen TopScreen
 		{
-			NSMenu mainMenu = new NSMenu();
-			NSMenuItem appMenuItem = new NSMenuItem();
-			mainMenu.AddItem(appMenuItem);
-			
-			NSMenu appMenu = new NSMenu();
-			NSMenuItem quitMenuItem = new NSMenuItem("Quit", "q", delegate { NSApplication.SharedApplication.Terminate(mainMenu); });
-			appMenu.AddItem(quitMenuItem);
-			
-			appMenuItem.Submenu = appMenu;
-			
-			NSApplication.SharedApplication.MainMenu = mainMenu;
+			get
+			{
+				return Common.Screens.LastOrDefault();
+			}
 		}
 		
-		public override void FinishedLaunching(NSObject notification)
+		private void GameTick()
 		{
-			CreateMenu();
-			NSWindow _window = new NSWindow(new RectangleF(0, 0, 640, 400), NSWindowStyle.Titled, NSBackingStore.Buffered, false)
+			RefreshGame();
+			_gameTick++;
+			_tickWaiter.Set();
+		}
+		
+		private void SetGameTick()
+		{
+			while (true)
 			{
-				Title = "CivOne"
-			};
+				// if the previous tick is still busy, step out... this will cause the game to slow down a bit
+				if (!_tickWaiter.WaitOne(25)) continue;
+				_tickWaiter.Reset();
+				
+				new Thread(new ThreadStart(GameTick)).Start();
+				Thread.Sleep(1000 / Settings.Instance.FramesPerSecond);
+			}
+		}
+		
+		private void ScreenUpdate()
+		{
+			// TODO
+		}
+		
+		private void RefreshGame()
+		{
+			if (TickThread.IsAlive && Common.EndGame)
+			{
+				TickThread.Abort();
+			}
 			
-			_window.CascadeTopLeftFromPoint(new PointF(20, 20));
-			_window.MakeKeyAndOrderFront(null);
+			if (!TickThread.IsAlive)
+			{
+				Dispose();
+				return;
+			}
+			
+			// Refresh the screen if there's an update
+			if (_forceUpdate || Common.Screens.Count(x => x.HasUpdate(_gameTick)) > 0) ScreenUpdate();
+			_forceUpdate = false;
 		}
 		
 		public static void CreateWindow(string screen)
 		{
 			NSApplication.Init();
-			_app = NSApplication.SharedApplication;
-			
-			_app.Delegate = new Window(screen);
-			_app.Run();
+			_app = new Application(screen);
 		}
 		
-		private Window(string screen)
+		public Window(string screen) : base(new RectangleF(0, 0, 640, 400), NSWindowStyle.Titled, NSBackingStore.Buffered, false)
 		{
+			// Setup the application window
+			Title = "CivOne";
+			CascadeTopLeftFromPoint(new PointF(20, 20));
+			MakeKeyAndOrderFront(null);
+			ContentView = new View();
 			
+			// Load the first screen
+			IScreen startScreen;
+			switch (screen)
+			{
+				case "demo":
+					startScreen = new Demo();
+					break;
+				case "setup":
+					startScreen = new Setup();
+					break;
+				default:
+					startScreen = new Credits();
+					break;
+			}
+			Common.AddScreen(startScreen);
+			
+			// Start tick thread
+			TickThread = new Thread(new ThreadStart(SetGameTick));
+			TickThread.Start();
 		}
 	}
 }
