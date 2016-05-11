@@ -14,28 +14,6 @@ namespace CivOne
 {
 	class Program
 	{
-		private static void RunGtk(string screen)
-		{
-			using (GtkWindow window = new GtkWindow(screen))
-			{
-				window.Run();
-			}
-			/*
-			Gdk.Threads.Init();
-			Gtk.Application.Init();
-			using (GtkWindow window = new GtkWindow(screen))
-			{
-				Gdk.Threads.Enter();
-				Gtk.Application.Run();
-				Gdk.Threads.Leave();
-			}*/
-		}
-		
-		private static void RunForms(string screen)
-		{
-			Application.Run(new Window(screen));
-		}
-		
 		[STAThread]
 		private static void Main(string[] args)
 		{
@@ -55,16 +33,7 @@ namespace CivOne
 			
 			Console.WriteLine("Game Start");
 			
-			switch (Environment.OSVersion.Platform)
-			{
-				case PlatformID.Unix:
-				case PlatformID.MacOSX:
-					RunGtk(screen);
-					break;
-				default:
-					RunForms(screen);
-					break;
-			}
+			Window.CreateWindow(screen);
 			
 			Console.WriteLine("Game End");
 		}
