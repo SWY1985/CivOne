@@ -217,6 +217,21 @@ namespace CivOne
 			}
 		}
 		
+		private void AddStartingUnits(byte player)
+		{
+			// TODO: Implement actual starting position algorithm
+			ITile[] tiles = Map.Instance.AllTiles().Where(t => t.LandValue > 0 && !_units.Any(u => Common.InCityRange(u.X, u.Y, t.X, t.Y))).OrderByDescending(t => t.LandValue).Take(50).ToArray();
+			if (tiles.Length == 0)
+			{
+				tiles = Map.Instance.AllTiles().Where(t => !t.IsOcean && !_units.Any(u => Common.InCityRange(u.X, u.Y, t.X, t.Y))).ToArray();
+			}
+			ITile startTile = tiles[Common.Random.Next(tiles.Length)];
+			
+			IUnit unit = CreateUnit(Unit.Settlers, startTile.X, startTile.Y);
+			unit.Owner = player;
+			_units.Add(unit);
+		}
+		
 		private void PreloadCivilopedia()
 		{
 			Console.WriteLine("Civilopedia: Preloading articles...");
@@ -254,6 +269,8 @@ namespace CivOne
 			_competition = competition;
 			Console.WriteLine("Game instance created (difficulty: {0}, competition: {1})", _difficulty, _competition);
 			
+			_cities = new List<City>();
+			_units = new List<IUnit>();
 			_players = new Player[competition + 1];
 			for (int i = 0; i <= competition; i++)
 			{
@@ -269,11 +286,15 @@ namespace CivOne
 				int r = Common.Random.Next(civs.Length);
 				
 				_players[i] = new Player(civs[r]);
+				
 				Console.WriteLine("- Player {0} is {1} of the {2}", i, _players[i].LeaderName, _players[i].TribeNamePlural);
 			}
 			
-			_cities = new List<City>();
-			_units = new List<IUnit>();
+			Console.WriteLine("Adding starting units...");
+			for (byte i = 1; i <= competition; i++)
+			{
+				AddStartingUnits(i);
+			}
 		}
 	}
 }
