@@ -20,23 +20,18 @@ using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Screens;
+using CivOne.Templates;
 
 namespace CivOne
 {
-	internal class Window : Form
+	internal partial class Window : Form
 	{
-		private Picture _canvas = null;
-		
-		private uint _gameTick = 0;
-		private Thread TickThread;
 		private delegate void DelegateRefreshGame();
 		private delegate void DelegateScreenUpdate();
 		
 		private Cursor _hiddenCursor;
 		private Cursor[,] _cursorPointer,_cursorGoto;
 		private MouseCursor _currentCursor = MouseCursor.Pointer;
-		
-		private AutoResetEvent _tickWaiter = new AutoResetEvent(true);
 		
 		private IScreen TopScreen
 		{
@@ -62,22 +57,6 @@ namespace CivOne
 			}
 		}
 		
-		private int CanvasWidth
-		{
-			get
-			{
-				return ScaleX * 320;
-			}
-		}
-		
-		private int CanvasHeight
-		{
-			get
-			{
-				return ScaleY * 200;
-			}
-		}
-		
 		private int ScaleX
 		{
 			get
@@ -91,26 +70,6 @@ namespace CivOne
 			get
 			{
 				return (int)Math.Floor((float)ClientSize.Height / 200);
-			}
-		}
-		
-		private void GameTick()
-		{
-			RefreshGame();
-			_gameTick++;
-			_tickWaiter.Set();
-		}
-		
-		private void SetGameTick()
-		{
-			while (true)
-			{
-				// if the previous tick is still busy, step out... this will cause the game to slow down a bit
-				if (!_tickWaiter.WaitOne(25)) continue;
-				_tickWaiter.Reset();
-				
-				new Thread(new ThreadStart(GameTick)).Start();
-				Thread.Sleep(1000 / Settings.Instance.FramesPerSecond);
 			}
 		}
 		
@@ -204,18 +163,6 @@ namespace CivOne
 			FormBorderStyle = FormBorderStyle.None;
 			WindowState = FormWindowState.Maximized;
 			LoadCursors();
-		}
-		
-		private void SaveScreen()
-		{
-			string filename = Common.CaptureFilename;
-			if (filename == null) return;
-			
-			using (Bitmap capture = (Bitmap)_canvas.Image.Clone())
-			{
-				Picture.ReplaceColours(capture, 0, 5); 
-				capture.Save(filename, ImageFormat.Png);
-			}
 		}
 		
 		private void ScaleMouseEventArgs(ref MouseEventArgs args)
@@ -378,20 +325,7 @@ namespace CivOne
 			ResizeEnd += OnResizeEnd;
 			
 			// Load the first screen
-			IScreen startScreen;
-			switch (screen)
-			{
-				case "demo":
-					startScreen = new Demo();
-					break;
-				case "setup":
-					startScreen = new Setup();
-					break;
-				default:
-					startScreen = new Credits();
-					break;
-			}
-			Common.AddScreen(startScreen);
+			Init(screen);
 			
 			ResumeLayout(false);
 		}
