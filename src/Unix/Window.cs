@@ -22,16 +22,9 @@ using CivOne.Screens;
 
 namespace CivOne
 {
-	internal class Window : IDisposable
+	internal partial class Window : IDisposable
 	{
 		private readonly Gtk.Window _window;
-		
-		private Picture _canvas = null;
-		
-		private uint _gameTick = 0;
-		private Thread TickThread;
-		
-		private AutoResetEvent _tickWaiter = new AutoResetEvent(true);
 		
 		private bool _forceUpdate = false;
 		private bool _fullScreen = false;
@@ -64,22 +57,6 @@ namespace CivOne
 			}
 		}
 		
-		private int CanvasWidth
-		{
-			get
-			{
-				return ScaleX * 320;
-			}
-		}
-		
-		private int CanvasHeight
-		{
-			get
-			{
-				return ScaleY * 200;
-			}
-		}
-		
 		private int ScaleX
 		{
 			get
@@ -97,27 +74,6 @@ namespace CivOne
 				int sizeW, sizeH;
 				_window.GetSize(out sizeW, out sizeH);
 				return (int)Math.Floor((float)sizeH / 200);
-			}
-		}
-		
-		private void GameTick()
-		{
-			RefreshGame();
-			_gameTick++;
-			_tickWaiter.Set();
-		}
-		
-		
-		private void SetGameTick()
-		{
-			while (true)
-			{
-				// if the previous tick is still busy, step out... this will cause the game to slow down a bit
-				if (!_tickWaiter.WaitOne(25)) continue;
-				_tickWaiter.Reset();
-				
-				new Thread(new ThreadStart(GameTick)).Start();
-				Thread.Sleep(1000 / Settings.Instance.FramesPerSecond);
 			}
 		}
 		
@@ -182,22 +138,6 @@ namespace CivOne
 			_window.Fullscreen();
 			_fullScreen = true;
 			_forceUpdate = true;
-		}
-		
-		private void SaveScreen()
-		{
-			for (int i = 1; i < 99999; i++)
-			{
-				string filename = Path.Combine(Settings.Instance.CaptureDirectory, string.Format("capture{0:00000}.png", i));
-				if (File.Exists(filename)) continue;
-				
-				using (Bitmap capture = (Bitmap)_canvas.Image.Clone())
-				{
-					Picture.ReplaceColours(capture, 0, 5); 
-					capture.Save(filename, ImageFormat.Png);
-				}
-				return;
-			}
 		}
 		
 		private void ScaleMouseEventArgs(ref MouseEventArgs args)
@@ -411,20 +351,7 @@ namespace CivOne
 			_window.KeyPressEvent += OnKeyPress;
 			
 			// Load the first screen
-			IScreen startScreen;
-			switch (screen)
-			{
-				case "demo":
-					startScreen = new Demo();
-					break;
-				case "setup":
-					startScreen = new Setup();
-					break;
-				default:
-					startScreen = new Credits();
-					break;
-			}
-			Common.AddScreen(startScreen);
+			Init(screen);
 			
 			_window.ShowAll();
 			
