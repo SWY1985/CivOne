@@ -34,6 +34,7 @@
 		<Reference Include="System.Windows.Forms" />
 		<Reference Include="MonoMac">
 			<HintPath>/Applications/Xamarin Studio.app/Contents/Resources/lib/monodevelop/AddIns/MonoDevelop.MonoMac/MonoMac.dll</HintPath>
+			<HintPath Condition="Exists('$(OutputPath)\..\lib/MonoMac.dll')">$(OutputPath)\..\lib/MonoMac.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 	<ItemGroup>
