@@ -160,7 +160,7 @@ namespace CivOne
 			_app = new Application(screen);
 		}
 		
-		public Window(string screen) : base(new RectangleF(0, 0, 640, 400), NSWindowStyle.Titled, NSBackingStore.Buffered, false)
+		public Window(string screen) : base(new RectangleF(0, 0, 640, 400), NSWindowStyle.Titled | NSWindowStyle.Closable | NSWindowStyle.Miniaturizable, NSBackingStore.Buffered, false)
 		{
 			// Setup the application window
 			Title = "CivOne";
