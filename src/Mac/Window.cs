@@ -109,6 +109,23 @@ namespace CivOne
 			_forceUpdate = TopScreen.MouseUp(args);
 		}
 		
+		public string BrowseDataFolder()
+		{
+			NSOpenPanel openPanel = new NSOpenPanel()
+			{
+				ReleasedWhenClosed = true,
+				Prompt = "Select",
+				CanChooseDirectories = true,
+				CanChooseFiles = false,
+				Title = "Select the folder containing the original Civilization data files."
+			};
+			if (openPanel.RunModal() == 1)
+			{
+				return openPanel.Url.Path;
+			}
+			return Settings.Instance.DataDirectory;
+		}
+		
 		public static void CreateWindow(string screen)
 		{
 			NSApplication.Init();
@@ -117,6 +134,9 @@ namespace CivOne
 		
 		public Window(string screen) : base(new RectangleF(0, 0, 640, 400), NSWindowStyle.Titled | NSWindowStyle.Closable | NSWindowStyle.Miniaturizable, NSBackingStore.Buffered, false)
 		{
+			// Load the first screen
+			Init(screen);
+			
 			// Setup the application window
 			Title = "CivOne";
 			CascadeTopLeftFromPoint(new PointF(20, 20));
@@ -126,9 +146,6 @@ namespace CivOne
 			// Set View events
 			(ContentView as View).OnMouseDown += MouseDown;
 			(ContentView as View).OnMouseUp += MouseUp;
-			
-			// Load the first screen
-			Init(screen);
 			
 			// Start tick thread
 			TickThread = new Thread(new ThreadStart(SetGameTick));
