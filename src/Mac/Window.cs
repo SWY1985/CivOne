@@ -9,9 +9,6 @@
 
 using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using MonoMac.AppKit;
@@ -67,7 +64,7 @@ namespace CivOne
 		
 		private void ScreenUpdate()
 		{
-			// TODO
+			ContentView.NeedsDisplay = true;
 		}
 		
 		private void RefreshGame()
@@ -84,7 +81,7 @@ namespace CivOne
 			}
 			
 			// Refresh the screen if there's an update
-			if (_forceUpdate || Common.Screens.Count(x => x.HasUpdate(_gameTick)) > 0) ScreenUpdate();
+			if (_forceUpdate || Common.Screens.Count(x => x.HasUpdate(_gameTick)) > 0) InvokeOnMainThread(new NSAction(ScreenUpdate));
 			_forceUpdate = false;
 		}
 		
