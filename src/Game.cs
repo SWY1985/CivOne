@@ -219,17 +219,31 @@ namespace CivOne
 		
 		private void AddStartingUnits(byte player)
 		{
-			// TODO: Implement actual starting position algorithm
-			ITile[] tiles = Map.Instance.AllTiles().Where(t => t.LandValue > 0 && !_units.Any(u => Common.InCityRange(u.X, u.Y, t.X, t.Y))).OrderByDescending(t => t.LandValue).Take(50).ToArray();
-			if (tiles.Length == 0)
+			// Translated from this post by darkpanda, might containt errors:
+			// http://forums.civfanatics.com/showthread.php?p=12895306&highlight=starting+position#post12895306
+			int loopCounter = 0;
+			while (loopCounter++ < 2000)
 			{
-				tiles = Map.Instance.AllTiles().Where(t => !t.IsOcean && !_units.Any(u => Common.InCityRange(u.X, u.Y, t.X, t.Y))).ToArray();
+				int x = Common.Random.Next(Map.WIDTH);
+				int y = Common.Random.Next(Map.HEIGHT);
+				ITile tile = Map.Instance[x, y];
+				
+				if (tile.IsOcean) continue;
+				if (tile.LandValue < (12 - (loopCounter / 32))) continue;
+				if (_cities.Any(c => Common.DistanceToTile(x, y, c.X, c.Y) < (10 - (loopCounter / 64)))) continue;
+				if (_units.Any(u => (u is Settlers) && Common.DistanceToTile(x, y, u.X, u.Y) < (10 - (loopCounter / 64)))) continue;
+				// TODO: Check contintent tiles
+				// TODO: Check cities on continent
+				if (tile.Hut) continue;
+				
+				Console.WriteLine(loopCounter.ToString());
+				
+				// Starting position found, add Settlers
+				IUnit unit = CreateUnit(Unit.Settlers, x, y);
+				unit.Owner = player;
+				_units.Add(unit);
+				return;
 			}
-			ITile startTile = tiles[Common.Random.Next(tiles.Length)];
-			
-			IUnit unit = CreateUnit(Unit.Settlers, startTile.X, startTile.Y);
-			unit.Owner = player;
-			_units.Add(unit);
 		}
 		
 		private void PreloadCivilopedia()
