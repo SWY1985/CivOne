@@ -11,6 +11,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
+using System.Windows.Forms;
 using MonoMac.AppKit;
 using MonoMac.Foundation;
 using CivOne.GFX;
@@ -39,6 +40,54 @@ namespace CivOne
 			get
 			{
 				return Common.Screens.LastOrDefault();
+			}
+		}
+		
+		private int CanvasX
+		{
+			get
+			{
+				return 0;
+			}
+		}
+		
+		private int CanvasY
+		{
+			get
+			{
+				return 0;
+			}
+		}
+		
+		private int CanvasWidth
+		{
+			get
+			{
+				return ScaleX * 320;
+			}
+		}
+		
+		private int CanvasHeight
+		{
+			get
+			{
+				return ScaleY * 200;
+			}
+		}
+		
+		private int ScaleX
+		{
+			get
+			{
+				return 2;
+			}
+		}
+		
+		private int ScaleY
+		{
+			get
+			{
+				return 2;
 			}
 		}
 		
@@ -85,6 +134,26 @@ namespace CivOne
 			_forceUpdate = false;
 		}
 		
+		private void ScaleMouseEventArgs(ref MouseEventArgs args)
+		{
+			int xx = args.X - CanvasX, yy = args.Y - CanvasY;
+			args = new MouseEventArgs(args.Button, args.Clicks, (int)Math.Floor((float)xx / ScaleX), (int)Math.Floor((float)yy / ScaleY), args.Delta);
+		}
+		
+		private void MouseDown(object sender, MouseEventArgs args)
+		{
+			if (TopScreen == null) return;
+			ScaleMouseEventArgs(ref args);
+			_forceUpdate = TopScreen.MouseDown(args);
+		}
+		
+		private void MouseUp(object sender, MouseEventArgs args)
+		{
+			if (TopScreen == null) return;
+			ScaleMouseEventArgs(ref args);
+			_forceUpdate = TopScreen.MouseUp(args);
+		}
+		
 		public static void CreateWindow(string screen)
 		{
 			NSApplication.Init();
@@ -98,6 +167,10 @@ namespace CivOne
 			CascadeTopLeftFromPoint(new PointF(20, 20));
 			MakeKeyAndOrderFront(null);
 			ContentView = new View();
+			
+			// Set View events
+			(ContentView as View).OnMouseDown += MouseDown;
+			(ContentView as View).OnMouseUp += MouseUp;
 			
 			// Load the first screen
 			IScreen startScreen;

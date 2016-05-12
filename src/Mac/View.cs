@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 using MonoMac.AppKit;
 using MonoMac.CoreGraphics;
 using MonoMac.Foundation;
@@ -23,6 +24,24 @@ namespace CivOne
 {
 	internal class View : NSView
 	{
+		public event MouseEventHandler OnMouseDown, OnMouseUp;
+		
+		private int Height
+		{
+			get
+			{
+				return Convert.ToInt32(Window.ContentRectFor(Window.Frame).Height);
+			}
+		}
+		
+		private int Width
+		{
+			get
+			{
+				return Convert.ToInt32(Window.ContentRectFor(Window.Frame).Width);
+			}
+		}
+		
 		private static CGImage ConvertImage(Image input)
 		{
 			byte[] byteMap;
@@ -41,13 +60,6 @@ namespace CivOne
 		
 		public override void DrawRect(RectangleF area)
 		{
-			CGContext context = NSGraphicsContext.CurrentContext.GraphicsPort;
-			context.SetStrokeColor(new CGColor(1.0F, 0.0F, 0.0F));
-			context.SetLineWidth(1.0F);
-			context.StrokeEllipseInRect(new RectangleF(5, 5, 10, 10));
-			
-			//
-			
 			if (Common.Screens.Length == 0) return;
 			
 			Color[] colours = Common.Screens.LastOrDefault().Canvas.Image.Palette.Entries;
@@ -60,8 +72,42 @@ namespace CivOne
 			}
 			
 			CGImage image = ConvertImage(_canvas.Image);
-			context.DrawImage(new RectangleF(0, 0, 640, 400), image);
-			//
+			NSGraphicsContext.CurrentContext.GraphicsPort.DrawImage(new RectangleF(0, 0, 640, 400), image);
+		}
+		
+		private MouseEventArgs MouseEvent(NSEvent theEvent)
+		{
+			MouseButtons buttons;
+			switch (theEvent.ButtonNumber)
+			{
+				case 0: buttons = MouseButtons.Left; break;
+				case 1: buttons = MouseButtons.Right; break;
+				default: buttons = MouseButtons.None; break;
+			}
+			
+			return new MouseEventArgs(buttons, 1, (int)theEvent.LocationInWindow.X, Height - (int)theEvent.LocationInWindow.Y - 1, 0);
+		}
+
+		public override void MouseDown(NSEvent theEvent)
+		{
+			if (OnMouseDown == null) return;
+			OnMouseDown.Invoke(this, MouseEvent(theEvent));
+		}
+
+		public override void MouseUp(NSEvent theEvent)
+		{
+			if (OnMouseUp == null) return;
+			OnMouseUp.Invoke(this, MouseEvent(theEvent));
+		}
+
+		public override void RightMouseDown(NSEvent theEvent)
+		{
+			MouseDown(theEvent);
+		}
+
+		public override void RightMouseUp(NSEvent theEvent)
+		{
+			MouseUp(theEvent);
 		}
 	}
 }
