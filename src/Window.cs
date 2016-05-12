@@ -7,9 +7,11 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Threading;
+using CivOne.IO;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Screens;
@@ -74,6 +76,12 @@ namespace CivOne
 		
 		private void Init(string screen)
 		{
+			if (!FileSystem.DataFilesExist())
+			{
+				FileSystem.CopyDataFiles(BrowseDataFolder());
+				Environment.Exit(0);
+			}
+			
 			// Load the first screen
 			IScreen startScreen;
 			switch (screen)
