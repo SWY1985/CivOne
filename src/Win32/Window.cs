@@ -297,6 +297,20 @@ namespace CivOne
 			Refresh();
 		}
 		
+		public string BrowseDataFolder()
+		{
+			using (FolderBrowserDialog folderBrowser = new FolderBrowserDialog()
+				{
+					Description = "Select the folder containing the original Civilization data files.",
+					RootFolder = Environment.SpecialFolder.MyComputer
+				})
+			{
+				if (folderBrowser.ShowDialog() == DialogResult.OK)
+					return folderBrowser.SelectedPath;
+				return Settings.Instance.DataDirectory;
+			}
+		}
+		
 		public static void CreateWindow(string screen)
 		{
 			Application.Run(new Window(screen));
