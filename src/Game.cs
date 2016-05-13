@@ -26,6 +26,64 @@ namespace CivOne
 		private readonly List<City> _cities;
 		private readonly List<IUnit> _units;
 		
+		private bool _hasUpdate;
+		private int _currentPlayer = 1;
+		private int _activeUnit;
+		
+		public bool HasUpdate
+		{
+			get
+			{
+				return (_hasUpdate = false);
+			}
+		}
+		
+		internal ushort GameTurn { get; private set; }
+		
+		internal string GameYear
+		{
+			get
+			{
+				return Common.YearString(GameTurn);
+			}
+		}
+		
+		internal Player HumanPlayer
+		{
+			get;
+			private set;
+		}
+		
+		internal byte PlayerNumber(Player player)
+		{
+			byte i = 0;
+			foreach (Player p in _players)
+			{
+				if (p == player)
+					return i;
+				i++;
+			}
+			return 0;
+		}
+		
+		public void NextTurn()
+		{
+			_activeUnit = 0;
+			_currentPlayer++;
+			if (_currentPlayer > _players.Length)
+				_currentPlayer = 0;
+			_hasUpdate = true;
+		}
+		
+		public City GetCity(int x, int y)
+		{
+			while (x < 0) x += Map.WIDTH;
+			while (x >= Map.WIDTH) x-= Map.WIDTH;
+			if (y < 0) return null;
+			if (y >= Map.HEIGHT) return null; 
+			return _cities.Where(c => c.X == x && c.Y == y && c.Size > 0).FirstOrDefault();
+		}
+		
 		private static IUnit CreateUnit(Unit type, int x, int y)
 		{
 			IUnit unit;
@@ -66,43 +124,6 @@ namespace CivOne
 			return unit;
 		}
 		
-		internal ushort GameTurn { get; private set; }
-		
-		internal string GameYear
-		{
-			get
-			{
-				return Common.YearString(GameTurn);
-			}
-		}
-		
-		internal Player HumanPlayer
-		{
-			get;
-			private set;
-		}
-		
-		internal byte PlayerNumber(Player player)
-		{
-			byte i = 0;
-			foreach (Player p in _players)
-			{
-				if (p == player)
-					return i;
-				i++;
-			}
-			return 0;
-		}
-		
-		public City GetCity(int x, int y)
-		{
-			while (x < 0) x += Map.WIDTH;
-			while (x >= Map.WIDTH) x-= Map.WIDTH;
-			if (y < 0) return null;
-			if (y >= Map.HEIGHT) return null; 
-			return _cities.Where(c => c.X == x && c.Y == y && c.Size > 0).FirstOrDefault();
-		}
-		
 		public IUnit[] GetUnits(int x, int y)
 		{
 			while (x < 0) x += Map.WIDTH;
@@ -110,6 +131,33 @@ namespace CivOne
 			if (y < 0) return null;
 			if (y >= Map.HEIGHT) return null; 
 			return _units.Where(u => u.X == x && u.Y == y).ToArray();
+		}
+		
+		public IUnit ActiveUnit
+		{
+			get
+			{
+				// Does the current unit still have moves left?
+				if (_units[_activeUnit].Owner == _currentPlayer &&  _units[_activeUnit].MovesLeft > 0)
+					return _units[_activeUnit];
+				
+				// Check if any units are still available for this player
+				if (!_units.Any(u => u.Owner == _currentPlayer && u.MovesLeft > 0))
+					return null;
+				
+				// If the unit counter is too high, return to 0
+				if (_activeUnit >= _units.Count)
+					_activeUnit = 0;
+				
+				// Loop through units
+				while (_units[_activeUnit].Owner != _currentPlayer || _units[_activeUnit].MovesLeft == 0)
+				{
+					_activeUnit++;
+					if (_activeUnit >= _units.Count)
+						_activeUnit = 0;
+				}
+				return _units[_activeUnit];
+			}
 		}
 		
 		public static void CreateGame(int difficulty, int competition, ICivilization tribe, string leaderName = null, string tribeName = null, string tribeNamePlural = null)
