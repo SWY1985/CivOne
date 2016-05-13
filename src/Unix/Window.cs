@@ -339,7 +339,7 @@ namespace CivOne
 			}
 		}
 		
-		private  Window(string screen)
+		private Window(string screen)
 		{
 			Gdk.Threads.Init();
 			Gtk.Application.Init();
