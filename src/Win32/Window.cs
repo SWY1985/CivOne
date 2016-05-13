@@ -26,7 +26,7 @@ namespace CivOne
 {
 	internal partial class Window : Form
 	{
-		private delegate void DelegateRefreshGame();
+		private delegate void DelegateRefreshWindow();
 		private delegate void DelegateScreenUpdate();
 		
 		private Cursor _hiddenCursor;
@@ -84,11 +84,11 @@ namespace CivOne
 			Refresh();
 		}
 		
-		private void RefreshGame()
+		private void RefreshWindow()
 		{
 			if (InvokeRequired)
 			{
-				Invoke(new DelegateRefreshGame(RefreshGame));
+				Invoke(new DelegateRefreshWindow(RefreshWindow));
 				return;
 			}
 			
@@ -119,7 +119,7 @@ namespace CivOne
 			}
 			
 			// Refresh the screen if there's an update
-			if (Common.Screens.Count(x => x.HasUpdate(_gameTick)) > 0) Refresh();
+			if (HasUpdate) Refresh();
 		}
 		
 		private void LoadCursor(ref Cursor[,] cursor, int x, int y)

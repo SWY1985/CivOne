@@ -10,6 +10,7 @@
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
 using System.Threading;
 using CivOne.IO;
 using CivOne.GFX;
@@ -26,9 +27,18 @@ namespace CivOne
 		private Thread TickThread;
 		private AutoResetEvent _tickWaiter = new AutoResetEvent(true);
 		
+		// Returns whether any changes have been made to the screen.
+		private bool HasUpdate
+		{
+			get
+			{
+				return (Common.Screens.Count(x => x.HasUpdate(_gameTick)) > 0);
+			}
+		}
+		
 		private void GameTick()
 		{
-			RefreshGame();
+			RefreshWindow();
 			_gameTick++;
 			_tickWaiter.Set();
 		}

@@ -106,7 +106,7 @@ namespace CivOne
 			Gdk.Threads.Leave();
 		}
 		
-		private void RefreshGame()
+		private void RefreshWindow()
 		{
 			if (TickThread.IsAlive && Common.EndGame)
 			{
@@ -120,7 +120,7 @@ namespace CivOne
 			}
 			
 			// Refresh the screen if there's an update
-			if (_forceUpdate || Common.Screens.Count(x => x.HasUpdate(_gameTick)) > 0) ScreenUpdate();
+			if (HasUpdate || _forceUpdate) Refresh();
 			_forceUpdate = false;
 		}
 		

@@ -71,7 +71,7 @@ namespace CivOne
 			ContentView.NeedsDisplay = true;
 		}
 		
-		private void RefreshGame()
+		private void RefreshWindow()
 		{
 			if (TickThread.IsAlive && Common.EndGame)
 			{
@@ -85,7 +85,7 @@ namespace CivOne
 			}
 			
 			// Refresh the screen if there's an update
-			if (_forceUpdate || Common.Screens.Count(x => x.HasUpdate(_gameTick)) > 0) InvokeOnMainThread(new NSAction(ScreenUpdate));
+			if (HasUpdate || _forceUpdate) InvokeOnMainThread(new NSAction(ScreenUpdate));
 			_forceUpdate = false;
 		}
 		
