@@ -122,6 +122,9 @@ namespace CivOne.Screens
 			_gameMenu.Items.Add(new GameMenu.Item(null));
 			_gameMenu.Items.Add(new GameMenu.Item("Disband Unit", "D"));
 			
+			_gameMenu.Items[0].Selected += (s, a) => Game.Instance.NextTurn();
+			_gameMenu.Items[10].Selected += (s, a) => Game.Instance.DisbandUnit(Game.Instance.ActiveUnit);
+			
 			_menuX = 72;
 			_menuY = 8;
 			
@@ -203,6 +206,7 @@ namespace CivOne.Screens
 		public override bool HasUpdate(uint gameTick)
 		{
 			if (_gameMap.MustUpdate(gameTick)) _update = true;
+			if (_sideBar.HasUpdate(gameTick)) _update = true;
 			if (gameTick % 3 == 0) _canvas.Cycle(96, 103).Cycle(104, 111);//_canvas.Cycle(96, 111);
 			if (!_update && !_redraw) return (gameTick % 3 == 0);
 			
@@ -252,7 +256,7 @@ namespace CivOne.Screens
 					Common.AddScreen(new WorldMap());
 					return true;
 			}
-			return false;
+			return _gameMap.KeyDown(args);
 		}
 		
 		public override bool MouseDown(MouseEventArgs args)
