@@ -120,7 +120,7 @@ namespace CivOne
 			}
 			
 			// Refresh the screen if there's an update
-			if (HasUpdate || _forceUpdate) Refresh();
+			if (HasUpdate || _forceUpdate) ScreenUpdate();
 			_forceUpdate = false;
 		}
 		
