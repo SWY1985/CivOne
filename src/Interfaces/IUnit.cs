@@ -26,6 +26,8 @@ namespace CivOne.Interfaces
 		int Y { get; set; }
 		byte Owner { get; set; }
 		byte Status { get; set; }
+		byte MovesLeft { get; }
+		void NewTurn();
 		Picture GetUnit(byte colour);
 	}
 }

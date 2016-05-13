@@ -88,6 +88,12 @@ namespace CivOne.Templates
 		public int Y { get; set; }
 		public byte Owner { get; set; }
 		public byte Status { get; set; }
+		public byte MovesLeft { get; private set; }
+		
+		public virtual void NewTurn()
+		{
+			MovesLeft = Move;
+		}
 		
 		protected void SetIcon(char page, int col, int row)
 		{
@@ -129,6 +135,7 @@ namespace CivOne.Templates
 			Owner = 0;
 			Status = 0;
 			RequiredWonder = null;
+			MovesLeft = move;
 		}
 	}
 }
