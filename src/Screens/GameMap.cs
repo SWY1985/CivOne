@@ -66,6 +66,17 @@ namespace CivOne.Screens
 			}
 		}
 		
+		public bool MustUpdate(uint gameTick)
+		{
+			// Check if the active unit is on the screen and the blink status has changed.
+			IUnit activeUnit = Game.Instance.ActiveUnit;
+			if (activeUnit != null && RenderTiles.Any(t => t.Tile.X == activeUnit.X && t.Tile.Y == activeUnit.Y) && (gameTick % 2) == 0)
+			{
+				_update = true;
+			}
+			return _update;
+		}
+		
 		public override bool HasUpdate(uint gameTick)
 		{
 			if (_update)
@@ -83,9 +94,23 @@ namespace CivOne.Screens
 					
 					IUnit[] units = Game.Instance.GetUnits(t.Tile.X, t.Tile.Y);
 					if (units.Length == 0) continue;
-					AddLayer(units[0].GetUnit(units[0].Owner), t.Position);
+					
+					IUnit drawUnit = units.FirstOrDefault(u => u == Game.Instance.ActiveUnit);
+					
+					if (drawUnit == null)
+					{
+						// No active unit on this tile, show top unit
+						drawUnit = units[0];
+					}
+					else if ((gameTick % 4) >= 2)
+					{
+						// Active unit on this tile, and blink status is off.
+						continue;
+					}
+					
+					AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position);
 					if (units.Length == 1) continue;
-					AddLayer(units[0].GetUnit(units[0].Owner), t.Position.X - 1, t.Position.Y - 1);
+					AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position.X - 1, t.Position.Y - 1);
 				}
 				
 				foreach (RenderTile t in RenderTiles.Reverse())
