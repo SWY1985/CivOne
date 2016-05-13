@@ -224,8 +224,8 @@ namespace CivOne
 			int loopCounter = 0;
 			while (loopCounter++ < 2000)
 			{
-				int x = Common.Random.Next(Map.WIDTH);
-				int y = Common.Random.Next(Map.HEIGHT);
+				int x = Common.Random.Next(2, Map.WIDTH - 2);
+				int y = Common.Random.Next(2, Map.HEIGHT - 2);
 				ITile tile = Map.Instance[x, y];
 				
 				if (tile.IsOcean) continue;
