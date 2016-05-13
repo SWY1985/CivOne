@@ -69,9 +69,17 @@ namespace CivOne
 		public void NextTurn()
 		{
 			_activeUnit = 0;
-			_currentPlayer++;
-			if (_currentPlayer > _players.Length)
-				_currentPlayer = 0;
+			//
+			foreach (IUnit unit in _units)
+				unit.NewTurn();
+			while (_players[_currentPlayer] != HumanPlayer)
+			{
+				_currentPlayer++;
+				if (_currentPlayer > _players.Length)
+					_currentPlayer = 0;
+			}
+			GameTurn++;
+			//
 			_hasUpdate = true;
 		}
 		
@@ -133,21 +141,27 @@ namespace CivOne
 			return _units.Where(u => u.X == x && u.Y == y).ToArray();
 		}
 		
+		public void DisbandUnit(IUnit unit)
+		{
+			if (!_units.Contains(unit)) return;
+			_units.Remove(unit);
+		}
+		
 		public IUnit ActiveUnit
 		{
 			get
 			{
+				// If the unit counter is too high, return to 0
+				if (_activeUnit >= _units.Count)
+					_activeUnit = 0;
+					
 				// Does the current unit still have moves left?
-				if (_units[_activeUnit].Owner == _currentPlayer &&  _units[_activeUnit].MovesLeft > 0)
+				if (_units[_activeUnit].Owner == _currentPlayer && _units[_activeUnit].MovesLeft > 0)
 					return _units[_activeUnit];
 				
 				// Check if any units are still available for this player
 				if (!_units.Any(u => u.Owner == _currentPlayer && u.MovesLeft > 0))
 					return null;
-				
-				// If the unit counter is too high, return to 0
-				if (_activeUnit >= _units.Count)
-					_activeUnit = 0;
 				
 				// Loop through units
 				while (_units[_activeUnit].Owner != _currentPlayer || _units[_activeUnit].MovesLeft == 0)

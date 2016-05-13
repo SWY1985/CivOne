@@ -144,6 +144,30 @@ namespace CivOne.Screens
 			return false;
 		}
 		
+		public override bool KeyDown(KeyEventArgs args)
+		{
+			switch (args.KeyCode)
+			{
+				case Keys.C:
+					if (Game.Instance.ActiveUnit == null) break;
+					_x = Game.Instance.ActiveUnit.X - 8;
+					_y = Game.Instance.ActiveUnit.Y - 6;
+					break;
+				case Keys.D:
+					if (!args.Shift) break;
+					Game.Instance.DisbandUnit(Game.Instance.ActiveUnit);
+					break;
+				case Keys.Space:
+					if (Game.Instance.ActiveUnit != null)
+						Game.Instance.ActiveUnit.SkipTurn();
+					else
+						Game.Instance.NextTurn();
+					break;
+			}
+			
+			return false;
+		}
+		
 		public override bool MouseDown(MouseEventArgs args)
 		{
 			int x = (int)Math.Floor((float)args.X / 16);
