@@ -287,8 +287,8 @@ namespace CivOne
 			while (loopCounter++ < 2000)
 			{
 				// Choose a map square randomly
-				int x = Common.Random.Next(2, Map.WIDTH - 2);
-				int y = Common.Random.Next(2, Map.HEIGHT - 2);
+				int x = Common.Random.Next(0, Map.WIDTH);
+				int y = Common.Random.Next(0, Map.HEIGHT);
 				ITile tile = Map.Instance[x, y];
 				
 				if (tile.IsOcean) continue; // Is it an ocean tile?
@@ -297,7 +297,7 @@ namespace CivOne
 				if (tile.LandValue < (12 - (loopCounter / 32))) continue; // Is the land value high enough?
 				if (_cities.Any(c => Common.DistanceToTile(x, y, c.X, c.Y) < (10 - (loopCounter / 64)))) continue; // Distance to other cities
 				if (_units.Any(u => (u is Settlers) && Common.DistanceToTile(x, y, u.X, u.Y) < (10 - (loopCounter / 64)))) continue; // Distance to other settlers
-				if (Map.Instance.ContinentTiles(tile.ContinentId).Count() < (32 - (GameTurn / 16))) continue; // Check buildable tiles on continent
+				if (Map.Instance.ContinentTiles(tile.ContinentId).Count(t => Map.TileIsType(t, Terrain.Plains, Terrain.Grassland1, Terrain.Grassland2, Terrain.River)) < (32 - (GameTurn / 16))) continue; // Check buildable tiles on continent
 				
 				// After 0 AD, don't spawn a Civilization on a continent that already contains cities.
 				if (Common.TurnToYear(GameTurn) >= 0 && Map.Instance.ContinentTiles(tile.ContinentId).Any(t => GetCity(t.X, t.Y) != null)) continue;
