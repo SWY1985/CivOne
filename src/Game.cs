@@ -15,6 +15,7 @@ using System.Threading;
 using CivOne.Civilizations;
 using CivOne.Enums;
 using CivOne.Interfaces;
+using CivOne.Screens;
 using CivOne.Units;
 
 namespace CivOne
@@ -74,11 +75,16 @@ namespace CivOne
 				unit.NewTurn();
 			while (_players[_currentPlayer] != HumanPlayer)
 			{
+				// Skip all AI players for now
 				_currentPlayer++;
 				if (_currentPlayer > _players.Length)
+				{
 					_currentPlayer = 0;
+				}
 			}
 			GameTurn++;
+			if (!_cities.Any(c => c.Owner == _currentPlayer) && !_units.Any(u => u.Owner == _currentPlayer))
+				Common.AddScreen(new GameOver());
 			//
 			_hasUpdate = true;
 		}
@@ -88,7 +94,7 @@ namespace CivOne
 			while (x < 0) x += Map.WIDTH;
 			while (x >= Map.WIDTH) x-= Map.WIDTH;
 			if (y < 0) return null;
-			if (y >= Map.HEIGHT) return null; 
+			if (y >= Map.HEIGHT) return null;
 			return _cities.Where(c => c.X == x && c.Y == y && c.Size > 0).FirstOrDefault();
 		}
 		
