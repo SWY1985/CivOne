@@ -44,6 +44,7 @@ namespace CivOne.Screens
 		private readonly Color[] _palette;
 		private bool _update = true;
 		private int _x, _y;
+		private IUnit _lastUnit;
 		
 		private IEnumerable<RenderTile> RenderTiles
 		{
@@ -71,6 +72,11 @@ namespace CivOne.Screens
 			// Check if the active unit is on the screen and the blink status has changed.
 			IUnit activeUnit = Game.Instance.ActiveUnit;
 			if (activeUnit != null && RenderTiles.Any(t => t.Tile.X == activeUnit.X && t.Tile.Y == activeUnit.Y) && (gameTick % 2) == 0)
+			{
+				_lastUnit = activeUnit;
+				_update = true;
+			}
+			else if (activeUnit != _lastUnit)
 			{
 				_update = true;
 			}
