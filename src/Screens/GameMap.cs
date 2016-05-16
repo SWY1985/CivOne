@@ -78,6 +78,7 @@ namespace CivOne.Screens
 			}
 			else if (activeUnit != _lastUnit)
 			{
+				CenterOnUnit();
 				_update = true;
 			}
 			return _update;
@@ -150,14 +151,20 @@ namespace CivOne.Screens
 			return false;
 		}
 		
+		private void CenterOnUnit()
+		{
+			if (Game.Instance.ActiveUnit == null) return;
+			_x = Game.Instance.ActiveUnit.X - 8;
+			_y = Game.Instance.ActiveUnit.Y - 6;
+		}
+		
 		public override bool KeyDown(KeyEventArgs args)
 		{
 			switch (args.KeyCode)
 			{
 				case Keys.C:
 					if (Game.Instance.ActiveUnit == null) break;
-					_x = Game.Instance.ActiveUnit.X - 8;
-					_y = Game.Instance.ActiveUnit.Y - 6;
+					CenterOnUnit();
 					break;
 				case Keys.D:
 					if (!args.Shift) break;
