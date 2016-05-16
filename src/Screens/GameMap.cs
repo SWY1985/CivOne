@@ -171,6 +171,7 @@ namespace CivOne.Screens
 					Game.Instance.DisbandUnit(Game.Instance.ActiveUnit);
 					break;
 				case Keys.Space:
+				case Keys.Enter:
 					if (Game.Instance.ActiveUnit != null)
 						Game.Instance.ActiveUnit.SkipTurn();
 					else
