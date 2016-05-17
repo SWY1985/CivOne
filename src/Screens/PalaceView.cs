@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Windows.Forms;
+using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Templates;
 
@@ -30,7 +31,7 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool MouseDown(MouseEventArgs args)
+		public override bool MouseDown(ScreenEventArgs args)
 		{
 			Destroy();
 			return true;

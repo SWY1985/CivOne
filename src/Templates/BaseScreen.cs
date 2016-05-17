@@ -13,6 +13,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
 using CivOne.Enums;
+using CivOne.Events;
 using CivOne.Interfaces;
 using CivOne.GFX;
 
@@ -48,9 +49,9 @@ namespace CivOne.Templates
 			_canvas.AddLayer(bitmap, x, y);
 		}
 		
-		protected void MouseArgsOffset(ref MouseEventArgs args, int offsetX, int offsetY)
+		protected void MouseArgsOffset(ref ScreenEventArgs args, int offsetX, int offsetY)
 		{
-			args = new MouseEventArgs(args.Button, args.Clicks, args.X - offsetX, args.Y - offsetY, args.Delta);
+			args = new ScreenEventArgs(args.X - offsetX, args.Y - offsetY, args.Buttons);
 		}
 		
 		public virtual Picture Canvas
@@ -66,15 +67,15 @@ namespace CivOne.Templates
 		{
 			return false;
 		}
-		public virtual bool MouseDown(MouseEventArgs args)
+		public virtual bool MouseDown(ScreenEventArgs args)
 		{
 			return false;
 		}
-		public virtual bool MouseUp(MouseEventArgs args)
+		public virtual bool MouseUp(ScreenEventArgs args)
 		{
 			return false;
 		}
-		public virtual bool MouseDrag(MouseEventArgs args)
+		public virtual bool MouseDrag(ScreenEventArgs args)
 		{
 			return false;
 		}

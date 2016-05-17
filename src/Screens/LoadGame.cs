@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using CivOne.Enums;
+using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Templates;
 
@@ -208,21 +209,21 @@ namespace CivOne.Screens
 			return false;
 		}
 		
-		public override bool MouseDown(MouseEventArgs args)
+		public override bool MouseDown(ScreenEventArgs args)
 		{
 			if (_menu != null)
 				return _menu.MouseDown(args);
 			return false;
 		}
 		
-		public override bool MouseUp(MouseEventArgs args)
+		public override bool MouseUp(ScreenEventArgs args)
 		{
 			if (_menu != null)
 				return _menu.MouseUp(args);
 			return false;
 		}
 		
-		public override bool MouseDrag(MouseEventArgs args)
+		public override bool MouseDrag(ScreenEventArgs args)
 		{
 			if (_menu != null)
 				return _menu.MouseDrag(args);

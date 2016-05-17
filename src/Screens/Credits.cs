@@ -12,6 +12,7 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Windows.Forms;
 using CivOne.Enums;
+using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.IO;
@@ -240,21 +241,21 @@ namespace CivOne.Screens
 			return SkipIntro();
 		}
 		
-		public override bool MouseDown(MouseEventArgs args)
+		public override bool MouseDown(ScreenEventArgs args)
 		{
 			if (_done && _overlay != null)
 				return _overlay.MouseDown(args);
 			return SkipIntro();
 		}
 		
-		public override bool MouseUp(MouseEventArgs args)
+		public override bool MouseUp(ScreenEventArgs args)
 		{
 			if (_done && _overlay != null)
 				return _overlay.MouseUp(args);
 			return false;
 		}
 		
-		public override bool MouseDrag(MouseEventArgs args)
+		public override bool MouseDrag(ScreenEventArgs args)
 		{
 			if (_done && _overlay != null)
 				return _overlay.MouseDrag(args);

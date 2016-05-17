@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using CivOne.Enums;
+using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Templates;
 
@@ -126,7 +127,7 @@ namespace CivOne.Screens
 			return false;
 		}
 		
-		private int MouseOverItem(MouseEventArgs args)
+		private int MouseOverItem(ScreenEventArgs args)
 		{
 			int fontHeight = Resources.Instance.GetFontHeight(FontId);
 			if (RowHeight != 0) fontHeight = RowHeight;
@@ -142,7 +143,7 @@ namespace CivOne.Screens
 			return -1;
 		}
 		
-		public override bool MouseDown(MouseEventArgs args)
+		public override bool MouseDown(ScreenEventArgs args)
 		{
 			int index = MouseOverItem(args);
 			if (index < 0 && MissClick != null)
@@ -156,7 +157,7 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool MouseUp(MouseEventArgs args)
+		public override bool MouseUp(ScreenEventArgs args)
 		{
 			int index = MouseOverItem(args);
 			if (index < 0) return false;
@@ -166,7 +167,7 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool MouseDrag(MouseEventArgs args)
+		public override bool MouseDrag(ScreenEventArgs args)
 		{
 			int index = MouseOverItem(args);
 			if (index < 0 || index == _activeItem) return false;

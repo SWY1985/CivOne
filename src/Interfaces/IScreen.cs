@@ -9,6 +9,7 @@
 
 using System.Windows.Forms;
 using CivOne.Enums;
+using CivOne.Events;
 using CivOne.GFX;
 
 namespace CivOne.Interfaces
@@ -19,8 +20,8 @@ namespace CivOne.Interfaces
 		MouseCursor Cursor { get; }
         bool HasUpdate(uint gameTick);
         bool KeyDown(KeyEventArgs args);
-		bool MouseDown(MouseEventArgs args);
-		bool MouseUp(MouseEventArgs args);
-		bool MouseDrag(MouseEventArgs args);
+		bool MouseDown(ScreenEventArgs args);
+		bool MouseUp(ScreenEventArgs args);
+		bool MouseDrag(ScreenEventArgs args);
 	}
 }

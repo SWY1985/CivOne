@@ -9,6 +9,7 @@
 
 using System.Windows.Forms;
 using CivOne.Enums;
+using CivOne.Events;
 using CivOne.GFX;
 
 namespace CivOne.Templates
@@ -30,7 +31,7 @@ namespace CivOne.Templates
 			return true;
 		}
 		
-		public override bool MouseDown(MouseEventArgs args)
+		public override bool MouseDown(ScreenEventArgs args)
 		{
 			Destroy();
 			return true;
