@@ -326,11 +326,15 @@ namespace CivOne
 		
 		private static string BrowseDataFolder()
 		{
+			Init();
+			
 			FileChooserDialog folderBrowser = new FileChooserDialog("Select the folder containing the original Civilization data files.", null, FileChooserAction.SelectFolder, "Cancel", ResponseType.Cancel, "Select", ResponseType.Ok);
 			
-			if (folderBrowser.Run() == (int)ResponseType.Ok)
-				return folderBrowser.Filename;
-			return Settings.Instance.DataDirectory;
+			bool responseOk = (folderBrowser.Run() == (int)ResponseType.Ok);
+			string directory = (responseOk ? folderBrowser.Filename : Settings.Instance.DataDirectory);
+			folderBrowser.Destroy();
+			
+			return directory;
 		}
 		
 		public static void CreateWindow(string screen)
@@ -341,11 +345,20 @@ namespace CivOne
 			}
 		}
 		
-		private Window(string screen)
+		private static bool _init = false;
+		private static void Init()
 		{
+			if (_init) return;
+			
 			Gdk.Threads.Init();
 			Gtk.Application.Init();
 			Gdk.Threads.Enter();
+			_init = true;
+		}
+		
+		private Window(string screen)
+		{
+			Init();
 			
 			// Set Window properties
 			_window = new Gtk.Window("CivOne");
