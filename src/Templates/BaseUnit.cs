@@ -95,6 +95,11 @@ namespace CivOne.Templates
 			MovesLeft = Move;
 		}
 		
+		public virtual void SkipTurn()
+		{
+			MovesLeft = 0;
+		}
+		
 		protected void SetIcon(char page, int col, int row)
 		{
 			if (_iconCache[(int)Type] == null)

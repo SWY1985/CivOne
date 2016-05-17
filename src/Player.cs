@@ -62,6 +62,14 @@ namespace CivOne
 			}
 		}
 		
+		public string LatestAdvance
+		{
+			get
+			{
+				return "Irrigation";
+			}
+		}
+		
 		public Player(ICivilization civilization, string customLeaderName = null, string customTribeName = null, string customTribeNamePlural = null)
 		{
 			_civilization = civilization;

@@ -233,7 +233,7 @@ namespace CivOne.Screens
 		{
 			Cursor = MouseCursor.None;
 			
-            _introText = TextFile.Instance.LoadArray("STORY");
+			_introText = TextFile.Instance.LoadArray("STORY");
 			_pictures = new Picture[8];
 			for (int i = 0; i < _pictures.Length; i++)
 				_pictures[i] = Resources.Instance.LoadPIC(string.Format("BIRTH{0}", i + 1), true);
