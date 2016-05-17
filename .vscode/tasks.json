@@ -34,7 +34,7 @@
 				"taskName": "build",
 				"suppressTaskName": true,
 				"isBuildCommand": true,
-				"args": ["xbuild", "${workspaceRoot}/CivOne.Win32.csproj", "/t:Rebuild"]
+				"args": ["msbuild", "${workspaceRoot}/CivOne.Win32.csproj", "/t:Rebuild"]
 			},
 			{
 				"taskName": "run",
