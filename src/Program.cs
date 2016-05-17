@@ -31,6 +31,12 @@ namespace CivOne
 				}
 			}
 			
+			if (!Window.CheckFiles())
+			{
+				Console.WriteLine("- Fatal error: Data directory is missing file(s).");
+				Environment.Exit(1);
+			}
+			
 			Console.WriteLine("Game Start");
 			
 			Window.CreateWindow(screen);

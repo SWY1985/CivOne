@@ -36,6 +36,7 @@ namespace CivOne.IO
 			foreach (string filename in DATA_FILES)
 			{
 				string[] files;
+				if (File.Exists(Path.Combine(Settings.Instance.DataDirectory, filename))) continue;
 				if ((files = Directory.GetFiles(folder, filename)).Length > 0)
 				{
 					File.Copy(Path.Combine(folder, files[0]), Path.Combine(Settings.Instance.DataDirectory, filename));

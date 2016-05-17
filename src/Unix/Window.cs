@@ -324,7 +324,7 @@ namespace CivOne
 			Gtk.Application.Run();
 		}
 		
-		public string BrowseDataFolder()
+		private static string BrowseDataFolder()
 		{
 			FileChooserDialog folderBrowser = new FileChooserDialog("Select the folder containing the original Civilization data files.", null, FileChooserAction.SelectFolder, "Cancel", ResponseType.Cancel, "Select", ResponseType.Ok);
 			

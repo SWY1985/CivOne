@@ -111,7 +111,7 @@ namespace CivOne
 			_forceUpdate = TopScreen.MouseUp(args);
 		}
 		
-		public string BrowseDataFolder()
+		private static string BrowseDataFolder()
 		{
 			NSOpenPanel openPanel = new NSOpenPanel()
 			{
