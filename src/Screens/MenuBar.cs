@@ -11,6 +11,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using CivOne.Enums;
+using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Templates;
 
@@ -40,7 +41,7 @@ namespace CivOne.Screens
 			return false;
 		}
 		
-		public override bool MouseDown(MouseEventArgs args)
+		public override bool MouseDown(ScreenEventArgs args)
 		{
 			if (_rectMenus[0].Contains(args.Location) && GameSelected != null) GameSelected(this, null);
 			if (_rectMenus[1].Contains(args.Location) && OrdersSelected != null) OrdersSelected(this, null);
@@ -51,7 +52,7 @@ namespace CivOne.Screens
 			return false;
 		}
 		
-		public override bool MouseUp(MouseEventArgs args)
+		public override bool MouseUp(ScreenEventArgs args)
 		{
 			return false;
 		}

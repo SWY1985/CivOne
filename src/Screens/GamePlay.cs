@@ -11,6 +11,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using CivOne.Enums;
+using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Templates;
@@ -259,7 +260,7 @@ namespace CivOne.Screens
 			return _gameMap.KeyDown(args);
 		}
 		
-		public override bool MouseDown(MouseEventArgs args)
+		public override bool MouseDown(ScreenEventArgs args)
 		{
 			if (args.Y < 8)
 			{
@@ -293,7 +294,7 @@ namespace CivOne.Screens
 			}
 		}
 		
-		public override bool MouseUp(MouseEventArgs args)
+		public override bool MouseUp(ScreenEventArgs args)
 		{
 			if (_gameMenu == null) return false;
 			
@@ -303,7 +304,7 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool MouseDrag(MouseEventArgs args)
+		public override bool MouseDrag(ScreenEventArgs args)
 		{
 			if (_gameMenu == null) return false;
 			

@@ -16,6 +16,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using CivOne.Enums;
+using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Screens;
@@ -140,27 +142,27 @@ namespace CivOne
 			_forceUpdate = true;
 		}
 		
-		private void ScaleMouseEventArgs(ref MouseEventArgs args)
+		private void ScaleMouseEventArgs(ref ScreenEventArgs args)
 		{
 			int xx = args.X - CanvasX, yy = args.Y - CanvasY;
-			args = new MouseEventArgs(args.Button, args.Clicks, (int)Math.Floor((float)xx / ScaleX), (int)Math.Floor((float)yy / ScaleY), args.Delta);
+			args = new ScreenEventArgs((int)Math.Floor((float)xx / ScaleX), (int)Math.Floor((float)yy / ScaleY), args.Buttons);
 		}
 		
-		private void SendMouseDown(MouseEventArgs args)
+		private void SendMouseDown(ScreenEventArgs args)
 		{
 			if (TopScreen == null) return;
 			ScaleMouseEventArgs(ref args);
 			_forceUpdate = TopScreen.MouseDown(args);
 		}
 		
-		private void SendMouseUp(MouseEventArgs args)
+		private void SendMouseUp(ScreenEventArgs args)
 		{
 			if (TopScreen == null) return;
 			ScaleMouseEventArgs(ref args);
 			_forceUpdate = TopScreen.MouseUp(args);
 		}
 		
-		private void SendMouseDrag(MouseEventArgs args)
+		private void SendMouseDrag(ScreenEventArgs args)
 		{
 			if (TopScreen == null);
 			ScaleMouseEventArgs(ref args);
@@ -205,33 +207,33 @@ namespace CivOne
 		
 		private void OnMouseDown(object sender, ButtonPressEventArgs args)
 		{
-			MouseButtons buttons = MouseButtons.None;
+			MouseButton buttons = MouseButton.None;
 			switch (args.Event.Button)
 			{
-				case 1: buttons = MouseButtons.Left; break;
-				case 3: buttons = MouseButtons.Right; break;
+				case 1: buttons = MouseButton.Left; break;
+				case 3: buttons = MouseButton.Right; break;
 			}
-			SendMouseDown(new MouseEventArgs(buttons, 1, (int)args.Event.X, (int)args.Event.Y, 0));
+			SendMouseDown(new ScreenEventArgs((int)args.Event.X, (int)args.Event.Y, buttons));
 		}
 		
 		private void OnMouseUp(object sender, ButtonReleaseEventArgs args)
 		{
-			MouseButtons buttons = MouseButtons.None;
+			MouseButton buttons = MouseButton.None;
 			switch (args.Event.Button)
 			{
-				case 1: buttons = MouseButtons.Left; break;
-				case 3: buttons = MouseButtons.Right; break;
+				case 1: buttons = MouseButton.Left; break;
+				case 3: buttons = MouseButton.Right; break;
 			}
-			SendMouseUp(new MouseEventArgs(buttons, 1, (int)args.Event.X, (int)args.Event.Y, 0));
+			SendMouseUp(new ScreenEventArgs((int)args.Event.X, (int)args.Event.Y, buttons));
 		}
 		
 		private void OnMouseDrag(MotionNotifyEventArgs args)
 		{
-			MouseButtons buttons = MouseButtons.None;
-			if ((args.Event.State & Gdk.ModifierType.Button1Mask) > 0) buttons |= MouseButtons.Left;
-			if ((args.Event.State & Gdk.ModifierType.Button3Mask) > 0) buttons |= MouseButtons.Right;
+			MouseButton buttons = MouseButton.None;
+			if ((args.Event.State & Gdk.ModifierType.Button1Mask) > 0) buttons |= MouseButton.Left;
+			if ((args.Event.State & Gdk.ModifierType.Button3Mask) > 0) buttons |= MouseButton.Right;
 			
-			SendMouseDrag(new MouseEventArgs(buttons, 1, (int)args.Event.X, (int)args.Event.Y, 0));
+			SendMouseDrag(new ScreenEventArgs((int)args.Event.X, (int)args.Event.Y, buttons));
 		}
 		
 		private void OnMouseMove(object sender, MotionNotifyEventArgs args)

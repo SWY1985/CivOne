@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using CivOne.Enums;
+using CivOne.Events;
 using CivOne.Interfaces;
 using CivOne.GFX;
 using CivOne.IO;
@@ -277,7 +278,7 @@ namespace CivOne.Screens
 			return _done;
 		}
 		
-		public override bool MouseDown(MouseEventArgs args)
+		public override bool MouseDown(ScreenEventArgs args)
 		{
 			if (_difficulty > -1 && _competition > -1 && _tribe > -1 && !_done)
 				_done = true;

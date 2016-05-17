@@ -10,6 +10,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using CivOne.Enums;
+using CivOne.Events;
 using CivOne.Interfaces;
 using CivOne.GFX;
 using CivOne.Templates;
@@ -75,7 +76,7 @@ namespace CivOne.Screens
 			return false;
 		}
 		
-		public override bool MouseDown(MouseEventArgs args)
+		public override bool MouseDown(ScreenEventArgs args)
 		{
 			if (args.Y > 50 && args.Y < 62)
 			{

@@ -13,6 +13,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using CivOne.Enums;
+using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Templates;
@@ -182,12 +183,12 @@ namespace CivOne.Screens
 			return false;
 		}
 		
-		public override bool MouseDown(MouseEventArgs args)
+		public override bool MouseDown(ScreenEventArgs args)
 		{
 			int x = (int)Math.Floor((float)args.X / 16);
 			int y = (int)Math.Floor((float)args.Y / 16);
 			
-			if (args.Button == MouseButtons.Right)
+			if ((args.Buttons & MouseButton.Right) > 0)
 			{
 				Console.WriteLine(_x.ToString() + "-" + _y.ToString());
 				if (Game.Instance.GetCity(_x + x, _y + y) == null)
@@ -195,7 +196,7 @@ namespace CivOne.Screens
 					Common.AddScreen(new Civilopedia(Map.Instance.GetTile(_x + x, _y + y)));
 				}
 			}
-			if (args.Button == MouseButtons.Left || args.Button == MouseButtons.Right)
+			if ((args.Buttons & MouseButton.Left | MouseButton.Right) > 0)
 			{
 				_x += x - 8;
 				_y += y - 6;
