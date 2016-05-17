@@ -14,6 +14,8 @@ using System.Threading;
 using System.Windows.Forms;
 using MonoMac.AppKit;
 using MonoMac.Foundation;
+using CivOne.Enums;
+using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Screens;
@@ -89,20 +91,20 @@ namespace CivOne
 			_forceUpdate = false;
 		}
 		
-		private void ScaleMouseEventArgs(ref MouseEventArgs args)
+		private void ScaleMouseEventArgs(ref ScreenEventArgs args)
 		{
 			int xx = args.X - CanvasX, yy = args.Y - CanvasY;
-			args = new MouseEventArgs(args.Button, args.Clicks, (int)Math.Floor((float)xx / ScaleX), (int)Math.Floor((float)yy / ScaleY), args.Delta);
+			args = new ScreenEventArgs((int)Math.Floor((float)xx / ScaleX), (int)Math.Floor((float)yy / ScaleY), args.Buttons);
 		}
 		
-		private void MouseDown(object sender, MouseEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
 			if (TopScreen == null) return;
 			ScaleMouseEventArgs(ref args);
 			_forceUpdate = TopScreen.MouseDown(args);
 		}
 		
-		private void MouseUp(object sender, MouseEventArgs args)
+		private void MouseUp(object sender, ScreenEventArgs args)
 		{
 			if (TopScreen == null) return;
 			ScaleMouseEventArgs(ref args);

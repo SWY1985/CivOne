@@ -16,6 +16,8 @@ using System.Windows.Forms;
 using MonoMac.AppKit;
 using MonoMac.CoreGraphics;
 using MonoMac.Foundation;
+using CivOne.Enums;
+using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Screens;
@@ -24,7 +26,7 @@ namespace CivOne
 {
 	internal class View : NSView
 	{
-		public event MouseEventHandler OnMouseDown, OnMouseUp;
+		public event EventHandler<ScreenEventArgs> OnMouseDown, OnMouseUp;
 		
 		private int Height
 		{
@@ -75,17 +77,17 @@ namespace CivOne
 			NSGraphicsContext.CurrentContext.GraphicsPort.DrawImage(new RectangleF(0, 0, 640, 400), image);
 		}
 		
-		private MouseEventArgs MouseEvent(NSEvent theEvent)
+		private ScreenEventArgs MouseEvent(NSEvent theEvent)
 		{
-			MouseButtons buttons;
+			MouseButton buttons;
 			switch (theEvent.ButtonNumber)
 			{
-				case 0: buttons = MouseButtons.Left; break;
-				case 1: buttons = MouseButtons.Right; break;
-				default: buttons = MouseButtons.None; break;
+				case 0: buttons = MouseButton.Left; break;
+				case 1: buttons = MouseButton.Right; break;
+				default: buttons = MouseButton.None; break;
 			}
 			
-			return new MouseEventArgs(buttons, 1, (int)theEvent.LocationInWindow.X, Height - (int)theEvent.LocationInWindow.Y - 1, 0);
+			return new ScreenEventArgs((int)theEvent.LocationInWindow.X, Height - (int)theEvent.LocationInWindow.Y - 1, buttons);
 		}
 
 		public override void MouseDown(NSEvent theEvent)
