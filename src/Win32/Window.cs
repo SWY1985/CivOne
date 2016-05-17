@@ -17,6 +17,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using CivOne.Enums;
+using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Screens;
@@ -165,10 +166,13 @@ namespace CivOne
 			LoadCursors();
 		}
 		
-		private void ScaleMouseEventArgs(ref MouseEventArgs args)
+		private ScreenEventArgs ScaleMouseEventArgs(MouseEventArgs args)
 		{
 			int xx = args.X - CanvasX, yy = args.Y - CanvasY;
-			args = new MouseEventArgs(args.Button, args.Clicks, (int)Math.Floor((float)xx / ScaleX), (int)Math.Floor((float)yy / ScaleY), args.Delta);
+			MouseButton buttons = MouseButton.None;
+			if (args.Button == MouseButtons.Left) buttons = MouseButton.Left;
+			else if (args.Button == MouseButtons.Right) buttons = MouseButton.Right;
+			return new ScreenEventArgs((int)Math.Floor((float)xx / ScaleX), (int)Math.Floor((float)yy / ScaleY), buttons);
 		}
 		
 		private void OnFormClosing(object sender, FormClosingEventArgs args)
@@ -240,20 +244,20 @@ namespace CivOne
 		
 		private void OnMouseDown(object sender, MouseEventArgs args)
 		{
-			ScaleMouseEventArgs(ref args);
-			if (TopScreen != null && TopScreen.MouseDown(args)) ScreenUpdate();
+			ScreenEventArgs screenArgs = ScaleMouseEventArgs(args);
+			if (TopScreen != null && TopScreen.MouseDown(screenArgs)) ScreenUpdate();
 		}
 		
 		private void OnMouseUp(object sender, MouseEventArgs args)
 		{
-			ScaleMouseEventArgs(ref args);
-			if (TopScreen != null && TopScreen.MouseUp(args)) ScreenUpdate();
+			ScreenEventArgs screenArgs = ScaleMouseEventArgs(args);
+			if (TopScreen != null && TopScreen.MouseUp(screenArgs)) ScreenUpdate();
 		}
 		
 		private void MouseDrag(MouseEventArgs args)
 		{
-			ScaleMouseEventArgs(ref args);
-			if (TopScreen != null && TopScreen.MouseDrag(args)) ScreenUpdate();
+			ScreenEventArgs screenArgs = ScaleMouseEventArgs(args);
+			if (TopScreen != null && TopScreen.MouseDrag(screenArgs)) ScreenUpdate();
 		}
 		
 		private void OnMouseMove(object sender, MouseEventArgs args)
