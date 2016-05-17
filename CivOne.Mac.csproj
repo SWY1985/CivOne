@@ -15,6 +15,19 @@
 		<RootNamespace>CivOne</RootNamespace>
 		<TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
 		<TargetFrameworkProfile>Client</TargetFrameworkProfile>
+		<PostBuildEvent Condition="'$(OS)' == 'Unix'">
+			rm -rf $(OutDir)CivOne.app
+			mkdir $(OutDir)CivOne.app
+			mkdir $(OutDir)CivOne.app/Contents
+			mkdir $(OutDir)CivOne.app/Contents/MacOS
+			mkdir $(OutDir)CivOne.app/Contents/MacOS/bin
+			mkdir $(OutDir)CivOne.app/Contents/Resources
+			cp ../resources/osx/Info.plist $(OutDir)CivOne.app/Contents
+			cp ../resources/osx/civone-mac $(OutDir)CivOne.app/Contents/MacOS
+			cp *.exe $(OutDir)CivOne.app/Contents/MacOS/bin
+			cp *.mdb $(OutDir)CivOne.app/Contents/MacOS/bin
+			cp *.dll $(OutDir)CivOne.app/Contents/MacOS/bin
+		</PostBuildEvent>
 	</PropertyGroup>
 	<PropertyGroup Condition="$(Configuration.StartsWith('Debug'))">
 		<DebugSymbols>true</DebugSymbols>
