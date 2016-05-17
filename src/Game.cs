@@ -15,6 +15,7 @@ using System.Threading;
 using CivOne.Civilizations;
 using CivOne.Enums;
 using CivOne.Interfaces;
+using CivOne.Screens;
 using CivOne.Units;
 
 namespace CivOne
@@ -69,9 +70,22 @@ namespace CivOne
 		public void NextTurn()
 		{
 			_activeUnit = 0;
-			_currentPlayer++;
-			if (_currentPlayer > _players.Length)
-				_currentPlayer = 0;
+			//
+			foreach (IUnit unit in _units)
+				unit.NewTurn();
+			while (_players[_currentPlayer] != HumanPlayer)
+			{
+				// Skip all AI players for now
+				_currentPlayer++;
+				if (_currentPlayer > _players.Length)
+				{
+					_currentPlayer = 0;
+				}
+			}
+			GameTurn++;
+			if (!_cities.Any(c => c.Owner == _currentPlayer) && !_units.Any(u => u.Owner == _currentPlayer))
+				Common.AddScreen(new GameOver());
+			//
 			_hasUpdate = true;
 		}
 		
@@ -80,7 +94,7 @@ namespace CivOne
 			while (x < 0) x += Map.WIDTH;
 			while (x >= Map.WIDTH) x-= Map.WIDTH;
 			if (y < 0) return null;
-			if (y >= Map.HEIGHT) return null; 
+			if (y >= Map.HEIGHT) return null;
 			return _cities.Where(c => c.X == x && c.Y == y && c.Size > 0).FirstOrDefault();
 		}
 		
@@ -133,21 +147,27 @@ namespace CivOne
 			return _units.Where(u => u.X == x && u.Y == y).ToArray();
 		}
 		
+		public void DisbandUnit(IUnit unit)
+		{
+			if (!_units.Contains(unit)) return;
+			_units.Remove(unit);
+		}
+		
 		public IUnit ActiveUnit
 		{
 			get
 			{
+				// If the unit counter is too high, return to 0
+				if (_activeUnit >= _units.Count)
+					_activeUnit = 0;
+					
 				// Does the current unit still have moves left?
-				if (_units[_activeUnit].Owner == _currentPlayer &&  _units[_activeUnit].MovesLeft > 0)
+				if (_units[_activeUnit].Owner == _currentPlayer && _units[_activeUnit].MovesLeft > 0)
 					return _units[_activeUnit];
 				
 				// Check if any units are still available for this player
 				if (!_units.Any(u => u.Owner == _currentPlayer && u.MovesLeft > 0))
 					return null;
-				
-				// If the unit counter is too high, return to 0
-				if (_activeUnit >= _units.Count)
-					_activeUnit = 0;
 				
 				// Loop through units
 				while (_units[_activeUnit].Owner != _currentPlayer || _units[_activeUnit].MovesLeft == 0)
@@ -273,8 +293,8 @@ namespace CivOne
 			while (loopCounter++ < 2000)
 			{
 				// Choose a map square randomly
-				int x = Common.Random.Next(2, Map.WIDTH - 2);
-				int y = Common.Random.Next(2, Map.HEIGHT - 2);
+				int x = Common.Random.Next(0, Map.WIDTH);
+				int y = Common.Random.Next(0, Map.HEIGHT);
 				ITile tile = Map.Instance[x, y];
 				
 				if (tile.IsOcean) continue; // Is it an ocean tile?
@@ -283,7 +303,7 @@ namespace CivOne
 				if (tile.LandValue < (12 - (loopCounter / 32))) continue; // Is the land value high enough?
 				if (_cities.Any(c => Common.DistanceToTile(x, y, c.X, c.Y) < (10 - (loopCounter / 64)))) continue; // Distance to other cities
 				if (_units.Any(u => (u is Settlers) && Common.DistanceToTile(x, y, u.X, u.Y) < (10 - (loopCounter / 64)))) continue; // Distance to other settlers
-				if (Map.Instance.ContinentTiles(tile.ContinentId).Count() < (32 - (GameTurn / 16))) continue; // Check buildable tiles on continent
+				if (Map.Instance.ContinentTiles(tile.ContinentId).Count(t => Map.TileIsType(t, Terrain.Plains, Terrain.Grassland1, Terrain.Grassland2, Terrain.River)) < (32 - (GameTurn / 16))) continue; // Check buildable tiles on continent
 				
 				// After 0 AD, don't spawn a Civilization on a continent that already contains cities.
 				if (Common.TurnToYear(GameTurn) >= 0 && Map.Instance.ContinentTiles(tile.ContinentId).Any(t => GetCity(t.X, t.Y) != null)) continue;
@@ -344,6 +364,7 @@ namespace CivOne
 				{
 					_players[i] = new Player(tribe, leaderName, tribeName, tribeNamePlural);
 					HumanPlayer = _players[i];
+					_currentPlayer = i;
 					Console.WriteLine("- Player {0} is {1} of the {2} (human)", i, _players[i].LeaderName, _players[i].TribeNamePlural);
 					continue;
 				}

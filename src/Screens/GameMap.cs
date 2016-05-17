@@ -44,6 +44,7 @@ namespace CivOne.Screens
 		private readonly Color[] _palette;
 		private bool _update = true;
 		private int _x, _y;
+		private IUnit _lastUnit;
 		
 		private IEnumerable<RenderTile> RenderTiles
 		{
@@ -72,6 +73,12 @@ namespace CivOne.Screens
 			IUnit activeUnit = Game.Instance.ActiveUnit;
 			if (activeUnit != null && RenderTiles.Any(t => t.Tile.X == activeUnit.X && t.Tile.Y == activeUnit.Y) && (gameTick % 2) == 0)
 			{
+				_lastUnit = activeUnit;
+				_update = true;
+			}
+			else if (activeUnit != _lastUnit)
+			{
+				CenterOnUnit();
 				_update = true;
 			}
 			return _update;
@@ -139,6 +146,37 @@ namespace CivOne.Screens
 				
 				_update = false;
 				return true;
+			}
+			
+			return false;
+		}
+		
+		private void CenterOnUnit()
+		{
+			if (Game.Instance.ActiveUnit == null) return;
+			_x = Game.Instance.ActiveUnit.X - 8;
+			_y = Game.Instance.ActiveUnit.Y - 6;
+		}
+		
+		public override bool KeyDown(KeyEventArgs args)
+		{
+			switch (args.KeyCode)
+			{
+				case Keys.C:
+					if (Game.Instance.ActiveUnit == null) break;
+					CenterOnUnit();
+					break;
+				case Keys.D:
+					if (!args.Shift) break;
+					Game.Instance.DisbandUnit(Game.Instance.ActiveUnit);
+					break;
+				case Keys.Space:
+				case Keys.Enter:
+					if (Game.Instance.ActiveUnit != null)
+						Game.Instance.ActiveUnit.SkipTurn();
+					else
+						Game.Instance.NextTurn();
+					break;
 			}
 			
 			return false;
