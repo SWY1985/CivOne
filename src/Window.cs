@@ -84,14 +84,16 @@ namespace CivOne
 			}
 		}
 		
+		public static bool CheckFiles()
+		{
+			if (FileSystem.DataFilesExist())
+				return true;
+			FileSystem.CopyDataFiles(BrowseDataFolder());
+			return FileSystem.DataFilesExist();
+		}
+		
 		private void Init(string screen)
 		{
-			if (!FileSystem.DataFilesExist())
-			{
-				FileSystem.CopyDataFiles(BrowseDataFolder());
-				Environment.Exit(0);
-			}
-			
 			// Load the first screen
 			IScreen startScreen;
 			switch (screen)

@@ -301,7 +301,7 @@ namespace CivOne
 			Refresh();
 		}
 		
-		public string BrowseDataFolder()
+		private static string BrowseDataFolder()
 		{
 			using (FolderBrowserDialog folderBrowser = new FolderBrowserDialog()
 				{
