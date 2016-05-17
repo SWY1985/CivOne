@@ -24,9 +24,9 @@
 			mkdir $(OutDir)CivOne.app/Contents/Resources
 			cp ../resources/osx/Info.plist $(OutDir)CivOne.app/Contents
 			cp ../resources/osx/civone-mac $(OutDir)CivOne.app/Contents/MacOS
-			cp *.exe $(OutDir)CivOne.app/Contents/MacOS/bin
-			cp *.mdb $(OutDir)CivOne.app/Contents/MacOS/bin
-			cp *.dll $(OutDir)CivOne.app/Contents/MacOS/bin
+			mv *.exe $(OutDir)CivOne.app/Contents/MacOS/bin
+			mv *.mdb $(OutDir)CivOne.app/Contents/MacOS/bin
+			mv *.dll $(OutDir)CivOne.app/Contents/MacOS/bin
 		</PostBuildEvent>
 	</PropertyGroup>
 	<PropertyGroup Condition="$(Configuration.StartsWith('Debug'))">
