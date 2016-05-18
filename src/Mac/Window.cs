@@ -113,6 +113,7 @@ namespace CivOne
 		
 		private static string BrowseDataFolder()
 		{
+			Init();
 			NSOpenPanel openPanel = new NSOpenPanel()
 			{
 				ReleasedWhenClosed = true,
@@ -130,8 +131,17 @@ namespace CivOne
 		
 		public static void CreateWindow(string screen)
 		{
-			NSApplication.Init();
+			Init();
 			_app = new Application(screen);
+		}
+		
+		private static bool _init = false;
+		private static void Init()
+		{
+			if (_init) return;
+			
+			NSApplication.Init();
+			_init = true;
 		}
 		
 		public Window(string screen) : base(new RectangleF(0, 0, 640, 400), NSWindowStyle.Titled | NSWindowStyle.Closable | NSWindowStyle.Miniaturizable, NSBackingStore.Buffered, false)
