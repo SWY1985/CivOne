@@ -15,6 +15,7 @@
 		<RootNamespace>CivOne</RootNamespace>
 		<TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
 		<TargetFrameworkProfile>Client</TargetFrameworkProfile>
+		<ApplicationIcon>resources/win32/CivOne.ico</ApplicationIcon>
 	</PropertyGroup>
 	<PropertyGroup Condition="$(Configuration.StartsWith('Debug'))">
 		<DebugSymbols>true</DebugSymbols>
