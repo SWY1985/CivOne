@@ -10,7 +10,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -100,21 +99,21 @@ namespace CivOne.Screens
 			return false;
 		}
 		
-		public override bool KeyDown(KeyEventArgs args)
+		public override bool KeyDown(KeyboardEventArgs args)
 		{
-			switch (args.KeyCode)
+			switch (args.Key)
 			{
-				case Keys.Up:
+				case Key.Up:
 					ActiveItem--;
 					return true;
-				case Keys.Down:
+				case Key.Down:
 					ActiveItem++;
 					return true;
-				case Keys.Enter:
+				case Key.Enter:
 					if (!Items[_activeItem].Enabled) return false;
 					Items[_activeItem].Select();
 					return true;
-				case Keys.Escape:
+				case Key.Escape:
 					if (Cancel != null)
 					{
 						_activeItem = -1;

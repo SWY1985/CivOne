@@ -9,7 +9,6 @@
 
 using System;
 using System.Drawing;
-using System.Windows.Forms;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.IO;

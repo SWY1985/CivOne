@@ -9,7 +9,6 @@
 
 using System;
 using System.Drawing;
-using System.Windows.Forms;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -227,33 +226,33 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool KeyDown(KeyEventArgs args)
+		public override bool KeyDown(KeyboardEventArgs args)
 		{
-			switch (args.KeyCode)
+			switch (args.Key)
 			{
-				case Keys.F1:
+				case Key.F1:
 					Common.AddScreen(new CityStatus());
 					return true;
-				case Keys.F2:
+				case Key.F2:
 					Common.AddScreen(new MilitaryLosses());
 					Common.AddScreen(new MilitaryStatus());
 					return true;
-				case Keys.F3:
+				case Key.F3:
 					Common.AddScreen(new IntelligenceReport());
 					return true;
-				case Keys.F4:
+				case Key.F4:
 					Common.AddScreen(new AttitudeSurvey());
 					return true;
-				case Keys.F5:
+				case Key.F5:
 					Common.AddScreen(new TradeReport());
 					return true;
-				case Keys.F6:
+				case Key.F6:
 					Common.AddScreen(new ScienceReport());
 					return true;
-				case Keys.F9:
+				case Key.F9:
 					Common.AddScreen(new CivilizationScore());
 					return true;
-				case Keys.F10:
+				case Key.F10:
 					Common.AddScreen(new WorldMap());
 					return true;
 			}

@@ -7,7 +7,6 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using System.Windows.Forms;
 using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Templates;
@@ -25,7 +24,7 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool KeyDown(KeyEventArgs args)
+		public override bool KeyDown(KeyboardEventArgs args)
 		{
 			Destroy();
 			return true;

@@ -7,7 +7,6 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using Gtk;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -15,7 +14,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Windows.Forms;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -169,35 +167,38 @@ namespace CivOne
 			_forceUpdate = TopScreen.MouseDrag(args);
 		}
 		
-		private void SendKeyDown(System.Windows.Forms.Keys keys)
+		private void SendKeyDown(Key key, KeyModifier modifier)
 		{
-			System.Windows.Forms.KeyEventArgs args = new System.Windows.Forms.KeyEventArgs(keys);
-			
+			SendKeyDown(new KeyboardEventArgs(key, modifier));
+		}
+		
+		private void SendKeyDown(char keyChar, KeyModifier modifier)
+		{
+			SendKeyDown(new KeyboardEventArgs(keyChar, modifier));
+		}
+		
+		private void SendKeyDown(KeyboardEventArgs args)
+		{
 			if (args.Alt || args.Control)
 			{
-				if (args.Alt && args.KeyCode == System.Windows.Forms.Keys.Enter)
+				if (args.Alt && args.Key == Key.Enter)
 				{
 					ToggleFullScreen();
 				}
-				if (args.Control && args.KeyCode == System.Windows.Forms.Keys.F5)
+				if (args.Control && args.Key == Key.F5)
 				{
 					SaveScreen();
 				}
-				if (args.Alt && args.KeyCode == System.Windows.Forms.Keys.Q)
+				if (args.Alt && args.KeyChar == 'Q')
 				{
 					Common.Quit();
 					Dispose();
 				}
-				args.SuppressKeyPress = true;
 				return;
 			}
 			
-			if (TopScreen != null && TopScreen.KeyDown(args)) _forceUpdate = true;// ScreenUpdate();
-			
-			if (args.KeyCode == System.Windows.Forms.Keys.F10)
-			{
-				args.SuppressKeyPress = true;
-			}
+			if (TopScreen != null && TopScreen.KeyDown(args))
+				_forceUpdate = true;
 		}
 		
 		private void OnDelete(object sender, EventArgs args)
@@ -205,7 +206,7 @@ namespace CivOne
 			Common.Quit();
 		}
 		
-		private void OnMouseDown(object sender, ButtonPressEventArgs args)
+		private void OnMouseDown(object sender, Gtk.ButtonPressEventArgs args)
 		{
 			MouseButton buttons = MouseButton.None;
 			switch (args.Event.Button)
@@ -216,7 +217,7 @@ namespace CivOne
 			SendMouseDown(new ScreenEventArgs((int)args.Event.X, (int)args.Event.Y, buttons));
 		}
 		
-		private void OnMouseUp(object sender, ButtonReleaseEventArgs args)
+		private void OnMouseUp(object sender, Gtk.ButtonReleaseEventArgs args)
 		{
 			MouseButton buttons = MouseButton.None;
 			switch (args.Event.Button)
@@ -227,7 +228,7 @@ namespace CivOne
 			SendMouseUp(new ScreenEventArgs((int)args.Event.X, (int)args.Event.Y, buttons));
 		}
 		
-		private void OnMouseDrag(MotionNotifyEventArgs args)
+		private void OnMouseDrag(Gtk.MotionNotifyEventArgs args)
 		{
 			MouseButton buttons = MouseButton.None;
 			if ((args.Event.State & Gdk.ModifierType.Button1Mask) > 0) buttons |= MouseButton.Left;
@@ -236,7 +237,7 @@ namespace CivOne
 			SendMouseDrag(new ScreenEventArgs((int)args.Event.X, (int)args.Event.Y, buttons));
 		}
 		
-		private void OnMouseMove(object sender, MotionNotifyEventArgs args)
+		private void OnMouseMove(object sender, Gtk.MotionNotifyEventArgs args)
 		{
 			if ((args.Event.State & (Gdk.ModifierType.Button1Mask | Gdk.ModifierType.Button3Mask)) > 0) OnMouseDrag(args);
 			
@@ -246,77 +247,78 @@ namespace CivOne
 		[GLib.ConnectBefore()]
 		private void OnKeyPress(object sender, Gtk.KeyPressEventArgs args)
 		{
-			System.Windows.Forms.Keys modifier = System.Windows.Forms.Keys.None;
-			if ((args.Event.State & Gdk.ModifierType.ControlMask) > 0) modifier |= System.Windows.Forms.Keys.Control;
-			if ((args.Event.State & Gdk.ModifierType.ShiftMask) > 0) modifier |= System.Windows.Forms.Keys.Shift;
-			if ((args.Event.State & Gdk.ModifierType.Mod1Mask) > 0) modifier |= System.Windows.Forms.Keys.Alt;
+			KeyModifier modifier = KeyModifier.None;
+			if ((args.Event.State & Gdk.ModifierType.ControlMask) > 0) modifier |= KeyModifier.Control;
+			if ((args.Event.State & Gdk.ModifierType.ShiftMask) > 0) modifier |= KeyModifier.Shift;
+			if ((args.Event.State & Gdk.ModifierType.Mod1Mask) > 0) modifier |= KeyModifier.Alt;
 			
 			switch (args.Event.Key)
 			{
 				case Gdk.Key.Return:
 				case Gdk.Key.KP_Enter:
-					SendKeyDown(System.Windows.Forms.Keys.Enter | modifier);
+					SendKeyDown(Key.Enter, modifier);
 					return;
 				case Gdk.Key.space:
 				case Gdk.Key.KP_Space:
-					SendKeyDown(System.Windows.Forms.Keys.Space | modifier);
+					SendKeyDown(Key.Space, modifier);
 					return;
 				case Gdk.Key.Up:
-					SendKeyDown(System.Windows.Forms.Keys.Up | modifier);
+					SendKeyDown(Key.Up, modifier);
 					return;
 				case Gdk.Key.Down:
-					SendKeyDown(System.Windows.Forms.Keys.Down | modifier);
+					SendKeyDown(Key.Down, modifier);
 					return;
 				case Gdk.Key.Left:
-					SendKeyDown(System.Windows.Forms.Keys.Left | modifier);
+					SendKeyDown(Key.Left, modifier);
 					return;
 				case Gdk.Key.Right:
-					SendKeyDown(System.Windows.Forms.Keys.Right | modifier);
+					SendKeyDown(Key.Right, modifier);
 					return;
 				case Gdk.Key.F1:
-					SendKeyDown(System.Windows.Forms.Keys.F1 | modifier);
+					SendKeyDown(Key.F1, modifier);
 					return;
 				case Gdk.Key.F2:
-					SendKeyDown(System.Windows.Forms.Keys.F2 | modifier);
+					SendKeyDown(Key.F2, modifier);
 					return;
 				case Gdk.Key.F3:
-					SendKeyDown(System.Windows.Forms.Keys.F3 | modifier);
+					SendKeyDown(Key.F3, modifier);
 					return;
 				case Gdk.Key.F4:
-					SendKeyDown(System.Windows.Forms.Keys.F4 | modifier);
+					SendKeyDown(Key.F4, modifier);
 					return;
 				case Gdk.Key.F5:
-					SendKeyDown(System.Windows.Forms.Keys.F5 | modifier);
+					SendKeyDown(Key.F5, modifier);
 					return;
 				case Gdk.Key.F6:
-					SendKeyDown(System.Windows.Forms.Keys.F6 | modifier);
+					SendKeyDown(Key.F6, modifier);
 					return;
 				case Gdk.Key.F7:
-					SendKeyDown(System.Windows.Forms.Keys.F7 | modifier);
+					SendKeyDown(Key.F7, modifier);
 					return;
 				case Gdk.Key.F8:
-					SendKeyDown(System.Windows.Forms.Keys.F8 | modifier);
+					SendKeyDown(Key.F8, modifier);
 					return;
 				case Gdk.Key.F9:
-					SendKeyDown(System.Windows.Forms.Keys.F9 | modifier);
+					SendKeyDown(Key.F9, modifier);
 					return;
 				case Gdk.Key.F10:
-					SendKeyDown(System.Windows.Forms.Keys.F10 | modifier);
+					SendKeyDown(Key.F10, modifier);
+					return;
+				case Gdk.Key.BackSpace:
+					SendKeyDown(Key.Backspace, modifier);
 					return;
 				default:
-					SendKeyDown((System.Windows.Forms.Keys)char.ToUpper((char)args.Event.Key) | modifier);
+					SendKeyDown(char.ToUpper((char)args.Event.Key), modifier);
 					return;
 			}
 		}
 		
-		protected void OnExpose(object sender, ExposeEventArgs args)
+		protected void OnExpose(object sender, Gtk.ExposeEventArgs args)
 		{
-			//args.Graphics.DrawImage(_canvas.Image, CanvasX, CanvasY, CanvasWidth, CanvasHeight);
-			
 			if (_canvas == null) return;
 			
 			Gdk.Pixbuf canvas = GetPixbuf(_canvas.Image).ScaleSimple(CanvasWidth, CanvasHeight, Gdk.InterpType.Nearest);
-			canvas.RenderToDrawable(args.Event.Window, _window.Style.BaseGC(StateType.Normal), 0, 0, CanvasX, CanvasY, -1, -1, Gdk.RgbDither.None, 0, 0);
+			canvas.RenderToDrawable(args.Event.Window, _window.Style.BaseGC(Gtk.StateType.Normal), 0, 0, CanvasX, CanvasY, -1, -1, Gdk.RgbDither.None, 0, 0);
 		}
 		
 		internal void Run()
@@ -328,9 +330,9 @@ namespace CivOne
 		{
 			Init();
 			
-			FileChooserDialog folderBrowser = new FileChooserDialog("Select the folder containing the original Civilization data files.", null, FileChooserAction.SelectFolder, "Cancel", ResponseType.Cancel, "Select", ResponseType.Ok);
+			Gtk.FileChooserDialog folderBrowser = new Gtk.FileChooserDialog("Select the folder containing the original Civilization data files.", null, Gtk.FileChooserAction.SelectFolder, "Cancel", Gtk.ResponseType.Cancel, "Select", Gtk.ResponseType.Ok);
 			
-			bool responseOk = (folderBrowser.Run() == (int)ResponseType.Ok);
+			bool responseOk = (folderBrowser.Run() == (int)Gtk.ResponseType.Ok);
 			string directory = (responseOk ? folderBrowser.Filename : Settings.Instance.DataDirectory);
 			folderBrowser.Destroy();
 			
@@ -364,7 +366,7 @@ namespace CivOne
 			_window = new Gtk.Window("CivOne");
 			_window.Resize(320 * Settings.Instance.ScaleX, 200 * Settings.Instance.ScaleY);
 			_window.AddEvents((int)(Gdk.EventMask.KeyPressMask | Gdk.EventMask.ButtonPressMask | Gdk.EventMask.ButtonReleaseMask | Gdk.EventMask.ButtonMotionMask | Gdk.EventMask.PointerMotionMask));
-			_window.ModifyBg(StateType.Normal, Gdk.Color.Zero);
+			_window.ModifyBg(Gtk.StateType.Normal, Gdk.Color.Zero);
 			
 			// Set Window events
 			_window.DeleteEvent += OnDelete;

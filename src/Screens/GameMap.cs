@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -159,25 +158,29 @@ namespace CivOne.Screens
 			_y = Game.Instance.ActiveUnit.Y - 6;
 		}
 		
-		public override bool KeyDown(KeyEventArgs args)
+		public override bool KeyDown(KeyboardEventArgs args)
 		{
-			switch (args.KeyCode)
+			switch (args.Key)
 			{
-				case Keys.C:
-					if (Game.Instance.ActiveUnit == null) break;
-					CenterOnUnit();
-					break;
-				case Keys.D:
-					if (!args.Shift) break;
-					Game.Instance.DisbandUnit(Game.Instance.ActiveUnit);
-					break;
-				case Keys.Space:
-				case Keys.Enter:
+				case Key.Space:
+				case Key.Enter:
 					if (Game.Instance.ActiveUnit != null)
 						Game.Instance.ActiveUnit.SkipTurn();
 					else
 						Game.Instance.NextTurn();
-					break;
+					return true;
+			}
+			
+			switch (args.KeyChar)
+			{
+				case 'C':
+					if (Game.Instance.ActiveUnit == null) break;
+					CenterOnUnit();
+					return true;
+				case 'D':
+					if (!args.Shift) break;
+					Game.Instance.DisbandUnit(Game.Instance.ActiveUnit);
+					return true;
 			}
 			
 			return false;

@@ -10,8 +10,8 @@
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Windows.Forms;
 using CivOne.Enums;
+using CivOne.Events;
 using CivOne.GFX;
 using CivOne.IO;
 using CivOne.Templates;
@@ -176,12 +176,12 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool KeyDown(KeyEventArgs args)
+		public override bool KeyDown(KeyboardEventArgs args)
 		{
 			if (args.Shift)
 			{
 				if (_fadeStep < 1.0F) return false;
-				if (args.KeyCode == Keys.Left)
+				if (args.Key == Key.Left)
 				{
 					if (_introLine <= 1) return false;
 					
@@ -200,7 +200,7 @@ namespace CivOne.Screens
 					}
 					return true;
 				}
-				if (args.KeyCode == Keys.Right)
+				if (args.Key == Key.Right)
 				{
 					if (_introLine >= _introText.Length - 1) return false;
 					
@@ -220,7 +220,7 @@ namespace CivOne.Screens
 					return true;
 				}
 			}
-			if (args.KeyCode == Keys.Space || args.KeyCode == Keys.Enter)
+			if (args.Key == Key.Space || args.Key == Key.Enter)
 			{
 				Destroy();
 				Common.AddScreen(new NewGame());

@@ -10,7 +10,6 @@
 using System;
 using System.Drawing.Imaging;
 using System.Linq;
-using System.Windows.Forms;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -234,7 +233,7 @@ namespace CivOne.Screens
 			Common.AddScreen(new CustomizeWorld());
 		}
 		
-		public override bool KeyDown(KeyEventArgs args)
+		public override bool KeyDown(KeyboardEventArgs args)
 		{
 			if (_done && _overlay != null)
 				return _overlay.KeyDown(args);

@@ -10,7 +10,8 @@
 using System;
 using System.Drawing;
 using System.Text;
-using System.Windows.Forms;
+using CivOne.Enums;
+using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Templates;
 
@@ -69,34 +70,34 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool KeyDown(KeyEventArgs args)
+		public override bool KeyDown(KeyboardEventArgs args)
 		{
 			StringBuilder sb;
-			switch (args.KeyCode)
+			switch (args.Key)
 			{
-				case Keys.Left:
+				case Key.Left:
 					if (_cursorPosition > 0) _cursorPosition--;
 					else _cursorPosition = 0;
 					_update = true;
 					return true;
-				case Keys.Right:
+				case Key.Right:
 					if (_cursorPosition < 0) _cursorPosition = 0;
 					if (_cursorPosition < _text.Length) _cursorPosition++;
 					else _cursorPosition = _text.Length;
 					_update = true;
 					return true;
-				case Keys.Escape:
+				case Key.Escape:
 					if (Cancel != null)
 						Cancel(this, null);
 					break;
-				case Keys.Enter:
+				case Key.Enter:
 					if (Accept != null)
 						Accept(this, null);
 					break;
-				case Keys.Delete:
+				case Key.Delete:
 					//TODO: Handle delete
 					break;
-				case Keys.Back:
+				case Key.Backspace:
 					if (_cursorPosition <= 0) return false;
 					
 					sb = new StringBuilder(_text);
@@ -106,10 +107,10 @@ namespace CivOne.Screens
 					_update = true;
 					return true;
 				default:
-					char c = (char)(args.KeyCode);
+					char c = args.KeyChar;
 					if (!args.Shift) c = Char.ToLower(c);
-					if (args.KeyData == Keys.OemPeriod) c = '.';
-					if (args.KeyData == Keys.Oemcomma) c = ',';
+					//if (args.KeyData == Keys.OemPeriod) c = '.';
+					//if (args.KeyData == Keys.Oemcomma) c = ',';
 					if (args.Shift && (c >= '0' && c <= '9')) c -= (char)16;
 					if (!Resources.Instance.ValidCharacter(_fontId, c)) return false;
 					

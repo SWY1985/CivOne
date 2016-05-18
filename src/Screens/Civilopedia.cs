@@ -10,7 +10,6 @@
 using System;
 using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
 using CivOne.Buildings;
 using CivOne.Enums;
 using CivOne.Events;
@@ -118,7 +117,7 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool KeyDown(KeyEventArgs args)
+		public override bool KeyDown(KeyboardEventArgs args)
 		{
 			if (_singlePage != null && NextPage())
 			{
