@@ -11,7 +11,6 @@ using System.Drawing;
 using System.Collections.Generic;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Windows.Forms;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Interfaces;
@@ -63,7 +62,7 @@ namespace CivOne.Templates
 		}
 		public virtual MouseCursor Cursor { get; protected set; }
 		public abstract bool HasUpdate(uint gameTick);
-		public virtual bool KeyDown(KeyEventArgs args)
+		public virtual bool KeyDown(KeyboardEventArgs args)
 		{
 			return false;
 		}

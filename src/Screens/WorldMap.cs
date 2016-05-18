@@ -12,7 +12,6 @@ using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Templates;
-using System.Windows.Forms;
 
 namespace CivOne.Screens
 {
@@ -27,7 +26,7 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool KeyDown(KeyEventArgs args)
+		public override bool KeyDown(KeyboardEventArgs args)
 		{
 			Destroy();
 			return true;

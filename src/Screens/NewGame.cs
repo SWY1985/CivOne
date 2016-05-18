@@ -10,7 +10,6 @@
 using System;
 using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Interfaces;
@@ -261,11 +260,11 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool KeyDown(KeyEventArgs args)
+		public override bool KeyDown(KeyboardEventArgs args)
 		{
 			if (_tribe != -1 && _leaderName == null)
 			{
-				if (args.KeyCode == Keys.Enter)
+				if (args.Key == Key.Enter)
 				{
 					ICivilization civ = _tribesAvailable[_tribe];
 					_leaderName = civ.LeaderName;

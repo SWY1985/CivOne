@@ -13,7 +13,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -151,12 +150,12 @@ namespace CivOne.Screens
 			return Cancel;
 		}
 		
-		public override bool KeyDown(KeyEventArgs args)
+		public override bool KeyDown(KeyboardEventArgs args)
 		{
 			if (Cancel) return false;
 			
-			char c = Char.ToUpper((char)args.KeyCode);
-			if (args.KeyCode == Keys.Escape)
+			char c = Char.ToUpper(args.KeyChar);
+			if (args.Key == Key.Escape)
 			{
 				Console.WriteLine("Cancel");
 				Cancel = true;
@@ -167,7 +166,7 @@ namespace CivOne.Screens
 			{
 				return _menu.KeyDown(args);
 			}
-			else if (args.KeyCode == Keys.Enter)
+			else if (args.Key == Key.Enter)
 			{
 				_menu = new Menu(Canvas.Image.Palette.Entries)
 				{
