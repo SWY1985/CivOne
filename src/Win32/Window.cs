@@ -196,6 +196,8 @@ namespace CivOne
 				case Keys.Escape: return new KeyboardEventArgs(Key.Escape, modifier);
 				case Keys.Delete: return new KeyboardEventArgs(Key.Delete, modifier);
 				case Keys.Back: return new KeyboardEventArgs(Key.Backspace, modifier);
+				case Keys.OemPeriod: return new KeyboardEventArgs('.', modifier);
+				case Keys.Oemcomma: return new KeyboardEventArgs(',', modifier);
 				default: return new KeyboardEventArgs(char.ToUpper((char)args.KeyCode), modifier);
 			}
 		}
