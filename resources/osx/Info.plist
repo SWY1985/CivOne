@@ -8,6 +8,8 @@
 	<string>1</string>
 	<key>CFBundleExecutable</key>
 	<string>civone-mac</string>
+	<key>CFBundleIconFile</key>
+	<string>CivOne.icns</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>10.7</string>
 	<key>NSMainNibFile</key>
