@@ -44,6 +44,9 @@ namespace CivOne.Screens
 			_canvas = new Picture(320, 200, background.Image.Palette.Entries);
 			
 			AddLayer(background);
+			AddLayer(Resources.Instance.GetPart("CASTLE0", 0, 1, 52, 99), 135, 37);
+			AddLayer(Resources.Instance.GetPart("CASTLE0", 53, 1, 26, 99), 185, 37);
+			AddLayer(Resources.Instance.GetPart("CASTLE0", 78, 1, 24, 99), 114, 37);
 		}
 	}
 }
