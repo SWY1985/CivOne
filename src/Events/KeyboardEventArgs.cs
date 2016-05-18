@@ -46,6 +46,10 @@ namespace CivOne.Events
 		{
 			Key = key;
 			KeyChar = (char)0x00;
+			switch (key)
+			{
+				case Key.Space: KeyChar = ' '; break;
+			}
 			Modifier = modifier;
 		}
 		
