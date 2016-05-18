@@ -96,6 +96,50 @@ namespace CivOne
 			args = new ScreenEventArgs((int)Math.Floor((float)xx / ScaleX), (int)Math.Floor((float)yy / ScaleY), args.Buttons);
 		}
 		
+		public override void KeyDown(NSEvent theEvent)
+		{
+			KeyboardEventArgs args = null;
+			Key key = Key.None;
+			switch (theEvent.KeyCode)
+			{
+				case 0x24: key = Key.Enter; break;
+				case 0x31: key = Key.Space; break;
+				case 0x33: key = Key.Backspace; break;
+				case 0x35: key = Key.Escape; break;
+				case 0x75: key = Key.Left; break;
+				case 0x7B: key = Key.Left; break;
+				case 0x7C: key = Key.Right; break;
+				case 0x7D: key = Key.Down; break;
+				case 0x7E: key = Key.Up; break;
+				// Function keys
+				case 0x7A: key = Key.F1; break;
+				case 0x78: key = Key.F2; break;
+				case 0x63: key = Key.F3; break;
+				case 0x76: key = Key.F4; break;
+				case 0x60: key = Key.F5; break;
+				case 0x61: key = Key.F6; break;
+				case 0x62: key = Key.F7; break;
+				case 0x64: key = Key.F8; break;
+				case 0x65: key = Key.F9; break;
+				case 0x6D: key = Key.F10; break;
+				case 0x67: key = Key.F11; break;
+				case 0x6F: key = Key.F12; break;
+			}
+			
+			if (key != Key.None)
+			{
+				args = new KeyboardEventArgs(key);
+			}
+			else
+			{
+				// Debug line to find out key codes.
+				Title = $"{theEvent.KeyCode}";
+			}
+			
+			if (args == null || TopScreen == null) return;
+			_forceUpdate = TopScreen.KeyDown(args);
+		}
+		
 		private void MouseDown(object sender, ScreenEventArgs args)
 		{
 			if (TopScreen == null) return;
@@ -155,6 +199,7 @@ namespace CivOne
 			ContentView = new View();
 			
 			// Set View events
+			//(ContentView as View).OnKeyDown += KeyDown;
 			(ContentView as View).OnMouseDown += MouseDown;
 			(ContentView as View).OnMouseUp += MouseUp;
 			
