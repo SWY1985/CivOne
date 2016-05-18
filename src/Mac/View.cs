@@ -26,6 +26,7 @@ namespace CivOne
 	internal class View : NSView
 	{
 		public event EventHandler<ScreenEventArgs> OnMouseDown, OnMouseUp;
+		public event EventHandler<KeyboardEventArgs> OnKeyDown;
 		
 		private int Height
 		{
@@ -76,6 +77,17 @@ namespace CivOne
 			NSGraphicsContext.CurrentContext.GraphicsPort.DrawImage(new RectangleF(0, 0, 640, 400), image);
 		}
 		
+		private KeyboardEventArgs KeyEvent(NSEvent theEvent)
+		{
+			switch (theEvent.KeyCode)
+			{
+				case 0x13: return new KeyboardEventArgs(Key.Enter);
+			}
+			
+			return new KeyboardEventArgs(Key.Enter);
+			return null;
+		}
+		
 		private ScreenEventArgs MouseEvent(NSEvent theEvent)
 		{
 			MouseButton buttons;
@@ -88,24 +100,30 @@ namespace CivOne
 			
 			return new ScreenEventArgs((int)theEvent.LocationInWindow.X, Height - (int)theEvent.LocationInWindow.Y - 1, buttons);
 		}
-
+		
+		public override void KeyDown(NSEvent theEvent)
+		{
+			if (OnKeyDown == null) return;
+			OnKeyDown.Invoke(this, KeyEvent(theEvent));
+		}
+		
 		public override void MouseDown(NSEvent theEvent)
 		{
 			if (OnMouseDown == null) return;
 			OnMouseDown.Invoke(this, MouseEvent(theEvent));
 		}
-
+		
 		public override void MouseUp(NSEvent theEvent)
 		{
 			if (OnMouseUp == null) return;
 			OnMouseUp.Invoke(this, MouseEvent(theEvent));
 		}
-
+		
 		public override void RightMouseDown(NSEvent theEvent)
 		{
 			MouseDown(theEvent);
 		}
-
+		
 		public override void RightMouseUp(NSEvent theEvent)
 		{
 			MouseUp(theEvent);
