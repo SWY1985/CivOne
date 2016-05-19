@@ -92,5 +92,12 @@ namespace CivOne
 		{
 			return GetTypes<ITile>();
 		}
+		
+		internal static void PreloadCivilopedia()
+		{
+			Console.WriteLine("Civilopedia: Preloading articles...");
+			foreach (ICivilopedia article in GetCivilopediaAll());
+			Console.WriteLine("Civilopedia: Preloading done!");
+		}
 	}
 }

@@ -92,6 +92,17 @@ namespace CivOne
 			return FileSystem.DataFilesExist();
 		}
 		
+		private static void LoadResources()
+		{
+			ThreadStart civilopediaDelegate = new ThreadStart(Reflect.PreloadCivilopedia);
+			Thread civilopedia = new Thread(new ThreadStart(Reflect.PreloadCivilopedia))
+			{
+				IsBackground = true
+			};
+			
+			civilopedia.Start();
+		}
+		
 		private void Init(string screen)
 		{
 			// Load the first screen
@@ -109,6 +120,8 @@ namespace CivOne
 					break;
 			}
 			Common.AddScreen(startScreen);
+			
+			LoadResources();
 		}
 	}
 }
