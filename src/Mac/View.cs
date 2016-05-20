@@ -90,12 +90,6 @@ namespace CivOne
 			return new ScreenEventArgs((int)theEvent.LocationInWindow.X, Height - (int)theEvent.LocationInWindow.Y - 1, buttons);
 		}
 		
-		public override void KeyDown(NSEvent theEvent)
-		{
-			if (OnKeyDown == null) return;
-			OnKeyDown.Invoke(this, KeyEvent(theEvent));
-		}
-		
 		public override void MouseDown(NSEvent theEvent)
 		{
 			if (OnMouseDown == null) return;
