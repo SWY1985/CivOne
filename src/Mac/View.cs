@@ -77,17 +77,6 @@ namespace CivOne
 			NSGraphicsContext.CurrentContext.GraphicsPort.DrawImage(new RectangleF(0, 0, 640, 400), image);
 		}
 		
-		private KeyboardEventArgs KeyEvent(NSEvent theEvent)
-		{
-			switch (theEvent.KeyCode)
-			{
-				case 0x13: return new KeyboardEventArgs(Key.Enter);
-			}
-			
-			return new KeyboardEventArgs(Key.Enter);
-			return null;
-		}
-		
 		private ScreenEventArgs MouseEvent(NSEvent theEvent)
 		{
 			MouseButton buttons;
