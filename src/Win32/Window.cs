@@ -187,6 +187,16 @@ namespace CivOne
 				case Keys.F10: return new KeyboardEventArgs(Key.F10, modifier);
 				case Keys.F11: return new KeyboardEventArgs(Key.F11, modifier);
 				case Keys.F12: return new KeyboardEventArgs(Key.F12, modifier);
+				case Keys.NumPad0: return new KeyboardEventArgs(Key.NumPad0, modifier);
+				case Keys.NumPad1: return new KeyboardEventArgs(Key.NumPad1, modifier);
+				case Keys.NumPad2: return new KeyboardEventArgs(Key.NumPad2, modifier);
+				case Keys.NumPad3: return new KeyboardEventArgs(Key.NumPad3, modifier);
+				case Keys.NumPad4: return new KeyboardEventArgs(Key.NumPad4, modifier);
+				case Keys.NumPad5: return new KeyboardEventArgs(Key.NumPad5, modifier);
+				case Keys.NumPad6: return new KeyboardEventArgs(Key.NumPad6, modifier);
+				case Keys.NumPad7: return new KeyboardEventArgs(Key.NumPad7, modifier);
+				case Keys.NumPad8: return new KeyboardEventArgs(Key.NumPad8, modifier);
+				case Keys.NumPad9: return new KeyboardEventArgs(Key.NumPad9, modifier);
 				case Keys.Up: return new KeyboardEventArgs(Key.Up, modifier);
 				case Keys.Left: return new KeyboardEventArgs(Key.Left, modifier);
 				case Keys.Right: return new KeyboardEventArgs(Key.Right, modifier);

@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System.Collections.Generic;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
@@ -86,6 +87,18 @@ namespace CivOne.Templates
 				case Direction.SouthEast: return map.GetTile(X + 1, Y + 1);
 			}
 			return null;
+		}
+
+		public IEnumerable<ITile> GetBorderTiles()
+		{
+			for (int relY = -1; relY <= 1; relY++)
+			{
+				for (int relX = -1; relX <= 1; relX++)
+				{
+					if (relX == 0 && relY == 0) continue;
+					yield return Map.Instance.GetTile(X -relX, Y - relY);
+				}
+			}
 		}
 		
 		public Terrain GetBorderType(Direction direction)

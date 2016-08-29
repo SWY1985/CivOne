@@ -169,6 +169,26 @@ namespace CivOne.Screens
 					else
 						Game.Instance.NextTurn();
 					return true;
+				case Key.NumPad1:
+					return Game.Instance.ActiveUnit.MoveTo(-1, 1);
+				case Key.NumPad2:
+				case Key.Down:
+					return Game.Instance.ActiveUnit.MoveTo(0, 1);
+				case Key.NumPad3:
+					return Game.Instance.ActiveUnit.MoveTo(1, 1);
+				case Key.NumPad4:
+				case Key.Left:
+					return Game.Instance.ActiveUnit.MoveTo(-1, 0);
+				case Key.NumPad6:
+				case Key.Right:
+					return Game.Instance.ActiveUnit.MoveTo(1, 0);
+				case Key.NumPad7:
+					return Game.Instance.ActiveUnit.MoveTo(-1, -1);
+				case Key.NumPad8:
+				case Key.Up:
+					return Game.Instance.ActiveUnit.MoveTo(0, -1);
+				case Key.NumPad9:
+					return Game.Instance.ActiveUnit.MoveTo(1, -1);
 			}
 			
 			switch (args.KeyChar)
