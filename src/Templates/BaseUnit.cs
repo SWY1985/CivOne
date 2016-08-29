@@ -8,7 +8,9 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
@@ -17,6 +19,8 @@ namespace CivOne.Templates
 {
 	internal abstract class BaseUnit : IUnit
 	{
+		private int _x, _y;
+
 		private static Picture[,] _unitCache = new Picture[28,8];
 		private static Picture[] _iconCache = new Picture[28];
 		public virtual Picture Icon
@@ -84,8 +88,32 @@ namespace CivOne.Templates
 		public byte Attack { get; protected set; }
 		public byte Defense { get; protected set; }
 		public byte Move { get; protected set; }
-		public int X { get; set; }
-		public int Y { get; set; }
+		public int X
+		{
+			get
+			{
+				return _x;
+			}
+			set
+			{
+				int val = value;
+				while (val < 0) val += Map.WIDTH;
+				while (val >= Map.WIDTH) val -= Map.WIDTH;
+				_x = val;
+			}
+		}
+		public int Y
+		{
+			get
+			{
+				return _y;
+			}
+			set
+			{
+				if (value < 0 || value >= Map.HEIGHT) return;
+				_y = value;
+			}
+		}
 		public byte Owner { get; set; }
 		public byte Status { get; set; }
 		public byte MovesLeft { get; private set; }
@@ -93,6 +121,19 @@ namespace CivOne.Templates
 		public virtual void NewTurn()
 		{
 			MovesLeft = Move;
+		}
+
+		public virtual bool MoveTo(int relX, int relY)
+		{
+			int toX = (X + relX);
+			int toY = (Y + relY);
+
+			if (!MoveTargets.Any(t => t.X == toX && t.Y == toY)) return false;
+
+			X += relX;
+			Y += relY;
+			MovesLeft--;
+			return true;
 		}
 		
 		public virtual void SkipTurn()
@@ -127,6 +168,27 @@ namespace CivOne.Templates
 				_unitCache[unitId, colour] = new Picture(image);
 			}
 			return _unitCache[unitId, colour];
+		}
+
+		private bool ValidMoveTarget(ITile tile)
+		{
+			if (tile == null) return false;
+			switch (Class)
+			{
+				case UnitClass.Water:
+					return tile.Type == Terrain.Ocean;
+				case UnitClass.Land:
+					return tile.Type != Terrain.Ocean;
+			}
+			return true;
+		}
+
+		public IEnumerable<ITile> MoveTargets
+		{
+			get
+			{
+				return Map.Instance.GetTile(X, Y).GetBorderTiles().Where(t => ValidMoveTarget(t));
+			}
 		}
 		
 		protected BaseUnit(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1)

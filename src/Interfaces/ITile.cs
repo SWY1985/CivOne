@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System.Collections.Generic;
 using CivOne.Enums;
 
 namespace CivOne.Interfaces
@@ -31,6 +32,7 @@ namespace CivOne.Interfaces
 		byte MiningCost { get; }
 		byte Borders { get; }
 		ITile GetBorderTile(Direction direction);
+		IEnumerable<ITile> GetBorderTiles();
 		Terrain GetBorderType(Direction direction);
 		bool Road { get; set; }
 		bool Irrigation { get; set; }
