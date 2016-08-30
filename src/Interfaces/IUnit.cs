@@ -24,6 +24,11 @@ namespace CivOne.Interfaces
 		byte Move { get; }
 		int X { get; set; }
 		int Y { get; set; }
+		bool Moving { get; }
+		int MoveFrame { get; }
+		int FromX { get; }
+		int FromY { get; }
+		void MoveUpdate();
 		byte Owner { get; set; }
 		byte Status { get; set; }
 		byte MovesLeft { get; }

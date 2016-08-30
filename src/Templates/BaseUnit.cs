@@ -21,6 +21,16 @@ namespace CivOne.Templates
 	{
 		private int _x, _y;
 
+		public bool Moving { get; private set; }
+		public int MoveFrame { get; private set; }
+		public int FromX { get; private set; }
+		public int FromY { get; private set; }
+		public void MoveUpdate()
+		{
+			MoveFrame++;
+			Moving = (MoveFrame < 8);
+		}
+
 		private static Picture[,] _unitCache = new Picture[28,8];
 		private static Picture[] _iconCache = new Picture[28];
 		public virtual Picture Icon
@@ -129,7 +139,12 @@ namespace CivOne.Templates
 			int toY = (Y + relY);
 
 			if (!MoveTargets.Any(t => t.X == toX && t.Y == toY)) return false;
-
+			
+			Moving = true;
+			MoveFrame = 0;
+			FromX = X;
+			FromY = Y;
+			
 			X += relX;
 			Y += relY;
 			MovesLeft--;

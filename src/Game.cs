@@ -179,6 +179,14 @@ namespace CivOne
 				return _units[_activeUnit];
 			}
 		}
+
+		public IUnit MovingUnit
+		{
+			get
+			{
+				return _units.FirstOrDefault(u => u.Moving);
+			}
+		}
 		
 		public static void CreateGame(int difficulty, int competition, ICivilization tribe, string leaderName = null, string tribeName = null, string tribeNamePlural = null)
 		{

@@ -76,6 +76,10 @@ namespace CivOne.Screens
 				_lastUnit = activeUnit;
 				_update = true;
 			}
+			else if (activeUnit != null && activeUnit.Moving)
+			{
+				_update = true;
+			}
 			else if (activeUnit != _lastUnit)
 			{
 				CenterOnUnit();
@@ -99,7 +103,7 @@ namespace CivOne.Screens
 					City city = Game.Instance.GetCity(t.Tile.X, t.Tile.Y);
 					if (city != null) continue;
 					
-					IUnit[] units = Game.Instance.GetUnits(t.Tile.X, t.Tile.Y);
+					IUnit[] units = Game.Instance.GetUnits(t.Tile.X, t.Tile.Y).Where(u => !u.Moving).ToArray();
 					if (units.Length == 0) continue;
 					
 					IUnit drawUnit = units.FirstOrDefault(u => u == Game.Instance.ActiveUnit);
@@ -109,12 +113,12 @@ namespace CivOne.Screens
 						// No active unit on this tile, show top unit
 						drawUnit = units[0];
 					}
-					else if ((gameTick % 4) >= 2)
+					else if ((gameTick % 4) >= 2 || drawUnit.Moving)
 					{
 						// Active unit on this tile, and blink status is off.
 						continue;
 					}
-					
+
 					AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position);
 					if (units.Length == 1) continue;
 					AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position.X - 1, t.Position.Y - 1);
@@ -142,6 +146,23 @@ namespace CivOne.Screens
 					int labelY = t.Position.Y + 16;
 					_canvas.DrawText(city.Name, 0, 5, labelX, labelY + 1, TextAlign.Left);
 					_canvas.DrawText(city.Name, 0, 11, labelX, labelY, TextAlign.Left);
+				}
+				
+				if (Game.Instance.MovingUnit != null)
+				{
+					IUnit movingUnit = Game.Instance.MovingUnit;
+					int relX = movingUnit.X - movingUnit.FromX;
+					int relY = movingUnit.Y - movingUnit.FromY;
+					while (relX < -1) relX += Map.WIDTH;
+					while (relX > 1) relX -= Map.WIDTH;
+
+					relX *= (movingUnit.MoveFrame * 2);
+					relY *= (movingUnit.MoveFrame * 2);
+					
+					movingUnit.MoveUpdate();
+					RenderTile tile = RenderTiles.First(t => t.Tile.X == movingUnit.FromX && t.Tile.Y == movingUnit.FromY);
+					AddLayer(movingUnit.GetUnit(movingUnit.Owner), tile.Position.X + relX, tile.Position.Y + relY);
+					return true;
 				}
 				
 				_update = false;
