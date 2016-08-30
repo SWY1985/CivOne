@@ -9,12 +9,18 @@
 
 using CivOne.Enums;
 using CivOne.Interfaces;
+using CivOne.Screens;
 using CivOne.Templates;
 
 namespace CivOne.Units
 {
 	internal class Settlers : BaseUnit
 	{
+		public void BuildCity()
+		{
+			Common.AddScreen(new CityName());
+		}
+
 		public Settlers() : base(4, 0, 1, 1)
 		{
 			Class = UnitClass.Land;

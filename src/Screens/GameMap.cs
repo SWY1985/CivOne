@@ -16,6 +16,7 @@ using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Templates;
+using CivOne.Units;
 
 namespace CivOne.Screens
 {
@@ -113,9 +114,9 @@ namespace CivOne.Screens
 						// No active unit on this tile, show top unit
 						drawUnit = units[0];
 					}
-					else if ((gameTick % 4) >= 2 || drawUnit.Moving)
+					else if (!Common.HasScreenType(typeof(Input)) && ((gameTick % 4) >= 2 || drawUnit.Moving))
 					{
-						// Active unit on this tile, and blink status is off.
+						// Active unit on this tile, and blink status is off, or unit is currently moving.
 						continue;
 					}
 
@@ -214,6 +215,13 @@ namespace CivOne.Screens
 			
 			switch (args.KeyChar)
 			{
+				case 'B':
+					if (Game.Instance.ActiveUnit is Settlers)
+					{
+						(Game.Instance.ActiveUnit as Settlers).BuildCity();
+						return true;
+					}
+					break;
 				case 'C':
 					if (Game.Instance.ActiveUnit == null) break;
 					CenterOnUnit();
