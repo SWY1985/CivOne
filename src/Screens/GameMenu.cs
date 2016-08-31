@@ -89,7 +89,7 @@ namespace CivOne.Screens
 		
 		public override bool HasUpdate(uint gameTick)
 		{
-			if (!_update) return false;
+			if (!_update) return true;
 			
 			int ww = MaxItemWidth + 17;
 			int hh = (Resources.Instance.GetFontHeight(0) * Items.Count) + 9;
