@@ -109,6 +109,8 @@ namespace CivOne.Screens
 		
 		private void MenuBarOrders(object sender, EventArgs args)
 		{
+			if (Game.Instance.ActiveUnit == null) return;
+
 			_gameMenu = new GameMenu(_canvas.Image.Palette.Entries);
 			_gameMenu.Items.Add(new GameMenu.Item("No Orders", "space"));
 			_gameMenu.Items.Add(new GameMenu.Item("Found New City", "b"));
@@ -123,6 +125,7 @@ namespace CivOne.Screens
 			_gameMenu.Items.Add(new GameMenu.Item("Disband Unit", "D"));
 			
 			_gameMenu.Items[0].Selected += (s, a) => Game.Instance.NextTurn();
+			_gameMenu.Items[1].Selected += (s, a) => Game.Instance.FoundCity();
 			_gameMenu.Items[10].Selected += (s, a) => Game.Instance.DisbandUnit(Game.Instance.ActiveUnit);
 			
 			_menuX = 72;
