@@ -32,5 +32,31 @@ namespace CivOne.Civilizations
 		{
 			get { return 7; }
 		}
+		
+		public string[] CityNames
+		{
+			get
+			{
+				return new string[]
+				{
+					"Delhi",
+					"Bombay",
+					"Madras",
+					"Bangalore",
+					"Calcutta",
+					"Lahore",
+					"Karachi",
+					"Kolhapur",
+					"Jaipur",
+					"Hyderbad",
+					"Bengal",
+					"Chittagong",
+					"Punjab",
+					"Dacca",
+					"Indus",
+					"Ganges"
+				};
+			}
+		}
 	}
 }

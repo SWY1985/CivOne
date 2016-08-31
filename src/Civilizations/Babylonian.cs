@@ -32,5 +32,31 @@ namespace CivOne.Civilizations
 		{
 			get { return 2; }
 		}
+		
+		public string[] CityNames
+		{
+			get
+			{
+				return new string[]
+				{
+					"Babylon",
+					"Sumer",
+					"Uruk",
+					"Ninevah",
+					"Ashur",
+					"Ellipi",
+					"Akkad",
+					"Eridu",
+					"Kish",
+					"Nippur",
+					"Shuruppak",
+					"Zariqum",
+					"Izibia",
+					"Nimrud",
+					"Arbela",
+					"Zamua"
+				};
+			}
+		}
 	}
 }

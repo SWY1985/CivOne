@@ -32,5 +32,31 @@ namespace CivOne.Civilizations
 		{
 			get { return 3; }
 		}
+		
+		public string[] CityNames
+		{
+			get
+			{
+				return new string[]
+				{
+					"Berlin",
+					"Leipzig",
+					"Hamburg",
+					"Bremen",
+					"Frankfurt",
+					"Bonn",
+					"Nuremberg",
+					"Cologne",
+					"Hannover",
+					"Munich",
+					"Stuttgart",
+					"Heidelberg",
+					"Salzburg",
+					"Konigsberg",
+					"Dortmond",
+					"Brandenburg"
+				};
+			}
+		}
 	}
 }

@@ -32,5 +32,31 @@ namespace CivOne.Civilizations
 		{
 			get { return 5; }
 		}
+		
+		public string[] CityNames
+		{
+			get
+			{
+				return new string[]
+				{
+					"Peking",
+					"Shanghai",
+					"Canton",
+					"Nanking",
+					"Tsingtao",
+					"Hangchow",
+					"Tientsin",
+					"Tatung",
+					"Macao",
+					"Anyang",
+					"Shantung",
+					"Chinan",
+					"Kaifeng",
+					"Ningpo",
+					"Paoting",
+					"Yangchow"
+				};
+			}
+		}
 	}
 }

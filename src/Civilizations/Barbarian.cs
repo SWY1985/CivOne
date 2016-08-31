@@ -32,5 +32,47 @@ namespace CivOne.Civilizations
 		{
 			get { return 0; }
 		}
+		
+		public string[] CityNames
+		{
+			get
+			{
+				return new string[]
+				{
+					"Mecca",
+					"Naples",
+					"Sidon",
+					"Tyre",
+					"Tarsus",
+					"Issus",
+					"Cunaxa",
+					"Cremona",
+					"Cannae",
+					"Capua",
+					"Turin",
+					"Genoa",
+					"Utica",
+					"Crete",
+					"Damascus",
+					"Verona",
+					"Salamis",
+					"Lisbon",
+					"Hamburg",
+					"Prague",
+					"Salzburg",
+					"Bergen",
+					"Venice",
+					"Milan",
+					"Ghent",
+					"Pisa",
+					"Cordoba",
+					"Seville",
+					"Dublin",
+					"Toronto",
+					"Melbourne",
+					"Sydney"
+				};
+			}
+		}
 	}
 }

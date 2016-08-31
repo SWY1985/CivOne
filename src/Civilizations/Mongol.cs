@@ -32,5 +32,31 @@ namespace CivOne.Civilizations
 		{
 			get { return 7; }
 		}
+		
+		public string[] CityNames
+		{
+			get
+			{
+				return new string[]
+				{
+					"Samarkand",
+					"Bokhara",
+					"Nishapur",
+					"Karakorum",
+					"Kashgar",
+					"Tabriz",
+					"Aleppo",
+					"Kabul",
+					"Ormuz",
+					"Basra",
+					"Khanbaryk",
+					"Khorasan",
+					"Shangtu",
+					"Kazan",
+					"Qyinsay",
+					"Kerman"
+				};
+			}
+		}
 	}
 }

@@ -32,5 +32,31 @@ namespace CivOne.Civilizations
 		{
 			get { return 4; }
 		}
+		
+		public string[] CityNames
+		{
+			get
+			{
+				return new string[]
+				{
+					"Tenochtitlan",
+					"Chiauhtia",
+					"Chapultapec",
+					"Coatepec",
+					"Ayontzinco",
+					"Itzapalapa",
+					"Itzapam",
+					"Mitxcoac",
+					"Tucubaya",
+					"Tecamac",
+					"Tepezinco",
+					"Ticoman",
+					"Tlaxcala",
+					"Xaltocan",
+					"Xicalango",
+					"Zumpanco"
+				};
+			}
+		}
 	}
 }
