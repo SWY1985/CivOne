@@ -22,6 +22,8 @@ namespace CivOne
 {
 	internal class Game
 	{
+		private readonly string[] _cityNames = Common.AllCityNames.ToArray();
+		private readonly bool[] _cityNameUsed = new bool[256];
 		private readonly int _difficulty, _competition;
 		private readonly Player[] _players;
 		private readonly List<City> _cities;
@@ -87,6 +89,50 @@ namespace CivOne
 				Common.AddScreen(new GameOver());
 			//
 			_hasUpdate = true;
+		}
+
+		private int GetCityIndex(ICivilization civilization)
+		{
+			// TODO: This should be a lot easier... let me think about it...
+
+			int indexFrom = Array.IndexOf(_cityNames, civilization.CityNames[0]); //_cityNames.IndexOf(civilization.CityNames[0]);
+			int indexTo = civilization.CityNames.Length + indexFrom;
+			for (int i = indexFrom; i < indexTo; i++)
+			{
+				if (_cityNameUsed[i]) continue;
+				return i;
+			}
+			
+			civilization = _players[0].Civilization;
+			indexFrom = Array.IndexOf(_cityNames, civilization.CityNames[0]);
+			indexTo = civilization.CityNames.Length + indexFrom;
+			for (int i = indexFrom; i < indexTo; i++)
+			{
+				if (_cityNameUsed[i]) continue;
+				return i;
+			}
+
+			for (int i = 0; i < _cityNames.Length; i++)
+			{
+				if (_cityNameUsed[i]) continue;
+				return i;
+			}
+
+			return 0;
+		}
+
+		public void BuildCity(IUnit unit)
+		{
+			if (unit.GetType() != typeof(Settlers)) return;
+
+			Player player = _players[unit.Owner];
+			ICivilization civilization = player.Civilization;
+			int index = GetCityIndex(civilization);
+			_cityNameUsed[index] = true;
+
+			string cityName = _cityNames[index];
+
+			Common.AddScreen(new CityName(cityName));
 		}
 		
 		public City GetCity(int x, int y)

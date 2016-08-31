@@ -46,7 +46,7 @@ namespace CivOne.Screens
 			Destroy();
 		}
 
-		public CityName()
+		public CityName(string cityName)
 		{
 			Cursor = MouseCursor.None;
 
@@ -58,7 +58,7 @@ namespace CivOne.Screens
 			_canvas.FillRectangle(5, 88, 95, 105, 14);
 			_canvas.FillRectangle(15, 89, 96, 103, 12);
 
-			_input = new Input(_canvas.Image.Palette.Entries, "Rome", 0, 5, 11, 90, 97, 101, 10, 12);
+			_input = new Input(_canvas.Image.Palette.Entries, cityName, 0, 5, 11, 90, 97, 101, 10, 12);
 			_input.Accept += CityName_Accept;
 			_input.Cancel += CityName_Cancel;
 		}
