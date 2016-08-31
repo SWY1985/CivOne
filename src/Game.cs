@@ -121,18 +121,31 @@ namespace CivOne
 			return 0;
 		}
 
-		public void BuildCity(IUnit unit)
+		public void BuildCity(string cityName = null)
 		{
-			if (unit.GetType() != typeof(Settlers)) return;
+			if (ActiveUnit.GetType() != typeof(Settlers)) return;
 
-			Player player = _players[unit.Owner];
-			ICivilization civilization = player.Civilization;
-			int index = GetCityIndex(civilization);
-			_cityNameUsed[index] = true;
+			if (cityName == null)
+			{
+				Player player = _players[ActiveUnit.Owner];
+				ICivilization civilization = player.Civilization;
+				int index = GetCityIndex(civilization);
+				_cityNameUsed[index] = true;
 
-			string cityName = _cityNames[index];
+				cityName = _cityNames[index];
+				Common.AddScreen(new CityName(cityName));
+				return;
+			}
 
-			Common.AddScreen(new CityName(cityName));
+			_cities.Add(new City()
+			{
+				X = (byte)ActiveUnit.X,
+				Y = (byte)ActiveUnit.Y,
+				Owner = ActiveUnit.Owner,
+				Name = cityName,
+				Size = 1
+			});
+			DisbandUnit(Game.Instance.ActiveUnit);
 		}
 		
 		public City GetCity(int x, int y)
