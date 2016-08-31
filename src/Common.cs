@@ -41,24 +41,6 @@ namespace CivOne
 			}
 		}
 
-		private static List<string> _availableCityNames;
-		internal static string[] AvailableCityNames
-		{
-			get
-			{
-				if (_availableCityNames == null)
-				{
-					_availableCityNames = new List<string>();
-					_availableCityNames.AddRange(AllCityNames);
-				}
-				if (_availableCityNames.Count > 0)
-				{
-					return _availableCityNames.ToArray();
-				}
-				return new string[] { AllCityNames.First() };
-			}
-		}
-
 		private static List<IScreen> _screens = new List<IScreen>();
 		internal static IScreen[] Screens
 		{

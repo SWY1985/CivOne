@@ -218,7 +218,7 @@ namespace CivOne.Screens
 				case 'B':
 					if (Game.Instance.ActiveUnit is Settlers)
 					{
-						(Game.Instance.ActiveUnit as Settlers).BuildCity();
+						Game.Instance.BuildCity(Game.Instance.ActiveUnit);
 						return true;
 					}
 					break;
