@@ -41,6 +41,8 @@ namespace CivOne.Screens
 		private void CityName_Cancel(object sender, EventArgs args)
 		{
 			if (sender.GetType() != typeof(Input)) return;
+			
+			Game.Instance.ActiveUnit.SkipTurn();
 
 			((Input)sender).Close();
 			Destroy();
