@@ -121,7 +121,7 @@ namespace CivOne
 			return 0;
 		}
 
-		public void BuildCity(string cityName = null)
+		public void FoundCity(string cityName = null)
 		{
 			if (ActiveUnit.GetType() != typeof(Settlers)) return;
 
