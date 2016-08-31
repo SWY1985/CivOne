@@ -32,7 +32,7 @@ namespace CivOne.Screens
 		{
 			if (sender.GetType() != typeof(Input)) return;
 
-			// TODO: Create city actions
+			Game.Instance.BuildCity(_input.Text);
 
 			((Input)sender).Close();
 			Destroy();
