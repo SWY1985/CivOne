@@ -32,5 +32,31 @@ namespace CivOne.Civilizations
 		{
 			get { return 1; }
 		}
+		
+		public string[] CityNames
+		{
+			get
+			{
+				return new string[]
+				{
+					"Rome",
+					"Caesarea",
+					"Carthage",
+					"Nicopolis",
+					"Byzantium",
+					"Brundisium",
+					"Syracuse",
+					"Antioch",
+					"Palmyra",
+					"Cyrene",
+					"Gordion",
+					"Tyrus",
+					"Jerusalem",
+					"Seleucia",
+					"Ravenna",
+					"Artaxata"
+				};
+			}
+		}
 	}
 }

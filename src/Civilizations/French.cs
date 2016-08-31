@@ -32,5 +32,31 @@ namespace CivOne.Civilizations
 		{
 			get { return 3; }
 		}
+		
+		public string[] CityNames
+		{
+			get
+			{
+				return new string[]
+				{
+					"Paris",
+					"Orleans",
+					"Lyons",
+					"Tours",
+					"Chartres",
+					"Bordeaux",
+					"Rouen",
+					"Avignon",
+					"Marseilles",
+					"Grenoble",
+					"Dijon",
+					"Amiens",
+					"Cherbourg",
+					"Poitiers",
+					"Toulouse",
+					"Bayonne"
+				};
+			}
+		}
 	}
 }

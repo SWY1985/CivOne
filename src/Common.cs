@@ -23,10 +23,42 @@ namespace CivOne
 		public static Random Random = new Random((int)DateTime.Now.Ticks);
 		
 		public static IAdvance[] Advances = Reflect.GetAdvances().ToArray();
-		public static ICivilization[] Civilizations = new ICivilization[] { new Barbarian(), new Roman(), new Babylonian(), new German(), new Egyptian(), new American(), new Greek(), new Indian(), new Russian(), new Zulu(), new French(), new Aztec(), new Chinese(), new English(), new Mongol() };
+		public static ICivilization[] Civilizations = new ICivilization[] { new Roman(), new Babylonian(), new German(), new Egyptian(), new American(), new Greek(), new Indian(), new Russian(), new Zulu(), new French(), new Aztec(), new Chinese(), new English(), new Mongol(), new Barbarian() };
 		public static byte[] ColourLight = new byte[] { 12, 15, 10, 9, 14, 11, 13, 7 };
 		public static byte[] ColourDark = new byte[] { 4, 7, 2, 1, 10, 3, 4, 8 };
 		
+		internal static IEnumerable<string> AllCityNames
+		{
+			get
+			{
+				foreach (ICivilization civilization in Civilizations)
+				{
+					foreach (string cityName in civilization.CityNames)
+					{
+						yield return cityName;
+					}
+				}
+			}
+		}
+
+		private static List<string> _availableCityNames;
+		internal static string[] AvailableCityNames
+		{
+			get
+			{
+				if (_availableCityNames == null)
+				{
+					_availableCityNames = new List<string>();
+					_availableCityNames.AddRange(AllCityNames);
+				}
+				if (_availableCityNames.Count > 0)
+				{
+					return _availableCityNames.ToArray();
+				}
+				return new string[] { AllCityNames.First() };
+			}
+		}
+
 		private static List<IScreen> _screens = new List<IScreen>();
 		internal static IScreen[] Screens
 		{

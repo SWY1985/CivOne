@@ -32,5 +32,31 @@ namespace CivOne.Civilizations
 		{
 			get { return 5; }
 		}
+		
+		public string[] CityNames
+		{
+			get
+			{
+				return new string[]
+				{
+					"Washington",
+					"New York",
+					"Boston",
+					"Philadelphia",
+					"Atlanta",
+					"Chicago",
+					"Buffalo",
+					"St. Louis",
+					"Detroit",
+					"New Orleans",
+					"Baltimore",
+					"Denver",
+					"Cincinnati",
+					"Dallas",
+					"Los Angeles",
+					"Las Vegas"
+				};
+			}
+		}
 	}
 }

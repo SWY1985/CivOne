@@ -32,5 +32,31 @@ namespace CivOne.Civilizations
 		{
 			get { return 6; }
 		}
+		
+		public string[] CityNames
+		{
+			get
+			{
+				return new string[]
+				{
+					"London",
+					"Coventry",
+					"Birmingham",
+					"Dover",
+					"Nottingham",
+					"York",
+					"Liverpool",
+					"Brighton",
+					"Oxford",
+					"Reading",
+					"Exeter",
+					"Cambridge",
+					"Hastings",
+					"Canterbury",
+					"Banbury",
+					"Newcastle"
+				};
+			}
+		}
 	}
 }

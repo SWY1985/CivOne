@@ -32,5 +32,31 @@ namespace CivOne.Civilizations
 		{
 			get { return 2; }
 		}
+		
+		public string[] CityNames
+		{
+			get
+			{
+				return new string[]
+				{
+					"Zimbabwe",
+					"Ulundi",
+					"Bapedi",
+					"Hlobane",
+					"Isandhlwala",
+					"Intombe",
+					"Mpondo",
+					"Ngome",
+					"Swazi",
+					"Tugela",
+					"Umtata",
+					"Umfolozi",
+					"Ibabanago",
+					"Isipezi",
+					"Amatikulu",
+					"Zunquin"
+				};
+			}
+		}
 	}
 }

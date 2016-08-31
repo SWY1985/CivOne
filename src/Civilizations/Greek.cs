@@ -32,5 +32,31 @@ namespace CivOne.Civilizations
 		{
 			get { return 6; }
 		}
+		
+		public string[] CityNames
+		{
+			get
+			{
+				return new string[]
+				{
+					"Athens",
+					"Sparta",
+					"Corinth",
+					"Delphi",
+					"Eretria",
+					"Pharsalos",
+					"Argos",
+					"Mycenae",
+					"Herakleia",
+					"Antioch",
+					"Ephesos",
+					"Rhodes",
+					"Knossos",
+					"Troy",
+					"Pergamon",
+					"Miletos"
+				};
+			}
+		}
 	}
 }

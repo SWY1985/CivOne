@@ -32,5 +32,31 @@ namespace CivOne.Civilizations
 		{
 			get { return 4; }
 		}
+		
+		public string[] CityNames
+		{
+			get
+			{
+				return new string[]
+				{
+					"Thebes",
+					"Memphis",
+					"Oryx",
+					"Heliopolis",
+					"Gaza",
+					"Alexandria",
+					"Byblos",
+					"Cairo",
+					"Coptos",
+					"Edfu",
+					"Pithom",
+					"Busirus",
+					"Athribus",
+					"Mendes",
+					"Tanis",
+					"Abydos"
+				};
+			}
+		}
 	}
 }

@@ -32,5 +32,31 @@ namespace CivOne.Civilizations
 		{
 			get { return 1; }
 		}
+		
+		public string[] CityNames
+		{
+			get
+			{
+				return new string[]
+				{
+					"Moscow",
+					"Leningrad",
+					"Kiev",
+					"Minsk",
+					"Smolensk",
+					"Odessa",
+					"Sevastopol",
+					"Tblisi",
+					"Sverdlovsk",
+					"Yakutsk",
+					"Vladivostok",
+					"Novograd",
+					"Krasnoyarsk",
+					"Riga",
+					"Rostov",
+					"Atrakhan"
+				};
+			}
+		}
 	}
 }
