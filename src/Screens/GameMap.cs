@@ -180,6 +180,17 @@ namespace CivOne.Screens
 			_y = Game.Instance.ActiveUnit.Y - 6;
 		}
 
+		private bool MoveTo(int relX, int relY)
+		{
+			if (Game.Instance.ActiveUnit == null)
+				return false;
+			
+			// TODO: Add CenterOnUnit() check here
+			// CenterOnUnit();
+			
+			return Game.Instance.ActiveUnit.MoveTo(relX, relY);
+		}
+
 		private bool KeyDownActiveUnit(KeyboardEventArgs args)
 		{
 			if (Game.Instance.ActiveUnit == null)
@@ -191,25 +202,25 @@ namespace CivOne.Screens
 					Game.Instance.ActiveUnit.SkipTurn();
 					return true;
 				case Key.NumPad1:
-					return Game.Instance.ActiveUnit.MoveTo(-1, 1);
+					return MoveTo(-1, 1);
 				case Key.NumPad2:
 				case Key.Down:
-					return Game.Instance.ActiveUnit.MoveTo(0, 1);
+					return MoveTo(0, 1);
 				case Key.NumPad3:
-					return Game.Instance.ActiveUnit.MoveTo(1, 1);
+					return MoveTo(1, 1);
 				case Key.NumPad4:
 				case Key.Left:
-					return Game.Instance.ActiveUnit.MoveTo(-1, 0);
+					return MoveTo(-1, 0);
 				case Key.NumPad6:
 				case Key.Right:
-					return Game.Instance.ActiveUnit.MoveTo(1, 0);
+					return MoveTo(1, 0);
 				case Key.NumPad7:
-					return Game.Instance.ActiveUnit.MoveTo(-1, -1);
+					return MoveTo(-1, -1);
 				case Key.NumPad8:
 				case Key.Up:
-					return Game.Instance.ActiveUnit.MoveTo(0, -1);
+					return MoveTo(0, -1);
 				case Key.NumPad9:
-					return Game.Instance.ActiveUnit.MoveTo(1, -1);
+					return MoveTo(1, -1);
 			}
 			
 			switch (args.KeyChar)
