@@ -20,6 +20,7 @@ namespace CivOne
 		private byte _framesPerSecond = 15;
 		private bool _fullScreen = false;
 		private bool _rightSideBar = false;
+		private int _scale = 2;
 		
 		internal string BinDirectory
 		{
@@ -119,11 +120,26 @@ namespace CivOne
 			}
 		}
 		
+		internal int Scale
+		{
+			get
+			{
+				return _scale;
+			}
+			set
+			{
+				if (value < 1 || value > 4) return;
+				_scale = value;
+				SetSetting("Scale", _scale.ToString());
+				Common.ReloadSettings = true;
+			}
+		}
+		
 		internal int ScaleX
 		{
 			get
 			{
-				return 2;
+				return _scale;
 			}
 		}
 		
@@ -131,7 +147,7 @@ namespace CivOne
 		{
 			get
 			{
-				return 2;
+				return _scale;
 			}
 		}
 		
@@ -197,18 +213,22 @@ namespace CivOne
 			byte framesPerSecond = _framesPerSecond;
 			bool fullScreen = _fullScreen;
 			bool rightSideBar = _rightSideBar;
+			int scale = _scale;
 			
 			// Read settings
 			Int32.TryParse(GetSetting("GraphicsMode"), out graphicsMode);
 			Byte.TryParse(GetSetting("FramesPerSecond"), out framesPerSecond);
 			fullScreen = (GetSetting("FullScreen") == "1");
 			rightSideBar = (GetSetting("SideBar") == "1");
-						
+			Int32.TryParse(GetSetting("Scale"), out scale);
+			
 			// Set settings
 			if (graphicsMode > 0 && graphicsMode < 3) _graphicsMode = (GraphicsMode)graphicsMode;
 			if (framesPerSecond > 5 && framesPerSecond < 61) _framesPerSecond = framesPerSecond;
 			_fullScreen = fullScreen;
 			_rightSideBar = rightSideBar;
+			if (scale < 1 || scale > 4) scale = 2;
+			_scale = scale;
 		}
 	}
 }

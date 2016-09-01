@@ -92,7 +92,7 @@ namespace CivOne.Screens
 		private void SettingsMenu(int activeItem = 0)
 		{
 			Settings settings = Settings.Instance; 
-			string graphicsMode, fullScreen, framesPerSecond, sideBar;
+			string graphicsMode, fullScreen, framesPerSecond, sideBar, scale;
 			switch (settings.GraphicsMode)
 			{
 				case GraphicsMode.Graphics256: graphicsMode = "256 colors"; break;
@@ -104,8 +104,9 @@ namespace CivOne.Screens
 			fullScreen = string.Format("Full Screen: {0}", settings.FullScreen ? "yes" : "no");
 			framesPerSecond = string.Format("Frames per second: {0}", settings.FramesPerSecond);
 			sideBar = string.Format("Side bar location: {0}", settings.RightSideBar ? "right" : "left");
+			scale = string.Format("Window scale: {0}x", settings.Scale);
 			
-			Menu menu = AddMenu("SETTINGS:", SettingsChoice, graphicsMode, fullScreen, framesPerSecond, sideBar, "Back");
+			Menu menu = AddMenu("SETTINGS:", SettingsChoice, graphicsMode, fullScreen, framesPerSecond, sideBar, scale, "Back");
 			menu.ActiveItem = activeItem;
 			Common.AddScreen(menu);
 		}
@@ -154,6 +155,13 @@ namespace CivOne.Screens
 			Common.AddScreen(menu);
 		}
 		
+		private void WindowScaleMenu()
+		{
+			Menu menu = AddMenu("WINDOW SCALE:", WindowScaleChoice, "1x", "2x", "3x", "4x", "Back");
+			menu.ActiveItem = Settings.Instance.Scale - 1;
+			Common.AddScreen(menu);
+		}
+		
 		private void MainChoice(object sender, EventArgs args)
 		{
 			int choice = (sender as Menu.Item).Value;
@@ -196,7 +204,10 @@ namespace CivOne.Screens
 				case 3: // Side bar
 					SideBarMenu();
 					break;
-				case 4: // Back
+				case 4: // Scale
+					WindowScaleMenu();
+					break;
+				case 5: // Back
 					MainMenu();
 					break;
 			}
@@ -257,6 +268,17 @@ namespace CivOne.Screens
 				case 1: // right
 					Settings.Instance.RightSideBar = true;
 					break;
+			}
+			CloseMenus();
+			SettingsMenu(3);
+		}
+		
+		private void WindowScaleChoice(object sender, EventArgs args)
+		{
+			int choice = (sender as Menu.Item).Value;
+			if (choice < 4)
+			{
+				Settings.Instance.Scale = (choice + 1);
 			}
 			CloseMenus();
 			SettingsMenu(3);
