@@ -12,13 +12,13 @@ using CivOne.GFX;
 
 namespace CivOne.Interfaces
 {
-	public interface IUnit : ICivilopedia
+	public interface IUnit : ICivilopedia, IProduction
 	{
 		IAdvance RequiredTech { get; }
 		IWonder RequiredWonder { get; }
 		IAdvance ObsoleteTech { get; }
 		UnitClass Class { get; }
-		byte Price { get; }
+		Unit Type { get; }
 		byte Attack { get; }
 		byte Defense { get; }
 		byte Move { get; }

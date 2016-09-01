@@ -12,11 +12,10 @@ using CivOne.GFX;
 
 namespace CivOne.Interfaces
 {
-	public interface IBuilding : ICivilopedia
+	public interface IBuilding : ICivilopedia, IProduction
 	{
 		byte Id { get; }
 		IAdvance RequiredTech { get; }
-		byte Price { get; }
 		byte Maintainance { get; }
 		Picture SmallIcon { get; }
 	}
