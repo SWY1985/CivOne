@@ -179,17 +179,16 @@ namespace CivOne.Screens
 			_x = Game.Instance.ActiveUnit.X - 8;
 			_y = Game.Instance.ActiveUnit.Y - 6;
 		}
-		
-		public override bool KeyDown(KeyboardEventArgs args)
+
+		private bool KeyDownActiveUnit(KeyboardEventArgs args)
 		{
+			if (Game.Instance.ActiveUnit == null)
+				return false;
+			
 			switch (args.Key)
 			{
 				case Key.Space:
-				case Key.Enter:
-					if (Game.Instance.ActiveUnit != null)
-						Game.Instance.ActiveUnit.SkipTurn();
-					else
-						Game.Instance.NextTurn();
+					Game.Instance.ActiveUnit.SkipTurn();
 					return true;
 				case Key.NumPad1:
 					return Game.Instance.ActiveUnit.MoveTo(-1, 1);
@@ -229,6 +228,24 @@ namespace CivOne.Screens
 				case 'D':
 					if (!args.Shift) break;
 					Game.Instance.DisbandUnit(Game.Instance.ActiveUnit);
+					return true;
+			}
+
+			return false;
+		}
+		
+		public override bool KeyDown(KeyboardEventArgs args)
+		{
+			if (Game.Instance.ActiveUnit != null)
+			{
+				return KeyDownActiveUnit(args);
+			}
+			
+			switch (args.Key)
+			{
+				case Key.Space:
+				case Key.Enter:
+					Game.Instance.NextTurn();
 					return true;
 			}
 			
