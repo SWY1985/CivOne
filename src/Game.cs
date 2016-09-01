@@ -75,6 +75,8 @@ namespace CivOne
 			//
 			foreach (IUnit unit in _units)
 				unit.NewTurn();
+			foreach (City city in _cities)
+				city.NewTurn();
 			while (_players[_currentPlayer] != HumanPlayer)
 			{
 				// Skip all AI players for now
@@ -195,6 +197,15 @@ namespace CivOne
 			unit.X = x;
 			unit.Y = y;
 			return unit;
+		}
+
+		public void CreateUnit(Unit type, int x, int y, byte owner)
+		{
+			IUnit unit = CreateUnit((Unit)type, x, y);
+			if (unit == null) return;
+
+			unit.Owner = owner;
+			_instance._units.Add(unit);
 		}
 		
 		public IUnit[] GetUnits(int x, int y)
