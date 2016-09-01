@@ -202,7 +202,7 @@ namespace CivOne
 			Int32.TryParse(GetSetting("GraphicsMode"), out graphicsMode);
 			Byte.TryParse(GetSetting("FramesPerSecond"), out framesPerSecond);
 			fullScreen = (GetSetting("FullScreen") == "1");
-			rightSideBar = (GetSetting("RightSideBar") == "1");
+			rightSideBar = (GetSetting("SideBar") == "1");
 						
 			// Set settings
 			if (graphicsMode > 0 && graphicsMode < 3) _graphicsMode = (GraphicsMode)graphicsMode;
