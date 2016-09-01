@@ -116,7 +116,7 @@ namespace CivOne.Screens
 					}
 					else if (!Common.HasScreenType(typeof(Input)) && ((gameTick % 4) >= 2 || drawUnit.Moving))
 					{
-						// Active unit on this tile, and blink status is off, or unit is currently moving.
+						// Active unit on this tile or unit is currently moving. Drawing happens later.
 						continue;
 					}
 
@@ -147,6 +147,31 @@ namespace CivOne.Screens
 					int labelY = t.Position.Y + 16;
 					_canvas.DrawText(city.Name, 0, 5, labelX, labelY + 1, TextAlign.Left);
 					_canvas.DrawText(city.Name, 0, 11, labelX, labelY, TextAlign.Left);
+				}
+				
+				foreach (RenderTile t in RenderTiles)
+				{
+					IUnit[] units = Game.Instance.GetUnits(t.Tile.X, t.Tile.Y).Where(u => !u.Moving).ToArray();
+					if (units.Length == 0) continue;
+					
+					IUnit drawUnit = units.FirstOrDefault(u => u == Game.Instance.ActiveUnit);
+					
+					if (drawUnit == null)
+					{
+						continue;
+					}
+
+					// Active unit on this tile
+					
+					if (!Common.HasScreenType(typeof(Input)) && ((gameTick % 4) >= 2 || drawUnit.Moving))
+					{
+						// Unit is currently moving or blink status is off. Do not draw unit.
+						continue;
+					}
+
+					AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position);
+					if (units.Length == 1) continue;
+					AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position.X - 1, t.Position.Y - 1);
 				}
 				
 				if (Game.Instance.MovingUnit != null)
