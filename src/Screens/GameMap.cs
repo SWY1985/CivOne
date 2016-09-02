@@ -218,7 +218,7 @@ namespace CivOne.Screens
 
 		private bool KeyDownActiveUnit(KeyboardEventArgs args)
 		{
-			if (Game.Instance.ActiveUnit == null)
+			if (Game.Instance.ActiveUnit == null || Game.Instance.ActiveUnit.Moving)
 				return false;
 			
 			switch (args.Key)
