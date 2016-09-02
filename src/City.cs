@@ -23,6 +23,19 @@ namespace CivOne
 		internal int Shields { get; private set; }
 		internal IProduction CurrentProduction { get; private set; }
 
+		public int Population
+		{
+			get
+			{
+				int output = 0;
+				for (int i = 1; i <= Size; i++)
+				{
+					output += 10000 * i;
+				}
+				return output;
+			}
+		}
+
 		internal void NewTurn()
 		{
 			// Temporary code
