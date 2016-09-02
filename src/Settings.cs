@@ -21,6 +21,7 @@ namespace CivOne
 		private bool _fullScreen = false;
 		private bool _rightSideBar = false;
 		private int _scale = 2;
+		private bool _revealWorld = false;
 		
 		internal string BinDirectory
 		{
@@ -135,6 +136,20 @@ namespace CivOne
 			}
 		}
 		
+		internal bool RevealWorld
+		{
+			get
+			{
+				return _revealWorld;
+			}
+			set
+			{
+				_revealWorld = value;
+				SetSetting("RevealWorld", _revealWorld ? "1" : "0");
+				Common.ReloadSettings = true;
+			}
+		}
+		
 		internal int ScaleX
 		{
 			get
@@ -214,6 +229,7 @@ namespace CivOne
 			bool fullScreen = _fullScreen;
 			bool rightSideBar = _rightSideBar;
 			int scale = _scale;
+			bool revealWorld = false;
 			
 			// Read settings
 			Int32.TryParse(GetSetting("GraphicsMode"), out graphicsMode);
@@ -221,6 +237,7 @@ namespace CivOne
 			fullScreen = (GetSetting("FullScreen") == "1");
 			rightSideBar = (GetSetting("SideBar") == "1");
 			Int32.TryParse(GetSetting("Scale"), out scale);
+			revealWorld = (GetSetting("RevealWorld") == "1");
 			
 			// Set settings
 			if (graphicsMode > 0 && graphicsMode < 3) _graphicsMode = (GraphicsMode)graphicsMode;
@@ -229,6 +246,7 @@ namespace CivOne
 			_rightSideBar = rightSideBar;
 			if (scale < 1 || scale > 4) scale = 2;
 			_scale = scale;
+			_revealWorld = revealWorld;
 		}
 	}
 }
