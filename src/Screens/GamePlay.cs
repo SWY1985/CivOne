@@ -56,6 +56,41 @@ namespace CivOne.Screens
 			MenuCancel(sender, args);
 		}
 		
+		private void MenuRevolution()
+		{
+			_menuLocation = new Point(64, 80);
+			_menuGraphics = new Picture(236, 33);
+			_menuGraphics.FillLayerTile(_menuBackground);
+			//_menuGraphics.AddBorder(5, 5, 0, 0, 236, 33);
+			_menuGraphics.AddBorder(15, 8, 0, 0, 236, 33);
+			_menuGraphics.DrawText("Are you sure you want a REVOLUTION?", 0, 15, 5, 5);
+			//_menuGraphics.DrawText("want to Quit?", 0, 15, 4, 12);
+			
+			Bitmap background = (Bitmap)_menuGraphics.GetPart(3, 12, 228, 16).Clone();
+			Picture.ReplaceColours(background, new byte[] { 7, 22 }, new byte[] { 11, 3 });
+
+			Menu menu = new Menu(Canvas.Image.Palette.Entries, background)
+			{
+				X = 67,
+				Y = 92,
+				Width = 227,
+				ActiveColour = 11,
+				TextColour = 5,
+				FontId = 0
+			};
+			Menu.Item menuItem;
+			int i = 0;
+			foreach (string choice in new [] { "_No, thanks.", "_Yes, we need a new government." })
+			{
+				menu.Items.Add(menuItem = new Menu.Item(choice, i++));
+				menuItem.Selected += MenuQuitChoice;
+			}
+			menu.MissClick += MenuCancel;
+			menu.Cancel += MenuCancel;
+			Menus.Add(menu);
+			Common.AddScreen(menu);
+		}
+		
 		private void MenuQuit()
 		{
 			_menuLocation = new Point(101, 81);
@@ -103,6 +138,7 @@ namespace CivOne.Screens
 			_gameMenu.Items.Add(new GameMenu.Item("Retire"));
 			_gameMenu.Items.Add(new GameMenu.Item("QUIT to DOS"));
 			
+			_gameMenu.Items[5].Selected += (s, a) => MenuRevolution();
 			_gameMenu.Items[8].Selected += (s, a) => MenuQuit();
 			
 			_menuX = 16;
