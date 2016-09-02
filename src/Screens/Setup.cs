@@ -92,7 +92,7 @@ namespace CivOne.Screens
 		private void SettingsMenu(int activeItem = 0)
 		{
 			Settings settings = Settings.Instance; 
-			string graphicsMode, fullScreen, framesPerSecond, sideBar, scale;
+			string graphicsMode, fullScreen, framesPerSecond, sideBar, scale, revealWorld;
 			switch (settings.GraphicsMode)
 			{
 				case GraphicsMode.Graphics256: graphicsMode = "256 colors"; break;
@@ -105,8 +105,9 @@ namespace CivOne.Screens
 			framesPerSecond = string.Format("Frames per second: {0}", settings.FramesPerSecond);
 			sideBar = string.Format("Side bar location: {0}", settings.RightSideBar ? "right" : "left");
 			scale = string.Format("Window scale: {0}x", settings.Scale);
+			revealWorld = string.Format("Reveal World: {0}", settings.RevealWorld ? "yes" : "no");
 			
-			Menu menu = AddMenu("SETTINGS:", SettingsChoice, graphicsMode, fullScreen, framesPerSecond, sideBar, scale, "Back");
+			Menu menu = AddMenu("SETTINGS:", SettingsChoice, graphicsMode, fullScreen, framesPerSecond, sideBar, scale, revealWorld, "Back");
 			menu.ActiveItem = activeItem;
 			Common.AddScreen(menu);
 		}
@@ -162,6 +163,13 @@ namespace CivOne.Screens
 			Common.AddScreen(menu);
 		}
 		
+		private void RevealWorldMenu()
+		{
+			Menu menu = AddMenu("REVEAL WORLD:", RevealWorldChoice, "No (default)", "Yes", "Back");
+			menu.ActiveItem = Settings.Instance.RevealWorld ? 1 : 0;
+			Common.AddScreen(menu);
+		}
+		
 		private void MainChoice(object sender, EventArgs args)
 		{
 			int choice = (sender as Menu.Item).Value;
@@ -207,7 +215,10 @@ namespace CivOne.Screens
 				case 4: // Scale
 					WindowScaleMenu();
 					break;
-				case 5: // Back
+				case 5: // Reveal World
+					RevealWorldMenu();
+					break;
+				case 6: // Back
 					MainMenu();
 					break;
 			}
@@ -282,6 +293,22 @@ namespace CivOne.Screens
 			}
 			CloseMenus();
 			SettingsMenu(3);
+		}
+		
+		private void RevealWorldChoice(object sender, EventArgs args)
+		{
+			int choice = (sender as Menu.Item).Value;
+			switch (choice)
+			{
+				case 0: // no
+					Settings.Instance.RevealWorld = false;
+					break;
+				case 1: // yes
+					Settings.Instance.RevealWorld = true;
+					break;
+			}
+			CloseMenus();
+			SettingsMenu(1);
 		}
 		
 		public Setup()
