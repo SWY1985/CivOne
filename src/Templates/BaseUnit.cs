@@ -28,7 +28,10 @@ namespace CivOne.Templates
 		public void MoveUpdate()
 		{
 			MoveFrame++;
-			Moving = (MoveFrame < 8);
+			if (!(Moving = (MoveFrame < 8)))
+			{
+				MovesLeft--;
+			}
 		}
 
 		private static Picture[,] _unitCache = new Picture[28,8];
@@ -135,6 +138,8 @@ namespace CivOne.Templates
 
 		public virtual bool MoveTo(int relX, int relY)
 		{
+			if (Moving) return false;
+
 			int toX = (X + relX);
 			int toY = (Y + relY);
 
@@ -147,7 +152,6 @@ namespace CivOne.Templates
 			
 			X += relX;
 			Y += relY;
-			MovesLeft--;
 			return true;
 		}
 		
