@@ -15,7 +15,7 @@ using CivOne.Templates;
 
 namespace CivOne.Screens
 {
-	internal class CityHeader : BaseScreen
+	internal class CityResources : BaseScreen
 	{
 		private readonly City _city;
 
@@ -28,9 +28,10 @@ namespace CivOne.Screens
 			if (_update || (gameTick % 2 == 0))
 			{
 				_canvas.FillLayerTile(_background);
-				_canvas.AddBorder(1, 1, 0, 0, 207, 21);
-				_canvas.FillRectangle(0, 207, 0, 1, 21);
-				_canvas.DrawText($"{_city.Name} (Pop: {_city.Population:0,000})", 1, 17, 104, 1, TextAlign.Center);
+				_canvas.AddBorder(1, 1, 0, 0, 123, 43);
+				_canvas.FillRectangle(1, 1, 1, 121, 8);
+				_canvas.FillRectangle(0, 123, 0, 1, 43);
+				_canvas.DrawText($"City Resources", 1, 17, 6, 2, TextAlign.Left);
 				
 				_update = false;
 				return true;
@@ -43,12 +44,12 @@ namespace CivOne.Screens
 			Destroy();
 		}
 
-		public CityHeader(City city, Bitmap background)
+		public CityResources(City city, Bitmap background)
 		{
 			_city = city;
 			_background = background;
 
-			_canvas = new Picture(208, 21, background.Palette.Entries);
+			_canvas = new Picture(124, 43, background.Palette.Entries);
 		}
 	}
 }
