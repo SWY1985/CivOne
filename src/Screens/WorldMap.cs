@@ -45,6 +45,12 @@ namespace CivOne.Screens
 			for (int x = 0; x < Map.WIDTH; x++)
 			for (int y = 0; y < Map.HEIGHT; y++)
 			{
+				if (!Settings.Instance.RevealWorld && !Game.Instance.HumanPlayer.Visible(x, y))
+				{
+					_canvas.FillRectangle(5, (x * 4), (y * 4), 4, 4);
+					continue;
+				}
+
 				City city = null;
 				IUnit[] units;
 				ITile tile = Map.Instance.GetTile(x, y);
