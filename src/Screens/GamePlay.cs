@@ -64,7 +64,11 @@ namespace CivOne.Screens
 			_menuGraphics.AddBorder(15, 8, 0, 0, 104, 39);
 			_menuGraphics.DrawText("Are you sure you", 0, 15, 4, 4);
 			_menuGraphics.DrawText("want to Quit?", 0, 15, 4, 12);
-			Menu menu = new Menu(Canvas.Image.Palette.Entries)
+			
+			Bitmap background = (Bitmap)_menuGraphics.GetPart(2, 19, 100, 16).Clone();
+			Picture.ReplaceColours(background, new byte[] { 7, 22 }, new byte[] { 11, 3 });
+
+			Menu menu = new Menu(Canvas.Image.Palette.Entries, background)
 			{
 				X = 103,
 				Y = 100,

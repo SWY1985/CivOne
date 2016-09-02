@@ -39,6 +39,8 @@ namespace CivOne.Screens
 			}
 		}
 		
+		private readonly Picture _background;
+		
 		public event EventHandler Cancel;
 		public event EventHandler MissClick;
 		
@@ -86,8 +88,18 @@ namespace CivOne.Screens
 				{
 					_canvas.DrawText(Title, FontId, TitleColour, X + IndentTitle, Y + 1);
 					offsetY = fontHeight;
-				}				
-				if (_activeItem >= 0) _canvas.FillRectangle(ActiveColour, X, yy + offsetY, Width, fontHeight);
+				}
+				if (_activeItem >= 0)
+				{
+					if (_background == null)
+					{
+						_canvas.FillRectangle(ActiveColour, X, yy + offsetY, Width, fontHeight);
+					}
+					else
+					{
+						_canvas.AddLayer(_background.GetPart(0, (_activeItem * fontHeight) + offsetY, Width, fontHeight), X, yy + offsetY);
+					}
+				}
 				for (int i = 0; i < Items.Count; i++)
 				{
 					yy = Y + (i * fontHeight) + offsetY;
@@ -180,8 +192,13 @@ namespace CivOne.Screens
 			Destroy();
 		}
 		
-		public Menu(Color[] colours)
+		public Menu(Color[] colours, Bitmap background = null)
 		{
+			if (background != null)
+			{
+				_background = new Picture(background);
+			}
+
 			Cursor = MouseCursor.Pointer;
 			IndentTitle = 8;
 			
