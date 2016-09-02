@@ -296,6 +296,8 @@ namespace CivOne.Screens
 			int x = (int)Math.Floor((float)args.X / 16);
 			int y = (int)Math.Floor((float)args.Y / 16);
 			
+			City city = Game.Instance.GetCity(_x + x, _y + y);
+			
 			if ((args.Buttons & MouseButton.Right) > 0)
 			{
 				int xx = _x + x;
@@ -314,9 +316,9 @@ namespace CivOne.Screens
 					MoveTo(relX, relY);
 					_update = true;
 					return true;
-				} 
+				}
 
-				if (Game.Instance.GetCity(_x + x, _y + y) == null)
+				if (city == null)
 				{
 					Common.AddScreen(new Civilopedia(Map.Instance.GetTile(_x + x, _y + y)));
 				}
@@ -330,6 +332,11 @@ namespace CivOne.Screens
 				while (_y < 0) _y++;
 				while (_y + 12 > Map.HEIGHT) _y--;
 				_update = true;
+
+				if (city != null)
+				{
+					Common.AddScreen(new CityManager(city));
+				}
 			}
 			return _update;
 		}
