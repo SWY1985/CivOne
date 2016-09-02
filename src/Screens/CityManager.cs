@@ -19,12 +19,15 @@ namespace CivOne.Screens
 	internal class CityManager : BaseScreen
 	{
 		private readonly City _city;
-		
+
 		private readonly Bitmap _background;
 
 		private readonly CityHeader _cityHeader;
 		private readonly CityResources _cityResources;
 		private readonly CityUnits _cityUnits;
+		private readonly CityMap _cityMap;
+		private readonly CityBuildings _cityBuildings;
+		private readonly CityFoodStorage _cityFoodStorage;
 		
 		private bool _update = true;
 		private bool _redraw = false;
@@ -47,10 +50,16 @@ namespace CivOne.Screens
 			if (_cityHeader.HasUpdate(gameTick)) _update = true;
 			if (_cityResources.HasUpdate(gameTick)) _update = true;
 			if (_cityUnits.HasUpdate(gameTick)) _update = true;
+			if (_cityMap.HasUpdate(gameTick)) _update = true;
+			if (_cityBuildings.HasUpdate(gameTick)) _update = true;
+			if (_cityFoodStorage.HasUpdate(gameTick)) _update = true;
 			
 			DrawLayer(_cityHeader, gameTick, 2, 1);
 			DrawLayer(_cityResources, gameTick, 2, 23);
 			DrawLayer(_cityUnits, gameTick, 2, 67);
+			DrawLayer(_cityMap, gameTick, 127, 23);
+			DrawLayer(_cityBuildings, gameTick, 211, 1);
+			DrawLayer(_cityFoodStorage, gameTick, 2, 106);
 			
 			if (_update)
 			{
@@ -88,6 +97,9 @@ namespace CivOne.Screens
 			_cityHeader = new CityHeader(_city, _background);
 			_cityResources = new CityResources(_city, _background);
 			_cityUnits = new CityUnits(_city, _background);
+			_cityMap = new CityMap(_city, _background);
+			_cityBuildings = new CityBuildings(_city, _background);
+			_cityFoodStorage = new CityFoodStorage(_city, _background);
 		}
 	}
 }
