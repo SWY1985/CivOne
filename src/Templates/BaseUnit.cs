@@ -31,6 +31,14 @@ namespace CivOne.Templates
 			if (!(Moving = (MoveFrame < 8)))
 			{
 				MovesLeft--;
+				if (Map.Instance[_x, _y].Hut)
+				{
+					Map.Instance[_x, _y].Hut = false;
+					if (Class == Class.Land)
+					{
+						// TODO: Tribal hut action
+					}
+				}
 			}
 		}
 
