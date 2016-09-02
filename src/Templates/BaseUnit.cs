@@ -112,6 +112,7 @@ namespace CivOne.Templates
 				int val = value;
 				while (val < 0) val += Map.WIDTH;
 				while (val >= Map.WIDTH) val -= Map.WIDTH;
+				if (_x == -1 && _y != -1 && value != -1) Explore();
 				_x = val;
 			}
 		}
@@ -124,6 +125,7 @@ namespace CivOne.Templates
 			set
 			{
 				if (value < 0 || value >= Map.HEIGHT) return;
+				if (_y == -1 && _x != -1 && value != -1) Explore();
 				_y = value;
 			}
 		}
@@ -134,6 +136,7 @@ namespace CivOne.Templates
 		public virtual void NewTurn()
 		{
 			MovesLeft = Move;
+			Explore();
 		}
 
 		public virtual bool MoveTo(int relX, int relY)
@@ -152,6 +155,7 @@ namespace CivOne.Templates
 			
 			X += relX;
 			Y += relY;
+			Explore();
 			return true;
 		}
 		
@@ -208,6 +212,14 @@ namespace CivOne.Templates
 			{
 				return Map.Instance.GetTile(X, Y).GetBorderTiles().Where(t => ValidMoveTarget(t));
 			}
+		}
+
+		public void Explore()
+		{
+			if (Game.Instance == null) return;
+			Player player = Game.Instance.GetPlayer(Owner);
+			if (player == null) return;
+			player.Explore(X, Y);
 		}
 		
 		protected BaseUnit(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1)

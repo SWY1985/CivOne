@@ -24,6 +24,7 @@ namespace CivOne.Screens
 	{
 		private struct RenderTile
 		{
+			public bool Visible;
 			public int X, Y;
 			public ITile Tile;
 			public Bitmap Image
@@ -60,6 +61,7 @@ namespace CivOne.Screens
 					
 					yield return new RenderTile
 					{
+						Visible = Game.Instance.HumanPlayer.Visible(tx, ty),
 						X = x,
 						Y = y,
 						Tile = Map.Instance.GetTile(tx, ty)
@@ -96,11 +98,22 @@ namespace CivOne.Screens
 				_canvas = new Picture(240, 192, _palette);
 				foreach (RenderTile t in RenderTiles)
 				{
+					if (!t.Visible)
+					{
+						_canvas.FillRectangle(5, t.X * 16, t.Y * 16, 16, 16);
+						continue;
+					}
 					AddLayer(t.Image, t.Position);
+					if (!Game.Instance.HumanPlayer.Visible(t.Tile.X - 1, t.Tile.Y)) AddLayer(Resources.Instance.GetFog(Direction.West), t.Position);
+					if (!Game.Instance.HumanPlayer.Visible(t.Tile.X, t.Tile.Y - 1)) AddLayer(Resources.Instance.GetFog(Direction.North), t.Position);
+					if (!Game.Instance.HumanPlayer.Visible(t.Tile.X + 1, t.Tile.Y)) AddLayer(Resources.Instance.GetFog(Direction.East), t.Position);
+					if (!Game.Instance.HumanPlayer.Visible(t.Tile.X, t.Tile.Y + 1)) AddLayer(Resources.Instance.GetFog(Direction.South), t.Position);
 				}
 				
 				foreach (RenderTile t in RenderTiles)
 				{
+					if (!t.Visible) continue;
+
 					City city = Game.Instance.GetCity(t.Tile.X, t.Tile.Y);
 					if (city != null) continue;
 					
@@ -127,6 +140,8 @@ namespace CivOne.Screens
 				
 				foreach (RenderTile t in RenderTiles.Reverse())
 				{
+					if (!t.Visible) continue;
+
 					City city = Game.Instance.GetCity(t.Tile.X, t.Tile.Y);
 					if (city == null) continue;
 					
@@ -151,6 +166,8 @@ namespace CivOne.Screens
 				
 				foreach (RenderTile t in RenderTiles)
 				{
+					if (!t.Visible) continue;
+
 					IUnit[] units = Game.Instance.GetUnits(t.Tile.X, t.Tile.Y).Where(u => !u.Moving).ToArray();
 					if (units.Length == 0) continue;
 					

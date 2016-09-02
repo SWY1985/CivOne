@@ -68,6 +68,13 @@ namespace CivOne
 			}
 			return 0;
 		}
+
+		internal Player GetPlayer(byte number)
+		{
+			if (_players.Length < number)
+				return null;
+			return _players[number];
+		}
 		
 		public void NextTurn()
 		{
@@ -266,6 +273,11 @@ namespace CivOne
 				return;
 			}
 			_instance = new Game(difficulty, competition, tribe, leaderName, tribeName, tribeNamePlural);
+			
+			foreach (IUnit unit in _instance._units)
+			{
+				unit.Explore();
+			}
 		}
 		
 		public static void LoadGame(string sveFile, string mapFile)

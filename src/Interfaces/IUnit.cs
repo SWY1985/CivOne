@@ -34,6 +34,7 @@ namespace CivOne.Interfaces
 		byte MovesLeft { get; }
 		void NewTurn();
 		void SkipTurn();
+		void Explore();
 		bool MoveTo(int relX, int relY);
 		Picture GetUnit(byte colour);
 	}

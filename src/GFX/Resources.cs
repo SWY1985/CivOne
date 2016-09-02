@@ -23,6 +23,7 @@ namespace CivOne.GFX
 		private readonly Dictionary<string, Picture> _cache = new Dictionary<string, Picture>();
 		private readonly Dictionary<string, Bitmap> _textCache = new Dictionary<string, Bitmap>();
 		private readonly List<Fontset> _fonts = new List<Fontset>();
+		private readonly Dictionary<Direction, Bitmap> _fog = new Dictionary<Direction, Bitmap>();
 		
 		internal void ClearTextCache()
 		{
@@ -221,6 +222,12 @@ namespace CivOne.GFX
 			}
 			return TileResources.GetTile256(tile);
 		}
+
+		public Bitmap GetFog(Direction direction)
+		{
+			if (!_fog.ContainsKey(direction)) return null;
+			return _fog[direction];
+		}
 		
 		private static Resources _instance;
 		public static Resources Instance
@@ -238,6 +245,10 @@ namespace CivOne.GFX
 		private Resources()
 		{
 			LoadFonts();
+			_fog.Add(Direction.West, (Bitmap)GetPart("SP257", 128, 128, 16, 16).Clone());
+			_fog.Add(Direction.South, (Bitmap)GetPart("SP257", 112, 128, 16, 16).Clone());
+			_fog.Add(Direction.East, (Bitmap)GetPart("SP257", 96, 128, 16, 16).Clone());
+			_fog.Add(Direction.North, (Bitmap)GetPart("SP257", 80, 128, 16, 16).Clone());
 		}
 	}
 }
