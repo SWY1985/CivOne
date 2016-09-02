@@ -34,7 +34,7 @@ namespace CivOne.Templates
 				if (Map.Instance[_x, _y].Hut)
 				{
 					Map.Instance[_x, _y].Hut = false;
-					if (Class == Class.Land)
+					if (Class == UnitClass.Land)
 					{
 						// TODO: Tribal hut action
 					}
