@@ -54,6 +54,16 @@ namespace CivOne
 			
 			return area;
 		}
+
+		public IEnumerable<ITile> QueryMapPart(int x, int y, int width, int height)
+		{
+			ITile[,] area = GetMapPart(x, y, width, height);
+			for (int yy = 0; yy < height; yy++)
+			for (int xx = 0; xx < width; xx++)
+			{
+				yield return area[xx, yy];
+			}
+		}
 		
 		public ITile GetTile(int x, int y)
 		{

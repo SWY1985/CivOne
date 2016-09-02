@@ -210,8 +210,11 @@ namespace CivOne.Screens
 			if (Game.Instance.ActiveUnit == null)
 				return false;
 			
-			// TODO: Add CenterOnUnit() check here
-			// CenterOnUnit();
+			if (!Map.Instance.QueryMapPart(_x + 1, _y + 1, 13, 10).Any(t => t.X == Game.Instance.ActiveUnit.X + relX && t.Y == Game.Instance.ActiveUnit.Y + relY))
+			{
+				// The unit is moving near the edge of the on screen map, center on the unit before moving.
+				CenterOnUnit();
+			}
 			
 			return Game.Instance.ActiveUnit.MoveTo(relX, relY);
 		}
