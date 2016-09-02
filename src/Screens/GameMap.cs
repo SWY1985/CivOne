@@ -298,7 +298,24 @@ namespace CivOne.Screens
 			
 			if ((args.Buttons & MouseButton.Right) > 0)
 			{
+				int xx = _x + x;
+				int yy = _y + y;
+				while (xx  < 0) xx += Map.WIDTH;
+				while (xx  >= Map.WIDTH) xx -= Map.WIDTH;
+
 				Console.WriteLine(_x.ToString() + "-" + _y.ToString());
+				if (Game.Instance.ActiveUnit != null && (Game.Instance.ActiveUnit as BaseUnit).MoveTargets.Any(t => t.X == xx && t.Y == yy))
+				{
+					int relX = xx - Game.Instance.ActiveUnit.X;
+					int relY = yy - Game.Instance.ActiveUnit.Y;
+					if (relX < -1) relX = 1;
+					if (relY > 1) relY = -1; 
+
+					MoveTo(relX, relY);
+					_update = true;
+					return true;
+				} 
+
 				if (Game.Instance.GetCity(_x + x, _y + y) == null)
 				{
 					Common.AddScreen(new Civilopedia(Map.Instance.GetTile(_x + x, _y + y)));
