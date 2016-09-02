@@ -19,9 +19,12 @@ namespace CivOne.Screens
 	internal class CityManager : BaseScreen
 	{
 		private readonly City _city;
+		
+		private readonly Bitmap _background;
 
 		private readonly CityHeader _cityHeader;
-		private readonly Bitmap _background;
+		private readonly CityResources _cityResources;
+		private readonly CityUnits _cityUnits;
 		
 		private bool _update = true;
 		private bool _redraw = false;
@@ -42,8 +45,12 @@ namespace CivOne.Screens
 		public override bool HasUpdate(uint gameTick)
 		{
 			if (_cityHeader.HasUpdate(gameTick)) _update = true;
+			if (_cityResources.HasUpdate(gameTick)) _update = true;
+			if (_cityUnits.HasUpdate(gameTick)) _update = true;
 			
 			DrawLayer(_cityHeader, gameTick, 2, 1);
+			DrawLayer(_cityResources, gameTick, 2, 23);
+			DrawLayer(_cityUnits, gameTick, 2, 67);
 			
 			if (_update)
 			{
@@ -79,6 +86,8 @@ namespace CivOne.Screens
 			_canvas.FillRectangle(5, 0, 0, 320, 200);
 			
 			_cityHeader = new CityHeader(_city, _background);
+			_cityResources = new CityResources(_city, _background);
+			_cityUnits = new CityUnits(_city, _background);
 		}
 	}
 }
