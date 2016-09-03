@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using CivOne.Enums;
 using CivOne.Interfaces;
 
 namespace CivOne
@@ -94,6 +95,18 @@ namespace CivOne
 			while (x < 0) x += Map.WIDTH;
 			while (x >= Map.WIDTH) x -= Map.WIDTH;
 			return _visible[x, y];
+		}
+
+		public bool Visible(ITile tile)
+		{
+			if (tile == null) return false;
+			return Visible(tile.X, tile.Y);
+		}
+
+		public bool Visible(ITile tile, Direction direction)
+		{
+			if (tile == null) return false;
+			return Visible(tile.GetBorderTile(direction));
 		}
 		
 		public Player(ICivilization civilization, string customLeaderName = null, string customTribeName = null, string customTribeNamePlural = null)

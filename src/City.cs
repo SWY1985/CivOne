@@ -36,6 +36,24 @@ namespace CivOne
 			}
 		}
 
+		public ITile[,] CityRadius
+		{
+			get
+			{
+				Player player = Game.Instance.GetPlayer(Owner);
+				ITile[,] tiles = Map.Instance.GetMapPart(X - 2, Y - 2, 5, 5);
+				for (int xx = 0; xx < 5; xx++)
+				for (int yy = 0; yy < 5; yy++)
+				{
+					ITile tile = tiles[xx, yy];
+					if (tile == null) continue;
+					if ((xx == 0 || xx == 4) && (yy == 0 || yy == 4)) tiles[xx, yy] = null;
+					if (!player.Visible(tile)) tiles[xx, yy] = null;
+				}
+				return tiles;
+			}
+		}
+
 		internal void NewTurn()
 		{
 			// Temporary code
