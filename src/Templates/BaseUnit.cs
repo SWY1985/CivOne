@@ -14,6 +14,7 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
+using CivOne.Screens;
 
 namespace CivOne.Templates
 {
@@ -37,6 +38,12 @@ namespace CivOne.Templates
 					if (Class == UnitClass.Land)
 					{
 						// TODO: Tribal hut action
+						// Tribal hut outcome is described here: http://forums.civfanatics.com/showthread.php?t=510312
+						if (Game.Instance.GetPlayer(Owner) == Game.Instance.HumanPlayer)
+						{
+							Common.AddScreen(new TribalHut("You have discovered", "valuable metal deposits", "worth 50$"));
+						}
+						Game.Instance.GetPlayer(Owner).Gold += 50;
 					}
 				}
 			}
