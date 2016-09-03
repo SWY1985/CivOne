@@ -61,10 +61,8 @@ namespace CivOne.Screens
 			_menuLocation = new Point(64, 80);
 			_menuGraphics = new Picture(236, 33);
 			_menuGraphics.FillLayerTile(_menuBackground);
-			//_menuGraphics.AddBorder(5, 5, 0, 0, 236, 33);
 			_menuGraphics.AddBorder(15, 8, 0, 0, 236, 33);
 			_menuGraphics.DrawText("Are you sure you want a REVOLUTION?", 0, 15, 5, 5);
-			//_menuGraphics.DrawText("want to Quit?", 0, 15, 4, 12);
 			
 			Bitmap background = (Bitmap)_menuGraphics.GetPart(3, 12, 228, 16).Clone();
 			Picture.ReplaceColours(background, new byte[] { 7, 22 }, new byte[] { 11, 3 });
