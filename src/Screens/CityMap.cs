@@ -31,6 +31,21 @@ namespace CivOne.Screens
 				_canvas.AddBorder(1, 1, 0, 0, 82, 82);
 				_canvas.FillRectangle(0, 82, 0, 2, 82);
 				
+				ITile[,] tiles = _city.CityRadius;
+				for (int xx = 0; xx < 5; xx++)
+				for (int yy = 0; yy < 5; yy++)
+				{
+					ITile tile = tiles[xx, yy];
+					if (tile == null) continue;
+					AddLayer(Resources.Instance.GetTile(tile), (xx * 16) + 1, (yy * 16) + 1);
+					if (Settings.Instance.RevealWorld) continue;
+					
+					if (!HumanPlayer.Visible(tile, Direction.West)) AddLayer(Resources.Instance.GetFog(Direction.West), (xx * 16) + 1, (yy * 16) + 1);
+					if (!HumanPlayer.Visible(tile, Direction.North)) AddLayer(Resources.Instance.GetFog(Direction.North), (xx * 16) + 1, (yy * 16) + 1);
+					if (!HumanPlayer.Visible(tile, Direction.East)) AddLayer(Resources.Instance.GetFog(Direction.East), (xx * 16) + 1, (yy * 16) + 1);
+					if (!HumanPlayer.Visible(tile, Direction.South)) AddLayer(Resources.Instance.GetFog(Direction.South), (xx * 16) + 1, (yy * 16) + 1);
+				}
+				
 				_update = false;
 				return true;
 			}

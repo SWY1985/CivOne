@@ -23,6 +23,14 @@ namespace CivOne.Templates
 		protected readonly List<Screens.Menu> Menus = new List<Screens.Menu>();
 		protected Picture _canvas = new Picture(320, 200);
 		
+		protected Player HumanPlayer
+		{
+			get
+			{
+				return Game.Instance.HumanPlayer;
+			}
+		}
+		
 		protected void AddLayer(IScreen screen, Point point)
 		{
 			AddLayer(screen, point.X, point.Y);

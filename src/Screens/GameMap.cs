@@ -104,13 +104,12 @@ namespace CivOne.Screens
 						continue;
 					}
 					AddLayer(t.Image, t.Position);
-					if (!Settings.Instance.RevealWorld)
-					{
-						if (!Game.Instance.HumanPlayer.Visible(t.Tile.X - 1, t.Tile.Y)) AddLayer(Resources.Instance.GetFog(Direction.West), t.Position);
-						if (!Game.Instance.HumanPlayer.Visible(t.Tile.X, t.Tile.Y - 1)) AddLayer(Resources.Instance.GetFog(Direction.North), t.Position);
-						if (!Game.Instance.HumanPlayer.Visible(t.Tile.X + 1, t.Tile.Y)) AddLayer(Resources.Instance.GetFog(Direction.East), t.Position);
-						if (!Game.Instance.HumanPlayer.Visible(t.Tile.X, t.Tile.Y + 1)) AddLayer(Resources.Instance.GetFog(Direction.South), t.Position);
-					}
+					if (Settings.Instance.RevealWorld) continue;
+					
+					if (!HumanPlayer.Visible(t.Tile, Direction.West)) AddLayer(Resources.Instance.GetFog(Direction.West), t.Position);
+					if (!HumanPlayer.Visible(t.Tile, Direction.North)) AddLayer(Resources.Instance.GetFog(Direction.North), t.Position);
+					if (!HumanPlayer.Visible(t.Tile, Direction.East)) AddLayer(Resources.Instance.GetFog(Direction.East), t.Position);
+					if (!HumanPlayer.Visible(t.Tile, Direction.South)) AddLayer(Resources.Instance.GetFog(Direction.South), t.Position);
 				}
 				
 				foreach (RenderTile t in RenderTiles)
