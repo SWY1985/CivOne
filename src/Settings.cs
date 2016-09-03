@@ -149,6 +149,11 @@ namespace CivOne
 				Common.ReloadSettings = true;
 			}
 		}
+
+		internal void RevealWorldCheat()
+		{
+			_revealWorld = !_revealWorld;
+		}
 		
 		internal int ScaleX
 		{
