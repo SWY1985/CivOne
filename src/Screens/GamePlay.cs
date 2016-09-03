@@ -33,6 +33,8 @@ namespace CivOne.Screens
 		
 		private Point _menuLocation = Point.Empty;
 		private Picture _menuGraphics = null;
+
+		private bool _shift5 = false;
 		
 		private void MenuCancel(object sender, EventArgs args)
 		{
@@ -266,9 +268,32 @@ namespace CivOne.Screens
 			_update = false;
 			return true;
 		}
+
+		private bool CheckShift56(KeyboardEventArgs args)
+		{
+			if (!_shift5 && args.Modifier == KeyModifier.Shift && args.KeyChar == '5')
+			{
+				_shift5 = true;
+				return true;
+			}
+			else if (_shift5 && args.Modifier == KeyModifier.Shift && args.KeyChar == '6')
+			{
+				_shift5 = false;
+				Settings.Instance.RevealWorldCheat();
+				return true;
+			}
+			else if (_shift5)
+			{
+				_shift5 = false;
+			}
+			return false;
+		}
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
+			if (CheckShift56(args))
+				return true;
+
 			switch (args.Key)
 			{
 				case Key.F1:
