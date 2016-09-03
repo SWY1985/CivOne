@@ -25,17 +25,18 @@ namespace CivOne.Screens
 		
 		public override bool HasUpdate(uint gameTick)
 		{
-			if (_update || (gameTick % 2 == 0))
+			if (_update)
 			{
+				string population = $"{_city.Population:0,000}".Replace(".", ",");
+
 				_canvas.FillLayerTile(_background);
 				_canvas.AddBorder(1, 1, 0, 0, 207, 21);
 				_canvas.FillRectangle(0, 207, 0, 1, 21);
-				_canvas.DrawText($"{_city.Name} (Pop: {_city.Population:0,000})", 1, 17, 104, 1, TextAlign.Center);
+				_canvas.DrawText($"{_city.Name} (Pop: {population})", 1, 17, 104, 1, TextAlign.Center);
 				
 				_update = false;
-				return true;
 			}
-			return false;
+			return true;
 		}
 
 		public void Close()

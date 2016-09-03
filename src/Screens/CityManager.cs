@@ -28,6 +28,7 @@ namespace CivOne.Screens
 		private readonly CityMap _cityMap;
 		private readonly CityBuildings _cityBuildings;
 		private readonly CityFoodStorage _cityFoodStorage;
+		private readonly CityInfo _cityInfo;
 		
 		private bool _update = true;
 		private bool _redraw = false;
@@ -53,16 +54,18 @@ namespace CivOne.Screens
 			if (_cityMap.HasUpdate(gameTick)) _update = true;
 			if (_cityBuildings.HasUpdate(gameTick)) _update = true;
 			if (_cityFoodStorage.HasUpdate(gameTick)) _update = true;
-			
-			DrawLayer(_cityHeader, gameTick, 2, 1);
-			DrawLayer(_cityResources, gameTick, 2, 23);
-			DrawLayer(_cityUnits, gameTick, 2, 67);
-			DrawLayer(_cityMap, gameTick, 127, 23);
-			DrawLayer(_cityBuildings, gameTick, 211, 1);
-			DrawLayer(_cityFoodStorage, gameTick, 2, 106);
+			if (_cityInfo.HasUpdate(gameTick)) _update = true;
 			
 			if (_update)
 			{
+				DrawLayer(_cityHeader, gameTick, 2, 1);
+				DrawLayer(_cityResources, gameTick, 2, 23);
+				DrawLayer(_cityUnits, gameTick, 2, 67);
+				DrawLayer(_cityMap, gameTick, 127, 23);
+				DrawLayer(_cityBuildings, gameTick, 211, 1);
+				DrawLayer(_cityFoodStorage, gameTick, 2, 106);
+				DrawLayer(_cityInfo, gameTick, 95, 106);
+
 				_update = false;
 				return true;
 			}
@@ -77,6 +80,11 @@ namespace CivOne.Screens
 		
 		public override bool MouseDown(ScreenEventArgs args)
 		{
+			if (new Rectangle(95, 106, 133, 92).Contains(args.Location))
+			{
+				MouseArgsOffset(ref args, 95, 106);
+				return _cityInfo.MouseDown(args);
+			}
 			CloseScreen();
 			return true;
 		}
@@ -100,6 +108,7 @@ namespace CivOne.Screens
 			_cityMap = new CityMap(_city, _background);
 			_cityBuildings = new CityBuildings(_city, _background);
 			_cityFoodStorage = new CityFoodStorage(_city, _background);
+			_cityInfo = new CityInfo(_city, _background);
 		}
 	}
 }
