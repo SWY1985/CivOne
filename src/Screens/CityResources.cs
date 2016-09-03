@@ -25,7 +25,7 @@ namespace CivOne.Screens
 		
 		public override bool HasUpdate(uint gameTick)
 		{
-			if (_update || (gameTick % 2 == 0))
+			if (_update)
 			{
 				_canvas.FillLayerTile(_background);
 				_canvas.AddBorder(1, 1, 0, 0, 123, 43);
@@ -34,9 +34,8 @@ namespace CivOne.Screens
 				_canvas.DrawText($"City Resources", 1, 17, 6, 2, TextAlign.Left);
 				
 				_update = false;
-				return true;
 			}
-			return false;
+			return true;
 		}
 
 		public void Close()
