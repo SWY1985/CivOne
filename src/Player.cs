@@ -74,6 +74,11 @@ namespace CivOne
 			}
 		}
 
+		public bool ProductionAvailable(IProduction production)
+		{
+			return true;
+		}
+
 		public void Explore(int x, int y, int range = 1)
 		{
 			_explored[x, y] = true;

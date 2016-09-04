@@ -7,6 +7,8 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System.Collections.Generic;
+using System.Linq;
 using CivOne.Enums;
 using CivOne.Interfaces;
 using CivOne.Units;
@@ -22,6 +24,26 @@ namespace CivOne
 		internal byte Size;
 		internal int Shields { get; private set; }
 		internal IProduction CurrentProduction { get; private set; }
+
+		private Player Player
+		{
+			get
+			{
+				return Game.Instance.GetPlayer(Owner);
+			}
+		}
+
+		public IEnumerable<IProduction> AvailableProduction
+		{
+			get
+			{
+				foreach (IUnit unit in Reflect.GetUnits().Where(u => Player.ProductionAvailable(u)))
+				{
+					if (unit.Class == UnitClass.Water && !Map.Instance.GetTile(X, Y).GetBorderTiles().Any(t => t.IsOcean)) continue;
+					yield return unit;
+				}
+			}
+		}
 
 		public int Population
 		{
