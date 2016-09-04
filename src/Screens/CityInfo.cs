@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using System.Drawing;
 using CivOne.Enums;
 using CivOne.Events;
@@ -32,7 +33,7 @@ namespace CivOne.Screens
 			_canvas.FillRectangle(1, x + 1, 8, width - 1, 1);
 			_canvas.FillRectangle(1, x + width - 1, 0, 1, 8);
 			_canvas.FillRectangle((byte)(selected ? 15 : 9), x + 1, 1, width - 2, 7);
-			_canvas.DrawText(text, 1, 1, x + (width / 2), 2, TextAlign.Center);
+			_canvas.DrawText(text, 1, 1, x + (int)Math.Ceiling((double)width / 2), 2, TextAlign.Center);
 		}
 
 		public override bool HasUpdate(uint gameTick)
