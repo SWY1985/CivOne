@@ -41,7 +41,7 @@ namespace CivOne
 		
 		internal static IEnumerable<IUnit> GetUnits()
 		{
-			return GetTypes<IUnit>();
+			return GetTypes<IUnit>().OrderBy(x => (int)x.Type);
 		}
 		
 		internal static IEnumerable<IBuilding> GetBuildings()
