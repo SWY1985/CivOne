@@ -229,12 +229,17 @@ namespace CivOne.Templates
 			}
 		}
 
-		public void Explore()
+		protected void Explore(int range)
 		{
 			if (Game.Instance == null) return;
 			Player player = Game.Instance.GetPlayer(Owner);
 			if (player == null) return;
-			player.Explore(X, Y);
+			player.Explore(X, Y, range);
+		}
+
+		public virtual void Explore()
+		{
+			Explore(1);
 		}
 		
 		protected BaseUnit(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1)

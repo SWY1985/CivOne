@@ -16,6 +16,11 @@ namespace CivOne.Units
 {
 	internal class Carrier : BaseUnit
 	{
+		public override void Explore()
+		{
+			Explore(2);
+		}
+		
 		public Carrier() : base(16, 1, 12, 5)
 		{
 			Class = UnitClass.Water;

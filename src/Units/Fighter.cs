@@ -16,6 +16,11 @@ namespace CivOne.Units
 {
 	internal class Fighter : BaseUnit
 	{
+		public override void Explore()
+		{
+			Explore(2);
+		}
+
 		public Fighter() : base(6, 4, 2, 10)
 		{
 			Class = UnitClass.Air;

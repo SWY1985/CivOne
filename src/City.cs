@@ -45,6 +45,17 @@ namespace CivOne
 			}
 		}
 
+		public void SetProduction(IProduction production)
+		{
+			CurrentProduction = production;
+		}
+
+		public void Buy()
+		{
+			// DEBUG CODE
+			Shields = (int)CurrentProduction.Price * 10;
+		}
+
 		public int Population
 		{
 			get
@@ -80,7 +91,7 @@ namespace CivOne
 		{
 			// Temporary code
 			Shields++;
-			if (Shields == (int)CurrentProduction.Price * 10)
+			if (Shields >= (int)CurrentProduction.Price * 10)
 			{
 				Shields = 0;
 				if (CurrentProduction is IUnit)

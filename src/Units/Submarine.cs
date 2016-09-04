@@ -16,6 +16,11 @@ namespace CivOne.Units
 {
 	internal class Submarine : BaseUnit
 	{
+		public override void Explore()
+		{
+			Explore(2);
+		}
+		
 		public Submarine() : base(50, 8, 2, 3)
 		{
 			Class = UnitClass.Water;
