@@ -31,6 +31,7 @@ namespace CivOne.Templates
 			MoveFrame++;
 			if (!(Moving = (MoveFrame < 8)))
 			{
+				Explore();
 				MovesLeft--;
 				if (Map.Instance[_x, _y].Hut)
 				{
@@ -170,7 +171,6 @@ namespace CivOne.Templates
 			
 			X += relX;
 			Y += relY;
-			Explore();
 			return true;
 		}
 		
