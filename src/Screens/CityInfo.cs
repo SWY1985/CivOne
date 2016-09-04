@@ -53,36 +53,59 @@ namespace CivOne.Screens
 			}
 			return true;
 		}
+
+		private bool GotoInfo()
+		{
+			_choice = CityInfoChoice.Info;
+			_update = true;
+			return true;
+		}
+
+		private bool GotoHappy()
+		{
+			_choice = CityInfoChoice.Happy;
+			_update = true;
+			return true;
+		}
+
+		private bool GotoMap()
+		{
+			_choice = CityInfoChoice.Map;
+			_update = true;
+			return true;
+		}
+
+		private bool GotoView()
+		{
+			_choice = CityInfoChoice.Info;
+			_update = true;
+			Common.AddScreen(new CityView(_city));
+			return true;
+		}
+		
+		public override bool KeyDown(KeyboardEventArgs args)
+		{
+			switch (args.KeyChar)
+			{
+				case 'I':
+					return GotoInfo();
+				case 'H':
+					return GotoHappy();
+				case 'M':
+					return GotoMap();
+				case 'V':
+					return GotoView();
+			}
+			return false;
+		}
 		
 		public override bool MouseDown(ScreenEventArgs args)
 		{
 			if (args.Y > 9) return false;
-			if (args.X < 34)
-			{
-				_choice = CityInfoChoice.Info;
-				_update = true;
-				return true;
-			}
-			else if (args.X < 66)
-			{
-				_choice = CityInfoChoice.Happy;
-				_update = true;
-				return true;
-			}
-			else if (args.X < 99)
-			{
-				_choice = CityInfoChoice.Map;
-				_update = true;
-				return true;
-			}
-			else if (args.X < 132)
-			{
-				// TODO: Open city view
-				_choice = CityInfoChoice.Info;
-				_update = true;
-				Common.AddScreen(new CityView(_city));
-				return true;
-			}
+			if (args.X < 34) return GotoInfo();
+			else if (args.X < 66) return GotoHappy();
+			else if (args.X < 99) return GotoMap();
+			else if (args.X < 132) return true;
 			return false;
 		}
 

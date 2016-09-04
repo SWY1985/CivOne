@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System.Collections.Generic;
 using System.Drawing;
 using CivOne.Enums;
 using CivOne.Events;
@@ -33,6 +34,8 @@ namespace CivOne.Screens
 		
 		private bool _update = true;
 		private bool _redraw = false;
+
+		private List<IScreen> _subScreens = new List<IScreen>();
 
 		private void CloseScreen()
 		{
@@ -77,6 +80,11 @@ namespace CivOne.Screens
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
+			foreach (IScreen screen in _subScreens)
+			{
+				if (!screen.KeyDown(args)) continue;
+				return true;
+			}
 			CloseScreen();
 			return true;
 		}
@@ -105,14 +113,14 @@ namespace CivOne.Screens
 			_canvas = new Picture(320, 200, palette);
 			_canvas.FillRectangle(5, 0, 0, 320, 200);
 			
-			_cityHeader = new CityHeader(_city, _background);
-			_cityResources = new CityResources(_city, _background);
-			_cityUnits = new CityUnits(_city, _background);
-			_cityMap = new CityMap(_city, _background);
-			_cityBuildings = new CityBuildings(_city, _background);
-			_cityFoodStorage = new CityFoodStorage(_city, _background);
-			_cityInfo = new CityInfo(_city, _background);
-			_cityProduction = new CityProduction(_city, _background);
+			_subScreens.Add(_cityHeader = new CityHeader(_city, _background));
+			_subScreens.Add(_cityResources = new CityResources(_city, _background));
+			_subScreens.Add(_cityUnits = new CityUnits(_city, _background));
+			_subScreens.Add(_cityMap = new CityMap(_city, _background));
+			_subScreens.Add(_cityBuildings = new CityBuildings(_city, _background));
+			_subScreens.Add(_cityFoodStorage = new CityFoodStorage(_city, _background));
+			_subScreens.Add(_cityInfo = new CityInfo(_city, _background));
+			_subScreens.Add(_cityProduction = new CityProduction(_city, _background));
 		}
 	}
 }
