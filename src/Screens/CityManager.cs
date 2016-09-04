@@ -29,6 +29,7 @@ namespace CivOne.Screens
 		private readonly CityBuildings _cityBuildings;
 		private readonly CityFoodStorage _cityFoodStorage;
 		private readonly CityInfo _cityInfo;
+		private readonly CityProduction _cityProduction;
 		
 		private bool _update = true;
 		private bool _redraw = false;
@@ -55,6 +56,7 @@ namespace CivOne.Screens
 			if (_cityBuildings.HasUpdate(gameTick)) _update = true;
 			if (_cityFoodStorage.HasUpdate(gameTick)) _update = true;
 			if (_cityInfo.HasUpdate(gameTick)) _update = true;
+			if (_cityProduction.HasUpdate(gameTick)) _update = true;
 			
 			if (_update)
 			{
@@ -65,6 +67,7 @@ namespace CivOne.Screens
 				DrawLayer(_cityBuildings, gameTick, 211, 1);
 				DrawLayer(_cityFoodStorage, gameTick, 2, 106);
 				DrawLayer(_cityInfo, gameTick, 95, 106);
+				DrawLayer(_cityProduction, gameTick, 230, 99);
 
 				_update = false;
 				return true;
@@ -93,7 +96,7 @@ namespace CivOne.Screens
 		{
 			_city = city;
 			_background = (Bitmap)Resources.Instance.GetPart("SP299", 288, 120, 32, 16).Clone();
-			Picture.ReplaceColours(_background, new byte[] { 7, 22 }, new byte[] { 9, 57 });
+			Picture.ReplaceColours(_background, new byte[] { 7, 22 }, new byte[] { 57, 9 });
 
 			Cursor = MouseCursor.Pointer;
 			
@@ -109,6 +112,7 @@ namespace CivOne.Screens
 			_cityBuildings = new CityBuildings(_city, _background);
 			_cityFoodStorage = new CityFoodStorage(_city, _background);
 			_cityInfo = new CityInfo(_city, _background);
+			_cityProduction = new CityProduction(_city, _background);
 		}
 	}
 }
