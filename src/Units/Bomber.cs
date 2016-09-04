@@ -16,6 +16,11 @@ namespace CivOne.Units
 {
 	internal class Bomber : BaseUnit
 	{
+		public override void Explore()
+		{
+			Explore(2);
+		}
+		
 		public Bomber() : base(12, 12, 1, 8)
 		{
 			Class = UnitClass.Air;

@@ -10,6 +10,7 @@
 using System;
 using System.Drawing;
 using CivOne.Enums;
+using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Templates;
@@ -33,6 +34,11 @@ namespace CivOne.Screens
 			_canvas.FillRectangle(9, x + 1, 8, width - 2, 7);
 			_canvas.DrawText(text, 1, 1, x + (int)Math.Ceiling((double)width / 2), 9, TextAlign.Center);
 		}
+
+		private void ForceUpdate(object sender, EventArgs args)
+		{
+			_update = true;
+		}
 		
 		public override bool HasUpdate(uint gameTick)
 		{
@@ -52,13 +58,36 @@ namespace CivOne.Screens
 				else
 				{
 				}
-				/*
-				_canvas.FillRectangle(0, 123, 0, 1, 38);*/
-
 				
 				_update = false;
 			}
 			return true;
+		}
+
+		private bool Change()
+		{
+			CityChooseProduction cityProductionMenu = new CityChooseProduction(_city);
+			cityProductionMenu.Closed += ForceUpdate;
+			Common.AddScreen(cityProductionMenu);
+			return true;
+		}
+
+		private bool Buy()
+		{
+			_city.Buy();
+			return true;
+		}
+		
+		public override bool KeyDown(KeyboardEventArgs args)
+		{
+			switch (args.KeyChar)
+			{
+				case 'C':
+					return Change();
+				case 'B':
+					return Buy();
+			}
+			return false;
 		}
 
 		public void Close()
