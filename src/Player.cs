@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System.Linq;
 using CivOne.Enums;
 using CivOne.Interfaces;
 
@@ -51,6 +52,14 @@ namespace CivOne
 			get
 			{
 				return _tribeNamePlural;
+			}
+		}
+
+		public int Population
+		{
+			get
+			{
+				return Game.Instance.GetCities().Where(c => c.Owner == _civilization.PreferredPlayerNumber).Sum(c => c.Population);
 			}
 		}
 		

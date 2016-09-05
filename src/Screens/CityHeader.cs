@@ -27,7 +27,7 @@ namespace CivOne.Screens
 		{
 			if (_update)
 			{
-				string population = $"{_city.Population:0,000}".Replace(".", ",");
+				string population = $"{_city.Population:n0}".Replace(".", ",");
 
 				_canvas.FillLayerTile(_background);
 				_canvas.AddBorder(1, 1, 0, 0, 207, 21);

@@ -223,6 +223,11 @@ namespace CivOne
 			if (y >= Map.HEIGHT) return null; 
 			return _units.Where(u => u.X == x && u.Y == y).ToArray();
 		}
+
+		public City[] GetCities()
+		{
+			return _cities.ToArray();
+		}
 		
 		public void DisbandUnit(IUnit unit)
 		{
