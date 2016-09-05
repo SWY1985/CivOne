@@ -73,14 +73,18 @@ namespace CivOne.Screens
 					menuGfx.FillRectangle(0, actualWidth, 0, width - actualWidth, height);
 				menuGfx.AddBorder(15, 8, 0, 0, actualWidth, height);
 				menuGfx.DrawText(menuHeaderText, _fontId, 15, 4, 4);
+				menuGfx.DrawText($"(Help available)", 1, 10, actualWidth, height - Resources.Instance.GetFontHeight(1), TextAlign.Right);
 
 				_canvas.FillRectangle(5, 80, 8, actualWidth + 2, height + 2);
 				AddLayer(menuGfx, 81, 9);
+				
+				Bitmap background = (Bitmap)menuGfx.GetPart(2, 3 + Resources.Instance.GetFontHeight(_fontId), itemWidth, Resources.Instance.GetFontHeight(_fontId) * menuItems.Count + 4).Clone();
+				Picture.ReplaceColours(background, new byte[] { 7, 22 }, new byte[] { 11, 3 });
 
-				Menu menu = new Menu(Canvas.Image.Palette.Entries)
+				Menu menu = new Menu(Canvas.Image.Palette.Entries, background)
 				{
 					X = 83,
-					Y = 20,
+					Y = 12 + Resources.Instance.GetFontHeight(_fontId),
 					Width = itemWidth,
 					ActiveColour = 11,
 					TextColour = 5,
