@@ -37,8 +37,8 @@ namespace CivOne.Screens
 			for (int i = 0; i < count; i++)
 			{
 				Bitmap icon;
-				if (i > tile.Food + tile.Shield) icon = Icons.Trade;
-				else if (i > tile.Food) icon = Icons.Shield;
+				if (i >= tile.Food + tile.Shield) icon = Icons.Trade;
+				else if (i >= tile.Food) icon = Icons.Shield;
 				else icon = Icons.Food; 
 
 				int xx = (x + ((i % iconsPerLine) * iconWidth));
