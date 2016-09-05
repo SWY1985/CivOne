@@ -19,26 +19,63 @@ namespace CivOne
 	{
 		internal byte X;
 		internal byte Y;
-		internal byte Owner;
+		private byte _owner;
+		internal byte Owner
+		{
+			get
+			{
+				return _owner;
+			}
+			set
+			{
+				_owner = value;
+				ResetResourceTiles();
+			}
+		}
 		internal string Name;
-		internal byte Size;
+		private byte _size;
+		internal byte Size
+		{
+			get
+			{
+				return _size;
+			}
+			set
+			{
+				_size = value;
+				SetResourceTiles();
+			}
+		}
 		internal int Shields { get; private set; }
 		internal IProduction CurrentProduction { get; private set; }
+		private List<ITile> _resourceTiles = new List<ITile>();
 
 		internal IEnumerable<ITile> ResourceTiles
 		{
 			get
 			{
-				ITile[,] tiles = CityRadius;
-				for (int xx = 0; xx < 5; xx++)
-				for (int yy = 0; yy < 5; yy++)
-				{
-					if (tiles[xx, yy] == null) continue;
-					
-					ITile tile = tiles[xx, yy];
-					if (tile.X == X && tile.Y == Y) yield return tile;
-				}
+				return CityTiles.Where(t => (t.X == X && t.Y == Y) || _resourceTiles.Contains(t));
 			}
+		}
+
+		private void SetResourceTiles()
+		{
+			while (_resourceTiles.Count > Size)
+				_resourceTiles.RemoveAt(_resourceTiles.Count - 1);
+			if (_resourceTiles.Count == Size) return;
+			if (_resourceTiles.Count < Size)
+			{
+				IEnumerable<ITile> tiles = CityTiles.Where(t => !ResourceTiles.Contains(t)).OrderByDescending(t => t.Shield).ThenByDescending(t => t.Food).ThenByDescending(t => t.Trade);
+				if (tiles.Count() > 0)
+					_resourceTiles.Add(tiles.First());
+			}
+		}
+
+		private void ResetResourceTiles()
+		{
+			_resourceTiles.Clear();
+			for (int i = 0; i < Size; i++)
+				SetResourceTiles();
 		}
 
 		private Player Player
@@ -85,6 +122,20 @@ namespace CivOne
 			}
 		}
 
+		private IEnumerable<ITile> CityTiles
+		{
+			get
+			{
+				ITile[,] tiles = CityRadius;
+				for (int xx = 0; xx < 5; xx++)
+				for (int yy = 0; yy < 5; yy++)
+				{
+					if (tiles[xx, yy] == null) continue;
+					yield return tiles[xx, yy];
+				}
+			}
+		}
+
 		public ITile[,] CityRadius
 		{
 			get
@@ -106,7 +157,7 @@ namespace CivOne
 		internal void NewTurn()
 		{
 			// Temporary code
-			Shields++;
+			Shields += ResourceTiles.Sum(t => t.Shield);
 			if (Shields >= (int)CurrentProduction.Price * 10)
 			{
 				Shields = 0;
@@ -120,6 +171,7 @@ namespace CivOne
 		internal City()
 		{
 			CurrentProduction = new Militia();
+			SetResourceTiles();
 		}
 	}
 }
