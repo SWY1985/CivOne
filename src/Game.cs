@@ -136,6 +136,13 @@ namespace CivOne
 
 			if (cityName == null)
 			{
+				if (Game.Instance.GetCity(ActiveUnit.X, ActiveUnit.Y) != null)
+				{
+					Game.Instance.GetCity(ActiveUnit.X, ActiveUnit.Y).Size++;
+					DisbandUnit(Game.Instance.ActiveUnit);
+					return;
+				}
+
 				Player player = _players[ActiveUnit.Owner];
 				ICivilization civilization = player.Civilization;
 				int index = GetCityIndex(civilization);
