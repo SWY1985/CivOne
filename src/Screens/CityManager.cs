@@ -96,8 +96,24 @@ namespace CivOne.Screens
 				MouseArgsOffset(ref args, 95, 106);
 				return _cityInfo.MouseDown(args);
 			}
+			if (new Rectangle(230, 99, 88, 99).Contains(args.Location))
+			{
+				MouseArgsOffset(ref args, 230, 99);
+				if (_cityProduction.MouseDown(args))
+					return true;
+			}
 			CloseScreen();
 			return true;
+		}
+		
+		public override bool MouseUp(ScreenEventArgs args)
+		{
+			if (new Rectangle(230, 99, 88, 99).Contains(args.Location))
+			{
+				MouseArgsOffset(ref args, 230, 99);
+				return _cityProduction.MouseUp(args);
+			}
+			return false;
 		}
 
 		public CityManager(City city)
