@@ -117,6 +117,7 @@ namespace CivOne.Screens
 		private bool Buy()
 		{
 			_city.Buy();
+			_update = true;
 			return true;
 		}
 		
@@ -129,6 +130,22 @@ namespace CivOne.Screens
 				case 'B':
 					return Buy();
 			}
+			return false;
+		}
+
+		public override bool MouseDown(ScreenEventArgs args)
+		{
+			if (args.Y < 7 || args.Y > 15) return false;
+			if (args.X < 34) return true;
+			if (args.X > 63 && args.X < 82) return true;
+			return false;
+		}
+
+		public override bool MouseUp(ScreenEventArgs args)
+		{
+			if (args.Y < 7 || args.Y > 15) return false;
+			if (args.X < 34) return Change();
+			if (args.X > 63 && args.X < 82) return Buy();
 			return false;
 		}
 
