@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using CivOne.Enums;
@@ -91,6 +92,11 @@ namespace CivOne.Screens
 		
 		public override bool MouseDown(ScreenEventArgs args)
 		{
+			if (new Rectangle(127, 23, 82, 82).Contains(args.Location))
+			{
+				MouseArgsOffset(ref args, 127, 23);
+				return _cityMap.MouseDown(args);
+			}
 			if (new Rectangle(95, 106, 133, 92).Contains(args.Location))
 			{
 				MouseArgsOffset(ref args, 95, 106);
@@ -116,6 +122,12 @@ namespace CivOne.Screens
 			return false;
 		}
 
+		private void MapUpdate(object sender, EventArgs args)
+		{
+			_cityHeader.Update();
+			_cityResources.Update();
+		}
+
 		public CityManager(City city)
 		{
 			_city = city;
@@ -137,6 +149,8 @@ namespace CivOne.Screens
 			_subScreens.Add(_cityFoodStorage = new CityFoodStorage(_city, _background));
 			_subScreens.Add(_cityInfo = new CityInfo(_city, _background));
 			_subScreens.Add(_cityProduction = new CityProduction(_city, _background));
+
+			_cityMap.MapUpdate += MapUpdate;
 		}
 	}
 }

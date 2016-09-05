@@ -11,6 +11,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using CivOne.Enums;
+using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Templates;
@@ -24,6 +25,8 @@ namespace CivOne.Screens
 		private readonly Bitmap _background;
 		
 		private bool _update = true;
+		
+		public event EventHandler MapUpdate;
 
 		private void DrawResources(ITile tile, int x, int y)
 		{
@@ -76,6 +79,17 @@ namespace CivOne.Screens
 				
 				_update = false;
 			}
+			return true;
+		}
+		
+		public override bool MouseDown(ScreenEventArgs args)
+		{
+			if (args.X < 1 || args.X > 81 || args.Y < 1 || args.Y > 81) return false;
+			int tileX = (int)Math.Floor(((double)args.X - 1) / 16);
+			int tileY = (int)Math.Floor(((double)args.Y - 1) / 16);
+			_city.SetResourceTile(_city.CityRadius[tileX, tileY]);
+			_update = true;
+			if (MapUpdate != null) MapUpdate(this, null);
 			return true;
 		}
 
