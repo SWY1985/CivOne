@@ -7,7 +7,9 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using System.Drawing;
+using System.Linq;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
@@ -22,6 +24,28 @@ namespace CivOne.Screens
 		private readonly Bitmap _background;
 		
 		private bool _update = true;
+
+		private void DrawResources(ITile tile, int x, int y)
+		{
+			int count = (tile.Food + tile.Shield + tile.Trade);
+			int iconsPerLine = 2;
+			int iconWidth = 8;
+			if (count > 4) iconsPerLine = (int)Math.Ceiling((double)count / 2);
+			if (iconsPerLine == 3) iconWidth = 4;
+			if (iconsPerLine >= 4) iconWidth = 2;
+
+			for (int i = 0; i < count; i++)
+			{
+				Bitmap icon;
+				if (i > tile.Food + tile.Shield) icon = Icons.Trade;
+				else if (i > tile.Food) icon = Icons.Shield;
+				else icon = Icons.Food; 
+
+				int xx = (x + ((i % iconsPerLine) * iconWidth));
+				int yy = (y + (((i - (i % iconsPerLine)) / iconsPerLine) * 8));
+				AddLayer(icon, xx, yy);
+			}
+		}
 		
 		public override bool HasUpdate(uint gameTick)
 		{
@@ -38,12 +62,16 @@ namespace CivOne.Screens
 					ITile tile = tiles[xx, yy];
 					if (tile == null) continue;
 					AddLayer(Resources.Instance.GetTile(tile), (xx * 16) + 1, (yy * 16) + 1);
-					if (Settings.Instance.RevealWorld) continue;
-					
-					if (!HumanPlayer.Visible(tile, Direction.West)) AddLayer(Resources.Instance.GetFog(Direction.West), (xx * 16) + 1, (yy * 16) + 1);
-					if (!HumanPlayer.Visible(tile, Direction.North)) AddLayer(Resources.Instance.GetFog(Direction.North), (xx * 16) + 1, (yy * 16) + 1);
-					if (!HumanPlayer.Visible(tile, Direction.East)) AddLayer(Resources.Instance.GetFog(Direction.East), (xx * 16) + 1, (yy * 16) + 1);
-					if (!HumanPlayer.Visible(tile, Direction.South)) AddLayer(Resources.Instance.GetFog(Direction.South), (xx * 16) + 1, (yy * 16) + 1);
+					if (!Settings.Instance.RevealWorld)
+					{
+						if (!HumanPlayer.Visible(tile, Direction.West)) AddLayer(Resources.Instance.GetFog(Direction.West), (xx * 16) + 1, (yy * 16) + 1);
+						if (!HumanPlayer.Visible(tile, Direction.North)) AddLayer(Resources.Instance.GetFog(Direction.North), (xx * 16) + 1, (yy * 16) + 1);
+						if (!HumanPlayer.Visible(tile, Direction.East)) AddLayer(Resources.Instance.GetFog(Direction.East), (xx * 16) + 1, (yy * 16) + 1);
+						if (!HumanPlayer.Visible(tile, Direction.South)) AddLayer(Resources.Instance.GetFog(Direction.South), (xx * 16) + 1, (yy * 16) + 1);
+					}
+
+					if (_city.ResourceTiles.Contains(tile))
+						DrawResources(tile, (xx * 16) + 1, (yy * 16) + 1);
 				}
 				
 				_update = false;
