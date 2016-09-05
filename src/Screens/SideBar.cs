@@ -29,7 +29,11 @@ namespace CivOne.Screens
 			_demographics.AddBorder(15, 8, 0, 0, 80, 39);
 			_demographics.FillRectangle(11, 3, 2, 74, 11);
 			_demographics.FillRectangle(2, 3, 13, 74, 1);
-			_demographics.DrawText("10,000 #", 0, 5, 2, 15, TextAlign.Left);
+			if (Game.Instance.HumanPlayer.Population > 0)
+			{
+				string population = $"{Game.Instance.HumanPlayer.Population:n0}".Replace(".", ",");
+				_demographics.DrawText($"{population} #", 0, 5, 2, 15, TextAlign.Left);
+			}
 			_demographics.DrawText(Game.Instance.GameYear, 0, 5, 2, 23, TextAlign.Left);
 			_demographics.DrawText(string.Format("{0}$ 0.5.5", Game.Instance.HumanPlayer.Gold), 0, 5, 2, 31, TextAlign.Left);
 		}
