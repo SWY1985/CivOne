@@ -78,6 +78,21 @@ namespace CivOne
 				SetResourceTiles();
 		}
 
+		public void SetResourceTile(ITile tile)
+		{
+			if (tile == null || !CityTiles.Contains(tile) || (tile.X == X && tile.Y == Y) || (_resourceTiles.Count >= Size && !_resourceTiles.Contains(tile)))
+			{
+				ResetResourceTiles();
+				return;
+			}
+			if (_resourceTiles.Contains(tile))
+			{
+				_resourceTiles.Remove(tile);
+				return;
+			}
+			_resourceTiles.Add(tile);
+		}
+
 		private Player Player
 		{
 			get

@@ -39,6 +39,11 @@ namespace CivOne.Screens
 			return true;
 		}
 
+		public void Update()
+		{
+			_update = true;
+		}
+
 		public void Close()
 		{
 			Destroy();
