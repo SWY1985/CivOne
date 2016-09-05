@@ -39,16 +39,58 @@ namespace CivOne.Screens
 		{
 			_update = true;
 		}
+
+		private void DrawShields()
+		{
+			double lineHeight = 1;
+			int totalShields = (int)_city.CurrentProduction.Price * 10;
+			int shieldWidth = 8;
+			int shieldHeight = 8;
+			int shieldsPerLine = 10;
+			for (int i = 100; i <= 400; i *= 2)
+			{
+				if (totalShields <= i) break;
+				shieldWidth /= 2;
+				shieldsPerLine *= 2;
+				lineHeight /= 2;
+			}
+
+			for (int i = 0; i < _city.Shields; i++)
+			{
+				int x = 1 + (shieldWidth * (i % shieldsPerLine));
+				int y = 17 + (((i - (i % shieldsPerLine)) / shieldsPerLine) * shieldHeight);
+				AddLayer(Icons.Shield, x, y);
+			}
+		}
 		
 		public override bool HasUpdate(uint gameTick)
 		{
 			if (_update)
 			{
+				int totalShields = (int)_city.CurrentProduction.Price * 10;
+				int width = 83;
+				int shieldsPerLine = 10;
+				if (totalShields > 100) { width += 4; shieldsPerLine *= 2; }
+				if (totalShields > 200) { width += 1; shieldsPerLine *= 2; }
+				if (totalShields > 400) { shieldsPerLine *= 2; }
+				int height = 8 * ((totalShields - (totalShields % shieldsPerLine)) / shieldsPerLine);
+
 				_canvas.FillLayerTile(_background);
-				_canvas.AddBorder(1, 1, 0, 0, 88, 99);
-				_canvas.FillRectangle(1, 1, 1, 86, 16);
+				_canvas.AddBorder(1, 1, 0, 0, width, 19 + height);
+				_canvas.FillRectangle(1, 1, 1, (width - 2), 16);
+				if (width < 88)
+				{
+					_canvas.FillRectangle(0, width, 0, 88 - width, 99);
+				}
+				if (height < 80)
+				{
+					_canvas.FillRectangle(0, 0, 19 + height, width, 80 - height);
+				}
 				DrawButton("Change", 1, 33);
 				DrawButton("Buy", 64, 18);
+
+				//AddLayer(Icons.Shield, 1, 17);
+				DrawShields();
 
 				if (_city.CurrentProduction is IUnit)
 				{
