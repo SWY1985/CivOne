@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using CivOne.Enums;
@@ -46,27 +47,9 @@ namespace CivOne.Screens
 		{
 			if (_update)
 			{
-				int height = _menuHeight + 10 + Resources.Instance.GetFontHeight(_fontId);
-				Picture menuGfx = new Picture(184, height);
-				menuGfx.FillLayerTile(_background);
-				menuGfx.FillRectangle(0, 181, 0, 3, height);
-				menuGfx.AddBorder(15, 8, 0, 0, 181, height);
-				menuGfx.DrawText($"What shall we build in {_city.Name}?", _fontId, 15, 4, 4);
-
-				_canvas.FillRectangle(5, 80, 8, 183, height + 2);
-				AddLayer(menuGfx, 81, 9);
-
-				Menu menu = new Menu(Canvas.Image.Palette.Entries)
-				{
-					X = 84,
-					Y = 20,
-					Width = 177,
-					ActiveColour = 11,
-					TextColour = 5,
-					FontId = _fontId
-				};
-				Menu.Item menuItem;
-				int i = 0;
+				List<string> menuItems = new List<string>();
+				string menuHeaderText = $"What shall we build in {_city.Name}?";
+				int itemWidth = Resources.Instance.GetTextSize(_fontId, menuHeaderText).Width;
 				foreach (IProduction production in _city.AvailableProduction)
 				{
 					string menuText = "todo";
@@ -74,13 +57,47 @@ namespace CivOne.Screens
 					{
 						IUnit unit = (production as IUnit);
 						menuText = $"{unit.Name} ({(int)unit.Price * 10} turns, ADM:0/0/0)";
+						if (Resources.Instance.GetTextSize(_fontId, menuText).Width > itemWidth) itemWidth = Resources.Instance.GetTextSize(_fontId, menuText).Width;
 					}
-					menu.Items.Add(menuItem = new Menu.Item(menuText, i++));
+					menuItems.Add(menuText);
+				}
+				itemWidth += 10;
+
+				int width = itemWidth + 14;
+				Console.WriteLine($"Item: {itemWidth}, Width: {width}");
+				int height = _menuHeight + 10 + Resources.Instance.GetFontHeight(_fontId);
+				Picture menuGfx = new Picture(width + (4 - (width % 4)), height);
+				menuGfx.FillLayerTile(_background);
+				if ((width % 4) > 0)
+					menuGfx.FillRectangle(0, width, 0, 4 - (width % 4), height);
+				menuGfx.AddBorder(15, 8, 0, 0, width, height);
+				menuGfx.DrawText(menuHeaderText, _fontId, 15, 4, 4);
+
+				_canvas.FillRectangle(5, 80, 8, width + 2, height + 2);
+				AddLayer(menuGfx, 81, 9);
+
+				Menu menu = new Menu(Canvas.Image.Palette.Entries)
+				{
+					X = 83,
+					Y = 20,
+					Width = itemWidth,
+					ActiveColour = 11,
+					TextColour = 5,
+					FontId = _fontId
+				};
+				Menu.Item menuItem;
+				int i = 0;
+				//foreach (IProduction production in _city.AvailableProduction)
+				foreach (string item in menuItems)
+				{
+					menu.Items.Add(menuItem = new Menu.Item(item, i++));
 					menuItem.Selected += ProductionChoice;
 				}
+				menu.Width += 10;
 				menu.MissClick += MenuCancel;
 				menu.Cancel += MenuCancel;
 				Menus.Add(menu);
+				
 				Common.AddScreen(menu);
 				
 				_update = false;
