@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Drawing;
+using CivOne.Enums;
 using CivOne.GFX;
 
 namespace CivOne.GFX
@@ -54,6 +55,16 @@ namespace CivOne.GFX
 				}
 				return _trade;
 			}
+		}
+
+		private static Bitmap[] _population = new Bitmap[9];
+		public static Bitmap Population(Population population)
+		{
+			if (_population[(int)population] == null)
+			{
+				_population[(int)population] = (Bitmap)Resources.Instance.GetPart("SP257", (8 * (int)population), 128, 8, 16);
+			}
+			return _population[(int)population];
 		}
 	}
 }
