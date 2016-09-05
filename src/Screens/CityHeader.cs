@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Drawing;
+using System.Linq;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
@@ -33,7 +34,17 @@ namespace CivOne.Screens
 				_canvas.AddBorder(1, 1, 0, 0, 207, 21);
 				_canvas.FillRectangle(0, 207, 0, 1, 21);
 				_canvas.DrawText($"{_city.Name} (Pop: {population})", 1, 17, 104, 1, TextAlign.Center);
-				
+
+				for (int i = 0; i < _city.Size; i++)
+				{
+					if (i < _city.ResourceTiles.Count() - 1)
+					{
+						AddLayer(Icons.Population((i % 2 == 0) ? Population.ContentMale : Population.ContentFemale), 8 + (8 * i), 7);
+						continue;
+					}
+					AddLayer(Icons.Population(Population.Entertainer), 8 + (8 * i), 7);
+				}
+
 				_update = false;
 			}
 			return true;
