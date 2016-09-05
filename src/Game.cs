@@ -412,6 +412,14 @@ namespace CivOne
 				return;
 			}
 		}
+
+		public static bool Started
+		{
+			get
+			{
+				return (_instance != null);
+			}
+		}
 		
 		private static Game _instance;
 		public static Game Instance
