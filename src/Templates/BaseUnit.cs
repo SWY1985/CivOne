@@ -147,7 +147,7 @@ namespace CivOne.Templates
 		}
 		public byte Owner { get; set; }
 		public byte Status { get; set; }
-		public byte MovesLeft { get; private set; }
+		public byte MovesLeft { get; protected set; }
 		
 		public virtual void NewTurn()
 		{
@@ -190,7 +190,7 @@ namespace CivOne.Templates
 			Icon = _iconCache[(int)Type];
 		}
 		
-		public Picture GetUnit(byte colour)
+		public virtual Picture GetUnit(byte colour)
 		{
 			int unitId = (int)Type;
 			if (_unitCache[unitId, colour] == null)

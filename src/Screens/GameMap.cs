@@ -287,6 +287,12 @@ namespace CivOne.Screens
 					if (!args.Shift) break;
 					Game.Instance.DisbandUnit(Game.Instance.ActiveUnit);
 					return true;
+				case 'R':
+					if (Game.Instance.ActiveUnit is Settlers)
+					{
+						return (Game.Instance.ActiveUnit as Settlers).BuildRoad();;
+					}
+					break;
 			}
 
 			return false;

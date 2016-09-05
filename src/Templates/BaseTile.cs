@@ -147,7 +147,19 @@ namespace CivOne.Templates
 			}
 		}
 		
-		public virtual bool Road { get; set; }
+		private bool _road = false;
+		public virtual bool Road
+		{
+			get
+			{
+				if (Game.Started && !_road && Game.Instance.GetCity(X, Y) != null) _road = true;
+				return _road;
+			}
+			set
+			{
+				_road = true;
+			}
+		}
 		public virtual bool Irrigation { get; set; }
 		public virtual bool Mine { get; set; }
 		public virtual bool Hut { get; set; }
