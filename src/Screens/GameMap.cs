@@ -188,6 +188,12 @@ namespace CivOne.Screens
 						continue;
 					}
 
+					if (Game.Instance.GetCity(t.Tile.X, t.Tile.Y) != null && units.Length == 1)
+					{
+						AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position.X - 1, t.Position.Y - 1);
+						continue;
+					}
+
 					AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position);
 					if (units.Length == 1) continue;
 					AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position.X - 1, t.Position.Y - 1);
