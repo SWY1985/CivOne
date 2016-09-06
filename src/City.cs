@@ -47,6 +47,7 @@ namespace CivOne
 			}
 		}
 		internal int Shields { get; private set; }
+		internal int Food { get; private set; }
 		internal IProduction CurrentProduction { get; private set; }
 		private List<ITile> _resourceTiles = new List<ITile>();
 
@@ -180,6 +181,13 @@ namespace CivOne
 				{
 					Game.Instance.CreateUnit((CurrentProduction as IUnit).Type, X, Y, Owner);
 				}
+			}
+			
+			Food += ResourceTiles.Sum(t => t.Food);
+			if (Food >= (int)(Size + 1) * 10)
+			{
+				Food -= ((int)(Size + 1) * 10);
+				Size++;
 			}
 		}
 

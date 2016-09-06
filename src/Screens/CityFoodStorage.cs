@@ -32,6 +32,21 @@ namespace CivOne.Screens
 				_canvas.FillRectangle(1, 1, 1, 89, 8);
 				_canvas.FillRectangle(0, 91, 0, 1, 92);
 				_canvas.DrawText($"Food Storage", 1, 17, 6, 2, TextAlign.Left);
+
+				int foodPerLine = (_city.Size + 1);
+				int foodWidth = 8;
+				int foodHeight = 8;
+				if (_city.Size > 10) foodWidth /= 4;
+				int width = 8 + (_city.Size * foodWidth);
+				if (width < 88)
+					_canvas.FillRectangle(1, 2 + width, 9, 88 - width, 82);
+
+				for (int i = 0; i < _city.Food; i++)
+				{
+					int x = 1 + (foodWidth * (i % foodPerLine));
+					int y = 9 + (((i - (i % foodPerLine)) / foodPerLine) * foodHeight);
+					AddLayer(Icons.Food, x, y);
+				}
 				
 				_update = false;
 			}
