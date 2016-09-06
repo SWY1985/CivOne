@@ -117,7 +117,6 @@ namespace CivOne.Templates
 				if (type == Terrain.Grassland2) type = Terrain.Grassland1;
 				
 				byte output = 0;
-				ITile tile = null;
 				switch (type)
 				{
 					case Terrain.Ocean:

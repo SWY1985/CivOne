@@ -25,7 +25,6 @@ namespace CivOne.Screens
 		private readonly Bitmap _background;
 		private readonly int _menuHeight;
 		private readonly int _fontId = 0;
-		private readonly Color[] _palette;
 		
 		private bool _update = true;
 		

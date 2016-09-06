@@ -217,10 +217,6 @@ namespace CivOne.Screens
 		{
 			if (!typeof(ITile).IsAssignableFrom(_singlePage.GetType())) return;
 			
-			string foodFormat = "Food: {0} units.";
-			string productionFormat = "Production: {0} units.";
-			string tradeFormat = "Trade: {0}";
-			
 			ITile tile = (ITile)_singlePage;
 			int move = 1, defense = 0;
 			

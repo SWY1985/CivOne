@@ -28,7 +28,6 @@ namespace CivOne.Screens
 		private int _x, _y, _width, _height;
 		private int _maxLength;
 		private int _cursorPosition = -1;
-		private bool _update = true;
 		
 		public string Text
 		{
@@ -66,7 +65,6 @@ namespace CivOne.Screens
 			if (_text.Length > 0)
 				_canvas.DrawText(_text, _fontId, _textColour, _x, yy);
 			
-			_update = false;
 			return true;
 		}
 		
@@ -78,13 +76,11 @@ namespace CivOne.Screens
 				case Key.Left:
 					if (_cursorPosition > 0) _cursorPosition--;
 					else _cursorPosition = 0;
-					_update = true;
 					return true;
 				case Key.Right:
 					if (_cursorPosition < 0) _cursorPosition = 0;
 					if (_cursorPosition < _text.Length) _cursorPosition++;
 					else _cursorPosition = _text.Length;
-					_update = true;
 					return true;
 				case Key.Escape:
 					if (Cancel != null)
@@ -104,7 +100,6 @@ namespace CivOne.Screens
 					sb.Remove(--_cursorPosition, 1);
 					_text = sb.ToString();
 					
-					_update = true;
 					return true;
 				default:
 					char c = args.KeyChar;
@@ -133,7 +128,6 @@ namespace CivOne.Screens
 					_cursorPosition++;
 					while (_cursorPosition >= _maxLength) _cursorPosition--;
 					
-					_update = true;
 					return true;
 			}
 			return false;
