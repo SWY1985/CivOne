@@ -19,6 +19,7 @@ namespace CivOne.Interfaces
 		IAdvance ObsoleteTech { get; }
 		UnitClass Class { get; }
 		Unit Type { get; }
+		City Home { get; }
 		byte Attack { get; }
 		byte Defense { get; }
 		byte Move { get; }
@@ -36,6 +37,7 @@ namespace CivOne.Interfaces
 		void SkipTurn();
 		void Explore();
 		bool MoveTo(int relX, int relY);
+		void SetHome(City city);
 		Picture GetUnit(byte colour);
 	}
 }

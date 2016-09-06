@@ -50,7 +50,7 @@ namespace CivOne.Screens
 				_gameInfo.DrawText(string.Format("({0})", Game.Instance.HumanPlayer.TribeName), 0, 5, 4, 2, TextAlign.Left);
 				_gameInfo.DrawText(unit.Name, 0, 5, 4, 10, TextAlign.Left);
 				_gameInfo.DrawText($"Moves: {unit.MovesLeft}", 0, 5, 4, 18, TextAlign.Left);
-				_gameInfo.DrawText("NONE", 0, 5, 4, 26, TextAlign.Left);
+				_gameInfo.DrawText((unit.Home == null ? "NONE" : unit.Home.Name), 0, 5, 4, 26, TextAlign.Left);
 				_gameInfo.DrawText($"({Map.Instance.GetTile(unit.X, unit.Y).Name})", 0, 5, 4, 34, TextAlign.Left);
 			}
 			else
