@@ -24,6 +24,10 @@ namespace CivOne.GFX
 				{
 					_food = (Bitmap)Resources.Instance.GetPart("SP257", 128, 32, 8, 8);
 					Picture.ReplaceColours(_food, 3, 0);
+
+					Picture temp = new Picture(_food);
+					temp.FillRectangle(0, 0, 0, 1, 8);
+					_food = temp.Image;
 				}
 				return _food;
 			}
