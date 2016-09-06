@@ -128,7 +128,22 @@ namespace CivOne.Templates
 			if (!(Moving = (MoveFrame < 8)))
 			{
 				Explore();
-				MovesLeft--;
+				if (Class == UnitClass.Land && Map.Instance[FromX, FromY].Road && Map.Instance[X, Y].Road)
+				{
+					if (PartMoves > 0)
+					{
+						PartMoves--;
+					}
+					else
+					{
+						MovesLeft--;
+						PartMoves = 2;
+					}
+				}
+				else
+				{
+					MovesLeft--;
+				}
 				if (Map.Instance[_x, _y].Hut)
 				{
 					Map.Instance[_x, _y].Hut = false;
@@ -246,6 +261,7 @@ namespace CivOne.Templates
 		}
 		public byte Status { get; set; }
 		public byte MovesLeft { get; protected set; }
+		public byte PartMoves { get; protected set; }
 		
 		public virtual void NewTurn()
 		{
