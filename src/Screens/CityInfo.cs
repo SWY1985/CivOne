@@ -105,7 +105,7 @@ namespace CivOne.Screens
 			if (args.X < 34) return GotoInfo();
 			else if (args.X < 66) return GotoHappy();
 			else if (args.X < 99) return GotoMap();
-			else if (args.X < 132) return true;
+			else if (args.X < 132) return GotoView();
 			return false;
 		}
 
