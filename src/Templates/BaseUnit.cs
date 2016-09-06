@@ -203,6 +203,7 @@ namespace CivOne.Templates
 		public IAdvance ObsoleteTech { get; protected set; }
 		public UnitClass Class { get; protected set; }
 		public Unit Type { get; protected set; }
+		public City Home { get; protected set; }
 		public byte Price { get; protected set; }
 		public byte Attack { get; protected set; }
 		public byte Defense { get; protected set; }
@@ -270,6 +271,12 @@ namespace CivOne.Templates
 			Y += relY;
 			return true;
 		}
+
+		public void SetHome(City home)
+		{
+			Home = home;
+		}
+		
 		
 		public virtual void SkipTurn()
 		{

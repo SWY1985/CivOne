@@ -229,15 +229,16 @@ namespace CivOne
 			return unit;
 		}
 
-		public void CreateUnit(Unit type, int x, int y, byte owner, bool endTurn = false)
+		public IUnit CreateUnit(Unit type, int x, int y, byte owner, bool endTurn = false)
 		{
 			IUnit unit = CreateUnit((Unit)type, x, y);
-			if (unit == null) return;
+			if (unit == null) return null;
 
 			unit.Owner = owner;
 			if (endTurn)
 				unit.SkipTurn();
 			_instance._units.Add(unit);
+			return unit;
 		}
 		
 		public IUnit[] GetUnits(int x, int y)

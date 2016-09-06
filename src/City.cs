@@ -15,7 +15,7 @@ using CivOne.Units;
 
 namespace CivOne
 {
-	internal class City
+	public class City
 	{
 		internal byte X;
 		internal byte Y;
@@ -179,7 +179,8 @@ namespace CivOne
 				Shields = 0;
 				if (CurrentProduction is IUnit)
 				{
-					Game.Instance.CreateUnit((CurrentProduction as IUnit).Type, X, Y, Owner);
+					IUnit unit = Game.Instance.CreateUnit((CurrentProduction as IUnit).Type, X, Y, Owner);
+					unit.SetHome(this);
 				}
 			}
 			
