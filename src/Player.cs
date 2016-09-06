@@ -55,6 +55,14 @@ namespace CivOne
 			}
 		}
 
+		public bool Human
+		{
+			get
+			{
+				return (Game.Instance.HumanPlayer == this);
+			}
+		}
+
 		public int Population
 		{
 			get

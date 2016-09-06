@@ -18,6 +18,8 @@ namespace CivOne.Screens
 	internal class CityName : BaseScreen
 	{
 		private readonly Input _input;
+		private readonly bool _discardSettlers;
+		private readonly int _x, _y;
 
 		public override bool HasUpdate(uint gameTick)
 		{
@@ -32,7 +34,8 @@ namespace CivOne.Screens
 		{
 			if (sender.GetType() != typeof(Input)) return;
 
-			Game.Instance.FoundCity(_input.Text);
+			if (Game.Instance.ActiveUnit != null)
+				Game.Instance.FoundCity(_x, _y, _input.Text, _discardSettlers);
 
 			((Input)sender).Close();
 			Destroy();
@@ -48,8 +51,12 @@ namespace CivOne.Screens
 			Destroy();
 		}
 
-		public CityName(string cityName)
+		public CityName(int x, int y, string cityName, bool discardSettlers)
 		{
+			_x = x;
+			_y = y;
+			_discardSettlers = discardSettlers;
+
 			Cursor = MouseCursor.None;
 
 			_canvas = new Picture(320, 200, Common.Screens.Last().Canvas.OriginalColours);
