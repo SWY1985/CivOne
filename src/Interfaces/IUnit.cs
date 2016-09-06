@@ -33,6 +33,7 @@ namespace CivOne.Interfaces
 		byte Owner { get; set; }
 		byte Status { get; set; }
 		byte MovesLeft { get; }
+		byte PartMoves { get; }
 		void NewTurn();
 		void SkipTurn();
 		void Explore();
