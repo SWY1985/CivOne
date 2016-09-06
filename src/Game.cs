@@ -130,38 +130,54 @@ namespace CivOne
 			return 0;
 		}
 
-		public void FoundCity(string cityName = null)
+		public void FoundCity(int x, int y, string cityName = null, bool discardSettlers = true)
 		{
-			if (ActiveUnit.GetType() != typeof(Settlers)) return;
+			IUnit unit = GetUnits(x, y).FirstOrDefault();
+			if (discardSettlers && ActiveUnit != null && ActiveUnit.GetType() != typeof(Settlers))
+			{
+				unit = ActiveUnit;
+			}
+			else if (discardSettlers && (ActiveUnit == null || ActiveUnit.GetType() != typeof(Settlers)))
+			{
+				return;
+			}
 
 			if (cityName == null)
 			{
-				if (Game.Instance.GetCity(ActiveUnit.X, ActiveUnit.Y) != null)
+				if (discardSettlers && Game.Instance.GetCity(x, y) != null)
 				{
-					Game.Instance.GetCity(ActiveUnit.X, ActiveUnit.Y).Size++;
+					Game.Instance.GetCity(x, y).Size++;
 					DisbandUnit(Game.Instance.ActiveUnit);
 					return;
 				}
 
-				Player player = _players[ActiveUnit.Owner];
+				Player player = _players[unit.Owner];
 				ICivilization civilization = player.Civilization;
 				int index = GetCityIndex(civilization);
 				_cityNameUsed[index] = true;
 
 				cityName = _cityNames[index];
-				Common.AddScreen(new CityName(cityName));
+				Common.AddScreen(new CityName(x, y, cityName, discardSettlers));
 				return;
 			}
 
 			_cities.Add(new City()
 			{
-				X = (byte)ActiveUnit.X,
-				Y = (byte)ActiveUnit.Y,
-				Owner = ActiveUnit.Owner,
+				X = (byte)x,
+				Y = (byte)y,
+				Owner = unit.Owner,
 				Name = cityName,
 				Size = 1
 			});
-			DisbandUnit(Game.Instance.ActiveUnit);
+			
+			if (!discardSettlers) return;
+			DisbandUnit(unit);
+		}
+
+		public void FoundCity()
+		{
+			if (ActiveUnit == null || !(ActiveUnit is Settlers)) return;
+			FoundCity(ActiveUnit.X, ActiveUnit.Y);
 		}
 		
 		public City GetCity(int x, int y)
@@ -213,12 +229,14 @@ namespace CivOne
 			return unit;
 		}
 
-		public void CreateUnit(Unit type, int x, int y, byte owner)
+		public void CreateUnit(Unit type, int x, int y, byte owner, bool endTurn = false)
 		{
 			IUnit unit = CreateUnit((Unit)type, x, y);
 			if (unit == null) return;
 
 			unit.Owner = owner;
+			if (endTurn)
+				unit.SkipTurn();
 			_instance._units.Add(unit);
 		}
 		

@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using System.Drawing;
 using System.Linq;
 using CivOne.Enums;
@@ -23,6 +24,8 @@ namespace CivOne.Screens
 		
 		private bool _update = true;
 		private bool _redraw = false;
+
+		public event EventHandler Closed;
 		
 		public override bool HasUpdate(uint gameTick)
 		{
@@ -37,12 +40,16 @@ namespace CivOne.Screens
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
+			if (Closed != null)
+				Closed(this, null);
 			Destroy();
 			return true;
 		}
 		
 		public override bool MouseDown(ScreenEventArgs args)
 		{
+			if (Closed != null)
+				Closed(this, null);
 			Destroy();
 			return true;
 		}
