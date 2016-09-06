@@ -43,7 +43,6 @@ namespace CivOne.Screens
 		private int _introLine = -1;
 		
 		private IScreen _overlay = null;
-		private bool _loadGame = false;
 		
 		private void HandleIntroText()
 		{
@@ -214,7 +213,6 @@ namespace CivOne.Screens
 			Console.WriteLine("Main Menu: Load a Saved Game");
 			CloseMenus();
 			
-			_loadGame = true;
 			_overlay = new LoadGame(_canvas.Image.Palette.Entries);
 		}
 		

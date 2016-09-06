@@ -23,7 +23,6 @@ namespace CivOne.Screens
 		private readonly Picture _messageBox;
 		
 		private bool _update = true;
-		private bool _redraw = false;
 
 		public event EventHandler Closed;
 		

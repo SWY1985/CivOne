@@ -29,7 +29,6 @@ namespace CivOne
 		private readonly List<City> _cities;
 		private readonly List<IUnit> _units;
 		
-		private bool _hasUpdate;
 		private int _currentPlayer = 1;
 		private int _activeUnit;
 		
@@ -37,7 +36,7 @@ namespace CivOne
 		{
 			get
 			{
-				return (_hasUpdate = false);
+				return false;
 			}
 		}
 		
@@ -96,8 +95,6 @@ namespace CivOne
 			GameTurn++;
 			if (!_cities.Any(c => c.Owner == _currentPlayer) && !_units.Any(u => u.Owner == _currentPlayer))
 				Common.AddScreen(new GameOver());
-			//
-			_hasUpdate = true;
 		}
 
 		private int GetCityIndex(ICivilization civilization)
@@ -334,7 +331,6 @@ namespace CivOne
 				ushort[] unitCount = new ushort[8];
 				for (int i = 0; i < 8; i++)
 					unitCount[i] = Common.BinaryReadUShort(br, 1752 + (i * 2));
-				int cc = 0;
 				List<City> cities = new List<City>();
 				for (int i = 5384; i < 8968; i+= 28)
 				{

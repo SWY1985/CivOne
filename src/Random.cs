@@ -210,6 +210,11 @@ namespace CivOne
 			
 			return equal;
 		}
+
+		public override int GetHashCode()
+		{
+			return _initialSeed;
+		}
 		
 		public int[] GetStatus(int i)
 		{
