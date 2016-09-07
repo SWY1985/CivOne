@@ -136,13 +136,17 @@ namespace CivOne.Templates
 					}
 					else
 					{
-						MovesLeft--;
+						if (MovesLeft > 0)
+							MovesLeft--;
 						PartMoves = 2;
 					}
 				}
 				else
 				{
-					MovesLeft--;
+					if (MovesLeft > 0)
+						MovesLeft--;
+					else if (PartMoves > 0)
+						PartMoves = 0;
 				}
 				if (Map.Instance[_x, _y].Hut)
 				{
