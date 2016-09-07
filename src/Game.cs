@@ -293,6 +293,12 @@ namespace CivOne
 				}
 				return _units[_activeUnit];
 			}
+			internal set
+			{
+				if (value == null || value.MovesLeft == 0 && value.PartMoves == 0)
+					return;
+				_activeUnit = _units.IndexOf(value);
+			}
 		}
 
 		public IUnit MovingUnit
