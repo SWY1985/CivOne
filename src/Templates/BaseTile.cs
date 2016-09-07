@@ -95,7 +95,7 @@ namespace CivOne.Templates
 			}
 			return null;
 		}
-
+		
 		public IEnumerable<ITile> GetBorderTiles()
 		{
 			for (int relY = -1; relY <= 1; relY++)
@@ -103,7 +103,7 @@ namespace CivOne.Templates
 				for (int relX = -1; relX <= 1; relX++)
 				{
 					if (relX == 0 && relY == 0) continue;
-					yield return Map[X -relX, Y - relY];
+					yield return Map[X + relX, Y + relY];
 				}
 			}
 		}

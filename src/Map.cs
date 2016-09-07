@@ -64,15 +64,6 @@ namespace CivOne
 				yield return area[xx, yy];
 			}
 		}
-		/*
-		public ITile GetTile(int x, int y)
-		{
-			while (x < 0) x += WIDTH;
-			while (x >= WIDTH) x-= WIDTH;
-			if (y < 0) return null;
-			if (y >= HEIGHT) return null; 
-			return _tiles[x, y];
-		}*/
 		
 		public IEnumerable<ITile> AllTiles()
 		{

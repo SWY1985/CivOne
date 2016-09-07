@@ -287,6 +287,9 @@ namespace CivOne.Templates
 
 			int toX = (X + relX);
 			int toY = (Y + relY);
+			
+			while (toX < 0) toX += Map.WIDTH;
+			while (toX >= Map.WIDTH) toX -= Map.WIDTH;
 
 			if (!MoveTargets.Any(t => t.X == toX && t.Y == toY)) return false;
 			
