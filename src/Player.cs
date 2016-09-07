@@ -146,11 +146,9 @@ namespace CivOne
 		{
 			get
 			{
-				System.Console.WriteLine("---");
 				foreach (IAdvance advance in Reflect.GetAdvances().Where(a => !_advances.Contains(a.Id)))
 				{
 					if (advance.RequiredTechs.Length > 0 && !advance.RequiredTechs.All(a => _advances.Contains(a.Id))) continue;
-					System.Console.WriteLine($" - {advance.Name}");
 					yield return advance;
 				}
 			}
