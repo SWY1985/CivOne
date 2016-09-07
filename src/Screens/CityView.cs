@@ -18,6 +18,8 @@ namespace CivOne.Screens
 {
 	internal class CityView : BaseScreen
 	{
+		private const float FADE_STEP = 0.1f;
+
 		private readonly City _city;
 		private readonly Picture _background;
 		private readonly bool _founded;
@@ -51,7 +53,7 @@ namespace CivOne.Screens
 		{
 			if (_founded && _skip)
 			{
-				_fadeStep -= 0.05f;
+				_fadeStep -= FADE_STEP;
 				if (_fadeStep <= 0.0f)
 				{
 					Common.AddScreen(new CityView(_city, firstView: true));
@@ -79,10 +81,9 @@ namespace CivOne.Screens
 
 			if (_firstView && _fadeStep < 1.0f)
 			{
-				_fadeStep += 0.05f;
+				_fadeStep += FADE_STEP;
 				if (_fadeStep > 1.0f) _fadeStep = 1.0f;
 				FadeColours();
-
 			}
 
 			if (_update) return false;
@@ -124,7 +125,7 @@ namespace CivOne.Screens
 			_firstView = firstView;
 			
 			_canvas = new Picture(320, 200, _background.Image.Palette.Entries);
-			
+
 			AddLayer(_background);
 			
 			if (founded)
@@ -140,9 +141,9 @@ namespace CivOne.Screens
 			if (firstView)
 			{
 				_fadeStep = 0.0f;
+				FadeColours();
 				return;
 			}
-
 			//TODO: Render citizens
 		}
 	}
