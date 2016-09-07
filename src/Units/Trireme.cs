@@ -14,11 +14,10 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Trireme : BaseUnit
+	internal class Trireme : BaseUnitSea
 	{
 		public Trireme() : base(4, 1, 0, 3)
 		{
-			Class = UnitClass.Water;
 			Type = Unit.Trireme;
 			Name = "Trireme";
 			RequiredTech = new MapMaking();

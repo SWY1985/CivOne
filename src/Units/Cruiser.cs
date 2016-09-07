@@ -14,16 +14,10 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Cruiser : BaseUnit
+	internal class Cruiser : BaseUnitSea
 	{
-		public override void Explore()
+		public Cruiser() : base(8, 6, 6, 6, 2)
 		{
-			Explore(2);
-		}
-		
-		public Cruiser() : base(8, 6, 6, 6)
-		{
-			Class = UnitClass.Water;
 			Type = Unit.Cruiser;
 			Name = "Cruiser";
 			RequiredTech = new Combustion();

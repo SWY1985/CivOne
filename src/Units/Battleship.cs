@@ -14,16 +14,10 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Battleship : BaseUnit
+	internal class Battleship : BaseUnitSea
 	{
-		public override void Explore()
+		public Battleship() : base(16, 18, 12, 4, 2)
 		{
-			Explore(2);
-		}
-		
-		public Battleship() : base(16, 18, 12, 4)
-		{
-			Class = UnitClass.Water;
 			Type = Unit.Battleship;
 			Name = "Battleship";
 			RequiredTech = new Steel();

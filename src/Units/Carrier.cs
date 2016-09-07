@@ -14,16 +14,10 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Carrier : BaseUnit
+	internal class Carrier : BaseUnitSea
 	{
-		public override void Explore()
+		public Carrier() : base(16, 1, 12, 5, 2)
 		{
-			Explore(2);
-		}
-		
-		public Carrier() : base(16, 1, 12, 5)
-		{
-			Class = UnitClass.Water;
 			Type = Unit.Carrier;
 			Name = "Carrier";
 			RequiredTech = new AdvancedFlight();

@@ -14,11 +14,10 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Sail : BaseUnit
+	internal class Sail : BaseUnitSea
 	{
 		public Sail() : base(4, 1, 1, 3)
 		{
-			Class = UnitClass.Water;
 			Type = Unit.Sail;
 			Name = "Sail";
 			RequiredTech = new Navigation();

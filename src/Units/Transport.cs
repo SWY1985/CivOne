@@ -14,11 +14,10 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Transport : BaseUnit
+	internal class Transport : BaseUnitSea
 	{
 		public Transport() : base(5, 0, 3, 4)
 		{
-			Class = UnitClass.Water;
 			Type = Unit.Transport;
 			Name = "Transport";
 			RequiredTech = new Industrialization();
