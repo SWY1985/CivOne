@@ -27,6 +27,14 @@ namespace CivOne.Templates
 		public int FromX { get; private set; }
 		public int FromY { get; private set; }
 
+		protected Map Map
+		{
+			get
+			{
+				return Map.Instance;
+			}
+		}
+
 		private int NearestCity
 		{
 			get
@@ -87,7 +95,7 @@ namespace CivOne.Templates
 				case 0:
 					if (NearestCity > 3)
 					{
-						if (Map.Instance[_x, _y].LandValue > 12)
+						if (Map[_x, _y].LandValue > 12)
 						{
 							TribalHut(HutResult.AdvancedTribe);
 							break;
@@ -128,7 +136,7 @@ namespace CivOne.Templates
 			if (!(Moving = (MoveFrame < 8)))
 			{
 				Explore();
-				if (Class == UnitClass.Land && Map.Instance[FromX, FromY].Road && Map.Instance[X, Y].Road)
+				if (Class == UnitClass.Land && Map[FromX, FromY].Road && Map[X, Y].Road)
 				{
 					if (PartMoves > 0)
 					{
@@ -148,9 +156,9 @@ namespace CivOne.Templates
 					else if (PartMoves > 0)
 						PartMoves = 0;
 				}
-				if (Map.Instance[_x, _y].Hut)
+				if (Map[_x, _y].Hut)
 				{
-					Map.Instance[_x, _y].Hut = false;
+					Map[_x, _y].Hut = false;
 					if (Class == UnitClass.Land)
 					{
 						TribalHut();
@@ -349,7 +357,7 @@ namespace CivOne.Templates
 		{
 			get
 			{
-				return Map.Instance.GetTile(X, Y).GetBorderTiles().Where(t => ValidMoveTarget(t));
+				return Map[X, Y].GetBorderTiles().Where(t => ValidMoveTarget(t));
 			}
 		}
 

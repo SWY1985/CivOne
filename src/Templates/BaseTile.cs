@@ -16,6 +16,14 @@ namespace CivOne.Templates
 {
 	internal abstract class BaseTile : ITile
 	{
+		protected Map Map
+		{
+			get
+			{
+				return Map.Instance;
+			}
+		}
+
 		public virtual Picture Icon
 		{
 			get
@@ -74,17 +82,16 @@ namespace CivOne.Templates
 		
 		public ITile GetBorderTile(Direction direction)
 		{
-			Map map = Map.Instance;
 			switch (direction)
 			{
-				case Direction.North: return map.GetTile(X, Y - 1);
-				case Direction.East: return map.GetTile(X + 1, Y);
-				case Direction.South: return map.GetTile(X, Y + 1);
-				case Direction.West: return map.GetTile(X - 1, Y);
-				case Direction.NorthWest: return map.GetTile(X - 1, Y - 1);
-				case Direction.NorthEast: return map.GetTile(X + 1, Y - 1);
-				case Direction.SouthWest: return map.GetTile(X - 1, Y + 1);
-				case Direction.SouthEast: return map.GetTile(X + 1, Y + 1);
+				case Direction.North: return Map[X, Y - 1];
+				case Direction.East: return Map[X + 1, Y];
+				case Direction.South: return Map[X, Y + 1];
+				case Direction.West: return Map[X - 1, Y];
+				case Direction.NorthWest: return Map[X - 1, Y - 1];
+				case Direction.NorthEast: return Map[X + 1, Y - 1];
+				case Direction.SouthWest: return Map[X - 1, Y + 1];
+				case Direction.SouthEast: return Map[X + 1, Y + 1];
 			}
 			return null;
 		}
@@ -96,7 +103,7 @@ namespace CivOne.Templates
 				for (int relX = -1; relX <= 1; relX++)
 				{
 					if (relX == 0 && relY == 0) continue;
-					yield return Map.Instance.GetTile(X -relX, Y - relY);
+					yield return Map[X -relX, Y - relY];
 				}
 			}
 		}

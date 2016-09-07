@@ -23,8 +23,6 @@ namespace CivOne.Screens
 		
 		private readonly Picture _miniMap, _demographics, _gameInfo;
 		private readonly Bitmap _background;
-
-		private int _x = -1, _y = -1;
 		
 		private void DrawMiniMap()
 		{
@@ -32,7 +30,7 @@ namespace CivOne.Screens
 			
 			if (GamePlay != null)
 			{
-				ITile[,] tile = Map.Instance.GetMapPart(GamePlay.X - 30, GamePlay.Y - 19, 78, 48);
+				ITile[,] tile = Map.GetMapPart(GamePlay.X - 30, GamePlay.Y - 19, 78, 48);
 				for (int yy = 0; yy < 48; yy++)
 				for (int xx = 0; xx < 78; xx++)
 				{
@@ -108,7 +106,7 @@ namespace CivOne.Screens
 					_gameInfo.DrawText($"Moves: {unit.MovesLeft}", 0, 5, 4, 18, TextAlign.Left);
 				}
 				_gameInfo.DrawText((unit.Home == null ? "NONE" : unit.Home.Name), 0, 5, 4, 26, TextAlign.Left);
-				_gameInfo.DrawText($"({Map.Instance.GetTile(unit.X, unit.Y).Name})", 0, 5, 4, 34, TextAlign.Left);
+				_gameInfo.DrawText($"({Map[unit.X, unit.Y].Name})", 0, 5, 4, 34, TextAlign.Left);
 			}
 			else
 			{

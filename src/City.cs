@@ -17,6 +17,14 @@ namespace CivOne
 {
 	public class City
 	{
+		private Map Map
+		{
+			get
+			{
+				return Map.Instance;
+			}
+		}
+
 		internal byte X;
 		internal byte Y;
 		private byte _owner;
@@ -108,7 +116,7 @@ namespace CivOne
 			{
 				foreach (IUnit unit in Reflect.GetUnits().Where(u => Player.ProductionAvailable(u)))
 				{
-					if (unit.Class == UnitClass.Water && !Map.Instance.GetTile(X, Y).GetBorderTiles().Any(t => t.IsOcean)) continue;
+					if (unit.Class == UnitClass.Water && !Map[X, Y].GetBorderTiles().Any(t => t.IsOcean)) continue;
 					yield return unit;
 				}
 			}
@@ -157,7 +165,7 @@ namespace CivOne
 			get
 			{
 				Player player = Game.Instance.GetPlayer(Owner);
-				ITile[,] tiles = Map.Instance.GetMapPart(X - 2, Y - 2, 5, 5);
+				ITile[,] tiles = Map.GetMapPart(X - 2, Y - 2, 5, 5);
 				for (int xx = 0; xx < 5; xx++)
 				for (int yy = 0; yy < 5; yy++)
 				{

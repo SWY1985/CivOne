@@ -80,7 +80,7 @@ namespace CivOne.Screens
 						Visible = Game.Instance.HumanPlayer.Visible(tx, ty),
 						X = x,
 						Y = y,
-						Tile = Map.Instance.GetTile(tx, ty)
+						Tile = Map[tx, ty]
 					};
 				}
 			}
@@ -251,7 +251,7 @@ namespace CivOne.Screens
 			if (Game.Instance.ActiveUnit == null)
 				return false;
 			
-			if (!Map.Instance.QueryMapPart(_x + 1, _y + 1, 13, 10).Any(t => t.X == Game.Instance.ActiveUnit.X + relX && t.Y == Game.Instance.ActiveUnit.Y + relY))
+			if (!Map.QueryMapPart(_x + 1, _y + 1, 13, 10).Any(t => t.X == Game.Instance.ActiveUnit.X + relX && t.Y == Game.Instance.ActiveUnit.Y + relY))
 			{
 				// The unit is moving near the edge of the on screen map, center on the unit before moving.
 				CenterOnUnit();
@@ -373,7 +373,7 @@ namespace CivOne.Screens
 
 				if (city == null)
 				{
-					Common.AddScreen(new Civilopedia(Map.Instance.GetTile(_x + x, _y + y)));
+					Common.AddScreen(new Civilopedia(Map[_x + x, _y + y]));
 				}
 			}
 			if ((args.Buttons & MouseButton.Left | MouseButton.Right) > 0)

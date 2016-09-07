@@ -101,8 +101,7 @@ namespace CivOne.Screens
 			Console.WriteLine("Load game: {0}", file.Name);
 			
 			Destroy();
-			//Map.Instance.LoadMap(file.MapFile);
-			//Game.CreateGame(file.Difficulty, 0, Common.Civilizations[0]);
+			
 			Game.LoadGame(file.SveFile, file.MapFile);
 			Common.AddScreen(new GamePlay());
 		}

@@ -53,7 +53,7 @@ namespace CivOne.Screens
 
 				City city = null;
 				IUnit[] units;
-				ITile tile = Map.Instance.GetTile(x, y);
+				ITile tile = Map[x, y];
 				Terrain type = tile.Type;
 				if (type == Terrain.Grassland2) type = Terrain.Grassland1;
 				bool altTile = ((x + y) % 2 == 1);
