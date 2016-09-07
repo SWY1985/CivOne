@@ -28,7 +28,15 @@ namespace CivOne
 		private short _gold;
 		private short _science;
 		private IAdvance _currentResearch = null;
-				
+		
+		private Map Map
+		{
+			get
+			{
+				return Map.Instance;
+			}
+		}
+
 		public ICivilization Civilization
 		{
 			get
@@ -197,7 +205,7 @@ namespace CivOne
 				if (yy < 0 || yy >= Map.HEIGHT) continue;
 				while (xx < 0) xx += Map.WIDTH;
 				while (xx >= Map.WIDTH) xx -= Map.WIDTH;
-				if (sea && !Map.Instance[xx, yy].IsOcean && (Math.Abs(relX) > 1 || Math.Abs(relY) > 1))
+				if (sea && !Map[xx, yy].IsOcean && (Math.Abs(relX) > 1 || Math.Abs(relY) > 1))
 					continue;
 				_visible[xx, yy] = true;
 			} 

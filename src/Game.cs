@@ -31,7 +31,7 @@ namespace CivOne
 		
 		private int _currentPlayer = 1;
 		private int _activeUnit;
-		
+
 		public bool HasUpdate
 		{
 			get

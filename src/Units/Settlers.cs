@@ -32,7 +32,7 @@ namespace CivOne.Units
 
 		public bool BuildRoad()
 		{
-			ITile tile = Map.Instance[X, Y];
+			ITile tile = Map[X, Y];
 			if (!tile.IsOcean && !tile.Road && Game.Instance.GetCity(X, Y) == null)
 			{
 				BuildingRoad = 2;
@@ -44,7 +44,7 @@ namespace CivOne.Units
 
 		public bool BuildIrrigation()
 		{
-			ITile tile = Map.Instance[X, Y];
+			ITile tile = Map[X, Y];
 			if ((tile.GetBorderTiles().Any(t => (t.X == X || t.Y == Y) && (t.IsOcean || t.Irrigation || (t is River)))) || (tile is River))
 			{
 				if (!tile.IsOcean && !(tile.Irrigation) && ((tile is Desert) || (tile is Grassland) || (tile is Hills) || (tile is Plains) || (tile is River)) && Game.Instance.GetCity(X, Y) == null)
@@ -65,7 +65,7 @@ namespace CivOne.Units
 				BuildingRoad--;
 				if (BuildingRoad > 0)
 				{
-					Map.Instance[X, Y].Road = true;
+					Map[X, Y].Road = true;
 					MovesLeft = 0;
 				}
 			}
@@ -78,7 +78,7 @@ namespace CivOne.Units
 				}
 				else
 				{
-					Map.Instance[X, Y].Irrigation = true;
+					Map[X, Y].Irrigation = true;
 				}
 			}
 		}

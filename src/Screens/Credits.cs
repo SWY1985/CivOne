@@ -203,7 +203,7 @@ namespace CivOne.Screens
 		{
 			Console.WriteLine("Main Menu: Start a New Game");
 			Destroy();
-			Map.Instance.Generate();
+			Map.Generate();
 			Common.AddScreen(new Intro());
 		}
 		
@@ -220,7 +220,7 @@ namespace CivOne.Screens
 		{
 			Console.WriteLine("Main Menu: EARTH");
 			Destroy();
-			Map.Instance.LoadMap();
+			Map.LoadMap();
 			Common.AddScreen(new Intro());
 		}
 		
