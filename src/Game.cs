@@ -95,6 +95,13 @@ namespace CivOne
 			GameTurn++;
 			if (!_cities.Any(c => c.Owner == _currentPlayer) && !_units.Any(u => u.Owner == _currentPlayer))
 				Common.AddScreen(new GameOver());
+			
+			// Temporary code until the science code is implemented
+			if (_cities.Any(c => c.Owner == _currentPlayer))
+			{
+				_players[_currentPlayer].Science++;
+			}
+			//
 		}
 
 		private int GetCityIndex(ICivilization civilization)
