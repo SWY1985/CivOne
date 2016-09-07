@@ -52,7 +52,7 @@ namespace CivOne.Screens
 				if (unit.PartMoves > 0)
 				{
 					_gameInfo.DrawText($"Moves: {unit.MovesLeft}({unit.PartMoves})", 0, 5, 4, 18, TextAlign.Left);
-				}task
+				}
 				else
 				{
 					_gameInfo.DrawText($"Moves: {unit.MovesLeft}", 0, 5, 4, 18, TextAlign.Left);
