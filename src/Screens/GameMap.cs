@@ -385,7 +385,7 @@ namespace CivOne.Screens
 				while (_y + 12 > Map.HEIGHT) _y--;
 				_update = true;
 				
-				if (Game.Instance.GetUnits(xx, yy).Any(u => u.Owner == Game.Instance.PlayerNumber(Game.Instance.HumanPlayer)))
+				if ((args.Buttons & MouseButton.Left) > 0 && Game.Instance.GetUnits(xx, yy).Any(u => u.Owner == Game.Instance.PlayerNumber(Game.Instance.HumanPlayer)))
 				{
 					Game.Instance.ActiveUnit = Game.Instance.GetUnits(xx, yy).FirstOrDefault(u => u.MovesLeft > 0 || u.PartMoves > 0);
 				}
