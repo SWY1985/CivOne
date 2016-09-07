@@ -70,5 +70,38 @@ namespace CivOne.GFX
 			}
 			return _population[(int)population];
 		}
+
+		private static Bitmap[,] _governmentPortrait = new Bitmap[7, 4];
+		public static Bitmap GovernmentPortrait(Government government, Advisor advisor, bool modern)
+		{
+			string filename;
+			int governmentId;
+			switch (government)
+			{
+				case Government.Anarchy:
+				case Government.Despotism:
+					governmentId = (modern ? 1 : 0);
+					filename = "GOVT0" + (modern ? "M" : "A");
+					break;
+				case Government.Monarchy:
+					governmentId = (modern ? 3 : 2);
+					filename = $"GOVT1" + (modern ? "M" : "A");
+					break;
+				case Government.Republic:
+				case Government.Democracy:
+					governmentId = (modern ? 5 : 4);
+					filename = $"GOVT2" + (modern ? "M" : "A");
+					break;
+				case Government.Communism:
+					governmentId = 6;
+					filename = "GOVT3A";
+					break;
+				default:
+					return null;
+			}
+			if (_governmentPortrait[governmentId, (int)advisor] == null)
+				_governmentPortrait[governmentId, (int)advisor] = (Bitmap)Resources.Instance.GetPart(filename, (40 * (int)advisor), 0, 40, 60);
+			return _governmentPortrait[governmentId, (int)advisor];
+		}
 	}
 }

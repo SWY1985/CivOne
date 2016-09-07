@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.Interfaces;
+using CivOne.Screens;
 
 namespace CivOne
 {
@@ -21,9 +22,11 @@ namespace CivOne
 
 		private readonly bool[,] _explored = new bool[Map.WIDTH, Map.HEIGHT];
 		private readonly bool[,] _visible = new bool[Map.WIDTH, Map.HEIGHT];
-		private readonly List<IAdvance> _advances = new List<IAdvance>();
+		private readonly List<byte> _advances = new List<byte>();
 		
 		private short _gold;
+		private short _science;
+		private IAdvance _currentResearch = null;
 				
 		public ICivilization Civilization
 		{
@@ -85,18 +88,78 @@ namespace CivOne
 			}
 		}
 		
+		public short Science
+		{
+			get
+			{
+				return _science;
+			}
+			internal set
+			{
+				// Temporary code until the science code is implemented
+				_science = value;
+				if (_science == 8)
+				{
+					_advances.Add(_currentResearch.Id);
+					_currentResearch = null;
+					_science = 0;
+				}
+				if (_currentResearch == null)
+				{
+					if (Human)
+						Common.AddScreen(new ChooseTech());
+				}
+			}
+		}
+		
 		public string LatestAdvance
 		{
 			get
 			{
-				return "Irrigation";
+				if (_advances.Count == 0)
+					return "Irrigation";
+				return Reflect.GetAdvances().First(a => a.Id == _advances.Last()).Name;
+			}
+		}
+
+		public IAdvance[] Advances
+		{
+			get
+			{
+				return _advances.Select(a => Reflect.GetAdvances().First(x => x.Id == a)).ToArray();
+			}
+		}
+
+		public IAdvance CurrentResearch
+		{
+			get
+			{
+				return _currentResearch;
+			}
+			set
+			{
+				_currentResearch = value;
+			}
+		}
+
+		public IEnumerable<IAdvance> AvailableResearch
+		{
+			get
+			{
+				System.Console.WriteLine("---");
+				foreach (IAdvance advance in Reflect.GetAdvances().Where(a => !_advances.Contains(a.Id)))
+				{
+					if (advance.RequiredTechs.Length > 0 && !advance.RequiredTechs.All(a => _advances.Contains(a.Id))) continue;
+					System.Console.WriteLine($" - {advance.Name}");
+					yield return advance;
+				}
 			}
 		}
 
 		private bool UnitAvailable(IUnit unit)
 		{
 			// Determine if the unit is obsolete
-			if (_advances.Any(a => unit.ObsoleteTech == a))
+			if (_advances.Any(a => unit.ObsoleteTech != null && unit.ObsoleteTech.Id == a))
 				return false;
 			
 			// Determine if the unit requires a tech
@@ -104,7 +167,7 @@ namespace CivOne
 				return true;
 			
 			// Determine if the Player has the required tech
-			if (_advances.Any(a => unit.RequiredTech == a))
+			if (_advances.Any(a => unit.RequiredTech.Id == a))
 				return true;
 			
 			return false;
