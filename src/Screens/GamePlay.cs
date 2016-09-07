@@ -36,6 +36,22 @@ namespace CivOne.Screens
 		private Picture _menuGraphics = null;
 
 		private bool _shift5 = false;
+
+		internal int X
+		{
+			get
+			{
+				return _gameMap.X;
+			}
+		}
+
+		internal int Y
+		{
+			get
+			{
+				return _gameMap.Y;
+			}
+		}
 		
 		private void MenuCancel(object sender, EventArgs args)
 		{

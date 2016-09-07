@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Drawing;
+using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Interfaces;
@@ -22,7 +23,56 @@ namespace CivOne.Screens
 		
 		private readonly Picture _miniMap, _demographics, _gameInfo;
 		private readonly Bitmap _background;
+
+		private int _x = -1, _y = -1;
 		
+		private void DrawMiniMap()
+		{
+			_miniMap.FillRectangle(5, 0, 0, 80, 50);
+			
+			if (GamePlay != null)
+			{
+				ITile[,] tile = Map.Instance.GetMapPart(GamePlay.X - 30, GamePlay.Y - 19, 78, 48);
+				for (int yy = 0; yy < 48; yy++)
+				for (int xx = 0; xx < 78; xx++)
+				{
+					if (tile[xx, yy] == null) continue;
+					if (Settings.Instance.RevealWorld)
+					{
+						byte colour = 5;
+						switch (tile[xx, yy].Type)
+						{
+							case Terrain.Ocean: colour = 1; break;
+							case Terrain.Forest: colour = 2; break;
+							case Terrain.Swamp: colour = 3; break;
+							case Terrain.Plains: colour = 6; break;
+							case Terrain.Tundra: colour = 7; break;
+							case Terrain.River: colour = 9; break;
+							case Terrain.Grassland1:
+							case Terrain.Grassland2: colour = 10; break;
+							case Terrain.Jungle: colour = 11; break;
+							case Terrain.Hills: colour = 12; break;
+							case Terrain.Mountains: colour = 13; break;
+							case Terrain.Desert: colour = 14; break;
+							case Terrain.Arctic: colour = 15; break;
+						}
+						_miniMap[xx + 1, yy + 1] = colour;
+					}
+					else if (Game.Instance.HumanPlayer.Visible(tile[xx, yy].X, tile[xx, yy].Y))
+					{
+						if (tile[xx, yy].IsOcean) _miniMap[xx + 1, yy + 1] = 1;
+						else _miniMap[xx + 1, yy + 1] = 2;
+					}
+				}
+			}
+			//_miniMap.AddBorder(15, 15, 29, 19, 18, 11);
+			_miniMap.FillRectangle(15, 29, 19, 18, 1);
+			_miniMap.FillRectangle(15, 29, 19, 1, 11);
+			_miniMap.FillRectangle(15, 30, 29, 17, 1);
+			_miniMap.FillRectangle(15, 46, 20, 1, 9);
+			_miniMap.AddBorder(15, 8, 0, 0, 80, 50);
+		}
+
 		private void DrawDemographics()
 		{
 			_demographics.FillLayerTile(_background);
@@ -73,6 +123,7 @@ namespace CivOne.Screens
 		{
 			if (_update || (gameTick % 2 == 0))
 			{
+				DrawMiniMap();
 				DrawDemographics();
 				DrawGameInfo(gameTick);
 				
@@ -95,19 +146,27 @@ namespace CivOne.Screens
 			}
 			return true;
 		}
+
+		private GamePlay GamePlay
+		{
+			get
+			{
+				IScreen mapScreen = Common.Screens.FirstOrDefault(s => (s is GamePlay));
+				if (mapScreen != null)
+					return (mapScreen as GamePlay);
+				return null;
+			}
+		}
 		
 		public SideBar(Color[] palette)
 		{
 			_background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
 			
 			_miniMap = new Picture(80, 50, palette);
-			_miniMap.FillRectangle(5, 0, 0, 80, 50);
-			_miniMap.AddBorder(15, 8, 0, 0, 80, 50);
-			
-			
 			_demographics = new Picture(80, 39, palette);
 			_gameInfo = new Picture(80, 103, palette);
 			
+			DrawMiniMap();
 			DrawDemographics();
 			DrawGameInfo();
 			

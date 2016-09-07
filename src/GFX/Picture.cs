@@ -472,6 +472,23 @@ namespace CivOne.GFX
 			}
 		}
 		
+		public byte this[int x, int y]
+		{
+			get
+			{
+				if (x < 0 || x >= _image.Width || y < 0 || y >= _image.Height) return 0;
+				
+				//return _image.GetPixel(x, y);
+				return 0;
+			}
+			internal set
+			{
+				if (x < 0 || x >= _image.Width || y < 0 || y >= _image.Height) return;
+
+				FillRectangle(value, x, y, 1, 1);
+			}
+		}
+		
 		public Picture(Bitmap bitmap) : this(bitmap.Width, bitmap.Height, bitmap.Palette.Entries)
 		{
 			AddLayer(bitmap);

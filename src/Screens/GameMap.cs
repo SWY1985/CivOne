@@ -47,6 +47,22 @@ namespace CivOne.Screens
 		private bool _update = true;
 		private int _x, _y;
 		private IUnit _lastUnit;
+
+		internal int X
+		{
+			get
+			{
+				return _x;
+			}
+		}
+
+		internal int Y
+		{
+			get
+			{
+				return _y;
+			}
+		}
 		
 		private IEnumerable<RenderTile> RenderTiles
 		{
