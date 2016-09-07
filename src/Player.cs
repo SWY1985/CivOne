@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CivOne.Enums;
@@ -185,7 +186,7 @@ namespace CivOne
 			return true;
 		}
 
-		public void Explore(int x, int y, int range = 1)
+		public void Explore(int x, int y, int range = 1, bool sea = false)
 		{
 			_explored[x, y] = true;
 			for (int relX = -range; relX <= range; relX++)
@@ -196,6 +197,8 @@ namespace CivOne
 				if (yy < 0 || yy >= Map.HEIGHT) continue;
 				while (xx < 0) xx += Map.WIDTH;
 				while (xx >= Map.WIDTH) xx -= Map.WIDTH;
+				if (sea && !Map.Instance[xx, yy].IsOcean && (Math.Abs(relX) > 1 || Math.Abs(relY) > 1))
+					continue;
 				_visible[xx, yy] = true;
 			} 
 		}

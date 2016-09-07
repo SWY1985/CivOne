@@ -353,12 +353,12 @@ namespace CivOne.Templates
 			}
 		}
 
-		protected void Explore(int range)
+		protected void Explore(int range, bool sea = false)
 		{
 			if (Game.Instance == null) return;
 			Player player = Game.Instance.GetPlayer(Owner);
 			if (player == null) return;
-			player.Explore(X, Y, range);
+			player.Explore(X, Y, range, sea);
 		}
 
 		public virtual void Explore()

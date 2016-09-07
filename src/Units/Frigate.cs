@@ -14,11 +14,10 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Frigate : BaseUnit
+	internal class Frigate : BaseUnitSea
 	{
 		public Frigate() : base(4, 2, 2, 3)
 		{
-			Class = UnitClass.Water;
 			Type = Unit.Frigate;
 			Name = "Frigate";
 			RequiredTech = new Magnetism();

@@ -14,11 +14,10 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Ironclad : BaseUnit
+	internal class Ironclad : BaseUnitSea
 	{
 		public Ironclad() : base(6, 4, 4, 4)
 		{
-			Class = UnitClass.Water;
 			Type = Unit.Ironclad;
 			Name = "Ironclad";
 			RequiredTech = new SteamEngine();

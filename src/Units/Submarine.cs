@@ -14,16 +14,10 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Submarine : BaseUnit
+	internal class Submarine : BaseUnitSea
 	{
-		public override void Explore()
+		public Submarine() : base(50, 8, 2, 3, 2)
 		{
-			Explore(2);
-		}
-		
-		public Submarine() : base(50, 8, 2, 3)
-		{
-			Class = UnitClass.Water;
 			Type = Unit.Submarine;
 			Name = "Submarine";
 			RequiredTech = new MassProduction();
