@@ -80,11 +80,11 @@ namespace CivOne.Screens
 				_canvas.FillRectangle(1, 1, 1, (width - 2), 16);
 				if (width < 88)
 				{
-					_canvas.FillRectangle(0, width, 0, 88 - width, 99);
+					_canvas.FillRectangle(5, width, 0, 88 - width, 99);
 				}
 				if (height < 80)
 				{
-					_canvas.FillRectangle(0, 0, 19 + height, width, 80 - height);
+					_canvas.FillRectangle(5, 0, 19 + height, width, 80 - height);
 				}
 				DrawButton("Change", 1, 33);
 				DrawButton("Buy", 64, 18);
