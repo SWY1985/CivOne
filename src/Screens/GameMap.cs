@@ -349,16 +349,15 @@ namespace CivOne.Screens
 			int x = (int)Math.Floor((float)args.X / 16);
 			int y = (int)Math.Floor((float)args.Y / 16);
 			
+			int xx = _x + x;
+			int yy = _y + y;
+			while (xx  < 0) xx += Map.WIDTH;
+			while (xx  >= Map.WIDTH) xx -= Map.WIDTH;
+			
 			City city = Game.Instance.GetCity(_x + x, _y + y);
 			
 			if ((args.Buttons & MouseButton.Right) > 0)
 			{
-				int xx = _x + x;
-				int yy = _y + y;
-				while (xx  < 0) xx += Map.WIDTH;
-				while (xx  >= Map.WIDTH) xx -= Map.WIDTH;
-
-				Console.WriteLine(_x.ToString() + "-" + _y.ToString());
 				if (Game.Instance.ActiveUnit != null && (Game.Instance.ActiveUnit as BaseUnit).MoveTargets.Any(t => t.X == xx && t.Y == yy))
 				{
 					int relX = xx - Game.Instance.ActiveUnit.X;
@@ -385,6 +384,11 @@ namespace CivOne.Screens
 				while (_y < 0) _y++;
 				while (_y + 12 > Map.HEIGHT) _y--;
 				_update = true;
+				
+				if (Game.Instance.GetUnits(xx, yy).Any(u => u.Owner == Game.Instance.PlayerNumber(Game.Instance.HumanPlayer)))
+				{
+					Game.Instance.ActiveUnit = Game.Instance.GetUnits(xx, yy).FirstOrDefault(u => u.MovesLeft > 0 || u.PartMoves > 0);
+				}
 
 				if (city != null)
 				{
