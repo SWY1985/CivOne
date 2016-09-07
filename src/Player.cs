@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System.Collections.Generic;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.Interfaces;
@@ -20,6 +21,7 @@ namespace CivOne
 
 		private readonly bool[,] _explored = new bool[Map.WIDTH, Map.HEIGHT];
 		private readonly bool[,] _visible = new bool[Map.WIDTH, Map.HEIGHT];
+		private readonly List<IAdvance> _advances = new List<IAdvance>();
 		
 		private short _gold;
 				
@@ -91,8 +93,27 @@ namespace CivOne
 			}
 		}
 
+		private bool UnitAvailable(IUnit unit)
+		{
+			// Determine if the unit is obsolete
+			if (_advances.Any(a => unit.ObsoleteTech == a))
+				return false;
+			
+			// Determine if the unit requires a tech
+			if (unit.RequiredTech == null)
+				return true;
+			
+			// Determine if the Player has the required tech
+			if (_advances.Any(a => unit.RequiredTech == a))
+				return true;
+			
+			return false;
+		}
+
 		public bool ProductionAvailable(IProduction production)
 		{
+			if (production is IUnit)
+				return UnitAvailable(production as IUnit);
 			return true;
 		}
 
