@@ -101,8 +101,15 @@ namespace CivOne
 				if (_science == 8)
 				{
 					_advances.Add(_currentResearch.Id);
-					_currentResearch = null;
-					_science = 0;
+					if (Human)
+					{
+						Screens.Civilopedia civilopedia = new Screens.Civilopedia(_currentResearch);
+						civilopedia.Closed += (s, a) => {
+							_currentResearch = null;
+							Science = 0;
+						};
+						Common.AddScreen(civilopedia);
+					}
 				}
 				if (_currentResearch == null)
 				{

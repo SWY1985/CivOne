@@ -35,6 +35,8 @@ namespace CivOne.Screens
 		private bool _update = true;
 		private int _startIndex = 0;
 		private byte _pageNumber = 1;
+
+		public event EventHandler Closed;
 		
 		private void DrawPageTitle()
 		{
@@ -123,7 +125,7 @@ namespace CivOne.Screens
 			{
 				return true;
 			}
-			Destroy();
+			Close();
 			return true;
 		}
 		
@@ -131,7 +133,7 @@ namespace CivOne.Screens
 		{
 			if (_singlePage != null)
 			{
-				if (!NextPage()) Destroy();
+				if (!NextPage()) Close();
 				return true;
 			}
 			
@@ -147,7 +149,7 @@ namespace CivOne.Screens
 				}
 				else
 				{
-					Destroy();
+					Close();
 					return true;
 				}
 			}
@@ -290,6 +292,13 @@ namespace CivOne.Screens
 			
 			_canvas.DrawText(string.Format("Movement cost: {0} MP", move), 6, 12, 12, yy); yy += 8;
 			_canvas.DrawText(string.Format("Defense bonus: +{0}%", defense), 6, 12, 12, yy);
+		}
+
+		private void Close()
+		{
+			if (Closed != null)
+				Closed(this, null);
+			Destroy();
 		}
 		
 		public Civilopedia(ICivilopedia[] pages)
