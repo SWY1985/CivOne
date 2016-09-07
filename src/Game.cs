@@ -158,14 +158,17 @@ namespace CivOne
 				return;
 			}
 
-			_cities.Add(new City()
+			City city = new City()
 			{
 				X = (byte)x,
 				Y = (byte)y,
 				Owner = unit.Owner,
 				Name = cityName,
 				Size = 1
-			});
+			};
+			_cities.Add(city);
+			Common.AddScreen(new CityView(city, founded: true));
+			DisbandUnit(Game.Instance.ActiveUnit);
 			
 			if (!discardSettlers) return;
 			DisbandUnit(unit);
