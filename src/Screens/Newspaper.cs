@@ -97,8 +97,8 @@ namespace CivOne.Screens
 			_canvas.DrawText("FLASH", 2, 5, 272, 3);
 			_canvas.DrawText(newsflash, 1, 5, 158, 3, TextAlign.Center);
 			_canvas.DrawText(newsflash, 1, 5, 158, 3, TextAlign.Center);
-			_canvas.DrawText(",-.", 4, 6, 8, 10);
-			_canvas.DrawText(",-.", 4, 6, 268, 10);
+			_canvas.DrawText(",-.", 4, 5, 8, 11);
+			_canvas.DrawText(",-.", 4, 5, 268, 11);
 			_canvas.DrawText(name, 4, 5, 160, 11, TextAlign.Center);
 			_canvas.DrawText(date, 0, 5, 8, 28);
 			_canvas.DrawText("10 cents", 0, 5, 272, 28);
