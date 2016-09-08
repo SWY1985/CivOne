@@ -138,7 +138,11 @@ namespace CivOne.Templates
 				Explore();
 				if (Class == UnitClass.Land && Map[FromX, FromY].Road && Map[X, Y].Road)
 				{
-					if (PartMoves > 0)
+					if (Map[X, Y].RailRoad && Map[FromX, FromY].RailRoad)
+					{
+						// No moves lost
+					}
+					else if (PartMoves > 0)
 					{
 						PartMoves--;
 					}
