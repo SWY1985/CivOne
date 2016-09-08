@@ -312,7 +312,13 @@ namespace CivOne.Screens
 				case 'I':
 					if (Game.Instance.ActiveUnit is Settlers)
 					{
-						return (Game.Instance.ActiveUnit as Settlers).BuildIrrigation();;
+						return (Game.Instance.ActiveUnit as Settlers).BuildIrrigation();
+					}
+					break;
+				case 'M':
+					if (Game.Instance.ActiveUnit is Settlers)
+					{
+						return (Game.Instance.ActiveUnit as Settlers).BuildMine();
 					}
 					break;
 				case 'R':
