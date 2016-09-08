@@ -66,9 +66,6 @@ namespace CivOne.GFX
 					bit = 0;
 					b++;
 				}
-				if (_charByteLength == 2)
-				{
-				}
 				for (int x = 0; x < _charByteLength * 8; x++)
 				{
 					if (x < _charWidths[character])
@@ -128,15 +125,22 @@ namespace CivOne.GFX
 				char character = (char)c;
 				byte[] b = new byte[(1 + _charBottomRow - _charTopRow) * _charByteLength];
 				for (int row = 0; row < (1 + _charBottomRow - _charTopRow); row++)
-					for (int col = 0; col < _charByteLength; col++)
-					{
-						int ind = (row * _charByteLength) + col;
-						int bin = index + (row * (_charByteLength * charCount)) + col;
+				for (int col = 0; col < _charByteLength; col++)
+				{
+					int ind = (row * _charByteLength) + col;
+					int bin = index + (row * (_charByteLength * charCount)) + col;
 
-						b[ind] = bytes[bin];
-					}
+					b[ind] = bytes[bin];
+				}
 				_characters.Add(character, b);
-				_charWidths.Add(character, bytes[offset - 9 - charCount + i]);
+
+				byte charWidth = bytes[offset - 9 - charCount + i];
+				if (charWidth > (_charByteLength * 8))
+				{
+					Console.WriteLine($"Warning: Character width larger than bytes per character. (ID: {(int)character}, Width: {charWidth})");
+					charWidth = (byte)(_charByteLength * 8);
+				}
+				_charWidths.Add(character, charWidth);
 
 				index += _charByteLength;
 			}
