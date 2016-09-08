@@ -40,5 +40,6 @@ namespace CivOne.Interfaces
 		bool Mine { get; set; }
 		bool Hut { get; set; }
 		bool IsOcean { get; }
+		ITile this[int relativeX, int relativeY] { get; }
 	}
 }
