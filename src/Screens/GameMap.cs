@@ -134,7 +134,7 @@ namespace CivOne.Screens
 
 					if (t.Tile.City != null) continue;
 					
-					IUnit[] units = Game.Instance.GetUnits(t.Tile.X, t.Tile.Y).Where(u => !u.Moving).ToArray();
+					IUnit[] units = t.Tile.Units.Where(u => !u.Moving).ToArray();
 					if (units.Length == 0) continue;
 					
 					IUnit drawUnit = units.FirstOrDefault(u => u == Game.Instance.ActiveUnit);
@@ -162,7 +162,7 @@ namespace CivOne.Screens
 					City city = t.Tile.City;
 					if (city == null) continue;
 					
-					if (Game.Instance.GetUnits(t.Tile.X, t.Tile.Y).Length > 0)
+					if (t.Tile.Units.Length > 0)
 						_canvas.FillRectangle(5, t.Position.X, t.Position.Y, 16, 16);
 					_canvas.FillRectangle(15, t.Position.X + 1, t.Position.Y + 1, 14, 14);
 					_canvas.FillRectangle(Common.ColourDark[city.Owner], t.Position.X + 2, t.Position.Y + 1, 13, 13);
@@ -185,7 +185,7 @@ namespace CivOne.Screens
 				{
 					if (!Settings.Instance.RevealWorld && !t.Visible) continue;
 
-					IUnit[] units = Game.Instance.GetUnits(t.Tile.X, t.Tile.Y).Where(u => !u.Moving).ToArray();
+					IUnit[] units = t.Tile.Units.Where(u => !u.Moving).ToArray();
 					if (units.Length == 0) continue;
 					
 					IUnit drawUnit = units.FirstOrDefault(u => u == Game.Instance.ActiveUnit);
@@ -390,9 +390,9 @@ namespace CivOne.Screens
 				while (_y + 12 > Map.HEIGHT) _y--;
 				_update = true;
 				
-				if ((args.Buttons & MouseButton.Left) > 0 && Game.Instance.GetUnits(xx, yy).Any(u => u.Owner == Game.Instance.PlayerNumber(Game.Instance.HumanPlayer)))
+				if ((args.Buttons & MouseButton.Left) > 0 && Map[xx, yy].Units.Any(u => u.Owner == Game.Instance.PlayerNumber(Game.Instance.HumanPlayer)))
 				{
-					Game.Instance.ActiveUnit = Game.Instance.GetUnits(xx, yy).FirstOrDefault(u => u.MovesLeft > 0 || u.PartMoves > 0);
+					Game.Instance.ActiveUnit = Map[xx, yy].Units.FirstOrDefault(u => u.MovesLeft > 0 || u.PartMoves > 0);
 				}
 
 				if (city != null)

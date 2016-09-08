@@ -66,7 +66,7 @@ namespace CivOne.Screens
 				{
 					_canvas.FillRectangle(Common.ColourLight[city.Owner], x * 4, y * 4, 4, 4);
 				}
-				else if ((units = Game.Instance.GetUnits(x, y)).Length > 0)
+				else if ((units = tile.Units).Length > 0)
 				{
 					_canvas.FillRectangle(5, (x * 4) + 1, (y * 4) + 1, 3, 3);
 					_canvas.FillRectangle(Common.ColourLight[units[0].Owner], x * 4, y * 4, 3, 3);
