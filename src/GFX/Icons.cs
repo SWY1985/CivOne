@@ -60,6 +60,19 @@ namespace CivOne.GFX
 				return _trade;
 			}
 		}
+		
+		private static Bitmap _newspaper;
+		public static Bitmap Newspaper
+		{
+			get
+			{
+				if (_newspaper == null)
+				{
+					_newspaper = (Bitmap)Resources.Instance.GetPart("SP257", 176, 128, 32, 16);
+				}
+				return _newspaper;
+			}
+		}
 
 		private static Bitmap[] _population = new Bitmap[9];
 		public static Bitmap Population(Population population)
