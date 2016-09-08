@@ -82,7 +82,7 @@ namespace CivOne.Screens
 				case 0:
 					break;
 				case 1:
-					Common.AddScreen(new Newspaper($"The {Game.Instance.HumanPlayer.TribeNamePlural} are", "revolting! Citizens", "demand new govt."));
+					Game.Instance.HumanPlayer.Revolt();
 					break;
 			}
 			MenuCancel(sender, args);

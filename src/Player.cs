@@ -25,6 +25,7 @@ namespace CivOne
 		private readonly bool[,] _visible = new bool[Map.WIDTH, Map.HEIGHT];
 		private readonly List<byte> _advances = new List<byte>();
 		
+		private short _anarchy = 0;
 		private short _gold;
 		private short _science;
 		private IAdvance _currentResearch = null;
@@ -67,6 +68,16 @@ namespace CivOne
 			{
 				return _tribeNamePlural;
 			}
+		}
+		
+		public Government Government { get; private set; }
+
+		public void Revolt()
+		{
+			_anarchy = 4;
+			Government = Government.Anarchy;
+			if (!Human) return;
+			Common.AddScreen(new Newspaper(false, $"The {Game.Instance.HumanPlayer.TribeNamePlural} are", "revolting! Citizens", "demand new govt."));
 		}
 
 		public bool Human
@@ -178,6 +189,19 @@ namespace CivOne
 			}
 		}
 
+		public IEnumerable<Government> AvailableGovernments
+		{
+			get
+			{
+				//TEMP
+				yield return Government.Despotism;
+				yield return Government.Monarchy;
+				yield return Government.Communism;
+				yield return Government.Republic;
+				yield return Government.Democracy;
+			}
+		}
+
 		private bool UnitAvailable(IUnit unit)
 		{
 			// Determine if the unit is obsolete
@@ -238,6 +262,21 @@ namespace CivOne
 			if (tile == null) return false;
 			return Visible(tile.GetBorderTile(direction));
 		}
+
+		public void NewTurn()
+		{
+			if (_anarchy == 0 && Government == Government.Anarchy)
+			{
+				ChooseGovernment chooseGovernment = new ChooseGovernment();
+				chooseGovernment.Closed += (s, a) => {
+					Government = (s as ChooseGovernment).Result;
+					Common.AddScreen(new Newspaper(true, $"{Game.Instance.HumanPlayer.TribeName} government", $"changed to {Government}!"));
+				};
+				Common.AddScreen(chooseGovernment);
+				//Common.AddScreen(new Newspaper(true, $"{Game.Instance.HumanPlayer.TribeName} government", "changed to Despotism!"));
+			}
+			_anarchy--;
+		}
 		
 		public Player(ICivilization civilization, string customLeaderName = null, string customTribeName = null, string customTribeNamePlural = null)
 		{
@@ -245,6 +284,7 @@ namespace CivOne
 			_leaderName = customLeaderName ?? _civilization.LeaderName;
 			_tribeName = customTribeName ?? _civilization.Name;
 			_tribeNamePlural = customTribeNamePlural ?? _civilization.NamePlural;
+			Government = Government.Despotism;
 			
 			for (int xx = 0; xx < Map.WIDTH; xx++)
 			for (int yy = 0; yy < Map.HEIGHT; yy++)

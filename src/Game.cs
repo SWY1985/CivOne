@@ -83,15 +83,14 @@ namespace CivOne
 				unit.NewTurn();
 			foreach (City city in _cities)
 				city.NewTurn();
-			while (_players[_currentPlayer] != HumanPlayer)
+			while (++_currentPlayer >= _players.Length || _players[_currentPlayer] != HumanPlayer)
 			{
 				// Skip all AI players for now
-				_currentPlayer++;
-				if (_currentPlayer > _players.Length)
-				{
+				if (_currentPlayer >= _players.Length)
 					_currentPlayer = 0;
-				}
+				_players[_currentPlayer].NewTurn();
 			}
+			_players[_currentPlayer].NewTurn();
 			GameTurn++;
 			if (!_cities.Any(c => c.Owner == _currentPlayer) && !_units.Any(u => u.Owner == _currentPlayer))
 				Common.AddScreen(new GameOver());

@@ -11,9 +11,9 @@ namespace CivOne.Enums
 {
 	public enum Advisor
 	{
-		Military,
-		Foreign,
+		Defense,
 		Domestic,
+		Foreign,
 		Science
 	}
 }

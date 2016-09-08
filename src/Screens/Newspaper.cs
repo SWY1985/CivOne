@@ -56,16 +56,25 @@ namespace CivOne.Screens
 			return true;
 		}
 
-		public Newspaper(params string[] message)
+		public Newspaper(bool showGovernment, params string[] message)
 		{
 			Cursor = MouseCursor.None;
 
 			bool modernGovernment = Game.Instance.HumanPlayer.Advances.Any(a => a.Id == (int)Advance.Invention);
-			Bitmap governmentPortrait = Icons.GovernmentPortrait(Government.Despotism, Advisor.Science, modernGovernment);
 			Color[] palette = Resources.Instance.LoadPIC("SP257").Image.Palette.Entries;
-			for (int i = 144; i < 256; i++)
+
+			Bitmap[] governmentPortraits = new Bitmap[4];
+			if (showGovernment)
 			{
-				palette[i] = governmentPortrait.Palette.Entries[i];
+				for (int i = 0; i < 4; i++)
+				{
+					governmentPortraits[i] = Icons.GovernmentPortrait(Game.Instance.HumanPlayer.Government, (Advisor)Enum.Parse(typeof(Advisor), i.ToString()), modernGovernment);
+				}
+
+				for (int i = 144; i < 256; i++)
+				{
+					palette[i] = governmentPortraits[0].Palette.Entries[i];
+				}
 			}
 			
 			string newsflash = TextFile.Instance.GetGameText($"KING/NEWS{(char)Common.Random.Next((int)'A', (int)'O')}")[0];
@@ -83,17 +92,14 @@ namespace CivOne.Screens
 
 			_canvas = new Picture(320, 200, palette);
 			_canvas.FillRectangle(15, 0, 0, 320, 100);
-			for (int xx = 0; xx < _canvas.Image.Width; xx += Icons.Newspaper.Width)
-			{
-				AddLayer(Icons.Newspaper, xx, 100);
-			}
+			
 			_canvas.DrawText("FLASH", 2, 5, 6, 3);
 			_canvas.DrawText("FLASH", 2, 5, 272, 3);
 			_canvas.DrawText(newsflash, 1, 5, 158, 3, TextAlign.Center);
 			_canvas.DrawText(newsflash, 1, 5, 158, 3, TextAlign.Center);
-			_canvas.DrawText(",-.", 4, 5, 8, 10);
-			_canvas.DrawText(",-.", 4, 5, 268, 10);
-			_canvas.DrawText(name, 4, 5, 158, 11, TextAlign.Center);
+			_canvas.DrawText(",-.", 4, 6, 8, 10);
+			_canvas.DrawText(",-.", 4, 6, 268, 10);
+			_canvas.DrawText(name, 4, 5, 160, 11, TextAlign.Center);
 			_canvas.DrawText(date, 0, 5, 8, 28);
 			_canvas.DrawText("10 cents", 0, 5, 272, 28);
 			_canvas.FillRectangle(5, 1, 1, 318, 1);
@@ -106,15 +112,34 @@ namespace CivOne.Screens
 			{
 				_canvas.DrawText(message[i], 3, 5, 16, 40 + (i * 17));
 			}
+
+			if (showGovernment)
+			{
+				string[] advisorNames = new string[] { "Defense Minister", "Domestic Advisor", "Foreign Minister", "Science Advisor" };
+				_canvas.FillRectangle(15, 0, 100, 320, 100);
+				_canvas.DrawText("New Cabinet:", 5, 5, 106, 102);
+				for (int i = 0; i < 4; i++)
+				{
+					AddLayer(governmentPortraits[i], 20 + (80 * i), 118);
+					_canvas.DrawText(advisorNames[i], 1, 5, 40 + (80 * i), (i % 2) == 0 ? 180 : 186, TextAlign.Center);
+				}
+			}
+			else
+			{
+				for (int xx = 0; xx < _canvas.Image.Width; xx += Icons.Newspaper.Width)
+				{
+					AddLayer(Icons.Newspaper, xx, 100);
+				}
+				Bitmap background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
+				Picture dialog = new Picture(152, 15);
+				dialog.FillLayerTile(background);
+				dialog.FillRectangle(0, 151, 0, 1, 15);
+				dialog.AddBorder(15, 8, 0, 0, 151, 15);
+				dialog.DrawText("Press any key to continue.", 0, 15, 4, 4);
+				_canvas.FillRectangle(5, 80, 128, 153, 17);
+				AddLayer(dialog, 81, 129);
+			}
 			
-			Bitmap background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
-			Picture dialog = new Picture(152, 15);
-			dialog.FillLayerTile(background);
-			dialog.FillRectangle(0, 151, 0, 1, 15);
-			dialog.AddBorder(15, 8, 0, 0, 151, 15);
-			dialog.DrawText("Press any key to continue.", 0, 15, 4, 4);
-			_canvas.FillRectangle(5, 80, 128, 153, 17);
-			AddLayer(dialog, 81, 129);
 		}
 	}
 }

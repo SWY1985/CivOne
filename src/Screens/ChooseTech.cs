@@ -86,7 +86,7 @@ namespace CivOne.Screens
 			Cursor = MouseCursor.Pointer;
 
 			bool modernGovernment = Game.Instance.HumanPlayer.Advances.Any(a => a.Id == (int)Advance.Invention);
-			Bitmap governmentPortrait = Icons.GovernmentPortrait(Government.Despotism, Advisor.Science, modernGovernment);
+			Bitmap governmentPortrait = Icons.GovernmentPortrait(Game.Instance.HumanPlayer.Government, Advisor.Science, modernGovernment);
 			Color[] palette = Resources.Instance.LoadPIC("SP257").Image.Palette.Entries;
 			for (int i = 144; i < 256; i++)
 			{
