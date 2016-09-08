@@ -205,6 +205,14 @@ namespace CivOne.Templates
 			}
 		}
 
+		public IUnit[] Units
+		{
+			get
+			{
+				return Game.Instance.GetUnits(X, Y);
+			}
+		}
+
 		public ITile this[int relativeX, int relativeY]
 		{
 			get
