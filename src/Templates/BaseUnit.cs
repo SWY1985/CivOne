@@ -353,7 +353,7 @@ namespace CivOne.Templates
 			switch (Class)
 			{
 				case UnitClass.Water:
-					return tile.Type == Terrain.Ocean;
+					return (tile.Type == Terrain.Ocean || tile.City != null);
 				case UnitClass.Land:
 					return tile.Type != Terrain.Ocean;
 			}
