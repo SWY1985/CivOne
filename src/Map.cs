@@ -31,33 +31,10 @@ namespace CivOne
 		private ITile[,] _tiles;
 		
 		public bool Ready { get; private set; }
-		
-		public ITile[,] GetMapPart(int x, int y, int width, int height)
-		{
-			ITile[,] area = new ITile[width, height];
-			
-			for (int xx = x; xx < x + width; xx++)
-			for (int yy = y; yy < y + height; yy++)
-			{
-				if (yy < 0 || yy >= HEIGHT)
-				{
-					area[xx - x, yy - y] = null;
-					continue;
-				}
-				
-				int mx = xx;
-				while (mx < 0) mx += 80;
-				while (mx >= WIDTH) mx -= WIDTH;
-				
-				area[xx - x, yy - y] = _tiles[mx, yy];
-			}
-			
-			return area;
-		}
 
 		public IEnumerable<ITile> QueryMapPart(int x, int y, int width, int height)
 		{
-			ITile[,] area = GetMapPart(x, y, width, height);
+			ITile[,] area = this[x, y, width, height];
 			for (int yy = 0; yy < height; yy++)
 			for (int xx = 0; xx < width; xx++)
 			{
@@ -76,11 +53,13 @@ namespace CivOne
 		
 		private bool NearOcean(int x, int y)
 		{
-			var map = GetMapPart(x - 1, y - 1, 3, 3);
-			return ((map[1, 0] != null && map[1, 0].Type == Terrain.Ocean) ||
-					(map[2, 1] != null && map[2, 1].Type == Terrain.Ocean) ||
-					(map[1, 2] != null && map[1, 2].Type == Terrain.Ocean) ||
-					(map[0, 1] != null && map[0, 1].Type == Terrain.Ocean));
+			for (int relY = -1; relY <= 1; relY++)
+			for (int relX = -1; relX <= 1; relX++)
+			{
+				if (Math.Abs(relX) == Math.Abs(relX)) continue;
+				if (_tiles[x + relX, y + relY] is Ocean) return true;
+			}
+			return false;
 		}
 		
 		internal static bool TileIsType(ITile tile, params Terrain[] terrain)
@@ -430,7 +409,7 @@ namespace CivOne
 				if ((nearOcean || tile.Type == Terrain.River) && riverLength > 5)
 				{
 					rivers++;
-					ITile[,] mapPart = GetMapPart(tile.X - 3, tile.Y - 3, 7, 7);
+					ITile[,] mapPart = this[tile.X - 3, tile.Y - 3, 7, 7];
 					for (int x = 0; x < 7; x++)
 					for (int y = 0; y < 7; y++)
 					{
@@ -860,6 +839,33 @@ namespace CivOne
 				y = (y % HEIGHT);
 				
 				_tiles[x, y] = value;
+			}
+		}
+		
+		public ITile[,] this[int x, int y, int width, int height]
+		{
+			get
+			{
+				if (width < 0)
+				{
+					width = Math.Abs(width);
+					x -= width;
+				}
+				if (height < 0)
+				{
+					height = Math.Abs(height);
+					y -= height;
+				}
+
+				ITile[,] output = new ITile[width, height];
+				
+				for (int yy = y; yy < y + height; yy++)
+				for (int xx = x; xx < x + width; xx++)
+				{
+					output[xx - x, yy - y] = this[xx, yy];
+				}
+				
+				return output;
 			}
 		}
 		

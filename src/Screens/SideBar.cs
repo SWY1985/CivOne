@@ -30,7 +30,7 @@ namespace CivOne.Screens
 			
 			if (GamePlay != null)
 			{
-				ITile[,] tile = Map.GetMapPart(GamePlay.X - 30, GamePlay.Y - 19, 78, 48);
+				ITile[,] tile = Map[GamePlay.X - 30, GamePlay.Y - 19, 78, 48];
 				for (int yy = 0; yy < 48; yy++)
 				for (int xx = 0; xx < 78; xx++)
 				{

@@ -165,7 +165,7 @@ namespace CivOne
 			get
 			{
 				Player player = Game.Instance.GetPlayer(Owner);
-				ITile[,] tiles = Map.GetMapPart(X - 2, Y - 2, 5, 5);
+				ITile[,] tiles = Map[X - 2, Y - 2, 5, 5];
 				for (int xx = 0; xx < 5; xx++)
 				for (int yy = 0; yy < 5; yy++)
 				{

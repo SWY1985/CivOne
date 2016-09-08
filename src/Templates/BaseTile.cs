@@ -104,7 +104,7 @@ namespace CivOne.Templates
 				for (int relX = -1; relX <= 1; relX++)
 				{
 					if (relX == 0 && relY == 0) continue;
-					yield return Map[X + relX, Y + relY];
+					yield return this[relX, relY];
 				}
 			}
 		}
@@ -195,6 +195,14 @@ namespace CivOne.Templates
 		protected bool AlternateSpecial()
 		{
 			return ((X + Y) % 4 == 0) || ((X + Y) % 4 == 3);
+		}
+
+		public ITile this[int relativeX, int relativeY]
+		{
+			get
+			{
+				return Map[X + relativeX, Y + relativeY];
+			}
 		}
 		
 		protected BaseTile(int x, int y, bool special = false)
