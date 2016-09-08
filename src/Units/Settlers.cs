@@ -42,7 +42,7 @@ namespace CivOne.Units
 				PartMoves = 0;
 				return true;
 			}
-			else if (Game.Instance.HumanPlayer.Advances.Any(a => a is Pottery) && !tile.IsOcean && tile.Road && Game.Instance.GetCity(X, Y) == null)
+			else if (Game.Instance.HumanPlayer.Advances.Any(a => a is RailRoad) && !tile.IsOcean && tile.Road && Game.Instance.GetCity(X, Y) == null)
 			{
 				BuildingRoad = 3;
 				MovesLeft = 0;
