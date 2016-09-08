@@ -109,6 +109,7 @@ namespace CivOne
 			if (!TickThread.IsAlive)
 			{
 				Close();
+				Environment.Exit(0);
 				return;
 			}
 			
