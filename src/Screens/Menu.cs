@@ -58,6 +58,7 @@ namespace CivOne.Screens
 		public int IndentTitle { get; set; }
 		public int RowHeight { get; set; }
 		
+		private bool _mouseDown = false;
 		private bool _change = true;
 		private int _activeItem = 0;
 		public int ActiveItem
@@ -157,6 +158,8 @@ namespace CivOne.Screens
 		
 		public override bool MouseDown(ScreenEventArgs args)
 		{
+			_mouseDown = true;
+
 			int index = MouseOverItem(args);
 			if (index < 0 && MissClick != null)
 			{
@@ -171,6 +174,8 @@ namespace CivOne.Screens
 		
 		public override bool MouseUp(ScreenEventArgs args)
 		{
+			if (!_mouseDown) return true;
+
 			int index = MouseOverItem(args);
 			if (index < 0) return false;
 			ActiveItem = index;
