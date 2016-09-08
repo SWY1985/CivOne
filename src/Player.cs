@@ -115,6 +115,19 @@ namespace CivOne
 				_gold = value;
 			}
 		}
+
+		private void CivilopediaClosed(object sender, EventArgs args)
+		{
+			_currentResearch = null;
+			Science = 0;
+		}
+
+		private void DiscoveryClosed(object sender, EventArgs args)
+		{
+			Screens.Civilopedia civilopedia = new Screens.Civilopedia(_currentResearch);
+			civilopedia.Closed += CivilopediaClosed;
+			Common.AddScreen(civilopedia);
+		}
 		
 		public short Science
 		{
@@ -131,12 +144,9 @@ namespace CivOne
 					_advances.Add(_currentResearch.Id);
 					if (Human)
 					{
-						Screens.Civilopedia civilopedia = new Screens.Civilopedia(_currentResearch);
-						civilopedia.Closed += (s, a) => {
-							_currentResearch = null;
-							Science = 0;
-						};
-						Common.AddScreen(civilopedia);
+						Discovery discovery = new Discovery(_currentResearch);
+						discovery.Closed += DiscoveryClosed;
+						Common.AddScreen(discovery);
 					}
 				}
 				if (_currentResearch == null)
