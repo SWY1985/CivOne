@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Linq;
+using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
@@ -37,6 +38,13 @@ namespace CivOne.Units
 			if (!tile.IsOcean && !tile.Road && Game.Instance.GetCity(X, Y) == null)
 			{
 				BuildingRoad = 2;
+				MovesLeft = 0;
+				PartMoves = 0;
+				return true;
+			}
+			else if (Game.Instance.HumanPlayer.Advances.Any(a => a is Pottery) && !tile.IsOcean && tile.Road && Game.Instance.GetCity(X, Y) == null)
+			{
+				BuildingRoad = 3;
 				MovesLeft = 0;
 				PartMoves = 0;
 				return true;
@@ -88,6 +96,10 @@ namespace CivOne.Units
 				BuildingRoad--;
 				if (BuildingRoad > 0)
 				{
+					if (Map[X, Y].Road)
+					{
+						Map[X, Y].RailRoad = true;
+					}
 					Map[X, Y].Road = true;
 					MovesLeft = 0;
 					PartMoves = 0;

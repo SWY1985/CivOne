@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Collections.Generic;
+using System.Linq;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
@@ -164,6 +165,19 @@ namespace CivOne.Templates
 			set
 			{
 				_road = true;
+			}
+		}
+		private bool _railRoad = false;
+		public virtual bool RailRoad
+		{
+			get
+			{
+				if (Game.Started && !_railRoad && Game.Instance.GetCity(X, Y) != null && Map[X, Y].GetBorderTiles().Any(t => t.RailRoad)) _railRoad = true;
+				return _railRoad;
+			}
+			set
+			{
+				_railRoad = true;
 			}
 		}
 		public virtual bool Irrigation { get; set; }

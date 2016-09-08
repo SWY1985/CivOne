@@ -199,7 +199,7 @@ namespace CivOne.GFX
 		
 		private static void DrawRoad(ref Picture output, ITile tile, bool graphics16 = false)
 		{
-			if (!tile.Road) return;
+			if (!tile.Road || tile.RailRoad) return;
 						
 			bool connected = false;
 			ITile borderTile = null;
@@ -213,6 +213,31 @@ namespace CivOne.GFX
 			}
 			if (connected) return;
 			output.FillRectangle(6, 7, 7, 2, 2);
+		}
+		
+		private static void DrawRailRoad(ref Picture output, ITile tile, bool graphics16 = false)
+		{
+			if (!tile.RailRoad) return;
+						
+			bool connected = false;
+			ITile borderTile = null;
+			Direction[] directions = new [] { Direction.North, Direction.NorthEast, Direction.East, Direction.SouthEast, Direction.South, Direction.SouthWest, Direction.West, Direction.NorthWest };
+			for (int i = 0; i < directions.Length; i++)
+			{
+				if ((borderTile = tile.GetBorderTile(directions[i])) == null) continue;
+				if (!borderTile.Road || borderTile.RailRoad) continue;
+				output.AddLayer(Res.GetPart(graphics16 ? "SPRITES" : "SP257", (i * 16), 48, 16, 16), 0, 0);
+				connected = true;
+			}
+			for (int i = 0; i < directions.Length; i++)
+			{
+				if ((borderTile = tile.GetBorderTile(directions[i])) == null) continue;
+				if (!borderTile.RailRoad) continue;
+				output.AddLayer(Res.GetPart(graphics16 ? "SPRITES" : "SP257", 128 + (i * 16), 96, 16, 16), 0, 0);
+				connected = true;
+			}
+			if (connected) return;
+			output.FillRectangle(5, 7, 7, 2, 2);
 		}
 		
 		private static void DrawHut(ref Picture output, ITile tile, bool graphics16 = false)
@@ -268,6 +293,7 @@ namespace CivOne.GFX
 				DrawMine(ref output, tile, true);
 			}
 			DrawRoad(ref output, tile, true);
+			DrawRailRoad(ref output, tile, true);
 			DrawHut(ref output, tile, true);
 			
 			return output.Image;
@@ -337,6 +363,7 @@ namespace CivOne.GFX
 				DrawMine(ref output, tile);
 			}
 			DrawRoad(ref output, tile);
+			DrawRailRoad(ref output, tile, true);
 			DrawHut(ref output, tile);
 			
 			return output.Image;

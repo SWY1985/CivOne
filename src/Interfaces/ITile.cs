@@ -35,6 +35,7 @@ namespace CivOne.Interfaces
 		IEnumerable<ITile> GetBorderTiles();
 		Terrain GetBorderType(Direction direction);
 		bool Road { get; set; }
+		bool RailRoad { get; set; }
 		bool Irrigation { get; set; }
 		bool Mine { get; set; }
 		bool Hut { get; set; }
