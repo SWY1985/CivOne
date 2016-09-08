@@ -29,6 +29,7 @@ namespace CivOne.Units
 
 		public int BuildingRoad { get; private set; }
 		public int BuildingIrrigation { get; private set; }
+		public int BuildingMine { get; private set; }
 
 		public bool BuildRoad()
 		{
@@ -50,6 +51,21 @@ namespace CivOne.Units
 				if (!tile.IsOcean && !(tile.Irrigation) && ((tile is Desert) || (tile is Grassland) || (tile is Hills) || (tile is Plains) || (tile is River)) && Game.Instance.GetCity(X, Y) == null)
 				{
 					BuildingIrrigation = 3;
+					MovesLeft = 0;
+					return true;
+				}
+			}
+			return false;
+		}
+
+		public bool BuildMine()
+		{
+			ITile tile = Map[X, Y];
+			if ((tile.GetBorderTiles().Any(t => (t.X == X || t.Y == Y) && (t.IsOcean || t.Irrigation || (t is River)))) || (tile is River))
+			{
+				if (!tile.IsOcean && !(tile.Mine) && ((tile is Desert) || (tile is Hills) || (tile is Mountains)) && Game.Instance.GetCity(X, Y) == null)
+				{
+					BuildingMine = 4;
 					MovesLeft = 0;
 					return true;
 				}
@@ -79,6 +95,20 @@ namespace CivOne.Units
 				else
 				{
 					Map[X, Y].Irrigation = true;
+					Map[X, Y].Mine = false;
+				}
+			}
+			else if (BuildingMine > 0)
+			{
+				BuildingMine--;
+				if (BuildingMine > 0)
+				{
+					MovesLeft = 0;
+				}
+				else
+				{
+					Map[X, Y].Irrigation = false;
+					Map[X, Y].Mine = true;
 				}
 			}
 		}
@@ -97,6 +127,13 @@ namespace CivOne.Units
 				Picture unit = new Picture(base.GetUnit(colour).Image);
 				unit.DrawText("I", 0, 5, 8, 9, TextAlign.Center);
 				unit.DrawText("I", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
+				return unit; 
+			}
+			else if (BuildingMine > 0)
+			{
+				Picture unit = new Picture(base.GetUnit(colour).Image);
+				unit.DrawText("M", 0, 5, 8, 9, TextAlign.Center);
+				unit.DrawText("M", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
 				return unit; 
 			}
 			return base.GetUnit(colour);
