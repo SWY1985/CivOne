@@ -77,11 +77,19 @@ namespace CivOne
 			}
 		}
 
+		public City[] Cities
+		{
+			get
+			{
+				return Game.Instance.GetCities().Where(c => c.Owner == _civilization.PreferredPlayerNumber).ToArray();
+			}
+		}
+
 		public int Population
 		{
 			get
 			{
-				return Game.Instance.GetCities().Where(c => c.Owner == _civilization.PreferredPlayerNumber).Sum(c => c.Population);
+				return Cities.Sum(c => c.Population);
 			}
 		}
 		

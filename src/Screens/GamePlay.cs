@@ -75,6 +75,19 @@ namespace CivOne.Screens
 			MenuCancel(sender, args);
 		}
 		
+		private void MenuRevolutionChoice(object sender, EventArgs args)
+		{
+			switch ((sender as Menu.Item).Value)
+			{
+				case 0:
+					break;
+				case 1:
+					Common.AddScreen(new Newspaper($"The {Game.Instance.HumanPlayer.TribeNamePlural} are", "revolting! Citizens", "demand new govt."));
+					break;
+			}
+			MenuCancel(sender, args);
+		}
+		
 		private void MenuRevolution()
 		{
 			_menuLocation = new Point(64, 80);
@@ -102,7 +115,7 @@ namespace CivOne.Screens
 			foreach (string choice in new [] { "_No, thanks.", "_Yes, we need a new government." })
 			{
 				menu.Items.Add(menuItem = new Menu.Item(choice, i++));
-				menuItem.Selected += MenuQuitChoice;
+				menuItem.Selected += MenuRevolutionChoice;
 			}
 			menu.MissClick += MenuCancel;
 			menu.Cancel += MenuCancel;
