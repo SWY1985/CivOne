@@ -87,6 +87,27 @@ namespace CivOne
 		{
 			return terrain.Any(x => tile.Type == x);
 		}
+
+		public void ChangeTileType(int x, int y, Terrain type)
+		{
+			bool special = TileIsSpecial(x, y);
+			switch(type)
+			{
+				case Terrain.Forest: _tiles[x, y] = new Forest(x, y, special); break;
+				case Terrain.Swamp: _tiles[x, y] = new Swamp(x, y, special); break;
+				case Terrain.Plains: _tiles[x, y] = new Plains(x, y, special); break;
+				case Terrain.Tundra: _tiles[x, y] = new Tundra(x, y, special); break;
+				case Terrain.River: _tiles[x, y] = new River(x, y); break;
+				case Terrain.Grassland1:
+				case Terrain.Grassland2: _tiles[x, y] = new Grassland(x, y); break;
+				case Terrain.Jungle: _tiles[x, y] = new Jungle(x, y, special); break;
+				case Terrain.Hills: _tiles[x, y] = new Hills(x, y, special); break;
+				case Terrain.Mountains: _tiles[x, y] = new Mountains(x, y, special); break;
+				case Terrain.Desert: _tiles[x, y] = new Desert(x, y, special); break;
+				case Terrain.Arctic: _tiles[x, y] = new Arctic(x, y, special); break;
+				case Terrain.Ocean: _tiles[x, y] = new Ocean(x, y, special); break;
+			}
+		}
 		
 		private int ModGrid(int x, int y)
 		{

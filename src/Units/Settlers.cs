@@ -38,6 +38,7 @@ namespace CivOne.Units
 			{
 				BuildingRoad = 2;
 				MovesLeft = 0;
+				PartMoves = 0;
 				return true;
 			}
 			return false;
@@ -46,12 +47,20 @@ namespace CivOne.Units
 		public bool BuildIrrigation()
 		{
 			ITile tile = Map[X, Y];
-			if ((tile.GetBorderTiles().Any(t => (t.X == X || t.Y == Y) && (t.IsOcean || t.Irrigation || (t is River)))) || (tile is River))
+			if ((tile is Forest) || (tile is Jungle) || (tile is Swamp))
+			{
+				BuildingIrrigation = 4;
+				MovesLeft = 0;
+				PartMoves = 0;
+				return true;
+			}
+			else if ((tile.GetBorderTiles().Any(t => (t.X == X || t.Y == Y) && (t.IsOcean || t.Irrigation || (t is River)))) || (tile is River))
 			{
 				if (!tile.IsOcean && !(tile.Irrigation) && ((tile is Desert) || (tile is Grassland) || (tile is Hills) || (tile is Plains) || (tile is River)) && Game.Instance.GetCity(X, Y) == null)
 				{
 					BuildingIrrigation = 3;
 					MovesLeft = 0;
+					PartMoves = 0;
 					return true;
 				}
 			}
@@ -61,14 +70,12 @@ namespace CivOne.Units
 		public bool BuildMine()
 		{
 			ITile tile = Map[X, Y];
-			if ((tile.GetBorderTiles().Any(t => (t.X == X || t.Y == Y) && (t.IsOcean || t.Irrigation || (t is River)))) || (tile is River))
+			if (!tile.IsOcean && !(tile.Mine) && ((tile is Desert) || (tile is Hills) || (tile is Mountains) || (tile is Jungle) || (tile is Grassland) || (tile is Plains) || (tile is Swamp)) && Game.Instance.GetCity(X, Y) == null)
 			{
-				if (!tile.IsOcean && !(tile.Mine) && ((tile is Desert) || (tile is Hills) || (tile is Mountains)) && Game.Instance.GetCity(X, Y) == null)
-				{
-					BuildingMine = 4;
-					MovesLeft = 0;
-					return true;
-				}
+				BuildingMine = 4;
+				MovesLeft = 0;
+				PartMoves = 0;
+				return true;
 			}
 			return false;
 		}
@@ -83,6 +90,7 @@ namespace CivOne.Units
 				{
 					Map[X, Y].Road = true;
 					MovesLeft = 0;
+					PartMoves = 0;
 				}
 			}
 			else if (BuildingIrrigation > 0)
@@ -91,6 +99,19 @@ namespace CivOne.Units
 				if (BuildingIrrigation > 0)
 				{
 					MovesLeft = 0;
+					PartMoves = 0;
+				}
+				else if (Map[X, Y] is Forest)
+				{
+					Map[X, Y].Irrigation = false;
+					Map[X, Y].Mine = false;
+					Map.ChangeTileType(X, Y, Terrain.Plains);
+				}
+				else if ((Map[X, Y] is Jungle) || (Map[X, Y] is Swamp))
+				{
+					Map[X, Y].Irrigation = false;
+					Map[X, Y].Mine = false;
+					Map.ChangeTileType(X, Y, Terrain.Grassland1);
 				}
 				else
 				{
@@ -104,6 +125,13 @@ namespace CivOne.Units
 				if (BuildingMine > 0)
 				{
 					MovesLeft = 0;
+					PartMoves = 0;
+				}
+				else if ((Map[X, Y] is Jungle) || (Map[X, Y] is Grassland) || (Map[X, Y] is Plains) || (Map[X, Y] is Swamp))
+				{
+					Map[X, Y].Irrigation = false;
+					Map[X, Y].Mine = false;
+					Map.ChangeTileType(X, Y, Terrain.Forest);
 				}
 				else
 				{
