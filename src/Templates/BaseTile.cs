@@ -159,7 +159,7 @@ namespace CivOne.Templates
 		{
 			get
 			{
-				if (Game.Started && !_road && Game.Instance.GetCity(X, Y) != null) _road = true;
+				if (Game.Started && !_road && City != null) _road = true;
 				return _road;
 			}
 			set
@@ -172,7 +172,7 @@ namespace CivOne.Templates
 		{
 			get
 			{
-				if (Game.Started && !_railRoad && Game.Instance.GetCity(X, Y) != null && Map[X, Y].GetBorderTiles().Any(t => t.RailRoad)) _railRoad = true;
+				if (Game.Started && !_railRoad && City != null && Map[X, Y].GetBorderTiles().Any(t => t.RailRoad)) _railRoad = true;
 				return _railRoad;
 			}
 			set
@@ -195,6 +195,14 @@ namespace CivOne.Templates
 		protected bool AlternateSpecial()
 		{
 			return ((X + Y) % 4 == 0) || ((X + Y) % 4 == 3);
+		}
+
+		public City City
+		{
+			get
+			{
+				return Game.Instance.GetCity(X, Y);
+			}
 		}
 
 		public ITile this[int relativeX, int relativeY]
