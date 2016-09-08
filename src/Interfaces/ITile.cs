@@ -41,6 +41,7 @@ namespace CivOne.Interfaces
 		bool Hut { get; set; }
 		bool IsOcean { get; }
 		City City { get; }
+		IUnit[] Units { get; }
 		ITile this[int relativeX, int relativeY] { get; }
 	}
 }
