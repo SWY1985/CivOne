@@ -35,14 +35,14 @@ namespace CivOne.Units
 		public bool BuildRoad()
 		{
 			ITile tile = Map[X, Y];
-			if (!tile.IsOcean && !tile.Road && Game.Instance.GetCity(X, Y) == null)
+			if (!tile.IsOcean && !tile.Road && tile.City == null)
 			{
 				BuildingRoad = 2;
 				MovesLeft = 0;
 				PartMoves = 0;
 				return true;
 			}
-			else if (Game.Instance.HumanPlayer.Advances.Any(a => a is RailRoad) && !tile.IsOcean && tile.Road && Game.Instance.GetCity(X, Y) == null)
+			else if (Game.Instance.HumanPlayer.Advances.Any(a => a is RailRoad) && !tile.IsOcean && tile.Road && tile.City == null)
 			{
 				BuildingRoad = 3;
 				MovesLeft = 0;
@@ -64,7 +64,7 @@ namespace CivOne.Units
 			}
 			else if ((tile.GetBorderTiles().Any(t => (t.X == X || t.Y == Y) && (t.IsOcean || t.Irrigation || (t is River)))) || (tile is River))
 			{
-				if (!tile.IsOcean && !(tile.Irrigation) && ((tile is Desert) || (tile is Grassland) || (tile is Hills) || (tile is Plains) || (tile is River)) && Game.Instance.GetCity(X, Y) == null)
+				if (!tile.IsOcean && !(tile.Irrigation) && ((tile is Desert) || (tile is Grassland) || (tile is Hills) || (tile is Plains) || (tile is River)) && tile.City == null)
 				{
 					BuildingIrrigation = 3;
 					MovesLeft = 0;
@@ -78,7 +78,7 @@ namespace CivOne.Units
 		public bool BuildMine()
 		{
 			ITile tile = Map[X, Y];
-			if (!tile.IsOcean && !(tile.Mine) && ((tile is Desert) || (tile is Hills) || (tile is Mountains) || (tile is Jungle) || (tile is Grassland) || (tile is Plains) || (tile is Swamp)) && Game.Instance.GetCity(X, Y) == null)
+			if (!tile.IsOcean && !(tile.Mine) && ((tile is Desert) || (tile is Hills) || (tile is Mountains) || (tile is Jungle) || (tile is Grassland) || (tile is Plains) || (tile is Swamp)) && tile.City == null)
 			{
 				BuildingMine = 4;
 				MovesLeft = 0;

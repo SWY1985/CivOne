@@ -132,8 +132,7 @@ namespace CivOne.Screens
 				{
 					if (!Settings.Instance.RevealWorld && !t.Visible) continue;
 
-					City city = Game.Instance.GetCity(t.Tile.X, t.Tile.Y);
-					if (city != null) continue;
+					if (t.Tile.City != null) continue;
 					
 					IUnit[] units = Game.Instance.GetUnits(t.Tile.X, t.Tile.Y).Where(u => !u.Moving).ToArray();
 					if (units.Length == 0) continue;
@@ -160,7 +159,7 @@ namespace CivOne.Screens
 				{
 					if (!Settings.Instance.RevealWorld && !t.Visible) continue;
 
-					City city = Game.Instance.GetCity(t.Tile.X, t.Tile.Y);
+					City city = t.Tile.City;
 					if (city == null) continue;
 					
 					if (Game.Instance.GetUnits(t.Tile.X, t.Tile.Y).Length > 0)
@@ -204,7 +203,7 @@ namespace CivOne.Screens
 						continue;
 					}
 
-					if (Game.Instance.GetCity(t.Tile.X, t.Tile.Y) != null && units.Length == 1)
+					if (t.Tile.City != null && units.Length == 1)
 					{
 						AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position.X - 1, t.Position.Y - 1);
 						continue;
@@ -360,7 +359,7 @@ namespace CivOne.Screens
 			while (xx  < 0) xx += Map.WIDTH;
 			while (xx  >= Map.WIDTH) xx -= Map.WIDTH;
 			
-			City city = Game.Instance.GetCity(_x + x, _y + y);
+			City city = Map[_x + x, _y + y].City;
 			
 			if ((args.Buttons & MouseButton.Right) > 0)
 			{

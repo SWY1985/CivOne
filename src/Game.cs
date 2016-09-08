@@ -148,9 +148,9 @@ namespace CivOne
 
 			if (cityName == null)
 			{
-				if (discardSettlers && Game.Instance.GetCity(x, y) != null)
+				if (discardSettlers && GetCity(x, y) != null)
 				{
-					Game.Instance.GetCity(x, y).Size++;
+					GetCity(x, y).Size++;
 					DisbandUnit(Game.Instance.ActiveUnit);
 					return;
 				}
@@ -187,7 +187,7 @@ namespace CivOne
 			FoundCity(ActiveUnit.X, ActiveUnit.Y);
 		}
 		
-		public City GetCity(int x, int y)
+		internal City GetCity(int x, int y)
 		{
 			while (x < 0) x += Map.WIDTH;
 			while (x >= Map.WIDTH) x-= Map.WIDTH;
@@ -439,7 +439,7 @@ namespace CivOne
 				if (Map.Instance.ContinentTiles(tile.ContinentId).Count(t => Map.TileIsType(t, Terrain.Plains, Terrain.Grassland1, Terrain.Grassland2, Terrain.River)) < (32 - (GameTurn / 16))) continue; // Check buildable tiles on continent
 				
 				// After 0 AD, don't spawn a Civilization on a continent that already contains cities.
-				if (Common.TurnToYear(GameTurn) >= 0 && Map.Instance.ContinentTiles(tile.ContinentId).Any(t => GetCity(t.X, t.Y) != null)) continue;
+				if (Common.TurnToYear(GameTurn) >= 0 && Map.Instance.ContinentTiles(tile.ContinentId).Any(t => t.City != null)) continue;
 				
 				Console.WriteLine(loopCounter.ToString());
 				
