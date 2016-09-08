@@ -50,6 +50,7 @@ namespace CivOne.Screens
 		public int X { get; set; }
 		public int Y { get; set; }
 		public int Width { get; set; }
+		public int Indent { get; set; }
 		public byte TitleColour { get; set; }
 		public byte ActiveColour { get; set; }
 		public byte TextColour { get; set; }
@@ -103,7 +104,7 @@ namespace CivOne.Screens
 				for (int i = 0; i < Items.Count; i++)
 				{
 					yy = Y + (i * fontHeight) + offsetY;
-					_canvas.DrawText(Items[i].Text, FontId, (byte)(Items[i].Enabled ? TextColour : DisabledColour), X + 8, yy + 1);
+					_canvas.DrawText(Items[i].Text, FontId, (byte)(Items[i].Enabled ? TextColour : DisabledColour), X + Indent, yy + 1);
 				}
 				_change = false;
 				return true;
@@ -201,6 +202,7 @@ namespace CivOne.Screens
 
 			Cursor = MouseCursor.Pointer;
 			IndentTitle = 8;
+			Indent = 8;
 			
 			_canvas = new Picture(320, 200, colours);
 		}

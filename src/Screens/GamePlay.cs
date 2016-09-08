@@ -78,22 +78,24 @@ namespace CivOne.Screens
 		private void MenuRevolution()
 		{
 			_menuLocation = new Point(64, 80);
-			_menuGraphics = new Picture(236, 33);
+			_menuGraphics = new Picture(232, 31);
 			_menuGraphics.FillLayerTile(_menuBackground);
-			_menuGraphics.AddBorder(15, 8, 0, 0, 236, 33);
-			_menuGraphics.DrawText("Are you sure you want a REVOLUTION?", 0, 15, 5, 5);
+			_menuGraphics.FillRectangle(0, 231, 0, 1, 31);
+			_menuGraphics.AddBorder(15, 8, 0, 0, 231, 31);
+			_menuGraphics.DrawText("Are you sure you want a REVOLUTION?", 0, 15, 4, 4);
 			
-			Bitmap background = (Bitmap)_menuGraphics.GetPart(3, 12, 228, 16).Clone();
+			Bitmap background = (Bitmap)_menuGraphics.GetPart(2, 11, 228, 16).Clone();
 			Picture.ReplaceColours(background, new byte[] { 7, 22 }, new byte[] { 11, 3 });
 
 			Menu menu = new Menu(Canvas.Image.Palette.Entries, background)
 			{
-				X = 67,
-				Y = 92,
+				X = 66,
+				Y = 91,
 				Width = 227,
 				ActiveColour = 11,
 				TextColour = 5,
-				FontId = 0
+				FontId = 0,
+				Indent = 2
 			};
 			Menu.Item menuItem;
 			int i = 0;
