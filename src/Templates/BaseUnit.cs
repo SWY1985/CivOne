@@ -22,6 +22,7 @@ namespace CivOne.Templates
 	{
 		private int _x, _y;
 
+		public bool Sentry { get; set; }
 		public bool Moving { get; private set; }
 		public int MoveFrame { get; private set; }
 		public int FromX { get; private set; }
@@ -343,6 +344,15 @@ namespace CivOne.Templates
 				else Picture.ReplaceColours(image, new byte[] { 3, 10, 2 }, new byte[] { 0, Common.ColourLight[colour], Common.ColourDark[colour] });
 				
 				_unitCache[unitId, colour] = new Picture(image);
+			}
+			if (!showState || !Sentry)
+				return _unitCache[unitId, colour];
+			
+			if (Sentry)
+			{
+				Bitmap output = (Bitmap)_unitCache[unitId, colour].Image.Clone();
+				Picture.ReplaceColours(output, 5, 7);
+				return new Picture(output);
 			}
 			return _unitCache[unitId, colour];
 		}

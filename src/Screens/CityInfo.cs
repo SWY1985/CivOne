@@ -168,15 +168,45 @@ namespace CivOne.Screens
 			}
 			return false;
 		}
+
+		private bool InfoClick(ScreenEventArgs args)
+		{
+			IUnit[] units = _city.Tile.Units;
+			for (int i = 0; i < units.Length; i++)
+			{
+				int xx = 4 + ((i % 6) * 18);
+				int yy = 0 + (((i - (i % 6)) / 6) * 16);
+
+				if (new Rectangle(xx, yy, 16, 16).Contains(args.Location))
+				{
+					units[i].Sentry = false;
+					_update = true;
+					break;
+				}
+			}
+			return true;
+		}
 		
 		public override bool MouseDown(ScreenEventArgs args)
 		{
-			if (args.Y > 9) return false;
-			if (args.X < 34) return GotoInfo();
-			else if (args.X < 66) return GotoHappy();
-			else if (args.X < 99) return GotoMap();
-			else if (args.X < 132) return GotoView();
-			return false;
+			if (args.Y < 10)
+			{
+				if (args.X < 34) return GotoInfo();
+				else if (args.X < 66) return GotoHappy();
+				else if (args.X < 99) return GotoMap();
+				else if (args.X < 132) return GotoView();
+			}
+			
+			switch (_choice)
+			{
+				case CityInfoChoice.Info:
+					MouseArgsOffset(ref args, 0, 9);
+					return InfoClick(args);
+				case CityInfoChoice.Happy:
+				case CityInfoChoice.Map:
+					break;
+			}
+			return true;
 		}
 
 		public void Close()
