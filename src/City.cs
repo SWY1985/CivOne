@@ -51,6 +51,12 @@ namespace CivOne
 			set
 			{
 				_size = value;
+				if (_size == 0)
+				{
+					Game.Instance.CreateUnit(Unit.Settlers, X, Y, Owner);
+					Game.Instance.DestroyCity(this);
+					return;
+				}
 				SetResourceTiles();
 			}
 		}
@@ -58,6 +64,62 @@ namespace CivOne
 		internal int Food { get; private set; }
 		internal IProduction CurrentProduction { get; private set; }
 		private List<ITile> _resourceTiles = new List<ITile>();
+
+		internal int ShieldCosts
+		{
+			get
+			{
+				switch (Game.Instance.GetPlayer(_owner).Government)
+				{
+					case Government.Anarchy:
+					case Government.Despotism:
+						int costs = 0;
+						for (int i = 0; i < Units.Length; i++)
+						{
+							if (i < _size) continue;
+							costs++;
+						}
+						return costs;
+					default:
+						return Units.Length;
+				} 
+			}
+		}
+
+		internal int ShieldIncome
+		{
+			get
+			{
+				return ResourceTiles.Sum(t => t.Food) - ShieldCosts;
+			}
+		}
+		
+		internal int FoodCosts
+		{
+			get
+			{
+				int costs = (_size * 2);
+				switch (Game.Instance.GetPlayer(_owner).Government)
+				{
+					case Government.Anarchy:
+					case Government.Despotism:
+						costs += Units.Count(u => (u is Settlers));
+						break;
+					default:
+						costs += (Units.Count(u => (u is Settlers)) * 2);
+						break;
+				} 
+				return costs;
+			}
+		}
+
+		internal int FoodIncome
+		{
+			get
+			{
+				return ResourceTiles.Sum(t => t.Food) - FoodCosts;
+			}
+		}
 
 		internal IEnumerable<ITile> ResourceTiles
 		{
@@ -178,10 +240,31 @@ namespace CivOne
 			}
 		}
 
+		public IUnit[] Units
+		{
+			get
+			{
+				return Game.Instance.GetUnits().Where(u => u.Home == this).ToArray();
+			}
+		}
+
 		internal void NewTurn()
 		{
-			// Temporary code
-			Shields += ResourceTiles.Sum(t => t.Shield);
+			Food += FoodIncome;
+			if (Food < 0)
+			{
+				Food = 0;
+				Size--;
+				if (Size == 0) return;
+			}
+			else if (Food >= (int)(Size + 1) * 10)
+			{
+				Food -= ((int)(Size + 1) * 10);
+				Size++;
+			}
+
+			if (ShieldIncome > 0)
+				Shields += ShieldIncome;
 			if (Shields >= (int)CurrentProduction.Price * 10)
 			{
 				Shields = 0;
@@ -191,13 +274,8 @@ namespace CivOne
 					unit.SetHome(this);
 				}
 			}
-			
-			Food += ResourceTiles.Sum(t => t.Food);
-			if (Food >= (int)(Size + 1) * 10)
-			{
-				Food -= ((int)(Size + 1) * 10);
-				Size++;
-			}
+
+			//TODO: Science and taxes
 		}
 
 		internal City()

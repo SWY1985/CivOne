@@ -81,8 +81,10 @@ namespace CivOne
 			//
 			foreach (IUnit unit in _units)
 				unit.NewTurn();
-			foreach (City city in _cities)
+			foreach (City city in _cities.ToArray())
+			{
 				city.NewTurn();
+			}
 			while (++_currentPlayer >= _players.Length || _players[_currentPlayer] != HumanPlayer)
 			{
 				// Skip all AI players for now
@@ -185,6 +187,11 @@ namespace CivOne
 			if (ActiveUnit == null || !(ActiveUnit is Settlers)) return;
 			FoundCity(ActiveUnit.X, ActiveUnit.Y);
 		}
+
+		public void DestroyCity(City city)
+		{
+			_cities.Remove(city);
+		}
 		
 		internal City GetCity(int x, int y)
 		{
@@ -254,6 +261,11 @@ namespace CivOne
 			if (y < 0) return null;
 			if (y >= Map.HEIGHT) return null; 
 			return _units.Where(u => u.X == x && u.Y == y).ToArray();
+		}
+
+		internal IUnit[] GetUnits()
+		{
+			return _units.ToArray();
 		}
 
 		public City[] GetCities()
