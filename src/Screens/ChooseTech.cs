@@ -118,7 +118,7 @@ namespace CivOne.Screens
 			_menuGfx.DrawText("Pick one...", 0, 15, 46, 28);
 			_menuGfx.DrawText($"(Help available)", 1, 10, 202, dialogHeight - Resources.Instance.GetFontHeight(1), TextAlign.Right);
 
-			_canvas.FillRectangle(5, 38, 56, 204, 99);
+			_canvas.FillRectangle(5, 38, 56, 204, dialogHeight + 2);
 			AddLayer(_menuGfx, 39, 57);
 		}
 	}
