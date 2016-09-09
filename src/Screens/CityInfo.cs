@@ -41,7 +41,6 @@ namespace CivOne.Screens
 					output.AddLayer(units[i].GetUnit(units[i].Owner).Image, xx, yy);
 					output.DrawText($"{units[i].Home.Name.Substring(0, 3)}.", 1, 5, xx, yy + 16);
 				}
-				//Tile
 				return output;
 			}
 		}
