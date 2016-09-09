@@ -79,21 +79,38 @@ namespace CivOne
 		{
 			_activeUnit = 0;
 			//
-			foreach (IUnit unit in _units)
-				unit.NewTurn();
-			foreach (City city in _cities.ToArray())
-			{
-				city.NewTurn();
-			}
 			while (++_currentPlayer >= _players.Length || _players[_currentPlayer] != HumanPlayer)
 			{
 				// Skip all AI players for now
 				if (_currentPlayer >= _players.Length)
+				{
 					_currentPlayer = 0;
+					GameTurn++;
+				}
 				_players[_currentPlayer].NewTurn();
+				foreach (City city in _cities.Where(c => c.Owner == _currentPlayer).ToArray())
+				{
+					city.NewTurn();
+				}
+				foreach (IUnit unit in _units.Where(c => c.Owner == _currentPlayer))
+				{
+					unit.NewTurn();
+				}
+				IUnit[] units = _units.Where(c => c.Owner == _currentPlayer).ToArray();
+				foreach (IUnit unit in units)
+				{
+					AI.MoveUnit(unit);
+				}
+			}
+			foreach (City city in _cities.Where(c => c.Owner == _currentPlayer).ToArray())
+			{
+				city.NewTurn();
+			}
+			foreach (IUnit unit in _units.Where(c => c.Owner == _currentPlayer))
+			{
+				unit.NewTurn();
 			}
 			_players[_currentPlayer].NewTurn();
-			GameTurn++;
 			if (!_cities.Any(c => c.Owner == _currentPlayer) && !_units.Any(u => u.Owner == _currentPlayer))
 				Common.AddScreen(new GameOver());
 			
@@ -162,7 +179,14 @@ namespace CivOne
 				_cityNameUsed[index] = true;
 
 				cityName = _cityNames[index];
-				Common.AddScreen(new CityName(x, y, cityName, discardSettlers));
+				if (unit.Owner == PlayerNumber(HumanPlayer))
+				{
+					Common.AddScreen(new CityName(x, y, cityName, discardSettlers));
+				}
+				else
+				{
+					FoundCity(x, y, cityName);
+				}
 				return;
 			}
 
@@ -175,7 +199,10 @@ namespace CivOne
 				Size = 1
 			};
 			_cities.Add(city);
-			Common.AddScreen(new CityView(city, founded: true));
+			if (unit.Owner == PlayerNumber(HumanPlayer))
+			{
+				Common.AddScreen(new CityView(city, founded: true));
+			}
 			DisbandUnit(Game.Instance.ActiveUnit);
 			
 			if (!discardSettlers) return;
@@ -285,6 +312,9 @@ namespace CivOne
 		{
 			get
 			{
+				if (_units.Count == 0)
+					return null;
+				
 				// If the unit counter is too high, return to 0
 				if (_activeUnit >= _units.Count)
 					_activeUnit = 0;

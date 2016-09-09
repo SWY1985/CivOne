@@ -216,8 +216,11 @@ namespace CivOne.Screens
 					relY *= (movingUnit.MoveFrame * 2);
 					
 					movingUnit.MoveUpdate();
-					RenderTile tile = RenderTiles.First(t => t.Tile.X == movingUnit.FromX && t.Tile.Y == movingUnit.FromY);
-					AddLayer(movingUnit.GetUnit(movingUnit.Owner), tile.Position.X + relX, tile.Position.Y + relY);
+					if (RenderTiles.Any(t => t.Tile.X == movingUnit.FromX && t.Tile.Y == movingUnit.FromY))
+					{
+						RenderTile tile = RenderTiles.First(t => t.Tile.X == movingUnit.FromX && t.Tile.Y == movingUnit.FromY);
+						AddLayer(movingUnit.GetUnit(movingUnit.Owner), tile.Position.X + relX, tile.Position.Y + relY);
+					}
 					return true;
 				}
 				
