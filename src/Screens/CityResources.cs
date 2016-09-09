@@ -45,12 +45,7 @@ namespace CivOne.Screens
 					AddLayer(Icons.Shield, 1 + (8 * i), 17);
 				for (int i = 0; i < shieldIncome; i++)
 					AddLayer(Icons.Shield, (shieldCosts > 0 ? 5 : 1) + (8 * shieldCosts) + (8 * i), 17);
-/*
-				for (int i = 0; i < _city.ResourceTiles.Sum(t => t.Food); i++)
-					AddLayer(Icons.Food, 1 + (8 * i), 9);
-				for (int i = 0; i < _city.ResourceTiles.Sum(t => t.Shield); i++)
-					AddLayer(Icons.Shield, 1 + (8 * i), 17);
-					*/
+				
 				for (int i = 0; i < _city.ResourceTiles.Sum(t => t.Trade); i++)
 					AddLayer(Icons.Trade, 1 + (8 * i), 25);
 				
