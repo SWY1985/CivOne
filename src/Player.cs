@@ -124,7 +124,7 @@ namespace CivOne
 
 		private void DiscoveryClosed(object sender, EventArgs args)
 		{
-			Screens.Civilopedia civilopedia = new Screens.Civilopedia(_currentResearch);
+			Screens.Civilopedia civilopedia = new Screens.Civilopedia(_currentResearch, discovered: true);
 			civilopedia.Closed += CivilopediaClosed;
 			Common.AddScreen(civilopedia);
 		}
