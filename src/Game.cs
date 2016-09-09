@@ -190,6 +190,8 @@ namespace CivOne
 
 		public void DestroyCity(City city)
 		{
+			foreach (IUnit unit in _units.Where(u => u.Home == city).ToArray())
+				_units.Remove(unit);
 			_cities.Remove(city);
 		}
 		

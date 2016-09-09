@@ -153,8 +153,11 @@ namespace CivOne.Units
 			}
 		}
 
-		public override Picture GetUnit(byte colour)
+		public override Picture GetUnit(byte colour, bool showState = true)
 		{
+			if (!showState)
+				return base.GetUnit(colour);
+
 			if (BuildingRoad > 0)
 			{
 				Picture unit = new Picture(base.GetUnit(colour).Image);

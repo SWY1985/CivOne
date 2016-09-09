@@ -39,6 +39,6 @@ namespace CivOne.Interfaces
 		void Explore();
 		bool MoveTo(int relX, int relY);
 		void SetHome(City city);
-		Picture GetUnit(byte colour);
+		Picture GetUnit(byte colour, bool showState = true);
 	}
 }
