@@ -80,7 +80,7 @@ namespace CivOne.Screens
 		public ChooseTech()
 		{
 			_background = (Bitmap)Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
-			_availableAdvances = Game.Instance.HumanPlayer.AvailableResearch.ToArray();
+			_availableAdvances = Game.Instance.HumanPlayer.AvailableResearch.Take(8).ToArray();
 			_menuHeight = Resources.Instance.GetFontHeight(0) * _availableAdvances.Count();
 			
 			Cursor = MouseCursor.Pointer;
