@@ -293,7 +293,7 @@ namespace CivOne.Screens
 			_canvas = new Picture(320, 200, _background.Image.Palette.Entries);
 			AddLayer(_background);
 			
-			_menuItemsDifficulty = new[] { "Chieftain (easiest)", "Warlock", "Prince", "King", "Emperor (toughest)" };
+			_menuItemsDifficulty = new[] { "Chieftain (easiest)", "Warlord", "Prince", "King", "Emperor (toughest)" };
 			_menuItemsCompetition = Enumerable.Range(3, 5).Reverse().Select(i => string.Format("{0} Civilizations", i)).ToArray();
 		}
 	}
