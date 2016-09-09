@@ -329,7 +329,7 @@ namespace CivOne.Templates
 			Icon = _iconCache[(int)Type];
 		}
 		
-		public virtual Picture GetUnit(byte colour)
+		public virtual Picture GetUnit(byte colour, bool showState = true)
 		{
 			int unitId = (int)Type;
 			if (_unitCache[unitId, colour] == null)
