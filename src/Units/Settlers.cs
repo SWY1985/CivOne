@@ -37,6 +37,8 @@ namespace CivOne.Units
 			ITile tile = Map[X, Y];
 			if (!tile.IsOcean && !tile.Road && tile.City == null)
 			{
+				if ((tile is River) && !Game.Instance.HumanPlayer.Advances.Any(a => a is BridgeBuilding))
+					return false;
 				BuildingRoad = 2;
 				MovesLeft = 0;
 				PartMoves = 0;
