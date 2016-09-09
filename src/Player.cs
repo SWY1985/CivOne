@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Interfaces;
 using CivOne.Screens;
@@ -205,10 +206,10 @@ namespace CivOne
 			{
 				//TEMP
 				yield return Government.Despotism;
-				yield return Government.Monarchy;
-				yield return Government.Communism;
-				yield return Government.Republic;
-				yield return Government.Democracy;
+				if (Game.Instance.HumanPlayer.Advances.Any(a => a is Monarchy)) yield return Government.Monarchy;
+				if (Game.Instance.HumanPlayer.Advances.Any(a => a is Communism)) yield return Government.Communism;
+				if (Game.Instance.HumanPlayer.Advances.Any(a => a is TheRepublic)) yield return Government.Republic;
+				if (Game.Instance.HumanPlayer.Advances.Any(a => a is Democracy)) yield return Government.Democracy;
 			}
 		}
 
