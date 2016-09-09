@@ -22,6 +22,7 @@ namespace CivOne.Screens
 		internal class Item
 		{
 			public event EventHandler Selected;
+			public event EventHandler RightClick;
 			public bool Enabled = true;
 			public string Text;
 			public readonly int Value;
@@ -30,6 +31,16 @@ namespace CivOne.Screens
 			{
 				if (Selected == null) return;
 				Selected(this, null);
+			}
+
+			internal void Context()
+			{
+				if (RightClick == null)
+				{
+					Select();
+					return;
+				}
+				RightClick(this, null);
 			}
 			
 			public Item(string text, int value = -1)
@@ -179,7 +190,19 @@ namespace CivOne.Screens
 			int index = MouseOverItem(args);
 			if (index < 0) return false;
 			ActiveItem = index;
-			if (Items[_activeItem].Enabled) Items[_activeItem].Select();
+			if (Items[_activeItem].Enabled)
+			{
+				if ((args.Buttons & MouseButton.Right) > 0)
+				{
+					ActiveItem = 0;
+					_mouseDown = false;
+					Items[_activeItem].Context();
+				}
+				else
+				{
+					Items[_activeItem].Select();
+				}
+			}
 			_change = true;
 			return true;
 		}

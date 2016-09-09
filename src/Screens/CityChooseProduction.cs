@@ -42,6 +42,12 @@ namespace CivOne.Screens
 			MenuCancel(sender, args);
 		}
 
+		private void ProductionContext(object sender, EventArgs args)
+		{
+			ICivilopedia page = (_city.AvailableProduction.ToArray()[(sender as Menu.Item).Value] as ICivilopedia);
+			Common.AddScreen(new Civilopedia(page, icon: false));
+		}
+
 		public override bool HasUpdate(uint gameTick)
 		{
 			if (_update)
@@ -96,6 +102,7 @@ namespace CivOne.Screens
 				{
 					menu.Items.Add(menuItem = new Menu.Item(item, i++));
 					menuItem.Selected += ProductionChoice;
+					menuItem.RightClick += ProductionContext;
 				}
 				menu.Width += 10;
 				menu.MissClick += MenuCancel;
