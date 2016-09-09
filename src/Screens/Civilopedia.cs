@@ -31,6 +31,7 @@ namespace CivOne.Screens
 		
 		private readonly ICivilopedia[] _pages;
 		private readonly ICivilopedia _singlePage;
+		private readonly bool _discovered;
 		
 		private bool _update = true;
 		private int _startIndex = 0;
@@ -55,6 +56,8 @@ namespace CivOne.Screens
 				AddLayer(_singlePage.Icon, iconX, iconY);
 			_canvas.DrawText(_singlePage.Name.ToUpper(), 5, 5, titleX, 20, TextAlign.Center);
 			_canvas.DrawText(category, 6, 7, titleX, 36, TextAlign.Center);
+			if (_pageNumber == 2 && _discovered)
+				_canvas.DrawText("(Discovered)", 6, 7, titleX, 48, TextAlign.Center);
 		}
 		
 		private void DrawPage(byte pageNumber)
@@ -70,8 +73,8 @@ namespace CivOne.Screens
 			if (_singlePage != null && _pageNumber < _singlePage.PageCount)
 			{
 				_canvas.FillRectangle(15, 8, 8, 304, 184);
-				DrawPageTitle();
 				DrawPage(++_pageNumber);
+				DrawPageTitle();
 				return true;
 			}
 			return false;
@@ -308,8 +311,10 @@ namespace CivOne.Screens
 			_pages = pages;
 		}
 		
-		public Civilopedia(ICivilopedia page)
+		public Civilopedia(ICivilopedia page, bool discovered = false)
 		{
+			_discovered = discovered;
+
 			_update = false;
 			_singlePage = page;
 			Color[] palette = Resources.Instance.LoadPIC("SP257").Image.Palette.Entries;
