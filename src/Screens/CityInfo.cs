@@ -9,6 +9,7 @@
 
 using System;
 using System.Drawing;
+using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -25,6 +26,63 @@ namespace CivOne.Screens
 		
 		private CityInfoChoice _choice = CityInfoChoice.Info;
 		private bool _update = true;
+
+		private Picture InfoFrame
+		{
+			get
+			{
+				Picture output = new Picture(144, 83);
+				IUnit[] units = _city.Tile.Units;
+				for (int i = 0; i < units.Length; i++)
+				{
+					int xx = 4 + ((i % 6) * 18);
+					int yy = 0 + (((i - (i % 6)) / 6) * 16);
+
+					output.AddLayer(units[i].GetUnit(units[i].Owner).Image, xx, yy);
+					output.DrawText($"{units[i].Home.Name.Substring(0, 3)}.", 1, 5, xx, yy + 16);
+				}
+				//Tile
+				return output;
+			}
+		}
+
+		private Picture HappyFrame
+		{
+			get
+			{
+				//TODO: Draw happiness data/stats
+				Picture output = new Picture(144, 83);
+				output.FillRectangle(1, 5, 15, 122, 1);
+				output.FillRectangle(1, 5, 31, 122, 1);
+				
+				for (int yy = 1; yy < 30; yy+= 16)
+				for (int i = 0; i < _city.Size; i++)
+				{
+					if (i < _city.ResourceTiles.Count() - 1)
+					{
+						output.AddLayer(Icons.Population((i % 2 == 0) ? Population.ContentMale : Population.ContentFemale), 7 + (8 * i), yy);
+						continue;
+					}
+					output.AddLayer(Icons.Population(Population.Entertainer), 7 + (8 * i), yy);
+				}
+				return output;
+			}
+		}
+		
+		private Picture MapFrame
+		{
+			get
+			{
+				//TODO: Draw map
+				Picture output = new Picture(144, 83);
+				output.FillRectangle(9, 5, 2, 122, 1);
+				output.FillRectangle(9, 5, 3, 1, 74);
+				output.FillRectangle(9, 126, 3, 1, 74);
+				output.FillRectangle(9, 5, 77, 122, 1);
+				output.FillRectangle(5, 6, 3, 120, 74);
+				return output;
+			}
+		}
 		
 		private void DrawButton(string text, int x, int width, bool selected)
 		{
@@ -48,6 +106,19 @@ namespace CivOne.Screens
 				DrawButton("Happy", 34, 32, (_choice == CityInfoChoice.Happy));
 				DrawButton("Map", 66, 33, (_choice == CityInfoChoice.Map));
 				DrawButton("View", 99, 33, false);
+
+				switch (_choice)
+				{
+					case CityInfoChoice.Info:
+						AddLayer(InfoFrame, 0, 9);
+						break;
+					case CityInfoChoice.Happy:
+						AddLayer(HappyFrame, 0, 9);
+						break;
+					case CityInfoChoice.Map:
+						AddLayer(MapFrame, 0, 9);
+						break;
+				}
 
 				_update = false;
 			}
