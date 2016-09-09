@@ -32,6 +32,7 @@ namespace CivOne.Screens
 		private readonly ICivilopedia[] _pages;
 		private readonly ICivilopedia _singlePage;
 		private readonly bool _discovered;
+		private readonly bool _icon;
 		
 		private bool _update = true;
 		private int _startIndex = 0;
@@ -52,7 +53,8 @@ namespace CivOne.Screens
 			else if (typeof(IAdvance).IsAssignableFrom(_singlePage.GetType())) { category = "Civilization Advance"; }
 			else if (typeof(IConcept).IsAssignableFrom(_singlePage.GetType())) { category = "Game Concepts"; titleX = 160; }
 			
-			if (_singlePage.Icon != null)
+			if (!_icon) titleX = 160;
+			if (_singlePage.Icon != null && _icon)
 				AddLayer(_singlePage.Icon, iconX, iconY);
 			_canvas.DrawText(_singlePage.Name.ToUpper(), 5, 5, titleX, 20, TextAlign.Center);
 			_canvas.DrawText(category, 6, 7, titleX, 36, TextAlign.Center);
@@ -311,9 +313,10 @@ namespace CivOne.Screens
 			_pages = pages;
 		}
 		
-		public Civilopedia(ICivilopedia page, bool discovered = false)
+		public Civilopedia(ICivilopedia page, bool discovered = false, bool icon = true)
 		{
 			_discovered = discovered;
+			_icon = icon;
 
 			_update = false;
 			_singlePage = page;
