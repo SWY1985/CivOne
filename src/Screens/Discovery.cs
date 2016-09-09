@@ -25,8 +25,6 @@ namespace CivOne.Screens
 		private readonly IAdvance _advance;
 
 		public EventHandler Closed;
-
-		private bool _update = true;
 		
 		private float _fadeStep = 0.0f;
 		
