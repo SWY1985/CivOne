@@ -65,6 +65,8 @@ namespace CivOne.Screens
 					ITile tile = tiles[xx, yy];
 					if (tile == null) continue;
 					AddLayer(Resources.Instance.GetTile(tile), (xx * 16) + 1, (yy * 16) + 1);
+					if (tile.City != null)
+						AddLayer(Icons.City(tile.City, smallFont: true), (xx * 16) + 1, (yy * 16) + 1);
 					if (!Settings.Instance.RevealWorld)
 					{
 						if (!HumanPlayer.Visible(tile, Direction.West)) AddLayer(Resources.Instance.GetFog(Direction.West), (xx * 16) + 1, (yy * 16) + 1);

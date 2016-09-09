@@ -116,5 +116,24 @@ namespace CivOne.GFX
 				_governmentPortrait[governmentId, (int)advisor] = (Bitmap)Resources.Instance.GetPart(filename, (40 * (int)advisor), 0, 40, 60);
 			return _governmentPortrait[governmentId, (int)advisor];
 		}
+
+		public static Bitmap City(City city, bool smallFont = false)
+		{
+			Picture output = new Picture(16, 16);
+			
+			if (city.Tile.Units.Length > 0)
+				output.FillRectangle(5, 0, 0, 16, 16);
+			output.FillRectangle(15, 1, 1, 14, 14);
+			output.FillRectangle(Common.ColourDark[city.Owner], 2, 1, 13, 13);
+			output.FillRectangle(Common.ColourLight[city.Owner], 2, 2, 12, 12);
+			
+			Bitmap resource = (Bitmap)Resources.Instance.GetPart("SP257", 192, 112, 16, 16).Clone();
+			Picture.ReplaceColours(resource, 3, 0);
+			Picture.ReplaceColours(resource, 5, Common.ColourDark[city.Owner]);
+			output.AddLayer(resource, 0, 0);
+			output.DrawText(city.Size.ToString(), (smallFont ? 1 : 0), 5, 5, 9, 5, TextAlign.Center);
+			
+			return output.Image;
+		}
 	}
 }

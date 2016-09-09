@@ -248,6 +248,14 @@ namespace CivOne
 			}
 		}
 
+		public ITile Tile
+		{
+			get
+			{
+				return Map[X, Y];
+			}
+		}
+
 		internal void NewTurn()
 		{
 			Food += FoodIncome;
