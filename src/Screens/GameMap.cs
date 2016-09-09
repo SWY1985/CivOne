@@ -162,17 +162,7 @@ namespace CivOne.Screens
 					City city = t.Tile.City;
 					if (city == null) continue;
 					
-					if (t.Tile.Units.Length > 0)
-						_canvas.FillRectangle(5, t.Position.X, t.Position.Y, 16, 16);
-					_canvas.FillRectangle(15, t.Position.X + 1, t.Position.Y + 1, 14, 14);
-					_canvas.FillRectangle(Common.ColourDark[city.Owner], t.Position.X + 2, t.Position.Y + 1, 13, 13);
-					_canvas.FillRectangle(Common.ColourLight[city.Owner], t.Position.X + 2, t.Position.Y + 2, 12, 12);
-					
-					Bitmap resource = (Bitmap)Resources.Instance.GetPart("SP257", 192, 112, 16, 16).Clone();
-					Picture.ReplaceColours(resource, 3, 0);
-					Picture.ReplaceColours(resource, 5, Common.ColourDark[city.Owner]);
-					AddLayer(resource, t.Position);
-					_canvas.DrawText(city.Size.ToString(), 0, 5, 5, t.Position.X + 9, t.Position.Y + 5, TextAlign.Center);
+					AddLayer(Icons.City(city), t.Position);
 					
 					if (t.Y == 11) continue;
 					int labelX = (t.X == 0) ? t.Position.X : t.Position.X - 8;
