@@ -95,11 +95,11 @@ namespace CivOne.Screens
 			
 			if (unit != null)
 			{
-				_gameInfo.DrawText(string.Format("({0})", Game.Instance.HumanPlayer.TribeName), 0, 5, 4, 2, TextAlign.Left);
+				_gameInfo.DrawText(Game.Instance.HumanPlayer.TribeName, 0, 5, 4, 2, TextAlign.Left);
 				_gameInfo.DrawText(unit.Name, 0, 5, 4, 10, TextAlign.Left);
 				if (unit.PartMoves > 0)
 				{
-					_gameInfo.DrawText($"Moves: {unit.MovesLeft}({unit.PartMoves})", 0, 5, 4, 18, TextAlign.Left);
+					_gameInfo.DrawText($"Moves: {unit.MovesLeft}.{unit.PartMoves}", 0, 5, 4, 18, TextAlign.Left);
 				}
 				else
 				{
