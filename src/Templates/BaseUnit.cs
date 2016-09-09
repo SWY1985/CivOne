@@ -15,6 +15,7 @@ using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Screens;
+using CivOne.Units;
 
 namespace CivOne.Templates
 {
@@ -22,6 +23,24 @@ namespace CivOne.Templates
 	{
 		private int _x, _y;
 
+		public bool FortifyActive { get; private set; }
+		private bool _fortify = false;
+		public bool Fortify
+		{
+			get
+			{
+				return (_fortify || FortifyActive);
+			}
+			set
+			{
+				if (Class != UnitClass.Land) return;
+				if (this is Settlers) return;
+				if (!value)
+					_fortify = false;
+				else
+					FortifyActive = true;
+			}
+		}
 		public bool Sentry { get; set; }
 		public bool Moving { get; private set; }
 		public int MoveFrame { get; private set; }
@@ -282,6 +301,11 @@ namespace CivOne.Templates
 		
 		public virtual void NewTurn()
 		{
+			if (FortifyActive)
+			{
+				FortifyActive = false;
+				_fortify = true;
+			}
 			MovesLeft = Move;
 			Explore();
 		}
@@ -345,7 +369,7 @@ namespace CivOne.Templates
 				
 				_unitCache[unitId, colour] = new Picture(image);
 			}
-			if (!showState || !Sentry)
+			if (!showState || (!Sentry && !Fortify))
 				return _unitCache[unitId, colour];
 			
 			if (Sentry)
@@ -353,6 +377,19 @@ namespace CivOne.Templates
 				Bitmap output = (Bitmap)_unitCache[unitId, colour].Image.Clone();
 				Picture.ReplaceColours(output, 5, 7);
 				return new Picture(output);
+			}
+			if (FortifyActive)
+			{
+				Picture unit = new Picture(_unitCache[unitId, colour].Image);
+				unit.DrawText("F", 0, 5, 8, 9, TextAlign.Center);
+				unit.DrawText("F", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
+				return unit; 
+			}
+			else if (_fortify)
+			{
+				Picture unit = new Picture(_unitCache[unitId, colour].Image);
+				unit.AddLayer(Icons.Fortify, 0, 0);
+				return unit; 
 			}
 			return _unitCache[unitId, colour];
 		}

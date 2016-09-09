@@ -26,6 +26,8 @@ namespace CivOne.Interfaces
 		int X { get; set; }
 		int Y { get; set; }
 		bool Sentry { get; set; }
+		bool FortifyActive { get; }
+		bool Fortify { get; set; }
 		bool Moving { get; }
 		int MoveFrame { get; }
 		int FromX { get; }
