@@ -33,7 +33,7 @@ namespace CivOne.Screens
 				_canvas.FillLayerTile(_background);
 				_canvas.AddBorder(1, 1, 0, 0, 207, 21);
 				_canvas.FillRectangle(0, 207, 0, 1, 21);
-				_canvas.DrawText($"{_city.Name} (Pop: {population})", 1, 17, 104, 1, TextAlign.Center);
+				_canvas.DrawText($"{_city.Name} (Pop:{population})", 1, 17, 104, 1, TextAlign.Center);
 
 				for (int i = 0; i < _city.Size; i++)
 				{
