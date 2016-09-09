@@ -180,6 +180,7 @@ namespace CivOne.Screens
 				if (new Rectangle(xx, yy, 16, 16).Contains(args.Location))
 				{
 					units[i].Sentry = false;
+					units[i].Fortify = false;
 					_update = true;
 					break;
 				}
