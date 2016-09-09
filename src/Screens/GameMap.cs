@@ -316,6 +316,9 @@ namespace CivOne.Screens
 						return (Game.Instance.ActiveUnit as Settlers).BuildRoad();;
 					}
 					break;
+				case 'S':
+					Game.Instance.ActiveUnit.Sentry = true;
+					break;
 			}
 
 			return false;
@@ -380,14 +383,13 @@ namespace CivOne.Screens
 				while (_y + 12 > Map.HEIGHT) _y--;
 				_update = true;
 				
-				if ((args.Buttons & MouseButton.Left) > 0 && Map[xx, yy].Units.Any(u => u.Owner == Game.Instance.PlayerNumber(Game.Instance.HumanPlayer)))
-				{
-					Game.Instance.ActiveUnit = Map[xx, yy].Units.FirstOrDefault(u => u.MovesLeft > 0 || u.PartMoves > 0);
-				}
-
 				if (city != null)
 				{
 					Common.AddScreen(new CityManager(city));
+				}
+				else if ((args.Buttons & MouseButton.Left) > 0 && Map[xx, yy].Units.Any(u => u.Owner == Game.Instance.PlayerNumber(Game.Instance.HumanPlayer)))
+				{
+					Game.Instance.ActiveUnit = Map[xx, yy].Units.FirstOrDefault(u => u.MovesLeft > 0 || u.PartMoves > 0);
 				}
 			}
 			return _update;

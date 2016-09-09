@@ -25,6 +25,7 @@ namespace CivOne.Interfaces
 		byte Move { get; }
 		int X { get; set; }
 		int Y { get; set; }
+		bool Sentry { get; set; }
 		bool Moving { get; }
 		int MoveFrame { get; }
 		int FromX { get; }
