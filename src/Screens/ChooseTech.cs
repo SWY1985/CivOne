@@ -36,6 +36,12 @@ namespace CivOne.Screens
 			Close();
 		}
 
+		private void AdvanceContext(object sender, EventArgs args)
+		{
+			ICivilopedia page = ( _availableAdvances[(sender as Menu.Item).Value] as ICivilopedia);
+			Common.AddScreen(new Civilopedia(page));
+		}
+
 		public override bool HasUpdate(uint gameTick)
 		{
 			if (_update)
@@ -60,7 +66,7 @@ namespace CivOne.Screens
 				{
 					menu.Items.Add(menuItem = new Menu.Item(_availableAdvances[i].Name, i));
 					menuItem.Selected += AdvanceChoice;
-					menuItem.RightClick += AdvanceChoice;
+					menuItem.RightClick += AdvanceContext;
 				}
 				Menus.Add(menu);
 				Common.AddScreen(menu);

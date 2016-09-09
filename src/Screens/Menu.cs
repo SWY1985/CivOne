@@ -194,7 +194,6 @@ namespace CivOne.Screens
 			{
 				if ((args.Buttons & MouseButton.Right) > 0)
 				{
-					ActiveItem = 0;
 					_mouseDown = false;
 					Items[_activeItem].Context();
 				}
