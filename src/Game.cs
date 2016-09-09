@@ -290,15 +290,15 @@ namespace CivOne
 					_activeUnit = 0;
 					
 				// Does the current unit still have moves left?
-				if (_units[_activeUnit].Owner == _currentPlayer && (_units[_activeUnit].MovesLeft > 0 || _units[_activeUnit].PartMoves > 0) && !_units[_activeUnit].Sentry)
+				if (_units[_activeUnit].Owner == _currentPlayer && (_units[_activeUnit].MovesLeft > 0 || _units[_activeUnit].PartMoves > 0) && !_units[_activeUnit].Sentry && !_units[_activeUnit].Fortify)
 					return _units[_activeUnit];
 				
 				// Check if any units are still available for this player
-				if (!_units.Any(u => u.Owner == _currentPlayer && (u.MovesLeft > 0 || u.PartMoves > 0) && !u.Sentry))
+				if (!_units.Any(u => u.Owner == _currentPlayer && (u.MovesLeft > 0 || u.PartMoves > 0) && !u.Sentry && !u.Fortify))
 					return null;
 				
 				// Loop through units
-				while (_units[_activeUnit].Owner != _currentPlayer || (_units[_activeUnit].MovesLeft == 0 && _units[_activeUnit].PartMoves == 0) || _units[_activeUnit].Sentry)
+				while (_units[_activeUnit].Owner != _currentPlayer || (_units[_activeUnit].MovesLeft == 0 && _units[_activeUnit].PartMoves == 0) || (_units[_activeUnit].Sentry || _units[_activeUnit].Fortify))
 				{
 					_activeUnit++;
 					if (_activeUnit >= _units.Count)
@@ -311,6 +311,7 @@ namespace CivOne
 				if (value == null || value.MovesLeft == 0 && value.PartMoves == 0)
 					return;
 				value.Sentry = false;
+				value.Fortify = false;
 				_activeUnit = _units.IndexOf(value);
 			}
 		}

@@ -319,6 +319,9 @@ namespace CivOne.Screens
 				case 'S':
 					Game.Instance.ActiveUnit.Sentry = true;
 					break;
+				case 'F':
+					Game.Instance.ActiveUnit.Fortify = true;
+					break;
 			}
 
 			return false;
