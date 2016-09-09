@@ -25,7 +25,7 @@ namespace CivOne.Civilizations
 
 		public string LeaderName
 		{
-			get { return "Ceasar"; }
+			get { return "Caesar"; }
 		}
 
 		public byte PreferredPlayerNumber
