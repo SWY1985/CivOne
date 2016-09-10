@@ -313,6 +313,16 @@ namespace CivOne.Templates
 		public virtual bool MoveTo(int relX, int relY)
 		{
 			if (Moving) return false;
+			if (Map[X, Y][relX, relY].Units.Any(u => u.Owner != Owner))
+			{
+				// TODO: Attack, or perform other unit action (confront)
+				return false;
+			}
+			if (Map[X, Y][relX, relY].City != null && Map[X, Y][relX, relY].City.Owner != Owner)
+			{
+				// TODO: Attack, take city or perform other unit action (confront)
+				return false;
+			}
 
 			int toX = (X + relX);
 			int toY = (Y + relY);
