@@ -9,8 +9,10 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using CivOne.Enums;
 using CivOne.Interfaces;
+using CivOne.Screens;
 using CivOne.Units;
 
 namespace CivOne
@@ -181,6 +183,10 @@ namespace CivOne
 					if (unit.Class == UnitClass.Water && !Map[X, Y].GetBorderTiles().Any(t => t.IsOcean)) continue;
 					yield return unit;
 				}
+				foreach (IBuilding building in Reflect.GetBuildings().Where(b => Player.ProductionAvailable(b)))
+				{
+					yield return building;
+				}
 			}
 		}
 
@@ -280,6 +286,10 @@ namespace CivOne
 				{
 					IUnit unit = Game.Instance.CreateUnit((CurrentProduction as IUnit).Type, X, Y, Owner);
 					unit.SetHome(this);
+				}
+				if (CurrentProduction is IBuilding)
+				{
+					Common.AddScreen(new CityView(this, building: (CurrentProduction as IBuilding)));
 				}
 			}
 

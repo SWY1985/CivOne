@@ -7,16 +7,19 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
+using CivOne.Interfaces;
 using CivOne.GFX;
 using CivOne.Templates;
 
 namespace CivOne.Screens
 {
-	internal class CityView : BaseScreen
+	internal class CityView : BaseScreen, IModal
 	{
 		private const float FADE_STEP = 0.1f;
 
@@ -56,9 +59,9 @@ namespace CivOne.Screens
 				_fadeStep -= FADE_STEP;
 				if (_fadeStep <= 0.0f)
 				{
-					Common.AddScreen(new CityView(_city, firstView: true));
 					Destroy();
-					return false;
+					Common.AddScreen(new CityView(_city, firstView: true));
+					return true;
 				}
 				FadeColours();
 			}
@@ -86,8 +89,8 @@ namespace CivOne.Screens
 				FadeColours();
 			}
 
-			if (_update) return false;
-			_update = false;
+			if (_update)
+				_update = false;
 			return true;
 		}
 
@@ -117,7 +120,7 @@ namespace CivOne.Screens
 			return SkipAction();
 		}
 		
-		public CityView(City city, bool founded = false, bool firstView = false)
+		public CityView(City city, bool founded = false, bool firstView = false, IBuilding building = null)
 		{
 			_city = city;
 			_background = Resources.Instance.LoadPIC("HILL");
@@ -130,6 +133,27 @@ namespace CivOne.Screens
 			
 			if (founded)
 			{
+				return;
+			}
+
+			if (building != null)
+			{
+				string[] lines =  new [] { $"{_city.Name} builds", $"{building.Name}." };
+				int width = lines.Max(l => Resources.Instance.GetTextSize(5, l).Width) + 10;
+				int actualWidth = width;
+				if (width % 4 > 0) width += (4 - (width % 4));
+				Picture dialog = new Picture(width, 37);
+				dialog.FillLayerTile((Bitmap)Resources.Instance.GetPart("SP299", 288, 120, 32, 16));
+				if (width > actualWidth)
+					dialog.FillRectangle(0, actualWidth, 0, width - actualWidth, 37);
+				dialog.AddBorder(15, 8, 0, 0, actualWidth, 37);
+				dialog.DrawText(lines[0], 5, 5, 4, 5);
+				dialog.DrawText(lines[0], 5, 15, 4, 4);
+				dialog.DrawText(lines[1], 5, 5, 4, 20);
+				dialog.DrawText(lines[1], 5, 15, 4, 19);
+
+				_canvas.FillRectangle(5, 80, 8, actualWidth + 2, 39);
+				_canvas.AddLayer(dialog.Image, 81, 9); 
 				return;
 			}
 			
