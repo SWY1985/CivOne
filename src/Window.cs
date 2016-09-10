@@ -32,7 +32,19 @@ namespace CivOne
 		{
 			get
 			{
+				if (Common.Screens.Any(x => x is IModal))
+					return Common.Screens.Last(x => x is IModal).HasUpdate(_gameTick);
 				return (Common.Screens.Count(x => x.HasUpdate(_gameTick)) > 0);
+			}
+		}
+		
+		protected IScreen TopScreen
+		{
+			get
+			{
+				if (Common.Screens.Any(x => x is IModal))
+					return Common.Screens.Last(x => x is IModal);
+				return Common.Screens.LastOrDefault();
 			}
 		}
 		

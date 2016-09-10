@@ -29,14 +29,6 @@ namespace CivOne
 		private bool _forceUpdate = false;
 		private bool _fullScreen = false;
 		
-		private IScreen TopScreen
-		{
-			get
-			{
-				return Common.Screens.LastOrDefault();
-			}
-		}
-		
 		private int CanvasX
 		{
 			get

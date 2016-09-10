@@ -34,14 +34,6 @@ namespace CivOne
 		private Cursor[,] _cursorPointer,_cursorGoto;
 		private MouseCursor _currentCursor = MouseCursor.Pointer;
 		
-		private IScreen TopScreen
-		{
-			get
-			{
-				return Common.Screens.LastOrDefault();
-			}
-		}
-		
 		private int CanvasX
 		{
 			get
@@ -252,9 +244,16 @@ namespace CivOne
 			colours[0] = Color.Black;
 			
 			_canvas = new Picture(320, 200, colours);
-			foreach (IScreen screen in Common.Screens)
+			if (TopScreen is IModal)
 			{
-				_canvas.AddLayer(screen.Canvas.Image, 0, 0);
+				_canvas.AddLayer(TopScreen.Canvas.Image, 0, 0);
+			}
+			else
+			{
+				foreach (IScreen screen in Common.Screens)
+				{
+					_canvas.AddLayer(screen.Canvas.Image, 0, 0);
+				}
 			}
 			
 			args.Graphics.Clear(Color.Black);

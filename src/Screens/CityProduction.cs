@@ -97,8 +97,10 @@ namespace CivOne.Screens
 					IUnit unit = (_city.CurrentProduction as IUnit);
 					AddLayer(unit.GetUnit(_city.Owner), 33, 0);
 				}
-				else
+				else if (_city.CurrentProduction is IBuilding)
 				{
+					IBuilding building = (_city.CurrentProduction as IBuilding);
+					_canvas.DrawText(building.Name, 1, 15, 44, 1, TextAlign.Center); 
 				}
 				
 				_update = false;

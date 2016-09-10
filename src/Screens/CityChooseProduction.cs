@@ -64,7 +64,18 @@ namespace CivOne.Screens
 						int turns = ((int)unit.Price * 10) - _city.Shields;
 						if (_city.ShieldIncome > 1)
 							turns = (int)Math.Ceiling((double)turns / _city.ShieldIncome);
+						if (turns < 1) turns = 1;
 						menuText = $"{unit.Name} ({turns} turns, ADM:{unit.Attack}/{unit.Defense}/{unit.Move})";
+						if (Resources.Instance.GetTextSize(_fontId, menuText).Width > itemWidth) itemWidth = Resources.Instance.GetTextSize(_fontId, menuText).Width;
+					}
+					if (production is IBuilding)
+					{
+						IBuilding building = (production as IBuilding);
+						int turns = ((int)building.Price * 10) - _city.Shields;
+						if (_city.ShieldIncome > 1)
+							turns = (int)Math.Ceiling((double)turns / _city.ShieldIncome);
+						if (turns < 1) turns = 1;
+						menuText = $"{building.Name} ({turns} turns)";
 						if (Resources.Instance.GetTextSize(_fontId, menuText).Width > itemWidth) itemWidth = Resources.Instance.GetTextSize(_fontId, menuText).Width;
 					}
 					menuItems.Add(menuText);
