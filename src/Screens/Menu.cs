@@ -128,9 +128,11 @@ namespace CivOne.Screens
 		{
 			switch (args.Key)
 			{
+				case Key.NumPad8:
 				case Key.Up:
 					ActiveItem--;
 					return true;
+				case Key.NumPad2:
 				case Key.Down:
 					ActiveItem++;
 					return true;
