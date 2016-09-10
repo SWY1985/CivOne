@@ -56,7 +56,7 @@ namespace CivOne.Screens
 			return true;
 		}
 
-		public Newspaper(bool showGovernment, params string[] message)
+		public Newspaper(bool showGovernment, City city = null, params string[] message)
 		{
 			Cursor = MouseCursor.None;
 
@@ -81,7 +81,9 @@ namespace CivOne.Screens
 			string shout = (Common.Random.Next(0, 2) == 0) ? "FLASH" : "EXTRA!";
 			string date = $"January 1, {Common.YearString(Game.Instance.GameTurn)}";
 			string name = "NONE";
-			if (Game.Instance.HumanPlayer.Cities.Length > 0)
+			if (city != null)
+				name = city.Name;
+			else if (Game.Instance.HumanPlayer.Cities.Length > 0)
 				name = Game.Instance.HumanPlayer.Cities[0].Name;
 			switch (Common.Random.Next(0, 3))
 			{
