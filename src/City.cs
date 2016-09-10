@@ -286,6 +286,12 @@ namespace CivOne
 				Shields = 0;
 				if (CurrentProduction is IUnit)
 				{
+					if (CurrentProduction is Settlers)
+					{
+						//TODO: This should do something to the food supply
+						if (Size == 1) Size++;
+						Size--;
+					}
 					IUnit unit = Game.Instance.CreateUnit((CurrentProduction as IUnit).Type, X, Y, Owner);
 					unit.SetHome(this);
 				}
