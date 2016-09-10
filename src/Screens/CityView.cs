@@ -54,12 +54,17 @@ namespace CivOne.Screens
 		
 		public override bool HasUpdate(uint gameTick)
 		{
-			if (_founded && _skip)
+			if (_founded && (_skip || _x > 120))
 			{
 				_fadeStep -= FADE_STEP;
 				if (_fadeStep <= 0.0f)
 				{
 					Destroy();
+					if (_skip)
+					{
+						Common.AddScreen(new CityManager(_city));
+						return true;
+					}
 					Common.AddScreen(new CityView(_city, firstView: true));
 					return true;
 				}
@@ -77,8 +82,6 @@ namespace CivOne.Screens
 				AddLayer(Resources.Instance.GetPart("SETTLERS", 1, 1 + (16 * ((frame + 1) % 4)), 48, 15), _x + 40, 135);
 
 				_x++;
-				if (_x == 120)
-					_skip = true;
 				return true;
 			}
 
