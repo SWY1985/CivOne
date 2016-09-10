@@ -139,7 +139,7 @@ namespace CivOne
 			if (_resourceTiles.Count == Size) return;
 			if (_resourceTiles.Count < Size)
 			{
-				IEnumerable<ITile> tiles = CityTiles.Where(t => !ResourceTiles.Contains(t)).OrderByDescending(t => t.Shield).ThenByDescending(t => t.Food).ThenByDescending(t => t.Trade);
+				IEnumerable<ITile> tiles = CityTiles.Where(t => !ResourceTiles.Contains(t)).OrderByDescending(t => t.Food).ThenByDescending(t => t.Shield).ThenByDescending(t => t.Trade);
 				if (tiles.Count() > 0)
 					_resourceTiles.Add(tiles.First());
 			}
