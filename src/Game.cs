@@ -167,6 +167,11 @@ namespace CivOne
 			{
 				if (discardSettlers && GetCity(x, y) != null)
 				{
+					if (GetCity(x, y).Size > 9)
+					{
+						// TODO Show message?
+						return;
+					}
 					GetCity(x, y).Size++;
 					DisbandUnit(Game.Instance.ActiveUnit);
 					return;
