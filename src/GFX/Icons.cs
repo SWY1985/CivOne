@@ -131,7 +131,14 @@ namespace CivOne.GFX
 			Picture.ReplaceColours(resource, 3, 0);
 			Picture.ReplaceColours(resource, 5, Common.ColourDark[city.Owner]);
 			output.AddLayer(resource, 0, 0);
-			output.DrawText(city.Size.ToString(), (smallFont ? 1 : 0), 5, 5, 9, 5, TextAlign.Center);
+			if (city.Size > 9)
+			{
+				output.DrawText($"{city.Size}", (smallFont ? 1 : 0), 5, 5, 8, 5, TextAlign.Center);
+			}
+			else
+			{
+				output.DrawText($"{city.Size}", (smallFont ? 1 : 0), 5, 5, 9, 5, TextAlign.Center);
+			}
 			
 			return output.Image;
 		}
