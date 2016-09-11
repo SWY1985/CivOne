@@ -62,6 +62,7 @@ namespace CivOne.Screens
 			Color[] palette = Resources.Instance.LoadPIC("SP257").Image.Palette.Entries;
 			
 			_canvas = new Picture(320, 200, palette);
+			_canvas.AddLayer(Common.Screens.Last().Canvas.Image, 0, 0);
 			
 			Bitmap[] textLines = new Bitmap[message.Length];
 			for (int i = 0; i < message.Length; i++)
