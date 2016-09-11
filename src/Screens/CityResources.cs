@@ -23,6 +23,44 @@ namespace CivOne.Screens
 		private readonly Bitmap _background;
 		
 		private bool _update = true;
+
+		private void DrawFood()
+		{
+			int costs = _city.FoodCosts;
+			int income = _city.FoodIncome;
+			for (int i = 0; (i < costs) && (i < costs + income); i++)
+			{
+				AddLayer(Icons.Food, 1 + (8 * i), 9);
+			}
+			for (int i = 0; i < income; i++)
+				AddLayer(Icons.Food, 5 + (8 * costs) + (8 * i), 9);
+			if (income < 0)
+			{
+				for (int i = 0; i < -income; i++)
+					AddLayer(Icons.FoodLoss, 5 + (8 * (costs + income)) + (8 * i), 9);
+			}
+		}
+
+		private void DrawShields()
+		{
+			int costs = _city.ShieldCosts;
+			int income = _city.ShieldIncome;
+			for (int i = 0; (i < costs) && (i < costs + income); i++)
+				AddLayer(Icons.Shield, 1 + (8 * i), 17);
+			for (int i = 0; i < income; i++)
+				AddLayer(Icons.Shield, (costs > 0 ? 5 : 1) + (8 * costs) + (8 * i), 17);
+			if (income < 0)
+			{
+				for (int i = 0; i < -income; i++)
+					AddLayer(Icons.ShieldLoss, 5 + (8 * (costs + income)) + (8 * i), 17);
+			}
+		}
+
+		private void DrawTrade()
+		{
+			for (int i = 0; i < _city.ResourceTiles.Sum(t => t.Trade); i++)
+				AddLayer(Icons.Trade, 1 + (8 * i), 25);
+		}
 		
 		public override bool HasUpdate(uint gameTick)
 		{
@@ -34,20 +72,9 @@ namespace CivOne.Screens
 				_canvas.FillRectangle(0, 123, 0, 1, 43);
 				_canvas.DrawText($"City Resources", 1, 17, 6, 2, TextAlign.Left);
 
-				for (int i = 0; i < _city.FoodCosts; i++)
-					AddLayer(Icons.Food, 1 + (8 * i), 9);
-				for (int i = 0; i < _city.FoodIncome; i++)
-					AddLayer(Icons.Food, 5 + (8 * _city.FoodCosts) + (8 * i), 9);
-				
-				int shieldCosts = _city.ShieldCosts;
-				int shieldIncome = _city.ShieldIncome;
-				for (int i = 0; i < shieldCosts; i++)
-					AddLayer(Icons.Shield, 1 + (8 * i), 17);
-				for (int i = 0; i < shieldIncome; i++)
-					AddLayer(Icons.Shield, (shieldCosts > 0 ? 5 : 1) + (8 * shieldCosts) + (8 * i), 17);
-				
-				for (int i = 0; i < _city.ResourceTiles.Sum(t => t.Trade); i++)
-					AddLayer(Icons.Trade, 1 + (8 * i), 25);
+				DrawFood();
+				DrawShields();
+				DrawTrade();
 				
 				_update = false;
 			}
