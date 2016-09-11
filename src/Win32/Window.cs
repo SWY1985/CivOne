@@ -280,6 +280,10 @@ namespace CivOne
 					Map.Instance.SaveBitmap();
 					return;
 				}
+				if (args.KeyCode == Keys.ControlKey)
+				{
+					return;
+				}
 			}
 			
 			if (args.KeyCode == Keys.F10)

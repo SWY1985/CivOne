@@ -9,6 +9,7 @@
 
 using System;
 using System.Drawing;
+using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -25,13 +26,13 @@ namespace CivOne.Screens
 		
 		private bool _update = true;
 		
-		private void DrawButton(string text, int x, int width)
+		private void DrawButton(string text, int x, int width, bool blink = false)
 		{
 			_canvas.FillRectangle(7, x + 0, 7, width, 1);
 			_canvas.FillRectangle(7, x + 0, 8, 1, 8);
 			_canvas.FillRectangle(1, x + 1, 15, width - 1, 1);
 			_canvas.FillRectangle(1, x + width - 1, 7, 1, 8);
-			_canvas.FillRectangle(9, x + 1, 8, width - 2, 7);
+			_canvas.FillRectangle((byte)(blink ? 14 : 9), x + 1, 8, width - 2, 7);
 			_canvas.DrawText(text, 1, 1, x + (int)Math.Ceiling((double)width / 2), 9, TextAlign.Center);
 		}
 
@@ -62,10 +63,22 @@ namespace CivOne.Screens
 				AddLayer(Icons.Shield, x, y);
 			}
 		}
+
+		private bool ProductionInvalid
+		{
+			get
+			{
+				if (_city.CurrentProduction is IBuilding)
+				{
+					return _city.Buildings.Any(b => b.Id == (_city.CurrentProduction as IBuilding).Id); 
+				}
+				return false;
+			}
+		}
 		
 		public override bool HasUpdate(uint gameTick)
 		{
-			if (_update)
+			if (_update || ProductionInvalid)
 			{
 				int totalShields = (int)_city.CurrentProduction.Price * 10;
 				int width = 83;
@@ -86,7 +99,10 @@ namespace CivOne.Screens
 				{
 					_canvas.FillRectangle(5, 0, 19 + height, width, 80 - height);
 				}
-				DrawButton("Change", 1, 33);
+				bool blink = false;
+				if (ProductionInvalid)
+					blink = (gameTick % 4 > 1);
+				DrawButton("Change", 1, 33, blink);
 				DrawButton("Buy", 64, 18);
 
 				//AddLayer(Icons.Shield, 1, 17);
