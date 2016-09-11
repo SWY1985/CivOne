@@ -32,6 +32,24 @@ namespace CivOne.GFX
 				return _food;
 			}
 		}
+
+		private static Bitmap _foodLoss;
+		public static Bitmap FoodLoss
+		{
+			get
+			{
+				if (_foodLoss == null)
+				{
+					_foodLoss = (Bitmap)Resources.Instance.GetPart("SP257", 128, 32, 8, 8).Clone();
+					Picture.ReplaceColours(_foodLoss, new byte[] { 3, 15 }, new byte[] { 0, 5 });
+
+					Picture temp = new Picture(_foodLoss);
+					temp.FillRectangle(0, 0, 0, 1, 8);
+					_foodLoss = temp.Image;
+				}
+				return _foodLoss;
+			}
+		}
 		
 		private static Bitmap _shield;
 		public static Bitmap Shield
@@ -44,6 +62,20 @@ namespace CivOne.GFX
 					Picture.ReplaceColours(_shield, 3, 0);
 				}
 				return _shield;
+			}
+		}
+		
+		private static Bitmap _shieldLoss;
+		public static Bitmap ShieldLoss
+		{
+			get
+			{
+				if (_shieldLoss == null)
+				{
+					_shieldLoss = (Bitmap)Resources.Instance.GetPart("SP257", 136, 32, 8, 8).Clone();
+					Picture.ReplaceColours(_shieldLoss, new byte[] { 3, 15 }, new byte[] { 0, 5 });
+				}
+				return _shieldLoss;
 			}
 		}
 		
