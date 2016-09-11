@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using CivOne.Enums;
@@ -24,6 +25,22 @@ namespace CivOne.Screens
 		
 		private bool _update = true;
 		
+		private IEnumerable<Population> GetCitizens
+		{
+			get
+			{
+				for (int i = 0; i < _city.Size; i++)
+				{
+					if (i < _city.ResourceTiles.Count() - 1)
+					{
+						yield return (i % 2 == 0) ? Population.ContentMale : Population.ContentFemale;
+						continue;
+					}
+					yield return Population.Entertainer;
+				}
+			}
+		}
+
 		public override bool HasUpdate(uint gameTick)
 		{
 			if (_update)
@@ -35,14 +52,16 @@ namespace CivOne.Screens
 				_canvas.FillRectangle(0, 207, 0, 1, 21);
 				_canvas.DrawText($"{_city.Name} (Pop:{population})", 1, 17, 104, 1, TextAlign.Center);
 
+				Population[] citizens = GetCitizens.ToArray();
+				int xx = 0;
 				for (int i = 0; i < _city.Size; i++)
 				{
-					if (i < _city.ResourceTiles.Count() - 1)
+					xx += 8;
+					if (i > 0)
 					{
-						AddLayer(Icons.Population((i % 2 == 0) ? Population.ContentMale : Population.ContentFemale), 8 + (8 * i), 7);
-						continue;
+						if (citizens[i] == Population.Entertainer && citizens[i - 1] != Population.Entertainer) xx += 6;
 					}
-					AddLayer(Icons.Population(Population.Entertainer), 8 + (8 * i), 7);
+					AddLayer(Icons.Population(citizens[i]), xx, 7);
 				}
 
 				_update = false;
