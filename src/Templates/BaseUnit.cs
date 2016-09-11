@@ -374,6 +374,7 @@ namespace CivOne.Templates
 		public virtual void SkipTurn()
 		{
 			MovesLeft = 0;
+			PartMoves = 0;
 		}
 		
 		protected void SetIcon(char page, int col, int row)
