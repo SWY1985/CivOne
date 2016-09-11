@@ -264,20 +264,22 @@ namespace CivOne
 		{
 			if (args.Alt || args.Control)
 			{
+				args.SuppressKeyPress = true;
 				if (args.KeyCode == Keys.Enter)
 				{
 					ToggleFullScreen();
+					return;
 				}
 				if (args.Control && args.KeyCode == Keys.F5)
 				{
 					SaveScreen();
+					return;
 				}
 				if (args.Control && args.KeyCode == Keys.F6 && Game.Instance != null)
 				{
 					Map.Instance.SaveBitmap();
+					return;
 				}
-				args.SuppressKeyPress = true;
-				return;
 			}
 			
 			if (args.KeyCode == Keys.F10)
