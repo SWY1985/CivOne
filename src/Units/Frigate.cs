@@ -14,8 +14,16 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Frigate : BaseUnitSea
+	internal class Frigate : BaseUnitSea, IBoardable
 	{
+		public int Cargo
+		{
+			get
+			{
+				return 4;
+			}
+		}
+
 		public Frigate() : base(4, 2, 2, 3)
 		{
 			Type = Unit.Frigate;
