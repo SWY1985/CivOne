@@ -116,6 +116,14 @@ namespace CivOne.Screens
 					_gameInfo.DrawText("(Irrigation)", 0, 5, 4, (yy += 8), TextAlign.Left);
 				else if (Map[unit.X, unit.Y].Mine)
 					_gameInfo.DrawText("(Mining)", 0, 5, 4, (yy += 8), TextAlign.Left);
+				
+				IUnit[] units = Map[unit.X, unit.Y].Units.Where(u => u != unit).Take(8).ToArray();
+				for (int i = 0; i < units.Length; i++)
+				{
+					int ix = 8 + ((i % 4) * 16);
+					int iy = 62 + (((i - (i % 4)) / 4) * 16);
+					_gameInfo.AddLayer(units[i].GetUnit(units[i].Owner).Image, ix, iy);
+				}
 			}
 			else
 			{
