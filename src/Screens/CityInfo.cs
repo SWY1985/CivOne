@@ -39,7 +39,10 @@ namespace CivOne.Screens
 					int yy = 0 + (((i - (i % 6)) / 6) * 16);
 
 					output.AddLayer(units[i].GetUnit(units[i].Owner).Image, xx, yy);
-					output.DrawText($"{units[i].Home.Name.Substring(0, 3)}.", 1, 5, xx, yy + 16);
+					string homeCity = "NON.";
+					if (units[i].Home != null)
+						homeCity = $"{units[i].Home.Name.Substring(0, 3)}.";
+					output.DrawText(homeCity, 1, 5, xx, yy + 16);
 				}
 				return output;
 			}
