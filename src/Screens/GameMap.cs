@@ -135,6 +135,11 @@ namespace CivOne.Screens
 					if (t.Tile.City != null) continue;
 					
 					IUnit[] units = t.Tile.Units.Where(u => !u.Moving).ToArray();
+					if (t.Tile.Type == Terrain.Ocean)
+					{
+						// Never show land units at sea
+						units = units.Where(u => u.Class != UnitClass.Land).ToArray();
+					}
 					if (units.Length == 0) continue;
 					
 					IUnit drawUnit = units.FirstOrDefault(u => u == Game.Instance.ActiveUnit);
@@ -324,6 +329,12 @@ namespace CivOne.Screens
 					break;
 				case 'F':
 					Game.Instance.ActiveUnit.Fortify = true;
+					break;
+				case 'U':
+					if (Game.Instance.ActiveUnit is IBoardable)
+					{
+						return (Game.Instance.ActiveUnit as BaseUnitSea).Unload();;
+					}
 					break;
 			}
 

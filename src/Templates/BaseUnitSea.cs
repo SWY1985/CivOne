@@ -26,6 +26,23 @@ namespace CivOne.Templates
 		{
 			Explore(_range, sea: true);
 		}
+
+		public bool Unload()
+		{
+			if (!(this is IBoardable))
+				return false;
+			IUnit[] units = Map[X, Y].Units.Where(u => u.Class == UnitClass.Land).Take((this as IBoardable).Cargo).ToArray();
+			if (units.Length == 0)
+				return false;
+			
+			foreach (IUnit unit in units)
+			{
+				unit.Sentry = false;
+			}
+			MovesLeft = 0;
+			PartMoves = 0;
+			return true;
+		}
 		
 		protected BaseUnitSea(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1, int range = 1) : base(price, attack, defense, move)
 		{
