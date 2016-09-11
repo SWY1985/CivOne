@@ -25,10 +25,13 @@ namespace CivOne.Screens
 		public event EventHandler AdvisorsSelected;
 		public event EventHandler WorldSelected;
 		public event EventHandler CivilopediaSelected;
+
+		public bool MenuDrag { get; private set; }
 		
 		private readonly Rectangle[] _rectMenus;
 		
 		private bool _update = true;
+		private int _mouseX, _mouseY;
 		
 		public override bool HasUpdate(uint gameTick)
 		{
@@ -42,6 +45,9 @@ namespace CivOne.Screens
 		
 		public override bool MouseDown(ScreenEventArgs args)
 		{
+			_mouseX = args.X;
+			_mouseY = args.Y;
+
 			if (_rectMenus[0].Contains(args.Location) && GameSelected != null) GameSelected(this, null);
 			if (_rectMenus[1].Contains(args.Location) && OrdersSelected != null) OrdersSelected(this, null);
 			if (_rectMenus[2].Contains(args.Location) && AdvisorsSelected != null) AdvisorsSelected(this, null);
@@ -53,6 +59,8 @@ namespace CivOne.Screens
 		
 		public override bool MouseUp(ScreenEventArgs args)
 		{
+			MenuDrag = !(args.X == _mouseX && args.Y == _mouseY);
+
 			return false;
 		}
 		

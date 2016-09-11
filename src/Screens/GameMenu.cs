@@ -72,6 +72,20 @@ namespace CivOne.Screens
 		
 		private int _activeItem = -1;
 		private bool _update = true;
+
+		private bool _keepOpen = false;
+		public bool KeepOpen
+		{
+			get
+			{
+				return _keepOpen;
+			}
+			set
+			{
+				_keepOpen = true;
+				_activeItem = 0;
+			}
+		}
 		
 		private int MaxItemWidth
 		{
@@ -143,8 +157,21 @@ namespace CivOne.Screens
 		
 		public override bool MouseDrag(ScreenEventArgs args)
 		{
+			if (KeepOpen) return false;
 			int index = MouseOverItem(args);
-			if (index < 0 || index == _activeItem) return false;
+			if (index == _activeItem) return false;
+						
+			_activeItem = index;
+			
+			_update = true;
+			return true;
+		}
+		
+		public override bool MouseDown(ScreenEventArgs args)
+		{
+			if (!KeepOpen) return false;
+			int index = MouseOverItem(args);
+			if (index == _activeItem) return false;
 						
 			_activeItem = index;
 			
@@ -154,7 +181,12 @@ namespace CivOne.Screens
 		
 		public override bool MouseUp(ScreenEventArgs args)
 		{			
-			if (_activeItem < 0) return false;
+			if (_activeItem < 0 && !KeepOpen) return false;
+			if (_activeItem < 0 && KeepOpen)
+			{
+				KeepOpen = false;
+				return false;
+			}
 			Items[_activeItem].Select();
 			
 			return true;
