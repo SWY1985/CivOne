@@ -337,6 +337,7 @@ namespace CivOne.GFX
 				default:
 					int terrainId = (int)tile.Type;
 					if (tile.Type == Terrain.Grassland2) { terrainId = (int)Terrain.Grassland1; }
+					DrawIrrigation(ref output, tile);
 					output.AddLayer(Res.GetPart("TER257", tile.Borders * 16, terrainId * 16, 16, 16));
 					break;
 			}
@@ -359,7 +360,6 @@ namespace CivOne.GFX
 			// Add tile improvements
 			if (tile.Type != Terrain.River)
 			{
-				DrawIrrigation(ref output, tile);
 				DrawMine(ref output, tile);
 			}
 			DrawRoad(ref output, tile);
