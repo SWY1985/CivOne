@@ -24,7 +24,7 @@ namespace CivOne.Units
 		{
 			get
 			{
-				return (base.Busy || BuildingRoad > 0 || BuildingIrrigation > 0);
+				return (base.Busy || BuildingRoad > 0 || BuildingIrrigation > 0 || BuildingMine > 0);
 			}
 		}
 		public int BuildingRoad { get; private set; }
