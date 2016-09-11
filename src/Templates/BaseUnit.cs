@@ -180,6 +180,22 @@ namespace CivOne.Templates
 						PartMoves = 2;
 					}
 				}
+				else if (Class == UnitClass.Land && Map[X, Y].Type == Terrain.Ocean)
+				{
+					MovesLeft = 0;
+					PartMoves = 0;
+					Sentry = true;
+				}
+				else if (Class == UnitClass.Water && (this is IBoardable) && Map[FromX, FromY].Units.Any(u => u.Class == UnitClass.Land))
+				{
+					IUnit[] moveUnits = Map[FromX, FromY].Units.Where(u => u.Class == UnitClass.Land).Take((this as IBoardable).Cargo).ToArray();
+					foreach (IUnit unit in moveUnits)
+					{
+						unit.X = X;
+						unit.Y = Y;
+						unit.Sentry = true;
+					}
+				}
 				else
 				{
 					if (MovesLeft > 0)
@@ -419,7 +435,13 @@ namespace CivOne.Templates
 				case UnitClass.Water:
 					return (tile.Type == Terrain.Ocean || tile.City != null);
 				case UnitClass.Land:
-					return tile.Type != Terrain.Ocean;
+					{
+						if (tile.Type == Terrain.Ocean)
+						{
+							return (tile.Units.Any(u => (u is IBoardable)) && tile.Units.Where(u => u is IBoardable).Sum(u => (u as IBoardable).Cargo) > tile.Units.Count(u => u.Class == UnitClass.Land));
+						}
+						return true;
+					}
 			}
 			return true;
 		}
