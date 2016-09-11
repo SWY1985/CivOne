@@ -327,6 +327,12 @@ namespace CivOne.Screens
 		{
 			if (CheckShift56(args))
 				return true;
+			
+			if (_menuBar.KeyDown(args) && _gameMenu != null)
+			{
+				_gameMenu.KeepOpen = true;
+				return true;
+			}
 
 			switch (args.Key)
 			{

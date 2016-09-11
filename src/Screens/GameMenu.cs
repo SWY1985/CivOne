@@ -180,7 +180,7 @@ namespace CivOne.Screens
 		}
 		
 		public override bool MouseUp(ScreenEventArgs args)
-		{			
+		{
 			if (_activeItem < 0 && !KeepOpen) return false;
 			if (_activeItem < 0 && KeepOpen)
 			{
