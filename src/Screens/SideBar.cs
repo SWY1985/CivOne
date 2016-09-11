@@ -73,17 +73,19 @@ namespace CivOne.Screens
 
 		private void DrawDemographics()
 		{
+			Player player = Game.Instance.HumanPlayer;
+
 			_demographics.FillLayerTile(_background);
 			_demographics.AddBorder(15, 8, 0, 0, 80, 39);
 			_demographics.FillRectangle(11, 3, 2, 74, 11);
 			_demographics.FillRectangle(2, 3, 13, 74, 1);
 			if (Game.Instance.HumanPlayer.Population > 0)
 			{
-				string population = $"{Game.Instance.HumanPlayer.Population:n0}".Replace(".", ",");
+				string population = $"{player.Population:n0}".Replace(".", ",");
 				_demographics.DrawText($"{population} #", 0, 5, 2, 15, TextAlign.Left);
 			}
 			_demographics.DrawText(Game.Instance.GameYear, 0, 5, 2, 23, TextAlign.Left);
-			_demographics.DrawText(string.Format("{0}$ 0.5.5", Game.Instance.HumanPlayer.Gold), 0, 5, 2, 31, TextAlign.Left);
+			_demographics.DrawText($"{player.Gold}$ {player.LuxuriesRate}.{player.TaxesRate}.{player.ScienceRate}", 0, 5, 2, 31, TextAlign.Left);
 		}
 		
 		private void DrawGameInfo(uint gameTick = 0)

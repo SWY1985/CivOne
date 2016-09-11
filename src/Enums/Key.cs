@@ -44,6 +44,8 @@ namespace CivOne.Enums
 		Escape,
 		Delete,
 		Backspace,
+		Plus,
+		Minus,
 		Other,
 	}
 }

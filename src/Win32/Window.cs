@@ -201,6 +201,10 @@ namespace CivOne
 				case Keys.Back: return new KeyboardEventArgs(Key.Backspace, modifier);
 				case Keys.OemPeriod: return new KeyboardEventArgs('.', modifier);
 				case Keys.Oemcomma: return new KeyboardEventArgs(',', modifier);
+				case Keys.Add:
+				case Keys.Oemplus: return new KeyboardEventArgs(Key.Plus, modifier);
+				case Keys.Subtract:
+				case Keys.OemMinus: return new KeyboardEventArgs(Key.Minus, modifier);
 				default: return new KeyboardEventArgs(char.ToUpper((char)args.KeyCode), modifier);
 			}
 		}
