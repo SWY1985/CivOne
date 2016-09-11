@@ -43,6 +43,41 @@ namespace CivOne.Screens
 			return false;
 		}
 		
+		public override bool KeyDown(KeyboardEventArgs args)
+		{
+			if (!args.Alt)
+				return false;
+			Console.WriteLine("alt!");
+			
+			switch (args.KeyChar)
+			{
+				case 'G':
+					if (GameSelected != null)
+						GameSelected(this, null);
+					break;
+				case 'O':
+					if (OrdersSelected != null)
+						OrdersSelected(this, null);
+					break;
+				case 'A':
+					if (AdvisorsSelected != null)
+						AdvisorsSelected(this, null);
+					break;
+				case 'W':
+					if (WorldSelected != null) 
+						WorldSelected(this, null);
+					break;
+				case 'C':
+					if (CivilopediaSelected != null) 
+						CivilopediaSelected(this, null);
+					break;
+				default:
+					return false;
+			}
+			MenuDrag = false;
+			return true;
+		}
+		
 		public override bool MouseDown(ScreenEventArgs args)
 		{
 			_mouseX = args.X;
