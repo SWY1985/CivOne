@@ -163,6 +163,8 @@ namespace CivOne
 			{
 				return;
 			}
+			
+			if (unit == null) return;
 
 			if (cityName == null)
 			{
