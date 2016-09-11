@@ -111,9 +111,9 @@ namespace CivOne.Screens
 				_gameInfo.DrawText($"({Map[unit.X, unit.Y].Name})", 0, 5, 4, 34, TextAlign.Left);
 				int yy = 34;
 				if (Map[unit.X, unit.Y].RailRoad)
-					_gameInfo.DrawText("(Road)", 0, 5, 4, (yy += 8), TextAlign.Left);
-				else if (Map[unit.X, unit.Y].Road)
 					_gameInfo.DrawText("(RailRoad)", 0, 5, 4, (yy += 8), TextAlign.Left);
+				else if (Map[unit.X, unit.Y].Road)
+					_gameInfo.DrawText("(Road)", 0, 5, 4, (yy += 8), TextAlign.Left);
 				if (Map[unit.X, unit.Y].Irrigation)
 					_gameInfo.DrawText("(Irrigation)", 0, 5, 4, (yy += 8), TextAlign.Left);
 				else if (Map[unit.X, unit.Y].Mine)
