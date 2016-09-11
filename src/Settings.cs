@@ -150,6 +150,8 @@ namespace CivOne
 			}
 		}
 
+		internal bool EndOfTurn { get; set; }
+
 		internal void RevealWorldCheat()
 		{
 			_revealWorld = !_revealWorld;
@@ -252,6 +254,9 @@ namespace CivOne
 			if (scale < 1 || scale > 4) scale = 2;
 			_scale = scale;
 			_revealWorld = revealWorld;
+
+			// Set game options
+			EndOfTurn = false;
 		}
 	}
 }

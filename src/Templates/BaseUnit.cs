@@ -23,6 +23,13 @@ namespace CivOne.Templates
 	{
 		private int _x, _y;
 
+		public virtual bool Busy
+		{
+			get
+			{
+				return (Sentry || Fortify);
+			}
+		}
 		public bool FortifyActive { get; private set; }
 		private bool _fortify = false;
 		public bool Fortify

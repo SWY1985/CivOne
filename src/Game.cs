@@ -316,7 +316,7 @@ namespace CivOne
 		{
 			get
 			{
-				if (_units.Count == 0)
+				if (_units.Count(u => u.Owner == _currentPlayer && !u.Busy) == 0)
 					return null;
 				
 				// If the unit counter is too high, return to 0
@@ -328,8 +328,14 @@ namespace CivOne
 					return _units[_activeUnit];
 				
 				// Check if any units are still available for this player
-				if (!_units.Any(u => u.Owner == _currentPlayer && (u.MovesLeft > 0 || u.PartMoves > 0) && !u.Sentry && !u.Fortify))
+				if (!_units.Any(u => u.Owner == _currentPlayer && (u.MovesLeft > 0 || u.PartMoves > 0) && !u.Busy))
+				{
+					if (!Settings.Instance.EndOfTurn)
+					{
+						NextTurn();
+					}
 					return null;
+				}
 				
 				// Loop through units
 				while (_units[_activeUnit].Owner != _currentPlayer || (_units[_activeUnit].MovesLeft == 0 && _units[_activeUnit].PartMoves == 0) || (_units[_activeUnit].Sentry || _units[_activeUnit].Fortify))

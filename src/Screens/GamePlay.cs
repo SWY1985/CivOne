@@ -170,6 +170,7 @@ namespace CivOne.Screens
 			_gameMenu.Items.Add(new GameMenu.Item("Retire"));
 			_gameMenu.Items.Add(new GameMenu.Item("QUIT to DOS"));
 			
+			_gameMenu.Items[3].Selected += (s, a) => Common.AddScreen(new GameOptions());
 			_gameMenu.Items[5].Selected += (s, a) => MenuRevolution();
 			_gameMenu.Items[8].Selected += (s, a) => MenuQuit();
 			
