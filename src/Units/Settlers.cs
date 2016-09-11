@@ -43,7 +43,7 @@ namespace CivOne.Units
 				PartMoves = 0;
 				return true;
 			}
-			else if (Game.Instance.HumanPlayer.Advances.Any(a => a is RailRoad) && !tile.IsOcean && tile.Road && tile.City == null)
+			else if (Game.Instance.HumanPlayer.Advances.Any(a => a is RailRoad) && !tile.IsOcean && tile.Road && !tile.RailRoad && tile.City == null)
 			{
 				BuildingRoad = 3;
 				MovesLeft = 0;
