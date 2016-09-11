@@ -392,7 +392,7 @@ namespace CivOne.Templates
 			if (Sentry)
 			{
 				Bitmap output = (Bitmap)_unitCache[unitId, colour].Image.Clone();
-				Picture.ReplaceColours(output, 5, 7);
+				Picture.ReplaceColours(output, new byte[] { 5, 8, }, new byte[] { 7, 7 });
 				return new Picture(output);
 			}
 			if (FortifyActive)
