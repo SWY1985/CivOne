@@ -14,8 +14,16 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Sail : BaseUnitSea
+	internal class Sail : BaseUnitSea, IBoardable
 	{
+		public int Cargo
+		{
+			get
+			{
+				return 3;
+			}
+		}
+
 		public Sail() : base(4, 1, 1, 3)
 		{
 			Type = Unit.Sail;

@@ -14,8 +14,16 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Trireme : BaseUnitSea
+	internal class Trireme : BaseUnitSea, IBoardable
 	{
+		public int Cargo
+		{
+			get
+			{
+				return 2;
+			}
+		}
+
 		public Trireme() : base(4, 1, 0, 3)
 		{
 			Type = Unit.Trireme;
