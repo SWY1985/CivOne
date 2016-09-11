@@ -16,7 +16,7 @@ namespace CivOne.Units
 {
 	internal class Submarine : BaseUnitSea
 	{
-		public Submarine() : base(50, 8, 2, 3, 2)
+		public Submarine() : base(5, 8, 2, 3, 2)
 		{
 			Type = Unit.Submarine;
 			Name = "Submarine";
