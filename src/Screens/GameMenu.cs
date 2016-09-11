@@ -141,6 +141,37 @@ namespace CivOne.Screens
 			return true;
 		}
 		
+		public override bool KeyDown(KeyboardEventArgs args)
+		{
+			switch (args.Key)
+			{
+				case Key.NumPad8:
+				case Key.Up:
+					if (_activeItem > 0)
+					{
+						_activeItem--;
+						_update = true;
+					}
+					return true;
+				case Key.NumPad2:
+				case Key.Down:
+					if (_activeItem <= (Items.Count - 1))
+					{
+						_activeItem++;
+						_update = true;
+					}
+					return true;
+				case Key.Escape:
+					KeepOpen = false;
+					return false;
+				case Key.Enter:
+					if (_activeItem >= 0)
+						Items[_activeItem].Select();
+					return false;
+			}
+			return true;
+		}
+		
 		private int MouseOverItem(ScreenEventArgs args)
 		{
 			int fontHeight = Resources.Instance.GetFontHeight(0);
