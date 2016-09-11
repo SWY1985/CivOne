@@ -170,6 +170,8 @@ namespace CivOne.Screens
 			_gameMenu.Items.Add(new GameMenu.Item("Retire"));
 			_gameMenu.Items.Add(new GameMenu.Item("QUIT to DOS"));
 			
+			_gameMenu.Items[0].Selected += (s, a) => Common.AddScreen(SetRate.Taxes);
+			_gameMenu.Items[1].Selected += (s, a) => Common.AddScreen(SetRate.Luxuries);
 			_gameMenu.Items[3].Selected += (s, a) => Common.AddScreen(new GameOptions());
 			_gameMenu.Items[5].Selected += (s, a) => MenuRevolution();
 			_gameMenu.Items[8].Selected += (s, a) => MenuQuit();
@@ -371,6 +373,12 @@ namespace CivOne.Screens
 					return true;
 				case Key.F10:
 					Common.AddScreen(new WorldMap());
+					return true;
+				case Key.Plus:
+					Common.AddScreen(SetRate.Taxes);
+					return true;
+				case Key.Minus:
+					Common.AddScreen(SetRate.Luxuries);
 					return true;
 			}
 			return _gameMap.KeyDown(args);

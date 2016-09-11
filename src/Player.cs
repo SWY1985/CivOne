@@ -73,6 +73,41 @@ namespace CivOne
 		
 		public Government Government { get; private set; }
 
+		private int _luxuriesRate = 0, _taxesRate = 5, _scienceRate = 5;
+		public int LuxuriesRate
+		{
+			get
+			{
+				return _luxuriesRate;
+			}
+			set
+			{
+				int diff = _luxuriesRate - value;
+				_luxuriesRate = value;
+				_scienceRate += diff;
+			}
+		}
+		public int TaxesRate
+		{
+			get
+			{
+				return _taxesRate;
+			}
+			set
+			{
+				int diff = _taxesRate - value;
+				_taxesRate = value;
+				_scienceRate += diff;
+			}
+		}
+		public int ScienceRate
+		{
+			get
+			{
+				return _scienceRate;
+			}
+		}
+
 		public void Revolt()
 		{
 			_anarchy = 4;
