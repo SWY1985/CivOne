@@ -361,6 +361,13 @@ namespace CivOne.Screens
 		
 		public override bool MouseDown(ScreenEventArgs args)
 		{
+			if (_gameMenu != null && _gameMenu.KeepOpen)
+			{
+				MouseArgsOffset(ref args, _menuX, _menuY);
+				_update |= _gameMenu.MouseDown(args);
+				return _update;
+			}
+
 			if (args.Y < 8)
 			{
 				return _menuBar.MouseDown(args);
@@ -396,6 +403,15 @@ namespace CivOne.Screens
 		public override bool MouseUp(ScreenEventArgs args)
 		{
 			if (_gameMenu == null) return false;
+			if (args.Y < 8)
+			{
+				_menuBar.MouseDown(args);
+				if (!_menuBar.MenuDrag)
+				{
+					_gameMenu.KeepOpen = true;
+					return true;
+				}
+			}
 			
 			_gameMenu.MouseUp(args);
 			_gameMenu = null;
