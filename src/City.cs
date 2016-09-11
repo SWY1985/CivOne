@@ -294,6 +294,12 @@ namespace CivOne
 					}
 					IUnit unit = Game.Instance.CreateUnit((CurrentProduction as IUnit).Type, X, Y, Owner);
 					unit.SetHome(this);
+					if (unit is Settlers)
+					{
+						AdvisorMessage advisorMessage = new AdvisorMessage(Advisor.Defense, $"{this.Name} builds Settlers.");
+						advisorMessage.Closed += (s, a) => Common.AddScreen(new CityManager(this));
+						Common.AddScreen(advisorMessage);
+					}
 				}
 				if (CurrentProduction is IBuilding)
 				{
