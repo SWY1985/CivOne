@@ -93,7 +93,7 @@ namespace CivOne
 		{
 			get
 			{
-				return ResourceTiles.Sum(t => t.Food) - ShieldCosts;
+				return ResourceTiles.Sum(t => t.Shield) - ShieldCosts;
 			}
 		}
 		
