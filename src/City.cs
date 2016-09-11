@@ -67,6 +67,14 @@ namespace CivOne
 		internal int Food { get; private set; }
 		internal IProduction CurrentProduction { get; private set; }
 		private List<ITile> _resourceTiles = new List<ITile>();
+		private List<IBuilding> _buildings = new List<IBuilding>();
+		public IBuilding[] Buildings
+		{
+			get
+			{
+				return _buildings.OrderBy(b => b.Id).ToArray();
+			}
+		}
 
 		internal int ShieldCosts
 		{
@@ -184,7 +192,7 @@ namespace CivOne
 					if (unit.Class == UnitClass.Water && !Map[X, Y].GetBorderTiles().Any(t => t.IsOcean)) continue;
 					yield return unit;
 				}
-				foreach (IBuilding building in Reflect.GetBuildings().Where(b => Player.ProductionAvailable(b)))
+				foreach (IBuilding building in Reflect.GetBuildings().Where(b => Player.ProductionAvailable(b) && !_buildings.Any(x => x.Id == b.Id)))
 				{
 					yield return building;
 				}
@@ -263,6 +271,11 @@ namespace CivOne
 			}
 		}
 
+		public void AddBuilding(IBuilding building)
+		{
+			_buildings.Add(building);
+		}
+
 		internal void NewTurn()
 		{
 			Food += FoodIncome;
@@ -283,7 +296,6 @@ namespace CivOne
 				Shields += ShieldIncome;
 			if (Shields >= (int)CurrentProduction.Price * 10)
 			{
-				Shields = 0;
 				if (CurrentProduction is IUnit)
 				{
 					if (CurrentProduction is Settlers)
@@ -292,6 +304,7 @@ namespace CivOne
 						if (Size == 1) Size++;
 						Size--;
 					}
+					Shields = 0;
 					IUnit unit = Game.Instance.CreateUnit((CurrentProduction as IUnit).Type, X, Y, Owner);
 					unit.SetHome(this);
 					if (unit is Settlers)
@@ -301,8 +314,10 @@ namespace CivOne
 						Common.AddScreen(advisorMessage);
 					}
 				}
-				if (CurrentProduction is IBuilding)
+				if (CurrentProduction is IBuilding && !_buildings.Any(b => b.Id == (CurrentProduction as IBuilding).Id))
 				{
+					Shields = 0;
+					_buildings.Add(CurrentProduction as IBuilding);
 					Common.AddScreen(new CityView(this, building: (CurrentProduction as IBuilding)));
 				}
 			}

@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CivOne.Buildings;
 using CivOne.Civilizations;
 using CivOne.Enums;
 using CivOne.Interfaces;
@@ -202,6 +203,8 @@ namespace CivOne
 				Name = cityName,
 				Size = 1
 			};
+			if (!_cities.Any(c => c.Owner == unit.Owner))
+				city.AddBuilding(new Palace());
 			_cities.Add(city);
 			if (unit.Owner == PlayerNumber(HumanPlayer))
 			{
