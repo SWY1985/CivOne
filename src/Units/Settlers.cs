@@ -20,14 +20,13 @@ namespace CivOne.Units
 {
 	internal class Settlers : BaseUnit
 	{
-		private bool Busy
+		public override bool Busy
 		{
 			get
 			{
-				return (BuildingRoad > 0 || BuildingIrrigation > 0);
+				return (base.Busy || BuildingRoad > 0 || BuildingIrrigation > 0);
 			}
 		}
-
 		public int BuildingRoad { get; private set; }
 		public int BuildingIrrigation { get; private set; }
 		public int BuildingMine { get; private set; }

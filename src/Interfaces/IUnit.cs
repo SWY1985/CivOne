@@ -25,6 +25,7 @@ namespace CivOne.Interfaces
 		byte Move { get; }
 		int X { get; set; }
 		int Y { get; set; }
+		bool Busy { get; }
 		bool Sentry { get; set; }
 		bool FortifyActive { get; }
 		bool Fortify { get; set; }
