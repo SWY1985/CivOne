@@ -104,12 +104,16 @@ namespace CivOne.Templates
 				}
 				else if (Class == UnitClass.Water && (this is IBoardable) && Map[FromX, FromY].Units.Any(u => u.Class == UnitClass.Land))
 				{
-					IUnit[] moveUnits = Map[FromX, FromY].Units.Where(u => u.Class == UnitClass.Land).Take((this as IBoardable).Cargo).ToArray();
+					IUnit[] moveUnits = Map[FromX, FromY].Units.Where(u => u.Class == UnitClass.Land).ToArray();
+					if (Map[FromX, FromY].City != null)
+						moveUnits = moveUnits.Where(u => u.Sentry).ToArray();
+					moveUnits = moveUnits.Take((this as IBoardable).Cargo).ToArray();
 					foreach (IUnit unit in moveUnits)
 					{
 						unit.X = X;
 						unit.Y = Y;
 						unit.Sentry = true;
+						unit.Fortify = false;
 					}
 				}
 				else
