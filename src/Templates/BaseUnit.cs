@@ -348,24 +348,7 @@ namespace CivOne.Templates
 			return _unitCache[unitId, colour];
 		}
 
-		private bool ValidMoveTarget(ITile tile)
-		{
-			if (tile == null) return false;
-			switch (Class)
-			{
-				case UnitClass.Water:
-					return (tile.Type == Terrain.Ocean || tile.City != null);
-				case UnitClass.Land:
-					{
-						if (tile.Type == Terrain.Ocean)
-						{
-							return (tile.Units.Any(u => (u is IBoardable)) && tile.Units.Where(u => u is IBoardable).Sum(u => (u as IBoardable).Cargo) > tile.Units.Count(u => u.Class == UnitClass.Land));
-						}
-						return true;
-					}
-			}
-			return true;
-		}
+		protected abstract bool ValidMoveTarget(ITile tile);
 
 		public IEnumerable<ITile> MoveTargets
 		{

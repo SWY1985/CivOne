@@ -44,6 +44,12 @@ namespace CivOne.Templates
 			return true;
 		}
 		
+		protected override bool ValidMoveTarget(ITile tile)
+		{
+			// Check whether the tile exists, is an ocean tile or contains a city.
+			return (tile != null && (tile.Type == Terrain.Ocean || tile.City != null));
+		}
+		
 		protected BaseUnitSea(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1, int range = 1) : base(price, attack, defense, move)
 		{
 			Class = UnitClass.Water;
