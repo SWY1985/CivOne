@@ -90,7 +90,11 @@ namespace CivOne.Screens
 		{
 			// Check if the active unit is on the screen and the blink status has changed.
 			IUnit activeUnit = Game.Instance.ActiveUnit;
-			if (activeUnit == null) return false;
+			if (activeUnit == null)
+			{
+				_update = true;
+				return false;
+			}
 
 			if (RenderTiles.Any(t => t.Tile.X == activeUnit.X && t.Tile.Y == activeUnit.Y) && (gameTick % 2) == 0)
 			{
