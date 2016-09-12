@@ -7,6 +7,8 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
+using System.Linq;
 using CivOne.Interfaces;
 using CivOne.Tiles;
 using CivOne.Units;
@@ -47,6 +49,20 @@ namespace CivOne
 			{
 				unit.Fortify = true;
 			}
+		}
+
+		internal static void ChooseResearch(Player player)
+		{
+			if (player.CurrentResearch != null) return;
+			
+			IAdvance[] advances = player.AvailableResearch.ToArray();
+			
+			// No further research possible
+			if (advances.Length == 0) return;
+
+			player.CurrentResearch = advances[Common.Random.Next(0, advances.Length)];
+
+			Console.WriteLine($"AI: {player.LeaderName} of the {player.TribeNamePlural} starts researching {player.CurrentResearch.Name}.");
 		}
 	}
 }

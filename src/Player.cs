@@ -182,6 +182,20 @@ namespace CivOne
 			{
 				// Temporary code until the science code is implemented
 				_science = value;
+				if (_currentResearch == null)
+				{
+					if (!AvailableResearch.Any())
+					{
+						// no further research possible
+						//TODO: Implement future techs.
+						return;
+					}
+
+					if (Human)
+						Common.AddScreen(new ChooseTech());
+					else
+						AI.ChooseResearch(this);
+				}
 				if (_science >= ScienceCost)
 				{
 					_science -= ScienceCost;
@@ -192,11 +206,6 @@ namespace CivOne
 						discovery.Closed += DiscoveryClosed;
 						Common.AddScreen(discovery);
 					}
-				}
-				if (_currentResearch == null)
-				{
-					if (Human)
-						Common.AddScreen(new ChooseTech());
 				}
 			}
 		}
