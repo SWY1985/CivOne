@@ -14,11 +14,10 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Catapult : BaseUnit
+	internal class Catapult : BaseUnitLand
 	{
 		public Catapult() : base(4, 6, 1, 1)
 		{
-			Class = UnitClass.Land;
 			Type = Unit.Catapult;
 			Name = "Catapult";
 			RequiredTech = new Mathematics();

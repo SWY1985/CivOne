@@ -14,11 +14,10 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Diplomat : BaseUnit
+	internal class Diplomat : BaseUnitLand
 	{
 		public Diplomat() : base(3, 0, 0, 2)
 		{
-			Class = UnitClass.Land;
 			Type = Unit.Diplomat;
 			Name = "Diplomat";
 			RequiredTech = new Writing();

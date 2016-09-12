@@ -14,11 +14,10 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Phalanx : BaseUnit
+	internal class Phalanx : BaseUnitLand
 	{
 		public Phalanx() : base(2, 1, 2, 1)
 		{
-			Class = UnitClass.Land;
 			Type = Unit.Phalanx;
 			Name = "Phalanx";
 			RequiredTech = new BronzeWorking();

@@ -14,11 +14,10 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Armor : BaseUnit
+	internal class Armor : BaseUnitLand
 	{
 		public Armor() : base(8, 10, 5, 3)
 		{
-			Class = UnitClass.Land;
 			Type = Unit.Armor;
 			Name = "Armor";
 			RequiredTech = new Automobile();

@@ -15,7 +15,7 @@ using CivOne.Wonders;
 
 namespace CivOne.Units
 {
-	internal class Nuclear : BaseUnit
+	internal class Nuclear : BaseUnitAir
 	{
 		public override void Explore()
 		{

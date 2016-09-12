@@ -14,11 +14,10 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Riflemen : BaseUnit
+	internal class Riflemen : BaseUnitLand
 	{
 		public Riflemen() : base(3, 3, 5, 1)
 		{
-			Class = UnitClass.Land;
 			Type = Unit.Riflemen;
 			Name = "Riflemen";
 			RequiredTech = new Conscription();

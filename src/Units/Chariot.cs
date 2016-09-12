@@ -14,11 +14,10 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Chariot : BaseUnit
+	internal class Chariot : BaseUnitLand
 	{
 		public Chariot() : base(4, 4, 1, 2)
 		{
-			Class = UnitClass.Land;
 			Type = Unit.Chariot;
 			Name = "Chariot";
 			RequiredTech = new TheWheel();

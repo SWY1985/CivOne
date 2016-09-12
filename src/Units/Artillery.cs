@@ -14,11 +14,10 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Artillery : BaseUnit
+	internal class Artillery : BaseUnitLand
 	{
 		public Artillery() : base(6, 12, 2, 2)
 		{
-			Class = UnitClass.Land;
 			Type = Unit.Artillery;
 			Name = "Artillery";
 			RequiredTech = new Robotics();

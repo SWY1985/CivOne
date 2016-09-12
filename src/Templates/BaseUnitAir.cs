@@ -7,22 +7,22 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using CivOne.Advances;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using CivOne.Enums;
+using CivOne.GFX;
 using CivOne.Interfaces;
-using CivOne.Templates;
+using CivOne.Screens;
 
-namespace CivOne.Units
+namespace CivOne.Templates
 {
-	internal class Knights : BaseUnitLand
+	internal abstract class BaseUnitAir : BaseUnit
 	{
-		public Knights() : base(4, 4, 2, 2)
+		protected BaseUnitAir(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1) : base(price, attack, defense, move)
 		{
-			Type = Unit.Knights;
-			Name = "Knights";
-			RequiredTech = new Chivalry();
-			ObsoleteTech = new Automobile();
-			SetIcon('E', 1, 1);
+			Class = UnitClass.Land;
 		}
 	}
 }

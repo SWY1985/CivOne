@@ -14,7 +14,7 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Fighter : BaseUnit
+	internal class Fighter : BaseUnitAir
 	{
 		public override void Explore()
 		{
@@ -23,7 +23,6 @@ namespace CivOne.Units
 
 		public Fighter() : base(6, 4, 2, 10)
 		{
-			Class = UnitClass.Air;
 			Type = Unit.Fighter;
 			Name = "Fighter";
 			RequiredTech = new Flight();

@@ -14,11 +14,10 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Cavalry : BaseUnit
+	internal class Cavalry : BaseUnitLand
 	{
 		public Cavalry() : base(2, 2, 1, 2)
 		{
-			Class = UnitClass.Land;
 			Type = Unit.Cavalry;
 			Name = "Cavalry";
 			RequiredTech = new HorsebackRiding();
