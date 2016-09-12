@@ -20,6 +20,102 @@ namespace CivOne.Templates
 {
 	internal abstract class BaseUnitLand : BaseUnit
 	{
+		protected override void MovementDone()
+		{
+			if (Map[_x, _y].Hut)
+			{
+				Map[_x, _y].Hut = false;
+				if (Class == UnitClass.Land)
+				{
+					TribalHut();
+				}
+			}
+		}
+
+		private void TribalHutMessage(EventHandler method, params string[] message)
+		{
+			if (Player.Human)
+			{
+				TribalHut tribalHut = new TribalHut(message);
+				tribalHut.Closed += method;
+				Common.AddScreen(tribalHut);
+				return;
+			}
+			method(this, null);
+		}
+
+		protected void TribalHut(HutResult result = HutResult.Random)
+		{
+			switch(result)
+			{
+				case HutResult.MetalDeposits:
+					TribalHutMessage((s, e) => {
+						 Player.Gold += 50;
+					}, "You have discovered", "valuable metal deposits", "worth 50$");
+					return;
+				case HutResult.FriendlyTribe:
+					TribalHutMessage((s, e) => {
+						Game.Instance.CreateUnit(Common.Random.Next(0, 100) < 50 ? Unit.Cavalry : Unit.Legion, X, Y, Owner, true);
+					}, "You have discovered", "a friendly tribe of", "skilled mercenaries.");
+					return;
+				case HutResult.AdvancedTribe:
+					TribalHutMessage((s, e) => {
+						Game.Instance.FoundCity(_x, _y, discardSettlers: false);
+					}, "You have discovered", "an advanced tribe.");
+					return;
+				case HutResult.AncientScrolls:
+					TribalHutMessage((s, e) => {
+						// TODO: Actually give the ancient scroll of wisdom to the player.
+					}, "You have discovered", "scrolls of ancient wisdom.");
+					return;
+				case HutResult.Barbarians:
+					TribalHutMessage((s, e) => {
+						// TODO: Actually unleash the horde of barbarians.
+					}, "You have unleashed", "a horde of barbarians!");
+					return;
+			}
+
+			// Tribal hut outcome, as described here: http://forums.civfanatics.com/showthread.php?t=510312
+			switch (Common.Random.Next(0, 4))
+			{
+				case 0:
+					if (NearestCity > 3)
+					{
+						if (Map[_x, _y].LandValue > 12)
+						{
+							TribalHut(HutResult.AdvancedTribe);
+							break;
+						}
+						TribalHut(HutResult.MetalDeposits);
+						break;
+					}
+					TribalHut(HutResult.FriendlyTribe);
+					break;
+				case 1:
+					if (Game.Instance.GameTurn == 0 || Common.TurnToYear(Game.Instance.GameTurn) >= 1000)
+					{
+						TribalHut(HutResult.MetalDeposits);
+						break;
+					}
+					TribalHut(HutResult.AncientScrolls);
+					break;
+				case 2:
+					TribalHut(HutResult.MetalDeposits);
+					break;
+				case 3:
+					if (NearestCity < 4 || !Game.Instance.GetCities().Any(c => c.Owner == Game.Instance.PlayerNumber(Player)))
+					{
+						TribalHut(HutResult.FriendlyTribe);
+						break;
+					}
+					TribalHut(HutResult.Barbarians);
+					break;
+				default:
+					TribalHut(HutResult.FriendlyTribe);
+					break;
+			}
+		}
+
 		protected BaseUnitLand(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1) : base(price, attack, defense, move)
 		{
 			Class = UnitClass.Land;
