@@ -88,8 +88,11 @@ namespace CivOne.Screens
 			for (int i = 1; i < textLines.Length; i++)
 				messageBox.AddLayer(textLines[i], 46, (textLines[i].Height * (i - 1)) + 12);
 
-			_canvas.FillRectangle(5, 38, 72, actualWidth + 2, height + 2);
-			AddLayer(messageBox, 39, 73);
+			int left = 38;
+			if (advisor == Advisor.Domestic)
+				left = 58;
+			_canvas.FillRectangle(5, left, 72, actualWidth + 2, height + 2);
+			AddLayer(messageBox, left + 1, 73);
 			
 			/*
 			Bitmap[] textLines = new Bitmap[message.Length];
