@@ -18,7 +18,7 @@ using CivOne.Tiles;
 
 namespace CivOne.Units
 {
-	internal class Settlers : BaseUnit
+	internal class Settlers : BaseUnitLand
 	{
 		public override bool Busy
 		{
@@ -185,7 +185,6 @@ namespace CivOne.Units
 
 		public Settlers() : base(4, 0, 1, 1)
 		{
-			Class = UnitClass.Land;
 			Type = Unit.Settlers;
 			Name = "Settlers";
 			RequiredTech = null;

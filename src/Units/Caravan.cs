@@ -14,11 +14,10 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Caravan : BaseUnit
+	internal class Caravan : BaseUnitLand
 	{
 		public Caravan() : base(5, 0, 1, 1)
 		{
-			Class = UnitClass.Land;
 			Type = Unit.Caravan;
 			Name = "Caravan";
 			RequiredTech = new Trade();

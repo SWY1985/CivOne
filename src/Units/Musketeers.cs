@@ -14,11 +14,10 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Musketeers : BaseUnit
+	internal class Musketeers : BaseUnitLand
 	{
 		public Musketeers() : base(3, 2, 3, 1)
 		{
-			Class = UnitClass.Land;
 			Type = Unit.Musketeers;
 			Name = "Musketeers";
 			RequiredTech = new Gunpowder();

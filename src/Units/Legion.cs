@@ -14,11 +14,10 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Legion : BaseUnit
+	internal class Legion : BaseUnitLand
 	{
 		public Legion() : base(2, 3, 1, 1)
 		{
-			Class = UnitClass.Land;
 			Type = Unit.Legion;
 			Name = "Legion";
 			RequiredTech = new IronWorking();

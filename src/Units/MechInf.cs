@@ -14,11 +14,10 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class MechInf : BaseUnit
+	internal class MechInf : BaseUnitLand
 	{
 		public MechInf() : base(5, 6, 6, 3)
 		{
-			Class = UnitClass.Land;
 			Type = Unit.MechInf;
 			Name = "Mech. Inf.";
 			RequiredTech = new LaborUnion();
