@@ -20,6 +20,11 @@ namespace CivOne.Templates
 {
 	internal abstract class BaseUnitAir : BaseUnit
 	{
+		protected override bool ValidMoveTarget(ITile tile)
+		{
+			return (tile != null);
+		}
+
 		protected BaseUnitAir(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1) : base(price, attack, defense, move)
 		{
 			Class = UnitClass.Land;

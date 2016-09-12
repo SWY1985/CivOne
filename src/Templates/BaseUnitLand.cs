@@ -116,6 +116,19 @@ namespace CivOne.Templates
 			}
 		}
 
+		protected override bool ValidMoveTarget(ITile tile)
+		{
+			if (tile == null)
+				return false;
+
+			// If the tile is not an ocean tile, movement is allowed
+			if (tile.Type != Terrain.Ocean)
+				return true;
+			
+			// This query checks if there's a boardable cargo vessel with free slots on the tile.
+			return (tile.Units.Any(u => (u is IBoardable)) && tile.Units.Where(u => u is IBoardable).Sum(u => (u as IBoardable).Cargo) > tile.Units.Count(u => u.Class == UnitClass.Land));
+		}
+
 		protected BaseUnitLand(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1) : base(price, attack, defense, move)
 		{
 			Class = UnitClass.Land;
