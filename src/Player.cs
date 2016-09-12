@@ -154,7 +154,9 @@ namespace CivOne
 
 		private void CivilopediaClosed(object sender, EventArgs args)
 		{
+			short scienceCost = ScienceCost;
 			_currentResearch = null;
+			_science -= scienceCost;
 		}
 
 		private void DiscoveryClosed(object sender, EventArgs args)
@@ -182,6 +184,21 @@ namespace CivOne
 			{
 				// Temporary code until the science code is implemented
 				_science = value;
+				if (_science >= ScienceCost)
+				{
+					_advances.Add(_currentResearch.Id);
+					if (Human)
+					{
+						Discovery discovery = new Discovery(_currentResearch);
+						discovery.Closed += DiscoveryClosed;
+						Common.AddScreen(discovery);
+					}
+					else
+					{
+						_currentResearch = null;
+						_science -= ScienceCost;
+					}
+				}
 				if (_currentResearch == null)
 				{
 					if (!AvailableResearch.Any())
@@ -195,17 +212,6 @@ namespace CivOne
 						Common.AddScreen(new ChooseTech());
 					else
 						AI.ChooseResearch(this);
-				}
-				if (_science >= ScienceCost)
-				{
-					_science -= ScienceCost;
-					_advances.Add(_currentResearch.Id);
-					if (Human)
-					{
-						Discovery discovery = new Discovery(_currentResearch);
-						discovery.Closed += DiscoveryClosed;
-						Common.AddScreen(discovery);
-					}
 				}
 			}
 		}
