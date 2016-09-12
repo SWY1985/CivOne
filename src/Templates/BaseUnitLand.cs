@@ -20,15 +20,54 @@ namespace CivOne.Templates
 {
 	internal abstract class BaseUnitLand : BaseUnit
 	{
-		protected override void MovementDone()
+		protected override void MovementDone(ITile previousTile)
 		{
-			if (Map[_x, _y].Hut)
+			//if (Class == UnitClass.Land && Map[FromX, FromY].Road && Map[X, Y].Road)
+			if (previousTile.Road && Tile.Road)
 			{
-				Map[_x, _y].Hut = false;
-				if (Class == UnitClass.Land)
+				//if (Map[X, Y].RailRoad && Map[FromX, FromY].RailRoad)
+				if (Tile.RailRoad && previousTile.RailRoad)
 				{
-					TribalHut();
+					// No moves lost
 				}
+				else if (PartMoves > 0)
+				{
+					PartMoves--;
+				}
+				else
+				{
+					if (MovesLeft > 0)
+						MovesLeft--;
+					PartMoves = 2;
+				}
+			}
+			else if (Tile.Type == Terrain.Ocean)
+			{
+				MovesLeft = 0;
+				PartMoves = 0;
+				Sentry = true;
+			}
+			else
+			{
+				if (MovesLeft > 0)
+				{
+					byte moveCosts = 1;
+					if (Class == UnitClass.Land)
+						moveCosts = Map[X, Y].Movement;
+					if (MovesLeft < moveCosts)
+						moveCosts = MovesLeft;
+					MovesLeft -= moveCosts;
+				}
+				else if (PartMoves > 0)
+				{
+					PartMoves = 0;
+				}
+			}
+			
+			if (Tile.Hut)
+			{
+				Tile.Hut = false;
+				TribalHut();
 			}
 		}
 

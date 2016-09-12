@@ -22,6 +22,26 @@ namespace CivOne.Templates
 	{
 		private readonly int _range;
 
+		protected override void MovementDone(ITile previousTile)
+		{
+			if ((this is IBoardable) && previousTile.Units.Any(u => u.Class == UnitClass.Land))
+			{
+				IUnit[] moveUnits = previousTile.Units.Where(u => u.Class == UnitClass.Land).ToArray();
+				if (previousTile.City != null)
+					moveUnits = moveUnits.Where(u => u.Sentry).ToArray();
+				moveUnits = moveUnits.Take((this as IBoardable).Cargo).ToArray();
+				foreach (IUnit unit in moveUnits)
+				{
+					unit.X = X;
+					unit.Y = Y;
+					unit.Sentry = true;
+					unit.Fortify = false;
+				}
+			}
+
+			base.MovementDone(previousTile);
+		}
+
 		public override void Explore()
 		{
 			Explore(_range, sea: true);

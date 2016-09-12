@@ -12,16 +12,19 @@ using System.Collections.Generic;
 
 namespace CivOne
 {
-	internal abstract class GameTask
+	public abstract class GameTask
 	{
 		private static GameTask _currentTask = null;
 		private static List<GameTask> _tasks = new List<GameTask>();
 
 		public static void Update()
 		{
-			if (_currentTask != null || _tasks.Count == 0)
+			if (_currentTask != null)
+				_currentTask.Step();
+			else if (_tasks.Count == 0)
 				return;
-			(_currentTask = _tasks[0]).Run();
+			else
+				(_currentTask = _tasks[0]).Run();
 		}
 
 		public static void Enqueue(GameTask task)
@@ -48,6 +51,10 @@ namespace CivOne
 		}
 
 		public event EventHandler Done;
+
+		protected virtual void Step()
+		{
+		}
 
 		public abstract void Run();
 
