@@ -40,7 +40,19 @@ namespace CivOne
 			}
 		}
 		
-		internal ushort GameTurn { get; private set; }
+		private ushort _gameTurn;
+		internal ushort GameTurn
+		{
+			get
+			{
+				return _gameTurn;
+			}
+			private set
+			{
+				_gameTurn = value;
+				Console.WriteLine($"Turn {_gameTurn}: {GameYear}");
+			}
+		}
 		
 		internal string GameYear
 		{
@@ -565,6 +577,8 @@ namespace CivOne
 			{
 				AddStartingUnits(i);
 			}
+			
+			GameTurn = 0;
 		}
 	}
 }
