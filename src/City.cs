@@ -173,6 +173,13 @@ namespace CivOne
 			}
 		}
 
+		internal bool OccupiedTile(ITile tile)
+		{
+			if (ResourceTiles.Any(t => t.X == tile.X && t.Y == tile.Y))
+				return false;
+			return (tile.City != null || Game.Instance.GetCities().Any(c => c.ResourceTiles.Any(t => t.X == tile.X && t.Y == tile.Y)));
+		}
+
 		private void SetResourceTiles()
 		{
 			while (_resourceTiles.Count > Size)
@@ -180,7 +187,7 @@ namespace CivOne
 			if (_resourceTiles.Count == Size) return;
 			if (_resourceTiles.Count < Size)
 			{
-				IEnumerable<ITile> tiles = CityTiles.Where(t => !ResourceTiles.Contains(t)).OrderByDescending(t => t.Food).ThenByDescending(t => t.Shield).ThenByDescending(t => t.Trade);
+				IEnumerable<ITile> tiles = CityTiles.Where(t => !OccupiedTile(t) && !ResourceTiles.Contains(t)).OrderByDescending(t => t.Food).ThenByDescending(t => t.Shield).ThenByDescending(t => t.Trade);
 				if (tiles.Count() > 0)
 					_resourceTiles.Add(tiles.First());
 			}
@@ -195,7 +202,7 @@ namespace CivOne
 
 		public void SetResourceTile(ITile tile)
 		{
-			if (tile == null || !CityTiles.Contains(tile) || (tile.X == X && tile.Y == Y) || (_resourceTiles.Count >= Size && !_resourceTiles.Contains(tile)))
+			if (tile == null || OccupiedTile(tile) || !CityTiles.Contains(tile) || (tile.X == X && tile.Y == Y) || (_resourceTiles.Count >= Size && !_resourceTiles.Contains(tile)))
 			{
 				ResetResourceTiles();
 				return;
