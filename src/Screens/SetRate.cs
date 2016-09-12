@@ -23,7 +23,6 @@ namespace CivOne.Screens
 		private readonly bool _luxuries;
 
 		private readonly Bitmap _background;
-		private readonly int _menuHeight;
 		private readonly int _fontId = 0;
 		
 		private bool _update = true;
