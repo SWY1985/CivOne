@@ -8,8 +8,11 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Drawing;
+using System.Linq;
+using CivOne.Buildings;
 using CivOne.Enums;
 using CivOne.GFX;
+using CivOne.Interfaces;
 
 namespace CivOne.GFX
 {
@@ -170,6 +173,11 @@ namespace CivOne.GFX
 			else
 			{
 				output.DrawText($"{city.Size}", (smallFont ? 1 : 0), 5, 5, 9, 5, TextAlign.Center);
+			}
+
+			if (city.Buildings.Any(b => b.Id == new CityWalls().Id))
+			{
+				output.AddLayer(Fortify, 0, 0);
 			}
 			
 			return output.Image;
