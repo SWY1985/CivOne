@@ -152,9 +152,19 @@ namespace CivOne
 			}
 		}
 
+		private void NewTech()
+		{
+			if (!AvailableResearch.Any()) return;
+			if (Human)
+				Common.AddScreen(new ChooseTech());
+			else
+				AI.ChooseResearch(this);
+		}
+
 		private void CivilopediaClosed(object sender, EventArgs args)
 		{
 			_currentResearch = null;
+			NewTech();
 		}
 
 		private void DiscoveryClosed(object sender, EventArgs args)
@@ -200,17 +210,7 @@ namespace CivOne
 				}
 				if (_currentResearch == null)
 				{
-					if (!AvailableResearch.Any())
-					{
-						// no further research possible
-						//TODO: Implement future techs.
-						return;
-					}
-
-					if (Human)
-						Common.AddScreen(new ChooseTech());
-					else
-						AI.ChooseResearch(this);
+					NewTech();
 				}
 			}
 		}
