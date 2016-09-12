@@ -115,7 +115,14 @@ namespace CivOne.Templates
 				else
 				{
 					if (MovesLeft > 0)
-						MovesLeft--;
+					{
+						byte moveCosts = 1;
+						if (Class == UnitClass.Land)
+							moveCosts = Map[X, Y].Movement;
+						if (MovesLeft < moveCosts)
+							moveCosts = MovesLeft;
+						MovesLeft -= moveCosts;
+					}
 					else if (PartMoves > 0)
 						PartMoves = 0;
 				}
