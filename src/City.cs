@@ -340,9 +340,9 @@ namespace CivOne
 					Shields = 0;
 					IUnit unit = Game.Instance.CreateUnit((CurrentProduction as IUnit).Type, X, Y, Owner);
 					unit.SetHome(this);
-					if (unit is Settlers)
+					if ((unit is Settlers) || (unit is Diplomat) || (unit is Caravan))
 					{
-						AdvisorMessage advisorMessage = new AdvisorMessage(Advisor.Defense, $"{this.Name} builds Settlers.");
+						AdvisorMessage advisorMessage = new AdvisorMessage(Advisor.Defense, $"{this.Name} builds {unit.Name}.");
 						advisorMessage.Closed += (s, a) => Common.AddScreen(new CityManager(this));
 						Common.AddScreen(advisorMessage);
 					}
