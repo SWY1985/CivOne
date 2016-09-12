@@ -75,6 +75,14 @@ namespace CivOne.Screens
 						if (!HumanPlayer.Visible(tile, Direction.South)) AddLayer(Resources.Instance.GetFog(Direction.South), (xx * 16) + 1, (yy * 16) + 1);
 					}
 
+					if (_city.OccupiedTile(tile))
+					{
+						_canvas.FillRectangle(12, (xx * 16) + 1, (yy * 16) + 1, 16, 1);
+						_canvas.FillRectangle(12, (xx * 16) + 1, (yy * 16) + 2, 1, 14);
+						_canvas.FillRectangle(12, (xx * 16) + 1, (yy * 16) + 16, 16, 1);
+						_canvas.FillRectangle(12, (xx * 16) + 16, (yy * 16) + 2, 1, 14);
+					}
+
 					if (_city.ResourceTiles.Contains(tile))
 						DrawResources(tile, (xx * 16) + 1, (yy * 16) + 1);
 				}
