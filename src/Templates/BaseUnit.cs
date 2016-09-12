@@ -15,6 +15,7 @@ using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Screens;
+using CivOne.Tasks;
 using CivOne.Units;
 
 namespace CivOne.Templates
@@ -22,6 +23,14 @@ namespace CivOne.Templates
 	internal abstract class BaseUnit : IUnit
 	{
 		protected int _x, _y;
+		
+		protected Map Map
+		{
+			get
+			{
+				return Map.Instance;
+			}
+		}
 
 		public virtual bool Busy
 		{
@@ -49,16 +58,64 @@ namespace CivOne.Templates
 			}
 		}
 		public bool Sentry { get; set; }
-		public bool Moving { get; private set; }
-		public int MoveFrame { get; private set; }
-		public int FromX { get; private set; }
-		public int FromY { get; private set; }
 
-		protected Map Map
+		public bool Moving
 		{
 			get
 			{
-				return Map.Instance;
+				return (Movement != null); 
+			}
+		}
+		public MoveUnit Movement { get; private set; }
+		
+		public virtual bool MoveTo(int relX, int relY)
+		{
+			if (Movement != null) return false;
+			
+			ITile moveTarget = Map[X, Y][relX, relY];
+			if (moveTarget.Units.Any(u => u.Owner != Owner))
+			{
+				// TODO: Attack, or perform other unit action (confront)
+				return false;
+			}
+			if (moveTarget.City != null && Map[X, Y][relX, relY].City.Owner != Owner)
+			{
+				// TODO: Attack, take city or perform other unit action (confront)
+				return false;
+			}
+
+			if (!MoveTargets.Any(t => t.X == moveTarget.X && t.Y == moveTarget.Y))
+			{
+				// Target tile is invalid
+				// TODO: For some tiles, display a message detailing why the move is illegal
+				return false;
+			}
+
+			Movement = new MoveUnit(relX, relY);
+			Movement.Done += MoveEnd;
+			GameTask.Insert(Movement);
+
+			return true;
+		}
+
+		private void MoveEnd(object sender, EventArgs args)
+		{
+			ITile previousTile = Map[_x, _y];
+			X += Movement.RelX;
+			Y += Movement.RelY;
+			Movement = null;
+			
+			Explore();
+			MovementDone(previousTile);
+		}
+
+		protected virtual void MovementDone(ITile previousTile)
+		{
+			MovesLeft--;
+
+			if (Tile.Hut)
+			{
+				Tile.Hut = false;
 			}
 		}
 
@@ -72,72 +129,7 @@ namespace CivOne.Templates
 				return output;
 			}
 		}
-
-		public void MoveUpdate()
-		{
-			MoveFrame++;
-			if (!(Moving = (MoveFrame < 8)))
-			{
-				Explore();
-				if (Class == UnitClass.Land && Map[FromX, FromY].Road && Map[X, Y].Road)
-				{
-					if (Map[X, Y].RailRoad && Map[FromX, FromY].RailRoad)
-					{
-						// No moves lost
-					}
-					else if (PartMoves > 0)
-					{
-						PartMoves--;
-					}
-					else
-					{
-						if (MovesLeft > 0)
-							MovesLeft--;
-						PartMoves = 2;
-					}
-				}
-				else if (Class == UnitClass.Land && Map[X, Y].Type == Terrain.Ocean)
-				{
-					MovesLeft = 0;
-					PartMoves = 0;
-					Sentry = true;
-				}
-				else if (Class == UnitClass.Water && (this is IBoardable) && Map[FromX, FromY].Units.Any(u => u.Class == UnitClass.Land))
-				{
-					IUnit[] moveUnits = Map[FromX, FromY].Units.Where(u => u.Class == UnitClass.Land).ToArray();
-					if (Map[FromX, FromY].City != null)
-						moveUnits = moveUnits.Where(u => u.Sentry).ToArray();
-					moveUnits = moveUnits.Take((this as IBoardable).Cargo).ToArray();
-					foreach (IUnit unit in moveUnits)
-					{
-						unit.X = X;
-						unit.Y = Y;
-						unit.Sentry = true;
-						unit.Fortify = false;
-					}
-				}
-				else
-				{
-					if (MovesLeft > 0)
-					{
-						byte moveCosts = 1;
-						if (Class == UnitClass.Land)
-							moveCosts = Map[X, Y].Movement;
-						if (MovesLeft < moveCosts)
-							moveCosts = MovesLeft;
-						MovesLeft -= moveCosts;
-					}
-					else if (PartMoves > 0)
-						PartMoves = 0;
-				}
-				MovementDone();
-			}
-		}
-
-		protected virtual void MovementDone()
-		{
-		}
-
+		
 		private static Picture[,] _unitCache = new Picture[28,8];
 		private static Picture[] _iconCache = new Picture[28];
 		public virtual Picture Icon
@@ -234,6 +226,13 @@ namespace CivOne.Templates
 				_y = value;
 			}
 		}
+		public ITile Tile
+		{
+			get
+			{
+				return Map[_x, _y];
+			}
+		}
 		public byte Owner { get; set; }
 		public Player Player
 		{
@@ -255,38 +254,6 @@ namespace CivOne.Templates
 			}
 			MovesLeft = Move;
 			Explore();
-		}
-
-		public virtual bool MoveTo(int relX, int relY)
-		{
-			if (Moving) return false;
-			if (Map[X, Y][relX, relY].Units.Any(u => u.Owner != Owner))
-			{
-				// TODO: Attack, or perform other unit action (confront)
-				return false;
-			}
-			if (Map[X, Y][relX, relY].City != null && Map[X, Y][relX, relY].City.Owner != Owner)
-			{
-				// TODO: Attack, take city or perform other unit action (confront)
-				return false;
-			}
-
-			int toX = (X + relX);
-			int toY = (Y + relY);
-			
-			while (toX < 0) toX += Map.WIDTH;
-			while (toX >= Map.WIDTH) toX -= Map.WIDTH;
-
-			if (!MoveTargets.Any(t => t.X == toX && t.Y == toY)) return false;
-			
-			Moving = true;
-			MoveFrame = 0;
-			FromX = X;
-			FromY = Y;
-			
-			X += relX;
-			Y += relY;
-			return true;
 		}
 
 		public void SetHome(City home)

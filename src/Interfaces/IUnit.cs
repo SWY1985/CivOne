@@ -9,6 +9,7 @@
 
 using CivOne.Enums;
 using CivOne.GFX;
+using CivOne.Tasks;
 
 namespace CivOne.Interfaces
 {
@@ -25,15 +26,14 @@ namespace CivOne.Interfaces
 		byte Move { get; }
 		int X { get; set; }
 		int Y { get; set; }
+		ITile Tile { get; }
 		bool Busy { get; }
 		bool Sentry { get; set; }
 		bool FortifyActive { get; }
 		bool Fortify { get; set; }
 		bool Moving { get; }
-		int MoveFrame { get; }
-		int FromX { get; }
-		int FromY { get; }
-		void MoveUpdate();
+		MoveUnit Movement { get; }
+		bool MoveTo(int relX, int relY);
 		byte Owner { get; set; }
 		byte Status { get; set; }
 		byte MovesLeft { get; }
@@ -41,7 +41,6 @@ namespace CivOne.Interfaces
 		void NewTurn();
 		void SkipTurn();
 		void Explore();
-		bool MoveTo(int relX, int relY);
 		void SetHome(City city);
 		Picture GetUnit(byte colour, bool showState = true);
 	}

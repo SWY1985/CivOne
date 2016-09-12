@@ -310,7 +310,7 @@ namespace CivOne
 			while (x >= Map.WIDTH) x-= Map.WIDTH;
 			if (y < 0) return null;
 			if (y >= Map.HEIGHT) return null; 
-			return _units.Where(u => (!u.Moving && u.X == x && u.Y == y) || (u.Moving && u.FromX == x && u.FromY == y)).ToArray();
+			return _units.Where(u => u.X == x && u.Y == y).ToArray();
 		}
 
 		internal IUnit[] GetUnits()

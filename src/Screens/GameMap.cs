@@ -224,20 +224,11 @@ namespace CivOne.Screens
 				
 				if (Game.Instance.MovingUnit != null)
 				{
-					IUnit movingUnit = Game.Instance.MovingUnit;
-					int relX = movingUnit.X - movingUnit.FromX;
-					int relY = movingUnit.Y - movingUnit.FromY;
-					while (relX < -1) relX += Map.WIDTH;
-					while (relX > 1) relX -= Map.WIDTH;
-
-					relX *= (movingUnit.MoveFrame * 2);
-					relY *= (movingUnit.MoveFrame * 2);
-					
-					movingUnit.MoveUpdate();
-					if (RenderTiles.Any(t => t.Tile.X == movingUnit.FromX && t.Tile.Y == movingUnit.FromY))
+					IUnit unit = Game.Instance.MovingUnit;
+					if (RenderTiles.Any(t => (t.Tile.X == unit.X && t.Tile.Y == unit.Y)))
 					{
-						RenderTile tile = RenderTiles.First(t => t.Tile.X == movingUnit.FromX && t.Tile.Y == movingUnit.FromY);
-						AddLayer(movingUnit.GetUnit(movingUnit.Owner), tile.Position.X + relX, tile.Position.Y + relY);
+						RenderTile tile = RenderTiles.First(t => (t.Tile.X == unit.X && t.Tile.Y == unit.Y));
+						AddLayer(unit.GetUnit(unit.Owner), tile.Position.X + unit.Movement.X, tile.Position.Y + unit.Movement.Y);
 					}
 					return true;
 				}
