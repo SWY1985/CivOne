@@ -28,7 +28,6 @@ namespace CivOne
 		
 		private short _anarchy = 0;
 		private short _gold;
-		private short _science;
 		private IAdvance _currentResearch = null;
 		
 		private Map Map
@@ -152,29 +151,7 @@ namespace CivOne
 			}
 		}
 
-		private void NewTech()
-		{
-			if (!AvailableResearch.Any()) return;
-			if (Human)
-				Common.AddScreen(new ChooseTech());
-			else
-				AI.ChooseResearch(this);
-		}
-
-		private void CivilopediaClosed(object sender, EventArgs args)
-		{
-			_currentResearch = null;
-			NewTech();
-		}
-
-		private void DiscoveryClosed(object sender, EventArgs args)
-		{
-			Screens.Civilopedia civilopedia = new Screens.Civilopedia(_currentResearch, discovered: true);
-			civilopedia.Closed += CivilopediaClosed;
-			Common.AddScreen(civilopedia);
-		}
-
-		private short ScienceCost
+		internal short ScienceCost
 		{
 			get
 			{
@@ -182,37 +159,11 @@ namespace CivOne
 			}
 		}
 		
-		public short Science
+		public short Science { get; internal set; }
+
+		public void AddAdvance(IAdvance advance)
 		{
-			get
-			{
-				return _science;
-			}
-			internal set
-			{
-				// Temporary code until the science code is implemented
-				_science = value;
-				if (_science >= ScienceCost)
-				{
-					_science -= ScienceCost;
-					_advances.Add(_currentResearch.Id);
-					if (Human)
-					{
-						Discovery discovery = new Discovery(_currentResearch);
-						discovery.Closed += DiscoveryClosed;
-						Common.AddScreen(discovery);
-					}
-					else
-					{
-						_currentResearch = null;
-						_science -= ScienceCost;
-					}
-				}
-				if (_currentResearch == null)
-				{
-					NewTech();
-				}
-			}
+			_advances.Add(_currentResearch.Id);
 		}
 		
 		public string LatestAdvance

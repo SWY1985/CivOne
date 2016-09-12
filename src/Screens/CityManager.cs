@@ -37,11 +37,15 @@ namespace CivOne.Screens
 		private bool _redraw = false;
 
 		private List<IScreen> _subScreens = new List<IScreen>();
+		
+		public event EventHandler Closed;
 
 		private void CloseScreen()
 		{
 			_cityHeader.Close();
 			Destroy();
+			if (Closed != null)
+				Closed(this, null);
 		}
 		
 		private void DrawLayer(IScreen layer, uint gameTick, int x, int y)

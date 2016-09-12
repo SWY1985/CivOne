@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -32,6 +33,7 @@ namespace CivOne
 		{
 			get
 			{
+				GameTask.Update();
 				if (Common.Screens.Any(x => x is IModal))
 					return Common.Screens.Last(x => x is IModal).HasUpdate(_gameTick);
 				return (Common.Screens.Count(x => x.HasUpdate(_gameTick)) > 0);

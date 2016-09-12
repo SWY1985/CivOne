@@ -14,6 +14,7 @@ using System.Threading;
 using CivOne.Enums;
 using CivOne.Interfaces;
 using CivOne.Screens;
+using CivOne.Tasks;
 using CivOne.Units;
 
 namespace CivOne
@@ -358,13 +359,14 @@ namespace CivOne
 				{
 					Shields = 0;
 					_buildings.Add(CurrentProduction as IBuilding);
-					Common.AddScreen(new CityView(this, building: (CurrentProduction as IBuilding)));
+					GameTask.Enqueue(new ImprovementBuilt(this, (CurrentProduction as IBuilding)));
 				}
 			}
 
 			// TODO: Handle luxuries
 			Player.Gold += Taxes;
 			Player.Science += Science;
+			GameTask.Enqueue(new ProcessScience(Player));
 		}
 
 		internal City()
