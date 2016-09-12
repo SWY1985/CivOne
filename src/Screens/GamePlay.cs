@@ -471,6 +471,8 @@ namespace CivOne.Screens
 			_menuBar.AdvisorsSelected += MenuBarAdvisors;
 			_menuBar.WorldSelected += MenuBarWorld;
 			_menuBar.CivilopediaSelected += MenuBarCivilopedia;
+
+			Game.Instance.NextTurn();
 		}
 	}
 }
