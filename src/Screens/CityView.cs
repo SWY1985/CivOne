@@ -33,6 +33,8 @@ namespace CivOne.Screens
 		private int _x = 80;
 		private float _fadeStep = 1.0f;
 		private bool _skip = false;
+
+		public event EventHandler Closed;
 		
 		private Color FadeColour(Color colour1, Color colour2)
 		{
@@ -110,6 +112,8 @@ namespace CivOne.Screens
 			{
 				Common.AddScreen(new CityManager(_city));
 			}
+			if (Closed != null)
+				Closed(this, null);
 			return true;
 		}
 		
