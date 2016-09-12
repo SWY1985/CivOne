@@ -29,7 +29,7 @@ namespace CivOne
 		private readonly List<City> _cities;
 		private readonly List<IUnit> _units;
 		
-		private int _currentPlayer = 1;
+		private int _currentPlayer = 0;
 		private int _activeUnit;
 
 		public bool HasUpdate
@@ -78,7 +78,6 @@ namespace CivOne
 		public void NextTurn()
 		{
 			_activeUnit = 0;
-			//
 			while (++_currentPlayer >= _players.Length || _players[_currentPlayer] != HumanPlayer)
 			{
 				// Skip all AI players for now
@@ -549,7 +548,6 @@ namespace CivOne
 				{
 					_players[i] = new Player(tribe, leaderName, tribeName, tribeNamePlural);
 					HumanPlayer = _players[i];
-					_currentPlayer = i;
 					Console.WriteLine("- Player {0} is {1} of the {2} (human)", i, _players[i].LeaderName, _players[i].TribeNamePlural);
 					continue;
 				}
