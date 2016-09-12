@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -129,6 +130,38 @@ namespace CivOne
 			get
 			{
 				return ResourceTiles.Sum(t => t.Food) - FoodCosts;
+			}
+		}
+
+		internal int TradeTotal
+		{
+			get
+			{
+				return ResourceTiles.Sum(t => t.Trade);
+			}
+		}
+
+		internal short Luxuries
+		{
+			get
+			{
+				return (short)Math.Round(((double)TradeTotal / 10) * Player.LuxuriesRate);
+			}
+		}
+
+		internal short Taxes
+		{
+			get
+			{
+				return (short)Math.Round(((double)(TradeTotal - Luxuries) / (10 - Player.LuxuriesRate)) * Player.TaxesRate);
+			}
+		}
+
+		internal short Science
+		{
+			get
+			{
+				return (short)(TradeTotal - Luxuries - Taxes);
 			}
 		}
 
@@ -322,7 +355,9 @@ namespace CivOne
 				}
 			}
 
-			//TODO: Science and taxes
+			// TODO: Handle luxuries
+			Player.Gold += Taxes;
+			Player.Science += Science;
 		}
 
 		internal City()

@@ -155,7 +155,6 @@ namespace CivOne
 		private void CivilopediaClosed(object sender, EventArgs args)
 		{
 			_currentResearch = null;
-			Science = 0;
 		}
 
 		private void DiscoveryClosed(object sender, EventArgs args)
@@ -163,6 +162,14 @@ namespace CivOne
 			Screens.Civilopedia civilopedia = new Screens.Civilopedia(_currentResearch, discovered: true);
 			civilopedia.Closed += CivilopediaClosed;
 			Common.AddScreen(civilopedia);
+		}
+
+		private short ScienceCost
+		{
+			get
+			{
+				return 16;
+			}
 		}
 		
 		public short Science
@@ -175,8 +182,9 @@ namespace CivOne
 			{
 				// Temporary code until the science code is implemented
 				_science = value;
-				if (_science == 8)
+				if (_science >= ScienceCost)
 				{
+					_science -= ScienceCost;
 					_advances.Add(_currentResearch.Id);
 					if (Human)
 					{
