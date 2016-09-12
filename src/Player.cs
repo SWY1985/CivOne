@@ -154,9 +154,7 @@ namespace CivOne
 
 		private void CivilopediaClosed(object sender, EventArgs args)
 		{
-			short scienceCost = ScienceCost;
 			_currentResearch = null;
-			_science -= scienceCost;
 		}
 
 		private void DiscoveryClosed(object sender, EventArgs args)
@@ -170,7 +168,7 @@ namespace CivOne
 		{
 			get
 			{
-				return 16;
+				return (short)((Game.Instance.Difficulty + 3) * 2 * (_advances.Count() + 1) * (Common.TurnToYear(Game.Instance.GameTurn) > 0 ? 2 : 1));
 			}
 		}
 		
@@ -186,6 +184,7 @@ namespace CivOne
 				_science = value;
 				if (_science >= ScienceCost)
 				{
+					_science -= ScienceCost;
 					_advances.Add(_currentResearch.Id);
 					if (Human)
 					{

@@ -32,6 +32,14 @@ namespace CivOne
 		private int _currentPlayer = 0;
 		private int _activeUnit;
 
+		public int Difficulty
+		{
+			get
+			{
+				return _difficulty;
+			}
+		}
+
 		public bool HasUpdate
 		{
 			get
