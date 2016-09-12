@@ -90,17 +90,26 @@ namespace CivOne.Screens
 		{
 			// Check if the active unit is on the screen and the blink status has changed.
 			IUnit activeUnit = Game.Instance.ActiveUnit;
-			if (activeUnit != null && RenderTiles.Any(t => t.Tile.X == activeUnit.X && t.Tile.Y == activeUnit.Y) && (gameTick % 2) == 0)
+			if (activeUnit == null) return false;
+
+			if (RenderTiles.Any(t => t.Tile.X == activeUnit.X && t.Tile.Y == activeUnit.Y) && (gameTick % 2) == 0)
 			{
 				_lastUnit = activeUnit;
 				_update = true;
 			}
-			else if (activeUnit != null && activeUnit.Moving)
+			else if (activeUnit.Moving)
 			{
 				_update = true;
 			}
-			else if (activeUnit != _lastUnit)
+			else if (activeUnit != _lastUnit && ShouldCenter())
 			{
+				if (activeUnit.Owner != Game.Instance.PlayerNumber(HumanPlayer))
+				{
+					if (!Settings.Instance.RevealWorld && !HumanPlayer.Visible(activeUnit.X, activeUnit.Y))
+					{
+						return (_update = false);
+					}
+				} 
 				CenterOnUnit();
 				_update = true;
 			}
@@ -243,12 +252,19 @@ namespace CivOne.Screens
 			_y = Game.Instance.ActiveUnit.Y - 6;
 		}
 
+		private bool ShouldCenter(int relX = 0, int relY = 0)
+		{
+			if (Game.Instance.ActiveUnit == null)
+				return false;
+			return (!Map.QueryMapPart(_x + 1, _y + 1, 13, 10).Any(t => t.X == Game.Instance.ActiveUnit.X + relX && t.Y == Game.Instance.ActiveUnit.Y + relY));
+		}
+
 		private bool MoveTo(int relX, int relY)
 		{
 			if (Game.Instance.ActiveUnit == null)
 				return false;
 			
-			if (!Map.QueryMapPart(_x + 1, _y + 1, 13, 10).Any(t => t.X == Game.Instance.ActiveUnit.X + relX && t.Y == Game.Instance.ActiveUnit.Y + relY))
+			if (ShouldCenter(relX, relY))
 			{
 				// The unit is moving near the edge of the on screen map, center on the unit before moving.
 				CenterOnUnit();
