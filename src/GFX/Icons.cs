@@ -96,6 +96,48 @@ namespace CivOne.GFX
 			}
 		}
 		
+		private static Bitmap _luxuries;
+		public static Bitmap Luxuries
+		{
+			get
+			{
+				if (_luxuries == null)
+				{
+					_luxuries = (Bitmap)Resources.Instance.GetPart("SP257", 144, 40, 8, 8);
+					Picture.ReplaceColours(_luxuries, 3, 0);
+				}
+				return _luxuries;
+			}
+		}
+		
+		private static Bitmap _taxes;
+		public static Bitmap Taxes
+		{
+			get
+			{
+				if (_taxes == null)
+				{
+					_taxes = (Bitmap)Resources.Instance.GetPart("SP257", 152, 32, 8, 8);
+					Picture.ReplaceColours(_taxes, 3, 0);
+				}
+				return _taxes;
+			}
+		}
+		
+		private static Bitmap _science;
+		public static Bitmap Science
+		{
+			get
+			{
+				if (_science == null)
+				{
+					_science = (Bitmap)Resources.Instance.GetPart("SP257", 128, 40, 8, 8);
+					Picture.ReplaceColours(_science, 3, 0);
+				}
+				return _science;
+			}
+		}
+		
 		private static Bitmap _newspaper;
 		public static Bitmap Newspaper
 		{

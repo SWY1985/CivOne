@@ -58,8 +58,27 @@ namespace CivOne.Screens
 
 		private void DrawTrade()
 		{
-			for (int i = 0; i < _city.ResourceTiles.Sum(t => t.Trade); i++)
+			for (int i = 0; i < _city.TradeTotal; i++)
 				AddLayer(Icons.Trade, 1 + (8 * i), 25);
+			
+			int xx = 1;
+			for (int i = 0; i < _city.Luxuries; i++)
+			{
+				AddLayer(Icons.Luxuries, xx, 33);
+				xx += 8;
+			}
+			if (_city.Luxuries > 0) xx += 4;
+			for (int i = 0; i < _city.Taxes; i++)
+			{
+				AddLayer(Icons.Taxes, xx, 33);
+				xx += 8;
+			}
+			if (_city.Taxes > 0) xx += 4;
+			for (int i = 0; i < _city.Science; i++)
+			{
+				AddLayer(Icons.Science, xx, 33);
+				xx += 8;
+			}
 		}
 		
 		public override bool HasUpdate(uint gameTick)
