@@ -17,14 +17,15 @@ namespace CivOne
 		private static GameTask _currentTask = null;
 		private static List<GameTask> _tasks = new List<GameTask>();
 
-		public static void Update()
+		public static bool Update()
 		{
 			if (_currentTask != null)
-				_currentTask.Step();
+				return _currentTask.Step();
 			else if (_tasks.Count == 0)
-				return;
-			else
-				(_currentTask = _tasks[0]).Run();
+				return false;
+			
+			(_currentTask = _tasks[0]).Run();
+			return true;
 		}
 
 		public static void Enqueue(GameTask task)
@@ -52,8 +53,9 @@ namespace CivOne
 
 		public event EventHandler Done;
 
-		protected virtual void Step()
+		protected virtual bool Step()
 		{
+			return false;
 		}
 
 		public abstract void Run();
