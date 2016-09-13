@@ -354,6 +354,10 @@ namespace CivOne.Screens
 					Game.Instance.ActiveUnit.Sentry = true;
 					break;
 				case 'F':
+					if (Game.Instance.ActiveUnit is Settlers)
+					{
+						return (Game.Instance.ActiveUnit as Settlers).BuildFortress();
+					}
 					Game.Instance.ActiveUnit.Fortify = true;
 					break;
 				case 'U':

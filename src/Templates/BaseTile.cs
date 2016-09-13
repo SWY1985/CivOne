@@ -245,6 +245,7 @@ namespace CivOne.Templates
 			}
 		}
 		public virtual bool Mine { get; set; }
+		public virtual bool Fortress { get; set; }
 		public virtual bool Hut { get; set; }
 		public virtual bool IsOcean
 		{

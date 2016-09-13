@@ -37,6 +37,7 @@ namespace CivOne.Interfaces
 		bool Road { get; set; }
 		bool RailRoad { get; set; }
 		bool Irrigation { get; set; }
+		bool Fortress { get; set; }
 		bool Mine { get; set; }
 		bool Hut { get; set; }
 		bool IsOcean { get; }

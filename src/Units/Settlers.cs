@@ -24,19 +24,20 @@ namespace CivOne.Units
 		{
 			get
 			{
-				return (base.Busy || BuildingRoad > 0 || BuildingIrrigation > 0 || BuildingMine > 0);
+				return (base.Busy || BuildingRoad > 0 || BuildingIrrigation > 0 || BuildingMine > 0 || BuildingFortress > 0);
 			}
 		}
 		public int BuildingRoad { get; private set; }
 		public int BuildingIrrigation { get; private set; }
 		public int BuildingMine { get; private set; }
+		public int BuildingFortress { get; private set; }
 
 		public bool BuildRoad()
 		{
 			ITile tile = Map[X, Y];
 			if (!tile.IsOcean && !tile.Road && tile.City == null)
 			{
-				if ((tile is River) && !Game.Instance.HumanPlayer.Advances.Any(a => a is BridgeBuilding))
+				if ((tile is River) && !Game.Instance.CurrentPlayer.Advances.Any(a => a is BridgeBuilding))
 					return false;
 				BuildingRoad = 2;
 				MovesLeft = 0;
@@ -82,6 +83,22 @@ namespace CivOne.Units
 			if (!tile.IsOcean && !(tile.Mine) && ((tile is Desert) || (tile is Hills) || (tile is Mountains) || (tile is Jungle) || (tile is Grassland) || (tile is Plains) || (tile is Swamp)) && tile.City == null)
 			{
 				BuildingMine = 4;
+				MovesLeft = 0;
+				PartMoves = 0;
+				return true;
+			}
+			return false;
+		}
+
+		public bool BuildFortress()
+		{
+			if (!Game.Instance.CurrentPlayer.Advances.Any(a => a is Construction))
+				return false;
+			
+			ITile tile = Map[X, Y];
+			if (!tile.IsOcean && !(tile.Fortress) && tile.City == null)
+			{
+				BuildingFortress = 5;
 				MovesLeft = 0;
 				PartMoves = 0;
 				return true;
@@ -152,6 +169,19 @@ namespace CivOne.Units
 					Map[X, Y].Mine = true;
 				}
 			}
+			else if (BuildingFortress > 0)
+			{
+				BuildingFortress--;
+				if (BuildingFortress > 0)
+				{
+					MovesLeft = 0;
+					PartMoves = 0;
+				}
+				else
+				{
+					Map[X, Y].Fortress = true;
+				}
+			}
 		}
 
 		public override Picture GetUnit(byte colour, bool showState = true)
@@ -178,6 +208,13 @@ namespace CivOne.Units
 				Picture unit = new Picture(base.GetUnit(colour).Image);
 				unit.DrawText("M", 0, 5, 8, 9, TextAlign.Center);
 				unit.DrawText("M", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
+				return unit; 
+			}
+			else if (BuildingFortress > 0)
+			{
+				Picture unit = new Picture(base.GetUnit(colour).Image);
+				unit.DrawText("F", 0, 5, 8, 9, TextAlign.Center);
+				unit.DrawText("F", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
 				return unit; 
 			}
 			return base.GetUnit(colour);
