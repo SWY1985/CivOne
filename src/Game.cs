@@ -571,6 +571,11 @@ namespace CivOne
 				{
 					_players[i] = new Player(tribe, leaderName, tribeName, tribeNamePlural);
 					HumanPlayer = _players[i];
+					if (difficulty == 0)
+					{
+						// Chieftan starts with 50 Gold
+						HumanPlayer.Gold = 50;
+					}
 					Console.WriteLine("- Player {0} is {1} of the {2} (human)", i, _players[i].LeaderName, _players[i].TribeNamePlural);
 					continue;
 				}
