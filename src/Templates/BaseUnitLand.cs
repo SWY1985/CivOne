@@ -83,8 +83,6 @@ namespace CivOne.Templates
 
 		protected void TribalHut(HutResult result = HutResult.Random)
 		{
-			if (result == HutResult.Random)
-				result = HutResult.AncientScrolls;
 			switch(result)
 			{
 				case HutResult.MetalDeposits:
@@ -104,7 +102,7 @@ namespace CivOne.Templates
 					return;
 				case HutResult.AncientScrolls:
 					TribalHutMessage((s, e) => {
-						// This seems curious but this is how it actually happens in the original game
+						// This seems curious but this is how it actually probably happens in the original game
 						IAdvance[] available = Game.Instance.CurrentPlayer.AvailableResearch.ToArray();
 						int advanceId = Common.Random.Next(0, 72);
 						for (int i = 0; i < 1000; i++)
@@ -113,13 +111,24 @@ namespace CivOne.Templates
 							GameTask.Enqueue(new GetAdvance(Game.Instance.CurrentPlayer, available.First(a => a.Id == (advanceId + i) % 72)));
 							break;
 						}
-						//if (advances.Length == 0)
-						//	return;
 					}, "You have discovered", "scrolls of ancient wisdom.");
 					return;
 				case HutResult.Barbarians:
 					TribalHutMessage((s, e) => {
-						// TODO: Actually unleash the horde of barbarians.
+						//TODO: Find out how the barbarians should be created
+						// This implementation is an approximation
+						int count = 0;
+						for (int i = 0; i < 1000; i++)
+						{
+							foreach (ITile tile in Map[X, Y].GetBorderTiles())
+							{
+								if (tile.City != null || tile.Units.Length > 0) continue;
+								if (Common.Random.Next(0, 10) < 8) continue;
+								Game.Instance.CreateUnit(Common.Random.Next(0, 100) < 50 ? Unit.Cavalry : Unit.Legion, tile.X, tile.Y, 0, true);
+								count++;
+							}
+							if (count > 0) break;
+						}
 					}, "You have unleashed", "a horde of barbarians!");
 					return;
 			}
