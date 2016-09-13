@@ -52,7 +52,7 @@ namespace CivOne.Tiles
 		{
 			get
 			{
-				return (sbyte)(Road ? 3 : 0);
+				return (sbyte)((Road ? 3 : 0) + (RepublicDemocracy ? 1 : 0));
 			}
 		}
 		
