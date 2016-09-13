@@ -36,7 +36,7 @@ namespace CivOne.Tiles
 		{
 			get
 			{
-				return (sbyte)(1 + (Irrigation ? (Special ? 1 : 2) : 0)); 
+				return (sbyte)(1 + (Irrigation ? 1 : 0)); 
 			}
 		}
 		
