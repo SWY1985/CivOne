@@ -27,7 +27,7 @@ namespace CivOne.Templates
 			if (previousTile.Road && Tile.Road)
 			{
 				//if (Map[X, Y].RailRoad && Map[FromX, FromY].RailRoad)
-				if (Tile.RailRoad && previousTile.RailRoad)
+				if (Tile.RailRoad && previousTile.RailRoad && Tile.City == null)
 				{
 					// No moves lost
 				}
