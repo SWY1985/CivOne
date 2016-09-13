@@ -15,6 +15,7 @@ using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Screens;
+using CivOne.Tasks;
 
 namespace CivOne.Templates
 {
@@ -75,9 +76,11 @@ namespace CivOne.Templates
 		{
 			if (Player.Human)
 			{
-				TribalHut tribalHut = new TribalHut(message);
-				tribalHut.Closed += method;
-				Common.AddScreen(tribalHut);
+				//TribalHut tribalHut = new TribalHut(message);
+				//tribalHut.Closed += method;
+				//Common.AddScreen(tribalHut);
+				GameTask.Enqueue(Message.TribalHut(message));
+				method(this, null);
 				return;
 			}
 			method(this, null);
