@@ -163,7 +163,7 @@ namespace CivOne
 
 		public void AddAdvance(IAdvance advance)
 		{
-			_advances.Add(_currentResearch.Id);
+			_advances.Add(advance.Id);
 		}
 		
 		public string LatestAdvance
