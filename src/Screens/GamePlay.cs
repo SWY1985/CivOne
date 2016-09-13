@@ -28,6 +28,7 @@ namespace CivOne.Screens
 		
 		private GameMenu _gameMenu = null;
 		private int _menuX, _menuY;
+		private uint _lastGameTick;
 		private bool _update = true;
 		private bool _redraw = false;
 		private bool _rightSideBar = Settings.Instance.RightSideBar;
@@ -287,7 +288,7 @@ namespace CivOne.Screens
 		{
 			if (_gameMap.MustUpdate(gameTick)) _update = true;
 			if (_sideBar.HasUpdate(gameTick)) _update = true;
-			if (gameTick % 3 == 0) _canvas.Cycle(96, 103).Cycle(104, 111);//_canvas.Cycle(96, 111);
+			if (gameTick != _lastGameTick && gameTick % 3 == 0) _canvas.Cycle(96, 103).Cycle(104, 111);//_canvas.Cycle(96, 111);
 			if (!_update && !_redraw) return (gameTick % 3 == 0);
 			
 			DrawLayer(_menuBar, gameTick, 0, 0);
@@ -303,6 +304,7 @@ namespace CivOne.Screens
 			
 			_redraw = false;
 			_update = false;
+			_lastGameTick = gameTick;
 			return true;
 		}
 

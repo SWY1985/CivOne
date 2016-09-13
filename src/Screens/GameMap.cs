@@ -45,6 +45,7 @@ namespace CivOne.Screens
 		
 		private readonly Color[] _palette;
 		private bool _update = true;
+		private bool _centerChanged = false;
 		private int _x, _y;
 		private IUnit _lastUnit;
 
@@ -124,8 +125,20 @@ namespace CivOne.Screens
 		{
 			if (_update)
 			{
-				_canvas = new Picture(240, 192, _palette);
-				foreach (RenderTile t in RenderTiles)
+				RenderTile[] renderTiles = RenderTiles.ToArray();
+				if (Game.Instance.MovingUnit != null && !_centerChanged)
+				{
+					IUnit unit = Game.Instance.MovingUnit;
+					ITile[] tiles = Map.QueryMapPart(unit.X - 1, unit.Y - 1, 3, 3).ToArray();
+					renderTiles = renderTiles.Where(t => tiles.Any(x => x.X == t.Tile.X && x.Y == t.Tile.Y)).ToArray();
+				}
+				else
+				{
+					_centerChanged = false;
+					_canvas = new Picture(240, 192, _palette);
+				}
+
+				foreach (RenderTile t in renderTiles)
 				{
 					if (!Settings.Instance.RevealWorld && !t.Visible)
 					{
@@ -141,7 +154,7 @@ namespace CivOne.Screens
 					if (!HumanPlayer.Visible(t.Tile, Direction.South)) AddLayer(Resources.Instance.GetFog(Direction.South), t.Position);
 				}
 				
-				foreach (RenderTile t in RenderTiles)
+				foreach (RenderTile t in renderTiles)
 				{
 					if (!Settings.Instance.RevealWorld && !t.Visible) continue;
 
@@ -173,7 +186,7 @@ namespace CivOne.Screens
 					AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position.X - 1, t.Position.Y - 1);
 				}
 				
-				foreach (RenderTile t in RenderTiles.Reverse())
+				foreach (RenderTile t in renderTiles.Reverse())
 				{
 					if (!Settings.Instance.RevealWorld && !t.Visible) continue;
 
@@ -189,7 +202,7 @@ namespace CivOne.Screens
 					_canvas.DrawText(city.Name, 0, 11, labelX, labelY, TextAlign.Left);
 				}
 				
-				foreach (RenderTile t in RenderTiles)
+				foreach (RenderTile t in renderTiles)
 				{
 					if (!Settings.Instance.RevealWorld && !t.Visible) continue;
 
@@ -225,9 +238,9 @@ namespace CivOne.Screens
 				if (Game.Instance.MovingUnit != null)
 				{
 					IUnit unit = Game.Instance.MovingUnit;
-					if (RenderTiles.Any(t => (t.Tile.X == unit.X && t.Tile.Y == unit.Y)))
+					if (renderTiles.Any(t => (t.Tile.X == unit.X && t.Tile.Y == unit.Y)))
 					{
-						RenderTile tile = RenderTiles.First(t => (t.Tile.X == unit.X && t.Tile.Y == unit.Y));
+						RenderTile tile = renderTiles.First(t => (t.Tile.X == unit.X && t.Tile.Y == unit.Y));
 						AddLayer(unit.GetUnit(unit.Owner), tile.Position.X + unit.Movement.X, tile.Position.Y + unit.Movement.Y);
 					}
 					return true;
@@ -245,6 +258,7 @@ namespace CivOne.Screens
 			if (Game.Instance.ActiveUnit == null) return;
 			_x = Game.Instance.ActiveUnit.X - 8;
 			_y = Game.Instance.ActiveUnit.Y - 6;
+			_centerChanged = true;
 		}
 
 		private bool ShouldCenter(int relX = 0, int relY = 0)
