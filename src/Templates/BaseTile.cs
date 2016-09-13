@@ -29,6 +29,9 @@ namespace CivOne.Templates
 		{
 			get
 			{
+				if (!Game.Started)
+					return false;
+				
 				switch (Game.Instance.CurrentPlayer.Government)
 				{
 					case Government.Anarchy:
@@ -43,6 +46,9 @@ namespace CivOne.Templates
 		{
 			get
 			{
+				if (!Game.Started)
+					return false;
+				
 				switch (Game.Instance.CurrentPlayer.Government)
 				{
 					case Government.Monarchy:
@@ -57,6 +63,9 @@ namespace CivOne.Templates
 		{
 			get
 			{
+				if (!Game.Started)
+					return false;
+				
 				switch (Game.Instance.CurrentPlayer.Government)
 				{
 					case Government.Republic:
