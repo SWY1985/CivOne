@@ -50,21 +50,21 @@ namespace CivOne
 		
 		private void GameTick()
 		{
-			RefreshWindow();
-			_gameTick++;
-			_tickWaiter.Set();
+			while (true)
+			{
+				_tickWaiter.WaitOne();
+				RefreshWindow();
+				_gameTick++;
+			}
 		}
 		
 		private void SetGameTick()
 		{
+			new Thread(new ThreadStart(GameTick)).Start();
 			while (true)
 			{
-				// if the previous tick is still busy, step out... this will cause the game to slow down a bit
-				if (!_tickWaiter.WaitOne(10)) continue;
-				_tickWaiter.Reset();
-				
-				new Thread(new ThreadStart(GameTick)).Start();
 				Thread.Sleep(1000 / 60);
+				_tickWaiter.Set();
 			}
 		}
 		
