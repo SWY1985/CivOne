@@ -33,10 +33,10 @@ namespace CivOne
 		{
 			get
 			{
-				GameTask.Update();
+				if (!GameTask.Update() && (_gameTick % 2) > 0) return false;
 				if (Common.Screens.Any(x => x is IModal))
-					return Common.Screens.Last(x => x is IModal).HasUpdate(_gameTick);
-				return (Common.Screens.Count(x => x.HasUpdate(_gameTick)) > 0);
+					return Common.Screens.Last(x => x is IModal).HasUpdate(_gameTick / 2);
+				return (Common.Screens.Count(x => x.HasUpdate(_gameTick / 2)) > 0);
 			}
 		}
 		
@@ -62,11 +62,11 @@ namespace CivOne
 			while (true)
 			{
 				// if the previous tick is still busy, step out... this will cause the game to slow down a bit
-				if (!_tickWaiter.WaitOne(25)) continue;
+				if (!_tickWaiter.WaitOne(10)) continue;
 				_tickWaiter.Reset();
 				
 				new Thread(new ThreadStart(GameTick)).Start();
-				Thread.Sleep(1000 / Settings.Instance.FramesPerSecond);
+				Thread.Sleep(1000 / 30);
 			}
 		}
 		

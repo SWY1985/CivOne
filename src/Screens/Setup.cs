@@ -92,7 +92,7 @@ namespace CivOne.Screens
 		private void SettingsMenu(int activeItem = 0)
 		{
 			Settings settings = Settings.Instance; 
-			string graphicsMode, fullScreen, framesPerSecond, sideBar, scale, revealWorld;
+			string graphicsMode, fullScreen, sideBar, scale, revealWorld;
 			switch (settings.GraphicsMode)
 			{
 				case GraphicsMode.Graphics256: graphicsMode = "256 colors"; break;
@@ -102,12 +102,11 @@ namespace CivOne.Screens
 			
 			graphicsMode = string.Format("Graphics Mode: {0}", graphicsMode);
 			fullScreen = string.Format("Full Screen: {0}", settings.FullScreen ? "yes" : "no");
-			framesPerSecond = string.Format("Frames per second: {0}", settings.FramesPerSecond);
 			sideBar = string.Format("Side bar location: {0}", settings.RightSideBar ? "right" : "left");
 			scale = string.Format("Window scale: {0}x", settings.Scale);
 			revealWorld = string.Format("Reveal World: {0}", settings.RevealWorld ? "yes" : "no");
 			
-			Menu menu = AddMenu("SETTINGS:", SettingsChoice, graphicsMode, fullScreen, framesPerSecond, sideBar, scale, revealWorld, "Back");
+			Menu menu = AddMenu("SETTINGS:", SettingsChoice, graphicsMode, fullScreen, sideBar, scale, revealWorld, "Back");
 			menu.ActiveItem = activeItem;
 			Common.AddScreen(menu);
 		}
@@ -131,21 +130,6 @@ namespace CivOne.Screens
 		{
 			Menu menu = AddMenu("FULL SCREEN:", FullScreenChoice, "No (default)", "Yes", "Back");
 			menu.ActiveItem = Settings.Instance.FullScreen ? 1 : 0;
-			Common.AddScreen(menu);
-		}
-		
-		private void FramesPerSecondMenu()
-		{
-			Menu menu = AddMenu("FRAMES PER SECOND:", FramesPerSecondChoice, "5 (not recommended)", "10", "15 (default)", "20", "25", "30", "35", "40", "45", "50", "55", "60", "Custom", "Back");
-			menu.Items[12].Enabled = false; // Custom FPS: Not yet implemented
-			if (Settings.Instance.FramesPerSecond % 5 == 0)
-			{
-				menu.ActiveItem = (Settings.Instance.FramesPerSecond / 5) - 1;
-			}
-			else
-			{
-				menu.ActiveItem = 12;
-			}
 			Common.AddScreen(menu);
 		}
 		
@@ -206,19 +190,16 @@ namespace CivOne.Screens
 				case 1: // Full Screen
 					FullScreenMenu();
 					break;
-				case 2: // Frames per second
-					FramesPerSecondMenu();
-					break;
-				case 3: // Side bar
+				case 2: // Side bar
 					SideBarMenu();
 					break;
-				case 4: // Scale
+				case 3: // Scale
 					WindowScaleMenu();
 					break;
-				case 5: // Reveal World
+				case 4: // Reveal World
 					RevealWorldMenu();
 					break;
-				case 6: // Back
+				case 5: // Back
 					MainMenu();
 					break;
 			}
@@ -256,18 +237,6 @@ namespace CivOne.Screens
 			SettingsMenu(1);
 		}
 		
-		private void FramesPerSecondChoice(object sender, EventArgs args)
-		{
-			int choice = (sender as Menu.Item).Value;
-			if (choice < 12)
-			{
-				byte framesPerSecond = (byte)((choice * 5) + 5);
-				Settings.Instance.FramesPerSecond = framesPerSecond;
-			}
-			CloseMenus();
-			SettingsMenu(2);
-		}
-		
 		private void SideBarChoice(object sender, EventArgs args)
 		{
 			int choice = (sender as Menu.Item).Value;
@@ -281,7 +250,7 @@ namespace CivOne.Screens
 					break;
 			}
 			CloseMenus();
-			SettingsMenu(3);
+			SettingsMenu(2);
 		}
 		
 		private void WindowScaleChoice(object sender, EventArgs args)
@@ -308,7 +277,7 @@ namespace CivOne.Screens
 					break;
 			}
 			CloseMenus();
-			SettingsMenu(1);
+			SettingsMenu(4);
 		}
 		
 		public Setup()

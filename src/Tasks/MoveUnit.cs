@@ -26,14 +26,15 @@ namespace CivOne.Tasks
 		public int X { get; private set; }
 		public int Y { get; private set; }
 
-		protected override void Step()
+		protected override bool Step()
 		{
 			_step += STEP_SIZE;
 			X = (RelX * _step);
 			Y = (RelY * _step);
 			if (_step < 16)
-				return;
+				return true;
 			EndTask();
+			return true;
 		}
 
 		public override void Run()
