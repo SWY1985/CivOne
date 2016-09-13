@@ -23,10 +23,8 @@ namespace CivOne.Templates
 	{
 		protected override void MovementDone(ITile previousTile)
 		{
-			//if (Class == UnitClass.Land && Map[FromX, FromY].Road && Map[X, Y].Road)
 			if (previousTile.Road && Tile.Road)
 			{
-				//if (Map[X, Y].RailRoad && Map[FromX, FromY].RailRoad)
 				if (Tile.RailRoad && previousTile.RailRoad && Tile.City == null)
 				{
 					// No moves lost
@@ -76,9 +74,6 @@ namespace CivOne.Templates
 		{
 			if (Player.Human)
 			{
-				//TribalHut tribalHut = new TribalHut(message);
-				//tribalHut.Closed += method;
-				//Common.AddScreen(tribalHut);
 				GameTask.Enqueue(Message.TribalHut(message));
 				method(this, null);
 				return;
@@ -88,6 +83,8 @@ namespace CivOne.Templates
 
 		protected void TribalHut(HutResult result = HutResult.Random)
 		{
+			if (result == HutResult.Random)
+				result = HutResult.AncientScrolls;
 			switch(result)
 			{
 				case HutResult.MetalDeposits:
@@ -107,7 +104,17 @@ namespace CivOne.Templates
 					return;
 				case HutResult.AncientScrolls:
 					TribalHutMessage((s, e) => {
-						// TODO: Actually give the ancient scroll of wisdom to the player.
+						// This seems curious but this is how it actually happens in the original game
+						IAdvance[] available = Game.Instance.CurrentPlayer.AvailableResearch.ToArray();
+						int advanceId = Common.Random.Next(0, 72);
+						for (int i = 0; i < 1000; i++)
+						{
+							if (!available.Any(a => a.Id == (advanceId + i) % 72)) continue;
+							GameTask.Enqueue(new GetAdvance(Game.Instance.CurrentPlayer, available.First(a => a.Id == (advanceId + i) % 72)));
+							break;
+						}
+						//if (advances.Length == 0)
+						//	return;
 					}, "You have discovered", "scrolls of ancient wisdom.");
 					return;
 				case HutResult.Barbarians:
