@@ -223,7 +223,8 @@ namespace CivOne
 			if (TickThread.IsAlive)
 			{
 				TickThread.Abort();
-				args.Cancel = true;
+				//args.Cancel = true;
+				Environment.Exit(0);
 			}
 		}
 		
