@@ -252,5 +252,19 @@ namespace CivOne.GFX
 				return _fortify;
 			}
 		}
+
+		private static Bitmap _fortress;
+		public static Bitmap Fortress
+		{
+			get
+			{
+				if (_fortress == null)
+				{
+					_fortress = (Bitmap)Resources.Instance.GetPart("SP257", 224, 112, 16, 16);
+					Picture.ReplaceColours(_fortress, 3, 0);
+				}
+				return _fortress;
+			}
+		}
 	}
 }

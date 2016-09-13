@@ -197,6 +197,14 @@ namespace CivOne.GFX
 			output.AddLayer(Res.GetPart(graphics16 ? "SPRITES" : "SP257", 80, 32, 16, 16), 0, 0);
 		}
 		
+		private static void DrawFortress(ref Picture output, ITile tile, bool graphics16 = false)
+		{
+			if (!tile.Fortress) return;
+			if (Game.Instance != null && tile.City == null)
+			
+			output.AddLayer(Icons.Fortress, 0, 0);
+		}
+		
 		private static void DrawRoad(ref Picture output, ITile tile, bool graphics16 = false)
 		{
 			if (!tile.Road || tile.RailRoad) return;
@@ -294,6 +302,7 @@ namespace CivOne.GFX
 			}
 			DrawRoad(ref output, tile, true);
 			DrawRailRoad(ref output, tile, true);
+			DrawFortress(ref output, tile, true);
 			DrawHut(ref output, tile, true);
 			
 			return output.Image;
@@ -364,6 +373,7 @@ namespace CivOne.GFX
 			}
 			DrawRoad(ref output, tile);
 			DrawRailRoad(ref output, tile, true);
+			DrawFortress(ref output, tile, true);
 			DrawHut(ref output, tile);
 			
 			return output.Image;
