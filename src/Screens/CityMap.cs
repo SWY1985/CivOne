@@ -31,6 +31,13 @@ namespace CivOne.Screens
 		private void DrawResources(ITile tile, int x, int y)
 		{
 			int count = (tile.Food + tile.Shield + tile.Trade);
+
+			if (count == 0)
+			{
+				AddLayer(Icons.Unhappy, x + 4, y + 4);
+				return;
+			}
+
 			int iconsPerLine = 2;
 			int iconWidth = 8;
 			if (count > 4) iconsPerLine = (int)Math.Ceiling((double)count / 2);
