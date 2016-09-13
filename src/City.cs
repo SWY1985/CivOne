@@ -146,7 +146,7 @@ namespace CivOne
 		{
 			get
 			{
-				return (short)Math.Round(((double)TradeTotal / 10) * Player.LuxuriesRate);
+				return (short)Math.Round(((double)(TradeTotal - Science) / (10 - Player.ScienceRate)) * Player.LuxuriesRate);
 			}
 		}
 
@@ -154,7 +154,7 @@ namespace CivOne
 		{
 			get
 			{
-				return (short)Math.Round(((double)(TradeTotal - Luxuries) / (10 - Player.LuxuriesRate)) * Player.TaxesRate);
+				return (short)(TradeTotal - Luxuries - Science);
 			}
 		}
 
@@ -162,7 +162,7 @@ namespace CivOne
 		{
 			get
 			{
-				return (short)(TradeTotal - Luxuries - Taxes);
+				return (short)Math.Round(((double)TradeTotal / 10) * Player.ScienceRate);
 			}
 		}
 
