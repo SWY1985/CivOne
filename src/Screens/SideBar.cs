@@ -82,7 +82,7 @@ namespace CivOne.Screens
 			if (Game.Instance.HumanPlayer.Population > 0)
 			{
 				string population = $"{player.Population:n0}".Replace(".", ",");
-				_demographics.DrawText($"{population} #", 0, 5, 2, 15, TextAlign.Left);
+				_demographics.DrawText($"{population}#", 0, 5, 2, 15, TextAlign.Left);
 			}
 			_demographics.DrawText(Game.Instance.GameYear, 0, 5, 2, 23, TextAlign.Left);
 			_demographics.DrawText($"{player.Gold}$ {player.LuxuriesRate}.{player.TaxesRate}.{player.ScienceRate}", 0, 5, 2, 31, TextAlign.Left);
