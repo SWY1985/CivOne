@@ -16,6 +16,7 @@ using CivOne.Civilizations;
 using CivOne.Enums;
 using CivOne.Interfaces;
 using CivOne.Screens;
+using CivOne.Tasks;
 using CivOne.Units;
 
 namespace CivOne
@@ -76,6 +77,14 @@ namespace CivOne
 			private set;
 		}
 		
+		internal Player CurrentPlayer
+		{
+			get
+			{
+				return _players[_currentPlayer];
+			}
+		}
+		
 		internal byte PlayerNumber(Player player)
 		{
 			byte i = 0;
@@ -94,44 +103,38 @@ namespace CivOne
 				return null;
 			return _players[number];
 		}
-		
-		public void NextTurn()
+
+		public void EndTurn()
 		{
-			_activeUnit = 0;
-			while (++_currentPlayer >= _players.Length || _players[_currentPlayer] != HumanPlayer)
+			if (++_currentPlayer >= _players.Length)
 			{
-				// Skip all AI players for now
-				if (_currentPlayer >= _players.Length)
-				{
-					_currentPlayer = 0;
-					GameTurn++;
-				}
-				_players[_currentPlayer].NewTurn();
-				foreach (City city in _cities.Where(c => c.Owner == _currentPlayer).ToArray())
-				{
-					city.NewTurn();
-				}
-				foreach (IUnit unit in _units.Where(c => c.Owner == _currentPlayer))
-				{
-					unit.NewTurn();
-				}
-				IUnit[] units = _units.Where(c => c.Owner == _currentPlayer).ToArray();
-				foreach (IUnit unit in units)
-				{
-					AI.MoveUnit(unit);
-				}
+				_currentPlayer = 0;
+				GameTurn++;
 			}
+
 			foreach (City city in _cities.Where(c => c.Owner == _currentPlayer).ToArray())
 			{
-				city.NewTurn();
+				GameTask.Enqueue(Turn.New(city));
 			}
-			foreach (IUnit unit in _units.Where(c => c.Owner == _currentPlayer))
+			foreach (IUnit unit in _units.Where(u => u.Owner == _currentPlayer))
 			{
-				unit.NewTurn();
+				GameTask.Enqueue(Turn.New(unit));
 			}
-			_players[_currentPlayer].NewTurn();
-			if (!_cities.Any(c => c.Owner == _currentPlayer) && !_units.Any(u => u.Owner == _currentPlayer))
-				Common.AddScreen(new GameOver());
+			GameTask.Enqueue(Turn.New(CurrentPlayer));
+
+			if (CurrentPlayer == HumanPlayer) return;
+
+			// Enqueue AI moves
+			foreach (IUnit unit in _units.Where(u => u.Owner == _currentPlayer))
+			{
+				GameTask.Enqueue(Turn.Move(unit));
+			}
+			GameTask.Enqueue(Turn.End());
+		}
+		
+		public void Update()
+		{
+
 		}
 
 		private int GetCityIndex(ICivilization civilization)
@@ -347,9 +350,9 @@ namespace CivOne
 				// Check if any units are still available for this player
 				if (!_units.Any(u => u.Owner == _currentPlayer && (u.MovesLeft > 0 || u.PartMoves > 0) && !u.Busy))
 				{
-					if (!Settings.Instance.EndOfTurn)
+					if (CurrentPlayer == HumanPlayer && !Settings.Instance.EndOfTurn && !GameTask.Any() && (Common.TopScreen is GamePlay))
 					{
-						NextTurn();
+						GameTask.Enqueue(Turn.End());
 					}
 					return null;
 				}

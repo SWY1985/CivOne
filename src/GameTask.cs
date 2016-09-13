@@ -17,6 +17,11 @@ namespace CivOne
 		private static GameTask _currentTask = null;
 		private static List<GameTask> _tasks = new List<GameTask>();
 
+		public static bool Any()
+		{
+			return (_tasks.Count > 0);
+		}
+
 		public static bool Update()
 		{
 			if (_currentTask != null)
@@ -43,12 +48,7 @@ namespace CivOne
 		private static void Finish(object sender, EventArgs args)
 		{
 			_tasks.Remove((sender as GameTask));
-			if (_tasks.Count == 0)
-			{
-				_currentTask = null;
-				return;
-			}
-			(_currentTask = _tasks[0]).Run();
+			_currentTask = null;
 		}
 
 		public event EventHandler Done;

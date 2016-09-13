@@ -13,7 +13,7 @@ using CivOne.Tasks;
 
 namespace CivOne.Interfaces
 {
-	public interface IUnit : ICivilopedia, IProduction
+	public interface IUnit : ICivilopedia, IProduction, ITurn
 	{
 		IAdvance RequiredTech { get; }
 		IWonder RequiredWonder { get; }
@@ -38,7 +38,6 @@ namespace CivOne.Interfaces
 		byte Status { get; set; }
 		byte MovesLeft { get; }
 		byte PartMoves { get; }
-		void NewTurn();
 		void SkipTurn();
 		void Explore();
 		void SetHome(City city);

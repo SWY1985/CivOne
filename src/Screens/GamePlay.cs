@@ -14,6 +14,7 @@ using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Units;
+using CivOne.Tasks;
 using CivOne.Templates;
 
 namespace CivOne.Screens
@@ -200,7 +201,6 @@ namespace CivOne.Screens
 			_gameMenu.Items.Add(new GameMenu.Item(null));
 			_gameMenu.Items.Add(new GameMenu.Item("Disband Unit", "D"));
 			
-			_gameMenu.Items[0].Selected += (s, a) => Game.Instance.NextTurn();
 			_gameMenu.Items[1].Selected += (s, a) => Game.Instance.FoundCity();
 			_gameMenu.Items[2].Selected += (s, a) => { if (Game.Instance.ActiveUnit is Settlers) (Game.Instance.ActiveUnit as Settlers).BuildRoad(); };
 			_gameMenu.Items[3].Selected += (s, a) => { if (Game.Instance.ActiveUnit is Settlers) (Game.Instance.ActiveUnit as Settlers).BuildIrrigation(); };
@@ -474,7 +474,7 @@ namespace CivOne.Screens
 			_menuBar.WorldSelected += MenuBarWorld;
 			_menuBar.CivilopediaSelected += MenuBarCivilopedia;
 
-			Game.Instance.NextTurn();
+			GameTask.Enqueue(Turn.End());
 		}
 	}
 }
