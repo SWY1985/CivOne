@@ -52,7 +52,7 @@ namespace CivOne.Tiles
 		{
 			get
 			{
-				return (sbyte)(Special ? 4 : 0);
+				return (sbyte)(Special ? 3 + (MonarchyCommunism ? 1 : 0) + (RepublicDemocracy ? 2 : 0) : 0);
 			}
 		}
 		

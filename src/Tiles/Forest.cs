@@ -36,7 +36,7 @@ namespace CivOne.Tiles
 		{
 			get
 			{
-				return (sbyte)(Special ? 3 : 1); 
+				return (sbyte)(Special ? 2 + (AnarchyDespotism ? 0 : 1) : 1); 
 			}
 		}
 		

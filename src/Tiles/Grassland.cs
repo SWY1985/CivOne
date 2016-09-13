@@ -36,7 +36,7 @@ namespace CivOne.Tiles
 		{
 			get
 			{
-				return (sbyte)((Special ? 2 : 1) + (Irrigation ? 1 : 0)); 
+				return (sbyte)(2 + (Irrigation && !AnarchyDespotism ? 1 : 0)); 
 			}
 		}
 		
@@ -44,7 +44,7 @@ namespace CivOne.Tiles
 		{
 			get
 			{
-				return 1;
+				return (sbyte)(Special ? 1 : 0);
 			}
 		}
 		
