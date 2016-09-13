@@ -15,7 +15,7 @@ namespace CivOne.Tasks
 {
 	public class MoveUnit : GameTask
 	{
-		private const int STEP_SIZE = 2;
+		private const int STEP_SIZE = 1;
 
 		public readonly int RelX, RelY;
 

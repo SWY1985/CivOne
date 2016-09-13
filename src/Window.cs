@@ -33,10 +33,10 @@ namespace CivOne
 		{
 			get
 			{
-				if (!GameTask.Update() && (_gameTick % 2) > 0) return false;
+				if (!GameTask.Update() && (_gameTick % 4) > 0) return false;
 				if (Common.Screens.Any(x => x is IModal))
-					return Common.Screens.Last(x => x is IModal).HasUpdate(_gameTick / 2);
-				return (Common.Screens.Count(x => x.HasUpdate(_gameTick / 2)) > 0);
+					return Common.Screens.Last(x => x is IModal).HasUpdate(_gameTick / 4);
+				return (Common.Screens.Count(x => x.HasUpdate(_gameTick / 4)) > 0);
 			}
 		}
 		
@@ -66,7 +66,7 @@ namespace CivOne
 				_tickWaiter.Reset();
 				
 				new Thread(new ThreadStart(GameTick)).Start();
-				Thread.Sleep(1000 / 30);
+				Thread.Sleep(1000 / 60);
 			}
 		}
 		
