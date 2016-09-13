@@ -27,7 +27,13 @@ namespace CivOne
 
 		internal static void Move(IUnit unit)
 		{
-			if (unit is Settlers)
+			if (unit.Owner == 0)
+			{
+				// Barbarians
+				// Until confrontation has been implemented, barbarians delete themselves
+				Game.Instance.DisbandUnit(unit);
+			}
+			else if (unit is Settlers)
 			{
 				if (!((Map[unit.X, unit.Y] is Grassland) || (Map[unit.X, unit.Y] is River) || (Map[unit.X, unit.Y] is Plains)))
 				{
