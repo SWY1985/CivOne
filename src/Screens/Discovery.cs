@@ -10,6 +10,7 @@
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -23,6 +24,7 @@ namespace CivOne.Screens
 		private const float FADE_STEP = 0.025f;
 
 		private readonly IAdvance _advance;
+		private readonly bool _modern;
 
 		public EventHandler Closed;
 		
@@ -84,22 +86,37 @@ namespace CivOne.Screens
 		public Discovery(IAdvance advance)
 		{
 			_advance = advance;
+			_modern = Game.Instance.HumanPlayer.Advances.Any(a => a.Id == (int)Advance.Electricity);
 
-			Picture background = Resources.Instance.LoadPIC("DISCOVR1");
+			Picture background = Resources.Instance.LoadPIC(_modern ? "DISCOVR2" : "DISCOVR1");
 			
 			_canvas = new Picture(320, 200, background.Image.Palette.Entries);
 			_canvas.FillRectangle(32, 0, 0, 320, 200);
 
 			AddLayer(background);
 
-			_canvas.DrawText($"{Game.Instance.HumanPlayer.TribeName} wise men", 5, 32, 101, 7);
-			_canvas.DrawText($"{Game.Instance.HumanPlayer.TribeName} wise men", 5, 15, 101, 6);
-			_canvas.DrawText("discover the secret", 5, 32, 101, 22);
-			_canvas.DrawText("discover the secret", 5, 15, 101, 21);
-			_canvas.DrawText($"of {advance.Name}!", 5, 32, 101, 37);
-			_canvas.DrawText($"of {advance.Name}!", 5, 15, 101, 36);
+			string[] text = new string[]
+			{
+				$"{Game.Instance.HumanPlayer.TribeName} wise men",
+				"discover the secret",
+				$"of {advance.Name}!"
+			};
 
-			AddLayer(advance.Icon, 119, 61);
+			
+			for (int i = 0; i < text.Length; i++)
+			{
+				if (_modern)
+				{
+					_canvas.DrawText(text[i], 0, 3, 101, 30 + (8 * i));
+				}
+				else
+				{
+					_canvas.DrawText(text[i], 5, 32, 101, 7 + (15 * i));
+					_canvas.DrawText(text[i], 5, 15, 101, 6 + (15 * i));
+				}
+			}
+
+			AddLayer(advance.Icon, 119, _modern ? 53 : 61);
 		}
 	}
 }
