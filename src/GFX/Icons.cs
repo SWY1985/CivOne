@@ -96,6 +96,20 @@ namespace CivOne.GFX
 			}
 		}
 		
+		private static Bitmap _unhappy;
+		public static Bitmap Unhappy
+		{
+			get
+			{
+				if (_unhappy == null)
+				{
+					_unhappy = (Bitmap)Resources.Instance.GetPart("SP257", 136, 40, 8, 8);
+					Picture.ReplaceColours(_unhappy, 3, 0);
+				}
+				return _unhappy;
+			}
+		}
+		
 		private static Bitmap _luxuries;
 		public static Bitmap Luxuries
 		{
