@@ -15,6 +15,7 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
+using CivOne.Tasks;
 using CivOne.Templates;
 using CivOne.Units;
 
@@ -377,7 +378,7 @@ namespace CivOne.Screens
 			{
 				case Key.Space:
 				case Key.Enter:
-					Game.Instance.NextTurn();
+					GameTask.Enqueue(Turn.End());
 					return true;
 			}
 			

@@ -17,7 +17,7 @@ using CivOne.Screens;
 
 namespace CivOne
 {
-	internal class Player
+	public class Player : ITurn
 	{
 		private readonly ICivilization _civilization;
 		private readonly string _leaderName, _tribeName, _tribeNamePlural;

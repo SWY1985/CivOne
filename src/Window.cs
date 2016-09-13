@@ -44,9 +44,7 @@ namespace CivOne
 		{
 			get
 			{
-				if (Common.Screens.Any(x => x is IModal))
-					return Common.Screens.Last(x => x is IModal);
-				return Common.Screens.LastOrDefault();
+				return Common.TopScreen;
 			}
 		}
 		

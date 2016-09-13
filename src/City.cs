@@ -19,7 +19,7 @@ using CivOne.Units;
 
 namespace CivOne
 {
-	public class City
+	public class City : ITurn
 	{
 		private Map Map
 		{
@@ -317,7 +317,7 @@ namespace CivOne
 			_buildings.Add(building);
 		}
 
-		internal void NewTurn()
+		public void NewTurn()
 		{
 			Food += FoodIncome;
 			if (Food < 0)

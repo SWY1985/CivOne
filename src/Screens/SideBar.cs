@@ -95,7 +95,11 @@ namespace CivOne.Screens
 			_gameInfo.FillLayerTile(_background);
 			_gameInfo.AddBorder(15, 8, 0, 0, 80, 103);
 			
-			if (unit != null)
+			if (Game.Instance.CurrentPlayer != Game.Instance.HumanPlayer)
+			{
+				_gameInfo.FillRectangle((byte)((gameTick % 4 < 2) ? 15 : 8), 2, 95, 6, 6);
+			}
+			else if (unit != null)
 			{
 				_gameInfo.DrawText(Game.Instance.HumanPlayer.TribeName, 0, 5, 4, 2, TextAlign.Left);
 				_gameInfo.DrawText(unit.Name, 0, 5, 4, 10, TextAlign.Left);
@@ -140,6 +144,9 @@ namespace CivOne.Screens
 		{
 			if (_update || (gameTick % 2 == 0))
 			{
+				if (!(Common.TopScreen is GamePlay))
+					gameTick = 0;
+
 				DrawMiniMap();
 				DrawDemographics();
 				DrawGameInfo(gameTick);

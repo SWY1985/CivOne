@@ -79,6 +79,16 @@ namespace CivOne
 				return _screens.ToArray();
 			}
 		}
+
+		public static IScreen TopScreen
+		{
+			get
+			{
+				if (Common.Screens.Any(x => x is IModal))
+					return Common.Screens.Last(x => x is IModal);
+				return Common.Screens.LastOrDefault();
+			}
+		}
 		
 		internal static void SetRandomSeed(short seed)
 		{

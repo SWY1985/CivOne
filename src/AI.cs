@@ -25,7 +25,7 @@ namespace CivOne
 			}
 		}
 
-		internal static void MoveUnit(IUnit unit)
+		internal static void Move(IUnit unit)
 		{
 			if (unit is Settlers)
 			{
