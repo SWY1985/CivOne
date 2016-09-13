@@ -25,6 +25,48 @@ namespace CivOne.Templates
 			}
 		}
 
+		protected bool AnarchyDespotism
+		{
+			get
+			{
+				switch (Game.Instance.CurrentPlayer.Government)
+				{
+					case Government.Anarchy:
+					case Government.Despotism:
+						return true;
+				}
+				return false;
+			}
+		}
+
+		protected bool MonarchyCommunism
+		{
+			get
+			{
+				switch (Game.Instance.CurrentPlayer.Government)
+				{
+					case Government.Monarchy:
+					case Government.Communism:
+						return true;
+				}
+				return false;
+			}
+		}
+
+		protected bool RepublicDemocracy
+		{
+			get
+			{
+				switch (Game.Instance.CurrentPlayer.Government)
+				{
+					case Government.Republic:
+					case Government.Democracy:
+						return true;
+				}
+				return false;
+			}
+		}
+
 		public virtual Picture Icon
 		{
 			get
