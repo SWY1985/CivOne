@@ -164,7 +164,7 @@ namespace CivOne.Templates
 			}
 			set
 			{
-				_road = true;
+				_road = value;
 			}
 		}
 		private bool _railRoad = false;
@@ -172,12 +172,12 @@ namespace CivOne.Templates
 		{
 			get
 			{
-				if (Game.Started && !_railRoad && City != null && Map[X, Y].GetBorderTiles().Any(t => t.RailRoad)) _railRoad = true;
+				if (Game.Started && !_railRoad && City != null && Map[X, Y].GetBorderTiles().Any(t => (t as BaseTile)._railRoad || t.City != null)) _railRoad = true;
 				return _railRoad;
 			}
 			set
 			{
-				_railRoad = true;
+				_railRoad = value;
 			}
 		}
 		private bool _irrigation = false;
