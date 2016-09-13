@@ -53,6 +53,8 @@ namespace CivOne.Templates
 				if (this is Settlers) return;
 				if (!value)
 					_fortify = false;
+				else if (Fortify)
+					return;
 				else
 					FortifyActive = true;
 			}
