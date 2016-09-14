@@ -201,7 +201,7 @@ namespace CivOne.Screens
 			_gameMenu.Items.Add(new GameMenu.Item(null));
 			_gameMenu.Items.Add(new GameMenu.Item("Disband Unit", "D"));
 			
-			_gameMenu.Items[1].Selected += (s, a) => Game.Instance.FoundCity();
+			_gameMenu.Items[1].Selected += (s, a) => { if (Game.Instance.ActiveUnit is Settlers) GameTask.Enqueue(Orders.NewCity(Game.Instance.ActiveUnit as Settlers)); };
 			_gameMenu.Items[2].Selected += (s, a) => { if (Game.Instance.ActiveUnit is Settlers) (Game.Instance.ActiveUnit as Settlers).BuildRoad(); };
 			_gameMenu.Items[3].Selected += (s, a) => { if (Game.Instance.ActiveUnit is Settlers) (Game.Instance.ActiveUnit as Settlers).BuildIrrigation(); };
 			_gameMenu.Items[10].Selected += (s, a) => Game.Instance.DisbandUnit(Game.Instance.ActiveUnit);

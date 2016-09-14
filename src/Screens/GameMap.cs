@@ -320,7 +320,7 @@ namespace CivOne.Screens
 				case 'B':
 					if (Game.Instance.ActiveUnit is Settlers)
 					{
-						Game.Instance.FoundCity();
+						GameTask.Enqueue(Orders.NewCity(Game.Instance.ActiveUnit as Settlers));
 						return true;
 					}
 					break;

@@ -98,7 +98,7 @@ namespace CivOne.Templates
 					return;
 				case HutResult.AdvancedTribe:
 					TribalHutMessage((s, e) => {
-						Game.Instance.FoundCity(_x, _y, discardSettlers: false);
+						GameTask.Enqueue(Orders.NewCity(Player, _x, _y));
 					}, "You have discovered", "an advanced tribe.");
 					return;
 				case HutResult.AncientScrolls:
