@@ -373,6 +373,12 @@ namespace CivOne.Screens
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
+			if (Game.Instance.CurrentPlayer != Game.Instance.HumanPlayer)
+			{
+				// Ignore all keypresses if the current player is not human
+				return false;
+			}
+
 			if (Game.Instance.ActiveUnit != null)
 			{
 				return KeyDownActiveUnit(args);
@@ -385,7 +391,6 @@ namespace CivOne.Screens
 					GameTask.Enqueue(Turn.End());
 					return true;
 			}
-			
 			return false;
 		}
 		
