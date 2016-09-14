@@ -13,6 +13,7 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Interfaces;
 using CivOne.GFX;
+using CivOne.Tasks;
 using CivOne.Templates;
 
 namespace CivOne.Screens
@@ -163,10 +164,21 @@ namespace CivOne.Screens
 		
 		public override bool MouseDown(ScreenEventArgs args)
 		{
+			if (args.Y <= 50)
+			{
+				//TODO: Minimap action
+			}
 			if (args.Y > 50 && args.Y < 62)
 			{
 				System.Console.WriteLine("Sidebar: Palace View");
 				Common.AddScreen(new PalaceView());
+			}
+			else if (args.Y >= 62)
+			{
+				if (Game.Instance.CurrentPlayer == Game.Instance.HumanPlayer && Game.Instance.ActiveUnit == null)
+				{
+					GameTask.Enqueue(Turn.End());
+				}
 			}
 			return true;
 		}
