@@ -34,7 +34,7 @@ namespace CivOne.Screens
 		private float _fadeStep = 1.0f;
 		private bool _skip = false;
 
-		public event EventHandler Closed;
+		public event EventHandler Closed, Skipped;
 		
 		private Color FadeColour(Color colour1, Color colour2)
 		{
@@ -61,13 +61,7 @@ namespace CivOne.Screens
 				_fadeStep -= FADE_STEP;
 				if (_fadeStep <= 0.0f)
 				{
-					Destroy();
-					if (_skip)
-					{
-						Common.AddScreen(new CityManager(_city));
-						return true;
-					}
-					Common.AddScreen(new CityView(_city, firstView: true));
+					Close();
 					return true;
 				}
 				FadeColours();
@@ -101,20 +95,19 @@ namespace CivOne.Screens
 
 		private bool SkipAction()
 		{
-			if (_founded)
-			{
-				_skip = true;
-				return true;
-			}
-
 			Destroy();
-			if (_firstView)
-			{
-				Common.AddScreen(new CityManager(_city));
-			}
-			if (Closed != null)
+			if (Skipped != null)
+				Skipped(this, null);
+			else if (Closed != null)
 				Closed(this, null);
 			return true;
+		}
+
+		private void Close()
+		{
+			Destroy();
+			if (Closed != null)
+				Closed(this, null);
 		}
 		
 		public override bool KeyDown(KeyboardEventArgs args)

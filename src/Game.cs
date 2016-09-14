@@ -167,76 +167,31 @@ namespace CivOne
 			return 0;
 		}
 
-		public void FoundCity(int x, int y, string cityName = null, bool discardSettlers = true)
+		internal string CityName(Player player)
 		{
-			IUnit unit = GetUnits(x, y).FirstOrDefault();
-			if (discardSettlers && ActiveUnit != null && ActiveUnit.GetType() != typeof(Settlers))
-			{
-				unit = ActiveUnit;
-			}
-			else if (discardSettlers && (ActiveUnit == null || ActiveUnit.GetType() != typeof(Settlers)))
-			{
-				return;
-			}
-			
-			if (unit == null) return;
+			ICivilization civilization = player.Civilization;
+			int index = GetCityIndex(civilization);
+			_cityNameUsed[index] = true;
+			return _cityNames[index];
+		}
 
-			if (cityName == null)
-			{
-				if (discardSettlers && GetCity(x, y) != null)
-				{
-					if (GetCity(x, y).Size > 9)
-					{
-						// TODO Show message?
-						return;
-					}
-					GetCity(x, y).Size++;
-					DisbandUnit(Game.Instance.ActiveUnit);
-					return;
-				}
-
-				Player player = _players[unit.Owner];
-				ICivilization civilization = player.Civilization;
-				int index = GetCityIndex(civilization);
-				_cityNameUsed[index] = true;
-
-				cityName = _cityNames[index];
-				if (unit.Owner == PlayerNumber(HumanPlayer))
-				{
-					Common.AddScreen(new CityName(x, y, cityName, discardSettlers));
-				}
-				else
-				{
-					FoundCity(x, y, cityName);
-				}
-				return;
-			}
+		internal City AddCity(Player player, string name, int x, int y)
+		{
+			if (_cities.Any(c => c.X == x && c.Y == y))
+				return null;
 
 			City city = new City()
 			{
 				X = (byte)x,
 				Y = (byte)y,
-				Owner = unit.Owner,
-				Name = cityName,
+				Owner = PlayerNumber(player),
+				Name = name,
 				Size = 1
 			};
-			if (!_cities.Any(c => c.Owner == unit.Owner))
+			if (!_cities.Any(c => c.Owner == city.Owner))
 				city.AddBuilding(new Palace());
 			_cities.Add(city);
-			if (unit.Owner == PlayerNumber(HumanPlayer))
-			{
-				Common.AddScreen(new CityView(city, founded: true));
-			}
-			DisbandUnit(Game.Instance.ActiveUnit);
-			
-			if (!discardSettlers) return;
-			DisbandUnit(unit);
-		}
-
-		public void FoundCity()
-		{
-			if (ActiveUnit == null || !(ActiveUnit is Settlers)) return;
-			FoundCity(ActiveUnit.X, ActiveUnit.Y);
+			return city;
 		}
 
 		public void DestroyCity(City city)

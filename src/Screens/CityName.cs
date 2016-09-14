@@ -18,8 +18,27 @@ namespace CivOne.Screens
 	internal class CityName : BaseScreen
 	{
 		private readonly Input _input;
-		private readonly bool _discardSettlers;
-		private readonly int _x, _y;
+
+		public string Value { get; private set; }
+
+		public event EventHandler Accept, Cancel;
+
+		private void CityName_Accept(object sender, EventArgs args)
+		{
+			Value = (sender as Input).Text;
+			if (Accept != null)
+				Accept(this, null);
+			((Input)sender).Close();
+			Destroy();
+		}
+
+		private void CityName_Cancel(object sender, EventArgs args)
+		{
+			if (Cancel != null)
+				Cancel(this, null);
+			((Input)sender).Close();
+			Destroy();
+		}
 
 		public override bool HasUpdate(uint gameTick)
 		{
@@ -30,33 +49,8 @@ namespace CivOne.Screens
 			return false;
 		}
 
-		private void CityName_Accept(object sender, EventArgs args)
+		public CityName(string cityName)
 		{
-			if (sender.GetType() != typeof(Input)) return;
-
-			if (Game.Instance.ActiveUnit != null)
-				Game.Instance.FoundCity(_x, _y, _input.Text, _discardSettlers);
-
-			((Input)sender).Close();
-			Destroy();
-		}
-
-		private void CityName_Cancel(object sender, EventArgs args)
-		{
-			if (sender.GetType() != typeof(Input)) return;
-			
-			Game.Instance.ActiveUnit.SkipTurn();
-
-			((Input)sender).Close();
-			Destroy();
-		}
-
-		public CityName(int x, int y, string cityName, bool discardSettlers)
-		{
-			_x = x;
-			_y = y;
-			_discardSettlers = discardSettlers;
-
 			Cursor = MouseCursor.None;
 
 			_canvas = new Picture(320, 200, Common.Screens.Last().Canvas.OriginalColours);

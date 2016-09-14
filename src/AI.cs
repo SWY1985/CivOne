@@ -10,6 +10,7 @@
 using System;
 using System.Linq;
 using CivOne.Interfaces;
+using CivOne.Tasks;
 using CivOne.Tiles;
 using CivOne.Units;
 
@@ -48,8 +49,8 @@ namespace CivOne
 					}
 					unit.SkipTurn();
 					return;
-				} 
-				Game.Instance.FoundCity(unit.X, unit.Y);
+				}
+				GameTask.Enqueue(Orders.NewCity(unit as Settlers));
 			}
 			else
 			{
