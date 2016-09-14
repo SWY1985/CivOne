@@ -75,6 +75,7 @@ namespace CivOne.Templates
 			if (Movement != null) return false;
 			
 			ITile moveTarget = Map[X, Y][relX, relY];
+			if (moveTarget == null) return false;
 			if (moveTarget.Units.Any(u => u.Owner != Owner))
 			{
 				// TODO: Attack, or perform other unit action (confront)

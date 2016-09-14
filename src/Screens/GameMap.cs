@@ -77,6 +77,8 @@ namespace CivOne.Screens
 					int ty = _y + y;
 					while (tx >= Map.WIDTH) tx -= Map.WIDTH;
 					
+					if (ty < 0 || ty >= Map.HEIGHT) continue;
+
 					yield return new RenderTile
 					{
 						Visible = Game.Instance.HumanPlayer.Visible(tx, ty),
@@ -131,7 +133,7 @@ namespace CivOne.Screens
 				{
 					IUnit unit = Game.Instance.MovingUnit;
 					ITile[] tiles = Map.QueryMapPart(unit.X - 1, unit.Y - 1, 3, 3).ToArray();
-					renderTiles = renderTiles.Where(t => tiles.Any(x => x.X == t.Tile.X && x.Y == t.Tile.Y)).ToArray();
+					renderTiles = renderTiles.Where(t => tiles.Any(x => x != null && x.X == t.Tile.X && x.Y == t.Tile.Y)).ToArray();
 				}
 				else
 				{
@@ -259,6 +261,8 @@ namespace CivOne.Screens
 			if (Game.Instance.ActiveUnit == null) return;
 			_x = Game.Instance.ActiveUnit.X - 8;
 			_y = Game.Instance.ActiveUnit.Y - 6;
+			while (_y < 0) _y++;
+			while (_y + 11 >= Map.HEIGHT) _y--;
 			_centerChanged = true;
 		}
 
