@@ -22,71 +22,7 @@ namespace CivOne.Tasks
 		private Settlers _settlers = null;
 		private int _x, _y;
 		private bool _newCity = false;
-
-		/*
-		IUnit unit = GetUnits(x, y).FirstOrDefault();
-			if (discardSettlers && ActiveUnit != null && ActiveUnit.GetType() != typeof(Settlers))
-			{
-				unit = ActiveUnit;
-			}
-			else if (discardSettlers && (ActiveUnit == null || ActiveUnit.GetType() != typeof(Settlers)))
-			{
-				return;
-			}
-			
-			if (unit == null) return;
-
-			if (cityName == null)
-			{
-				if (discardSettlers && GetCity(x, y) != null)
-				{
-					if (GetCity(x, y).Size > 9)
-					{
-						// TODO Show message?
-						return;
-					}
-					GetCity(x, y).Size++;
-					DisbandUnit(Game.Instance.ActiveUnit);
-					return;
-				}
-
-				Player player = _players[unit.Owner];
-				ICivilization civilization = player.Civilization;
-				int index = GetCityIndex(civilization);
-				_cityNameUsed[index] = true;
-
-				cityName = _cityNames[index];
-				if (unit.Owner == PlayerNumber(HumanPlayer))
-				{
-					Common.AddScreen(new CityName(x, y, cityName, discardSettlers));
-				}
-				else
-				{
-					FoundCity(x, y, cityName);
-				}
-				return;
-			}
-
-			City city = new City()
-			{
-				X = (byte)x,
-				Y = (byte)y,
-				Owner = unit.Owner,
-				Name = cityName,
-				Size = 1
-			};
-			if (!_cities.Any(c => c.Owner == unit.Owner))
-				city.AddBuilding(new Palace());
-			_cities.Add(city);
-			if (unit.Owner == PlayerNumber(HumanPlayer))
-			{
-				Common.AddScreen(new CityView(city, founded: true));
-			}
-			DisbandUnit(Game.Instance.ActiveUnit);
-			
-			if (!discardSettlers) return;
-			DisbandUnit(unit);
-		*/
+		
 		private void CityManagerClosed(object sender, EventArgs args)
 		{
 			if (_settlers != null)
