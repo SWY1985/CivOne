@@ -37,8 +37,6 @@ namespace CivOne.Screens
 		private bool _update = true;
 		private int _startIndex = 0;
 		private byte _pageNumber = 1;
-
-		public event EventHandler Closed;
 		
 		private void DrawPageTitle()
 		{
@@ -301,8 +299,7 @@ namespace CivOne.Screens
 
 		private void Close()
 		{
-			if (Closed != null)
-				Closed(this, null);
+			HandleClose();
 			Destroy();
 		}
 		

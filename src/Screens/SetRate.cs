@@ -26,8 +26,6 @@ namespace CivOne.Screens
 		private readonly int _fontId = 0;
 		
 		private bool _update = true;
-		
-		public event EventHandler Closed;
 
 		private IEnumerable<string> MenuOptions
 		{
@@ -143,10 +141,7 @@ namespace CivOne.Screens
 
 		public void Close()
 		{
-			if (Closed != null)
-			{
-				Closed(this, null);
-			}
+			HandleClose();
 			Destroy();
 		}
 

@@ -14,6 +14,7 @@ using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Interfaces;
 using CivOne.Screens;
+using CivOne.Tasks;
 
 namespace CivOne
 {
@@ -112,7 +113,8 @@ namespace CivOne
 			_anarchy = 4;
 			Government = Government.Anarchy;
 			if (!Human) return;
-			Common.AddScreen(new Newspaper(false, null, $"The {Game.Instance.HumanPlayer.TribeNamePlural} are", "revolting! Citizens", "demand new govt."));
+			//Common.AddScreen(new Newspaper(false, null, $"The {Game.Instance.HumanPlayer.TribeNamePlural} are", "revolting! Citizens", "demand new govt."));
+			GameTask.Enqueue(Message.Newspaper(null, $"The {Game.Instance.HumanPlayer.TribeNamePlural} are", "revolting! Citizens", "demand new govt."));
 		}
 
 		public bool Human
@@ -304,7 +306,8 @@ namespace CivOne
 				ChooseGovernment chooseGovernment = new ChooseGovernment();
 				chooseGovernment.Closed += (s, a) => {
 					Government = (s as ChooseGovernment).Result;
-					Common.AddScreen(new Newspaper(true, null, $"{Game.Instance.HumanPlayer.TribeName} government", $"changed to {Government}!"));
+					//Common.AddScreen(new Newspaper(true, null, $"{Game.Instance.HumanPlayer.TribeName} government", $"changed to {Government}!"));
+					GameTask.Enqueue(Message.NewGoverment(null, $"{Game.Instance.HumanPlayer.TribeName} government", $"changed to {Government}!"));
 				};
 				Common.AddScreen(chooseGovernment);
 				//Common.AddScreen(new Newspaper(true, $"{Game.Instance.HumanPlayer.TribeName} government", "changed to Despotism!"));

@@ -25,8 +25,6 @@ namespace CivOne.Screens
 
 		private readonly IAdvance _advance;
 		private readonly bool _modern;
-
-		public EventHandler Closed;
 		
 		private float _fadeStep = 0.0f;
 		
@@ -78,8 +76,7 @@ namespace CivOne.Screens
 
 		private void Close()
 		{
-			if (Closed != null)
-				Closed(this, null);
+			HandleClose();
 			Destroy();
 		}
 		

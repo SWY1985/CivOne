@@ -34,7 +34,7 @@ namespace CivOne.Screens
 		private float _fadeStep = 1.0f;
 		private bool _skip = false;
 
-		public event EventHandler Closed, Skipped;
+		public event EventHandler Skipped;
 		
 		private Color FadeColour(Color colour1, Color colour2)
 		{
@@ -98,16 +98,15 @@ namespace CivOne.Screens
 			Destroy();
 			if (Skipped != null)
 				Skipped(this, null);
-			else if (Closed != null)
-				Closed(this, null);
+			else
+				HandleClose();
 			return true;
 		}
 
 		private void Close()
 		{
 			Destroy();
-			if (Closed != null)
-				Closed(this, null);
+			HandleClose();
 		}
 		
 		public override bool KeyDown(KeyboardEventArgs args)

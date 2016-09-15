@@ -24,6 +24,14 @@ namespace CivOne.Tasks
 		public int X { get; private set; }
 		public int Y { get; private set; }
 
+		private IUnit ActiveUnit
+		{
+			get
+			{
+				return Game.Instance.ActiveUnit;
+			}
+		}
+
 		protected override bool Step()
 		{
 			_step += STEP_SIZE;
@@ -37,8 +45,11 @@ namespace CivOne.Tasks
 
 		public override void Run()
 		{
-			//TODO: Off screen? End task immediately
-			//EndTask();
+			if (ActiveUnit == null || (!Settings.Instance.RevealWorld && !Game.Instance.HumanPlayer.Visible(ActiveUnit.X, ActiveUnit.Y)))
+			{
+				// Off screen? End task immediately
+				EndTask();
+			}
 		}
 
 		public MoveUnit(int relX, int relY)
