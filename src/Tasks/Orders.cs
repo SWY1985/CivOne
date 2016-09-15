@@ -120,7 +120,19 @@ namespace CivOne.Tasks
 
 			if (Map.Instance[_x, _y].City != null)
 			{
-				// There is already a city here, abort!
+				// There is already a city here
+				if (_unit is Settlers)
+				{
+					if (Map.Instance[_x, _y].City.Size >= 10)
+					{
+						// City is 10 or larger, can not join city
+						Error("ADDCITY");
+						EndTask();
+						return;
+					}
+					Map.Instance[_x, _y].City.Size++;
+					Game.Instance.DisbandUnit(_unit);
+				}
 				EndTask();
 				return;
 			}
