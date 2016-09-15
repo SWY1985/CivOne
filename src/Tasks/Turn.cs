@@ -15,7 +15,7 @@ using CivOne.Screens;
 
 namespace CivOne.Tasks
 {
-	internal class Turn : GameTask
+	internal class Turn : GameTask, IFast
 	{
 		private ITurn _turnObject = null;
 		private IUnit _unit = null;
