@@ -44,12 +44,12 @@ namespace CivOne.Tasks
 			return new Message(new TribalHut(message));
 		}
 
-		public static Message Notice(string title, params string[] message)
+		public static Message Help(string title, params string[] message)
 		{
 			return new Message(new PopupMessage(2, title, message));
 		}
 
-		public static Message Warning(string title, params string[] message)
+		public static Message Error(string title, params string[] message)
 		{
 			return new Message(new PopupMessage(4, title, message));
 		}
