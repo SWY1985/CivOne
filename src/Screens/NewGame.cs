@@ -227,7 +227,7 @@ namespace CivOne.Screens
 				Destroy();
 				Common.AddScreen(new GamePlay());
 				if (Game.Instance.Difficulty == 0)
-					GameTask.Enqueue(Message.Notice("--- Civilization Note ---", TextFile.Instance.GetGameText("HELP/FIRSTMOVE")));
+					GameTask.Enqueue(Message.Help("--- Civilization Note ---", TextFile.Instance.GetGameText("HELP/FIRSTMOVE")));
 				return true;
 			}
 			
