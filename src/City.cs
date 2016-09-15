@@ -134,6 +134,22 @@ namespace CivOne
 			}
 		}
 
+		internal int FoodTotal
+		{
+			get
+			{
+				return ResourceTiles.Sum(t => t.Food);
+			}
+		}
+
+		internal int ShieldTotal
+		{
+			get
+			{
+				return ResourceTiles.Sum(t => t.Shield);
+			}
+		}
+
 		internal int TradeTotal
 		{
 			get

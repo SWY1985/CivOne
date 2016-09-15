@@ -7,15 +7,79 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System.Collections.Generic;
+using System.Linq;
+using CivOne.Events;
+using CivOne.Interfaces;
+using CivOne.GFX;
 using CivOne.Templates;
 
 namespace CivOne.Screens
 {
 	internal class CityStatus : BaseStatusScreen
 	{
+		private const char FOOD = '{';
+		private const char SHIELD = '|';
+		private const char TRADE = '}';
+		private const byte FONT_ID = 0;
+
+		private readonly City[] _cities;
+
+		private bool _update = true;
+		private int _page = 0;
+
+		public override bool HasUpdate(uint gameTick)
+		{
+			if (!_update) return false;
+
+			_canvas.FillRectangle(8, 0, 32, 320, 168);
+
+			int fontHeight = Resources.Instance.GetFontHeight(FONT_ID);
+			int yy = 32;
+			for (int i = (_page++ * 20); i < _cities.Length && i < (_page * 20); i++)
+			{
+				City city = _cities[i];
+
+				string production = (city.CurrentProduction as ICivilopedia).Name;
+				int productionWidth = Resources.Instance.GetTextSize(1, production).Width;
+
+				_canvas.DrawText(city.Name, FONT_ID, 15, 8, yy);
+				_canvas.DrawText($"{city.Size}-{city.FoodTotal}{FOOD} {city.ShieldTotal}{SHIELD} {city.TradeTotal}{TRADE}", FONT_ID, 15, 80, yy);
+				_canvas.DrawText(production, FONT_ID, 15, 172, yy);
+				_canvas.DrawText($"({city.Shields}/{city.CurrentProduction.Price * 10})", FONT_ID, 7, 172 + productionWidth + 7, yy);
+				yy += fontHeight;
+			}
+
+			_update = false;
+			return true;
+		}
+
+		private bool NextPage()
+		{
+			if ((_page * 20) < _cities.Length)
+			{
+				_update = true;
+			}
+			else
+			{
+				Destroy();
+			}
+			return true;
+		}
+		
+		public override bool KeyDown(KeyboardEventArgs args)
+		{
+			return NextPage();
+		}
+		
+		public override bool MouseDown(ScreenEventArgs args)
+		{
+			return NextPage();
+		}
+
 		public CityStatus() : base("CITY STATUS", 8)
 		{
-			
+			_cities = Game.Instance.GetCities().Where(c => c.Owner == Game.Instance.PlayerNumber(HumanPlayer)).ToArray();
 		}
 	}
 }
