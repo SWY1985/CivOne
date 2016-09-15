@@ -222,13 +222,19 @@ namespace CivOne.Screens
 
 					// Active unit on this tile
 					
-					if (!Common.HasScreenType(typeof(Input)) && ((gameTick % 4) >= 2 || drawUnit.Moving))
+					if (drawUnit.Moving)
 					{
-						// Unit is currently moving or blink status is off. Do not draw unit.
+						// Unit is currently moving, do not draw the unit here.
 						continue;
 					}
 
-					if (t.Tile.City != null && units.Length == 1)
+					if (drawUnit.Owner == Game.Instance.PlayerNumber(HumanPlayer) && (gameTick % 4) >= 2 && !GameTask.Any())
+					{
+						// Unit is owned by human player, blink status is off and no tasks are running. Do not draw unit.
+						continue;
+					}
+
+					if (t.Tile.City != null && units.Length == 1 && !GameTask.Any())
 					{
 						AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position.X - 1, t.Position.Y - 1);
 						continue;
