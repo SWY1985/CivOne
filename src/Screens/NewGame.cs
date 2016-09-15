@@ -15,6 +15,7 @@ using CivOne.Events;
 using CivOne.Interfaces;
 using CivOne.GFX;
 using CivOne.IO;
+using CivOne.Tasks;
 using CivOne.Templates;
 
 namespace CivOne.Screens
@@ -225,6 +226,8 @@ namespace CivOne.Screens
 			{
 				Destroy();
 				Common.AddScreen(new GamePlay());
+				if (Game.Instance.Difficulty == 0)
+					GameTask.Enqueue(Message.Notice("--- Civilization Note ---", TextFile.Instance.GetGameText("HELP/FIRSTMOVE")));
 				return true;
 			}
 			
