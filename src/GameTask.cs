@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CivOne.Interfaces;
 
 namespace CivOne
@@ -57,7 +58,10 @@ namespace CivOne
 		private static void Finish(object sender, EventArgs args)
 		{
 			_tasks.Remove((sender as GameTask));
-			_currentTask = null;
+			if (!_tasks.Any())
+				_currentTask = null;
+			else
+				(_currentTask = _tasks[0]).Run();
 		}
 
 		public event EventHandler Done;
