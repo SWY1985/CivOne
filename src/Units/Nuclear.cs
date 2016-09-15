@@ -24,7 +24,6 @@ namespace CivOne.Units
 		
 		public Nuclear() : base(16, 99, 0, 16)
 		{
-			Class = UnitClass.Air;
 			Type = Unit.Nuclear;
 			Name = "Nuclear";
 			RequiredTech = new Rocketry();
