@@ -424,10 +424,8 @@ namespace CivOne.Screens
 					return true;
 				}
 
-				if (city == null)
-				{
-					Common.AddScreen(new Civilopedia(Map[_x + x, _y + y]));
-				}
+				Common.AddScreen(new Civilopedia(Map[_x + x, _y + y]));
+				return _update;
 			}
 			if ((args.Buttons & MouseButton.Left | MouseButton.Right) > 0)
 			{
