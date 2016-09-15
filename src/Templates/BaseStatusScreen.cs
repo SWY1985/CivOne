@@ -10,10 +10,11 @@
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
+using CivOne.Interfaces;
 
 namespace CivOne.Templates
 {
-	internal abstract class BaseStatusScreen : BaseScreen
+	internal abstract class BaseStatusScreen : BaseScreen, IModal
 	{
 		private bool _update = true;
 		
