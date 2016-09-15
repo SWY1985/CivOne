@@ -22,8 +22,6 @@ namespace CivOne.Screens
 	{
 		private bool _update = true;
 		
-		public event EventHandler Closed;
-		
 		private void MenuCancel(object sender, EventArgs args)
 		{
 			CloseMenus();
@@ -88,10 +86,7 @@ namespace CivOne.Screens
 
 		public void Close()
 		{
-			if (Closed != null)
-			{
-				Closed(this, null);
-			}
+			HandleClose();
 			Destroy();
 		}
 

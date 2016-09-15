@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using System.Drawing;
 using System.Collections.Generic;
 using System.Drawing.Drawing2D;
@@ -67,6 +68,15 @@ namespace CivOne.Templates
 		protected void MouseArgsOffset(ref ScreenEventArgs args, int offsetX, int offsetY)
 		{
 			args = new ScreenEventArgs(args.X - offsetX, args.Y - offsetY, args.Buttons);
+		}
+
+		public event EventHandler Closed;
+
+		protected void HandleClose()
+		{
+			if (Closed == null)
+				return;
+			Closed(this, null);
 		}
 		
 		public virtual Picture Canvas

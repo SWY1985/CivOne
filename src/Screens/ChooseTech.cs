@@ -26,7 +26,6 @@ namespace CivOne.Screens
 		private readonly IAdvance[] _availableAdvances;
 		private readonly int _menuHeight;
 		
-		public event EventHandler Closed;
 		private bool _update = true;
 
 		private void AdvanceChoice(object sender, EventArgs args)
@@ -77,10 +76,7 @@ namespace CivOne.Screens
 
 		public void Close()
 		{
-			if (Closed != null)
-			{
-				Closed(this, null);
-			}
+			HandleClose();
 			Destroy();
 		}
 

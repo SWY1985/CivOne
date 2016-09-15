@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -15,6 +16,7 @@ namespace CivOne.Interfaces
 {
 	public interface IScreen
 	{
+		event EventHandler Closed;
 		Picture Canvas { get; }
 		MouseCursor Cursor { get; }
 		bool HasUpdate(uint gameTick);

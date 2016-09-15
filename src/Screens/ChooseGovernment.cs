@@ -26,7 +26,6 @@ namespace CivOne.Screens
 		private readonly Government[] _availableGovernments;
 		private readonly int _menuHeight;
 		
-		public event EventHandler Closed;
 		private bool _update = true;
 
 		public Government Result { get; private set; }
@@ -72,10 +71,7 @@ namespace CivOne.Screens
 
 		public void Close()
 		{
-			if (Closed != null)
-			{
-				Closed(this, null);
-			}
+			HandleClose();
 			Destroy();
 		}
 

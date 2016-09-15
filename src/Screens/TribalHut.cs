@@ -23,8 +23,6 @@ namespace CivOne.Screens
 		private readonly Picture _messageBox;
 		
 		private bool _update = true;
-
-		public event EventHandler Closed;
 		
 		public override bool HasUpdate(uint gameTick)
 		{
@@ -39,16 +37,14 @@ namespace CivOne.Screens
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
-			if (Closed != null)
-				Closed(this, null);
+			HandleClose();
 			Destroy();
 			return true;
 		}
 		
 		public override bool MouseDown(ScreenEventArgs args)
 		{
-			if (Closed != null)
-				Closed(this, null);
+			HandleClose();
 			Destroy();
 			return true;
 		}

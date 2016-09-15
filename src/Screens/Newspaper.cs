@@ -24,14 +24,9 @@ namespace CivOne.Screens
 	{
 		private bool _update = true;
 
-		public event EventHandler Closed;
-
 		public void Close()
 		{
-			if (Closed != null)
-			{
-				Closed(this, null);
-			}
+			HandleClose();
 			Destroy();
 		}
 		
@@ -46,17 +41,18 @@ namespace CivOne.Screens
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
-			Destroy();
+			Close();
 			return true;
 		}
 		
 		public override bool MouseDown(ScreenEventArgs args)
 		{
-			Destroy();
+			Close();
 			return true;
 		}
 
-		public Newspaper(bool showGovernment, City city = null, params string[] message)
+		//public Newspaper(bool showGovernment, City city = null, params string[] message)
+		public Newspaper(City city, string[] message, bool showGovernment = false)
 		{
 			Cursor = MouseCursor.None;
 
@@ -141,7 +137,6 @@ namespace CivOne.Screens
 				_canvas.FillRectangle(5, 80, 128, 153, 17);
 				AddLayer(dialog, 81, 129);
 			}
-			
 		}
 	}
 }
