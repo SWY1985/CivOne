@@ -28,6 +28,9 @@ namespace CivOne.Units
 			RequiredTech = new AdvancedFlight();
 			ObsoleteTech = null;
 			SetIcon('A', 1, 2);
+
+			TotalFuel *= 2;
+			FuelLeft = TotalFuel;
 		}
 	}
 }
