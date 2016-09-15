@@ -12,7 +12,9 @@ using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
+using CivOne.IO;
 using CivOne.Screens;
+using CivOne.Tasks;
 using CivOne.Templates;
 using CivOne.Tiles;
 
@@ -73,6 +75,17 @@ namespace CivOne.Units
 					PartMoves = 0;
 					return true;
 				}
+				GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText("ERROR/NOIRR")));
+				return false;
+			}
+			else
+			{
+				if (((tile is Desert) || (tile is Grassland) || (tile is Hills) || (tile is Plains) || (tile is River)) && tile.City == null)
+				{
+					GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText("ERROR/NOWATER")));
+					return true;
+				}
+				GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText("ERROR/NOIRR")));
 			}
 			return false;
 		}
