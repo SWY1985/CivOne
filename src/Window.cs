@@ -54,7 +54,7 @@ namespace CivOne
 			{
 				_tickWaiter.WaitOne();
 				RefreshWindow();
-				_gameTick++;
+				_gameTick += (uint)(GameTask.Fast ? 1 : 4);
 			}
 		}
 		
@@ -63,7 +63,7 @@ namespace CivOne
 			new Thread(new ThreadStart(GameTick)).Start();
 			while (true)
 			{
-				Thread.Sleep(1000 / 60);
+				Thread.Sleep(1000 / (GameTask.Fast ? 60 : 15));
 				_tickWaiter.Set();
 			}
 		}
