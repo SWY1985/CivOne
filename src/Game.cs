@@ -104,6 +104,15 @@ namespace CivOne
 			return _players[number];
 		}
 
+		internal IEnumerable<Player> Players
+		{
+			get
+			{
+				foreach (Player player in _players)
+					yield return player;
+			}
+		}
+
 		public void EndTurn()
 		{
 			if (++_currentPlayer >= _players.Length)
