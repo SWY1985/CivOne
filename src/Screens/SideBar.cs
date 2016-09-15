@@ -104,7 +104,11 @@ namespace CivOne.Screens
 			{
 				_gameInfo.DrawText(Game.Instance.HumanPlayer.TribeName, 0, 5, 4, 2, TextAlign.Left);
 				_gameInfo.DrawText(unit.Name, 0, 5, 4, 10, TextAlign.Left);
-				if (unit.PartMoves > 0)
+				if (unit is BaseUnitAir)
+				{
+					_gameInfo.DrawText($"Moves: {unit.MovesLeft}({(unit as BaseUnitAir).FuelLeft})", 0, 5, 4, 18, TextAlign.Left);
+				}
+				else if (unit.PartMoves > 0)
 				{
 					_gameInfo.DrawText($"Moves: {unit.MovesLeft}.{unit.PartMoves}", 0, 5, 4, 18, TextAlign.Left);
 				}

@@ -14,12 +14,47 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
+using CivOne.IO;
 using CivOne.Screens;
+using CivOne.Tasks;
 
 namespace CivOne.Templates
 {
 	internal abstract class BaseUnitAir : BaseUnit
 	{
+		public int TotalFuel { get; protected set; }
+		public int FuelLeft { get; protected set; }
+
+		private void HandleFuel()
+		{
+			if (Map[X, Y].City != null)
+			{
+				MovesLeft = 0;
+				FuelLeft = TotalFuel;
+				return;
+			}
+			if (MovesLeft > 0 || FuelLeft > 0) return;
+			
+			// Air unit is out of fuel
+			Game.Instance.DisbandUnit(this);
+			GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText("ERROR/FUEL")));
+		}
+
+		protected override void MovementDone(ITile previousTile)
+		{
+			base.MovementDone(previousTile);
+			
+			FuelLeft--;
+			HandleFuel();
+		}
+
+		public override void SkipTurn()
+		{
+			MovesLeft = 0;
+			FuelLeft -= (FuelLeft % Move);
+			HandleFuel();
+		}
+
 		protected override bool ValidMoveTarget(ITile tile)
 		{
 			return (tile != null);
@@ -28,6 +63,8 @@ namespace CivOne.Templates
 		protected BaseUnitAir(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1) : base(price, attack, defense, move)
 		{
 			Class = UnitClass.Air;
+			TotalFuel = move;
+			FuelLeft = move;
 		}
 	}
 }

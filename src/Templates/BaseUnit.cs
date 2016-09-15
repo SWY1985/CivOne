@@ -264,7 +264,6 @@ namespace CivOne.Templates
 			Home = home;
 		}
 		
-		
 		public virtual void SkipTurn()
 		{
 			MovesLeft = 0;
