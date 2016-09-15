@@ -15,6 +15,7 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
+using CivOne.IO;
 using CivOne.Tasks;
 using CivOne.Templates;
 using CivOne.Units;
@@ -322,12 +323,15 @@ namespace CivOne.Screens
 			switch (args.KeyChar)
 			{
 				case 'B':
+					GameTask.Enqueue(Orders.NewCity(Game.Instance.ActiveUnit));
+				/*
 					if (Game.Instance.ActiveUnit is Settlers)
 					{
 						GameTask.Enqueue(Orders.NewCity(Game.Instance.ActiveUnit as Settlers));
 						return true;
 					}
-					break;
+					GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText("ERROR/SETTLERS")));*/
+					return true;
 				case 'C':
 					if (Game.Instance.ActiveUnit == null) break;
 					CenterOnUnit();
@@ -337,10 +341,12 @@ namespace CivOne.Screens
 					Game.Instance.DisbandUnit(Game.Instance.ActiveUnit);
 					return true;
 				case 'I':
+					GameTask.Enqueue(Orders.Irrigate(Game.Instance.ActiveUnit));
+				/*
 					if (Game.Instance.ActiveUnit is Settlers)
 					{
 						return (Game.Instance.ActiveUnit as Settlers).BuildIrrigation();
-					}
+					}*/
 					break;
 				case 'M':
 					if (Game.Instance.ActiveUnit is Settlers)

@@ -10,6 +10,7 @@
 using System;
 using System.Linq;
 using CivOne.Interfaces;
+using CivOne.IO;
 using CivOne.Screens;
 using CivOne.Units;
 
@@ -19,15 +20,21 @@ namespace CivOne.Tasks
 	{
 		private City _city;
 		private Player _player;
-		private Settlers _settlers = null;
+		private IUnit _unit = null;
 		private int _x, _y;
 		private bool _newCity = false;
+		private bool _irrigate = false;
+
+		private void Error(string error)
+		{
+			GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText($"ERROR/{error}")));
+		}
 		
 		private void CityManagerClosed(object sender, EventArgs args)
 		{
-			if (_settlers != null)
+			if (_unit != null)
 			{
-				Game.Instance.DisbandUnit(_settlers);
+				Game.Instance.DisbandUnit(_unit);
 			}
 			EndTask();
 		}
@@ -71,9 +78,9 @@ namespace CivOne.Tasks
 					Common.AddScreen(cityView);
 					return;
 				}
-				if (_settlers != null)
+				if (_unit != null)
 				{
-					Game.Instance.DisbandUnit(_settlers);
+					Game.Instance.DisbandUnit(_unit);
 				}
 			}
 			EndTask();
@@ -94,35 +101,62 @@ namespace CivOne.Tasks
 			CreateCity(name);
 		}
 
+		private void CreateCity()
+		{
+			if (!(_unit is Settlers))
+			{
+				Error("SETTLERS");
+				EndTask();
+				return;
+			}
+
+			Settlers settlers = (_unit as Settlers);
+			if (settlers != null)
+			{
+				_player = settlers.Player;
+				_x = settlers.X;
+				_y = settlers.Y;
+			}
+
+			if (Map.Instance[_x, _y].City != null)
+			{
+				// There is already a city here, abort!
+				EndTask();
+				return;
+			}
+
+			CreateCity(_player, _x, _y);
+		}
+
+		private void Irrigate()
+		{
+			if (!(_unit is Settlers))
+			{
+				Error("SETTLERS");
+				EndTask();
+				return;
+			}
+			(_unit as Settlers).BuildIrrigation();
+			EndTask();
+		}
+
 		public override void Run()
 		{
-			//public void FoundCity(int x, int y, string cityName = null, bool discardSettlers = true)
 			if (_newCity)
 			{
-				if (_settlers != null)
-				{
-					_player = _settlers.Player;
-					_x = _settlers.X;
-					_y = _settlers.Y;
-				}
-
-				if (Map.Instance[_x, _y].City != null)
-				{
-					// There is already a city here, abort!
-					EndTask();
-					return;
-				}
-
-				CreateCity(_player, _x, _y);
-				return;
+				CreateCity();
+			}
+			else if (_irrigate)
+			{
+				Irrigate();
 			}
 		}
 
-		public static Orders NewCity(Settlers settlers = null)
+		public static Orders NewCity(IUnit unit = null)
 		{
 			return new Orders()
 			{
-				_settlers = settlers,
+				_unit = unit,
 				_newCity = true
 			};
 		}
@@ -135,6 +169,15 @@ namespace CivOne.Tasks
 				_newCity = true,
 				_x = x,
 				_y = y
+			};
+		}
+
+		public static Orders Irrigate(IUnit unit)
+		{
+			return new Orders()
+			{
+				_unit = unit,
+				_irrigate = true
 			};
 		}
 
