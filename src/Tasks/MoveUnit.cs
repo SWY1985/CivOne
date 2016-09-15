@@ -13,15 +13,13 @@ using CivOne.Screens;
 
 namespace CivOne.Tasks
 {
-	public class MoveUnit : GameTask
+	public class MoveUnit : GameTask, IFast
 	{
 		private const int STEP_SIZE = 1;
 
 		public readonly int RelX, RelY;
 
 		private int _step = 0;
-
-		//public event EventHandler Moved;
 
 		public int X { get; private set; }
 		public int Y { get; private set; }
@@ -39,7 +37,7 @@ namespace CivOne.Tasks
 
 		public override void Run()
 		{
-			// Off screen? End task immediately
+			//TODO: Off screen? End task immediately
 			//EndTask();
 		}
 

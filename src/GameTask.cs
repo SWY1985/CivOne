@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using CivOne.Interfaces;
 
 namespace CivOne
 {
@@ -20,6 +21,14 @@ namespace CivOne
 		public static bool Any()
 		{
 			return (_tasks.Count > 0);
+		}
+
+		public static bool Fast
+		{
+			get
+			{
+				return (_currentTask is IFast); 
+			}
 		}
 
 		public static bool Update()
