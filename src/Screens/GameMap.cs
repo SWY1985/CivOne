@@ -324,13 +324,6 @@ namespace CivOne.Screens
 			{
 				case 'B':
 					GameTask.Enqueue(Orders.NewCity(Game.Instance.ActiveUnit));
-				/*
-					if (Game.Instance.ActiveUnit is Settlers)
-					{
-						GameTask.Enqueue(Orders.NewCity(Game.Instance.ActiveUnit as Settlers));
-						return true;
-					}
-					GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText("ERROR/SETTLERS")));*/
 					return true;
 				case 'C':
 					if (Game.Instance.ActiveUnit == null) break;
@@ -342,12 +335,7 @@ namespace CivOne.Screens
 					return true;
 				case 'I':
 					GameTask.Enqueue(Orders.Irrigate(Game.Instance.ActiveUnit));
-				/*
-					if (Game.Instance.ActiveUnit is Settlers)
-					{
-						return (Game.Instance.ActiveUnit as Settlers).BuildIrrigation();
-					}*/
-					break;
+					return true;
 				case 'M':
 					if (Game.Instance.ActiveUnit is Settlers)
 					{
