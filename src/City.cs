@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using CivOne.Buildings;
 using CivOne.Enums;
 using CivOne.Interfaces;
 using CivOne.Screens;
@@ -170,6 +171,8 @@ namespace CivOne
 		{
 			get
 			{
+				short science = (short)Math.Round(((double)TradeTotal / 10) * Player.ScienceRate);
+				if (_buildings.Any(b => (b is Marketplace))) science += (short)Math.Floor((double)science / 2);
 				return (short)(TradeTotal - Luxuries - Science);
 			}
 		}
@@ -178,7 +181,9 @@ namespace CivOne
 		{
 			get
 			{
-				return (short)Math.Round(((double)TradeTotal / 10) * Player.ScienceRate);
+				short science = (short)Math.Round(((double)TradeTotal / 10) * Player.ScienceRate);
+				if (_buildings.Any(b => (b is Library))) science += (short)Math.Floor((double)science / 2);
+				return science;
 			}
 		}
 
