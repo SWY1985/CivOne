@@ -198,7 +198,11 @@ namespace CivOne
 				Size = 1
 			};
 			if (!_cities.Any(c => c.Owner == city.Owner))
-				city.AddBuilding(new Palace());
+			{
+				Palace palace = new Palace();
+				palace.SetFree();
+				city.AddBuilding(palace);
+			}
 			_cities.Add(city);
 			return city;
 		}
