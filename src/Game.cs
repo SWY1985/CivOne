@@ -470,7 +470,7 @@ namespace CivOne
 			{
 				// Choose a map square randomly
 				int x = Common.Random.Next(0, Map.WIDTH);
-				int y = Common.Random.Next(0, Map.HEIGHT);
+				int y = Common.Random.Next(2, Map.HEIGHT - 2);
 				ITile tile = Map.Instance[x, y];
 				
 				if (tile.IsOcean) continue; // Is it an ocean tile?
