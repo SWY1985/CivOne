@@ -16,6 +16,11 @@ namespace CivOne.Buildings
 {
 	internal class Palace : BaseBuilding, IUnique
 	{
+		public void SetFree()
+		{
+			Maintainance = 0;
+		}
+
 		public Palace() : base(20, 5)
 		{
 			Name = "Palace";
