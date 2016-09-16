@@ -62,7 +62,7 @@ namespace CivOne.Templates
 				if (RequiredTech != null) requiredTech = RequiredTech.Name;
 				output.DrawText(string.Format("Requires {0}", requiredTech), 6, 9, 12, yy); yy += 8;
 				output.DrawText(string.Format("Cost: {0}0 shields.", Price), 6, 9, 12, yy); yy += 8;
-				output.DrawText(string.Format("Maintenance: ${0}", Maintainance), 6, 12, 12, yy);
+				output.DrawText(string.Format("Maintenance: ${0}", Maintenance), 6, 12, 12, yy);
 			}
 			
 			return output;
@@ -72,7 +72,7 @@ namespace CivOne.Templates
 		
 		public IAdvance RequiredTech { get; protected set; }
 		public byte Price { get; protected set; }
-		public byte Maintainance { get; protected set; }
+		public byte Maintenance { get; protected set; }
 		
 		protected void SetIcon(int col, int row, bool grassTile)
 		{
@@ -117,10 +117,10 @@ namespace CivOne.Templates
 			}
 		}
 		
-		protected BaseBuilding(byte price = 1, byte maintainance = 0)
+		protected BaseBuilding(byte price = 1, byte maintenance = 0)
 		{
 			Price = price;
-			Maintainance = maintainance;
+			Maintenance = maintenance;
 		}
 	}
 }

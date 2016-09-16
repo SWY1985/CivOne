@@ -396,6 +396,10 @@ namespace CivOne
 
 			// TODO: Handle luxuries
 			Player.Gold += Taxes;
+			foreach (IBuilding building in _buildings)
+			{
+				Player.Gold -= building.Maintenance;
+			}
 			Player.Science += Science;
 			GameTask.Enqueue(new ProcessScience(Player));
 		}
