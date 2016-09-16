@@ -345,8 +345,10 @@ namespace CivOne
 			{
 				Food = 0;
 				Size--;
-				//Common.AddScreen(new Newspaper(false, this, "Food storage exhausted", $"in {Name}!", "Famine feared."));
-				GameTask.Enqueue(Message.Newspaper(this, "Food storage exhausted", $"in {Name}!", "Famine feared."));
+				if (Owner == Game.Instance.PlayerNumber(Game.Instance.HumanPlayer))
+				{
+					GameTask.Enqueue(Message.Newspaper(this, "Food storage exhausted", $"in {Name}!", "Famine feared."));
+				}
 				if (Size == 0) return;
 			}
 			else if (Food >= (int)(Size + 1) * 10)
