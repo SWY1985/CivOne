@@ -104,7 +104,7 @@ namespace CivOne
 		{
 			get
 			{
-				return ResourceTiles.Sum(t => t.Shield) - ShieldCosts;
+				return ShieldTotal - ShieldCosts;
 			}
 		}
 		
@@ -147,7 +147,10 @@ namespace CivOne
 		{
 			get
 			{
-				return ResourceTiles.Sum(t => t.Shield);
+				int shields = ResourceTiles.Sum(t => t.Shield);
+				if (_buildings.Any(b => (b is Factory))) shields += (short)Math.Floor((double)shields * (_buildings.Any(b => (b is NuclearPlant)) ? 1.0 : 0.5));
+				if (_buildings.Any(b => (b is MfgPlant))) shields += (short)Math.Floor((double)shields * 1.0);
+				return shields;
 			}
 		}
 
@@ -163,7 +166,9 @@ namespace CivOne
 		{
 			get
 			{
-				return (short)Math.Round(((double)(TradeTotal - Science) / (10 - Player.ScienceRate)) * Player.LuxuriesRate);
+				short luxuries = (short)Math.Round(((double)(TradeTotal - Science) / (10 - Player.ScienceRate)) * Player.LuxuriesRate);
+				if (_buildings.Any(b => (b is Bank))) luxuries += (short)Math.Floor((double)luxuries * 0.5);
+				return luxuries;
 			}
 		}
 
@@ -172,7 +177,8 @@ namespace CivOne
 			get
 			{
 				short taxes = (short)(TradeTotal - Luxuries - Science);
-				if (_buildings.Any(b => (b is MarketPlace))) taxes += (short)Math.Floor((double)taxes / 2);
+				if (_buildings.Any(b => (b is MarketPlace))) taxes += (short)Math.Floor((double)taxes * 0.5);
+				if (_buildings.Any(b => (b is Bank))) taxes += (short)Math.Floor((double)taxes * 0.5);
 				return taxes;
 			}
 		}
@@ -182,7 +188,8 @@ namespace CivOne
 			get
 			{
 				short science = (short)Math.Round(((double)TradeTotal / 10) * Player.ScienceRate);
-				if (_buildings.Any(b => (b is Library))) science += (short)Math.Floor((double)science / 2);
+				if (_buildings.Any(b => (b is Library))) science += (short)Math.Floor((double)science * 0.5);
+				if (_buildings.Any(b => (b is University))) science += (short)Math.Floor((double)science * 0.5);
 				return science;
 			}
 		}
