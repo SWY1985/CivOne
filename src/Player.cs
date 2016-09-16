@@ -149,6 +149,13 @@ namespace CivOne
 			}
 			internal set
 			{
+				if (value < 0)
+				{
+					//TODO: Implement sold improvements task
+					value = 0;
+				}
+				if (value > 30000)
+					value = 30000;
 				_gold = value;
 			}
 		}

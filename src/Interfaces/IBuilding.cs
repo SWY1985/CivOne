@@ -16,7 +16,7 @@ namespace CivOne.Interfaces
 	{
 		byte Id { get; }
 		IAdvance RequiredTech { get; }
-		byte Maintainance { get; }
+		byte Maintenance { get; }
 		Picture SmallIcon { get; }
 	}
 }

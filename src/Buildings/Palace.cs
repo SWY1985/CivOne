@@ -18,7 +18,7 @@ namespace CivOne.Buildings
 	{
 		public void SetFree()
 		{
-			Maintainance = 0;
+			Maintenance = 0;
 		}
 
 		public Palace() : base(20, 5)
