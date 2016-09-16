@@ -171,9 +171,9 @@ namespace CivOne
 		{
 			get
 			{
-				short science = (short)Math.Round(((double)TradeTotal / 10) * Player.ScienceRate);
-				if (_buildings.Any(b => (b is Marketplace))) science += (short)Math.Floor((double)science / 2);
-				return (short)(TradeTotal - Luxuries - Science);
+				short taxes = (short)(TradeTotal - Luxuries - Science);
+				if (_buildings.Any(b => (b is MarketPlace))) taxes += (short)Math.Floor((double)taxes / 2);
+				return taxes;
 			}
 		}
 
