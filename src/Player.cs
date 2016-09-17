@@ -260,12 +260,27 @@ namespace CivOne
 			return false;
 		}
 
+		private bool WonderAvailable(IWonder wonder)
+		{
+			// Determine if the building requires a tech
+			if (wonder.RequiredTech == null)
+				return true;
+			
+			// Determine if the Player has the required tech
+			if (_advances.Any(a => wonder.RequiredTech.Id == a))
+				return true;
+			
+			return false;
+		}
+
 		public bool ProductionAvailable(IProduction production)
 		{
 			if (production is IUnit)
 				return UnitAvailable(production as IUnit);
 			if (production is IBuilding)
 				return BuildingAvailable(production as IBuilding);
+			if (production is IWonder)
+				return WonderAvailable(production as IWonder);
 			return true;
 		}
 

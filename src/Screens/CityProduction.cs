@@ -118,6 +118,11 @@ namespace CivOne.Screens
 					IBuilding building = (_city.CurrentProduction as IBuilding);
 					_canvas.DrawText(building.Name, 1, 15, 44, 1, TextAlign.Center); 
 				}
+				else if (_city.CurrentProduction is IWonder)
+				{
+					IWonder wonder = (_city.CurrentProduction as IWonder);
+					_canvas.DrawText(wonder.Name, 1, 15, 44, 1, TextAlign.Center); 
+				}
 				
 				_update = false;
 			}

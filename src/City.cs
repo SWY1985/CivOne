@@ -265,6 +265,10 @@ namespace CivOne
 				{
 					yield return building;
 				}
+				foreach (IWonder wonder in Reflect.GetWonders().Where(b => Player.ProductionAvailable(b)))
+				{
+					yield return wonder;
+				}
 			}
 		}
 
