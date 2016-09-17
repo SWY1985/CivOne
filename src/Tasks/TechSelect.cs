@@ -30,6 +30,14 @@ namespace CivOne.Tasks
 			{
 				// This task is only for human players
 				EndTask();
+				return;
+			}
+
+			if (_player.Science == 0)
+			{
+				// This task is only for human players
+				EndTask();
+				return;
 			}
 
 			if (!_player.AvailableResearch.Any())
