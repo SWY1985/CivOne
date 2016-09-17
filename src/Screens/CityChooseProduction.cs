@@ -22,11 +22,14 @@ namespace CivOne.Screens
 	{
 		private readonly City _city;
 
+		private readonly IProduction[] _availableProduction;
 		private readonly Bitmap _background;
-		private readonly int _menuHeight;
 		private readonly int _fontId = 0;
-		
-		private bool _update = true;
+        private readonly List<IProduction[]> _pages = new List<IProduction[]>();
+
+        private bool _update = true;
+        private int _menuHeight;
+        private int _page = 0;
 		
 		private void MenuCancel(object sender, EventArgs args)
 		{
@@ -36,12 +39,26 @@ namespace CivOne.Screens
 
 		private void ProductionChoice(object sender, EventArgs args)
 		{
-			_city.SetProduction(_city.AvailableProduction.ToArray()[(sender as Menu.Item).Value]);
+			if (_pages.Count > 1 && ((sender as Menu.Item).Value == _pages[_page].Length))
+			{
+				CloseMenus();
+				_page++;
+				if (_page >= _pages.Count) _page = 0;
+				_menuHeight = Resources.Instance.GetFontHeight(1) * (_pages[_page].Length + 1);
+				_update = true;
+				return;
+			}
+			_city.SetProduction(_pages[_page].ToArray()[(sender as Menu.Item).Value]);
 			MenuCancel(sender, args);
 		}
 
 		private void ProductionContext(object sender, EventArgs args)
 		{
+			if (_pages.Count > 1 && ((sender as Menu.Item).Value == _pages[_page].Length))
+			{
+				ProductionChoice(sender, args);
+				return;
+			}
 			ICivilopedia page = (_city.AvailableProduction.ToArray()[(sender as Menu.Item).Value] as ICivilopedia);
 			Common.AddScreen(new Civilopedia(page, icon: false));
 		}
@@ -50,10 +67,12 @@ namespace CivOne.Screens
 		{
 			if (_update)
 			{
+				_canvas.FillRectangle(0, 0, 0, 320, 200);
+
 				List<string> menuItems = new List<string>();
 				string menuHeaderText = $"What shall we build in {_city.Name}?";
 				int itemWidth = Resources.Instance.GetTextSize(_fontId, menuHeaderText).Width;
-				foreach (IProduction production in _city.AvailableProduction)
+				foreach (IProduction production in _pages[_page])
 				{
 					string menuText = "todo";
 					if (production is IUnit)
@@ -76,7 +95,21 @@ namespace CivOne.Screens
 						menuText = $"{building.Name} ({turns} turns)";
 						if (Resources.Instance.GetTextSize(_fontId, menuText).Width > itemWidth) itemWidth = Resources.Instance.GetTextSize(_fontId, menuText).Width;
 					}
+					if (production is IWonder)
+					{
+						IWonder wonder = (production as IWonder);
+						int turns = ((int)wonder.Price * 10) - _city.Shields;
+						if (_city.ShieldIncome > 1)
+							turns = (int)Math.Ceiling((double)turns / _city.ShieldIncome);
+						if (turns < 1) turns = 1;
+						menuText = $"{wonder.Name} ({turns} turns)";
+						if (Resources.Instance.GetTextSize(_fontId, menuText).Width > itemWidth) itemWidth = Resources.Instance.GetTextSize(_fontId, menuText).Width;
+					}
 					menuItems.Add(menuText);
+				}
+				if (_pages.Count > 1)
+				{
+					menuItems.Add("More...");
 				}
 				itemWidth += 10;
 
@@ -145,13 +178,29 @@ namespace CivOne.Screens
 			
 			_canvas = new Picture(320, 200, palette);
 
-			IProduction[] availableProduction = _city.AvailableProduction.ToArray();
-			_menuHeight = Resources.Instance.GetFontHeight(0) * availableProduction.Length;
+			_availableProduction = _city.AvailableProduction.ToArray();
+			_menuHeight = Resources.Instance.GetFontHeight(0) * _availableProduction.Length;
 			if (_menuHeight > 188)
 			{
 				_fontId = 1;
-				_menuHeight = Resources.Instance.GetFontHeight(1) * availableProduction.Length;
+				_menuHeight = Resources.Instance.GetFontHeight(1) * _availableProduction.Length;
+				if (_menuHeight > 188)
+				{
+					_pages.Add(_availableProduction.Where(p => (p is IUnit)).Take(28).ToArray());
+					if (_availableProduction.Count(p => (p is IBuilding || p is IWonder)) > 28)
+					{
+						_pages.Add(_availableProduction.Where(p => (p is IBuilding)).Take(28).ToArray());
+						_pages.Add(_availableProduction.Where(p => (p is IWonder)).Take(28).ToArray());
+					}
+					else
+					{
+						_pages.Add(_availableProduction.Where(p => (p is IBuilding || p is IWonder)).Take(28).ToArray());
+					}
+					_menuHeight = Resources.Instance.GetFontHeight(1) * (_pages[0].Length + 1);
+					return;
+				}
 			}
+			_pages.Add(_availableProduction);
 		}
 	}
 }
