@@ -28,16 +28,20 @@ namespace CivOne.Screens
 		{
 			int costs = _city.FoodCosts;
 			int income = _city.FoodIncome;
+			int width = 8;
+			for (int i = 0; i < 7; i++)
+				if (((costs + income) * width) > 116) width--;
+
 			for (int i = 0; (i < costs) && (i < costs + income); i++)
 			{
-				AddLayer(Icons.Food, 1 + (8 * i), 9);
+				AddLayer(Icons.Food, 1 + (width * i), 9);
 			}
 			for (int i = 0; i < income; i++)
-				AddLayer(Icons.Food, 5 + (8 * costs) + (8 * i), 9);
+				AddLayer(Icons.Food, 5 + (width * costs) + (width * i), 9);
 			if (income < 0)
 			{
 				for (int i = 0; i < -income; i++)
-					AddLayer(Icons.FoodLoss, 5 + (8 * (costs + income)) + (8 * i), 9);
+					AddLayer(Icons.FoodLoss, 5 + (width * (costs + income)) + (width * i), 9);
 			}
 		}
 
@@ -45,39 +49,51 @@ namespace CivOne.Screens
 		{
 			int costs = _city.ShieldCosts;
 			int income = _city.ShieldIncome;
+			int width = 8;
+			for (int i = 0; i < 7; i++)
+				if (((costs + income) * width) > 116) width--;
+			
 			for (int i = 0; (i < costs) && (i < costs + income); i++)
-				AddLayer(Icons.Shield, 1 + (8 * i), 17);
+				AddLayer(Icons.Shield, 1 + (width * i), 17);
 			for (int i = 0; i < income; i++)
-				AddLayer(Icons.Shield, (costs > 0 ? 5 : 1) + (8 * costs) + (8 * i), 17);
+				AddLayer(Icons.Shield, (costs > 0 ? 5 : 1) + (width * costs) + (width * i), 17);
 			if (income < 0)
 			{
 				for (int i = 0; i < -income; i++)
-					AddLayer(Icons.ShieldLoss, 5 + (8 * (costs + income)) + (8 * i), 17);
+					AddLayer(Icons.ShieldLoss, 5 + (8 * (costs + income)) + (width * i), 17);
 			}
 		}
 
 		private void DrawTrade()
 		{
+			int width = 8;
+			for (int i = 0; i < 7; i++)
+				if ((_city.TradeTotal * width) > 116) width--;
+			
 			for (int i = 0; i < _city.TradeTotal; i++)
-				AddLayer(Icons.Trade, 1 + (8 * i), 25);
+				AddLayer(Icons.Trade, 1 + (width * i), 25);
+			
+			width = 8;
+			for (int i = 0; i < 7; i++)
+				if (((_city.Luxuries + _city.Luxuries + _city.Taxes) * width) > 116) width--;
 			
 			int xx = 1;
 			for (int i = 0; i < _city.Luxuries; i++)
 			{
 				AddLayer(Icons.Luxuries, xx, 33);
-				xx += 8;
+				xx += width;
 			}
 			if (_city.Luxuries > 0) xx += 4;
 			for (int i = 0; i < _city.Taxes; i++)
 			{
 				AddLayer(Icons.Taxes, xx, 33);
-				xx += 8;
+				xx += width;
 			}
 			if (_city.Taxes > 0) xx += 4;
 			for (int i = 0; i < _city.Science; i++)
 			{
 				AddLayer(Icons.Science, xx, 33);
-				xx += 8;
+				xx += width;
 			}
 		}
 		
