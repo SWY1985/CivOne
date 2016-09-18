@@ -238,6 +238,10 @@ namespace CivOne
 			if (_advances.Any(a => unit.ObsoleteTech != null && unit.ObsoleteTech.Id == a))
 				return false;
 			
+			// Require Manhattan Project to be built for Nuclear unit
+			if ((unit is Nuclear) && !Game.Instance.GetCities().SelectMany(c => c.Wonders).Any(w => w is ManhattanProject))
+				return false;
+			
 			// Determine if the unit requires a tech
 			if (unit.RequiredTech == null)
 				return true;
