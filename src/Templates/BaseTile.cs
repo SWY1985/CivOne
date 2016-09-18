@@ -231,19 +231,7 @@ namespace CivOne.Templates
 				_railRoad = value;
 			}
 		}
-		private bool _irrigation = false;
-		public virtual bool Irrigation
-		{
-			get
-			{
-				if (Game.Started && !_irrigation && City != null) _irrigation = true;
-				return _irrigation;
-			}
-			set
-			{
-				_irrigation = value;
-			}
-		}
+		public virtual bool Irrigation { get; set; }
 		public virtual bool Mine { get; set; }
 		public virtual bool Fortress { get; set; }
 		public virtual bool Hut { get; set; }

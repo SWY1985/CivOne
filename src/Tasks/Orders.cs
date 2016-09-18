@@ -152,6 +152,18 @@ namespace CivOne.Tasks
 			EndTask();
 		}
 
+		private void Mine()
+		{
+			if (!(_unit is Settlers))
+			{
+				Error("SETTLERS");
+				EndTask();
+				return;
+			}
+			(_unit as Settlers).BuildMine();
+			EndTask();
+		}
+
 		public override void Run()
 		{
 			if (_newCity)

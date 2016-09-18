@@ -17,6 +17,7 @@ using CivOne.Enums;
 using CivOne.Interfaces;
 using CivOne.Screens;
 using CivOne.Tasks;
+using CivOne.Tiles;
 using CivOne.Units;
 
 namespace CivOne
@@ -202,6 +203,10 @@ namespace CivOne
 				Palace palace = new Palace();
 				palace.SetFree();
 				city.AddBuilding(palace);
+			}
+			if ((Map.Instance[x, y] is Desert) || (Map.Instance[x, y] is Grassland) || (Map.Instance[x, y] is Hills) || (Map.Instance[x, y] is Plains) || (Map.Instance[x, y] is River))
+			{
+				Map.Instance[x, y].Irrigation = true;
 			}
 			_cities.Add(city);
 			return city;
