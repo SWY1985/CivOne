@@ -24,6 +24,7 @@ namespace CivOne.Tasks
 		private int _x, _y;
 		private bool _newCity = false;
 		private bool _irrigate = false;
+		private bool _mine = false;
 
 		private void Error(string error)
 		{
@@ -174,6 +175,10 @@ namespace CivOne.Tasks
 			{
 				Irrigate();
 			}
+			else if (_mine)
+			{
+				Mine();
+			}
 		}
 
 		public static Orders NewCity(IUnit unit = null)
@@ -202,6 +207,15 @@ namespace CivOne.Tasks
 			{
 				_unit = unit,
 				_irrigate = true
+			};
+		}
+
+		public static Orders Mine(IUnit unit)
+		{
+			return new Orders()
+			{
+				_unit = unit,
+				_mine = true
 			};
 		}
 
