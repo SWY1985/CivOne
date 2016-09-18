@@ -343,10 +343,7 @@ namespace CivOne.Screens
 					GameTask.Enqueue(Orders.Irrigate(Game.Instance.ActiveUnit));
 					return true;
 				case 'M':
-					if (Game.Instance.ActiveUnit is Settlers)
-					{
-						return (Game.Instance.ActiveUnit as Settlers).BuildMine();
-					}
+					GameTask.Enqueue(Orders.Mine(Game.Instance.ActiveUnit));
 					break;
 				case 'R':
 					if (Game.Instance.ActiveUnit is Settlers)
