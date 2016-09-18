@@ -26,36 +26,6 @@ namespace CivOne
 		public static ICivilization[] Civilizations = new ICivilization[] { new Roman(), new Babylonian(), new German(), new Egyptian(), new American(), new Greek(), new Indian(), new Russian(), new Zulu(), new French(), new Aztec(), new Chinese(), new English(), new Mongol(), new Barbarian() };
 		public static byte[] ColourLight = new byte[] { 12, 15, 10, 9, 14, 11, 13, 7 };
 		public static byte[] ColourDark = new byte[] { 4, 7, 2, 1, 10, 3, 4, 8 };
-		/*
-		private static GameTask _currentTask = null;
-		private static List<GameTask> _tasks = new List<GameTask>();
-		public static void UpdateTasks()
-		{
-			if (_currentTask == null && _tasks.Count > 0)
-			{
-				(_currentTask = _tasks[0]).Run();
-			}
-		}
-		public static void EnqueueTask(GameTask task)
-		{
-			task.Done += FinishTask;
-			_tasks.Add(task);
-		}
-		public static void InsertTask(GameTask task)
-		{
-			task.Done += FinishTask;
-			_tasks.Insert(0, task);
-		}
-		private static void FinishTask(object sender, EventArgs args)
-		{
-			_tasks.Remove((sender as GameTask));
-			if (_tasks.Count == 0)
-			{
-				_currentTask = null;
-				return;
-			}
-			(_currentTask = _tasks[0]).Run();
-		}*/
 		
 		internal static IEnumerable<string> AllCityNames
 		{
@@ -183,7 +153,7 @@ namespace CivOne
 		
 		public static int DistanceToTile(int x1, int y1, int x2, int y2)
 		{
-			return Math.Min(Math.Abs(x1 - x2), Math.Abs(y1 - y2));
+			return Math.Max(Math.Abs(x1 - x2), Math.Abs(y1 - y2));
 		}
 		
 		public static byte BinaryReadByte(BinaryReader reader, int position)

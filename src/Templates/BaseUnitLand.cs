@@ -82,6 +82,17 @@ namespace CivOne.Templates
 			method(this, null);
 		}
 
+		private int NearestCity
+		{
+			get
+			{
+				int output = 0;
+				if (Game.Instance.GetCities().Any())
+					output = Game.Instance.GetCities().Select(c => Common.DistanceToTile(_x, _y, c.X, c.Y)).Min();
+				return output;
+			}
+		}
+
 		protected void TribalHut(HutResult result = HutResult.Random)
 		{
 			switch(result)
