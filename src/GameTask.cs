@@ -24,6 +24,11 @@ namespace CivOne
 			return (_tasks.Count > 0);
 		}
 
+		public static int Count<T>() where T : GameTask
+		{
+			return _tasks.Count(t => t is T);
+		} 
+
 		public static bool Fast
 		{
 			get
