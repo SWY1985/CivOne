@@ -15,6 +15,7 @@ using CivOne.Enums;
 using CivOne.Interfaces;
 using CivOne.Screens;
 using CivOne.Tasks;
+using CivOne.Wonders;
 
 namespace CivOne
 {
@@ -221,12 +222,13 @@ namespace CivOne
 		{
 			get
 			{
-				//TEMP
+				bool allGovernments = Game.Instance.GetCities().Where(c => c.Owner == Game.Instance.PlayerNumber(this)).SelectMany(c => c.Wonders).Any(w => w is Pyramids); 
+				
 				yield return Government.Despotism;
-				if (Game.Instance.HumanPlayer.Advances.Any(a => a is Monarchy)) yield return Government.Monarchy;
-				if (Game.Instance.HumanPlayer.Advances.Any(a => a is Communism)) yield return Government.Communism;
-				if (Game.Instance.HumanPlayer.Advances.Any(a => a is TheRepublic)) yield return Government.Republic;
-				if (Game.Instance.HumanPlayer.Advances.Any(a => a is Democracy)) yield return Government.Democracy;
+				if (allGovernments || Game.Instance.HumanPlayer.Advances.Any(a => a is Monarchy)) yield return Government.Monarchy;
+				if (allGovernments || Game.Instance.HumanPlayer.Advances.Any(a => a is Communism)) yield return Government.Communism;
+				if (allGovernments || Game.Instance.HumanPlayer.Advances.Any(a => a is TheRepublic)) yield return Government.Republic;
+				if (allGovernments || Game.Instance.HumanPlayer.Advances.Any(a => a is Democracy)) yield return Government.Democracy;
 			}
 		}
 
