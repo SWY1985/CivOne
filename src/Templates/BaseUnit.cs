@@ -121,17 +121,6 @@ namespace CivOne.Templates
 				Tile.Hut = false;
 			}
 		}
-
-		protected int NearestCity
-		{
-			get
-			{
-				int output = 0;
-				if (Game.Instance.GetCities().Any())
-					output = Game.Instance.GetCities().Select(c => Common.DistanceToTile(_x, _y, c.X, c.Y)).Min();
-				return output;
-			}
-		}
 		
 		private static Picture[,] _unitCache = new Picture[28,8];
 		private static Picture[] _iconCache = new Picture[28];
