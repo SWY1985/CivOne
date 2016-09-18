@@ -119,7 +119,7 @@ namespace CivOne.Screens
 			return SkipAction();
 		}
 		
-		public CityView(City city, bool founded = false, bool firstView = false, IBuilding building = null)
+		public CityView(City city, bool founded = false, bool firstView = false, IProduction production = null)
 		{
 			_city = city;
 			_background = Resources.Instance.LoadPIC("HILL");
@@ -135,9 +135,9 @@ namespace CivOne.Screens
 				return;
 			}
 
-			if (building != null)
+			if (production != null)
 			{
-				string[] lines =  new [] { $"{_city.Name} builds", $"{building.Name}." };
+				string[] lines =  new [] { $"{_city.Name} builds", $"{(production as ICivilopedia).Name}." };
 				int width = lines.Max(l => Resources.Instance.GetTextSize(5, l).Width) + 10;
 				int actualWidth = width;
 				if (width % 4 > 0) width += (4 - (width % 4));

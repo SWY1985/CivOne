@@ -293,6 +293,14 @@ namespace CivOne
 		{
 			return _cities.ToArray();
 		}
+
+		public IWonder[] BuiltWonders
+		{
+			get
+			{
+				return _cities.SelectMany(c => c.Wonders).ToArray();
+			}
+		}
 		
 		public void DisbandUnit(IUnit unit)
 		{

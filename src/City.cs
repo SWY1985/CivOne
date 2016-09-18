@@ -78,6 +78,14 @@ namespace CivOne
 				return _buildings.OrderBy(b => b.Id).ToArray();
 			}
 		}
+		private List<IWonder> _wonders = new List<IWonder>();
+		public IWonder[] Wonders
+		{
+			get
+			{
+				return _wonders.OrderBy(b => b.Id).ToArray();
+			}
+		}
 
 		internal int ShieldCosts
 		{
@@ -402,6 +410,13 @@ namespace CivOne
 					Shields = 0;
 					_buildings.Add(CurrentProduction as IBuilding);
 					GameTask.Enqueue(new ImprovementBuilt(this, (CurrentProduction as IBuilding)));
+				}
+				//if (CurrentProduction is IWonder && !Game.Instance.GetCities().Select(c => c.Wonders).Any(a => a.Any(w => w.Id == (CurrentProduction as IWonder).Id)))
+				if (CurrentProduction is IWonder && !Game.Instance.BuiltWonders.Any(w => w.Id == (CurrentProduction as IWonder).Id))
+				{
+					Shields = 0;
+					_wonders.Add(CurrentProduction as IWonder);
+					GameTask.Enqueue(new ImprovementBuilt(this, (CurrentProduction as IWonder)));
 				}
 			}
 

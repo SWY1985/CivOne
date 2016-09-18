@@ -262,6 +262,10 @@ namespace CivOne
 
 		private bool WonderAvailable(IWonder wonder)
 		{
+			// Determine if the wonder has already been built
+			if (Game.Instance.BuiltWonders.Any(w => w.Id == wonder.Id))
+				return false;
+
 			// Determine if the building requires a tech
 			if (wonder.RequiredTech == null)
 				return true;

@@ -25,6 +25,38 @@ namespace CivOne.Screens
 		private readonly Bitmap _background;
 		
 		private bool _update = true;
+
+		private void DrawWonders(int offset = 0)
+		{
+			IWonder[] wonders = _city.Wonders.ToArray();
+			for (int i = 0; i < wonders.Length; i++)
+			{
+				int ii = (i + offset);
+				int xx = (ii % 2 == 0) ? 21 : 1;
+				int yy = -1 + (6 * ii);
+				if (yy < 0)
+					AddLayer(wonders[i].SmallIcon.GetPart(0, Math.Abs(yy), wonders[i].SmallIcon.Image.Width, wonders[i].SmallIcon.Image.Height + yy), xx, 0);
+				else
+					AddLayer(wonders[i].SmallIcon, xx, yy);
+				_canvas.DrawText(wonders[i].Name, 1, 15, 42, 3 + (6 * ii));
+			}
+		}
+
+		private void DrawBuildings(int offset = 0)
+		{
+			IBuilding[] buildings = _city.Buildings.ToArray();
+			for (int i = 0; i < buildings.Length; i++)
+			{
+				int ii = (i + offset);
+				int xx = (ii % 2 == 0) ? 21 : 1;
+				int yy = -1 + (6 * ii);
+				if (yy < 0)
+					AddLayer(buildings[i].SmallIcon.GetPart(0, Math.Abs(yy), buildings[i].SmallIcon.Image.Width, buildings[i].SmallIcon.Image.Height + yy), xx, 0);
+				else
+					AddLayer(buildings[i].SmallIcon, xx, yy);
+				_canvas.DrawText(buildings[i].Name, 1, 15, 42, 3 + (6 * ii));
+			}
+		}
 		
 		public override bool HasUpdate(uint gameTick)
 		{
@@ -33,17 +65,9 @@ namespace CivOne.Screens
 				_canvas.FillLayerTile(_background);
 				_canvas.FillRectangle(0, 107, 0, 1, 97);
 
-				IBuilding[] buildings = _city.Buildings.ToArray();
-				for (int i = 0; i < buildings.Length; i++)
-				{
-					int xx = (i % 2 == 0) ? 21 : 1;
-					int yy = -1 + (6 * i);
-					if (yy < 0)
-						AddLayer(buildings[i].SmallIcon.GetPart(0, Math.Abs(yy), buildings[i].SmallIcon.Image.Width, buildings[i].SmallIcon.Image.Height + yy), xx, 0);
-					else
-						AddLayer(buildings[i].SmallIcon, xx, yy);
-					_canvas.DrawText(buildings[i].Name, 1, 15, 42, 3 + (6 * i));
-				}
+				DrawWonders();
+				DrawBuildings(_city.Wonders.Length);
+
 				_canvas.AddBorder(1, 1, 0, 0, 107, 97);
 				
 				_update = false;
