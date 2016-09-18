@@ -14,7 +14,7 @@ using CivOne.Templates;
 
 namespace CivOne.Buildings
 {
-	internal class Palace : BaseBuilding, IUnique
+	internal class Palace : BaseBuilding
 	{
 		public void SetFree()
 		{
