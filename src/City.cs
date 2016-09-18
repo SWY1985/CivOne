@@ -357,6 +357,11 @@ namespace CivOne
 			_buildings.Add(building);
 		}
 
+		public void RemoveBuilding(IBuilding building)
+		{
+			_buildings.RemoveAll(b => b.Id == building.Id);
+		}
+
 		public void NewTurn()
 		{
 			Food += FoodIncome;
@@ -408,8 +413,28 @@ namespace CivOne
 				if (CurrentProduction is IBuilding && !_buildings.Any(b => b.Id == (CurrentProduction as IBuilding).Id))
 				{
 					Shields = 0;
-					_buildings.Add(CurrentProduction as IBuilding);
-					GameTask.Enqueue(new ImprovementBuilt(this, (CurrentProduction as IBuilding)));
+					if (CurrentProduction is Palace)
+					{
+						foreach (City city in Game.Instance.GetCities().Where(c => c.Owner == Owner))
+						{
+							// Remove palace from all buildings.
+							city.RemoveBuilding(CurrentProduction as Palace);
+						}
+						_buildings.Add(CurrentProduction as IBuilding);
+						
+						Message message = Message.Newspaper(this, $"{this.Name} builds", $"{(CurrentProduction as ICivilopedia).Name}.");
+						message.Done += (s, a) => {
+							AdvisorMessage advisorMessage = new AdvisorMessage(Advisor.Foreign, $"{Player.TribeName} capital", $"moved to {Name}.");
+							advisorMessage.Closed += (s1, a1) => Common.AddScreen(new CityManager(this));
+							Common.AddScreen(advisorMessage);
+						};
+						GameTask.Enqueue(message);
+					}
+					else
+					{
+						_buildings.Add(CurrentProduction as IBuilding);
+						GameTask.Enqueue(new ImprovementBuilt(this, (CurrentProduction as IBuilding)));
+					}
 				}
 				//if (CurrentProduction is IWonder && !Game.Instance.GetCities().Select(c => c.Wonders).Any(a => a.Any(w => w.Id == (CurrentProduction as IWonder).Id)))
 				if (CurrentProduction is IWonder && !Game.Instance.BuiltWonders.Any(w => w.Id == (CurrentProduction as IWonder).Id))
