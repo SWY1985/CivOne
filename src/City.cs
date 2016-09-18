@@ -202,6 +202,14 @@ namespace CivOne
 			}
 		}
 
+		internal short TotalMaintenance
+		{
+			get
+			{
+				return (short)_buildings.Sum(b => b.Maintenance);
+			}
+		}
+
 		internal IEnumerable<ITile> ResourceTiles
 		{
 			get
@@ -447,10 +455,7 @@ namespace CivOne
 
 			// TODO: Handle luxuries
 			Player.Gold += Taxes;
-			foreach (IBuilding building in _buildings)
-			{
-				Player.Gold -= building.Maintenance;
-			}
+			Player.Gold -= TotalMaintenance;
 			Player.Science += Science;
 			GameTask.Enqueue(new ProcessScience(Player));
 		}
