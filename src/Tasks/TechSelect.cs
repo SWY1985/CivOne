@@ -26,6 +26,13 @@ namespace CivOne.Tasks
 
 		public override void Run()
 		{
+			if (GameTask.Count<TechSelect>() > 1)
+			{
+				// Dialog already open
+				EndTask();
+				return;
+			}
+
 			if (!_human)
 			{
 				// This task is only for human players
