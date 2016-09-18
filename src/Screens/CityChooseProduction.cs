@@ -74,7 +74,7 @@ namespace CivOne.Screens
 				int itemWidth = Resources.Instance.GetTextSize(_fontId, menuHeaderText).Width;
 				foreach (IProduction production in _pages[_page])
 				{
-					string menuText = "todo";
+					string menuText = string.Empty;
 					if (production is IUnit)
 					{
 						IUnit unit = (production as IUnit);

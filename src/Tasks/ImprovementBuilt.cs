@@ -27,7 +27,20 @@ namespace CivOne.Tasks
 
 		public override void Run()
 		{
-			CityView cityView = new CityView(_city, building: (_improvement as IBuilding));
+			CityView cityView;
+			if (_improvement is IBuilding)
+			{
+				cityView = new CityView(_city, production: (_improvement as IBuilding));
+			}
+			else if (_improvement is IWonder)
+			{
+				cityView = new CityView(_city, production: (_improvement as IWonder));
+			}
+			else
+			{
+				EndTask();
+				return;
+			}
 			cityView.Closed += ClosedCityView;
 			Common.AddScreen(cityView);
 		}
@@ -36,6 +49,12 @@ namespace CivOne.Tasks
 		{
 			_city = city;
 			_improvement = building;
+		}
+
+		public ImprovementBuilt(City city, IWonder wonder)
+		{
+			_city = city;
+			_improvement = wonder;
 		}
 	}
 }

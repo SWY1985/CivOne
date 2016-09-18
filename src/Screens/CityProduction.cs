@@ -72,6 +72,10 @@ namespace CivOne.Screens
 				{
 					return _city.Buildings.Any(b => b.Id == (_city.CurrentProduction as IBuilding).Id); 
 				}
+				if (_city.CurrentProduction is IWonder)
+				{
+					return Game.Instance.BuiltWonders.Any(w => w.Id == (_city.CurrentProduction as IWonder).Id); 
+				}
 				return false;
 			}
 		}
