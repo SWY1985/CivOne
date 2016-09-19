@@ -485,6 +485,11 @@ namespace CivOne
 				// Choose a map square randomly
 				int x = Common.Random.Next(0, Map.WIDTH);
 				int y = Common.Random.Next(2, Map.HEIGHT - 2);
+				if (Map.Instance.FixedStartPositions)
+				{
+					x = _players[player].Civilization.StartX;
+					y = _players[player].Civilization.StartY;
+				}
 				ITile tile = Map.Instance[x, y];
 				
 				if (tile.IsOcean) continue; // Is it an ocean tile?
