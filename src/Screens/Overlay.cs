@@ -43,7 +43,6 @@ namespace CivOne.Screens
 							_canvas.FillRectangle(5, cx + (xx * 16), cy + (yy * 16), 16, 16);
 							continue;
 						}
-						//_canvas.FillRectangle(4, cx + (xx * 16), cy + (yy * 16), 16, 16);
 						AddLayer(Resources.Instance.GetTile(tile, improvements: false), cx + (xx * 16), cy + (yy * 16));
 						
 						if (!HumanPlayer.Visible(tile, Direction.West)) AddLayer(Resources.Instance.GetFog(Direction.West), cx + (xx * 16), cy + (yy * 16));
