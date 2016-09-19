@@ -86,6 +86,13 @@ namespace CivOne.Templates
 				return _canvas;
 			}
 		}
+		public Color[] Palette
+		{
+			get
+			{
+				return Canvas.Image.Palette.Entries;
+			}
+		}
 		public virtual MouseCursor Cursor { get; protected set; }
 		public abstract bool HasUpdate(uint gameTick);
 		public virtual bool KeyDown(KeyboardEventArgs args)

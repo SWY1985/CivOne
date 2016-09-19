@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.Drawing;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -18,6 +19,7 @@ namespace CivOne.Interfaces
 	{
 		event EventHandler Closed;
 		Picture Canvas { get; }
+		Color[] Palette { get; }
 		MouseCursor Cursor { get; }
 		bool HasUpdate(uint gameTick);
 		bool KeyDown(KeyboardEventArgs args);
