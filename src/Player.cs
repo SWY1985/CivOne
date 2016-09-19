@@ -168,7 +168,10 @@ namespace CivOne
 		{
 			get
 			{
-				return (short)((Game.Instance.Difficulty + 3) * 2 * (_advances.Count() + 1) * (Common.TurnToYear(Game.Instance.GameTurn) > 0 ? 2 : 1));
+				short cost = (short)((Game.Instance.Difficulty + 3) * 2 * (_advances.Count() + 1) * (Common.TurnToYear(Game.Instance.GameTurn) > 0 ? 2 : 1));
+				if (cost < 12)
+					return 12;
+				return cost;
 			}
 		}
 		
