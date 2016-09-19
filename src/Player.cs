@@ -72,6 +72,8 @@ namespace CivOne
 				return _tribeNamePlural;
 			}
 		}
+
+		public byte Handicap { get; internal set; }
 		
 		public Government Government { get; private set; }
 

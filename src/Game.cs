@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CivOne.Advances;
 using CivOne.Buildings;
 using CivOne.Civilizations;
 using CivOne.Enums;
@@ -507,6 +508,95 @@ namespace CivOne
 			}
 		}
 
+		private void CalculateHandicap(byte player)
+		{
+			// Translated drom this post by Gowron:
+			// http://forums.civfanatics.com/showthread.php?t=494994
+			
+			// All Handicap values start from 0.
+			byte handicap = 0;
+			IUnit startUnit = _units.Where(u => u.Owner == player).FirstOrDefault();
+			if (startUnit == null) return;
+			int x = startUnit.X, y = startUnit.Y;
+
+			ITile[] continent = Map.Instance.ContinentTiles(Map.Instance[x, y].ContinentId).ToArray();
+			IUnit[] unitsOnContinent = _units.Where(u => continent.Any(c => (c.X == u.X && c.Y == u.Y))).ToArray();
+			
+			if (unitsOnContinent.Count() == 0)
+			{
+				// Add +4 if the civ does not share its land mass with any other civs.
+				handicap += 4;
+			}
+			else if (unitsOnContinent.Select(u => Common.DistanceToTile(x, y, u.X, u.Y)).Min() >= 20)
+			{
+				// If that is not the case, then add +2 if the nearest civ on the same continent is 20 or more squares away.
+				handicap += 2;
+			}
+			else if (unitsOnContinent.Select(u => Common.DistanceToTile(x, y, u.X, u.Y)).Min() >= 10)
+			{
+				// Add +1 instead if the nearest civ on the same continent is 10-19 squares away.
+				handicap += 1;
+			}
+
+			// Check the terrain of the starting position and the 8 adjacent map squares.
+			if (Map.Instance[x, y].GetBorderTiles().Count(t => (t is River)) >= 1)
+			{
+				// Add +2 if there's at least one river square among them.
+				handicap += 2;
+			}
+			else if (Map.Instance[x, y].GetBorderTiles().Count(t => (t is Grassland)) >= 3)
+			{
+				// If that is not the case, then add +1 if there are 3 or more grassland squares among them.
+				handicap += 1;
+			}
+
+			if (continent.Count() >= 200)
+			{
+				// Add +2 if the civ starts on a continent that covers at least 200 map squares.
+				handicap += 2;
+			}
+			else if (continent.Count() >= 200)
+			{
+				// If that is not the case, then add +1 if the civ starts on a continent that covers at least 100 map squares.
+				handicap += 1;
+			}
+
+			_players[player].Handicap = handicap;
+		}
+
+		private void ApplyBonus(byte player)
+		{
+			byte bonus = (byte)(_players.Max(p => p.Handicap) - _players[player].Handicap);
+			IUnit startUnit = _units.Where(u => u.Owner == player).FirstOrDefault();
+			if (startUnit == null) return;
+			int x = startUnit.X, y = startUnit.Y;
+
+			if (bonus >= 4)
+			{
+				// If the Bonus value of the civ is 4 or higher, then the civ is granted an extra Settlers unit, for a total of two Settlers units.
+				// In this case, the Bonus value is reduced by 3 afterwards.
+				IUnit unit = CreateUnit(Unit.Settlers, x, y);
+				unit.Owner = player;
+				_units.Add(unit);
+
+				bonus -= 3;
+			}
+
+			// If the Bonus value is (still) greater than zero, then the civ gains a number of technologies equal to the Bonus value.
+			while (bonus > 0)
+			{
+				IAdvance[] available = _players[player].AvailableResearch.ToArray();
+				int advanceId = Common.Random.Next(0, 72);
+				for (int i = 0; i < 1000; i++)
+				{
+					if (!available.Any(a => a.Id == (advanceId + i) % 72)) continue;
+					_players[player].AddAdvance(available.First(a => a.Id == (advanceId + i) % 72));
+					break;
+				}
+				bonus--;
+			}
+		}
+
 		public static bool Started
 		{
 			get
@@ -573,6 +663,18 @@ namespace CivOne
 			for (byte i = 1; i <= competition; i++)
 			{
 				AddStartingUnits(i);
+			}
+
+			Console.WriteLine("Calculate players handicap...");
+			for (byte i = 1; i <= competition; i++)
+			{
+				CalculateHandicap(i);
+			}
+
+			Console.WriteLine("Apply players bonus...");
+			for (byte i = 1; i <= competition; i++)
+			{
+				ApplyBonus(i);
 			}
 			
 			GameTurn = 0;

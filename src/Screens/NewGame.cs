@@ -10,6 +10,7 @@
 using System;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Interfaces;
@@ -216,8 +217,25 @@ namespace CivOne.Screens
 					yy += 8;
 					Console.WriteLine(line);
 				}
+				StringBuilder sb = new StringBuilder();
+				int i = 0;
+				foreach (IAdvance advance in Game.Instance.HumanPlayer.Advances.OrderBy(a => a.Id))
+				{
+					sb.Append($"{advance.Name}, ");
+					i++;
+					if (i % 2 == 0) sb.Append("|");
+				}
+				sb.Append("and Roads.");
+
+				foreach (string line in sb.ToString().Split('|'))
+				{
+					_canvas.DrawText(line, 0, 5, 88, yy);
+					Console.WriteLine(line);
+					yy += 8;
+				}
+				/*
 				_canvas.DrawText("and Roads.", 0, 5, 88, yy);
-				Console.WriteLine("and Roads.");
+				Console.WriteLine("and Roads.");*/
 				
 				_showIntroText = true;
 				return true;
