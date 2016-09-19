@@ -15,6 +15,8 @@ namespace CivOne.Interfaces
 		string NamePlural { get; }
 		string LeaderName { get; }
 		byte PreferredPlayerNumber { get; }
+		byte StartX { get; }
+		byte StartY { get; }
 		string[] CityNames { get; }
 	}
 }

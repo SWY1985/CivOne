@@ -32,6 +32,16 @@ namespace CivOne.Civilizations
 		{
 			get { return 7; }
 		}
+
+		public byte StartX
+		{
+			get { return 57; }
+		}
+
+		public byte StartY
+		{
+			get { return 24; }
+		}
 		
 		public string[] CityNames
 		{

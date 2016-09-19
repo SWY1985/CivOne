@@ -31,6 +31,7 @@ namespace CivOne
 		private ITile[,] _tiles;
 		
 		public bool Ready { get; private set; }
+		public bool FixedStartPositions { get; private set; }
 
 		public IEnumerable<ITile> QueryMapPart(int x, int y, int width, int height)
 		{
@@ -816,6 +817,7 @@ namespace CivOne
 			_temperature = -1;
 			_climate = -1;
 			_age = -1;
+			FixedStartPositions = true;
 			
 			new Thread(new ThreadStart(LoadMapThread)).Start();
 		}
