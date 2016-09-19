@@ -651,6 +651,7 @@ namespace CivOne
 					{
 						// Chieftain starts with 50 Gold
 						HumanPlayer.Gold = 50;
+						Settings.Instance.InstantAdvice = true;
 					}
 					Console.WriteLine("- Player {0} is {1} of the {2} (human)", i, _players[i].LeaderName, _players[i].TribeNamePlural);
 					continue;

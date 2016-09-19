@@ -134,6 +134,7 @@ namespace CivOne
 			}
 		}
 
+		internal bool InstantAdvice { get; set; }
 		internal bool EndOfTurn { get; set; }
 
 		internal void RevealWorldCheat()
