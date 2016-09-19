@@ -41,6 +41,14 @@ namespace CivOne.Tasks
 			return new Show(Overlay.Terrain(x, y));
 		}
 
+		public static Show Options
+		{
+			get
+			{
+				return new Show(new GameOptions());
+			}
+		}
+
 		private Show(IScreen screen)
 		{
 			_screen = screen;

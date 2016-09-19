@@ -164,17 +164,17 @@ namespace CivOne.Screens
 			_gameMenu = new GameMenu(_canvas.Image.Palette.Entries);
 			_gameMenu.Items.Add(new GameMenu.Item("Tax Rate"));
 			_gameMenu.Items.Add(new GameMenu.Item("Luxuries Rate"));
-			_gameMenu.Items.Add(new GameMenu.Item("FindCity"));
+			_gameMenu.Items.Add(new GameMenu.Item("FindCity") { Enabled = false });
 			_gameMenu.Items.Add(new GameMenu.Item("Options"));
 			_gameMenu.Items.Add(new GameMenu.Item("Save Game") { Enabled = false });
 			_gameMenu.Items.Add(new GameMenu.Item("REVOLUTION!"));
 			_gameMenu.Items.Add(new GameMenu.Item(null));
-			_gameMenu.Items.Add(new GameMenu.Item("Retire"));
+			_gameMenu.Items.Add(new GameMenu.Item("Retire") { Enabled = false });
 			_gameMenu.Items.Add(new GameMenu.Item("QUIT to DOS"));
 			
 			_gameMenu.Items[0].Selected += (s, a) => Common.AddScreen(SetRate.Taxes);
 			_gameMenu.Items[1].Selected += (s, a) => Common.AddScreen(SetRate.Luxuries);
-			_gameMenu.Items[3].Selected += (s, a) => Common.AddScreen(new GameOptions());
+			_gameMenu.Items[3].Selected += (s, a) => GameTask.Enqueue(Show.Options); //Common.AddScreen(new GameOptions());
 			_gameMenu.Items[5].Selected += (s, a) => MenuRevolution();
 			_gameMenu.Items[8].Selected += (s, a) => MenuQuit();
 			
