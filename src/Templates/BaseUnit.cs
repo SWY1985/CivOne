@@ -279,11 +279,14 @@ namespace CivOne.Templates
 				int yy = unitId < 20 ? 160 : 176;
 				
 				Bitmap image = (Bitmap)Resources.Instance.GetPart((Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? "SP257" : "SPRITES"), xx, yy, 16, 16).Clone();
-				if (Common.ColourLight[colour] == 15) Picture.ReplaceColours(image, new byte[] { 3, 15, 10, 2 }, new byte[] { 0, 11, Common.ColourLight[colour], Common.ColourDark[colour] });
-				else if (Common.ColourDark[colour] == 8) Picture.ReplaceColours(image, new byte[] { 3, 7, 10, 2 }, new byte[] { 0, 3, Common.ColourLight[colour], Common.ColourDark[colour] });
-				else Picture.ReplaceColours(image, new byte[] { 3, 10, 2 }, new byte[] { 0, Common.ColourLight[colour], Common.ColourDark[colour] });
+				if (Common.ColourLight[colour] == 15) Picture.ReplaceColours(image, new byte[] { 15, 10, 2 }, new byte[] { 11, Common.ColourLight[colour], Common.ColourDark[colour] });
+				else if (Common.ColourDark[colour] == 8) Picture.ReplaceColours(image, new byte[] { 7, 10, 2 }, new byte[] { 3, Common.ColourLight[colour], Common.ColourDark[colour] });
+				else Picture.ReplaceColours(image, new byte[] { 10, 2 }, new byte[] { Common.ColourLight[colour], Common.ColourDark[colour] });
 				
-				_unitCache[unitId, colour] = new Picture(image);
+				Picture icon = new Picture(image);
+				icon.FillRectangle(0, 0, 0, 16, 1);
+				icon.FillRectangle(0, 0, 1, 1, 15);
+				_unitCache[unitId, colour] = icon;
 			}
 			if (!showState || (!Sentry && !Fortify))
 				return _unitCache[unitId, colour];
