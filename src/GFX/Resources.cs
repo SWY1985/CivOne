@@ -214,13 +214,13 @@ namespace CivOne.GFX
 			return palette1;
 		}
 		
-		public Bitmap GetTile(ITile tile)
+		public Bitmap GetTile(ITile tile, bool improvements = true, bool roads = true)
 		{
 			if (Settings.Instance.GraphicsMode == GraphicsMode.Graphics16)
 			{
-				return TileResources.GetTile16(tile);
+				return TileResources.GetTile16(tile, improvements, roads);
 			}
-			return TileResources.GetTile256(tile);
+			return TileResources.GetTile256(tile, improvements, roads);
 		}
 
 		public Bitmap GetFog(Direction direction)
