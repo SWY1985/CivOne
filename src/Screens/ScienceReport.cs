@@ -48,7 +48,7 @@ namespace CivOne.Screens
 			foreach (IAdvance advance in HumanPlayer.Advances.OrderBy(a => a.Id))
 			{
 				int xx = 8 + ((c % 3) * 100);
-				int yy = 42 + ((c - (c % 3)) * 8);
+				int yy = 42 + (((c - (c % 3)) / 3) * 8);
 				_canvas.DrawText(advance.Name, 0, 15, xx, yy);
 				c++;
 			}
