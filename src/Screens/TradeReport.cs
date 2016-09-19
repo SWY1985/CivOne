@@ -72,7 +72,6 @@ namespace CivOne.Screens
 			DrawCityTrade();
 			DrawMaintenanceCost();
 
-			//278, 2
 			AddLayer(Portrait[(int)Advisor.Domestic], 278, 2);
 		}
 	}
