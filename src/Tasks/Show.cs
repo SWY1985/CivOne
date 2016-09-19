@@ -36,6 +36,11 @@ namespace CivOne.Tasks
 			}
 		}
 
+		public static Show Terrain(int x, int y)
+		{
+			return new Show(Overlay.Terrain(x, y));
+		}
+
 		private Show(IScreen screen)
 		{
 			_screen = screen;

@@ -257,7 +257,7 @@ namespace CivOne.GFX
 			output.AddLayer(resource, 0, 0);
 		}
 		
-		internal static Bitmap GetTile16(ITile tile)
+		internal static Bitmap GetTile16(ITile tile, bool improvements, bool roads)
 		{
 			Picture output = new Picture(16, 16);
 			
@@ -295,20 +295,23 @@ namespace CivOne.GFX
 			}
 			
 			// Add tile improvements
-			if (tile.Type != Terrain.River)
+			if (improvements && tile.Type != Terrain.River)
 			{
 				DrawIrrigation(ref output, tile, true);
 				DrawMine(ref output, tile, true);
 			}
-			DrawRoad(ref output, tile, true);
-			DrawRailRoad(ref output, tile, true);
+			if (roads)
+			{
+				DrawRoad(ref output, tile, true);
+				DrawRailRoad(ref output, tile, true);
+			}
 			DrawFortress(ref output, tile, true);
 			DrawHut(ref output, tile, true);
 			
 			return output.Image;
 		}
 		
-		internal static Bitmap GetTile256(ITile tile)
+		internal static Bitmap GetTile256(ITile tile, bool improvements, bool roads)
 		{
 			Picture output = new Picture(16, 16);
 			
@@ -339,14 +342,17 @@ namespace CivOne.GFX
 					DrawDiagonalCoast(ref output, tile);
 					break;
 				case Terrain.River:
-					DrawIrrigation(ref output, tile);
-					DrawMine(ref output, tile);
+					if (improvements)
+					{
+						DrawIrrigation(ref output, tile);
+						DrawMine(ref output, tile);
+					}
 					output.AddLayer(Res.GetPart("SP257", tile.Borders * 16, 80, 16, 16));
 					break;
 				default:
 					int terrainId = (int)tile.Type;
 					if (tile.Type == Terrain.Grassland2) { terrainId = (int)Terrain.Grassland1; }
-					DrawIrrigation(ref output, tile);
+					if (improvements) DrawIrrigation(ref output, tile);
 					output.AddLayer(Res.GetPart("TER257", tile.Borders * 16, terrainId * 16, 16, 16));
 					break;
 			}
@@ -367,12 +373,15 @@ namespace CivOne.GFX
 			}
 			
 			// Add tile improvements
-			if (tile.Type != Terrain.River)
+			if (tile.Type != Terrain.River && improvements)
 			{
 				DrawMine(ref output, tile);
 			}
-			DrawRoad(ref output, tile);
-			DrawRailRoad(ref output, tile, true);
+			if (roads)
+			{
+				DrawRoad(ref output, tile);
+				DrawRailRoad(ref output, tile, true);
+			}
 			DrawFortress(ref output, tile, true);
 			DrawHut(ref output, tile);
 			

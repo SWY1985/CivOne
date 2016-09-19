@@ -382,6 +382,13 @@ namespace CivOne.Screens
 				// Ignore all keypresses if the current player is not human
 				return false;
 			}
+			
+			switch (args.KeyChar)
+			{
+				case 'T':
+					GameTask.Enqueue(Show.Terrain(_x, _y));
+					return true;
+			}
 
 			if (Game.Instance.ActiveUnit != null)
 			{
