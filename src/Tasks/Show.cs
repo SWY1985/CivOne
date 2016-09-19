@@ -41,6 +41,11 @@ namespace CivOne.Tasks
 			return new Show(Overlay.Terrain(x, y));
 		}
 
+		public static Show Goto(int x, int y)
+		{
+			return new Show(new Goto(x, y));
+		}
+
 		public static Show Options
 		{
 			get
