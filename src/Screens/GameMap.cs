@@ -314,6 +314,9 @@ namespace CivOne.Screens
 				case Key.NumPad4:
 				case Key.Left:
 					return MoveTo(-1, 0);
+				case Key.NumPad5:
+					GameTask.Enqueue(Show.Empty);
+					return true;
 				case Key.NumPad6:
 				case Key.Right:
 					return MoveTo(1, 0);
