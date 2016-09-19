@@ -96,7 +96,7 @@ namespace CivOne
 					case Government.Anarchy:
 					case Government.Despotism:
 						int costs = 0;
-						for (int i = 0; i < Units.Length; i++)
+						for (int i = 0; i < Units.Count(u => (!(u is Diplomat) || (u is Caravan))); i++)
 						{
 							if (i < _size) continue;
 							costs++;
@@ -444,7 +444,6 @@ namespace CivOne
 						GameTask.Enqueue(new ImprovementBuilt(this, (CurrentProduction as IBuilding)));
 					}
 				}
-				//if (CurrentProduction is IWonder && !Game.Instance.GetCities().Select(c => c.Wonders).Any(a => a.Any(w => w.Id == (CurrentProduction as IWonder).Id)))
 				if (CurrentProduction is IWonder && !Game.Instance.BuiltWonders.Any(w => w.Id == (CurrentProduction as IWonder).Id))
 				{
 					Shields = 0;
