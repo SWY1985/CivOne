@@ -29,7 +29,8 @@ namespace CivOne.Interfaces
 		int X { get; set; }
 		int Y { get; set; }
 		ITile Tile { get; }
-		bool Busy { get; }
+		bool Busy { get; set; }
+		bool Veteran { get; set; }
 		bool Sentry { get; set; }
 		bool FortifyActive { get; }
 		bool Fortify { get; set; }

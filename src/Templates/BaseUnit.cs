@@ -38,7 +38,14 @@ namespace CivOne.Templates
 			{
 				return (Sentry || Fortify);
 			}
+			set
+			{
+				Sentry = false;
+				Fortify = false;
+				FortifyActive = false;
+			}
 		}
+		public bool Veteran { get; set; }
 		public bool FortifyActive { get; private set; }
 		private bool _fortify = false;
 		public bool Fortify
