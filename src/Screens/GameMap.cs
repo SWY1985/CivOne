@@ -263,6 +263,16 @@ namespace CivOne.Screens
 			return false;
 		}
 		
+		internal void CenterOnPoint(int x, int y)
+		{
+			if (Game.Instance.ActiveUnit == null) return;
+			_x = x - 8;
+			_y = y - 6;
+			while (_y < 0) _y++;
+			while (_y + 11 >= Map.HEIGHT) _y--;
+			_centerChanged = true;
+		}
+		
 		private void CenterOnUnit()
 		{
 			if (Game.Instance.ActiveUnit == null) return;

@@ -26,21 +26,31 @@ namespace CivOne.Screens
 		private readonly Picture _miniMap, _demographics, _gameInfo;
 		private readonly Bitmap _background;
 		
-		private void DrawMiniMap()
+		private void DrawMiniMap(uint gameTick = 0)
 		{
 			_miniMap.FillRectangle(5, 0, 0, 80, 50);
 			
 			if (GamePlay != null)
 			{
-				ITile[,] tile = Map[GamePlay.X - 30, GamePlay.Y - 19, 78, 48];
+				IUnit activeUnit = Game.Instance.ActiveUnit;
+				ITile[,] tiles = Map[GamePlay.X - 30, GamePlay.Y - 18, 78, 48];
 				for (int yy = 0; yy < 48; yy++)
 				for (int xx = 0; xx < 78; xx++)
 				{
-					if (tile[xx, yy] == null) continue;
+					ITile tile = tiles[xx, yy];
+					if (tile == null) continue;
+
+					// Flash active unit
+					if (activeUnit != null && gameTick % 4 <= 1 && (tile.X == activeUnit.X && tile.Y == activeUnit.Y))
+					{
+						_miniMap[xx + 1, yy + 1] = 15;
+						continue;
+					}
+
 					if (Settings.Instance.RevealWorld)
 					{
 						byte colour = 5;
-						switch (tile[xx, yy].Type)
+						switch (tile.Type)
 						{
 							case Terrain.Ocean: colour = 1; break;
 							case Terrain.Forest: colour = 2; break;
@@ -58,18 +68,24 @@ namespace CivOne.Screens
 						}
 						_miniMap[xx + 1, yy + 1] = colour;
 					}
-					else if (Game.Instance.HumanPlayer.Visible(tile[xx, yy].X, tile[xx, yy].Y))
+					else if (Game.Instance.HumanPlayer.Visible(tile.X, tile.Y))
 					{
-						if (tile[xx, yy].IsOcean) _miniMap[xx + 1, yy + 1] = 1;
-						else _miniMap[xx + 1, yy + 1] = 2;
+						if (tile.City != null)
+						{
+							_miniMap[xx + 1, yy + 1] = Common.ColourLight[tile.City.Owner];
+						}
+						else
+						{
+							if (tile.IsOcean) _miniMap[xx + 1, yy + 1] = 1;
+							else _miniMap[xx + 1, yy + 1] = 2;
+						}
 					}
 				}
 			}
-			//_miniMap.AddBorder(15, 15, 29, 19, 18, 11);
-			_miniMap.FillRectangle(15, 29, 19, 18, 1);
-			_miniMap.FillRectangle(15, 29, 19, 1, 11);
-			_miniMap.FillRectangle(15, 30, 29, 17, 1);
-			_miniMap.FillRectangle(15, 46, 20, 1, 9);
+			_miniMap.FillRectangle(15, 31, 18, 18, 1);
+			_miniMap.FillRectangle(15, 31, 19, 1, 9);
+			_miniMap.FillRectangle(15, 31, 28, 18, 1);
+			_miniMap.FillRectangle(15, 48, 19, 1, 9);
 			_miniMap.AddBorder(15, 8, 0, 0, 80, 50);
 		}
 
@@ -131,7 +147,7 @@ namespace CivOne.Screens
 				}
 				_gameInfo.DrawText((unit.Home == null ? "NONE" : unit.Home.Name), 0, 5, 4, (yy += 8), TextAlign.Left);
 				_gameInfo.DrawText($"({Map[unit.X, unit.Y].Name})", 0, 5, 4, (yy += 8), TextAlign.Left);
-				//int yy = 34;
+				
 				if (Map[unit.X, unit.Y].RailRoad)
 					_gameInfo.DrawText("(RailRoad)", 0, 5, 4, (yy += 8), TextAlign.Left);
 				else if (Map[unit.X, unit.Y].Road)
@@ -165,7 +181,7 @@ namespace CivOne.Screens
 				if (!(Common.TopScreen is GamePlay))
 					gameTick = 0;
 
-				DrawMiniMap();
+				DrawMiniMap(gameTick);
 				DrawDemographics();
 				DrawGameInfo(gameTick);
 				
@@ -183,7 +199,12 @@ namespace CivOne.Screens
 		{
 			if (args.Y <= 50)
 			{
-				//TODO: Minimap action
+				if (args.X < 1 || args.Y < 1 || args.X > 79 || args.Y > 49) return true;
+				
+				int xx = (args.X - 1) + GamePlay.X - 30;
+				int yy = (args.Y - 1) + GamePlay.Y - 18;
+
+				GamePlay.CenterOnPoint(xx, yy);
 			}
 			if (args.Y > 50 && args.Y < 62)
 			{
