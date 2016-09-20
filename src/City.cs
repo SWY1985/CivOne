@@ -17,6 +17,7 @@ using CivOne.Interfaces;
 using CivOne.Screens;
 using CivOne.Tasks;
 using CivOne.Units;
+using CivOne.Wonders;
 
 namespace CivOne
 {
@@ -198,6 +199,8 @@ namespace CivOne
 				short science = (short)Math.Round(((double)TradeTotal / 10) * Player.ScienceRate);
 				if (_buildings.Any(b => (b is Library))) science += (short)Math.Floor((double)science * 0.5);
 				if (_buildings.Any(b => (b is University))) science += (short)Math.Floor((double)science * 0.5);
+				if (_wonders.Any(w => (w is CopernicusObservatory))) science += (short)Math.Floor((double)science * 1.0);
+				if (Game.Instance.GetCities().Where(c => c.Owner == Owner).SelectMany(c => c.Wonders).Any(w => w is SETIProgram)) science += (short)Math.Floor((double)science * 0.5);
 				return science;
 			}
 		}
