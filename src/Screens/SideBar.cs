@@ -102,23 +102,30 @@ namespace CivOne.Screens
 			}
 			else if (unit != null)
 			{
+				int yy = 2;
 				_gameInfo.DrawText(Game.Instance.HumanPlayer.TribeName, 0, 5, 4, 2, TextAlign.Left);
-				_gameInfo.DrawText(unit.Name, 0, 5, 4, 10, TextAlign.Left);
+				_gameInfo.DrawText(unit.Name, 0, 5, 4, (yy += 8), TextAlign.Left);
+				
+				if (unit.Veteran)
+				{
+					_gameInfo.DrawText("Veteran", 0, 5, 8, (yy += 8), TextAlign.Left);
+				}
+
 				if (unit is BaseUnitAir)
 				{
-					_gameInfo.DrawText($"Moves: {unit.MovesLeft}({(unit as BaseUnitAir).FuelLeft})", 0, 5, 4, 18, TextAlign.Left);
+					_gameInfo.DrawText($"Moves: {unit.MovesLeft}({(unit as BaseUnitAir).FuelLeft})", 0, 5, 4, (yy += 8), TextAlign.Left);
 				}
 				else if (unit.PartMoves > 0)
 				{
-					_gameInfo.DrawText($"Moves: {unit.MovesLeft}.{unit.PartMoves}", 0, 5, 4, 18, TextAlign.Left);
+					_gameInfo.DrawText($"Moves: {unit.MovesLeft}.{unit.PartMoves}", 0, 5, 4, (yy += 8), TextAlign.Left);
 				}
 				else
 				{
-					_gameInfo.DrawText($"Moves: {unit.MovesLeft}", 0, 5, 4, 18, TextAlign.Left);
+					_gameInfo.DrawText($"Moves: {unit.MovesLeft}", 0, 5, 4, (yy += 8), TextAlign.Left);
 				}
-				_gameInfo.DrawText((unit.Home == null ? "NONE" : unit.Home.Name), 0, 5, 4, 26, TextAlign.Left);
-				_gameInfo.DrawText($"({Map[unit.X, unit.Y].Name})", 0, 5, 4, 34, TextAlign.Left);
-				int yy = 34;
+				_gameInfo.DrawText((unit.Home == null ? "NONE" : unit.Home.Name), 0, 5, 4, (yy += 8), TextAlign.Left);
+				_gameInfo.DrawText($"({Map[unit.X, unit.Y].Name})", 0, 5, 4, (yy += 8), TextAlign.Left);
+				//int yy = 34;
 				if (Map[unit.X, unit.Y].RailRoad)
 					_gameInfo.DrawText("(RailRoad)", 0, 5, 4, (yy += 8), TextAlign.Left);
 				else if (Map[unit.X, unit.Y].Road)
