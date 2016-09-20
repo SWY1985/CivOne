@@ -54,6 +54,11 @@ namespace CivOne.Screens
 				return _gameMap.Y;
 			}
 		}
+
+		internal void CenterOnPoint(int x, int y)
+		{
+			_gameMap.CenterOnPoint(x, y);
+		}
 		
 		private void MenuCancel(object sender, EventArgs args)
 		{
