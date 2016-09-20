@@ -437,7 +437,7 @@ namespace CivOne.Screens
 				Common.AddScreen(new Civilopedia(Map[_x + x, _y + y]));
 				return _update;
 			}
-			if ((args.Buttons & MouseButton.Left | MouseButton.Right) > 0)
+			if ((args.Buttons & MouseButton.Left) > 0)
 			{
 				_x += x - 8;
 				_y += y - 6;
@@ -451,9 +451,10 @@ namespace CivOne.Screens
 				{
 					Common.AddScreen(new CityManager(city));
 				}
-				else if ((args.Buttons & MouseButton.Left) > 0 && Map[xx, yy].Units.Any(u => u.Owner == Game.Instance.PlayerNumber(Game.Instance.HumanPlayer)))
+				else if (Map[xx, yy].Units.Any(u => u.Owner == Game.Instance.PlayerNumber(Game.Instance.HumanPlayer)))
 				{
-					Game.Instance.ActiveUnit = Map[xx, yy].Units.FirstOrDefault(u => u.MovesLeft > 0 || u.PartMoves > 0);
+					//Game.Instance.ActiveUnit = Map[xx, yy].Units.FirstOrDefault(u => u.MovesLeft > 0 || u.PartMoves > 0);
+					GameTask.Enqueue(Show.UnitStack(xx, yy));
 				}
 			}
 			return _update;

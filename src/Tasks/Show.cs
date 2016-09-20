@@ -63,6 +63,11 @@ namespace CivOne.Tasks
 			}
 		}
 
+		public static Show UnitStack(int x, int y)
+		{
+			return new Show(new UnitStack(x, y));
+		}
+
 		private Show(IScreen screen)
 		{
 			_screen = screen;
