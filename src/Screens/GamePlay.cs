@@ -189,6 +189,9 @@ namespace CivOne.Screens
 			if (Game.Instance.ActiveUnit == null) return;
 
 			_gameMenu = new GameMenu(_canvas.Image.Palette.Entries);
+			_gameMenu.Items.AddRange(Game.Instance.ActiveUnit.MenuItems);
+/*
+			_gameMenu = new GameMenu(_canvas.Image.Palette.Entries);
 			_gameMenu.Items.Add(new GameMenu.Item("No Orders", "space"));
 			_gameMenu.Items.Add(new GameMenu.Item("Found New City", "b"));
 			_gameMenu.Items.Add(new GameMenu.Item("Build Road", "r"));
@@ -205,7 +208,7 @@ namespace CivOne.Screens
 			_gameMenu.Items[2].Selected += (s, a) => { if (Game.Instance.ActiveUnit is Settlers) (Game.Instance.ActiveUnit as Settlers).BuildRoad(); };
 			_gameMenu.Items[3].Selected += (s, a) => { if (Game.Instance.ActiveUnit is Settlers) (Game.Instance.ActiveUnit as Settlers).BuildIrrigation(); };
 			_gameMenu.Items[10].Selected += (s, a) => GameTask.Enqueue(Show.Goto(_gameMap.X, _gameMap.Y));
-			_gameMenu.Items[10].Selected += (s, a) => Game.Instance.DisbandUnit(Game.Instance.ActiveUnit);
+			_gameMenu.Items[10].Selected += (s, a) => Game.Instance.DisbandUnit(Game.Instance.ActiveUnit);*/
 			
 			_menuX = 72;
 			_menuY = 8;

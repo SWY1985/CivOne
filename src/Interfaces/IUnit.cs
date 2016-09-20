@@ -7,8 +7,10 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System.Collections.Generic;
 using CivOne.Enums;
 using CivOne.GFX;
+using CivOne.Screens;
 using CivOne.Tasks;
 
 namespace CivOne.Interfaces
@@ -42,5 +44,6 @@ namespace CivOne.Interfaces
 		void Explore();
 		void SetHome(City city);
 		Picture GetUnit(byte colour, bool showState = true);
+		IEnumerable<GameMenu.Item> MenuItems { get; }
 	}
 }

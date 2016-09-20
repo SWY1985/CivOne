@@ -17,9 +17,9 @@ using CivOne.Templates;
 
 namespace CivOne.Screens
 {
-	internal class Menu : BaseScreen
+	public class Menu : BaseScreen
 	{
-		internal class Item
+		public class Item
 		{
 			public event EventHandler Selected;
 			public event EventHandler RightClick;

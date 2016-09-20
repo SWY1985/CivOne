@@ -63,6 +63,34 @@ namespace CivOne.Templates
 			PartMoves = 0;
 			return true;
 		}
+
+		private GameMenu.Item MenuUnload()
+		{
+			GameMenu.Item item = new GameMenu.Item("Unload", "u");
+			item.Selected += (s, a) => Unload();
+			return item;
+		}
+		
+		public override IEnumerable<GameMenu.Item> MenuItems
+		{
+			get
+			{
+				yield return MenuNoOrders();
+				yield return MenuWait();
+				yield return MenuSentry();
+				yield return MenuGoTo();
+				if (Map[X, Y].City != null)
+				{
+					yield return MenuHomeCity();
+				}
+				else if (Map[X, Y].Units.Any(u => u.Class == UnitClass.Land))
+				{
+					yield return MenuUnload();
+				}
+				yield return new GameMenu.Item(null);
+				yield return MenuDisbandUnit();
+			}
+		}
 		
 		protected override bool ValidMoveTarget(ITile tile)
 		{
