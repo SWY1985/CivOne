@@ -24,7 +24,7 @@ namespace CivOne.Tasks
 		private int _x, _y;
 		private bool _newCity = false;
 		private bool _irrigate = false;
-		private bool _mine = false;
+		private bool _mines = false;
 
 		private void Error(string error)
 		{
@@ -153,7 +153,7 @@ namespace CivOne.Tasks
 			EndTask();
 		}
 
-		private void Mine()
+		private void Mines()
 		{
 			if (!(_unit is Settlers))
 			{
@@ -161,7 +161,7 @@ namespace CivOne.Tasks
 				EndTask();
 				return;
 			}
-			(_unit as Settlers).BuildMine();
+			(_unit as Settlers).BuildMines();
 			EndTask();
 		}
 
@@ -175,9 +175,9 @@ namespace CivOne.Tasks
 			{
 				Irrigate();
 			}
-			else if (_mine)
+			else if (_mines)
 			{
-				Mine();
+				Mines();
 			}
 		}
 
@@ -215,7 +215,7 @@ namespace CivOne.Tasks
 			return new Orders()
 			{
 				_unit = unit,
-				_mine = true
+				_mines = true
 			};
 		}
 

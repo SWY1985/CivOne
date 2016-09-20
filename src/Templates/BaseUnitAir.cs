@@ -59,15 +59,17 @@ namespace CivOne.Templates
 		{
 			get
 			{
+				ITile tile = Map[X, Y];
+
 				yield return MenuNoOrders();
 				yield return MenuWait();
 				yield return MenuSentry();
 				yield return MenuGoTo();
-				if (Map[X, Y].Irrigation || Map[X, Y].Mine || Map[X, Y].Road || Map[X, Y].RailRoad)
+				if ((TotalFuel > Move) && (tile.Irrigation || tile.Mine || tile.Road || tile.RailRoad))
 				{
 					yield return MenuPillage();
 				}
-				if (Map[X, Y].City != null)
+				if (tile.City != null)
 				{
 					yield return MenuHomeCity();
 				}
