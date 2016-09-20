@@ -101,6 +101,28 @@ namespace CivOne.Templates
 				return false;
 			}
 
+			// TODO: This implementation was done by observation, may need a revision
+			if (MovesLeft == 0 && !moveTarget.Road && moveTarget.Movement > 1)
+			{
+				bool success;
+				if (PartMoves >= 2)
+				{
+					// 2/3 moves left? 50% chance of success
+					success = (Common.Random.Next(0, 2) == 0);
+				}
+				else
+				{
+					// 2/3 moves left? 33% chance of success
+					success = (Common.Random.Next(0, 3) == 0);
+				}
+
+				if (!success)
+				{
+					PartMoves = 0;
+					return false;
+				}
+			}
+
 			Movement = new MoveUnit(relX, relY);
 			Movement.Done += MoveEnd;
 			GameTask.Insert(Movement);
