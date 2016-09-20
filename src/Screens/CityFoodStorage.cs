@@ -8,6 +8,8 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Drawing;
+using System.Linq;
+using CivOne.Buildings;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
@@ -40,6 +42,11 @@ namespace CivOne.Screens
 				int width = 8 + (_city.Size * foodWidth);
 				if (width < 88)
 					_canvas.FillRectangle(1, 2 + width, 9, 88 - width, 82);
+				
+				if (_city.Buildings.Any(b => (b is Granary)))
+				{
+					_canvas.FillRectangle(1, 3, 49, width - 3, 1);
+				}
 
 				for (int i = 0; i < _city.Food; i++)
 				{
