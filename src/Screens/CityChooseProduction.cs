@@ -25,11 +25,11 @@ namespace CivOne.Screens
 		private readonly IProduction[] _availableProduction;
 		private readonly Bitmap _background;
 		private readonly int _fontId = 0;
-        private readonly List<IProduction[]> _pages = new List<IProduction[]>();
+		private readonly List<IProduction[]> _pages = new List<IProduction[]>();
 
-        private bool _update = true;
-        private int _menuHeight;
-        private int _page = 0;
+		private bool _update = true;
+		private int _menuHeight;
+		private int _page = 0;
 		
 		private void MenuCancel(object sender, EventArgs args)
 		{
@@ -180,11 +180,11 @@ namespace CivOne.Screens
 
 			_availableProduction = _city.AvailableProduction.ToArray();
 			_menuHeight = Resources.Instance.GetFontHeight(0) * _availableProduction.Length;
-			if (_menuHeight > 188)
+			if (_menuHeight > 180)
 			{
 				_fontId = 1;
 				_menuHeight = Resources.Instance.GetFontHeight(1) * _availableProduction.Length;
-				if (_menuHeight > 188)
+				if (_menuHeight > 180)
 				{
 					_pages.Add(_availableProduction.Where(p => (p is IUnit)).Take(28).ToArray());
 					if (_availableProduction.Count(p => (p is IBuilding || p is IWonder)) > 28)
