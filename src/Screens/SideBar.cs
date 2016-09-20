@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using System.Drawing;
 using System.Linq;
 using CivOne.Enums;
@@ -86,6 +87,11 @@ namespace CivOne.Screens
 				_demographics.DrawText($"{population}#", 0, 5, 2, 15, TextAlign.Left);
 			}
 			_demographics.DrawText(Game.Instance.GameYear, 0, 5, 2, 23, TextAlign.Left);
+
+			int width = Resources.Instance.GetTextSize(0, Game.Instance.GameYear).Width;
+			int stage = (int)Math.Floor(((double)Game.Instance.HumanPlayer.Science / Game.Instance.HumanPlayer.ScienceCost) * 4);
+			_demographics.AddLayer(Icons.Lamp(stage), 4 + width, 22);
+
 			_demographics.DrawText($"{player.Gold}$ {player.LuxuriesRate}.{player.TaxesRate}.{player.ScienceRate}", 0, 5, 2, 31, TextAlign.Left);
 		}
 		
