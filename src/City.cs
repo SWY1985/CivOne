@@ -152,6 +152,14 @@ namespace CivOne
 			}
 		}
 
+		internal int FoodRequired
+		{
+			get
+			{
+				return (int)(Size + 1) * 10;
+			}
+		}
+
 		internal int ShieldTotal
 		{
 			get
@@ -386,7 +394,7 @@ namespace CivOne
 				}
 				if (Size == 0) return;
 			}
-			else if (Food >= (int)(Size + 1) * 10)
+			else if (Food >= FoodRequired)
 			{
 				Food -= ((int)(Size + 1) * 10);
 				if (Size == 10 && !_buildings.Any(b => b.Id == (int)Building.Aqueduct))
@@ -396,6 +404,14 @@ namespace CivOne
 				else
 				{
 					Size++;
+				}
+
+				if (_buildings.Any(b => (b is Granary)))
+				{
+					if (Food < (FoodRequired / 2))
+					{
+						Food = (FoodRequired / 2);
+					}
 				}
 			}
 
