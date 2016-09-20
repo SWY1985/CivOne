@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System.Collections.Generic;
 using System.Linq;
 using CivOne.Advances;
 using CivOne.Enums;
@@ -194,6 +195,64 @@ namespace CivOne.Units
 				{
 					Map[X, Y].Fortress = true;
 				}
+			}
+		}
+
+		private GameMenu.Item MenuFoundCity()
+		{
+			GameMenu.Item item;
+			if (Map[X, Y].City == null)
+			{
+				item = new GameMenu.Item("Found New City", "b");
+			}
+			else
+			{
+				item = new GameMenu.Item("Add to City", "b");
+			}
+			item.Selected += (s, a) => GameTask.Enqueue(Orders.NewCity(this));
+			return item;
+		}
+
+		private GameMenu.Item MenuBuildRoad()
+		{
+			GameMenu.Item item;
+			if (Map[X, Y].Road)
+			{
+				item = new GameMenu.Item("Build RailRoad", "r");
+			}
+			else
+			{
+				item = new GameMenu.Item("Build Road", "r");
+			}
+			item.Selected += (s, a) => BuildRoad();
+			return item;
+		}
+		
+		public override IEnumerable<GameMenu.Item> MenuItems
+		{
+			get
+			{
+				yield return MenuNoOrders();
+				yield return MenuFoundCity();
+				if (!Map[X, Y].IsOcean && (!Map[X, Y].Road || (Game.Instance.HumanPlayer.Advances.Any(a => a is RailRoad) && !Map[X, Y].RailRoad)))
+				{	
+					yield return MenuBuildRoad();
+				}
+				//Mine/Change to Forest
+				//Build Fortress
+				yield return MenuWait();
+				yield return MenuSentry();
+				yield return MenuGoTo();
+				if (Map[X, Y].Irrigation || Map[X, Y].Mine || Map[X, Y].Road || Map[X, Y].RailRoad)
+				{
+					yield return MenuPillage();
+				}
+				if (Map[X, Y].City != null)
+				{
+					yield return MenuHomeCity();
+				}
+				yield return new GameMenu.Item(null);
+				yield return MenuDisbandUnit();
 			}
 		}
 

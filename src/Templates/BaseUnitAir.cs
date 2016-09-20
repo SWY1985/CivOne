@@ -54,6 +54,27 @@ namespace CivOne.Templates
 			FuelLeft -= (FuelLeft % Move);
 			HandleFuel();
 		}
+		
+		public override IEnumerable<GameMenu.Item> MenuItems
+		{
+			get
+			{
+				yield return MenuNoOrders();
+				yield return MenuWait();
+				yield return MenuSentry();
+				yield return MenuGoTo();
+				if (Map[X, Y].Irrigation || Map[X, Y].Mine || Map[X, Y].Road || Map[X, Y].RailRoad)
+				{
+					yield return MenuPillage();
+				}
+				if (Map[X, Y].City != null)
+				{
+					yield return MenuHomeCity();
+				}
+				yield return new GameMenu.Item(null);
+				yield return MenuDisbandUnit();
+			}
+		}
 
 		protected override bool ValidMoveTarget(ITile tile)
 		{

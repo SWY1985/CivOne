@@ -313,6 +313,11 @@ namespace CivOne
 			if (!_units.Contains(unit)) return;
 			_units.Remove(unit);
 		}
+
+		public void UnitWait()
+		{
+			_activeUnit++;
+		}
 		
 		public IUnit ActiveUnit
 		{

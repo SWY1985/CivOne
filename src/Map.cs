@@ -21,7 +21,7 @@ using CivOne.Tiles;
 
 namespace CivOne
 {
-	internal class Map
+	public class Map
 	{
 		public const int WIDTH = 80;
 		public const int HEIGHT = 50;

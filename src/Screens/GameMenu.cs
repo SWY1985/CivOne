@@ -17,9 +17,9 @@ using CivOne.Templates;
 
 namespace CivOne.Screens
 {
-	internal class GameMenu : BaseScreen
+	public class GameMenu : BaseScreen
 	{
-		internal class Item
+		public class Item
 		{
 			public event EventHandler Selected;
 			public bool Enabled = true;
@@ -60,10 +60,14 @@ namespace CivOne.Screens
 				picture.DrawText(Shortcut, 0, 15, x + TextWidth + 8, y, TextAlign.Left);
 			}
 			
-			public Item(string text, string shortcut = null)
+			public Item(string text, string shortcut = null, Action<EventHandler> selected = null)
 			{
 				Text = text;
 				Shortcut = shortcut;
+				if (selected != null)
+				{
+					selected += selected;
+				}
 			}
 		}
 		

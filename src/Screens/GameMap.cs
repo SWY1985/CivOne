@@ -386,10 +386,10 @@ namespace CivOne.Screens
 			switch (args.KeyChar)
 			{
 				case 'G':
-					GameTask.Enqueue(Show.Goto(_x, _y));
+					GameTask.Enqueue(Show.Goto);
 					return true;
 				case 'T':
-					GameTask.Enqueue(Show.Terrain(_x, _y));
+					GameTask.Enqueue(Show.Terrain);
 					return true;
 			}
 

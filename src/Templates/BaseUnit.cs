@@ -313,6 +313,65 @@ namespace CivOne.Templates
 			return _unitCache[unitId, colour];
 		}
 
+		protected GameMenu.Item MenuNoOrders()
+		{
+			GameMenu.Item item = new GameMenu.Item("No Orders", "space");
+			item.Selected += (s, a) => SkipTurn();
+			return item;
+		}
+		
+		protected GameMenu.Item MenuFortify()
+		{
+			GameMenu.Item item = new GameMenu.Item("Fortify", "f");
+			item.Selected += (s, a) => Fortify = true;
+			return item;
+		}
+		
+		protected GameMenu.Item MenuWait()
+		{
+			GameMenu.Item item = new GameMenu.Item("Wait", "w");
+			item.Selected += (s, a) => Game.Instance.UnitWait();
+			return item;
+		}
+		
+		protected GameMenu.Item MenuSentry()
+		{
+			GameMenu.Item item = new GameMenu.Item("Sentry", "s");
+			item.Selected += (s, a) => Sentry = true;
+			return item;
+		}
+		
+		protected GameMenu.Item MenuGoTo()
+		{
+			GameMenu.Item item = new GameMenu.Item("GoTo");
+			item.Selected += (s, a) => GameTask.Enqueue(Show.Goto);
+			return item;
+		}
+		
+		protected GameMenu.Item MenuPillage()
+		{
+			GameMenu.Item item = new GameMenu.Item("Pillage", "P");
+			item.Enabled = false;
+			// TODO: Add action
+			return item;
+		}
+		
+		protected GameMenu.Item MenuHomeCity()
+		{
+			GameMenu.Item item = new GameMenu.Item("Home City", "h");
+			item.Selected += (s, a) => SetHome(Map[X, Y].City);
+			return item;
+		}
+		
+		protected GameMenu.Item MenuDisbandUnit()
+		{
+			GameMenu.Item item = new GameMenu.Item("Disband Unit", "D");
+			item.Selected += (s, a) => Game.Instance.DisbandUnit(this);
+			return item;
+		}
+
+		public abstract IEnumerable<GameMenu.Item> MenuItems { get; }
+
 		protected abstract bool ValidMoveTarget(ITile tile);
 
 		public IEnumerable<ITile> MoveTargets

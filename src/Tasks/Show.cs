@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.Linq;
 using CivOne.Interfaces;
 using CivOne.Screens;
 
@@ -36,14 +37,22 @@ namespace CivOne.Tasks
 			}
 		}
 
-		public static Show Terrain(int x, int y)
+		public static Show Terrain
 		{
-			return new Show(Overlay.Terrain(x, y));
+			get
+			{
+				GamePlay gamePlay = (GamePlay)Common.Screens.First(s => (s is GamePlay));
+				return new Show(Overlay.Terrain(gamePlay.X, gamePlay.Y));
+			}
 		}
 
-		public static Show Goto(int x, int y)
+		public static Show Goto
 		{
-			return new Show(new Goto(x, y));
+			get
+			{
+				GamePlay gamePlay = (GamePlay)Common.Screens.First(s => (s is GamePlay));
+				return new Show(new Goto(gamePlay.X, gamePlay.Y));
+			}
 		}
 
 		public static Show Options
