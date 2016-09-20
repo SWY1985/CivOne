@@ -91,7 +91,7 @@ namespace CivOne.Units
 			return false;
 		}
 
-		public bool BuildMine()
+		public bool BuildMines()
 		{
 			ITile tile = Map[X, Y];
 			if (!tile.IsOcean && !(tile.Mine) && ((tile is Desert) || (tile is Hills) || (tile is Mountains) || (tile is Jungle) || (tile is Grassland) || (tile is Plains) || (tile is Swamp)))
@@ -227,27 +227,81 @@ namespace CivOne.Units
 			item.Selected += (s, a) => BuildRoad();
 			return item;
 		}
+
+		private GameMenu.Item MenuBuildIrrigation()
+		{
+			GameMenu.Item item;
+			if (Map[X, Y] is Forest)
+			{
+				item = new GameMenu.Item("Change to Plains", "i");
+			}
+			else if ((Map[X, Y] is Jungle) || (Map[X, Y] is Swamp))
+			{
+				item = new GameMenu.Item("Change to Grassland", "i");
+			}
+			else
+			{
+				item = new GameMenu.Item("Build Irrigation", "i");
+			}
+			item.Selected += (s, a) => BuildIrrigation();
+			return item;
+		}
+
+		private GameMenu.Item MenuBuildMines()
+		{
+			GameMenu.Item item;
+			if ((Map[X, Y] is Jungle) || (Map[X, Y] is Grassland) || (Map[X, Y] is Plains) || (Map[X, Y] is Swamp))
+			{
+				item = new GameMenu.Item("Change to Forest", "m");
+			}
+			else
+			{
+				item = new GameMenu.Item("Build Mines", "m");
+			}
+			item.Selected += (s, a) => BuildMines();
+			return item;
+		}
+
+		private GameMenu.Item MenuBuildFortress()
+		{
+			GameMenu.Item item = new GameMenu.Item("Build fortress", "f");
+			if (!Game.Instance.CurrentPlayer.Advances.Any(a => a is Construction))
+				item.Enabled = false;
+			else
+				item.Selected += (s, a) => BuildFortress();
+			return item;
+		}
 		
 		public override IEnumerable<GameMenu.Item> MenuItems
 		{
 			get
 			{
+				ITile tile = Map[X, Y];
+
 				yield return MenuNoOrders();
 				yield return MenuFoundCity();
-				if (!Map[X, Y].IsOcean && (!Map[X, Y].Road || (Game.Instance.HumanPlayer.Advances.Any(a => a is RailRoad) && !Map[X, Y].RailRoad)))
+				if (!tile.IsOcean && (!tile.Road || (Game.Instance.HumanPlayer.Advances.Any(a => a is RailRoad) && !tile.RailRoad)))
 				{	
 					yield return MenuBuildRoad();
 				}
-				//Mine/Change to Forest
-				//Build Fortress
+				if (!tile.Irrigation && ((tile is Desert) || (tile is Grassland) || (tile is Hills) || (tile is Plains) || (tile is River) || (tile is Forest) || (tile is Jungle) || (tile is Swamp)))
+				{
+					yield return MenuBuildIrrigation();
+				}
+				if (!tile.Mine && ((tile is Desert) || (tile is Hills) || (tile is Mountains) || (tile is Jungle) || (tile is Grassland) || (tile is Plains) || (tile is Swamp)))
+				{
+					yield return MenuBuildMines();
+				}
+				yield return MenuBuildFortress();
+				//
 				yield return MenuWait();
 				yield return MenuSentry();
 				yield return MenuGoTo();
-				if (Map[X, Y].Irrigation || Map[X, Y].Mine || Map[X, Y].Road || Map[X, Y].RailRoad)
+				if (tile.Irrigation || tile.Mine || tile.Road || tile.RailRoad)
 				{
 					yield return MenuPillage();
 				}
-				if (Map[X, Y].City != null)
+				if (tile.City != null)
 				{
 					yield return MenuHomeCity();
 				}
