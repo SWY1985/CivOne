@@ -175,6 +175,19 @@ namespace CivOne.GFX
 			return _population[(int)population];
 		}
 
+		private static Bitmap[] _lamp = new Bitmap[4];
+		public static Bitmap Lamp(int stage)
+		{
+			if (stage < 0 || stage >= 4)
+				return null;
+			
+			if (_lamp[stage] == null)
+			{
+				_lamp[stage] = (Bitmap)Resources.Instance.GetPart("SP257", 128 + (8 * stage), 48, 8, 8);
+			}
+			return _lamp[stage];
+		}
+
 		private static Bitmap[,] _governmentPortrait = new Bitmap[7, 4];
 		public static Bitmap GovernmentPortrait(Government government, Advisor advisor, bool modern)
 		{
