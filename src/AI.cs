@@ -50,7 +50,7 @@ namespace CivOne
 					unit.SkipTurn();
 					return;
 				}
-				GameTask.Enqueue(Orders.NewCity(unit as Settlers));
+				GameTask.Enqueue(Orders.FoundCity(unit as Settlers));
 			}
 			else
 			{

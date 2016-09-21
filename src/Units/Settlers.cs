@@ -217,7 +217,7 @@ namespace CivOne.Units
 			{
 				item = new GameMenu.Item("Add to City", "b");
 			}
-			item.Selected += (s, a) => GameTask.Enqueue(Orders.NewCity(this));
+			item.Selected += (s, a) => GameTask.Enqueue(Orders.FoundCity(this));
 			return item;
 		}
 
@@ -251,7 +251,7 @@ namespace CivOne.Units
 			{
 				item = new GameMenu.Item("Build Irrigation", "i");
 			}
-			item.Selected += (s, a) => BuildIrrigation();
+			item.Selected += (s, a) => GameTask.Enqueue(Orders.BuildIrrigation(this));
 			return item;
 		}
 
@@ -266,7 +266,7 @@ namespace CivOne.Units
 			{
 				item = new GameMenu.Item("Build Mines", "m");
 			}
-			item.Selected += (s, a) => BuildMines();
+			item.Selected += (s, a) => GameTask.Enqueue(Orders.BuildMines(this));
 			return item;
 		}
 
@@ -276,7 +276,7 @@ namespace CivOne.Units
 			if (!Game.Instance.CurrentPlayer.Advances.Any(a => a is Construction))
 				item.Enabled = false;
 			else
-				item.Selected += (s, a) => BuildFortress();
+				item.Selected += (s, a) => GameTask.Enqueue(Orders.BuildFortress(this));
 			return item;
 		}
 		
