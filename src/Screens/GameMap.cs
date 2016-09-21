@@ -380,6 +380,9 @@ namespace CivOne.Screens
 						return (Game.Instance.ActiveUnit as BaseUnitSea).Unload();;
 					}
 					break;
+				case 'W':
+					GameTask.Enqueue(Orders.Wait(Game.Instance.ActiveUnit));
+					break;
 			}
 
 			return false;

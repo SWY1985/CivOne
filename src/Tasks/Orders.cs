@@ -25,6 +25,7 @@ namespace CivOne.Tasks
 		private bool _newCity = false;
 		private bool _irrigate = false;
 		private bool _mines = false;
+		private bool _wait = false;
 
 		private void Error(string error)
 		{
@@ -165,6 +166,12 @@ namespace CivOne.Tasks
 			EndTask();
 		}
 
+		private void UnitWait()
+		{
+			Game.Instance.UnitWait();
+			EndTask();
+		}
+
 		public override void Run()
 		{
 			if (_newCity)
@@ -178,6 +185,10 @@ namespace CivOne.Tasks
 			else if (_mines)
 			{
 				Mines();
+			}
+			else if (_wait)
+			{
+				UnitWait();
 			}
 		}
 
@@ -216,6 +227,15 @@ namespace CivOne.Tasks
 			{
 				_unit = unit,
 				_mines = true
+			};
+		}
+
+		public static Orders Wait(IUnit unit)
+		{
+			return new Orders()
+			{
+				_unit = unit,
+				_wait = true
 			};
 		}
 
