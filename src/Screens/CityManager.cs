@@ -35,6 +35,7 @@ namespace CivOne.Screens
 		
 		private bool _update = true;
 		private bool _redraw = false;
+		private bool _mouseDown = false;
 
 		private List<IScreen> _subScreens = new List<IScreen>();
 
@@ -101,6 +102,8 @@ namespace CivOne.Screens
 		
 		public override bool MouseDown(ScreenEventArgs args)
 		{
+			_mouseDown = true;
+			
 			if (new Rectangle(127, 23, 82, 82).Contains(args.Location))
 			{
 				MouseArgsOffset(ref args, 127, 23);
@@ -123,6 +126,8 @@ namespace CivOne.Screens
 		
 		public override bool MouseUp(ScreenEventArgs args)
 		{
+			if (!_mouseDown) return true;
+
 			if (new Rectangle(230, 99, 88, 99).Contains(args.Location))
 			{
 				MouseArgsOffset(ref args, 230, 99);
