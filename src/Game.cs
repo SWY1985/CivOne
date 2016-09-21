@@ -535,15 +535,6 @@ namespace CivOne
 				IUnit unit = CreateUnit(Unit.Settlers, x, y);
 				unit.Owner = player;
 				_units.Add(unit);
-				if (player == PlayerNumber(HumanPlayer))
-				{
-					for (int i = 0; i < 20; i++)
-					{
-						unit = CreateUnit(Unit.Settlers, x, y);
-						unit.Owner = player;
-						_units.Add(unit);
-					}
-				}
 				return;
 			}
 		}
