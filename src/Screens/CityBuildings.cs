@@ -38,7 +38,13 @@ namespace CivOne.Screens
 					AddLayer(wonders[i].SmallIcon.GetPart(0, Math.Abs(yy), wonders[i].SmallIcon.Image.Width, wonders[i].SmallIcon.Image.Height + yy), xx, 0);
 				else
 					AddLayer(wonders[i].SmallIcon, xx, yy);
-				_canvas.DrawText(wonders[i].Name, 1, 15, 42, 3 + (6 * ii));
+				
+				string name = wonders[i].Name;
+				while (Resources.Instance.GetTextSize(1, name).Width > 62)
+				{
+					name = $"{name.Substring(0, name.Length - 2)}.";
+				}
+				_canvas.DrawText(name, 1, 15, 42, 3 + (6 * ii));
 			}
 		}
 
@@ -54,7 +60,13 @@ namespace CivOne.Screens
 					AddLayer(buildings[i].SmallIcon.GetPart(0, Math.Abs(yy), buildings[i].SmallIcon.Image.Width, buildings[i].SmallIcon.Image.Height + yy), xx, 0);
 				else
 					AddLayer(buildings[i].SmallIcon, xx, yy);
-				_canvas.DrawText(buildings[i].Name, 1, 15, 42, 3 + (6 * ii));
+				
+				string name = buildings[i].Name;
+				while (Resources.Instance.GetTextSize(1, name).Width > 54)
+				{
+					name = $"{name.Substring(0, name.Length - 1)}";
+				}
+				_canvas.DrawText(name, 1, 15, 42, 3 + (6 * ii));
 			}
 		}
 		

@@ -109,7 +109,6 @@ namespace CivOne.Screens
 				DrawButton("Change", 1, 33, blink);
 				DrawButton("Buy", 64, 18);
 
-				//AddLayer(Icons.Shield, 1, 17);
 				DrawShields();
 
 				if (_city.CurrentProduction is IUnit)
@@ -117,15 +116,14 @@ namespace CivOne.Screens
 					IUnit unit = (_city.CurrentProduction as IUnit);
 					AddLayer(unit.GetUnit(_city.Owner), 33, 0);
 				}
-				else if (_city.CurrentProduction is IBuilding)
+				else
 				{
-					IBuilding building = (_city.CurrentProduction as IBuilding);
-					_canvas.DrawText(building.Name, 1, 15, 44, 1, TextAlign.Center); 
-				}
-				else if (_city.CurrentProduction is IWonder)
-				{
-					IWonder wonder = (_city.CurrentProduction as IWonder);
-					_canvas.DrawText(wonder.Name, 1, 15, 44, 1, TextAlign.Center); 
+					string name = (_city.CurrentProduction as ICivilopedia).Name;
+					while (Resources.Instance.GetTextSize(1, name).Width > 86)
+					{
+						name = $"{name.Substring(0, name.Length - 2)}.";
+					}
+					_canvas.DrawText(name, 1, 15, 44, 1, TextAlign.Center); 
 				}
 				
 				_update = false;
