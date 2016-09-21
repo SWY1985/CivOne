@@ -323,6 +323,22 @@ namespace CivOne
 			}
 		}
 
+		internal IEnumerable<Citizen> Citizens
+		{
+			get
+			{
+				for (int i = 0; i < Size; i++)
+				{
+					if (i < ResourceTiles.Count() - 1)
+					{
+						yield return (i % 2 == 0) ? Citizen.ContentMale : Citizen.ContentFemale;
+						continue;
+					}
+					yield return Citizen.Entertainer;
+				}
+			}
+		}
+
 		private IEnumerable<ITile> CityTiles
 		{
 			get

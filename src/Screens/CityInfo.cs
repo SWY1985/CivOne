@@ -62,10 +62,10 @@ namespace CivOne.Screens
 				{
 					if (i < _city.ResourceTiles.Count() - 1)
 					{
-						output.AddLayer(Icons.Population((i % 2 == 0) ? Population.ContentMale : Population.ContentFemale), 7 + (8 * i), yy);
+						output.AddLayer(Icons.Citizen((i % 2 == 0) ? Citizen.ContentMale : Citizen.ContentFemale), 7 + (8 * i), yy);
 						continue;
 					}
-					output.AddLayer(Icons.Population(Population.Entertainer), 7 + (8 * i), yy);
+					output.AddLayer(Icons.Citizen(Citizen.Entertainer), 7 + (8 * i), yy);
 				}
 				return output;
 			}

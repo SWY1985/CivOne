@@ -24,22 +24,6 @@ namespace CivOne.Screens
 		private readonly Bitmap _background;
 		
 		private bool _update = true;
-		
-		private IEnumerable<Population> GetCitizens
-		{
-			get
-			{
-				for (int i = 0; i < _city.Size; i++)
-				{
-					if (i < _city.ResourceTiles.Count() - 1)
-					{
-						yield return (i % 2 == 0) ? Population.ContentMale : Population.ContentFemale;
-						continue;
-					}
-					yield return Population.Entertainer;
-				}
-			}
-		}
 
 		public override bool HasUpdate(uint gameTick)
 		{
@@ -52,16 +36,16 @@ namespace CivOne.Screens
 				_canvas.FillRectangle(0, 207, 0, 1, 21);
 				_canvas.DrawText($"{_city.Name} (Pop:{population})", 1, 17, 104, 1, TextAlign.Center);
 
-				Population[] citizens = GetCitizens.ToArray();
+				Citizen[] citizens = _city.Citizens.ToArray();
 				int xx = 0;
 				for (int i = 0; i < _city.Size; i++)
 				{
 					xx += 8;
 					if (i > 0)
 					{
-						if (citizens[i] == Population.Entertainer && citizens[i - 1] != Population.Entertainer) xx += 6;
+						if (citizens[i] == Citizen.Entertainer && citizens[i - 1] != Citizen.Entertainer) xx += 6;
 					}
-					AddLayer(Icons.Population(citizens[i]), xx, 7);
+					AddLayer(Icons.Citizen(citizens[i]), xx, 7);
 				}
 
 				_update = false;
