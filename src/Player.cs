@@ -177,9 +177,11 @@ namespace CivOne
 		
 		public short Science { get; internal set; }
 
-		public void AddAdvance(IAdvance advance)
+		public void AddAdvance(IAdvance advance, bool setOrigin = true)
 		{
 			_advances.Add(advance.Id);
+			if (!setOrigin) return;
+			Game.Instance.SetAdvanceOrigin(advance, this);
 		}
 		
 		public string LatestAdvance

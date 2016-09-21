@@ -35,6 +35,27 @@ namespace CivOne
 		private int _currentPlayer = 0;
 		private int _activeUnit;
 
+		private Dictionary<byte, byte> _advanceOrigin;
+		public void SetAdvanceOrigin(IAdvance advance, Player player)
+		{
+			if (_advanceOrigin == null)
+				_advanceOrigin = new Dictionary<byte, byte>();
+			if (_advanceOrigin.ContainsKey(advance.Id))
+				return;
+			byte playerNumber = 0;
+			if (player != null)
+				playerNumber = PlayerNumber(player);
+			_advanceOrigin.Add(advance.Id, playerNumber);
+		}
+		public bool GetAdvanceOrigin(IAdvance advance, Player player)
+		{
+			if (_advanceOrigin == null)
+				_advanceOrigin = new Dictionary<byte, byte>();
+			if (_advanceOrigin.ContainsKey(advance.Id))
+				return (_advanceOrigin[advance.Id] == PlayerNumber(player));
+			return false;
+		}
+
 		public int Difficulty
 		{
 			get
@@ -600,7 +621,9 @@ namespace CivOne
 				for (int i = 0; i < 1000; i++)
 				{
 					if (!available.Any(a => a.Id == (advanceId + i) % 72)) continue;
-					_players[player].AddAdvance(available.First(a => a.Id == (advanceId + i) % 72));
+					IAdvance advance = available.First(a => a.Id == (advanceId + i) % 72);
+					SetAdvanceOrigin(advance, null);
+					_players[player].AddAdvance(advance, false);
 					break;
 				}
 				bonus--;
