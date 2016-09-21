@@ -9,6 +9,7 @@
 
 using System;
 using System.Linq;
+using CivOne.Enums;
 using CivOne.Interfaces;
 using CivOne.Screens;
 
@@ -27,6 +28,11 @@ namespace CivOne.Tasks
 		{
 			_screen.Closed += ClosedMessage;
 			Common.AddScreen(_screen);
+		}
+
+		public static Message Advisor(Advisor advisor, params string[] message)
+		{
+			return new Message(new AdvisorMessage(advisor, message));
 		}
 
 		public static Message NewGoverment(City city, params string[] message)

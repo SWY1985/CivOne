@@ -118,11 +118,13 @@ namespace CivOne.Screens
 			_gameInfo.FillLayerTile(_background);
 			_gameInfo.AddBorder(15, 8, 0, 0, 80, 103);
 			
-			if (Game.Instance.CurrentPlayer != Game.Instance.HumanPlayer)
+			if (Game.Instance.CurrentPlayer != Game.Instance.HumanPlayer || GameTask.Any())
 			{
 				_gameInfo.FillRectangle((byte)((gameTick % 4 < 2) ? 15 : 8), 2, 95, 6, 6);
+				return;
 			}
-			else if (unit != null)
+
+			if (unit != null)
 			{
 				int yy = 2;
 				_gameInfo.DrawText(Game.Instance.HumanPlayer.TribeName, 0, 5, 4, 2, TextAlign.Left);

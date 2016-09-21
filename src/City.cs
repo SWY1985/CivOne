@@ -416,7 +416,7 @@ namespace CivOne
 
 				if (Size == 10 && !_buildings.Any(b => b.Id == (int)Building.Aqueduct))
 				{
-					Common.AddScreen(new AdvisorMessage(Advisor.Domestic, $"{Name} requires an AQUADUCT", "for further growth."));
+					GameTask.Enqueue(Message.Advisor(Advisor.Domestic, $"{Name} requires an AQUADUCT", "for further growth."));
 				}
 				else
 				{
@@ -450,9 +450,9 @@ namespace CivOne
 					unit.Veteran = (_buildings.Any(b => (b is Barracks)));
 					if ((unit is Settlers) || (unit is Diplomat) || (unit is Caravan))
 					{
-						AdvisorMessage advisorMessage = new AdvisorMessage(Advisor.Defense, $"{this.Name} builds {unit.Name}.");
-						advisorMessage.Closed += (s, a) => Common.AddScreen(new CityManager(this));
-						Common.AddScreen(advisorMessage);
+						GameTask advisorMessage = Message.Advisor(Advisor.Defense, $"{this.Name} builds {unit.Name}.");
+						advisorMessage.Done += (s, a) => GameTask.Insert(Show.CityManager(this));//Common.AddScreen(new CityManager(this));
+						GameTask.Enqueue(advisorMessage);
 					}
 				}
 				if (CurrentProduction is IBuilding && !_buildings.Any(b => b.Id == (CurrentProduction as IBuilding).Id))
@@ -469,9 +469,9 @@ namespace CivOne
 						
 						Message message = Message.Newspaper(this, $"{this.Name} builds", $"{(CurrentProduction as ICivilopedia).Name}.");
 						message.Done += (s, a) => {
-							AdvisorMessage advisorMessage = new AdvisorMessage(Advisor.Foreign, $"{Player.TribeName} capital", $"moved to {Name}.");
-							advisorMessage.Closed += (s1, a1) => Common.AddScreen(new CityManager(this));
-							Common.AddScreen(advisorMessage);
+							GameTask advisorMessage = Message.Advisor(Advisor.Foreign, $"{Player.TribeName} capital", $"moved to {Name}.");
+							advisorMessage.Done += (s1, a1) => GameTask.Insert(Show.CityManager(this)); //Common.AddScreen(new CityManager(this));
+							GameTask.Enqueue(advisorMessage);
 						};
 						GameTask.Enqueue(message);
 					}
