@@ -195,25 +195,6 @@ namespace CivOne.Screens
 
 			_gameMenu = new GameMenu(_canvas.Image.Palette.Entries);
 			_gameMenu.Items.AddRange(Game.Instance.ActiveUnit.MenuItems);
-/*
-			_gameMenu = new GameMenu(_canvas.Image.Palette.Entries);
-			_gameMenu.Items.Add(new GameMenu.Item("No Orders", "space"));
-			_gameMenu.Items.Add(new GameMenu.Item("Found New City", "b"));
-			_gameMenu.Items.Add(new GameMenu.Item("Build Road", "r"));
-			_gameMenu.Items.Add(new GameMenu.Item("Build Irrigation", "i"));
-			_gameMenu.Items.Add(new GameMenu.Item("Change to Forest", "m"));
-			_gameMenu.Items.Add(new GameMenu.Item("Build Fortress", "f") { Enabled = false });
-			_gameMenu.Items.Add(new GameMenu.Item("Wait", "w"));
-			_gameMenu.Items.Add(new GameMenu.Item("Sentry", "s"));
-			_gameMenu.Items.Add(new GameMenu.Item("GoTo"));
-			_gameMenu.Items.Add(new GameMenu.Item(null));
-			_gameMenu.Items.Add(new GameMenu.Item("Disband Unit", "D"));
-			
-			_gameMenu.Items[1].Selected += (s, a) => { if (Game.Instance.ActiveUnit is Settlers) GameTask.Enqueue(Orders.NewCity(Game.Instance.ActiveUnit as Settlers)); };
-			_gameMenu.Items[2].Selected += (s, a) => { if (Game.Instance.ActiveUnit is Settlers) (Game.Instance.ActiveUnit as Settlers).BuildRoad(); };
-			_gameMenu.Items[3].Selected += (s, a) => { if (Game.Instance.ActiveUnit is Settlers) (Game.Instance.ActiveUnit as Settlers).BuildIrrigation(); };
-			_gameMenu.Items[10].Selected += (s, a) => GameTask.Enqueue(Show.Goto(_gameMap.X, _gameMap.Y));
-			_gameMenu.Items[10].Selected += (s, a) => Game.Instance.DisbandUnit(Game.Instance.ActiveUnit);*/
 			
 			_menuX = 72;
 			_menuY = 8;
