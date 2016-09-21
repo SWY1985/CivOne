@@ -14,6 +14,7 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
+using CivOne.IO;
 using CivOne.Screens;
 using CivOne.Tasks;
 using CivOne.Units;
@@ -87,6 +88,17 @@ namespace CivOne.Templates
 			{
 				// TODO: Attack, or perform other unit action (confront)
 				return false;
+			}
+			if (Class == UnitClass.Land && !(this is Diplomat || this is Caravan) && moveTarget.GetBorderTiles().SelectMany(t => t.Units).Any(u => u.Owner != Owner))
+			{
+				IUnit[] targetUnits = moveTarget.GetBorderTiles().SelectMany(t => t.Units).Where(u => u.Owner != Owner).ToArray();
+				IUnit[] borderUnits = Map[X, Y].GetBorderTiles().SelectMany(t => t.Units).Where(u => u.Owner != Owner).ToArray();
+
+				if (borderUnits.Any(u => targetUnits.Any(t => t.X == u.X && t.Y == u.Y)))
+				{
+					GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText($"ERROR/ZOC")));
+					return false;
+				}
 			}
 			if (moveTarget.City != null && Map[X, Y][relX, relY].City.Owner != Owner)
 			{
