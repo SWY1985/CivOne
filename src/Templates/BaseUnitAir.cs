@@ -17,6 +17,7 @@ using CivOne.Interfaces;
 using CivOne.IO;
 using CivOne.Screens;
 using CivOne.Tasks;
+using CivOne.Units;
 
 namespace CivOne.Templates
 {
@@ -27,7 +28,7 @@ namespace CivOne.Templates
 
 		private void HandleFuel()
 		{
-			if (Map[X, Y].City != null)
+			if (Map[X, Y].City != null || Map[X, Y].Units.Any(u => u is Carrier))
 			{
 				MovesLeft = 0;
 				FuelLeft = TotalFuel;

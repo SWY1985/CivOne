@@ -242,6 +242,8 @@ namespace CivOne
 
 		private bool UnitAvailable(IUnit unit)
 		{
+			if (unit is Carrier || unit is Fighter || unit is Bomber) return true;
+
 			// Determine if the unit is obsolete
 			if (_advances.Any(a => unit.ObsoleteTech != null && unit.ObsoleteTech.Id == a))
 				return false;
