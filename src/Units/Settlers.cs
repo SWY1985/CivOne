@@ -138,7 +138,17 @@ namespace CivOne.Units
 				{
 					if (Map[X, Y].Road)
 					{
-						Map[X, Y].RailRoad = true;
+						if (Game.Instance.HumanPlayer.Advances.Any(a => a is RailRoad))
+						{
+							Map[X, Y].RailRoad = true;
+						}
+						else
+						{
+							foreach (Settlers settlers in Map[X, Y].Units.Where(u => (u is Settlers) && (u as Settlers).BuildingRoad > 0).Select(u => (u as Settlers)))
+							{
+								settlers.BuildingRoad = 0;
+							}
+						}
 					}
 					Map[X, Y].Road = true;
 					MovesLeft = 0;
