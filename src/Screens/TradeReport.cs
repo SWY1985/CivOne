@@ -27,6 +27,7 @@ namespace CivOne.Screens
 		private void DrawCityTrade()
 		{
 			int totalIncome = _cities.Sum(c => c.Taxes);
+			int totalScience = _cities.Sum(c => c.Science);
 
 			_canvas.DrawText("City Trade", 0, 15, 8, 32);
 
@@ -40,7 +41,14 @@ namespace CivOne.Screens
 
 				yy += Resources.Instance.GetFontHeight(0);
 			}
-			_canvas.DrawText($"Total Income: {totalIncome}$", 0, 10, 8, yy + 4);
+			
+			yy += 4;
+			_canvas.DrawText($"Total Income: {totalIncome}$", 0, 10, 8, yy);
+			if (totalScience > 0)
+			{
+				yy += Resources.Instance.GetFontHeight(0);
+				_canvas.DrawText($"Discoveries: {(int)Math.Ceiling((double)HumanPlayer.ScienceCost / totalScience)} turns", 0, 10, 8, yy);
+			}
 		}
 		
 		private void DrawMaintenanceCost()
@@ -62,7 +70,8 @@ namespace CivOne.Screens
 				yy += Resources.Instance.GetFontHeight(0);
 			}
 
-			_canvas.DrawText($"Total Cost: {totalCost}$", 0, 14, 160, yy + 4);
+			yy += 4;
+			_canvas.DrawText($"Total Cost: {totalCost}$", 0, 14, 160, yy);
 		}
 
 		public TradeReport() : base("TRADE REPORT", 2)
