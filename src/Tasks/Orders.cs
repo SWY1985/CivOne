@@ -104,7 +104,7 @@ namespace CivOne.Tasks
 
 		private void CreateCity()
 		{
-			if (!(_unit is Settlers))
+			if (_unit != null && !(_unit is Settlers))
 			{
 				Error("SETTLERS");
 				EndTask();
