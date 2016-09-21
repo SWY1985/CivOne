@@ -10,6 +10,7 @@
 using System;
 using System.Linq;
 using CivOne.Enums;
+using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Templates;
@@ -24,6 +25,9 @@ namespace CivOne.Screens
 
 		private readonly City[] _cities;
 
+		private bool _update = true;
+		private int _page = 0;
+
 		private void DrawCityTrade()
 		{
 			int totalIncome = _cities.Sum(c => c.Taxes);
@@ -32,8 +36,12 @@ namespace CivOne.Screens
 			_canvas.DrawText("City Trade", 0, 15, 8, 32);
 
 			int yy = 40;
-			foreach (City city in _cities)
+			//foreach (City city in _cities)
+			//{
+			for (int i = (_page++ * 18); i < _cities.Length && i < (_page * 18); i++)
 			{
+				City city = _cities[i];
+
 				_canvas.DrawText(city.Name, 0, 5, 16, yy + 1);
 				_canvas.DrawText(city.Name, 0, 15, 16, yy);
 				
@@ -42,12 +50,15 @@ namespace CivOne.Screens
 				yy += Resources.Instance.GetFontHeight(0);
 			}
 			
-			yy += 4;
-			_canvas.DrawText($"Total Income: {totalIncome}$", 0, 10, 8, yy);
-			if (totalScience > 0)
+			if ((_page * 18) >= _cities.Length)
 			{
+				yy += 4;
+				_canvas.DrawText($"Total Income: {totalIncome}$", 0, 10, 8, yy);
 				yy += Resources.Instance.GetFontHeight(0);
-				_canvas.DrawText($"Discoveries: {(int)Math.Ceiling((double)HumanPlayer.ScienceCost / totalScience)} turns", 0, 10, 8, yy);
+				if (totalScience > 0 && yy <= 188)
+				{
+					_canvas.DrawText($"Discoveries: {(int)Math.Ceiling((double)HumanPlayer.ScienceCost / totalScience)} turns", 0, 10, 8, yy);
+				}
 			}
 		}
 		
@@ -73,15 +84,50 @@ namespace CivOne.Screens
 			yy += 4;
 			_canvas.DrawText($"Total Cost: {totalCost}$", 0, 14, 160, yy);
 		}
+		
+		public override bool HasUpdate(uint gameTick)
+		{
+			if (!_update) return false;
+
+			_canvas.FillRectangle(2, 0, 32, 320, 168);
+			DrawCityTrade();
+			if ((_page * 18) >= _cities.Length)
+			{
+				DrawMaintenanceCost();
+			}
+
+			AddLayer(Portrait[(int)Advisor.Domestic], 278, 2);
+
+			_update = false;
+			return true;
+		}
+
+		private bool NextPage()
+		{
+			if ((_page * 18) < _cities.Length)
+			{
+				_update = true;
+			}
+			else
+			{
+				Destroy();
+			}
+			return true;
+		}
+		
+		public override bool KeyDown(KeyboardEventArgs args)
+		{
+			return NextPage();
+		}
+		
+		public override bool MouseDown(ScreenEventArgs args)
+		{
+			return NextPage();
+		}
 
 		public TradeReport() : base("TRADE REPORT", 2)
 		{
 			_cities = Game.Instance.GetCities().Where(c => c.Owner == Game.Instance.PlayerNumber(HumanPlayer)).ToArray();
-
-			DrawCityTrade();
-			DrawMaintenanceCost();
-
-			AddLayer(Portrait[(int)Advisor.Domestic], 278, 2);
 		}
 	}
 }
