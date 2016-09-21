@@ -410,9 +410,10 @@ namespace CivOne
 				}
 				if (Size == 0) return;
 			}
-			else if (Food >= FoodRequired)
+			else if (Food > FoodRequired)
 			{
-				Food -= ((int)(Size + 1) * 10);
+				Food -= FoodRequired;
+
 				if (Size == 10 && !_buildings.Any(b => b.Id == (int)Building.Aqueduct))
 				{
 					Common.AddScreen(new AdvisorMessage(Advisor.Domestic, $"{Name} requires an AQUADUCT", "for further growth."));
