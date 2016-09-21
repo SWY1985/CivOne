@@ -342,7 +342,7 @@ namespace CivOne.Screens
 			switch (args.KeyChar)
 			{
 				case 'B':
-					GameTask.Enqueue(Orders.NewCity(Game.Instance.ActiveUnit));
+					GameTask.Enqueue(Orders.FoundCity(Game.Instance.ActiveUnit));
 					return true;
 				case 'C':
 					if (Game.Instance.ActiveUnit == null) break;
@@ -353,16 +353,13 @@ namespace CivOne.Screens
 					Game.Instance.DisbandUnit(Game.Instance.ActiveUnit);
 					return true;
 				case 'I':
-					GameTask.Enqueue(Orders.Irrigate(Game.Instance.ActiveUnit));
+					GameTask.Enqueue(Orders.BuildIrrigation(Game.Instance.ActiveUnit));
 					return true;
 				case 'M':
-					GameTask.Enqueue(Orders.Mine(Game.Instance.ActiveUnit));
+					GameTask.Enqueue(Orders.BuildMines(Game.Instance.ActiveUnit));
 					break;
 				case 'R':
-					if (Game.Instance.ActiveUnit is Settlers)
-					{
-						return (Game.Instance.ActiveUnit as Settlers).BuildRoad();;
-					}
+					GameTask.Enqueue(Orders.BuildRoad(Game.Instance.ActiveUnit));
 					break;
 				case 'S':
 					Game.Instance.ActiveUnit.Sentry = true;
@@ -370,7 +367,8 @@ namespace CivOne.Screens
 				case 'F':
 					if (Game.Instance.ActiveUnit is Settlers)
 					{
-						return (Game.Instance.ActiveUnit as Settlers).BuildFortress();
+						GameTask.Enqueue(Orders.BuildFortress(Game.Instance.ActiveUnit));
+						break;
 					}
 					Game.Instance.ActiveUnit.Fortify = true;
 					break;

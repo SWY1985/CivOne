@@ -18,14 +18,27 @@ namespace CivOne.Tasks
 {
 	internal class Orders : GameTask
 	{
+		private enum Order
+		{
+			None,
+			NewCity,
+			Sentry,
+			Fortify,
+			Road,
+			Irrigate,
+			Mines,
+			Fortress,
+			Wait,
+			Skip,
+			Unload,
+			Disband
+		}
+
 		private City _city;
 		private Player _player;
 		private IUnit _unit = null;
 		private int _x, _y;
-		private bool _newCity = false;
-		private bool _irrigate = false;
-		private bool _mines = false;
-		private bool _wait = false;
+		private Order _order;
 
 		private void Error(string error)
 		{
@@ -166,6 +179,30 @@ namespace CivOne.Tasks
 			EndTask();
 		}
 
+		private void Fortress()
+		{
+			if (!(_unit is Settlers))
+			{
+				Error("SETTLERS");
+				EndTask();
+				return;
+			}
+			(_unit as Settlers).BuildFortress();
+			EndTask();
+		}
+
+		private void Road()
+		{
+			if (!(_unit is Settlers))
+			{
+				Error("SETTLERS");
+				EndTask();
+				return;
+			}
+			(_unit as Settlers).BuildRoad();
+			EndTask();
+		}
+
 		private void UnitWait()
 		{
 			Game.Instance.UnitWait();
@@ -174,30 +211,38 @@ namespace CivOne.Tasks
 
 		public override void Run()
 		{
-			if (_newCity)
+			switch (_order)
 			{
-				CreateCity();
-			}
-			else if (_irrigate)
-			{
-				Irrigate();
-			}
-			else if (_mines)
-			{
-				Mines();
-			}
-			else if (_wait)
-			{
-				UnitWait();
+				case Order.NewCity:
+					CreateCity();
+					break;
+				case Order.Irrigate:
+					Irrigate();
+					break;
+				case Order.Mines:
+					Mines();
+					break;
+				case Order.Fortress:
+					Fortress();
+					break;
+				case Order.Road:
+					Road();
+					break;
+				case Order.Wait:
+					UnitWait();
+					break;
+				default:
+					EndTask();
+					break;
 			}
 		}
 
-		public static Orders NewCity(IUnit unit = null)
+		public static Orders FoundCity(IUnit unit = null)
 		{
 			return new Orders()
 			{
 				_unit = unit,
-				_newCity = true
+				_order = Order.NewCity
 			};
 		}
 
@@ -206,27 +251,45 @@ namespace CivOne.Tasks
 			return new Orders()
 			{
 				_player = player,
-				_newCity = true,
+				_order = Order.NewCity,
 				_x = x,
 				_y = y
 			};
 		}
 
-		public static Orders Irrigate(IUnit unit)
+		public static Orders BuildIrrigation(IUnit unit)
 		{
 			return new Orders()
 			{
 				_unit = unit,
-				_irrigate = true
+				_order = Order.Irrigate
 			};
 		}
 
-		public static Orders Mine(IUnit unit)
+		public static Orders BuildMines(IUnit unit)
 		{
 			return new Orders()
 			{
 				_unit = unit,
-				_mines = true
+				_order = Order.Mines
+			};
+		}
+
+		public static Orders BuildFortress(IUnit unit)
+		{
+			return new Orders()
+			{
+				_unit = unit,
+				_order = Order.Irrigate
+			};
+		}
+
+		public static Orders BuildRoad(IUnit unit)
+		{
+			return new Orders()
+			{
+				_unit = unit,
+				_order = Order.Road
 			};
 		}
 
@@ -235,7 +298,7 @@ namespace CivOne.Tasks
 			return new Orders()
 			{
 				_unit = unit,
-				_wait = true
+				_order = Order.Wait
 			};
 		}
 
