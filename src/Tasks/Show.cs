@@ -63,6 +63,11 @@ namespace CivOne.Tasks
 			}
 		}
 
+		public static Show CityManager(City city)
+		{
+			return new Show(new CityManager(city));
+		}
+
 		public static Show UnitStack(int x, int y)
 		{
 			return new Show(new UnitStack(x, y));

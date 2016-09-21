@@ -45,7 +45,7 @@ namespace CivOne.Screens
 			return true;
 		}
 
-		public AdvisorMessage(Advisor advisor, params string[] message)
+		public AdvisorMessage(Advisor advisor, string[] message)
 		{
 			Cursor = MouseCursor.None;
 
