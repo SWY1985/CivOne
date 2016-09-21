@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System.Linq;
 using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Interfaces;
@@ -16,6 +17,23 @@ namespace CivOne.Units
 {
 	internal class Carrier : BaseUnitSea
 	{
+		protected override void MovementDone(ITile previousTile)
+		{
+			if (previousTile.Units.Any(u => u.Class == UnitClass.Air))
+			{
+				IUnit[] moveUnits = previousTile.Units.Where(u => u.Class == UnitClass.Air).ToArray();
+				moveUnits = moveUnits.Take(8).ToArray();
+				foreach (IUnit unit in moveUnits)
+				{
+					unit.X = X;
+					unit.Y = Y;
+					unit.Sentry = false;
+				}
+			}
+
+			base.MovementDone(previousTile);
+		}
+
 		public Carrier() : base(16, 1, 12, 5, 2)
 		{
 			Type = Unit.Carrier;
