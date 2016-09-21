@@ -165,14 +165,14 @@ namespace CivOne.GFX
 			}
 		}
 
-		private static Bitmap[] _population = new Bitmap[9];
-		public static Bitmap Population(Population population)
+		private static Bitmap[] _citizen = new Bitmap[9];
+		public static Bitmap Citizen(Citizen citizen)
 		{
-			if (_population[(int)population] == null)
+			if (_citizen[(int)citizen] == null)
 			{
-				_population[(int)population] = (Bitmap)Resources.Instance.GetPart("SP257", (8 * (int)population), 128, 8, 16);
+				_citizen[(int)citizen] = (Bitmap)Resources.Instance.GetPart("SP257", (8 * (int)citizen), 128, 8, 16);
 			}
-			return _population[(int)population];
+			return _citizen[(int)citizen];
 		}
 
 		private static Bitmap[] _lamp = new Bitmap[4];
