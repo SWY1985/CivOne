@@ -13,6 +13,7 @@ using System.Drawing;
 using System.Linq;
 using CivOne.Buildings;
 using CivOne.Enums;
+using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Templates;
@@ -64,51 +65,6 @@ namespace CivOne.Screens
 			_canvas.DrawText(name, 1, 15, 42, 3 + (6 * offset));
 			AddLayer(Icons.SellButton, 98, 2 + (6 * offset));
 		}
-/*
-		private void DrawWonders(int offset = 0)
-		{
-			IWonder[] wonders = _city.Wonders.ToArray();
-			for (int i = 0; i < wonders.Length; i++)
-			{
-				int ii = (i + offset);
-				int xx = (ii % 2 == 0) ? 21 : 1;
-				int yy = -1 + (6 * ii);
-				if (yy < 0)
-					AddLayer(wonders[i].SmallIcon.GetPart(0, Math.Abs(yy), wonders[i].SmallIcon.Image.Width, wonders[i].SmallIcon.Image.Height + yy), xx, 0);
-				else
-					AddLayer(wonders[i].SmallIcon, xx, yy);
-				
-				string name = wonders[i].Name;
-				while (Resources.Instance.GetTextSize(1, name).Width > 62)
-				{
-					name = $"{name.Substring(0, name.Length - 2)}.";
-				}
-				_canvas.DrawText(name, 1, 15, 42, 3 + (6 * ii));
-			}
-		}
-
-		private void DrawBuildings(int offset = 0)
-		{
-			IBuilding[] buildings = _city.Buildings.ToArray();
-			for (int i = 0; i < buildings.Length; i++)
-			{
-				int ii = (i + offset);
-				int xx = (ii % 2 == 0) ? 21 : 1;
-				int yy = -1 + (6 * ii);
-				if (yy < 0)
-					AddLayer(buildings[i].SmallIcon.GetPart(0, Math.Abs(yy), buildings[i].SmallIcon.Image.Width, buildings[i].SmallIcon.Image.Height + yy), xx, 0);
-				else
-					AddLayer(buildings[i].SmallIcon, xx, yy);
-				
-				string name = buildings[i].Name;
-				while (Resources.Instance.GetTextSize(1, name).Width > 54)
-				{
-					name = $"{name.Substring(0, name.Length - 1)}";
-				}
-				_canvas.DrawText(name, 1, 15, 42, 3 + (6 * ii));
-				AddLayer(Icons.SellButton, 98, 2 + (6 * ii));
-			}
-		}*/
 
 		private IEnumerable<IProduction> GetImprovements
 		{
@@ -149,6 +105,18 @@ namespace CivOne.Screens
 				_update = false;
 			}
 			return true;
+		}
+
+		public override bool MouseDown(ScreenEventArgs args)
+		{
+			if (args.X > 75 && args.X < 105 && args.Y > 86 && args.Y < 96)
+			{
+				_page++;
+				if ((_page * 14) > _improvements.Length) _page = 0;
+				_update = true;
+				return true;
+			}
+			return false;
 		}
 
 		public void Close()
