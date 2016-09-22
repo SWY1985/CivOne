@@ -25,16 +25,6 @@ namespace CivOne.Screens
 		private readonly Bitmap _background;
 		
 		private bool _update = true;
-		
-		private void DrawButton(string text, int x, int width, bool blink = false)
-		{
-			_canvas.FillRectangle(7, x + 0, 7, width, 1);
-			_canvas.FillRectangle(7, x + 0, 8, 1, 8);
-			_canvas.FillRectangle(1, x + 1, 15, width - 1, 1);
-			_canvas.FillRectangle(1, x + width - 1, 7, 1, 8);
-			_canvas.FillRectangle((byte)(blink ? 14 : 9), x + 1, 8, width - 2, 7);
-			_canvas.DrawText(text, 1, 1, x + (int)Math.Ceiling((double)width / 2), 9, TextAlign.Center);
-		}
 
 		private void ForceUpdate(object sender, EventArgs args)
 		{
@@ -103,11 +93,8 @@ namespace CivOne.Screens
 				{
 					_canvas.FillRectangle(5, 0, 19 + height, width, 80 - height);
 				}
-				bool blink = false;
-				if (ProductionInvalid)
-					blink = (gameTick % 4 > 1);
-				DrawButton("Change", 1, 33, blink);
-				DrawButton("Buy", 64, 18);
+				DrawButton("Change", (byte)(ProductionInvalid ? 14 : 9), 1, 1, 7, 33);
+				DrawButton("Buy", 9, 1, 64, 7, 18);
 
 				DrawShields();
 
