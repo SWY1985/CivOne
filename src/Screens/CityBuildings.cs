@@ -67,6 +67,7 @@ namespace CivOne.Screens
 					name = $"{name.Substring(0, name.Length - 1)}";
 				}
 				_canvas.DrawText(name, 1, 15, 42, 3 + (6 * ii));
+				AddLayer(Icons.SellButton, 98, 2 + (6 * i));
 			}
 		}
 		

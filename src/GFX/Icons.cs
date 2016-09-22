@@ -165,6 +165,28 @@ namespace CivOne.GFX
 			}
 		}
 
+		private static Bitmap _sellButton;
+		public static Bitmap SellButton
+		{
+			get
+			{
+				if (_sellButton == null)
+				{
+					byte[] bytemap = new byte[] {
+						0,  0,  5,  5,  5,  0,  0,  0,
+						0,  5, 15, 15, 15,  5,  0,  0,
+						5, 15, 12, 12, 12, 15,  5,  0,
+						5, 15, 12, 12, 12, 15,  5,  0,
+						5, 15, 12, 12, 12, 15,  5,  0,
+						0,  5, 15, 15, 15,  5,  0,  0,
+						0,  0,  5,  5,  5,  0,  0,  0
+					};
+					_sellButton = (Bitmap)new Picture(8, 7, bytemap, Food.Palette.Entries).Image;
+				}
+				return _sellButton;
+			}
+		}
+
 		private static Bitmap[] _citizen = new Bitmap[9];
 		public static Bitmap Citizen(Citizen citizen)
 		{

@@ -123,7 +123,7 @@ namespace CivOne.Screens
 					{
 						name = $"{name.Substring(0, name.Length - 2)}.";
 					}
-					_canvas.DrawText(name, 1, 15, 44, 1, TextAlign.Center); 
+					_canvas.DrawText(name, 1, 15, 44, 1, TextAlign.Center);
 				}
 				
 				_update = false;
