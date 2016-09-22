@@ -265,7 +265,6 @@ namespace CivOne.Screens
 		
 		internal void CenterOnPoint(int x, int y)
 		{
-			if (Game.Instance.ActiveUnit == null) return;
 			_x = x - 8;
 			_y = y - 6;
 			while (_y < 0) _y++;
