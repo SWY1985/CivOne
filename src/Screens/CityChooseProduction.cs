@@ -181,11 +181,11 @@ namespace CivOne.Screens
 
 			_availableProduction = _city.AvailableProduction.ToArray();
 			_menuHeight = Resources.Instance.GetFontHeight(0) * _availableProduction.Length;
-			if (_menuHeight > 180)
+			if (_menuHeight > 170)
 			{
 				_fontId = 1;
 				_menuHeight = Resources.Instance.GetFontHeight(1) * _availableProduction.Length;
-				if (_menuHeight > 180)
+				if (_menuHeight > 170)
 				{
 					_pages.Add(_availableProduction.Where(p => (p is IUnit)).Take(28).ToArray());
 					if (_availableProduction.Count(p => (p is IBuilding || p is IWonder)) > 28)
