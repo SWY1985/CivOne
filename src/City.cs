@@ -90,9 +90,19 @@ namespace CivOne
 			}
 		}
 
+		public bool HasBuilding(IBuilding building)
+		{
+			return _buildings.Any(b => b.Id == building.Id);
+		}
+
 		public bool HasBuilding<T>() where T : IBuilding
 		{
 			return _buildings.Any(b => b is T);
+		}
+
+		public bool HasWonder(IWonder wonder)
+		{
+			return _wonders.Any(w => w.Id == wonder.Id);
 		}
 
 		public bool HasWonder<T>() where T : IWonder

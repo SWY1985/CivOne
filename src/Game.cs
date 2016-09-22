@@ -328,6 +328,16 @@ namespace CivOne
 				return _cities.SelectMany(c => c.Wonders).ToArray();
 			}
 		}
+
+		public bool WonderExists(IWonder wonder)
+		{
+			return _cities.SelectMany(c => c.Wonders).Any(w => w.Id == wonder.Id);
+		}
+
+		public bool WonderExists<T>() where T : IWonder
+		{
+			return _cities.SelectMany(c => c.Wonders).Any(w => w is T);
+		}
 		
 		public void DisbandUnit(IUnit unit)
 		{
