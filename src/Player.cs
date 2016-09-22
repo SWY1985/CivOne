@@ -230,7 +230,7 @@ namespace CivOne
 		{
 			get
 			{
-				bool allGovernments = Game.Instance.GetCities().Where(c => c.Owner == Game.Instance.PlayerNumber(this)).SelectMany(c => c.Wonders).Any(w => w is Pyramids); 
+				bool allGovernments = !WonderObsolete<Pyramids>() && HasWonder<Pyramids>(); 
 				
 				yield return Government.Despotism;
 				if (allGovernments || Game.Instance.HumanPlayer.Advances.Any(a => a is Monarchy)) yield return Government.Monarchy;
@@ -247,7 +247,7 @@ namespace CivOne
 				return false;
 			
 			// Require Manhattan Project to be built for Nuclear unit
-			if ((unit is Nuclear) && !Game.Instance.GetCities().SelectMany(c => c.Wonders).Any(w => w is ManhattanProject))
+			if ((unit is Nuclear) && Game.Instance.WonderBuilt<ManhattanProject>())
 				return false;
 			
 			// Determine if the unit requires a tech
