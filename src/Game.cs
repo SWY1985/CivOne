@@ -328,6 +328,11 @@ namespace CivOne
 				return _cities.SelectMany(c => c.Wonders).ToArray();
 			}
 		}
+
+		public bool WonderBuilt<T>() where T : IWonder
+		{
+			return BuiltWonders.Any(w => w is T);
+		}
 		
 		public void DisbandUnit(IUnit unit)
 		{
