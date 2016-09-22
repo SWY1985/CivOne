@@ -15,6 +15,7 @@ using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Screens;
+using CivOne.Wonders;
 
 namespace CivOne.Templates
 {
@@ -96,6 +97,14 @@ namespace CivOne.Templates
 		{
 			// Check whether the tile exists, is an ocean tile or contains a city.
 			return (tile != null && (tile.Type == Terrain.Ocean || tile.City != null));
+		}
+
+		public override void NewTurn()
+		{
+			base.NewTurn();
+
+			Player player = Game.Instance.GetPlayer(Owner);
+			if (player.HasWonder<MagellansExpedition>() || (!player.WonderObsolete<Lighthouse>() && player.HasWonder<Lighthouse>())) MovesLeft++;
 		}
 		
 		protected BaseUnitSea(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1, int range = 1) : base(price, attack, defense, move)
