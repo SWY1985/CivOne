@@ -676,6 +676,9 @@ namespace CivOne
 			_competition = competition;
 			Console.WriteLine("Game instance created (difficulty: {0}, competition: {1})", _difficulty, _competition);
 			
+			Settings.Instance.Animations = true;
+			Settings.Instance.CivilopediaText = true; 
+
 			_cities = new List<City>();
 			_units = new List<IUnit>();
 			_players = new Player[competition + 1];
