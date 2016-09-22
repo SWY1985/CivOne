@@ -125,6 +125,12 @@ namespace CivOne.Screens
 				MouseArgsOffset(ref args, 95, 106);
 				return _cityInfo.MouseDown(args);
 			}
+			if (new Rectangle(211, 1, 107, 97).Contains(args.Location))
+			{
+				MouseArgsOffset(ref args, 211, 1);
+				if (_cityBuildings.MouseDown(args))
+					return true;
+			}
 			if (new Rectangle(230, 99, 88, 99).Contains(args.Location))
 			{
 				MouseArgsOffset(ref args, 230, 99);
