@@ -64,6 +64,16 @@ namespace CivOne.Templates
 		{
 			_canvas.AddLayer(bitmap, x, y);
 		}
+
+		protected void DrawButton(string text, byte colour, byte colourDark, int x, int y, int width)
+		{
+			_canvas.FillRectangle(7, x, y, width, 1);
+			_canvas.FillRectangle(7, x, y + 1, 1, 8);
+			_canvas.FillRectangle(colourDark, x + 1, y + 8, width - 1, 1);
+			_canvas.FillRectangle(colourDark, x + width - 1, y, 1, 8);
+			_canvas.FillRectangle(colour, x + 1, y + 1, width - 2, 7);
+			_canvas.DrawText(text, 1, colourDark, x + (int)Math.Ceiling((double)width / 2), y + 2, TextAlign.Center);
+		}
 		
 		protected void MouseArgsOffset(ref ScreenEventArgs args, int offsetX, int offsetY)
 		{

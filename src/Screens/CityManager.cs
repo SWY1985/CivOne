@@ -75,13 +75,7 @@ namespace CivOne.Screens
 				DrawLayer(_cityInfo, gameTick, 95, 106);
 				DrawLayer(_cityProduction, gameTick, 230, 99);
 
-				// Draw exit button
-				_canvas.FillRectangle(7, 284, 190, 33, 1);
-				_canvas.FillRectangle(7, 284, 191, 1, 8);
-				_canvas.FillRectangle(4, 285, 198, 32, 1);
-				_canvas.FillRectangle(4, 316, 190, 1, 8);
-				_canvas.FillRectangle(12, 285, 191, 31, 7);
-				_canvas.DrawText("Exit", 1, 4, 302, 192, TextAlign.Center);
+				DrawButton("Exit", 12, 4, 284, 190, 33);
 
 				_update = false;
 				return true;
