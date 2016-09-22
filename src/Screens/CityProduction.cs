@@ -93,7 +93,8 @@ namespace CivOne.Screens
 				{
 					_canvas.FillRectangle(5, 0, 19 + height, width, 80 - height);
 				}
-				DrawButton("Change", (byte)(ProductionInvalid ? 14 : 9), 1, 1, 7, 33);
+				bool blink = ProductionInvalid && (gameTick % 4 > 1);
+				DrawButton("Change", (byte)(blink ? 14 : 9), 1, 1, 7, 33);
 				DrawButton("Buy", 9, 1, 64, 7, 18);
 
 				DrawShields();
