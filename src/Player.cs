@@ -290,6 +290,23 @@ namespace CivOne
 			
 			return false;
 		}
+		
+		public bool HasWonder<T>() where T : IWonder
+		{
+			return Cities.Any(c => c.HasWonder<T>());
+		}
+
+		public bool WonderObsolete<T>() where T : IWonder, new()
+		{
+			return WonderObsolete(new T());
+		}
+
+		public bool WonderObsolete(IWonder wonder)
+		{
+			if (wonder.ObsoleteTech == null) return false;
+			if (_advances.Any(a => wonder.ObsoleteTech.Id == a)) return true;
+			return false;
+		}
 
 		public bool ProductionAvailable(IProduction production)
 		{

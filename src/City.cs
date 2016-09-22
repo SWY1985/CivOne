@@ -72,6 +72,8 @@ namespace CivOne
 		internal IProduction CurrentProduction { get; private set; }
 		private List<ITile> _resourceTiles = new List<ITile>();
 		private List<IBuilding> _buildings = new List<IBuilding>();
+		private List<IWonder> _wonders = new List<IWonder>();
+
 		public IBuilding[] Buildings
 		{
 			get
@@ -79,13 +81,23 @@ namespace CivOne
 				return _buildings.OrderBy(b => b.Id).ToArray();
 			}
 		}
-		private List<IWonder> _wonders = new List<IWonder>();
+
 		public IWonder[] Wonders
 		{
 			get
 			{
 				return _wonders.OrderBy(b => b.Id).ToArray();
 			}
+		}
+
+		public bool HasBuilding<T>() where T : IBuilding
+		{
+			return _buildings.Any(b => b is T);
+		}
+
+		public bool HasWonder<T>() where T : IWonder
+		{
+			return _wonders.Any(w => w is T);
 		}
 
 		internal int ShieldCosts
