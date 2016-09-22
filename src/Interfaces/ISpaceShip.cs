@@ -7,20 +7,9 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using CivOne.Advances;
-using CivOne.Enums;
-using CivOne.Interfaces;
-using CivOne.Templates;
-
-namespace CivOne.Buildings
+namespace CivOne.Interfaces
 {
-	internal class SSModule : BaseBuilding, ISpaceShip
+	public interface ISpaceShip
 	{
-		public SSModule() : base(32)
-		{
-			Name = "SS Module";
-			RequiredTech = new Robotics();
-			Type = Building.SSModule;
-		}
 	}
 }

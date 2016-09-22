@@ -9,11 +9,12 @@
 
 using CivOne.Advances;
 using CivOne.Enums;
+using CivOne.Interfaces;
 using CivOne.Templates;
 
 namespace CivOne.Buildings
 {
-	internal class SSStructural : BaseBuilding
+	internal class SSStructural : BaseBuilding, ISpaceShip
 	{
 		public SSStructural() : base(8)
 		{

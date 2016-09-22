@@ -269,7 +269,13 @@ namespace CivOne
 			
 			// Determine if the Player has the required tech
 			if (_advances.Any(a => building.RequiredTech.Id == a))
+			{
+				if (building is ISpaceShip)
+				{
+					return Game.Instance.WonderExists<ApolloProgram>();
+				}
 				return true;
+			}
 			
 			return false;
 		}
