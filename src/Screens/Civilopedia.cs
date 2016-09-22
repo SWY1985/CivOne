@@ -348,6 +348,8 @@ namespace CivOne.Screens
 			AddLayer(borders[1], 312, 0);
 			AddLayer(borders[2], 0, 192);
 			AddLayer(borders[3], 312, 192);
+
+			if (_discovered && !Settings.Instance.CivilopediaText) _pageNumber++;
 			
 			DrawPageTitle();
 			DrawPage(_pageNumber);
