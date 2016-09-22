@@ -75,12 +75,21 @@ namespace CivOne.Screens
 				DrawLayer(_cityInfo, gameTick, 95, 106);
 				DrawLayer(_cityProduction, gameTick, 230, 99);
 
+				DrawButton("Rename", 9, 1, 231, 190, 42);
 				DrawButton("Exit", 12, 4, 284, 190, 33);
 
 				_update = false;
 				return true;
 			}
 			return false;
+		}
+
+		private void CityRename(object sender, EventArgs args)
+		{
+			if (!(sender is CityName)) return;
+
+			_city.Name = (sender as CityName).Value;
+			_cityHeader.Update();
 		}
 		
 		public override bool KeyDown(KeyboardEventArgs args)
@@ -98,6 +107,14 @@ namespace CivOne.Screens
 		{
 			_mouseDown = true;
 			
+			if (new Rectangle(231, 190, 42, 10).Contains(args.Location))
+			{
+				// Rename button
+				CityName name = new CityName(_city.Name);
+				name.Accept += CityRename;
+				Common.AddScreen(name);
+				return true;
+			}
 			if (new Rectangle(127, 23, 82, 82).Contains(args.Location))
 			{
 				MouseArgsOffset(ref args, 127, 23);
