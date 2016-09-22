@@ -70,11 +70,11 @@ namespace CivOne.Screens
 			{
 				if (_city.CurrentProduction is IBuilding)
 				{
-					return _city.Buildings.Any(b => b.Id == (_city.CurrentProduction as IBuilding).Id); 
+					return _city.HasBuilding(_city.CurrentProduction as IBuilding);
 				}
 				if (_city.CurrentProduction is IWonder)
 				{
-					return Game.Instance.BuiltWonders.Any(w => w.Id == (_city.CurrentProduction as IWonder).Id); 
+					return Game.Instance.WonderExists(_city.CurrentProduction as IWonder);
 				}
 				return false;
 			}
