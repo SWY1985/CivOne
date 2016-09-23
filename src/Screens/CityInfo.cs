@@ -85,16 +85,6 @@ namespace CivOne.Screens
 				return output;
 			}
 		}
-		
-		private void DrawButton(string text, int x, int width, bool selected)
-		{
-			_canvas.FillRectangle(7, x + 0, 0, width, 1);
-			_canvas.FillRectangle(7, x + 0, 1, 1, 8);
-			_canvas.FillRectangle(1, x + 1, 8, width - 1, 1);
-			_canvas.FillRectangle(1, x + width - 1, 0, 1, 8);
-			_canvas.FillRectangle((byte)(selected ? 15 : 9), x + 1, 1, width - 2, 7);
-			_canvas.DrawText(text, 1, 1, x + (int)Math.Ceiling((double)width / 2), 2, TextAlign.Center);
-		}
 
 		public override bool HasUpdate(uint gameTick)
 		{
@@ -104,10 +94,10 @@ namespace CivOne.Screens
 				_canvas.AddBorder(1, 1, 0, 0, 133, 92);
 				_canvas.FillRectangle(0, 133, 0, 3, 92);
 				
-				DrawButton("Info", 0, 34, (_choice == CityInfoChoice.Info));
-				DrawButton("Happy", 34, 32, (_choice == CityInfoChoice.Happy));
-				DrawButton("Map", 66, 33, (_choice == CityInfoChoice.Map));
-				DrawButton("View", 99, 33, false);
+				DrawButton("Info", (byte)((_choice == CityInfoChoice.Info) ? 15 : 9), 1, 0, 0, 34);
+				DrawButton("Happy", (byte)((_choice == CityInfoChoice.Happy) ? 15 : 9), 1, 34, 0, 32);
+				DrawButton("Map", (byte)((_choice == CityInfoChoice.Map) ? 15 : 9), 1, 66, 0, 33);
+				DrawButton("View", 9, 1, 99, 0, 33);
 
 				switch (_choice)
 				{

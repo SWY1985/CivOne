@@ -28,6 +28,20 @@ namespace CivOne.Screens
 			Close();
 		}
 
+		private void MenuAnimations(object sender, EventArgs args)
+		{
+			Settings.Instance.Animations = !Settings.Instance.Animations;
+			CloseMenus();
+			Close();
+		}
+
+		private void MenuCivilopediaText(object sender, EventArgs args)
+		{
+			Settings.Instance.CivilopediaText = !Settings.Instance.CivilopediaText;
+			CloseMenus();
+			Close();
+		}
+
 		private void MenuInstantAdvice(object sender, EventArgs args)
 		{
 			Settings.Instance.InstantAdvice = !Settings.Instance.InstantAdvice;
@@ -77,14 +91,16 @@ namespace CivOne.Screens
 				menu.Items.Add(new Menu.Item($"{(Settings.Instance.InstantAdvice ? '^' : ' ')}Instant Advice"));
 				menu.Items.Add(new Menu.Item(" AutoSave") { Enabled = false });
 				menu.Items.Add(new Menu.Item($"{(Settings.Instance.EndOfTurn ? '^' : ' ')}End of Turn"));
-				menu.Items.Add(new Menu.Item(" Animations") { Enabled = false });
+				menu.Items.Add(new Menu.Item($"{(Settings.Instance.Animations ? '^' : ' ')}Animations"));
 				menu.Items.Add(new Menu.Item(" Sound") { Enabled = false });
 				menu.Items.Add(new Menu.Item(" Enemy Moves") { Enabled = false });
-				menu.Items.Add(new Menu.Item(" Civilopedia Text") { Enabled = false });
+				menu.Items.Add(new Menu.Item($"{(Settings.Instance.CivilopediaText ? '^' : ' ')}Civilopedia Text"));
 				menu.Items.Add(new Menu.Item(" Palace") { Enabled = false });
 
 				menu.Items[0].Selected += MenuInstantAdvice;
 				menu.Items[2].Selected += MenuEndOfTurn;
+				menu.Items[3].Selected += MenuAnimations;
+				menu.Items[6].Selected += MenuCivilopediaText;
 
 				Menus.Add(menu);
 				Common.AddScreen(menu);

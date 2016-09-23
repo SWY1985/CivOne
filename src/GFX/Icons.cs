@@ -266,7 +266,7 @@ namespace CivOne.GFX
 				output.DrawText($"{city.Size}", (smallFont ? 1 : 0), 5, 5, 9, 5, TextAlign.Center);
 			}
 
-			if (city.Buildings.Any(b => b.Id == new CityWalls().Id))
+			if (city.HasBuilding<CityWalls>())
 			{
 				output.AddLayer(Fortify, 0, 0);
 			}
