@@ -134,6 +134,12 @@ namespace CivOne.Tasks
 				_y = settlers.Y;
 			}
 
+			if (Map.Instance[_x, _y].IsOcean)
+			{
+				EndTask();
+				return;
+			}
+
 			if (Map.Instance[_x, _y].City != null)
 			{
 				// There is already a city here
