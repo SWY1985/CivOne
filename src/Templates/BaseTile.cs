@@ -155,6 +155,7 @@ namespace CivOne.Templates
 				for (int relX = -1; relX <= 1; relX++)
 				{
 					if (relX == 0 && relY == 0) continue;
+					if (this[relX, relY] == null) continue;
 					yield return this[relX, relY];
 				}
 			}
