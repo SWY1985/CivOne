@@ -9,6 +9,7 @@
 
 using System;
 using System.Linq;
+using CivOne.Advances;
 using CivOne.Interfaces;
 using CivOne.IO;
 using CivOne.Screens;
@@ -187,7 +188,10 @@ namespace CivOne.Tasks
 				EndTask();
 				return;
 			}
-			(_unit as Settlers).BuildFortress();
+			if (Game.Instance.GetPlayer(_unit.Owner).HasAdvance<Construction>())
+			{
+				(_unit as Settlers).BuildFortress();
+			}
 			EndTask();
 		}
 

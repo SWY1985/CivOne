@@ -201,6 +201,11 @@ namespace CivOne
 				return _advances.Select(a => Reflect.GetAdvances().First(x => x.Id == a)).ToArray();
 			}
 		}
+		
+		public bool HasAdvance<T>() where T : IAdvance
+		{
+			return Advances.Any(a => a is T);
+		}
 
 		public IAdvance CurrentResearch
 		{
