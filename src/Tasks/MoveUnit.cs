@@ -45,7 +45,7 @@ namespace CivOne.Tasks
 
 		public override void Run()
 		{
-			if (ActiveUnit == null || (!Settings.Instance.RevealWorld && !Game.Instance.HumanPlayer.Visible(ActiveUnit.X, ActiveUnit.Y)))
+			if (ActiveUnit == null || (!Settings.RevealWorld && !Game.Instance.HumanPlayer.Visible(ActiveUnit.X, ActiveUnit.Y)))
 			{
 				// Off screen? End task immediately
 				EndTask();

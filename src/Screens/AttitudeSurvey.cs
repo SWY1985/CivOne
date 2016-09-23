@@ -118,7 +118,7 @@ namespace CivOne.Screens
 
 		public AttitudeSurvey() : base("ATTITUDE SURVEY", 9)
 		{
-			_cities = Game.Instance.GetCities().Where(c => c.Owner == Game.Instance.PlayerNumber(HumanPlayer)).ToArray();
+			_cities = Game.GetCities().Where(c => c.Owner == Game.PlayerNumber(HumanPlayer)).ToArray();
 		}
 	}
 }

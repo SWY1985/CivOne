@@ -134,25 +134,25 @@ namespace CivOne.Tasks
 				_y = settlers.Y;
 			}
 
-			if (Map.Instance[_x, _y].IsOcean)
+			if (Map[_x, _y].IsOcean)
 			{
 				EndTask();
 				return;
 			}
 
-			if (Map.Instance[_x, _y].City != null)
+			if (Map[_x, _y].City != null)
 			{
 				// There is already a city here
 				if (_unit is Settlers)
 				{
-					if (Map.Instance[_x, _y].City.Size >= 10)
+					if (Map[_x, _y].City.Size >= 10)
 					{
 						// City is 10 or larger, can not join city
 						Error("ADDCITY");
 						EndTask();
 						return;
 					}
-					Map.Instance[_x, _y].City.Size++;
+					Map[_x, _y].City.Size++;
 					Game.Instance.DisbandUnit(_unit);
 				}
 				EndTask();

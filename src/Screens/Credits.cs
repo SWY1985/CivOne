@@ -282,7 +282,7 @@ namespace CivOne.Screens
 			{
 				_noiseMap[x, y] = (byte)Common.Random.Next(1, _noiseCounter);
 			}
-			switch (Settings.Instance.GraphicsMode)
+			switch (Settings.GraphicsMode)
 			{
 				case GraphicsMode.Graphics256:
 					_textColours = new byte[] { 248, 242, 244 };

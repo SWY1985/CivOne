@@ -46,7 +46,7 @@ namespace CivOne.Screens
 		
 		private void FadeColours()
 		{
-			if (Settings.Instance.GraphicsMode != GraphicsMode.Graphics256) return;
+			if (Settings.GraphicsMode != GraphicsMode.Graphics256) return;
 			
 			ColorPalette palette = _background.Image.Palette;
 			for (int i = 1; i < 256; i++)
@@ -69,7 +69,7 @@ namespace CivOne.Screens
 			if (_founded && (gameTick % 3 == 0))
 			{
 				AddLayer(_background);
-				_canvas.DrawText($"{_city.Name} founded: {Game.Instance.GameYear}.", 5, 5, 161, 3, TextAlign.Center);
+				_canvas.DrawText($"{_city.Name} founded: {Game.GameYear}.", 5, 5, 161, 3, TextAlign.Center);
 
 				int frame = (_x % 4);
 				AddLayer(Resources.Instance.GetPart("SETTLERS", 1, 1 + (16 * frame), 48, 15), _x, 120);
@@ -158,8 +158,8 @@ namespace CivOne.Screens
 			
 			_canvas.DrawText(_city.Name, 5, 5, 161, 3, TextAlign.Center);
 			_canvas.DrawText(_city.Name, 5, 15, 160, 2, TextAlign.Center);
-			_canvas.DrawText(Game.Instance.GameYear, 5, 5, 161, 16, TextAlign.Center);
-			_canvas.DrawText(Game.Instance.GameYear, 5, 15, 160, 15, TextAlign.Center);
+			_canvas.DrawText(Game.GameYear, 5, 5, 161, 16, TextAlign.Center);
+			_canvas.DrawText(Game.GameYear, 5, 15, 160, 15, TextAlign.Center);
 			
 			if (firstView)
 			{

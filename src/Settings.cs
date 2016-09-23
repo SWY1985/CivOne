@@ -13,7 +13,7 @@ using CivOne.Enums;
 
 namespace CivOne
 {
-	internal class Settings
+	public class Settings
 	{
 		// Set default settings
 		private GraphicsMode _graphicsMode = GraphicsMode.Graphics256;

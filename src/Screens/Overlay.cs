@@ -31,14 +31,14 @@ namespace CivOne.Screens
 			{
 				if (_showTerrain)
 				{
-					int cx = Settings.Instance.RightSideBar ? 0 : 80;
+					int cx = Settings.RightSideBar ? 0 : 80;
 					int cy = 8;
 
 					for (int yy = 0; yy < 12; yy++)
 					for (int xx = 0; xx < 15; xx++)
 					{
 						ITile tile = Map[_x + xx, _y + yy];
-						if (tile == null || !Game.Instance.HumanPlayer.Visible(tile))
+						if (tile == null || !Game.HumanPlayer.Visible(tile))
 						{
 							_canvas.FillRectangle(5, cx + (xx * 16), cy + (yy * 16), 16, 16);
 							continue;

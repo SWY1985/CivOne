@@ -31,7 +31,7 @@ namespace CivOne.Screens
 			Cursor = MouseCursor.Pointer;
 			Picture background = Resources.Instance.LoadPIC("BIRTH1");
 			Picture logo = Resources.Instance.LoadPIC("LOGO");
-			switch (Settings.Instance.GraphicsMode)
+			switch (Settings.GraphicsMode)
 			{
 				case GraphicsMode.Graphics256:
 					_textColours = new byte[] { 239, 236, 233, 5, 229 };

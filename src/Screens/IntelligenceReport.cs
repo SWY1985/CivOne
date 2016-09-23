@@ -18,15 +18,15 @@ namespace CivOne.Screens
 		public IntelligenceReport() : base("INTELLIGENCE REPORT", 1)
 		{
 			int yy = 30;
-			foreach (Player player in Game.Instance.Players.Where(p => Game.Instance.PlayerNumber(p) > 0))
+			foreach (Player player in Game.Players.Where(p => Game.PlayerNumber(p) > 0))
 			{
 				_canvas.FillRectangle(9, 4, yy, 314, 1);
 
-				byte id = Game.Instance.PlayerNumber(player);
+				byte id = Game.PlayerNumber(player);
 				byte colour = Common.ColourLight[id];
 				if (player.Human)
 				{
-					int unitCount = Game.Instance.GetUnits().Count(u => u.Owner == id && u.Home != null);
+					int unitCount = Game.GetUnits().Count(u => u.Owner == id && u.Home != null);
 
 					_canvas.DrawText($"{player.TribeNamePlural}: {player.LeaderName}", 0, 5, 8, yy + 3);
 					_canvas.DrawText($"{player.TribeNamePlural}: {player.LeaderName}", 0, colour, 8, yy + 2);

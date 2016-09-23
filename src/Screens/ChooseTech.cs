@@ -30,7 +30,7 @@ namespace CivOne.Screens
 
 		private void AdvanceChoice(object sender, EventArgs args)
 		{
-			Game.Instance.HumanPlayer.CurrentResearch = _availableAdvances[(sender as Menu.Item).Value];
+			Game.HumanPlayer.CurrentResearch = _availableAdvances[(sender as Menu.Item).Value];
 			CloseMenus();
 			Close();
 		}
@@ -83,13 +83,13 @@ namespace CivOne.Screens
 		public ChooseTech()
 		{
 			_background = (Bitmap)Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
-			_availableAdvances = Game.Instance.HumanPlayer.AvailableResearch.Take(8).ToArray();
+			_availableAdvances = Game.HumanPlayer.AvailableResearch.Take(8).ToArray();
 			_menuHeight = Resources.Instance.GetFontHeight(0) * _availableAdvances.Count();
 			
 			Cursor = MouseCursor.Pointer;
 
-			bool modernGovernment = Game.Instance.HumanPlayer.Advances.Any(a => a.Id == (int)Advance.Invention);
-			Bitmap governmentPortrait = Icons.GovernmentPortrait(Game.Instance.HumanPlayer.Government, Advisor.Science, modernGovernment);
+			bool modernGovernment = Game.HumanPlayer.Advances.Any(a => a.Id == (int)Advance.Invention);
+			Bitmap governmentPortrait = Icons.GovernmentPortrait(Game.HumanPlayer.Government, Advisor.Science, modernGovernment);
 			Color[] palette = Resources.Instance.LoadPIC("SP257").Image.Palette.Entries;
 			for (int i = 144; i < 256; i++)
 			{

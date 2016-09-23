@@ -11,10 +11,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CivOne.Interfaces;
+using CivOne.Templates;
 
 namespace CivOne
 {
-	public abstract class GameTask
+	public abstract class GameTask : BaseInstance
 	{
 		private static GameTask _currentTask = null;
 		private static List<GameTask> _tasks = new List<GameTask>();

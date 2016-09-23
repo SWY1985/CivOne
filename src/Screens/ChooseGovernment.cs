@@ -78,7 +78,7 @@ namespace CivOne.Screens
 		public ChooseGovernment()
 		{
 			_background = (Bitmap)Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
-			_availableGovernments = Game.Instance.HumanPlayer.AvailableGovernments.ToArray();
+			_availableGovernments = Game.HumanPlayer.AvailableGovernments.ToArray();
 			_menuHeight = Resources.Instance.GetFontHeight(0) * _availableGovernments.Count();
 			
 			Cursor = MouseCursor.Pointer;

@@ -54,7 +54,7 @@ namespace CivOne.Screens
 			AddLayer(_background);
 			
 			// Load text and replace strings
-			Player humanPlayer = Game.Instance.HumanPlayer;
+			Player humanPlayer = Game.HumanPlayer;
 			_textLines = TextFile.Instance.GetGameText("KING/ARCH");
 			for (int i = 0; i < _textLines.Length; i++)
 				_textLines[i] = _textLines[i].Replace("$RPLC1", humanPlayer.LatestAdvance).Replace("$US", humanPlayer.LeaderName.ToUpper()).Replace("^", "");

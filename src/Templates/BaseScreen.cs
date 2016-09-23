@@ -19,18 +19,10 @@ using CivOne.GFX;
 
 namespace CivOne.Templates
 {
-	public abstract class BaseScreen : IScreen
+	public abstract class BaseScreen : BaseInstance, IScreen
 	{
 		protected readonly List<Screens.Menu> Menus = new List<Screens.Menu>();
 		protected Picture _canvas = new Picture(320, 200);
-
-		protected Map Map
-		{
-			get
-			{
-				return Map.Instance;
-			}
-		}
 		
 		protected Player HumanPlayer
 		{

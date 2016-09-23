@@ -19,9 +19,9 @@ namespace CivOne.Screens
 	{
 		public MilitaryStatus() : base("MILITARY STATUS", 1)
 		{
-			byte player = Game.Instance.PlayerNumber(HumanPlayer);
-			IUnit[] units = Game.Instance.GetUnits().Where(u => u.Owner == player && u.Home != null).ToArray();
-			IUnit[] production = Game.Instance.GetCities().Where(c => c.Owner == player).Where(c => (c.CurrentProduction is IUnit)).Select(c => (c.CurrentProduction as IUnit)).ToArray();
+			byte player = Game.PlayerNumber(HumanPlayer);
+			IUnit[] units = Game.GetUnits().Where(u => u.Owner == player && u.Home != null).ToArray();
+			IUnit[] production = Game.GetCities().Where(c => c.Owner == player).Where(c => (c.CurrentProduction is IUnit)).Select(c => (c.CurrentProduction as IUnit)).ToArray();
 
 			int i = 0;
 			foreach (IUnit unit in Reflect.GetUnits())

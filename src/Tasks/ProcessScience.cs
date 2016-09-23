@@ -64,7 +64,7 @@ namespace CivOne.Tasks
 			}
 
 			IScreen discovery;
-			if (Settings.Instance.Animations)
+			if (Settings.Animations)
 			{
 				discovery = new Discovery(_player.CurrentResearch);
 			}
