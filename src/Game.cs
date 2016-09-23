@@ -18,12 +18,13 @@ using CivOne.Enums;
 using CivOne.Interfaces;
 using CivOne.Screens;
 using CivOne.Tasks;
+using CivOne.Templates;
 using CivOne.Tiles;
 using CivOne.Units;
 
 namespace CivOne
 {
-	public class Game
+	public class Game : BaseInstance
 	{
 		private readonly string[] _cityNames = Common.AllCityNames.ToArray();
 		private readonly bool[] _cityNameUsed = new bool[256];
@@ -226,9 +227,9 @@ namespace CivOne
 				palace.SetFree();
 				city.AddBuilding(palace);
 			}
-			if ((Map.Instance[x, y] is Desert) || (Map.Instance[x, y] is Grassland) || (Map.Instance[x, y] is Hills) || (Map.Instance[x, y] is Plains) || (Map.Instance[x, y] is River))
+			if ((Map[x, y] is Desert) || (Map[x, y] is Grassland) || (Map[x, y] is Hills) || (Map[x, y] is Plains) || (Map[x, y] is River))
 			{
-				Map.Instance[x, y].Irrigation = true;
+				Map[x, y].Irrigation = true;
 			}
 			_cities.Add(city);
 			return city;
@@ -521,12 +522,12 @@ namespace CivOne
 				// Choose a map square randomly
 				int x = Common.Random.Next(0, Map.WIDTH);
 				int y = Common.Random.Next(2, Map.HEIGHT - 2);
-				if (Map.Instance.FixedStartPositions)
+				if (Map.FixedStartPositions)
 				{
 					x = _players[player].Civilization.StartX;
 					y = _players[player].Civilization.StartY;
 				}
-				ITile tile = Map.Instance[x, y];
+				ITile tile = Map[x, y];
 				
 				if (tile.IsOcean) continue; // Is it an ocean tile?
 				if (tile.Hut) continue; // Is there a hut on this tile?
@@ -534,10 +535,10 @@ namespace CivOne
 				if (tile.LandValue < (12 - (loopCounter / 32))) continue; // Is the land value high enough?
 				if (_cities.Any(c => Common.DistanceToTile(x, y, c.X, c.Y) < (10 - (loopCounter / 64)))) continue; // Distance to other cities
 				if (_units.Any(u => (u is Settlers) && Common.DistanceToTile(x, y, u.X, u.Y) < (10 - (loopCounter / 64)))) continue; // Distance to other settlers
-				if (Map.Instance.ContinentTiles(tile.ContinentId).Count(t => Map.TileIsType(t, Terrain.Plains, Terrain.Grassland1, Terrain.Grassland2, Terrain.River)) < (32 - (GameTurn / 16))) continue; // Check buildable tiles on continent
+				if (Map.ContinentTiles(tile.ContinentId).Count(t => Map.TileIsType(t, Terrain.Plains, Terrain.Grassland1, Terrain.Grassland2, Terrain.River)) < (32 - (GameTurn / 16))) continue; // Check buildable tiles on continent
 				
 				// After 0 AD, don't spawn a Civilization on a continent that already contains cities.
-				if (Common.TurnToYear(GameTurn) >= 0 && Map.Instance.ContinentTiles(tile.ContinentId).Any(t => t.City != null)) continue;
+				if (Common.TurnToYear(GameTurn) >= 0 && Map.ContinentTiles(tile.ContinentId).Any(t => t.City != null)) continue;
 				
 				Console.WriteLine(loopCounter.ToString());
 				
@@ -560,7 +561,7 @@ namespace CivOne
 			if (startUnit == null) return;
 			int x = startUnit.X, y = startUnit.Y;
 
-			ITile[] continent = Map.Instance.ContinentTiles(Map.Instance[x, y].ContinentId).ToArray();
+			ITile[] continent = Map.ContinentTiles(Map[x, y].ContinentId).ToArray();
 			IUnit[] unitsOnContinent = _units.Where(u => continent.Any(c => (c.X == u.X && c.Y == u.Y))).ToArray();
 			
 			if (unitsOnContinent.Count() == 0)
@@ -580,12 +581,12 @@ namespace CivOne
 			}
 
 			// Check the terrain of the starting position and the 8 adjacent map squares.
-			if (Map.Instance[x, y].GetBorderTiles().Count(t => (t is River)) >= 1)
+			if (Map[x, y].GetBorderTiles().Count(t => (t is River)) >= 1)
 			{
 				// Add +2 if there's at least one river square among them.
 				handicap += 2;
 			}
-			else if (Map.Instance[x, y].GetBorderTiles().Count(t => (t is Grassland)) >= 3)
+			else if (Map[x, y].GetBorderTiles().Count(t => (t is Grassland)) >= 3)
 			{
 				// If that is not the case, then add +1 if there are 3 or more grassland squares among them.
 				handicap += 1;
@@ -675,6 +676,9 @@ namespace CivOne
 			_difficulty = difficulty;
 			_competition = competition;
 			Console.WriteLine("Game instance created (difficulty: {0}, competition: {1})", _difficulty, _competition);
+
+			Settings.Animations = true;
+			Settings.CivilopediaText = true;
 			
 			_cities = new List<City>();
 			_units = new List<IUnit>();
@@ -689,7 +693,7 @@ namespace CivOne
 					{
 						// Chieftain starts with 50 Gold
 						HumanPlayer.Gold = 50;
-						Settings.Instance.InstantAdvice = true;
+						Settings.InstantAdvice = true;
 					}
 					Console.WriteLine("- Player {0} is {1} of the {2} (human)", i, _players[i].LeaderName, _players[i].TribeNamePlural);
 					continue;
