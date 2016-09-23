@@ -252,6 +252,11 @@ namespace CivOne.Screens
 					{
 						RenderTile tile = renderTiles.First(t => (t.Tile.X == unit.X && t.Tile.Y == unit.Y));
 						AddLayer(unit.GetUnit(unit.Owner), tile.Position.X + unit.Movement.X, tile.Position.Y + unit.Movement.Y);
+						if (unit is IBoardable && tile.Tile.Units.Any(u => u.Class == UnitClass.Land && (tile.Tile.City == null || (tile.Tile.City != null && unit.Sentry))))
+						{
+							// If there are units on the ship, draw a stack
+							AddLayer(unit.GetUnit(unit.Owner), tile.Position.X + unit.Movement.X - 1, tile.Position.Y + unit.Movement.Y - 1);
+						}
 					}
 					return true;
 				}
