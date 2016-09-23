@@ -1,6 +1,7 @@
 bin/**
 capture/**
 data/**
+plugins/**
 lib/**
 saves/**
 settings/**

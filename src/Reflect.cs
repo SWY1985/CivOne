@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using CivOne.Interfaces;
@@ -22,6 +23,10 @@ namespace CivOne
 			get
 			{
 				yield return Assembly.GetExecutingAssembly();
+				foreach(string file in Directory.GetFiles(Settings.Instance.PluginsDirectory, "*.dll"))
+				{
+					yield return Assembly.LoadFile(file);
+				}
 			}
 		}
 		

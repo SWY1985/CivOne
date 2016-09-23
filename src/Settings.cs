@@ -46,6 +46,14 @@ namespace CivOne
 			}
 		}
 		
+		internal string PluginsDirectory
+		{
+			get
+			{
+				return Path.Combine(BinDirectory, "plugins");
+			}
+		}
+		
 		internal string SavesDirectory
 		{
 			get

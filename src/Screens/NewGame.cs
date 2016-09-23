@@ -71,6 +71,11 @@ namespace CivOne.Screens
 		private void MenuTribe()
 		{
 			Menu menu = AddMenu("Pick your tribe...", SetTribe, _menuItemsTribes);
+			if (_menuItemsTribes.Length > 14)
+			{
+				menu.FontId = 1;
+				menu.RowHeight -= 2;
+			}
 			menu.Cancel += SetTribe_Cancel;
 			Common.AddScreen(menu);
 		}
