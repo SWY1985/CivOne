@@ -134,8 +134,10 @@ namespace CivOne
 			}
 		}
 
-		internal bool InstantAdvice { get; set; }
+		internal bool Animations { get; set; }
+		internal bool CivilopediaText { get; set; }
 		internal bool EndOfTurn { get; set; }
+		internal bool InstantAdvice { get; set; }
 
 		internal void RevealWorldCheat()
 		{

@@ -90,9 +90,19 @@ namespace CivOne
 			}
 		}
 
+		public bool HasBuilding(IBuilding building)
+		{
+			return _buildings.Any(b => b.Id == building.Id);
+		}
+
 		public bool HasBuilding<T>() where T : IBuilding
 		{
 			return _buildings.Any(b => b is T);
+		}
+
+		public bool HasWonder(IWonder wonder)
+		{
+			return _wonders.Any(w => w.Id == wonder.Id);
 		}
 
 		public bool HasWonder<T>() where T : IWonder
@@ -470,7 +480,16 @@ namespace CivOne
 				if (CurrentProduction is IBuilding && !_buildings.Any(b => b.Id == (CurrentProduction as IBuilding).Id))
 				{
 					Shields = 0;
-					if (CurrentProduction is Palace)
+					if (CurrentProduction is ISpaceShip)
+					{
+						Message message = Message.Newspaper(this, $"{this.Name} builds", $"{(CurrentProduction as ICivilopedia).Name}.");
+						message.Done += (s, a) => {
+							// TODO: Add space ship component
+							GameTask.Insert(Show.CityManager(this));
+						};
+						GameTask.Enqueue(message);
+					}
+					else if (CurrentProduction is Palace)
 					{
 						foreach (City city in Game.Instance.GetCities().Where(c => c.Owner == Owner))
 						{
