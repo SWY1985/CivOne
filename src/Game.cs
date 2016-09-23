@@ -27,7 +27,7 @@ namespace CivOne
 	public class Game : BaseInstance
 	{
 		private readonly string[] _cityNames = Common.AllCityNames.ToArray();
-		private readonly bool[] _cityNameUsed = new bool[256];
+		private readonly bool[] _cityNameUsed = new bool[Common.AllCityNames.Count()];
 		private readonly int _difficulty, _competition;
 		private readonly Player[] _players;
 		private readonly List<City> _cities;
