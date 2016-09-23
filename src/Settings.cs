@@ -206,7 +206,7 @@ namespace CivOne
 		
 		private void CreateDirectories()
 		{
-			foreach (string dir in new[] { CaptureDirectory, DataDirectory, SavesDirectory, SettingsDirectory })
+			foreach (string dir in new[] { CaptureDirectory, DataDirectory, PluginsDirectory, SavesDirectory, SettingsDirectory })
 			if (!Directory.Exists(dir))
 			{
 				Directory.CreateDirectory(dir);
