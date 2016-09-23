@@ -46,6 +46,11 @@ namespace CivOne.Units
 		public bool BuildRoad()
 		{
 			ITile tile = Map[X, Y];
+			if (tile.RailRoad)
+			{
+				// There is already a RailRoad here, don't build another one
+				return false;
+			}
 			if (!tile.IsOcean && !tile.Road && tile.City == null)
 			{
 				if ((tile is River) && !Game.Instance.CurrentPlayer.Advances.Any(a => a is BridgeBuilding))
@@ -297,7 +302,10 @@ namespace CivOne.Units
 				ITile tile = Map[X, Y];
 
 				yield return MenuNoOrders();
-				yield return MenuFoundCity();
+				if (!tile.IsOcean)
+				{
+					yield return MenuFoundCity();
+				}
 				if (!tile.IsOcean && (!tile.Road || (Game.Instance.HumanPlayer.Advances.Any(a => a is RailRoad) && !tile.RailRoad)))
 				{	
 					yield return MenuBuildRoad();
@@ -310,7 +318,10 @@ namespace CivOne.Units
 				{
 					yield return MenuBuildMines();
 				}
-				yield return MenuBuildFortress();
+				if (!tile.IsOcean && !tile.Fortress)
+				{
+					yield return MenuBuildFortress();
+				}
 				//
 				yield return MenuWait();
 				yield return MenuSentry();
