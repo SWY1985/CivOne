@@ -68,7 +68,7 @@ namespace CivOne.Screens
 		
 		private void FadeColours()
 		{
-			if (Settings.Instance.GraphicsMode != GraphicsMode.Graphics256) return;
+			if (Settings.GraphicsMode != GraphicsMode.Graphics256) return;
 			
 			ColorPalette palette = _pictures[_introPicture].Image.Palette;
 			for (int i = 1; i < 256; i++)

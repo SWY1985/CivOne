@@ -32,7 +32,7 @@ namespace CivOne.Screens
 		private uint _lastGameTick;
 		private bool _update = true;
 		private bool _redraw = false;
-		private bool _rightSideBar = Settings.Instance.RightSideBar;
+		private bool _rightSideBar;
 		
 		private Point _menuLocation = Point.Empty;
 		private Picture _menuGraphics = null;
@@ -89,7 +89,7 @@ namespace CivOne.Screens
 				case 0:
 					break;
 				case 1:
-					Game.Instance.HumanPlayer.Revolt();
+					Game.HumanPlayer.Revolt();
 					break;
 			}
 			MenuCancel(sender, args);
@@ -191,10 +191,10 @@ namespace CivOne.Screens
 		
 		private void MenuBarOrders(object sender, EventArgs args)
 		{
-			if (Game.Instance.ActiveUnit == null) return;
+			if (Game.ActiveUnit == null) return;
 
 			_gameMenu = new GameMenu(_canvas.Image.Palette.Entries);
-			_gameMenu.Items.AddRange(Game.Instance.ActiveUnit.MenuItems);
+			_gameMenu.Items.AddRange(Game.ActiveUnit.MenuItems);
 			
 			_menuX = 72;
 			_menuY = 8;
@@ -315,7 +315,7 @@ namespace CivOne.Screens
 			else if (_shift5 && args.Modifier == KeyModifier.Shift && args.KeyChar == '6')
 			{
 				_shift5 = false;
-				Settings.Instance.RevealWorldCheat();
+				Settings.RevealWorldCheat();
 				return true;
 			}
 			else if (_shift5)
@@ -461,6 +461,8 @@ namespace CivOne.Screens
 			_canvas = new Picture(320, 200, palette);
 			_canvas.FillRectangle(5, 0, 0, 320, 200);
 			
+			_rightSideBar = Settings.RightSideBar;
+
 			_menuBar = new MenuBar(palette);
 			_sideBar = new SideBar(palette);
 			_gameMap = new GameMap();

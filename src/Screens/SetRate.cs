@@ -33,17 +33,17 @@ namespace CivOne.Screens
 			{
 				if (_luxuries)
 				{
-					for (int i = 0; i <= (10 - Game.Instance.HumanPlayer.TaxesRate); i++)
+					for (int i = 0; i <= (10 - Game.HumanPlayer.TaxesRate); i++)
 					{
-						int science = 10 - Game.Instance.HumanPlayer.TaxesRate - i;
+						int science = 10 - Game.HumanPlayer.TaxesRate - i;
 						yield return $"{i * 10}% Luxuries, ({science * 10}% Science)";
 					}
 					yield break;
 				}
 
-				for (int i = 0; i <= (10 - Game.Instance.HumanPlayer.LuxuriesRate); i++)
+				for (int i = 0; i <= (10 - Game.HumanPlayer.LuxuriesRate); i++)
 				{
-					int science = 10 - Game.Instance.HumanPlayer.LuxuriesRate - i;
+					int science = 10 - Game.HumanPlayer.LuxuriesRate - i;
 					yield return $"{i * 10}% Tax, ({science * 10}% Science)";
 				}
 			}
@@ -67,13 +67,13 @@ namespace CivOne.Screens
 
 		private void TaxesChoice(object sender, EventArgs args)
 		{
-			Game.Instance.HumanPlayer.TaxesRate = (sender as Menu.Item).Value;
+			Game.HumanPlayer.TaxesRate = (sender as Menu.Item).Value;
 			MenuCancel(sender, args);
 		}
 
 		private void LuxuriesChoice(object sender, EventArgs args)
 		{
-			Game.Instance.HumanPlayer.LuxuriesRate = (sender as Menu.Item).Value;
+			Game.HumanPlayer.LuxuriesRate = (sender as Menu.Item).Value;
 			MenuCancel(sender, args);
 		}
 
@@ -127,9 +127,9 @@ namespace CivOne.Screens
 				menu.MissClick += MenuCancel;
 				menu.Cancel += MenuCancel;
 				if (_luxuries)
-					menu.ActiveItem = Game.Instance.HumanPlayer.LuxuriesRate;
+					menu.ActiveItem = Game.HumanPlayer.LuxuriesRate;
 				else
-					menu.ActiveItem = Game.Instance.HumanPlayer.TaxesRate;
+					menu.ActiveItem = Game.HumanPlayer.TaxesRate;
 				Menus.Add(menu);
 				
 				Common.AddScreen(menu);

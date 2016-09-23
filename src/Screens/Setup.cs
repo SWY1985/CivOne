@@ -91,9 +91,8 @@ namespace CivOne.Screens
 		
 		private void SettingsMenu(int activeItem = 0)
 		{
-			Settings settings = Settings.Instance; 
 			string graphicsMode, fullScreen, sideBar, scale, revealWorld;
-			switch (settings.GraphicsMode)
+			switch (Settings.GraphicsMode)
 			{
 				case GraphicsMode.Graphics256: graphicsMode = "256 colors"; break;
 				case GraphicsMode.Graphics16: graphicsMode = "16 colors"; break;
@@ -101,10 +100,10 @@ namespace CivOne.Screens
 			}
 			
 			graphicsMode = string.Format("Graphics Mode: {0}", graphicsMode);
-			fullScreen = string.Format("Full Screen: {0}", settings.FullScreen ? "yes" : "no");
-			sideBar = string.Format("Side bar location: {0}", settings.RightSideBar ? "right" : "left");
-			scale = string.Format("Window scale: {0}x", settings.Scale);
-			revealWorld = string.Format("Reveal World: {0}", settings.RevealWorld ? "yes" : "no");
+			fullScreen = string.Format("Full Screen: {0}", Settings.FullScreen ? "yes" : "no");
+			sideBar = string.Format("Side bar location: {0}", Settings.RightSideBar ? "right" : "left");
+			scale = string.Format("Window scale: {0}x", Settings.Scale);
+			revealWorld = string.Format("Reveal World: {0}", Settings.RevealWorld ? "yes" : "no");
 			
 			Menu menu = AddMenu("SETTINGS:", SettingsChoice, graphicsMode, fullScreen, sideBar, scale, revealWorld, "Back");
 			menu.ActiveItem = activeItem;
@@ -114,7 +113,7 @@ namespace CivOne.Screens
 		private void GraphicsModeMenu()
 		{
 			Menu menu = AddMenu("GRAPHICS MODE:", GraphicsModeChoice, "256 colors (default)", "16 colors", "Back");
-			switch (Settings.Instance.GraphicsMode)
+			switch (Settings.GraphicsMode)
 			{
 				case GraphicsMode.Graphics256: 
 					menu.ActiveItem = 0;
@@ -129,28 +128,28 @@ namespace CivOne.Screens
 		private void FullScreenMenu()
 		{
 			Menu menu = AddMenu("FULL SCREEN:", FullScreenChoice, "No (default)", "Yes", "Back");
-			menu.ActiveItem = Settings.Instance.FullScreen ? 1 : 0;
+			menu.ActiveItem = Settings.FullScreen ? 1 : 0;
 			Common.AddScreen(menu);
 		}
 		
 		private void SideBarMenu()
 		{
 			Menu menu = AddMenu("SIDE BAR LOCATION:", SideBarChoice, "Left (default)", "Right", "Back");
-			menu.ActiveItem = Settings.Instance.RightSideBar ? 1 : 0;
+			menu.ActiveItem = Settings.RightSideBar ? 1 : 0;
 			Common.AddScreen(menu);
 		}
 		
 		private void WindowScaleMenu()
 		{
 			Menu menu = AddMenu("WINDOW SCALE:", WindowScaleChoice, "1x", "2x", "3x", "4x", "Back");
-			menu.ActiveItem = Settings.Instance.Scale - 1;
+			menu.ActiveItem = Settings.Scale - 1;
 			Common.AddScreen(menu);
 		}
 		
 		private void RevealWorldMenu()
 		{
 			Menu menu = AddMenu("REVEAL WORLD:", RevealWorldChoice, "No (default)", "Yes", "Back");
-			menu.ActiveItem = Settings.Instance.RevealWorld ? 1 : 0;
+			menu.ActiveItem = Settings.RevealWorld ? 1 : 0;
 			Common.AddScreen(menu);
 		}
 		
@@ -212,10 +211,10 @@ namespace CivOne.Screens
 			switch (choice)
 			{
 				case 0: // 256 colours
-					Settings.Instance.GraphicsMode = GraphicsMode.Graphics256;
+					Settings.GraphicsMode = GraphicsMode.Graphics256;
 					break;
 				case 1: // 16 colours
-					Settings.Instance.GraphicsMode = GraphicsMode.Graphics16;
+					Settings.GraphicsMode = GraphicsMode.Graphics16;
 					break;
 			}
 			SettingsMenu(0);
@@ -227,10 +226,10 @@ namespace CivOne.Screens
 			switch (choice)
 			{
 				case 0: // no
-					Settings.Instance.FullScreen = false;
+					Settings.FullScreen = false;
 					break;
 				case 1: // yes
-					Settings.Instance.FullScreen = true;
+					Settings.FullScreen = true;
 					break;
 			}
 			CloseMenus();
@@ -243,10 +242,10 @@ namespace CivOne.Screens
 			switch (choice)
 			{
 				case 0: // left
-					Settings.Instance.RightSideBar = false;
+					Settings.RightSideBar = false;
 					break;
 				case 1: // right
-					Settings.Instance.RightSideBar = true;
+					Settings.RightSideBar = true;
 					break;
 			}
 			CloseMenus();
@@ -258,7 +257,7 @@ namespace CivOne.Screens
 			int choice = (sender as Menu.Item).Value;
 			if (choice < 4)
 			{
-				Settings.Instance.Scale = (choice + 1);
+				Settings.Scale = (choice + 1);
 			}
 			CloseMenus();
 			SettingsMenu(3);
@@ -270,10 +269,10 @@ namespace CivOne.Screens
 			switch (choice)
 			{
 				case 0: // no
-					Settings.Instance.RevealWorld = false;
+					Settings.RevealWorld = false;
 					break;
 				case 1: // yes
-					Settings.Instance.RevealWorld = true;
+					Settings.RevealWorld = true;
 					break;
 			}
 			CloseMenus();

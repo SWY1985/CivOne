@@ -43,7 +43,7 @@ namespace CivOne.Screens
 					if (!(units[i] is Diplomat) || (units[i] is Caravan))
 					{
 						int shields = 0, food = 0;
-						switch (Game.Instance.GetPlayer(_city.Owner).Government)
+						switch (Game.GetPlayer(_city.Owner).Government)
 						{
 							case Government.Anarchy:
 							case Government.Despotism:

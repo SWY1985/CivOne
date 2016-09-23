@@ -84,7 +84,7 @@ namespace CivOne.Screens
 					if (uid < 0 || uid >= _units.Length)
 						return true;
 					
-					Game.Instance.ActiveUnit = _units[uid];
+					Game.ActiveUnit = _units[uid];
 					_units[uid].Busy = false;
 					return true;
 				}

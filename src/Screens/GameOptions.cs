@@ -30,28 +30,28 @@ namespace CivOne.Screens
 
 		private void MenuAnimations(object sender, EventArgs args)
 		{
-			Settings.Instance.Animations = !Settings.Instance.Animations;
+			Settings.Animations = !Settings.Animations;
 			CloseMenus();
 			Close();
 		}
 
 		private void MenuCivilopediaText(object sender, EventArgs args)
 		{
-			Settings.Instance.CivilopediaText = !Settings.Instance.CivilopediaText;
+			Settings.CivilopediaText = !Settings.CivilopediaText;
 			CloseMenus();
 			Close();
 		}
 
 		private void MenuInstantAdvice(object sender, EventArgs args)
 		{
-			Settings.Instance.InstantAdvice = !Settings.Instance.InstantAdvice;
+			Settings.InstantAdvice = !Settings.InstantAdvice;
 			CloseMenus();
 			Close();
 		}
 
 		private void MenuEndOfTurn(object sender, EventArgs args)
 		{
-			Settings.Instance.EndOfTurn = !Settings.Instance.EndOfTurn;
+			Settings.EndOfTurn = !Settings.EndOfTurn;
 			CloseMenus();
 			Close();
 		}
@@ -88,13 +88,13 @@ namespace CivOne.Screens
 				menu.MissClick += MenuCancel;
 				menu.Cancel += MenuCancel;
 
-				menu.Items.Add(new Menu.Item($"{(Settings.Instance.InstantAdvice ? '^' : ' ')}Instant Advice"));
+				menu.Items.Add(new Menu.Item($"{(Settings.InstantAdvice ? '^' : ' ')}Instant Advice"));
 				menu.Items.Add(new Menu.Item(" AutoSave") { Enabled = false });
-				menu.Items.Add(new Menu.Item($"{(Settings.Instance.EndOfTurn ? '^' : ' ')}End of Turn"));
-				menu.Items.Add(new Menu.Item($"{(Settings.Instance.Animations ? '^' : ' ')}Animations"));
+				menu.Items.Add(new Menu.Item($"{(Settings.EndOfTurn ? '^' : ' ')}End of Turn"));
+				menu.Items.Add(new Menu.Item($"{(Settings.Animations ? '^' : ' ')}Animations"));
 				menu.Items.Add(new Menu.Item(" Sound") { Enabled = false });
 				menu.Items.Add(new Menu.Item(" Enemy Moves") { Enabled = false });
-				menu.Items.Add(new Menu.Item($"{(Settings.Instance.CivilopediaText ? '^' : ' ')}Civilopedia Text"));
+				menu.Items.Add(new Menu.Item($"{(Settings.CivilopediaText ? '^' : ' ')}Civilopedia Text"));
 				menu.Items.Add(new Menu.Item(" Palace") { Enabled = false });
 
 				menu.Items[0].Selected += MenuInstantAdvice;

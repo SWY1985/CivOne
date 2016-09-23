@@ -212,14 +212,14 @@ namespace CivOne.Screens
 				int yy = 81;
 				foreach (string textLine in TextFile.Instance.GetGameText("KING/INIT"))
 				{
-					string line = textLine.Replace("$RPLC1", Game.Instance.HumanPlayer.LeaderName).Replace("$US", Game.Instance.HumanPlayer.TribeNamePlural).Replace("^", "");
+					string line = textLine.Replace("$RPLC1", Game.HumanPlayer.LeaderName).Replace("$US", Game.HumanPlayer.TribeNamePlural).Replace("^", "");
 					_canvas.DrawText(line, 0, 5, 88, yy);
 					yy += 8;
 					Console.WriteLine(line);
 				}
 				StringBuilder sb = new StringBuilder();
 				int i = 0;
-				foreach (IAdvance advance in Game.Instance.HumanPlayer.Advances.OrderBy(a => a.Id))
+				foreach (IAdvance advance in Game.HumanPlayer.Advances.OrderBy(a => a.Id))
 				{
 					sb.Append($"{advance.Name}, ");
 					i++;
@@ -244,7 +244,7 @@ namespace CivOne.Screens
 			{
 				Destroy();
 				Common.AddScreen(new GamePlay());
-				if (Game.Instance.Difficulty == 0)
+				if (Game.Difficulty == 0)
 					GameTask.Enqueue(Message.Help("--- Civilization Note ---", TextFile.Instance.GetGameText("HELP/FIRSTMOVE")));
 				return true;
 			}

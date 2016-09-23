@@ -56,7 +56,7 @@ namespace CivOne.Screens
 		{
 			Cursor = MouseCursor.None;
 
-			bool modernGovernment = Game.Instance.HumanPlayer.Advances.Any(a => a.Id == (int)Advance.Invention);
+			bool modernGovernment = Game.HumanPlayer.Advances.Any(a => a.Id == (int)Advance.Invention);
 			Color[] palette = Resources.Instance.LoadPIC("SP257").Image.Palette.Entries;
 
 			Bitmap[] governmentPortraits = new Bitmap[4];
@@ -64,7 +64,7 @@ namespace CivOne.Screens
 			{
 				for (int i = 0; i < 4; i++)
 				{
-					governmentPortraits[i] = Icons.GovernmentPortrait(Game.Instance.HumanPlayer.Government, (Advisor)Enum.Parse(typeof(Advisor), i.ToString()), modernGovernment);
+					governmentPortraits[i] = Icons.GovernmentPortrait(Game.HumanPlayer.Government, (Advisor)Enum.Parse(typeof(Advisor), i.ToString()), modernGovernment);
 				}
 
 				for (int i = 144; i < 256; i++)
@@ -75,12 +75,12 @@ namespace CivOne.Screens
 			
 			string newsflash = TextFile.Instance.GetGameText($"KING/NEWS{(char)Common.Random.Next((int)'A', (int)'O')}")[0];
 			string shout = (Common.Random.Next(0, 2) == 0) ? "FLASH" : "EXTRA!";
-			string date = $"January 1, {Common.YearString(Game.Instance.GameTurn)}";
+			string date = $"January 1, {Common.YearString(Game.GameTurn)}";
 			string name = "NONE";
 			if (city != null)
 				name = city.Name;
-			else if (Game.Instance.HumanPlayer.Cities.Length > 0)
-				name = Game.Instance.HumanPlayer.Cities[0].Name;
+			else if (Game.HumanPlayer.Cities.Length > 0)
+				name = Game.HumanPlayer.Cities[0].Name;
 			switch (Common.Random.Next(0, 3))
 			{
 				case 0: name = $"The {name} Times"; break;

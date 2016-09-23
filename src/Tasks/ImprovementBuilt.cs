@@ -28,7 +28,7 @@ namespace CivOne.Tasks
 		public override void Run()
 		{
 			IScreen cityView;
-			if (!Settings.Instance.Animations)
+			if (!Settings.Animations)
 			{
 				cityView = new Newspaper(_city, new string[] { $"{_city.Name} builds", $"{(_improvement as ICivilopedia).Name}." }, showGovernment: false);
 			}

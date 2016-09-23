@@ -38,7 +38,7 @@ namespace CivOne.Screens
 		
 		private void FadeColours()
 		{
-			if (Settings.Instance.GraphicsMode != GraphicsMode.Graphics256) return;
+			if (Settings.GraphicsMode != GraphicsMode.Graphics256) return;
 			
 			ColorPalette palette = _canvas.Image.Palette;
 			for (int i = 86; i < 256; i++)
@@ -83,7 +83,7 @@ namespace CivOne.Screens
 		public Discovery(IAdvance advance)
 		{
 			_advance = advance;
-			_modern = Game.Instance.HumanPlayer.Advances.Any(a => a.Id == (int)Advance.Electricity);
+			_modern = Game.HumanPlayer.Advances.Any(a => a.Id == (int)Advance.Electricity);
 
 			Picture background = Resources.Instance.LoadPIC(_modern ? "DISCOVR2" : "DISCOVR1");
 			
@@ -94,7 +94,7 @@ namespace CivOne.Screens
 
 			string[] text = new string[]
 			{
-				$"{Game.Instance.HumanPlayer.TribeName} wise men",
+				$"{Game.HumanPlayer.TribeName} wise men",
 				"discover the secret",
 				$"of {advance.Name}!"
 			};

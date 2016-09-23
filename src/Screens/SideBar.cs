@@ -32,7 +32,7 @@ namespace CivOne.Screens
 			
 			if (GamePlay != null)
 			{
-				IUnit activeUnit = Game.Instance.ActiveUnit;
+				IUnit activeUnit = Game.ActiveUnit;
 				ITile[,] tiles = Map[GamePlay.X - 30, GamePlay.Y - 18, 78, 48];
 				for (int yy = 0; yy < 48; yy++)
 				for (int xx = 0; xx < 78; xx++)
@@ -47,7 +47,7 @@ namespace CivOne.Screens
 						continue;
 					}
 
-					if (Settings.Instance.RevealWorld)
+					if (Settings.RevealWorld)
 					{
 						byte colour = 5;
 						switch (tile.Type)
@@ -68,7 +68,7 @@ namespace CivOne.Screens
 						}
 						_miniMap[xx + 1, yy + 1] = colour;
 					}
-					else if (Game.Instance.HumanPlayer.Visible(tile.X, tile.Y))
+					else if (Game.HumanPlayer.Visible(tile.X, tile.Y))
 					{
 						if (tile.City != null)
 						{
@@ -91,21 +91,21 @@ namespace CivOne.Screens
 
 		private void DrawDemographics()
 		{
-			Player player = Game.Instance.HumanPlayer;
+			Player player = Game.HumanPlayer;
 
 			_demographics.FillLayerTile(_background);
 			_demographics.AddBorder(15, 8, 0, 0, 80, 39);
 			_demographics.FillRectangle(11, 3, 2, 74, 11);
 			_demographics.FillRectangle(2, 3, 13, 74, 1);
-			if (Game.Instance.HumanPlayer.Population > 0)
+			if (Game.HumanPlayer.Population > 0)
 			{
 				string population = $"{player.Population:n0}".Replace(".", ",");
 				_demographics.DrawText($"{population}#", 0, 5, 2, 15, TextAlign.Left);
 			}
-			_demographics.DrawText(Game.Instance.GameYear, 0, 5, 2, 23, TextAlign.Left);
+			_demographics.DrawText(Game.GameYear, 0, 5, 2, 23, TextAlign.Left);
 
-			int width = Resources.Instance.GetTextSize(0, Game.Instance.GameYear).Width;
-			int stage = (int)Math.Floor(((double)Game.Instance.HumanPlayer.Science / Game.Instance.HumanPlayer.ScienceCost) * 4);
+			int width = Resources.Instance.GetTextSize(0, Game.GameYear).Width;
+			int stage = (int)Math.Floor(((double)Game.HumanPlayer.Science / Game.HumanPlayer.ScienceCost) * 4);
 			_demographics.AddLayer(Icons.Lamp(stage), 4 + width, 22);
 
 			_demographics.DrawText($"{player.Gold}$ {player.LuxuriesRate}.{player.TaxesRate}.{player.ScienceRate}", 0, 5, 2, 31, TextAlign.Left);
@@ -113,12 +113,12 @@ namespace CivOne.Screens
 		
 		private void DrawGameInfo(uint gameTick = 0)
 		{
-			IUnit unit = Game.Instance.ActiveUnit;
+			IUnit unit = Game.ActiveUnit;
 			
 			_gameInfo.FillLayerTile(_background);
 			_gameInfo.AddBorder(15, 8, 0, 0, 80, 103);
 			
-			if (Game.Instance.CurrentPlayer != Game.Instance.HumanPlayer || GameTask.Any())
+			if (Game.CurrentPlayer != Game.HumanPlayer || GameTask.Any())
 			{
 				_gameInfo.FillRectangle((byte)((gameTick % 4 < 2) ? 15 : 8), 2, 95, 6, 6);
 				return;
@@ -127,7 +127,7 @@ namespace CivOne.Screens
 			if (unit != null)
 			{
 				int yy = 2;
-				_gameInfo.DrawText(Game.Instance.HumanPlayer.TribeName, 0, 5, 4, 2, TextAlign.Left);
+				_gameInfo.DrawText(Game.HumanPlayer.TribeName, 0, 5, 4, 2, TextAlign.Left);
 				_gameInfo.DrawText(unit.Name, 0, 5, 4, (yy += 8), TextAlign.Left);
 				
 				if (unit.Veteran)
@@ -215,7 +215,7 @@ namespace CivOne.Screens
 			}
 			else if (args.Y >= 62)
 			{
-				if (Game.Instance.CurrentPlayer == Game.Instance.HumanPlayer && Game.Instance.ActiveUnit == null)
+				if (Game.CurrentPlayer == Game.HumanPlayer && Game.ActiveUnit == null)
 				{
 					GameTask.Enqueue(Turn.End());
 				}

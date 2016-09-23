@@ -23,7 +23,7 @@ using CivOne.Units;
 
 namespace CivOne
 {
-	internal class Game
+	public class Game
 	{
 		private readonly string[] _cityNames = Common.AllCityNames.ToArray();
 		private readonly bool[] _cityNameUsed = new bool[256];
