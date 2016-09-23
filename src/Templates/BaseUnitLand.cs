@@ -45,6 +45,10 @@ namespace CivOne.Templates
 				MovesLeft = 0;
 				PartMoves = 0;
 				Sentry = true;
+				foreach (IUnit unit in Tile.Units.Where(u => u is IBoardable))
+				{
+					unit.Sentry = false;
+				}
 			}
 			else
 			{
