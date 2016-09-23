@@ -13,6 +13,14 @@ namespace CivOne.Civilizations
 {
 	internal class English : ICivilization
 	{
+		public int Id
+		{
+			get
+			{
+				return 13;
+			}
+		}
+
 		public string Name
 		{
 			get { return "English"; }

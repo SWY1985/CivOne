@@ -13,6 +13,14 @@ namespace CivOne.Civilizations
 {
 	internal class Aztec : ICivilization
 	{
+		public int Id
+		{
+			get
+			{
+				return 11;
+			}
+		}
+
 		public string Name
 		{
 			get { return "Aztec"; }
