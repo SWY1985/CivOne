@@ -64,7 +64,7 @@ namespace CivOne.Screens
 				}
 				if (_city.CurrentProduction is IWonder)
 				{
-					return Game.Instance.WonderExists(_city.CurrentProduction as IWonder);
+					return Game.Instance.WonderBuilt(_city.CurrentProduction as IWonder);
 				}
 				return false;
 			}

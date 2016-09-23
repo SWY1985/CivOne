@@ -333,6 +333,11 @@ namespace CivOne
 		{
 			return BuiltWonders.Any(w => w is T);
 		}
+
+		public bool WonderBuilt(IWonder wonder)
+		{
+			return BuiltWonders.Any(w => w.Id == wonder.Id);
+		}
 		
 		public void DisbandUnit(IUnit unit)
 		{
