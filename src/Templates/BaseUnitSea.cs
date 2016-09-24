@@ -41,6 +41,13 @@ namespace CivOne.Templates
 			}
 
 			base.MovementDone(previousTile);
+			
+			if (Map[X, Y].City != null)
+			{
+				// End turn when entering city
+				MovesLeft = 0;
+				return;
+			}
 		}
 
 		public override void Explore()
