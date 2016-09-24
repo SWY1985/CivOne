@@ -145,13 +145,13 @@ namespace CivOne
 				GameTurn++;
 			}
 
-			foreach (City city in _cities.Where(c => c.Owner == _currentPlayer).ToArray())
-			{
-				GameTask.Enqueue(Turn.New(city));
-			}
 			foreach (IUnit unit in _units.Where(u => u.Owner == _currentPlayer))
 			{
 				GameTask.Enqueue(Turn.New(unit));
+			}
+			foreach (City city in _cities.Where(c => c.Owner == _currentPlayer).ToArray())
+			{
+				GameTask.Enqueue(Turn.New(city));
 			}
 			GameTask.Enqueue(Turn.New(CurrentPlayer));
 
