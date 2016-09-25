@@ -343,6 +343,14 @@ namespace CivOne
 		public void DisbandUnit(IUnit unit)
 		{
 			if (!_units.Contains(unit)) return;
+			if (unit.Tile is Ocean && unit is IBoardable)
+			{
+				int totalCargo = unit.Tile.Units.Where(u => u is IBoardable).Sum(u => (u as IBoardable).Cargo) - (unit as IBoardable).Cargo;
+				while (unit.Tile.Units.Count(u => u.Class != UnitClass.Water) > totalCargo)
+				{
+					_units.Remove(unit.Tile.Units.First(u => u.Class != UnitClass.Water));
+				} 
+			}
 			_units.Remove(unit);
 		}
 
