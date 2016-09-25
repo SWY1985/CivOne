@@ -167,8 +167,8 @@ namespace CivOne.Screens
 					IUnit[] units = t.Tile.Units.Where(u => !u.Moving).ToArray();
 					if (t.Tile.Type == Terrain.Ocean)
 					{
-						// Never show land units at sea
-						units = units.Where(u => u.Class != UnitClass.Land).ToArray();
+						// Always show naval units first at sea
+						units = units.OrderBy(u => (u.Class == UnitClass.Water) ? 1 : 0).ToArray();
 					}
 					if (units.Length == 0) continue;
 					
@@ -182,6 +182,12 @@ namespace CivOne.Screens
 					else if (!Common.HasScreenType(typeof(Input)) && ((gameTick % 4) >= 2 || drawUnit.Moving))
 					{
 						// Active unit on this tile or unit is currently moving. Drawing happens later.
+						continue;
+					}
+
+					if (t.Tile.IsOcean && drawUnit.Class != UnitClass.Water && drawUnit.Sentry)
+					{
+						// Do not draw sentried land units at sea
 						continue;
 					}
 
