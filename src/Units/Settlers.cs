@@ -73,6 +73,12 @@ namespace CivOne.Units
 		public bool BuildIrrigation()
 		{
 			ITile tile = Map[X, Y];
+			if (tile.Irrigation)
+			{
+				// Tile already irrigated, ignore
+				return false;
+			}
+
 			if ((tile is Forest) || (tile is Jungle) || (tile is Swamp))
 			{
 				BuildingIrrigation = 4;
