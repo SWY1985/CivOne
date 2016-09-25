@@ -141,7 +141,7 @@ namespace CivOne.GFX
 			if (tile.GetBorderType(Direction.South) != Terrain.Ocean) borders += 4;
 			if (tile.GetBorderType(Direction.West) != Terrain.Ocean) borders += 8;
 			
-			if (borders == 12) // South East
+			if (borders == 6) // South East
 			{
 				if (tile.GetBorderType(Direction.NorthEast) != Terrain.Ocean) return false;
 				if (tile.GetBorderType(Direction.SouthWest) != Terrain.Ocean) return false;
