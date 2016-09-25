@@ -522,25 +522,29 @@ namespace CivOne
 				// Choose a map square randomly
 				int x = Common.Random.Next(0, Map.WIDTH);
 				int y = Common.Random.Next(2, Map.HEIGHT - 2);
-				if (Map.FixedStartPositions)
+				if (Map.FixedStartPositions && GameTurn == 0)
 				{
+					// Map position is fixed, don't check anything
 					x = _players[player].Civilization.StartX;
 					y = _players[player].Civilization.StartY;
 				}
-				ITile tile = Map[x, y];
-				
-				if (tile.IsOcean) continue; // Is it an ocean tile?
-				if (tile.Hut) continue; // Is there a hut on this tile?
-				if (_units.Any(u => u.X == x || u.Y == y)) continue; // Is there already a unit on this tile?
-				if (tile.LandValue < (12 - (loopCounter / 32))) continue; // Is the land value high enough?
-				if (_cities.Any(c => Common.DistanceToTile(x, y, c.X, c.Y) < (10 - (loopCounter / 64)))) continue; // Distance to other cities
-				if (_units.Any(u => (u is Settlers) && Common.DistanceToTile(x, y, u.X, u.Y) < (10 - (loopCounter / 64)))) continue; // Distance to other settlers
-				if (Map.ContinentTiles(tile.ContinentId).Count(t => Map.TileIsType(t, Terrain.Plains, Terrain.Grassland1, Terrain.Grassland2, Terrain.River)) < (32 - (GameTurn / 16))) continue; // Check buildable tiles on continent
-				
-				// After 0 AD, don't spawn a Civilization on a continent that already contains cities.
-				if (Common.TurnToYear(GameTurn) >= 0 && Map.ContinentTiles(tile.ContinentId).Any(t => t.City != null)) continue;
-				
-				Console.WriteLine(loopCounter.ToString());
+				else
+				{
+					ITile tile = Map[x, y];
+					
+					if (tile.IsOcean) continue; // Is it an ocean tile?
+					if (tile.Hut) continue; // Is there a hut on this tile?
+					if (_units.Any(u => u.X == x || u.Y == y)) continue; // Is there already a unit on this tile?
+					if (tile.LandValue < (12 - (loopCounter / 32))) continue; // Is the land value high enough?
+					if (_cities.Any(c => Common.DistanceToTile(x, y, c.X, c.Y) < (10 - (loopCounter / 64)))) continue; // Distance to other cities
+					if (_units.Any(u => (u is Settlers) && Common.DistanceToTile(x, y, u.X, u.Y) < (10 - (loopCounter / 64)))) continue; // Distance to other settlers
+					if (Map.ContinentTiles(tile.ContinentId).Count(t => Map.TileIsType(t, Terrain.Plains, Terrain.Grassland1, Terrain.Grassland2, Terrain.River)) < (32 - (GameTurn / 16))) continue; // Check buildable tiles on continent
+					
+					// After 0 AD, don't spawn a Civilization on a continent that already contains cities.
+					if (Common.TurnToYear(GameTurn) >= 0 && Map.ContinentTiles(tile.ContinentId).Any(t => t.City != null)) continue;
+					
+					Console.WriteLine(loopCounter.ToString());
+				}
 				
 				// Starting position found, add Settlers
 				IUnit unit = CreateUnit(Unit.Settlers, x, y);
