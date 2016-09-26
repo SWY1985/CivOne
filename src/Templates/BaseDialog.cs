@@ -25,6 +25,24 @@ namespace CivOne.Templates
 		
 		protected Picture DialogBox { get; private set; }
 		
+		protected Bitmap[] TextLines { get; private set; }
+
+		protected int TextWidth
+		{
+			get
+			{
+				return TextLines.Max(x => x.Width);
+			}
+		}
+
+		protected int TextHeight
+		{
+			get
+			{
+				return TextLines.Sum(x => x.Height);
+			}
+		}
+		
 		protected Bitmap Selection(int left, int top, int width, int height)
 		{
 			Bitmap background = (Bitmap)DialogBox.GetPart(left, top, width, height).Clone();
@@ -68,12 +86,9 @@ namespace CivOne.Templates
 			Cancel();
 			return true;
 		}
-		
-		public BaseDialog(int left, int top, int width, int height)
-		{
-			_left = left;
-			_top = top;
 
+		private void Initialize(int left, int top, int width, int height)
+		{
 			Cursor = MouseCursor.Pointer;
 
 			Bitmap background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
@@ -96,6 +111,25 @@ namespace CivOne.Templates
 				DialogBox.FillRectangle(0, width, 0, (actualWidth - width), height);
 			DialogBox.AddBorder(15, 8, 1, 1, width - 2, height - 2);
 			DialogBox.AddBorder(5, 5, 0, 0, width, height);
+		}
+
+		public BaseDialog(int left, int top, int marginWidth, int marginHeight, string[] message)
+		{
+			_left = left;
+			_top = top;
+			TextLines = new Bitmap[message.Length];
+			for (int i = 0; i < message.Length; i++)
+				TextLines[i] = Resources.Instance.GetText(message[i], 0, 15);
+
+			Initialize(left, top, TextWidth + marginWidth, TextHeight + marginHeight);
+		}
+		
+		public BaseDialog(int left, int top, int width, int height)
+		{
+			_left = left;
+			_top = top;
+
+			Initialize(left, top, width, height);
 		}
 	}
 }
