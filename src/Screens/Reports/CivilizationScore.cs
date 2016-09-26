@@ -9,7 +9,7 @@
 
 using CivOne.Templates;
 
-namespace CivOne.Screens
+namespace CivOne.Screens.Reports
 {
 	internal class CivilizationScore : BaseReport
 	{

@@ -11,7 +11,7 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.Templates;
 
-namespace CivOne.Screens
+namespace CivOne.Screens.Reports
 {
 	internal class IntelligenceReport : BaseReport
 	{
