@@ -114,7 +114,7 @@ namespace CivOne
 
 		public void Revolt()
 		{
-			_anarchy = 4;
+			_anarchy = (short)((HasWonder<Pyramids>() && !WonderObsolete<Pyramids>()) ? 1 : 4);
 			Government = Government.Anarchy;
 			if (!Human) return;
 			GameTask.Enqueue(Message.Newspaper(null, $"The {Game.Instance.HumanPlayer.TribeNamePlural} are", "revolting! Citizens", "demand new govt."));
@@ -370,7 +370,7 @@ namespace CivOne
 			{
 				GameTask.Enqueue(Show.ChooseGovernment);
 			}
-			_anarchy--;
+			if (_anarchy > 0) _anarchy--;
 		}
 		
 		public Player(ICivilization civilization, string customLeaderName = null, string customTribeName = null, string customTribeNamePlural = null)
