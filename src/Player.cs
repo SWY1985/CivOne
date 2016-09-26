@@ -75,7 +75,7 @@ namespace CivOne
 
 		public byte Handicap { get; internal set; }
 		
-		public Government Government { get; private set; }
+		public Government Government { get; internal set; }
 
 		private int _luxuriesRate = 0, _taxesRate = 5, _scienceRate = 5;
 		public int LuxuriesRate
@@ -368,12 +368,7 @@ namespace CivOne
 		{
 			if (_anarchy == 0 && Government == Government.Anarchy)
 			{
-				ChooseGovernment chooseGovernment = new ChooseGovernment();
-				chooseGovernment.Closed += (s, a) => {
-					Government = (s as ChooseGovernment).Result;
-					GameTask.Enqueue(Message.NewGoverment(null, $"{Game.Instance.HumanPlayer.TribeName} government", $"changed to {Government}!"));
-				};
-				Common.AddScreen(chooseGovernment);
+				GameTask.Enqueue(Show.ChooseGovernment);
 			}
 			_anarchy--;
 		}
