@@ -470,7 +470,10 @@ namespace CivOne.Screens
 				
 				if (city != null)
 				{
-					Common.AddScreen(new CityManager(city));
+					if (city.Owner == Game.PlayerNumber(HumanPlayer) || Settings.RevealWorld)
+					{
+						Common.AddScreen(new CityManager(city));
+					}
 				}
 				else if (Map[xx, yy].Units.Any(u => u.Owner == Game.PlayerNumber(Game.HumanPlayer)))
 				{
