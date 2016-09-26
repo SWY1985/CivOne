@@ -34,9 +34,6 @@ namespace CivOne.Screens
 		private bool _update = true;
 		private bool _redraw = false;
 		private bool _rightSideBar;
-		
-		private Point _menuLocation = Point.Empty;
-		private Picture _menuGraphics = null;
 
 		private bool _shift5 = false;
 
@@ -59,28 +56,6 @@ namespace CivOne.Screens
 		internal void CenterOnPoint(int x, int y)
 		{
 			_gameMap.CenterOnPoint(x, y);
-		}
-		
-		private void MenuCancel(object sender, EventArgs args)
-		{
-			CloseMenus();
-			_menuLocation = Point.Empty;
-			_menuGraphics = null;
-			_update = true;
-			_redraw = true;
-		}
-		
-		private void MenuRevolutionChoice(object sender, EventArgs args)
-		{
-			switch ((sender as Menu.Item).Value)
-			{
-				case 0:
-					break;
-				case 1:
-					Game.HumanPlayer.Revolt();
-					break;
-			}
-			MenuCancel(sender, args);
 		}
 		
 		private void MenuBarGame(object sender, EventArgs args)
@@ -211,12 +186,6 @@ namespace CivOne.Screens
 			DrawLayer(_sideBar, gameTick, _rightSideBar ? 240 : 0, 8);
 			DrawLayer(_gameMap, gameTick, _rightSideBar ? 0 : 80, 8);
 			DrawLayer(_gameMenu, gameTick, _menuX, _menuY);
-			
-			if (_menuLocation != Point.Empty && _menuGraphics != null)
-			{
-				_canvas.FillRectangle(5, _menuLocation.X - 1, _menuLocation.Y - 1, _menuGraphics.Image.Width + 2, _menuGraphics.Image.Height + 2);
-				AddLayer(_menuGraphics, _menuLocation.X, _menuLocation.Y);
-			}
 			
 			_redraw = false;
 			_update = false;
