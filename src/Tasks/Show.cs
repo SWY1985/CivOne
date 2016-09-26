@@ -11,6 +11,7 @@ using System;
 using System.Linq;
 using CivOne.Interfaces;
 using CivOne.Screens;
+using CivOne.Screens.Dialogs;
 
 namespace CivOne.Tasks
 {
@@ -71,6 +72,14 @@ namespace CivOne.Tasks
 		public static Show UnitStack(int x, int y)
 		{
 			return new Show(new UnitStack(x, y));
+		}
+
+		public static Show ConfirmQuit
+		{
+			get
+			{
+				return new Show(new ConfirmQuit());
+			}
 		}
 
 		private Show(IScreen screen)
