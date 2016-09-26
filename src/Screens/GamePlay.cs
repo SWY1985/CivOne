@@ -69,19 +69,6 @@ namespace CivOne.Screens
 			_redraw = true;
 		}
 		
-		private void MenuQuitChoice(object sender, EventArgs args)
-		{
-			switch ((sender as Menu.Item).Value)
-			{
-				case 0:
-					break;
-				case 1:
-					Common.Quit();
-					break;
-			}
-			MenuCancel(sender, args);
-		}
-		
 		private void MenuRevolutionChoice(object sender, EventArgs args)
 		{
 			switch ((sender as Menu.Item).Value)
@@ -130,40 +117,6 @@ namespace CivOne.Screens
 			Common.AddScreen(menu);
 		}
 		
-		private void MenuQuit()
-		{
-			_menuLocation = new Point(101, 81);
-			_menuGraphics = new Picture(104, 39);
-			_menuGraphics.FillLayerTile(_menuBackground);
-			_menuGraphics.AddBorder(15, 8, 0, 0, 104, 39);
-			_menuGraphics.DrawText("Are you sure you", 0, 15, 4, 4);
-			_menuGraphics.DrawText("want to Quit?", 0, 15, 4, 12);
-			
-			Bitmap background = (Bitmap)_menuGraphics.GetPart(2, 19, 100, 16).Clone();
-			Picture.ReplaceColours(background, new byte[] { 7, 22 }, new byte[] { 11, 3 });
-
-			Menu menu = new Menu(Canvas.Image.Palette.Entries, background)
-			{
-				X = 103,
-				Y = 100,
-				Width = 100,
-				ActiveColour = 11,
-				TextColour = 5,
-				FontId = 0
-			};
-			Menu.Item menuItem;
-			int i = 0;
-			foreach (string choice in new [] { "Keep Playing", "Yes, Quit" })
-			{
-				menu.Items.Add(menuItem = new Menu.Item(choice, i++));
-				menuItem.Selected += MenuQuitChoice;
-			}
-			menu.MissClick += MenuCancel;
-			menu.Cancel += MenuCancel;
-			Menus.Add(menu);
-			Common.AddScreen(menu);
-		}
-		
 		private void MenuBarGame(object sender, EventArgs args)
 		{
 			_gameMenu = new GameMenu(_canvas.Image.Palette.Entries);
@@ -181,7 +134,7 @@ namespace CivOne.Screens
 			_gameMenu.Items[1].Selected += (s, a) => Common.AddScreen(SetRate.Luxuries);
 			_gameMenu.Items[3].Selected += (s, a) => GameTask.Enqueue(Show.Options); //Common.AddScreen(new GameOptions());
 			_gameMenu.Items[5].Selected += (s, a) => MenuRevolution();
-			_gameMenu.Items[8].Selected += (s, a) => MenuQuit();
+			_gameMenu.Items[8].Selected += (s, a) => GameTask.Enqueue(Show.ConfirmQuit);
 			
 			_menuX = 16;
 			_menuY = 8;
