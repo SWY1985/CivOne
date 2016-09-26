@@ -25,6 +25,7 @@
 		<Compile Include="src\IO\*.cs" />
 		<Compile Include="src\Screens\*.cs" />
 		<Compile Include="src\Screens\Dialogs\*.cs" />
+		<Compile Include="src\Screens\Reports\*.cs" />
 		<Compile Include="src\Tasks\*.cs" />
 		<Compile Include="src\Templates\*.cs" />
 		<Compile Include="src\Tiles\*.cs" />
