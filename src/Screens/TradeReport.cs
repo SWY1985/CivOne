@@ -17,7 +17,7 @@ using CivOne.Templates;
 
 namespace CivOne.Screens
 {
-	internal class TradeReport : BaseStatusScreen
+	internal class TradeReport : BaseReport
 	{
 		private const char LUXURIES = '\\';
 		private const char GOLD = '$';

@@ -17,7 +17,7 @@ using CivOne.Interfaces;
 
 namespace CivOne.Templates
 {
-	internal abstract class BaseStatusScreen : BaseScreen, IModal
+	internal abstract class BaseReport : BaseScreen, IModal
 	{
 		private bool _update = true;
 
@@ -42,7 +42,7 @@ namespace CivOne.Templates
 			return true;
 		}
 		
-		public BaseStatusScreen(string title, byte backgroundColour)
+		public BaseReport(string title, byte backgroundColour)
 		{
 			bool modernGovernment = Game.Instance.HumanPlayer.Advances.Any(a => a.Id == (int)Advance.Invention);
 			for (int i = 0; i < 4; i++)

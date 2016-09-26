@@ -11,7 +11,7 @@ using CivOne.Templates;
 
 namespace CivOne.Screens
 {
-	internal class CivilizationScore : BaseStatusScreen
+	internal class CivilizationScore : BaseReport
 	{
 		public CivilizationScore() : base("CIVILIZATION SCORE", 3)
 		{

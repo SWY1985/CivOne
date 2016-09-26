@@ -16,7 +16,7 @@ using CivOne.Templates;
 
 namespace CivOne.Screens
 {
-	internal class CityStatus : BaseStatusScreen
+	internal class CityStatus : BaseReport
 	{
 		private const char FOOD = '{';
 		private const char SHIELD = '|';

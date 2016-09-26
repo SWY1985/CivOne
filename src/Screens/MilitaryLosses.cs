@@ -11,7 +11,7 @@ using CivOne.Templates;
 
 namespace CivOne.Screens
 {
-	internal class MilitaryLosses : BaseStatusScreen
+	internal class MilitaryLosses : BaseReport
 	{
 		public MilitaryLosses() : base("MILITARY LOSSES", 4)
 		{

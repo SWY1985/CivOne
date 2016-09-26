@@ -13,7 +13,7 @@ using CivOne.Templates;
 
 namespace CivOne.Screens
 {
-	internal class IntelligenceReport : BaseStatusScreen
+	internal class IntelligenceReport : BaseReport
 	{
 		public IntelligenceReport() : base("INTELLIGENCE REPORT", 1)
 		{

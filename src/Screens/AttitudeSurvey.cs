@@ -17,7 +17,7 @@ using CivOne.Templates;
 
 namespace CivOne.Screens
 {
-	internal class AttitudeSurvey : BaseStatusScreen
+	internal class AttitudeSurvey : BaseReport
 	{
 		private const byte FONT_ID = 0;
 
