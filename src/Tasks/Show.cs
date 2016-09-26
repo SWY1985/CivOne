@@ -9,6 +9,7 @@
 
 using System;
 using System.Linq;
+using CivOne.Enums;
 using CivOne.Interfaces;
 using CivOne.Screens;
 using CivOne.Screens.Dialogs;
@@ -87,6 +88,19 @@ namespace CivOne.Tasks
 			get
 			{
 				return new Show(new Revolution());
+			}
+		}
+
+		public static Show ChooseGovernment
+		{
+			get
+			{
+				ChooseGovernment chooseGovernment = new ChooseGovernment();
+				chooseGovernment.Closed += (s, a) => {
+					Game.Instance.HumanPlayer.Government = (s as ChooseGovernment).Result;
+					GameTask.Insert(Message.NewGoverment(null, $"{Game.Instance.HumanPlayer.TribeName} government", $"changed to {Game.Instance.HumanPlayer.Government}!"));
+				};
+				return new Show(chooseGovernment);
 			}
 		}
 
