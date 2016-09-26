@@ -227,11 +227,11 @@ namespace CivOne.GFX
 					filename = $"GOVT1" + (modern ? "M" : "A");
 					break;
 				case Government.Republic:
-				case Government.Democracy:
+				case Government.Democratic:
 					governmentId = (modern ? 5 : 4);
 					filename = $"GOVT2" + (modern ? "M" : "A");
 					break;
-				case Government.Communism:
+				case Government.Communist:
 					governmentId = 6;
 					filename = "GOVT3A";
 					break;

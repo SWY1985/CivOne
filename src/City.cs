@@ -473,7 +473,7 @@ namespace CivOne
 					if ((unit is Settlers) || (unit is Diplomat) || (unit is Caravan))
 					{
 						GameTask advisorMessage = Message.Advisor(Advisor.Defense, $"{this.Name} builds {unit.Name}.");
-						advisorMessage.Done += (s, a) => GameTask.Insert(Show.CityManager(this));//Common.AddScreen(new CityManager(this));
+						advisorMessage.Done += (s, a) => GameTask.Insert(Show.CityManager(this));
 						GameTask.Enqueue(advisorMessage);
 					}
 				}
@@ -501,7 +501,7 @@ namespace CivOne
 						Message message = Message.Newspaper(this, $"{this.Name} builds", $"{(CurrentProduction as ICivilopedia).Name}.");
 						message.Done += (s, a) => {
 							GameTask advisorMessage = Message.Advisor(Advisor.Foreign, $"{Player.TribeName} capital", $"moved to {Name}.");
-							advisorMessage.Done += (s1, a1) => GameTask.Insert(Show.CityManager(this)); //Common.AddScreen(new CityManager(this));
+							advisorMessage.Done += (s1, a1) => GameTask.Insert(Show.CityManager(this));
 							GameTask.Enqueue(advisorMessage);
 						};
 						GameTask.Enqueue(message);

@@ -13,7 +13,7 @@ using System.Linq;
 using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Interfaces;
-using CivOne.Screens;
+using CivOne.Screens.Dialogs;
 using CivOne.Tasks;
 using CivOne.Units;
 using CivOne.Wonders;
@@ -117,7 +117,6 @@ namespace CivOne
 			_anarchy = 4;
 			Government = Government.Anarchy;
 			if (!Human) return;
-			//Common.AddScreen(new Newspaper(false, null, $"The {Game.Instance.HumanPlayer.TribeNamePlural} are", "revolting! Citizens", "demand new govt."));
 			GameTask.Enqueue(Message.Newspaper(null, $"The {Game.Instance.HumanPlayer.TribeNamePlural} are", "revolting! Citizens", "demand new govt."));
 		}
 
@@ -239,9 +238,9 @@ namespace CivOne
 				
 				yield return Government.Despotism;
 				if (allGovernments || Game.Instance.HumanPlayer.Advances.Any(a => a is Monarchy)) yield return Government.Monarchy;
-				if (allGovernments || Game.Instance.HumanPlayer.Advances.Any(a => a is Communism)) yield return Government.Communism;
+				if (allGovernments || Game.Instance.HumanPlayer.Advances.Any(a => a is Communism)) yield return Government.Communist;
 				if (allGovernments || Game.Instance.HumanPlayer.Advances.Any(a => a is TheRepublic)) yield return Government.Republic;
-				if (allGovernments || Game.Instance.HumanPlayer.Advances.Any(a => a is Democracy)) yield return Government.Democracy;
+				if (allGovernments || Game.Instance.HumanPlayer.Advances.Any(a => a is Democracy)) yield return Government.Democratic;
 			}
 		}
 
@@ -372,11 +371,9 @@ namespace CivOne
 				ChooseGovernment chooseGovernment = new ChooseGovernment();
 				chooseGovernment.Closed += (s, a) => {
 					Government = (s as ChooseGovernment).Result;
-					//Common.AddScreen(new Newspaper(true, null, $"{Game.Instance.HumanPlayer.TribeName} government", $"changed to {Government}!"));
 					GameTask.Enqueue(Message.NewGoverment(null, $"{Game.Instance.HumanPlayer.TribeName} government", $"changed to {Government}!"));
 				};
 				Common.AddScreen(chooseGovernment);
-				//Common.AddScreen(new Newspaper(true, $"{Game.Instance.HumanPlayer.TribeName} government", "changed to Despotism!"));
 			}
 			_anarchy--;
 		}
