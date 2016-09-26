@@ -16,7 +16,7 @@ using CivOne.Templates;
 
 namespace CivOne.Screens
 {
-	internal class ScienceReport : BaseStatusScreen
+	internal class ScienceReport : BaseReport
 	{
 		public ScienceReport() : base("SCIENCE REPORT", 1)
 		{
