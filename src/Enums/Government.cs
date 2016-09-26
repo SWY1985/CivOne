@@ -14,8 +14,8 @@ namespace CivOne.Enums
 		Anarchy,
 		Despotism,
 		Monarchy,
-		Communism,
+		Communist,
 		Republic,
-		Democracy
+		Democratic
 	}
 }

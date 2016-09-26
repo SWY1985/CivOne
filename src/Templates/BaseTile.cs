@@ -42,7 +42,7 @@ namespace CivOne.Templates
 			}
 		}
 
-		protected bool MonarchyCommunism
+		protected bool MonarchyCommunist
 		{
 			get
 			{
@@ -52,14 +52,14 @@ namespace CivOne.Templates
 				switch (Game.Instance.CurrentPlayer.Government)
 				{
 					case Government.Monarchy:
-					case Government.Communism:
+					case Government.Communist:
 						return true;
 				}
 				return false;
 			}
 		}
 
-		protected bool RepublicDemocracy
+		protected bool RepublicDemocratic
 		{
 			get
 			{
@@ -69,7 +69,7 @@ namespace CivOne.Templates
 				switch (Game.Instance.CurrentPlayer.Government)
 				{
 					case Government.Republic:
-					case Government.Democracy:
+					case Government.Democratic:
 						return true;
 				}
 				return false;
