@@ -24,8 +24,8 @@ namespace CivOne.Screens.Dialogs
 		{
 			Menu menu = new Menu(Canvas.Image.Palette.Entries, Selection(3, 12, 228, 16))
 			{
-				X = 66,
-				Y = 91,
+				X = 67,
+				Y = 92,
 				Width = 227,
 				ActiveColour = 11,
 				TextColour = 5,
@@ -33,7 +33,7 @@ namespace CivOne.Screens.Dialogs
 				Indent = 2
 			};
 			int i = 0;
-			foreach (string choice in new [] { "_No, thanks.", "_Yes, we need a new government." })
+			foreach (string choice in new [] { "_No thanks.", "_Yes, we need a new government." })
 			{
 				menu.Items.Add(new Menu.Item(choice, i++));
 			}
@@ -46,7 +46,7 @@ namespace CivOne.Screens.Dialogs
 			Common.AddScreen(menu);
 		}
 
-		public Revolution() : base(63, 79, 234, 33)
+		public Revolution() : base(64, 80, 231, 31)
 		{
 			DialogBox.DrawText("Are you sure you want a REVOLUTION?", 0, 15, 5, 5);
 		}
