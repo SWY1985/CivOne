@@ -82,6 +82,14 @@ namespace CivOne.Tasks
 			}
 		}
 
+		public static Show Revolution
+		{
+			get
+			{
+				return new Show(new Revolution());
+			}
+		}
+
 		private Show(IScreen screen)
 		{
 			_screen = screen;
