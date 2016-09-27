@@ -72,7 +72,7 @@ namespace CivOne
 		internal static IEnumerable<ICivilopedia> GetCivilopediaAll()
 		{
 			List<string> articles = new List<string>();
-			foreach (ICivilopedia article in GetTypes<ICivilopedia>())
+			foreach (ICivilopedia article in GetTypes<ICivilopedia>().OrderBy(a => (a is IConcept) ? 1 : 0))
 			{
 				if (articles.Contains(article.Name)) continue;
 				articles.Add(article.Name);

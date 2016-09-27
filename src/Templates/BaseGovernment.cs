@@ -7,15 +7,19 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using CivOne.Templates;
+using CivOne.Interfaces;
 
-namespace CivOne.Civilopedia
+namespace CivOne.Templates
 {
-	internal class Monarchy : BaseConcept
+	internal abstract class BaseGovernment : BaseConcept, IGovernment
 	{
-		public Monarchy()
+		public abstract byte Id { get; }
+		public virtual IAdvance RequiredTech
 		{
-			Name = "Monarchy";
+			get
+			{
+				return null;
+			}
 		}
 	}
 }
