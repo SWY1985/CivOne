@@ -82,7 +82,7 @@ namespace CivOne.Screens
 
 					yield return new RenderTile
 					{
-						Visible = Game.HumanPlayer.Visible(tx, ty),
+						Visible = Human.Visible(tx, ty),
 						X = x,
 						Y = y,
 						Tile = Map[tx, ty]
@@ -398,7 +398,7 @@ namespace CivOne.Screens
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
-			if (Game.CurrentPlayer != Game.HumanPlayer)
+			if (Game.CurrentPlayer != Human)
 			{
 				// Ignore all keypresses if the current player is not human
 				return false;
@@ -475,7 +475,7 @@ namespace CivOne.Screens
 						Common.AddScreen(new CityManager(city));
 					}
 				}
-				else if (Map[xx, yy].Units.Any(u => u.Owner == Game.PlayerNumber(Game.HumanPlayer)))
+				else if (Map[xx, yy].Units.Any(u => u.Owner == Game.PlayerNumber(Human)))
 				{
 					GameTask.Enqueue(Show.UnitStack(xx, yy));
 				}

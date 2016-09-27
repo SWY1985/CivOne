@@ -16,7 +16,7 @@ namespace CivOne.Screens.Dialogs
 	{
 		private void MenuRevolution(object sender, EventArgs args)
 		{
-			Game.HumanPlayer.Revolt();
+			Human.Revolt();
 			Cancel();
 		}
 

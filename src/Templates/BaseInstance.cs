@@ -27,6 +27,14 @@ namespace CivOne.Templates
 			}
 		}
 
+		protected Player Human
+		{
+			get
+			{
+				return Game.Instance.HumanPlayer;
+			}
+		}
+
 		protected Settings Settings
 		{
 			get

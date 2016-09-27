@@ -216,14 +216,14 @@ namespace CivOne.Screens
 				int yy = 81;
 				foreach (string textLine in TextFile.Instance.GetGameText("KING/INIT"))
 				{
-					string line = textLine.Replace("$RPLC1", Game.HumanPlayer.LeaderName).Replace("$US", Game.HumanPlayer.TribeNamePlural).Replace("^", "");
+					string line = textLine.Replace("$RPLC1", Human.LeaderName).Replace("$US", Human.TribeNamePlural).Replace("^", "");
 					_canvas.DrawText(line, 0, 5, 88, yy);
 					yy += 8;
 					Console.WriteLine(line);
 				}
 				StringBuilder sb = new StringBuilder();
 				int i = 0;
-				foreach (IAdvance advance in Game.HumanPlayer.Advances.OrderBy(a => a.Id))
+				foreach (IAdvance advance in Human.Advances.OrderBy(a => a.Id))
 				{
 					sb.Append($"{advance.Name}, ");
 					i++;
