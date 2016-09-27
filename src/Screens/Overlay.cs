@@ -45,10 +45,10 @@ namespace CivOne.Screens
 						}
 						AddLayer(Resources.Instance.GetTile(tile, improvements: false), cx + (xx * 16), cy + (yy * 16));
 						
-						if (!HumanPlayer.Visible(tile, Direction.West)) AddLayer(Resources.Instance.GetFog(Direction.West), cx + (xx * 16), cy + (yy * 16));
-						if (!HumanPlayer.Visible(tile, Direction.North)) AddLayer(Resources.Instance.GetFog(Direction.North), cx + (xx * 16), cy + (yy * 16));
-						if (!HumanPlayer.Visible(tile, Direction.East)) AddLayer(Resources.Instance.GetFog(Direction.East), cx + (xx * 16), cy + (yy * 16));
-						if (!HumanPlayer.Visible(tile, Direction.South)) AddLayer(Resources.Instance.GetFog(Direction.South), cx + (xx * 16), cy + (yy * 16));
+						if (!Human.Visible(tile, Direction.West)) AddLayer(Resources.Instance.GetFog(Direction.West), cx + (xx * 16), cy + (yy * 16));
+						if (!Human.Visible(tile, Direction.North)) AddLayer(Resources.Instance.GetFog(Direction.North), cx + (xx * 16), cy + (yy * 16));
+						if (!Human.Visible(tile, Direction.East)) AddLayer(Resources.Instance.GetFog(Direction.East), cx + (xx * 16), cy + (yy * 16));
+						if (!Human.Visible(tile, Direction.South)) AddLayer(Resources.Instance.GetFog(Direction.South), cx + (xx * 16), cy + (yy * 16));
 					}
 				}
 

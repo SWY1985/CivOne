@@ -81,8 +81,8 @@ namespace CivOne.Screens.Reports
 			y += 8;
 			if (y <= 190)
 			{
-				string population = $"{HumanPlayer.Population:n0}".Replace(".", ",");
-				if (HumanPlayer.Population == 0) population = "00,000";
+				string population = $"{Human.Population:n0}".Replace(".", ",");
+				if (Human.Population == 0) population = "00,000";
 				int happy = 0;
 				int content = 100;
 				int unhappy = 0;
@@ -118,7 +118,7 @@ namespace CivOne.Screens.Reports
 
 		public AttitudeSurvey() : base("ATTITUDE SURVEY", 9)
 		{
-			_cities = Game.GetCities().Where(c => c.Owner == Game.PlayerNumber(HumanPlayer)).ToArray();
+			_cities = Game.GetCities().Where(c => c.Owner == Game.PlayerNumber(Human)).ToArray();
 		}
 	}
 }

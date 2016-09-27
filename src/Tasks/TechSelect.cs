@@ -63,7 +63,7 @@ namespace CivOne.Tasks
 		public TechSelect(Player player)
 		{
 			_player = player;
-			_human = (Game.Instance.HumanPlayer == player);
+			_human = (Human == player);
 		}
 	}
 }

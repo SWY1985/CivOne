@@ -79,7 +79,7 @@ namespace CivOne.Tasks
 		public ProcessScience(Player player)
 		{
 			_player = player;
-			_human = (Game.Instance.HumanPlayer == player);
+			_human = (Human == player);
 		}
 	}
 }

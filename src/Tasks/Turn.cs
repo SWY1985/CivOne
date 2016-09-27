@@ -33,7 +33,7 @@ namespace CivOne.Tasks
 			}
 			else if (_endTurn)
 			{
-				Game.Instance.EndTurn();
+				Game.EndTurn();
 			}
 			EndTask();
 			return;

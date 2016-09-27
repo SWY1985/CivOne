@@ -21,22 +21,22 @@ namespace CivOne.Screens.Reports
 		public ScienceReport() : base("SCIENCE REPORT", 1)
 		{
 			double width = 8;
-			while ((width * HumanPlayer.ScienceCost) > 200 || width <= 0.1)
+			while ((width * Human.ScienceCost) > 200 || width <= 0.1)
 			{
 				width -= 0.1;
 			}
 
-			int barWidth = (int)Math.Ceiling(width * HumanPlayer.ScienceCost);
+			int barWidth = (int)Math.Ceiling(width * Human.ScienceCost);
 			int barX = (320 - barWidth) / 2;
 			_canvas.FillRectangle(9, barX, 25, barWidth, 16);
 
-			if (HumanPlayer.CurrentResearch != null)
+			if (Human.CurrentResearch != null)
 			{
-				_canvas.DrawText($"Researching {HumanPlayer.CurrentResearch.Name}", 0, 5, 160, 26, TextAlign.Center);
-				_canvas.DrawText($"Researching {HumanPlayer.CurrentResearch.Name}", 0, 15, 159, 26, TextAlign.Center);
+				_canvas.DrawText($"Researching {Human.CurrentResearch.Name}", 0, 5, 160, 26, TextAlign.Center);
+				_canvas.DrawText($"Researching {Human.CurrentResearch.Name}", 0, 15, 159, 26, TextAlign.Center);
 
 				int xx = -1;
-				for (int i = 0; i < HumanPlayer.Science; i++)
+				for (int i = 0; i < Human.Science; i++)
 				{
 					if (xx == (int)Math.Floor((width * i) + barX - 1)) continue;
 					xx = (int)Math.Floor((width * i) + barX - 1);
@@ -45,9 +45,9 @@ namespace CivOne.Screens.Reports
 			}
 
 			int c = 0;
-			foreach (IAdvance advance in HumanPlayer.Advances.OrderBy(a => a.Id))
+			foreach (IAdvance advance in Human.Advances.OrderBy(a => a.Id))
 			{
-				bool first = Game.GetAdvanceOrigin(advance, HumanPlayer);
+				bool first = Game.GetAdvanceOrigin(advance, Human);
 				int xx = 8 + ((c % 3) * 100);
 				int yy = 42 + (((c - (c % 3)) / 3) * 7);
 				_canvas.DrawText(advance.Name, 0, (byte)(first ? 15 : 11), xx, yy);
