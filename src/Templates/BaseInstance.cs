@@ -11,7 +11,7 @@ namespace CivOne.Templates
 {
 	public abstract class BaseInstance
 	{
-		protected Game Game
+		protected static Game Game
 		{
 			get
 			{
@@ -19,7 +19,7 @@ namespace CivOne.Templates
 			}
 		}
 
-		protected Map Map
+		protected static Map Map
 		{
 			get
 			{
@@ -27,7 +27,7 @@ namespace CivOne.Templates
 			}
 		}
 
-		protected Player Human
+		protected static Player Human
 		{
 			get
 			{
@@ -35,7 +35,7 @@ namespace CivOne.Templates
 			}
 		}
 
-		protected Settings Settings
+		protected static Settings Settings
 		{
 			get
 			{

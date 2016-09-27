@@ -57,7 +57,7 @@ namespace CivOne.Screens.Reports
 				yy += Resources.Instance.GetFontHeight(0);
 				if (totalScience > 0 && yy <= 188)
 				{
-					_canvas.DrawText($"Discoveries: {(int)Math.Ceiling((double)HumanPlayer.ScienceCost / totalScience)} turns", 0, 10, 8, yy);
+					_canvas.DrawText($"Discoveries: {(int)Math.Ceiling((double)Human.ScienceCost / totalScience)} turns", 0, 10, 8, yy);
 				}
 			}
 		}
@@ -127,7 +127,7 @@ namespace CivOne.Screens.Reports
 
 		public TradeReport() : base("TRADE REPORT", 2)
 		{
-			_cities = Game.GetCities().Where(c => c.Owner == Game.PlayerNumber(HumanPlayer)).ToArray();
+			_cities = Game.GetCities().Where(c => c.Owner == Game.PlayerNumber(Human)).ToArray();
 		}
 	}
 }

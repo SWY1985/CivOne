@@ -103,7 +103,7 @@ namespace CivOne.Screens
 							turns = (int)Math.Ceiling((double)turns / _city.ShieldIncome);
 						if (turns < 1) turns = 1;
 						menuText = $"{wonder.Name} ({turns} turns)";
-						if (HumanPlayer.WonderObsolete(wonder)) menuText = $"*{menuText}";
+						if (Human.WonderObsolete(wonder)) menuText = $"*{menuText}";
 						if (Resources.Instance.GetTextSize(_fontId, menuText).Width > itemWidth) itemWidth = Resources.Instance.GetTextSize(_fontId, menuText).Width;
 					}
 					menuItems.Add(menuText);

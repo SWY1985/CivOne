@@ -26,14 +26,6 @@ namespace CivOne.Templates
 
 		protected Picture _canvas = new Picture(320, 200);
 		
-		protected Player HumanPlayer
-		{
-			get
-			{
-				return Game.Instance.HumanPlayer;
-			}
-		}
-		
 		protected void AddLayer(IScreen screen, Point point)
 		{
 			AddLayer(screen, point.X, point.Y);

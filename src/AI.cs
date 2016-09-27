@@ -11,28 +11,21 @@ using System;
 using System.Linq;
 using CivOne.Interfaces;
 using CivOne.Tasks;
+using CivOne.Templates;
 using CivOne.Tiles;
 using CivOne.Units;
 
 namespace CivOne
 {
-	internal class AI
+	internal class AI : BaseInstance
 	{
-		private static Map Map
-		{
-			get
-			{
-				return Map.Instance;
-			}
-		}
-
 		internal static void Move(IUnit unit)
 		{
 			if (unit.Owner == 0)
 			{
 				// Barbarians
 				// Until confrontation has been implemented, barbarians delete themselves
-				Game.Instance.DisbandUnit(unit);
+				Game.DisbandUnit(unit);
 			}
 			else if (unit is Settlers)
 			{

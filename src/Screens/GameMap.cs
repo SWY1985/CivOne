@@ -112,9 +112,9 @@ namespace CivOne.Screens
 			}
 			else if (activeUnit != _lastUnit && ShouldCenter())
 			{
-				if (activeUnit.Owner != Game.PlayerNumber(HumanPlayer))
+				if (activeUnit.Owner != Game.PlayerNumber(Human))
 				{
-					if (!Settings.RevealWorld && !HumanPlayer.Visible(activeUnit.X, activeUnit.Y))
+					if (!Settings.RevealWorld && !Human.Visible(activeUnit.X, activeUnit.Y))
 					{
 						return (_update = false);
 					}
@@ -152,10 +152,10 @@ namespace CivOne.Screens
 					AddLayer(t.Image, t.Position);
 					if (Settings.RevealWorld) continue;
 					
-					if (!HumanPlayer.Visible(t.Tile, Direction.West)) AddLayer(Resources.Instance.GetFog(Direction.West), t.Position);
-					if (!HumanPlayer.Visible(t.Tile, Direction.North)) AddLayer(Resources.Instance.GetFog(Direction.North), t.Position);
-					if (!HumanPlayer.Visible(t.Tile, Direction.East)) AddLayer(Resources.Instance.GetFog(Direction.East), t.Position);
-					if (!HumanPlayer.Visible(t.Tile, Direction.South)) AddLayer(Resources.Instance.GetFog(Direction.South), t.Position);
+					if (!Human.Visible(t.Tile, Direction.West)) AddLayer(Resources.Instance.GetFog(Direction.West), t.Position);
+					if (!Human.Visible(t.Tile, Direction.North)) AddLayer(Resources.Instance.GetFog(Direction.North), t.Position);
+					if (!Human.Visible(t.Tile, Direction.East)) AddLayer(Resources.Instance.GetFog(Direction.East), t.Position);
+					if (!Human.Visible(t.Tile, Direction.South)) AddLayer(Resources.Instance.GetFog(Direction.South), t.Position);
 				}
 				
 				foreach (RenderTile t in renderTiles)
@@ -234,7 +234,7 @@ namespace CivOne.Screens
 						continue;
 					}
 
-					if (drawUnit.Owner == Game.PlayerNumber(HumanPlayer) && (gameTick % 4) >= 2 && !GameTask.Any())
+					if (drawUnit.Owner == Game.PlayerNumber(Human) && (gameTick % 4) >= 2 && !GameTask.Any())
 					{
 						// Unit is owned by human player, blink status is off and no tasks are running. Do not draw unit.
 						continue;
@@ -470,7 +470,7 @@ namespace CivOne.Screens
 				
 				if (city != null)
 				{
-					if (city.Owner == Game.PlayerNumber(HumanPlayer) || Settings.RevealWorld)
+					if (city.Owner == Game.PlayerNumber(Human) || Settings.RevealWorld)
 					{
 						Common.AddScreen(new CityManager(city));
 					}

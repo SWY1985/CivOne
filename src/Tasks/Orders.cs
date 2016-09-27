@@ -50,7 +50,7 @@ namespace CivOne.Tasks
 		{
 			if (_unit != null)
 			{
-				Game.Instance.DisbandUnit(_unit);
+				Game.DisbandUnit(_unit);
 			}
 			EndTask();
 		}
@@ -83,7 +83,7 @@ namespace CivOne.Tasks
 
 		private void CreateCity(string name)
 		{
-			_city = Game.Instance.AddCity(_player, name, _x, _y); 
+			_city = Game.AddCity(_player, name, _x, _y); 
 			if (_city != null)
 			{
 				if (_player.Human)
@@ -96,7 +96,7 @@ namespace CivOne.Tasks
 				}
 				if (_unit != null)
 				{
-					Game.Instance.DisbandUnit(_unit);
+					Game.DisbandUnit(_unit);
 				}
 			}
 			EndTask();
@@ -104,7 +104,7 @@ namespace CivOne.Tasks
 
 		private void CreateCity(Player player, int x, int y)
 		{
-			string name = Game.Instance.CityName(player);
+			string name = Game.CityName(player);
 			if (player.Human)
 			{
 				CityName cityName = new CityName(name);
@@ -153,7 +153,7 @@ namespace CivOne.Tasks
 						return;
 					}
 					Map[_x, _y].City.Size++;
-					Game.Instance.DisbandUnit(_unit);
+					Game.DisbandUnit(_unit);
 				}
 				EndTask();
 				return;
@@ -194,7 +194,7 @@ namespace CivOne.Tasks
 				EndTask();
 				return;
 			}
-			if (Game.Instance.GetPlayer(_unit.Owner).HasAdvance<Construction>())
+			if (Game.GetPlayer(_unit.Owner).HasAdvance<Construction>())
 			{
 				(_unit as Settlers).BuildFortress();
 			}
@@ -215,7 +215,7 @@ namespace CivOne.Tasks
 
 		private void UnitWait()
 		{
-			Game.Instance.UnitWait();
+			Game.UnitWait();
 			EndTask();
 		}
 

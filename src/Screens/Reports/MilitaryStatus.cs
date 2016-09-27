@@ -19,7 +19,7 @@ namespace CivOne.Screens.Reports
 	{
 		public MilitaryStatus() : base("MILITARY STATUS", 1)
 		{
-			byte player = Game.PlayerNumber(HumanPlayer);
+			byte player = Game.PlayerNumber(Human);
 			IUnit[] units = Game.GetUnits().Where(u => u.Owner == player && u.Home != null).ToArray();
 			IUnit[] production = Game.GetCities().Where(c => c.Owner == player).Where(c => (c.CurrentProduction is IUnit)).Select(c => (c.CurrentProduction as IUnit)).ToArray();
 
