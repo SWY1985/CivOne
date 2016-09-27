@@ -49,8 +49,7 @@ namespace CivOne.Screens.Dialogs
 				menu.Items.Add(menuItem = new Menu.Item($"{_availableGovernments[i]}", i));
 				menuItem.Selected += GovernmentChoice;
 			}
-			Menus.Add(menu);
-			Common.AddScreen(menu);
+			AddMenu(menu);
 		}
 
 		private static int DialogHeight

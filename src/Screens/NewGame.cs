@@ -31,7 +31,7 @@ namespace CivOne.Screens
 		private string _leaderName = null, _tribeName = null, _tribeNamePlural = null;
 		private bool _done = false, _showIntroText = false;
 		
-		private Menu AddMenu(string title, EventHandler setChoice, params string[] menuTexts)
+		private Menu CreateMenu(string title, EventHandler setChoice, params string[] menuTexts)
 		{
 			Menu menu = new Menu(Canvas.Image.Palette.Entries)
 			{
@@ -54,30 +54,29 @@ namespace CivOne.Screens
 				menu.Items.Add(menuItem = new Menu.Item(menuTexts[i], i));
 				menuItem.Selected += setChoice;
 			}
-			Menus.Add(menu);
 			return menu;
 		}
 		
 		private void MenuDifficulty()
 		{
-			Common.AddScreen(AddMenu("Difficulty Level...", SetDifficulty, _menuItemsDifficulty));
+			AddMenu(CreateMenu("Difficulty Level...", SetDifficulty, _menuItemsDifficulty));
 		}
 		
 		private void MenuCompetition()
 		{
-			Common.AddScreen(AddMenu("Level of Competition...", SetCompetition, _menuItemsCompetition));
+			AddMenu(CreateMenu("Level of Competition...", SetCompetition, _menuItemsCompetition));
 		}
 		
 		private void MenuTribe()
 		{
-			Menu menu = AddMenu("Pick your tribe...", SetTribe, _menuItemsTribes);
+			Menu menu = CreateMenu("Pick your tribe...", SetTribe, _menuItemsTribes);
 			if (_menuItemsTribes.Length > 14)
 			{
 				menu.FontId = 1;
 				menu.RowHeight -= 2;
 			}
 			menu.Cancel += SetTribe_Cancel;
-			Common.AddScreen(menu);
+			AddMenu(menu);
 		}
 		
 		private void InputLeaderName()
@@ -172,7 +171,7 @@ namespace CivOne.Screens
 		
 		public override bool HasUpdate(uint gameTick)
 		{
-			if (Menus.Count != 0) return false;
+			if (HasMenu) return false;
 			
 			if (_difficulty == -1) MenuDifficulty();
 			else if (_competition == -1) MenuCompetition();

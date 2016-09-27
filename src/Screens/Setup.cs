@@ -27,7 +27,7 @@ namespace CivOne.Screens
 			if (!_update) return false;
 			_update = false;
 			
-			if (Menus.Count == 0)
+			if (!HasMenu)
 			{
 				MainMenu();
 			}
@@ -52,7 +52,7 @@ namespace CivOne.Screens
 			return menuItems * Resources.Instance.GetFontHeight(MenuFont);
 		}
 		
-		private Menu AddMenu(string title, EventHandler setChoice, params string[] menuTexts)
+		private Menu CreateMenu(string title, EventHandler setChoice, params string[] menuTexts)
 		{
 			int width = GetMenuWidth(title, menuTexts);
 			int height = GetMenuHeight(title, menuTexts);
@@ -76,17 +76,16 @@ namespace CivOne.Screens
 				menu.Items.Add(menuItem = new Menu.Item(menuTexts[i], i));
 				menuItem.Selected += setChoice;
 			}
-			Menus.Add(menu);
 			return menu;
 		}
 		
 		private void MainMenu(int activeItem = 0)
 		{
-			Menu menu = AddMenu("CIVONE SETUP:", MainChoice, "Settings", "Patches", "Mods", "Launch Game", "Quit");
+			Menu menu = CreateMenu("CIVONE SETUP:", MainChoice, "Settings", "Patches", "Mods", "Launch Game", "Quit");
 			menu.Items[1].Enabled = false; // Patches: Not yet implemented
 			menu.Items[2].Enabled = false; // Mods: Not yet implemented
 			menu.ActiveItem = activeItem;
-			Common.AddScreen(menu);
+			AddMenu(menu);
 		}
 		
 		private void SettingsMenu(int activeItem = 0)
@@ -105,14 +104,14 @@ namespace CivOne.Screens
 			scale = string.Format("Window scale: {0}x", Settings.Scale);
 			revealWorld = string.Format("Reveal World: {0}", Settings.RevealWorld ? "yes" : "no");
 			
-			Menu menu = AddMenu("SETTINGS:", SettingsChoice, graphicsMode, fullScreen, sideBar, scale, revealWorld, "Back");
+			Menu menu = CreateMenu("SETTINGS:", SettingsChoice, graphicsMode, fullScreen, sideBar, scale, revealWorld, "Back");
 			menu.ActiveItem = activeItem;
-			Common.AddScreen(menu);
+			AddMenu(menu);
 		}
 		
 		private void GraphicsModeMenu()
 		{
-			Menu menu = AddMenu("GRAPHICS MODE:", GraphicsModeChoice, "256 colors (default)", "16 colors", "Back");
+			Menu menu = CreateMenu("GRAPHICS MODE:", GraphicsModeChoice, "256 colors (default)", "16 colors", "Back");
 			switch (Settings.GraphicsMode)
 			{
 				case GraphicsMode.Graphics256: 
@@ -122,35 +121,35 @@ namespace CivOne.Screens
 					menu.ActiveItem = 1;
 					break;
 			}
-			Common.AddScreen(menu);
+			AddMenu(menu);
 		}
 		
 		private void FullScreenMenu()
 		{
-			Menu menu = AddMenu("FULL SCREEN:", FullScreenChoice, "No (default)", "Yes", "Back");
+			Menu menu = CreateMenu("FULL SCREEN:", FullScreenChoice, "No (default)", "Yes", "Back");
 			menu.ActiveItem = Settings.FullScreen ? 1 : 0;
-			Common.AddScreen(menu);
+			AddMenu(menu);
 		}
 		
 		private void SideBarMenu()
 		{
-			Menu menu = AddMenu("SIDE BAR LOCATION:", SideBarChoice, "Left (default)", "Right", "Back");
+			Menu menu = CreateMenu("SIDE BAR LOCATION:", SideBarChoice, "Left (default)", "Right", "Back");
 			menu.ActiveItem = Settings.RightSideBar ? 1 : 0;
-			Common.AddScreen(menu);
+			AddMenu(menu);
 		}
 		
 		private void WindowScaleMenu()
 		{
-			Menu menu = AddMenu("WINDOW SCALE:", WindowScaleChoice, "1x", "2x", "3x", "4x", "Back");
+			Menu menu = CreateMenu("WINDOW SCALE:", WindowScaleChoice, "1x", "2x", "3x", "4x", "Back");
 			menu.ActiveItem = Settings.Scale - 1;
-			Common.AddScreen(menu);
+			AddMenu(menu);
 		}
 		
 		private void RevealWorldMenu()
 		{
-			Menu menu = AddMenu("REVEAL WORLD:", RevealWorldChoice, "No (default)", "Yes", "Back");
+			Menu menu = CreateMenu("REVEAL WORLD:", RevealWorldChoice, "No (default)", "Yes", "Back");
 			menu.ActiveItem = Settings.RevealWorld ? 1 : 0;
-			Common.AddScreen(menu);
+			AddMenu(menu);
 		}
 		
 		private void MainChoice(object sender, EventArgs args)

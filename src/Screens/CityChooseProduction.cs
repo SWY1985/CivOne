@@ -153,9 +153,8 @@ namespace CivOne.Screens
 				menu.Width += 10;
 				menu.MissClick += MenuCancel;
 				menu.Cancel += MenuCancel;
-				Menus.Add(menu);
-				
-				Common.AddScreen(menu);
+
+				AddMenu(menu);
 				
 				_update = false;
 			}

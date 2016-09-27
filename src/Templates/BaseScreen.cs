@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Collections.Generic;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Interfaces;
@@ -21,7 +22,8 @@ namespace CivOne.Templates
 {
 	public abstract class BaseScreen : BaseInstance, IScreen
 	{
-		protected readonly List<Screens.Menu> Menus = new List<Screens.Menu>();
+		private readonly List<Screens.Menu> _menus = new List<Screens.Menu>();
+
 		protected Picture _canvas = new Picture(320, 200);
 		
 		protected Player HumanPlayer
@@ -114,13 +116,25 @@ namespace CivOne.Templates
 			return false;
 		}
 		
+		protected bool HasMenu
+		{
+			get
+			{
+				return _menus.Any();
+			}
+		}
+		protected void AddMenu(Screens.Menu menu)
+		{
+			_menus.Add(menu);
+			Common.AddScreen(menu);
+		}
 		protected void CloseMenus()
 		{
-			foreach (Screens.Menu menu in Menus)
+			foreach (Screens.Menu menu in _menus)
 			{
 				menu.Close();
 			}
-			Menus.Clear();
+			_menus.Clear();
 		}
 		protected void Destroy()
 		{
