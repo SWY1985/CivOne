@@ -92,9 +92,9 @@ namespace CivOne.Screens
 				_pictures[1].ApplyNoise(_noiseMap, --_noiseCounter);
 			}
 			
-			if (_noiseCounter == 0 && Menus.Count > 0 && !Common.HasScreenType(typeof(Menu)) && (_overlay == null || LoadGameCancel))
+			if (_noiseCounter == 0 && HasMenu && !Common.HasScreenType(typeof(Menu)) && (_overlay == null || LoadGameCancel))
 			{
-				Common.AddScreen(Menus[0]);
+				CreateMenu();
 			}
 			
 			// Drawing
@@ -142,12 +142,9 @@ namespace CivOne.Screens
 					AddLayer(_overlay);
 					if (_overlay.GetType() == typeof(LoadGame) && ((LoadGame)_overlay).Cancel)
 					{
-						if (Menus.Count == 0)
-						{
-							CreateMenu();
-						}
+						CreateMenu();
 					}
-					if (Menus.Count == 0) return true;
+					if (!HasMenu) return true;
 				}
 				
 				// Draw menu background
@@ -155,6 +152,8 @@ namespace CivOne.Screens
 				_canvas.FillRectangle(_menuColours[0], 101, 141, 120, 47);
 				_canvas.FillRectangle(_menuColours[1], 101, 142, 119, 46);
 				_canvas.FillRectangle(_menuColours[2], 102, 142, 118, 45);
+				
+				CreateMenu();
 			}
 			return true;
 		}
@@ -174,6 +173,7 @@ namespace CivOne.Screens
 		
 		private void CreateMenu()
 		{
+			if (HasMenu) return;
 			Menu menu = new Menu(Canvas.Image.Palette.Entries)
 			{
 				X = 103,
@@ -196,7 +196,7 @@ namespace CivOne.Screens
 			menuItems[2].Selected += Earth;
 			menuItems[3].Selected += CustomizeWorld;
 			
-			Menus.Add(menu);
+			AddMenu(menu);
 		}
 		
 		private void StartNewGame(object sender, EventArgs args)
@@ -294,8 +294,6 @@ namespace CivOne.Screens
 			_menuColours = new byte[] { 8, 15, 7 };
 			
 			_canvas = new Picture(320, 200, _pictures[2].Image.Palette.Entries);
-			
-			CreateMenu();
 		}
 	}
 }

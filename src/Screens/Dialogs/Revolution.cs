@@ -42,8 +42,7 @@ namespace CivOne.Screens.Dialogs
 
 			menu.MissClick += Cancel;
 			menu.Cancel += Cancel;
-			Menus.Add(menu);
-			Common.AddScreen(menu);
+			AddMenu(menu);
 		}
 
 		public Revolution() : base(64, 80, 231, 31)

@@ -130,9 +130,7 @@ namespace CivOne.Screens
 					menu.ActiveItem = Game.HumanPlayer.LuxuriesRate;
 				else
 					menu.ActiveItem = Game.HumanPlayer.TaxesRate;
-				Menus.Add(menu);
-				
-				Common.AddScreen(menu);
+				AddMenu(menu);
 				
 				_update = false;
 			}

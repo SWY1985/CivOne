@@ -102,8 +102,7 @@ namespace CivOne.Screens
 				menu.Items[3].Selected += MenuAnimations;
 				menu.Items[6].Selected += MenuCivilopediaText;
 
-				Menus.Add(menu);
-				Common.AddScreen(menu);
+				AddMenu(menu);
 			}
 			return true;
 		}

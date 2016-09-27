@@ -41,8 +41,7 @@ namespace CivOne.Screens.Dialogs
 
 			menu.MissClick += Cancel;
 			menu.Cancel += Cancel;
-			Menus.Add(menu);
-			Common.AddScreen(menu);
+			AddMenu(menu);
 		}
 
 		public ConfirmQuit() : base(100, 80, 104, 39)

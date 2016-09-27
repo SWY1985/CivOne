@@ -67,8 +67,7 @@ namespace CivOne.Screens
 					menuItem.Selected += AdvanceChoice;
 					menuItem.RightClick += AdvanceContext;
 				}
-				Menus.Add(menu);
-				Common.AddScreen(menu);
+				AddMenu(menu);
 				return true;
 			}
 			return true;
