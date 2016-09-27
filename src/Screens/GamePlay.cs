@@ -13,7 +13,6 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
-using CivOne.Screens.Dialogs;
 using CivOne.Screens.Reports;
 using CivOne.Tasks;
 using CivOne.Templates;
@@ -72,9 +71,9 @@ namespace CivOne.Screens
 			_gameMenu.Items.Add(new GameMenu.Item("Retire") { Enabled = false });
 			_gameMenu.Items.Add(new GameMenu.Item("QUIT to DOS"));
 			
-			_gameMenu.Items[0].Selected += (s, a) => Common.AddScreen(SetRate.Taxes);
-			_gameMenu.Items[1].Selected += (s, a) => Common.AddScreen(SetRate.Luxuries);
-			_gameMenu.Items[3].Selected += (s, a) => GameTask.Enqueue(Show.Options); //Common.AddScreen(new GameOptions());
+			_gameMenu.Items[0].Selected += (s, a) => GameTask.Enqueue(Show.TaxRate);
+			_gameMenu.Items[1].Selected += (s, a) => GameTask.Enqueue(Show.LuxuryRate);
+			_gameMenu.Items[3].Selected += (s, a) => GameTask.Enqueue(Show.Options);
 			_gameMenu.Items[5].Selected += (s, a) => GameTask.Enqueue(Show.Revolution);
 			_gameMenu.Items[8].Selected += (s, a) => GameTask.Enqueue(Show.ConfirmQuit);
 			
@@ -263,10 +262,10 @@ namespace CivOne.Screens
 					Common.AddScreen(new WorldMap());
 					return true;
 				case Key.Plus:
-					Common.AddScreen(SetRate.Taxes);
+					GameTask.Enqueue(Show.TaxRate);
 					return true;
 				case Key.Minus:
-					Common.AddScreen(SetRate.Luxuries);
+					GameTask.Enqueue(Show.LuxuryRate);
 					return true;
 			}
 			return _gameMap.KeyDown(args);
