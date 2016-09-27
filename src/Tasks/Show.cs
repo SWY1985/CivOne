@@ -57,6 +57,22 @@ namespace CivOne.Tasks
 			}
 		}
 
+		public static Show TaxRate
+		{
+			get
+			{
+				return new Show(SetRate.Taxes);
+			}
+		}
+
+		public static Show LuxuryRate
+		{
+			get
+			{
+				return new Show(SetRate.Luxuries);
+			}
+		}
+
 		public static Show Options
 		{
 			get
