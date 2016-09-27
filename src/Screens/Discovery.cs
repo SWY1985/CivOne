@@ -83,7 +83,7 @@ namespace CivOne.Screens
 		public Discovery(IAdvance advance)
 		{
 			_advance = advance;
-			_modern = Game.HumanPlayer.Advances.Any(a => a.Id == (int)Advance.Electricity);
+			_modern = Human.Advances.Any(a => a.Id == (int)Advance.Electricity);
 
 			Picture background = Resources.Instance.LoadPIC(_modern ? "DISCOVR2" : "DISCOVR1");
 			
@@ -94,7 +94,7 @@ namespace CivOne.Screens
 
 			string[] text = new string[]
 			{
-				$"{Game.HumanPlayer.TribeName} wise men",
+				$"{Human.TribeName} wise men",
 				"discover the secret",
 				$"of {advance.Name}!"
 			};

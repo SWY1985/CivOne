@@ -38,7 +38,7 @@ namespace CivOne.Screens
 					for (int xx = 0; xx < 15; xx++)
 					{
 						ITile tile = Map[_x + xx, _y + yy];
-						if (tile == null || !Game.HumanPlayer.Visible(tile))
+						if (tile == null || !Human.Visible(tile))
 						{
 							_canvas.FillRectangle(5, cx + (xx * 16), cy + (yy * 16), 16, 16);
 							continue;
