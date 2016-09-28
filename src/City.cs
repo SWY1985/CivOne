@@ -249,7 +249,12 @@ namespace CivOne
 		{
 			if (ResourceTiles.Any(t => t.X == tile.X && t.Y == tile.Y))
 				return false;
-			return (tile.City != null || Game.Instance.GetCities().Any(c => c.ResourceTiles.Any(t => t.X == tile.X && t.Y == tile.Y)));
+			return ValidTile(tile);
+		}
+
+		internal bool ValidTile(ITile tile)
+		{
+			return (tile.City != null || Game.GetCities().Any(c => c.ResourceTiles.Any(t => t.X == tile.X && t.Y == tile.Y)) || tile.Units.Any(u => u.Owner != Owner));
 		}
 
 		private void UpdateSpecialists()
@@ -277,6 +282,12 @@ namespace CivOne
 			_resourceTiles.Clear();
 			for (int i = 0; i < Size; i++)
 				SetResourceTiles();
+		}
+
+		public void RelocateResourceTile(ITile tile)
+		{
+			SetResourceTile(tile);
+			SetResourceTiles();
 		}
 
 		public void SetResourceTile(ITile tile)
