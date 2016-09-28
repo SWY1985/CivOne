@@ -17,7 +17,7 @@ namespace CivOne.Enums
 		ContentFemale = 3,
 		UnhappyMale = 4,
 		UnhappyFemale = 5,
-		Banker = 6,
+		Taxman = 6,
 		Scientist = 7,
 		Entertainer = 8
 	}

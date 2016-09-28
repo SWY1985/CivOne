@@ -198,6 +198,7 @@ namespace CivOne
 			{
 				short luxuries = (short)Math.Round(((double)(TradeTotal - Science) / (10 - Player.ScienceRate)) * Player.LuxuriesRate);
 				if (_buildings.Any(b => (b is Bank))) luxuries += (short)Math.Floor((double)luxuries * 0.5);
+				luxuries += (short)(Citizens.Count(c => c == Citizen.Entertainer) * 2);
 				return luxuries;
 			}
 		}
@@ -209,6 +210,7 @@ namespace CivOne
 				short taxes = (short)(TradeTotal - Luxuries - Science);
 				if (_buildings.Any(b => (b is MarketPlace))) taxes += (short)Math.Floor((double)taxes * 0.5);
 				if (_buildings.Any(b => (b is Bank))) taxes += (short)Math.Floor((double)taxes * 0.5);
+				taxes += (short)(Citizens.Count(c => c == Citizen.Taxman) * 2);
 				return taxes;
 			}
 		}
@@ -222,6 +224,7 @@ namespace CivOne
 				if (HasBuilding<University>()) science += (short)Math.Floor((double)science * 0.5);
 				if (!Player.WonderObsolete<CopernicusObservatory>() && HasWonder<CopernicusObservatory>()) science += (short)Math.Floor((double)science * 1.0);
 				if (Player.HasWonder<SETIProgram>()) science += (short)Math.Floor((double)science * 0.5);
+				science += (short)(Citizens.Count(c => c == Citizen.Scientist) * 2);
 				return science;
 			}
 		}
@@ -249,6 +252,12 @@ namespace CivOne
 			return (tile.City != null || Game.Instance.GetCities().Any(c => c.ResourceTiles.Any(t => t.X == tile.X && t.Y == tile.Y)));
 		}
 
+		private void UpdateSpecialists()
+		{
+			while (_specialists.Count < (_size - ResourceTiles.Count())) _specialists.Add(Citizen.Entertainer);
+			while (_specialists.Count > 0 && _specialists.Count > (_size - ResourceTiles.Count() - 1)) _specialists.RemoveAt(_specialists.Count - 1);
+		}
+
 		private void SetResourceTiles()
 		{
 			while (_resourceTiles.Count > Size)
@@ -260,6 +269,7 @@ namespace CivOne
 				if (tiles.Count() > 0)
 					_resourceTiles.Add(tiles.First());
 			}
+			UpdateSpecialists();
 		}
 
 		private void ResetResourceTiles()
@@ -282,6 +292,7 @@ namespace CivOne
 				return;
 			}
 			_resourceTiles.Add(tile);
+			UpdateSpecialists();
 		}
 
 		private Player Player
@@ -336,10 +347,12 @@ namespace CivOne
 			}
 		}
 
+		private readonly List<Citizen> _specialists = new List<Citizen>();
 		internal IEnumerable<Citizen> Citizens
 		{
 			get
 			{
+				int specialist = 0;
 				for (int i = 0; i < Size; i++)
 				{
 					if (i < ResourceTiles.Count() - 1)
@@ -347,9 +360,15 @@ namespace CivOne
 						yield return (i % 2 == 0) ? Citizen.ContentMale : Citizen.ContentFemale;
 						continue;
 					}
-					yield return Citizen.Entertainer;
+					while (_specialists.Count < (specialist + 1)) _specialists.Add(Citizen.Entertainer);
+					yield return _specialists[specialist++];
 				}
 			}
+		}
+		internal void ChangeSpecialist(int index)
+		{
+			while (_specialists.Count < (index + 1)) _specialists.Add(Citizen.Entertainer);
+			_specialists[index] = (Citizen)((((int)_specialists[index] - 5) % 3) + 6);
 		}
 
 		private IEnumerable<ITile> CityTiles
