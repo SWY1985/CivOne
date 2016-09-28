@@ -115,6 +115,11 @@ namespace CivOne.Screens
 				Common.AddScreen(name);
 				return true;
 			}
+			if (new Rectangle(2, 1, 208, 21).Contains(args.Location))
+			{
+				MouseArgsOffset(ref args, 2, 1);
+				return _cityHeader.MouseDown(args);
+			}
 			if (new Rectangle(127, 23, 82, 82).Contains(args.Location))
 			{
 				MouseArgsOffset(ref args, 127, 23);
@@ -153,6 +158,11 @@ namespace CivOne.Screens
 			return false;
 		}
 
+		private void HeaderUpdate(object sender, EventArgs args)
+		{
+			_cityResources.Update();
+		}
+
 		private void MapUpdate(object sender, EventArgs args)
 		{
 			_cityHeader.Update();
@@ -181,6 +191,7 @@ namespace CivOne.Screens
 			_subScreens.Add(_cityInfo = new CityInfo(_city, _background));
 			_subScreens.Add(_cityProduction = new CityProduction(_city, _background));
 
+			_cityHeader.HeaderUpdate += HeaderUpdate;
 			_cityMap.MapUpdate += MapUpdate;
 		}
 	}
