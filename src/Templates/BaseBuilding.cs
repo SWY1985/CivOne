@@ -116,11 +116,14 @@ namespace CivOne.Templates
 				return (byte)Type;
 			}
 		}
+
+		public short SellPrice { get; private set; }
 		
-		protected BaseBuilding(byte price = 1, byte maintenance = 0)
+		protected BaseBuilding(byte price = 1, byte maintenance = 0, short sellPrice = 40)
 		{
 			Price = price;
 			Maintenance = maintenance;
+			SellPrice = sellPrice;
 		}
 	}
 }

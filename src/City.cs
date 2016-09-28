@@ -435,6 +435,12 @@ namespace CivOne
 			_buildings.Add(building);
 		}
 
+		public void SellBuilding(IBuilding building)
+		{
+			_buildings.Remove(building);
+			Game.CurrentPlayer.Gold += building.SellPrice;
+		}
+
 		public void RemoveBuilding(IBuilding building)
 		{
 			_buildings.RemoveAll(b => b.Id == building.Id);
