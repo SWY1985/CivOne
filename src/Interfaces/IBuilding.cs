@@ -18,5 +18,6 @@ namespace CivOne.Interfaces
 		IAdvance RequiredTech { get; }
 		byte Maintenance { get; }
 		Picture SmallIcon { get; }
+		short SellPrice { get; }
 	}
 }

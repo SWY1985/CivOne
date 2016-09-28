@@ -16,6 +16,7 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
+using CivOne.Screens.Dialogs;
 using CivOne.Templates;
 
 namespace CivOne.Screens
@@ -107,8 +108,30 @@ namespace CivOne.Screens
 			return true;
 		}
 
+		private void SellBuilding(object sender, EventArgs args)
+		{
+			_city.SellBuilding((sender as ConfirmSell).Building);
+			_update = true;
+		}
+
 		public override bool MouseDown(ScreenEventArgs args)
 		{
+			if (args.X > 97 && args.X < 105)
+			{
+				int yy = 2;
+				for (int i = (_page * 14); i < _improvements.Length && i < ((_page + 1) * 14); i++)
+				{
+					if (args.Y >= yy && args.Y < yy + 8 && _improvements[i] is IBuilding)
+					{
+						ConfirmSell confirmSell = new ConfirmSell(_improvements[i] as IBuilding);
+						confirmSell.Sell += SellBuilding;
+						Common.AddScreen(confirmSell);
+						return true;
+					}
+					yy += 6;
+				}
+			}
+
 			if (args.X > 75 && args.X < 105 && args.Y > 86 && args.Y < 96)
 			{
 				_page++;

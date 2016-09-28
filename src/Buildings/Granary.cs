@@ -15,7 +15,7 @@ namespace CivOne.Buildings
 {
 	internal class Granary : BaseBuilding
 	{
-		public Granary() : base(6, 1)
+		public Granary() : base(6, 1, 60)
 		{
 			Name = "Granary";
 			RequiredTech = new Pottery();
