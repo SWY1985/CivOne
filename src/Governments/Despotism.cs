@@ -9,21 +9,12 @@
 
 using CivOne.Templates;
 
-namespace CivOne.Civilopedia.Governments
+namespace CivOne.Governments
 {
 	internal class Despotism : BaseGovernment
 	{
-		public override byte Id
+		public Despotism() : base(1, "Despotism")
 		{
-			get
-			{
-				return 1;
-			}
-		}
-
-		public Despotism()
-		{
-			Name = "Despotism";
 		}
 	}
 }

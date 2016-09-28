@@ -9,21 +9,12 @@
 
 using CivOne.Templates;
 
-namespace CivOne.Civilopedia.Governments
+namespace CivOne.Governments
 {
 	internal class Communism : BaseGovernment
 	{
-		public override byte Id
+		public Communism() : base(3, "Communism", "Communist", new Advances.Communism())
 		{
-			get
-			{
-				return 3;
-			}
-		}
-
-		public Communism()
-		{
-			Name = "Communism";
 		}
 	}
 }

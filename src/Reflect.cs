@@ -49,6 +49,11 @@ namespace CivOne
 			return GetTypes<ICivilization>().OrderBy(x => (int)x.Id);
 		}
 		
+		internal static IEnumerable<IGovernment> GetGovernments()
+		{
+			return GetTypes<IGovernment>().OrderBy(x => x.Id);
+		}
+		
 		internal static IEnumerable<IUnit> GetUnits()
 		{
 			return GetTypes<IUnit>().OrderBy(x => (int)x.Type);

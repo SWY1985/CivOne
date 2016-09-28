@@ -9,21 +9,12 @@
 
 using CivOne.Templates;
 
-namespace CivOne.Civilopedia.Governments
+namespace CivOne.Governments
 {
 	internal class Democracy : BaseGovernment
 	{
-		public override byte Id
+		public Democracy() : base(5, "Democracy", "Democratic", new Advances.Democracy())
 		{
-			get
-			{
-				return 5;
-			}
-		}
-
-		public Democracy()
-		{
-			Name = "Democracy";
 		}
 	}
 }

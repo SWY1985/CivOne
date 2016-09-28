@@ -9,21 +9,12 @@
 
 using CivOne.Templates;
 
-namespace CivOne.Civilopedia.Governments
+namespace CivOne.Governments
 {
 	internal class Monarchy : BaseGovernment
 	{
-		public override byte Id
+		public Monarchy() : base(2, "Monarchy", new Advances.Monarchy())
 		{
-			get
-			{
-				return 2;
-			}
-		}
-
-		public Monarchy()
-		{
-			Name = "Monarchy";
 		}
 	}
 }

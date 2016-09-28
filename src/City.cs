@@ -13,24 +13,18 @@ using System.Linq;
 using System.Threading;
 using CivOne.Buildings;
 using CivOne.Enums;
+using CivOne.Governments;
 using CivOne.Interfaces;
 using CivOne.Screens;
 using CivOne.Tasks;
+using CivOne.Templates;
 using CivOne.Units;
 using CivOne.Wonders;
 
 namespace CivOne
 {
-	public class City : ITurn
+	public class City : BaseInstance, ITurn
 	{
-		private Map Map
-		{
-			get
-			{
-				return Map.Instance;
-			}
-		}
-
 		internal byte X;
 		internal byte Y;
 		private byte _owner;
@@ -59,7 +53,7 @@ namespace CivOne
 				_size = value;
 				if (_size == 0)
 				{
-					Game.Instance.DestroyCity(this);
+					Game.DestroyCity(this);
 					Map[X, Y].Road = false;
 					Map[X, Y].Irrigation = false;
 					return;
@@ -114,20 +108,18 @@ namespace CivOne
 		{
 			get
 			{
-				switch (Game.Instance.GetPlayer(_owner).Government)
+				IGovernment government = Game.GetPlayer(_owner).Government;
+				if (government is Anarchy || government is Despotism)
 				{
-					case Government.Anarchy:
-					case Government.Despotism:
-						int costs = 0;
-						for (int i = 0; i < Units.Count(u => (!(u is Diplomat) || (u is Caravan))); i++)
-						{
-							if (i < _size) continue;
-							costs++;
-						}
-						return costs;
-					default:
-						return Units.Length;
-				} 
+					int costs = 0;
+					for (int i = 0; i < Units.Count(u => (!(u is Diplomat) || (u is Caravan))); i++)
+					{
+						if (i < _size) continue;
+						costs++;
+					}
+					return costs;
+				}
+				return Units.Count(u => (!(u is Diplomat) || (u is Caravan)));
 			}
 		}
 
@@ -144,16 +136,15 @@ namespace CivOne
 			get
 			{
 				int costs = (_size * 2);
-				switch (Game.Instance.GetPlayer(_owner).Government)
+				IGovernment government = Game.GetPlayer(_owner).Government;
+				if (government is Anarchy || government is Despotism)
 				{
-					case Government.Anarchy:
-					case Government.Despotism:
-						costs += Units.Count(u => (u is Settlers));
-						break;
-					default:
-						costs += (Units.Count(u => (u is Settlers)) * 2);
-						break;
-				} 
+					costs += Units.Count(u => (u is Settlers));
+				}
+				else
+				{
+					costs += (Units.Count(u => (u is Settlers)) * 2);
+				}
 				return costs;
 			}
 		}

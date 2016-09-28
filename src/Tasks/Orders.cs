@@ -86,7 +86,7 @@ namespace CivOne.Tasks
 			_city = Game.AddCity(_player, name, _x, _y); 
 			if (_city != null)
 			{
-				if (_player.Human)
+				if (_player.IsHuman)
 				{
 					CityView cityView = new CityView(_city, founded: true);
 					cityView.Closed += CityFounded;
@@ -105,7 +105,7 @@ namespace CivOne.Tasks
 		private void CreateCity(Player player, int x, int y)
 		{
 			string name = Game.CityName(player);
-			if (player.Human)
+			if (player.IsHuman)
 			{
 				CityName cityName = new CityName(name);
 				cityName.Accept += CityNameAccept;

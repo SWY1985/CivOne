@@ -24,7 +24,7 @@ namespace CivOne.Screens.Reports
 
 				byte id = Game.PlayerNumber(player);
 				byte colour = Common.ColourLight[id];
-				if (player.Human)
+				if (player.IsHuman)
 				{
 					int unitCount = Game.GetUnits().Count(u => u.Owner == id && u.Home != null);
 
