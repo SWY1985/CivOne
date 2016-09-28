@@ -142,6 +142,7 @@ namespace CivOne.Templates
 			Movement = null;
 			
 			Explore();
+			Game.MovementDone();
 			MovementDone(previousTile);
 		}
 

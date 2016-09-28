@@ -73,7 +73,16 @@ namespace CivOne.Screens
 					if (tile == null) continue;
 					AddLayer(Resources.Instance.GetTile(tile), (xx * 16) + 1, (yy * 16) + 1);
 					if (tile.City != null)
+					{
 						AddLayer(Icons.City(tile.City, smallFont: true), (xx * 16) + 1, (yy * 16) + 1);
+					}
+					else if (tile.Units.Any(u => u.Owner != _city.Owner))
+					{
+						IUnit[] units = tile.Units.Where(u => u.Owner != _city.Owner).ToArray();
+						AddLayer(units[0].GetUnit(units[0].Owner), (xx * 16) + 1, (yy * 16) + 1);
+						if (units.Length > 1)
+							AddLayer(units[0].GetUnit(units[0].Owner), (xx * 16), (yy * 16));
+					}
 					if (!Settings.RevealWorld)
 					{
 						if (!Human.Visible(tile, Direction.West)) AddLayer(Resources.Instance.GetFog(Direction.West), (xx * 16) + 1, (yy * 16) + 1);

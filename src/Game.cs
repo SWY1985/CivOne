@@ -317,6 +317,17 @@ namespace CivOne
 			return _units.ToArray();
 		}
 
+		internal void MovementDone()
+		{
+			foreach (City city in _cities)
+			{
+				foreach (ITile tile in city.ResourceTiles.Where(t => city.ValidTile(t)))
+				{
+					city.RelocateResourceTile(tile);
+				} 
+			}
+		}
+
 		public City[] GetCities()
 		{
 			return _cities.ToArray();
