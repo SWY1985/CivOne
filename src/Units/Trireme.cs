@@ -32,7 +32,7 @@ namespace CivOne.Units
 			// The Trireme unit is surrounded by oceans, there's a 50% chance it will be lost at sea
 			if (Common.Random.Next(0, 100) < 50) return;
 
-			Game.Instance.DisbandUnit(this);
+			Game.DisbandUnit(this);
 			GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText("ERROR/TRIREME")));
 		}
 

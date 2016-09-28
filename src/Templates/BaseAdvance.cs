@@ -18,7 +18,7 @@ using CivOne.Interfaces;
 
 namespace CivOne.Templates
 {
-	internal abstract class BaseAdvance : IAdvance
+	internal abstract class BaseAdvance : BaseInstance, IAdvance
 	{
 		private Advance[] _requiredTechs;
 		private IEnumerable<IAdvance> GetRequiredTechs()
@@ -86,7 +86,7 @@ namespace CivOne.Templates
 						yy += 4;
 						foreach (IUnit unit in Reflect.GetUnits().Where(u => u.RequiredTech != null && u.RequiredTech.Id == Id))
 						{
-							output.AddLayer(unit.GetUnit(Game.Instance.PlayerNumber(Game.Instance.HumanPlayer)).Image, 40, yy - 5);
+							output.AddLayer(unit.GetUnit(Game.PlayerNumber(Human)).Image, 40, yy - 5);
 							output.DrawText(string.Format("{0} unit", unit.Name), 6, 12, 60, yy); yy += 12;
 						}
 						foreach (IBuilding building in Reflect.GetBuildings().Where(b => b.RequiredTech != null && b.RequiredTech.Id == Id))

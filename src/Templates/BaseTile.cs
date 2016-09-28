@@ -15,16 +15,8 @@ using CivOne.Interfaces;
 
 namespace CivOne.Templates
 {
-	internal abstract class BaseTile : ITile
+	internal abstract class BaseTile : BaseInstance, ITile
 	{
-		protected Map Map
-		{
-			get
-			{
-				return Map.Instance;
-			}
-		}
-
 		protected bool AnarchyDespotism
 		{
 			get
@@ -32,7 +24,7 @@ namespace CivOne.Templates
 				if (!Game.Started)
 					return false;
 				
-				switch (Game.Instance.CurrentPlayer.Government)
+				switch (Game.CurrentPlayer.Government)
 				{
 					case Government.Anarchy:
 					case Government.Despotism:
@@ -49,7 +41,7 @@ namespace CivOne.Templates
 				if (!Game.Started)
 					return false;
 				
-				switch (Game.Instance.CurrentPlayer.Government)
+				switch (Game.CurrentPlayer.Government)
 				{
 					case Government.Monarchy:
 					case Government.Communist:
@@ -66,7 +58,7 @@ namespace CivOne.Templates
 				if (!Game.Started)
 					return false;
 				
-				switch (Game.Instance.CurrentPlayer.Government)
+				switch (Game.CurrentPlayer.Government)
 				{
 					case Government.Republic:
 					case Government.Democratic:
@@ -254,7 +246,7 @@ namespace CivOne.Templates
 		{
 			get
 			{
-				return Game.Instance.GetCity(X, Y);
+				return Game.GetCity(X, Y);
 			}
 		}
 
@@ -262,7 +254,7 @@ namespace CivOne.Templates
 		{
 			get
 			{
-				return Game.Instance.GetUnits(X, Y);
+				return Game.GetUnits(X, Y);
 			}
 		}
 

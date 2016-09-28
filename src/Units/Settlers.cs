@@ -53,14 +53,14 @@ namespace CivOne.Units
 			}
 			if (!tile.IsOcean && !tile.Road && tile.City == null)
 			{
-				if ((tile is River) && !Game.Instance.CurrentPlayer.Advances.Any(a => a is BridgeBuilding))
+				if ((tile is River) && !Game.CurrentPlayer.Advances.Any(a => a is BridgeBuilding))
 					return false;
 				BuildingRoad = 2;
 				MovesLeft = 0;
 				PartMoves = 0;
 				return true;
 			}
-			else if (Game.Instance.HumanPlayer.Advances.Any(a => a is RailRoad) && !tile.IsOcean && tile.Road && !tile.RailRoad && tile.City == null)
+			else if (Game.CurrentPlayer.Advances.Any(a => a is RailRoad) && !tile.IsOcean && tile.Road && !tile.RailRoad && tile.City == null)
 			{
 				BuildingRoad = 3;
 				MovesLeft = 0;
@@ -125,7 +125,7 @@ namespace CivOne.Units
 
 		public bool BuildFortress()
 		{
-			if (!Game.Instance.CurrentPlayer.Advances.Any(a => a is Construction))
+			if (!Game.CurrentPlayer.Advances.Any(a => a is Construction))
 				return false;
 			
 			ITile tile = Map[X, Y];
@@ -149,7 +149,7 @@ namespace CivOne.Units
 				{
 					if (Map[X, Y].Road)
 					{
-						if (Game.Instance.HumanPlayer.Advances.Any(a => a is RailRoad))
+						if (Game.HumanPlayer.Advances.Any(a => a is RailRoad))
 						{
 							Map[X, Y].RailRoad = true;
 						}
@@ -294,7 +294,7 @@ namespace CivOne.Units
 		private GameMenu.Item MenuBuildFortress()
 		{
 			GameMenu.Item item = new GameMenu.Item("Build fortress", "f");
-			if (!Game.Instance.CurrentPlayer.Advances.Any(a => a is Construction))
+			if (!Game.CurrentPlayer.Advances.Any(a => a is Construction))
 				item.Enabled = false;
 			else
 				item.Selected += (s, a) => GameTask.Enqueue(Orders.BuildFortress(this));
@@ -312,7 +312,7 @@ namespace CivOne.Units
 				{
 					yield return MenuFoundCity();
 				}
-				if (!tile.IsOcean && (!tile.Road || (Game.Instance.HumanPlayer.Advances.Any(a => a is RailRoad) && !tile.RailRoad)))
+				if (!tile.IsOcean && (!tile.Road || (Game.HumanPlayer.Advances.Any(a => a is RailRoad) && !tile.RailRoad)))
 				{	
 					yield return MenuBuildRoad();
 				}
