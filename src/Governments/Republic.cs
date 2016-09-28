@@ -7,23 +7,15 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using CivOne.Advances;
 using CivOne.Templates;
 
-namespace CivOne.Civilopedia.Governments
+namespace CivOne.Governments
 {
 	internal class Republic : BaseGovernment
 	{
-		public override byte Id
+		public Republic() : base(4, "Republic", new TheRepublic())
 		{
-			get
-			{
-				return 4;
-			}
-		}
-
-		public Republic()
-		{
-			Name = "Republic";
 		}
 	}
 }

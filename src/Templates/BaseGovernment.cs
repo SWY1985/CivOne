@@ -13,13 +13,24 @@ namespace CivOne.Templates
 {
 	internal abstract class BaseGovernment : BaseConcept, IGovernment
 	{
-		public abstract byte Id { get; }
-		public virtual IAdvance RequiredTech
+		public byte Id { get; private set; }
+		public string NameAdjective { get; private set; }
+		public IAdvance RequiredTech { get; private set; }
+
+		internal BaseGovernment(byte id, string name, IAdvance requiredTech = null)
 		{
-			get
-			{
-				return null;
-			}
+			Id = id;
+			Name = name;
+			NameAdjective = name;
+			RequiredTech = requiredTech;
+		}
+		
+		internal BaseGovernment(byte id, string name, string nameAdjective, IAdvance requiredTech = null)
+		{
+			Id = id;
+			Name = name;
+			NameAdjective = nameAdjective;
+			RequiredTech = requiredTech;
 		}
 	}
 }

@@ -12,15 +12,17 @@ using System.Collections.Generic;
 using System.Linq;
 using CivOne.Advances;
 using CivOne.Enums;
+using CivOne.Governments;
 using CivOne.Interfaces;
 using CivOne.Screens.Dialogs;
 using CivOne.Tasks;
+using CivOne.Templates;
 using CivOne.Units;
 using CivOne.Wonders;
 
 namespace CivOne
 {
-	public class Player : ITurn
+	public class Player : BaseInstance, ITurn
 	{
 		private readonly ICivilization _civilization;
 		private readonly string _leaderName, _tribeName, _tribeNamePlural;
@@ -32,14 +34,6 @@ namespace CivOne
 		private short _anarchy = 0;
 		private short _gold;
 		private IAdvance _currentResearch = null;
-		
-		private Map Map
-		{
-			get
-			{
-				return Map.Instance;
-			}
-		}
 
 		public ICivilization Civilization
 		{
@@ -75,7 +69,7 @@ namespace CivOne
 
 		public byte Handicap { get; internal set; }
 		
-		public Government Government { get; internal set; }
+		public IGovernment Government { get; internal set; }
 
 		private int _luxuriesRate = 0, _taxesRate = 5, _scienceRate = 5;
 		public int LuxuriesRate
@@ -115,12 +109,12 @@ namespace CivOne
 		public void Revolt()
 		{
 			_anarchy = (short)((HasWonder<Pyramids>() && !WonderObsolete<Pyramids>()) ? 1 : 4);
-			Government = Government.Anarchy;
-			if (!Human) return;
+			Government = new Anarchy();
+			if (!IsHuman) return;
 			GameTask.Enqueue(Message.Newspaper(null, $"The {Game.Instance.HumanPlayer.TribeNamePlural} are", "revolting! Citizens", "demand new govt."));
 		}
 
-		public bool Human
+		public bool IsHuman
 		{
 			get
 			{
@@ -206,6 +200,11 @@ namespace CivOne
 			return Advances.Any(a => a is T);
 		}
 
+		public bool HasAdvance(IAdvance advance)
+		{
+			return (advance == null || Advances.Any(a => a.Id == advance.Id));
+		}
+
 		public IAdvance CurrentResearch
 		{
 			get
@@ -230,17 +229,16 @@ namespace CivOne
 			}
 		}
 
-		public IEnumerable<Government> AvailableGovernments
+		public IEnumerable<IGovernment> AvailableGovernments
 		{
 			get
 			{
-				bool allGovernments = !WonderObsolete<Pyramids>() && HasWonder<Pyramids>(); 
-				
-				yield return Government.Despotism;
-				if (allGovernments || Game.Instance.HumanPlayer.Advances.Any(a => a is Monarchy)) yield return Government.Monarchy;
-				if (allGovernments || Game.Instance.HumanPlayer.Advances.Any(a => a is Communism)) yield return Government.Communist;
-				if (allGovernments || Game.Instance.HumanPlayer.Advances.Any(a => a is TheRepublic)) yield return Government.Republic;
-				if (allGovernments || Game.Instance.HumanPlayer.Advances.Any(a => a is Democracy)) yield return Government.Democratic;
+				bool allGovernments = !WonderObsolete<Pyramids>() && HasWonder<Pyramids>();
+				foreach (IGovernment government in Reflect.GetGovernments().Where(g => g.Id > 0))
+				{
+					if (!allGovernments && !HasAdvance(government.RequiredTech)) continue;
+					yield return government; 
+				}
 			}
 		}
 
@@ -366,7 +364,7 @@ namespace CivOne
 
 		public void NewTurn()
 		{
-			if (_anarchy == 0 && Government == Government.Anarchy)
+			if (_anarchy == 0 && Government is Anarchy)
 			{
 				GameTask.Enqueue(Show.ChooseGovernment);
 			}
@@ -379,7 +377,7 @@ namespace CivOne
 			_leaderName = customLeaderName ?? _civilization.LeaderName;
 			_tribeName = customTribeName ?? _civilization.Name;
 			_tribeNamePlural = customTribeNamePlural ?? _civilization.NamePlural;
-			Government = Government.Despotism;
+			Government = new Despotism();
 			
 			for (int xx = 0; xx < Map.WIDTH; xx++)
 			for (int yy = 0; yy < Map.HEIGHT; yy++)

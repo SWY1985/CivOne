@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.GFX;
+using CivOne.Governments;
 using CivOne.Interfaces;
 
 namespace CivOne.Templates
@@ -23,14 +24,7 @@ namespace CivOne.Templates
 			{
 				if (!Game.Started)
 					return false;
-				
-				switch (Game.CurrentPlayer.Government)
-				{
-					case Government.Anarchy:
-					case Government.Despotism:
-						return true;
-				}
-				return false;
+				return (Game.CurrentPlayer.Government is Anarchy || Game.CurrentPlayer.Government is Despotism);
 			}
 		}
 
@@ -40,14 +34,7 @@ namespace CivOne.Templates
 			{
 				if (!Game.Started)
 					return false;
-				
-				switch (Game.CurrentPlayer.Government)
-				{
-					case Government.Monarchy:
-					case Government.Communist:
-						return true;
-				}
-				return false;
+				return (Game.CurrentPlayer.Government is Monarchy || Game.CurrentPlayer.Government is Communism);
 			}
 		}
 
@@ -57,14 +44,7 @@ namespace CivOne.Templates
 			{
 				if (!Game.Started)
 					return false;
-				
-				switch (Game.CurrentPlayer.Government)
-				{
-					case Government.Republic:
-					case Government.Democratic:
-						return true;
-				}
-				return false;
+				return (Game.CurrentPlayer.Government is Republic || Game.CurrentPlayer.Government is Democracy);
 			}
 		}
 

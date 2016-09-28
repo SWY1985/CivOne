@@ -10,6 +10,7 @@
 using System.Drawing;
 using System.Linq;
 using CivOne.Enums;
+using CivOne.Governments;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Units;
@@ -43,20 +44,19 @@ namespace CivOne.Screens
 					if (!(units[i] is Diplomat) || (units[i] is Caravan))
 					{
 						int shields = 0, food = 0;
-						switch (Game.GetPlayer(_city.Owner).Government)
+						IGovernment government = Game.GetPlayer(_city.Owner).Government;
+						if (government is Anarchy || government is Despotism)
 						{
-							case Government.Anarchy:
-							case Government.Despotism:
-								if (i >= _city.Size)
-									shields++;
-								if (units[i] is Settlers)
-									food++;
-								break;
-							default:
+							if (i >= _city.Size)
 								shields++;
-								if (units[i] is Settlers)
-									food += 2;
-								break;
+							if (units[i] is Settlers)
+								food++;
+						}
+						else
+						{
+							shields++;
+							if (units[i] is Settlers)
+								food += 2;
 						}
 						if (food > 0)
 						{

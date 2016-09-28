@@ -14,6 +14,7 @@ namespace CivOne.Interfaces
 	public interface IGovernment : ICivilopedia
 	{
 		byte Id { get; }
+		string NameAdjective { get; }
 		IAdvance RequiredTech { get; }
 	}
 }

@@ -21,9 +21,9 @@ namespace CivOne.Screens.Dialogs
 {
 	internal class ChooseGovernment : BaseDialog
 	{
-		private readonly Government[] _availableGovernments;
+		private readonly IGovernment[] _availableGovernments;
 
-		public Government Result { get; private set; }
+		public IGovernment Result { get; private set; }
 
 		private void GovernmentChoice(object sender, EventArgs args)
 		{
@@ -46,7 +46,7 @@ namespace CivOne.Screens.Dialogs
 			Menu.Item menuItem;
 			for (int i = 0; i < _availableGovernments.Length; i++)
 			{
-				menu.Items.Add(menuItem = new Menu.Item($"{_availableGovernments[i]}", i));
+				menu.Items.Add(menuItem = new Menu.Item($"{_availableGovernments[i].NameAdjective}", i));
 				menuItem.Selected += GovernmentChoice;
 			}
 			AddMenu(menu);

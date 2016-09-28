@@ -9,21 +9,12 @@
 
 using CivOne.Templates;
 
-namespace CivOne.Civilopedia.Governments
+namespace CivOne.Governments
 {
 	internal class Anarchy : BaseGovernment
 	{
-		public override byte Id
+		public Anarchy() : base(0, "Anarchy")
 		{
-			get
-			{
-				return 0;
-			}
-		}
-
-		public Anarchy()
-		{
-			Name = "Anarchy";
 		}
 	}
 }

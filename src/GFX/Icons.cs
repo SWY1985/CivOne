@@ -12,6 +12,7 @@ using System.Linq;
 using CivOne.Buildings;
 using CivOne.Enums;
 using CivOne.GFX;
+using CivOne.Governments;
 using CivOne.Interfaces;
 
 namespace CivOne.GFX
@@ -211,32 +212,29 @@ namespace CivOne.GFX
 		}
 
 		private static Bitmap[,] _governmentPortrait = new Bitmap[7, 4];
-		public static Bitmap GovernmentPortrait(Government government, Advisor advisor, bool modern)
+		public static Bitmap GovernmentPortrait(IGovernment government, Advisor advisor, bool modern)
 		{
 			string filename;
 			int governmentId;
-			switch (government)
+			if (government is Monarchy)
 			{
-				case Government.Anarchy:
-				case Government.Despotism:
-					governmentId = (modern ? 1 : 0);
-					filename = "GOVT0" + (modern ? "M" : "A");
-					break;
-				case Government.Monarchy:
-					governmentId = (modern ? 3 : 2);
-					filename = $"GOVT1" + (modern ? "M" : "A");
-					break;
-				case Government.Republic:
-				case Government.Democratic:
-					governmentId = (modern ? 5 : 4);
-					filename = $"GOVT2" + (modern ? "M" : "A");
-					break;
-				case Government.Communist:
-					governmentId = 6;
-					filename = "GOVT3A";
-					break;
-				default:
-					return null;
+				governmentId = (modern ? 3 : 2);
+				filename = $"GOVT1" + (modern ? "M" : "A");
+			}
+			else if (government is Republic || government is Democracy)
+			{
+				governmentId = (modern ? 5 : 4);
+				filename = $"GOVT2" + (modern ? "M" : "A");
+			}
+			else if (government is Monarchy)
+			{
+				governmentId = 6;
+				filename = "GOVT3A";
+			}
+			else // Anarchy or Despotism
+			{
+				governmentId = (modern ? 1 : 0);
+				filename = "GOVT0" + (modern ? "M" : "A");
 			}
 			if (_governmentPortrait[governmentId, (int)advisor] == null)
 				_governmentPortrait[governmentId, (int)advisor] = (Bitmap)Resources.Instance.GetPart(filename, (40 * (int)advisor), 0, 40, 60);
