@@ -44,10 +44,10 @@ namespace CivOne.Templates
 		
 		public BaseReport(string title, byte backgroundColour)
 		{
-			bool modernGovernment = Game.Instance.HumanPlayer.Advances.Any(a => a.Id == (int)Advance.Invention);
+			bool modernGovernment = Human.Advances.Any(a => a.Id == (int)Advance.Invention);
 			for (int i = 0; i < 4; i++)
 			{
-				Portrait[i] = Icons.GovernmentPortrait(Game.Instance.HumanPlayer.Government, (Advisor)Enum.Parse(typeof(Advisor), $"{i}"), modernGovernment); 
+				Portrait[i] = Icons.GovernmentPortrait(Human.Government, (Advisor)Enum.Parse(typeof(Advisor), $"{i}"), modernGovernment); 
 			}
 			Color[] palette = Resources.Instance.LoadPIC("SP299").Image.Palette.Entries;
 			for (int i = 144; i < 256; i++)
@@ -59,8 +59,8 @@ namespace CivOne.Templates
 			
 			_canvas.FillRectangle(backgroundColour, 0, 0, 320, 200);
 			_canvas.DrawText(title, 0, 15, 160, 2, TextAlign.Center);
-			_canvas.DrawText(string.Format("{0} of the {1}", "Empire", Game.Instance.HumanPlayer.TribeNamePlural), 0, 15, 160, 10, TextAlign.Center);
-			_canvas.DrawText(string.Format("{0} {1}: {2}", "Emperor", Game.Instance.HumanPlayer.LeaderName, Game.Instance.GameYear), 0, 15, 160, 18, TextAlign.Center);
+			_canvas.DrawText(string.Format("{0} of the {1}", "Empire", Human.TribeNamePlural), 0, 15, 160, 10, TextAlign.Center);
+			_canvas.DrawText(string.Format("{0} {1}: {2}", "Emperor", Human.LeaderName, Game.GameYear), 0, 15, 160, 18, TextAlign.Center);
 		}
 	}
 }

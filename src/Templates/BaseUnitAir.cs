@@ -37,7 +37,7 @@ namespace CivOne.Templates
 			if (MovesLeft > 0 || FuelLeft > 0) return;
 			
 			// Air unit is out of fuel
-			Game.Instance.DisbandUnit(this);
+			Game.DisbandUnit(this);
 			GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText("ERROR/FUEL")));
 		}
 

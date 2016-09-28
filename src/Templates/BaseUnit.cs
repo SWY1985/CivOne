@@ -21,17 +21,9 @@ using CivOne.Units;
 
 namespace CivOne.Templates
 {
-	internal abstract class BaseUnit : IUnit
+	internal abstract class BaseUnit : BaseInstance, IUnit
 	{
 		protected int _x, _y;
-		
-		protected Map Map
-		{
-			get
-			{
-				return Map.Instance;
-			}
-		}
 
 		public virtual bool Busy
 		{
@@ -271,7 +263,7 @@ namespace CivOne.Templates
 		{
 			get
 			{
-				return Game.Instance.GetPlayer(Owner);
+				return Game.GetPlayer(Owner);
 			}
 		}
 		public byte Status { get; set; }
@@ -371,7 +363,7 @@ namespace CivOne.Templates
 		protected GameMenu.Item MenuWait()
 		{
 			GameMenu.Item item = new GameMenu.Item("Wait", "w");
-			item.Selected += (s, a) => Game.Instance.UnitWait();
+			item.Selected += (s, a) => Game.UnitWait();
 			return item;
 		}
 		
@@ -407,7 +399,7 @@ namespace CivOne.Templates
 		protected GameMenu.Item MenuDisbandUnit()
 		{
 			GameMenu.Item item = new GameMenu.Item("Disband Unit", "D");
-			item.Selected += (s, a) => Game.Instance.DisbandUnit(this);
+			item.Selected += (s, a) => Game.DisbandUnit(this);
 			return item;
 		}
 
@@ -425,8 +417,8 @@ namespace CivOne.Templates
 
 		protected void Explore(int range, bool sea = false)
 		{
-			if (Game.Instance == null) return;
-			Player player = Game.Instance.GetPlayer(Owner);
+			if (Game == null) return;
+			Player player = Game.GetPlayer(Owner);
 			if (player == null) return;
 			player.Explore(X, Y, range, sea);
 		}

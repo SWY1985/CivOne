@@ -110,7 +110,7 @@ namespace CivOne.Templates
 		{
 			base.NewTurn();
 
-			Player player = Game.Instance.GetPlayer(Owner);
+			Player player = Game.GetPlayer(Owner);
 			if (player.HasWonder<MagellansExpedition>() || (!player.WonderObsolete<Lighthouse>() && player.HasWonder<Lighthouse>())) MovesLeft++;
 		}
 		
