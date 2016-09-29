@@ -16,7 +16,7 @@ namespace CivOne.Units
 {
 	internal class MechInf : BaseUnitLand
 	{
-		public MechInf() : base(5, 6, 6, 3, 450)
+		public MechInf() : base(5, 6, 6, 3)
 		{
 			Type = Unit.MechInf;
 			Name = "Mech. Inf.";

@@ -16,7 +16,7 @@ namespace CivOne.Units
 {
 	internal class Cruiser : BaseUnitSea
 	{
-		public Cruiser() : base(8, 6, 6, 6, 2)
+		public Cruiser() : base(8, 6, 6, 6)
 		{
 			Type = Unit.Cruiser;
 			Name = "Cruiser";

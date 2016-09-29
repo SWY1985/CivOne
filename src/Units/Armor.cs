@@ -16,7 +16,7 @@ namespace CivOne.Units
 {
 	internal class Armor : BaseUnitLand
 	{
-		public Armor() : base(8, 10, 5, 3, 960)
+		public Armor() : base(8, 10, 5, 3)
 		{
 			Type = Unit.Armor;
 			Name = "Armor";

@@ -16,7 +16,7 @@ namespace CivOne.Units
 {
 	internal class Legion : BaseUnitLand
 	{
-		public Legion() : base(2, 3, 1, 1, 120)
+		public Legion() : base(2, 3, 1, 1)
 		{
 			Type = Unit.Legion;
 			Name = "Legion";

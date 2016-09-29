@@ -16,7 +16,7 @@ namespace CivOne.Units
 {
 	internal class Caravan : BaseUnitLand
 	{
-		public Caravan() : base(5, 0, 1, 1, 450)
+		public Caravan() : base(5, 0, 1, 1)
 		{
 			Type = Unit.Caravan;
 			Name = "Caravan";

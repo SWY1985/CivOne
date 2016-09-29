@@ -84,7 +84,7 @@ namespace CivOne.Templates
 			return (tile != null);
 		}
 
-		protected BaseUnitAir(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1, short buy = 50) : base(price, attack, defense, move, buy)
+		protected BaseUnitAir(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1) : base(price, attack, defense, move)
 		{
 			Class = UnitClass.Air;
 			TotalFuel = move;
