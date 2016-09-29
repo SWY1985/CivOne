@@ -21,7 +21,7 @@ namespace CivOne.Units
 			Explore(2);
 		}
 		
-		public Bomber() : base(12, 12, 1, 8)
+		public Bomber() : base(12, 12, 1, 8, 1920)
 		{
 			Type = Unit.Bomber;
 			Name = "Bomber";

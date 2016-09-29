@@ -21,7 +21,7 @@ namespace CivOne.Units
 			Explore(2);
 		}
 
-		public Fighter() : base(6, 4, 2, 10)
+		public Fighter() : base(6, 4, 2, 10, 600)
 		{
 			Type = Unit.Fighter;
 			Name = "Fighter";

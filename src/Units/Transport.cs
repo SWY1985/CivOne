@@ -24,7 +24,7 @@ namespace CivOne.Units
 			}
 		}
 
-		public Transport() : base(5, 0, 3, 4)
+		public Transport() : base(5, 0, 3, 4, 450)
 		{
 			Type = Unit.Transport;
 			Name = "Transport";

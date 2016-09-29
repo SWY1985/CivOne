@@ -76,6 +76,7 @@ namespace CivOne.Templates
 		
 		public IAdvance RequiredTech { get; protected set; }
 		public IAdvance ObsoleteTech { get; protected set; }
+		public short BuyPrice { get; private set; }
 		public byte Price { get; protected set; }
 		
 		protected void SetSmallIcon(int col, int row)
@@ -97,9 +98,10 @@ namespace CivOne.Templates
 			}
 		}
 		
-		protected BaseWonder(byte price = 1)
+		protected BaseWonder(byte price = 1, short buy = 50)
 		{
 			Price = price;
+			BuyPrice = buy;
 		}
 	}
 }

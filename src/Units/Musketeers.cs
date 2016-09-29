@@ -16,7 +16,7 @@ namespace CivOne.Units
 {
 	internal class Musketeers : BaseUnitLand
 	{
-		public Musketeers() : base(3, 2, 3, 1)
+		public Musketeers() : base(3, 2, 3, 1, 210)
 		{
 			Type = Unit.Musketeers;
 			Name = "Musketeers";

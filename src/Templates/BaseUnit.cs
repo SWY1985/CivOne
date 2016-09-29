@@ -220,6 +220,7 @@ namespace CivOne.Templates
 		public UnitClass Class { get; protected set; }
 		public Unit Type { get; protected set; }
 		public City Home { get; protected set; }
+		public short BuyPrice { get; private set; }
 		public byte Price { get; protected set; }
 		public byte Attack { get; protected set; }
 		public byte Defense { get; protected set; }
@@ -429,8 +430,9 @@ namespace CivOne.Templates
 			Explore(1);
 		}
 		
-		protected BaseUnit(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1)
+		protected BaseUnit(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1, short buy = 50)
 		{
+			BuyPrice = buy;
 			Price = price;
 			Attack = attack;
 			Defense = defense;

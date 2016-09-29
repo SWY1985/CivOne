@@ -225,7 +225,7 @@ namespace CivOne.Templates
 			return (tile.Units.Any(u => (u is IBoardable)) && tile.Units.Where(u => u is IBoardable).Sum(u => (u as IBoardable).Cargo) > tile.Units.Count(u => u.Class == UnitClass.Land));
 		}
 
-		protected BaseUnitLand(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1) : base(price, attack, defense, move)
+		protected BaseUnitLand(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1, short buy = 50) : base(price, attack, defense, move, buy)
 		{
 			Class = UnitClass.Land;
 		}

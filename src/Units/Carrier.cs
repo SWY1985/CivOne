@@ -34,7 +34,7 @@ namespace CivOne.Units
 			base.MovementDone(previousTile);
 		}
 
-		public Carrier() : base(16, 1, 12, 5, 2)
+		public Carrier() : base(16, 1, 12, 5, 2, 3200)
 		{
 			Type = Unit.Carrier;
 			Name = "Carrier";
