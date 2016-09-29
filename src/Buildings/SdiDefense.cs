@@ -15,7 +15,7 @@ namespace CivOne.Buildings
 {
 	internal class SdiDefense : BaseBuilding
 	{
-		public SdiDefense() : base(20, 4, 200)
+		public SdiDefense() : base(20, 4, 200, 800)
 		{
 			Name = "SDI Defense";
 			RequiredTech = new SuperConductor();

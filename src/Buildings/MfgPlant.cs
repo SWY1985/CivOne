@@ -15,7 +15,7 @@ namespace CivOne.Buildings
 {
 	internal class MfgPlant : BaseBuilding
 	{
-		public MfgPlant() : base(32, 6, 320)
+		public MfgPlant() : base(32, 6, 320, 1280)
 		{
 			Name = "Mfg. Plant";
 			RequiredTech = new Robotics();

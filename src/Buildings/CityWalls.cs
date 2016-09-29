@@ -15,7 +15,7 @@ namespace CivOne.Buildings
 {
 	internal class CityWalls : BaseBuilding
 	{
-		public CityWalls() : base(12, 2, 120)
+		public CityWalls() : base(12, 2, 120, 480)
 		{
 			Name = "City Walls";
 			RequiredTech = new Masonry();
