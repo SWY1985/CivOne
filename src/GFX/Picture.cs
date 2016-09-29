@@ -336,6 +336,7 @@ namespace CivOne.GFX
 		}
 		public void AddLayer(Bitmap layer, Point offset)
 		{
+			if (layer == null) return;
 			if (offset.X < 0 || offset.Y < 0) return;
 			
 			int layerWidth = layer.Width;
