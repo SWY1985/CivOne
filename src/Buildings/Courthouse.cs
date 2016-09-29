@@ -15,7 +15,7 @@ namespace CivOne.Buildings
 {
 	internal class Courthouse : BaseBuilding
 	{
-		public Courthouse() : base(8, 1, 80, 320)
+		public Courthouse() : base(8, 1)
 		{
 			Name = "Courthouse";
 			RequiredTech = new CodeOfLaws();

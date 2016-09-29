@@ -15,7 +15,7 @@ namespace CivOne.Buildings
 {
 	internal class Temple : BaseBuilding
 	{
-		public Temple() : base(4, 1, 40, 160)
+		public Temple() : base(4, 1)
 		{
 			Name = "Temple";
 			RequiredTech = new CeremonialBurial();

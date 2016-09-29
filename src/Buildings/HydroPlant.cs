@@ -15,7 +15,7 @@ namespace CivOne.Buildings
 {
 	internal class HydroPlant : BaseBuilding
 	{
-		public HydroPlant() : base(24, 4, 240, 960)
+		public HydroPlant() : base(24, 4)
 		{
 			Name = "Hydro Plant";
 			RequiredTech = new Electronics();

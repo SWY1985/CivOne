@@ -15,7 +15,7 @@ namespace CivOne.Buildings
 {
 	internal class MassTransit : BaseBuilding
 	{
-		public MassTransit() : base(16, 4, 160, 640)
+		public MassTransit() : base(16, 4)
 		{
 			Name = "Mass Transit";
 			RequiredTech = new MassProduction();

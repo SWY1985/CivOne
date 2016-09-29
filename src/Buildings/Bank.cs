@@ -15,7 +15,7 @@ namespace CivOne.Buildings
 {
 	internal class Bank : BaseBuilding
 	{
-		public Bank() : base(12, 3, 120, 480)
+		public Bank() : base(12, 3)
 		{
 			Name = "Bank";
 			RequiredTech = new Banking();

@@ -14,7 +14,7 @@ namespace CivOne.Buildings
 {
 	internal class Barracks : BaseBuilding
 	{
-		public Barracks() : base(4, sell: 40, buy: 160)
+		public Barracks() : base(4)
 		{
 			Name = "Barracks";
 			RequiredTech = null;
