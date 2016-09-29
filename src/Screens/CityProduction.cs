@@ -119,6 +119,11 @@ namespace CivOne.Screens
 			return true;
 		}
 
+		public void Update()
+		{
+			_update = true;
+		}
+
 		private bool Change()
 		{
 			CityChooseProduction cityProductionMenu = new CityChooseProduction(_city);
