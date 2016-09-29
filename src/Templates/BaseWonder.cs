@@ -98,10 +98,10 @@ namespace CivOne.Templates
 			}
 		}
 		
-		protected BaseWonder(byte price = 1, short buy = 0)
+		protected BaseWonder(byte price = 1)
 		{
 			Price = price;
-			BuyPrice = (short)(buy > 0 ? buy : (80 * price));
+			BuyPrice = (short)(80 * price);
 		}
 	}
 }

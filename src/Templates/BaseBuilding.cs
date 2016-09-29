@@ -119,12 +119,12 @@ namespace CivOne.Templates
 			}
 		}
 		
-		protected BaseBuilding(byte price = 1, byte maintenance = 0, short sell = 40, short buy = 50)
+		protected BaseBuilding(byte price = 1, byte maintenance = 0)
 		{
 			Price = price;
 			Maintenance = maintenance;
-			BuyPrice = buy;
-			SellPrice = sell;
+			BuyPrice = (short)(40 * price);
+			SellPrice = (short)(BuyPrice / 4);
 		}
 	}
 }

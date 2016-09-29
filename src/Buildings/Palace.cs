@@ -21,7 +21,7 @@ namespace CivOne.Buildings
 			Maintenance = 0;
 		}
 
-		public Palace() : base(20, 5, 200, 800)
+		public Palace() : base(20, 5)
 		{
 			Name = "Palace";
 			RequiredTech = new Masonry();

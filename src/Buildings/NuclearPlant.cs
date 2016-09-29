@@ -15,7 +15,7 @@ namespace CivOne.Buildings
 {
 	internal class NuclearPlant : BaseBuilding
 	{
-		public NuclearPlant() : base(16, 2, 160, 640)
+		public NuclearPlant() : base(16, 2)
 		{
 			Name = "Nuclear Plant";
 			RequiredTech = new NuclearPower();
