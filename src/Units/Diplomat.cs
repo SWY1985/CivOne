@@ -16,7 +16,7 @@ namespace CivOne.Units
 {
 	internal class Diplomat : BaseUnitLand
 	{
-		public Diplomat() : base(3, 0, 0, 2, 210)
+		public Diplomat() : base(3, 0, 0, 2)
 		{
 			Type = Unit.Diplomat;
 			Name = "Diplomat";

@@ -24,7 +24,7 @@ namespace CivOne.Units
 			}
 		}
 
-		public Sail() : base(4, 1, 1, 3, 320)
+		public Sail() : base(4, 1, 1, 3)
 		{
 			Type = Unit.Sail;
 			Name = "Sail";

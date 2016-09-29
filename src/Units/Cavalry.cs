@@ -16,7 +16,7 @@ namespace CivOne.Units
 {
 	internal class Cavalry : BaseUnitLand
 	{
-		public Cavalry() : base(2, 2, 1, 2, 120)
+		public Cavalry() : base(2, 2, 1, 2)
 		{
 			Type = Unit.Cavalry;
 			Name = "Cavalry";

@@ -16,7 +16,7 @@ namespace CivOne.Units
 {
 	internal class Cannon : BaseUnitLand
 	{
-		public Cannon() : base(4, 8, 1, 1, 320)
+		public Cannon() : base(4, 8, 1, 1)
 		{
 			Type = Unit.Cannon;
 			Name = "Cannon";

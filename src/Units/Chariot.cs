@@ -16,7 +16,7 @@ namespace CivOne.Units
 {
 	internal class Chariot : BaseUnitLand
 	{
-		public Chariot() : base(4, 4, 1, 2, 320)
+		public Chariot() : base(4, 4, 1, 2)
 		{
 			Type = Unit.Chariot;
 			Name = "Chariot";

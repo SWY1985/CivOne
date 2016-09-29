@@ -430,10 +430,10 @@ namespace CivOne.Templates
 			Explore(1);
 		}
 		
-		protected BaseUnit(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1, short buy = 50)
+		protected BaseUnit(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1)
 		{
-			BuyPrice = buy;
 			Price = price;
+			BuyPrice = (short)((Price + 4) * 10 * Price);
 			Attack = attack;
 			Defense = defense;
 			Move = move;

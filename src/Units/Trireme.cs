@@ -44,7 +44,7 @@ namespace CivOne.Units
 			}
 		}
 
-		public Trireme() : base(4, 1, 0, 3, 320)
+		public Trireme() : base(4, 1, 0, 3)
 		{
 			Type = Unit.Trireme;
 			Name = "Trireme";

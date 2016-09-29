@@ -381,7 +381,7 @@ namespace CivOne.Units
 			return base.GetUnit(colour);
 		}
 
-		public Settlers() : base(4, 0, 1, 1, 320)
+		public Settlers() : base(4, 0, 1, 1)
 		{
 			Type = Unit.Settlers;
 			Name = "Settlers";

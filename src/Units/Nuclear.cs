@@ -22,7 +22,7 @@ namespace CivOne.Units
 			Explore(2);
 		}
 		
-		public Nuclear() : base(16, 99, 0, 16, 3200)
+		public Nuclear() : base(16, 99, 0, 16)
 		{
 			Type = Unit.Nuclear;
 			Name = "Nuclear";

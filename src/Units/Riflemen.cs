@@ -16,7 +16,7 @@ namespace CivOne.Units
 {
 	internal class Riflemen : BaseUnitLand
 	{
-		public Riflemen() : base(3, 3, 5, 1, 210)
+		public Riflemen() : base(3, 3, 5, 1)
 		{
 			Type = Unit.Riflemen;
 			Name = "Riflemen";
