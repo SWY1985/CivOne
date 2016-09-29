@@ -15,7 +15,7 @@ namespace CivOne.Buildings
 {
 	internal class Cathedral : BaseBuilding
 	{
-		public Cathedral() : base(16, 3)
+		public Cathedral() : base(16, 3, 160)
 		{
 			Name = "Cathedral";
 			RequiredTech = new Religion();

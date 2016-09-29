@@ -15,7 +15,7 @@ namespace CivOne.Buildings
 {
 	internal class RecyclingCenter : BaseBuilding
 	{
-		public RecyclingCenter() : base(20, 2)
+		public RecyclingCenter() : base(20, 2, 200)
 		{
 			Name = "Recycling Cntr.";
 			RequiredTech = new Recycling();

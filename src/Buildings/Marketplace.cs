@@ -15,7 +15,7 @@ namespace CivOne.Buildings
 {
 	internal class MarketPlace : BaseBuilding
 	{
-		public MarketPlace() : base(8, 1)
+		public MarketPlace() : base(8, 1, 80)
 		{
 			Name = "MarketPlace";
 			RequiredTech = new Currency();
