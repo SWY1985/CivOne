@@ -15,7 +15,7 @@ using CivOne.Buildings;
 using CivOne.Enums;
 using CivOne.Governments;
 using CivOne.Interfaces;
-using CivOne.Screens;
+using CivOne.Screens.Dialogs;
 using CivOne.Tasks;
 using CivOne.Templates;
 using CivOne.Units;
@@ -334,15 +334,39 @@ namespace CivOne
 			}
 		}
 
+		private void ConfirmBuy(object sender, EventArgs args)
+		{
+			Shields = (int)CurrentProduction.Price * 10;
+			Game.CurrentPlayer.Gold -= BuyPrice;
+		}
+
 		public void SetProduction(IProduction production)
 		{
 			CurrentProduction = production;
 		}
 
+		private short BuyPrice
+		{
+			get
+			{
+				// TODO: Calculate buy price
+				return CurrentProduction.BuyPrice;
+			}
+		}
+
 		public void Buy()
 		{
-			// DEBUG CODE
-			Shields = (int)CurrentProduction.Price * 10;
+			string name = (CurrentProduction as ICivilopedia).Name;
+			short playerGold = Game.CurrentPlayer.Gold;
+			if (playerGold < BuyPrice)
+			{
+				Common.AddScreen(new MessageBox("Cost to complete", $"{name}: ${BuyPrice}", $"Treasury: ${playerGold}"));
+				return;
+			}
+
+			ConfirmBuy confirmBuy = new ConfirmBuy(name, BuyPrice, playerGold);
+			confirmBuy.Buy += ConfirmBuy;
+			Common.AddScreen(confirmBuy);
 		}
 
 		public int Population
