@@ -15,7 +15,7 @@ namespace CivOne.Buildings
 {
 	internal class University : BaseBuilding
 	{
-		public University() : base(16, 3)
+		public University() : base(16, 3, 160)
 		{
 			Name = "University";
 			RequiredTech = new Advances.University();

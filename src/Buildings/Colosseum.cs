@@ -15,7 +15,7 @@ namespace CivOne.Buildings
 {
 	internal class Colosseum : BaseBuilding
 	{
-		public Colosseum() : base(10, 4)
+		public Colosseum() : base(10, 4, 100)
 		{
 			Name = "Colosseum";
 			RequiredTech = new Construction();
