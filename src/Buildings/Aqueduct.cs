@@ -15,7 +15,7 @@ namespace CivOne.Buildings
 {
 	internal class Aqueduct : BaseBuilding
 	{
-		public Aqueduct() : base(12, 2, 120)
+		public Aqueduct() : base(12, 2, 120, 480)
 		{
 			Name = "Aqueduct";
 			RequiredTech = new Construction();

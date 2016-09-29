@@ -15,7 +15,7 @@ namespace CivOne.Buildings
 {
 	internal class Factory : BaseBuilding
 	{
-		public Factory() : base(20, 4, 200)
+		public Factory() : base(20, 4, 200, 800)
 		{
 			Name = "Factory";
 			RequiredTech = new Industrialization();

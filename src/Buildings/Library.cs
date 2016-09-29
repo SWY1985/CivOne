@@ -15,7 +15,7 @@ namespace CivOne.Buildings
 {
 	internal class Library : BaseBuilding
 	{
-		public Library() : base(8, 1, 80)
+		public Library() : base(8, 1, 80, 320)
 		{
 			Name = "Library";
 			RequiredTech = new Writing();

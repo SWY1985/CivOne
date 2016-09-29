@@ -18,7 +18,7 @@ namespace CivOne.Buildings
 	{
 		private static Picture _iconCache = null;
 		
-		public PowerPlant() : base(16, 4, 160)
+		public PowerPlant() : base(16, 4, 160, 640)
 		{
 			Name = "Power Plant";
 			RequiredTech = new Refining();
