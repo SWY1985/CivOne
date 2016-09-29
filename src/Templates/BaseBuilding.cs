@@ -124,7 +124,7 @@ namespace CivOne.Templates
 			Price = price;
 			Maintenance = maintenance;
 			BuyPrice = (short)(40 * price);
-			SellPrice = (short)(BuyPrice / 4);
+			SellPrice = (short)(10 * price);
 		}
 	}
 }
