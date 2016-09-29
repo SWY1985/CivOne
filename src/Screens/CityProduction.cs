@@ -94,6 +94,7 @@ namespace CivOne.Screens
 					_canvas.FillRectangle(5, 0, 19 + height, width, 80 - height);
 				}
 				bool blink = ProductionInvalid && (gameTick % 4 > 1);
+				if (!(Common.TopScreen is CityManager)) blink = true;
 				DrawButton("Change", (byte)(blink ? 14 : 9), 1, 1, 7, 33);
 				DrawButton("Buy", 9, 1, 64, 7, 18);
 
