@@ -19,15 +19,21 @@ namespace CivOne
 {
 	internal class AI : BaseInstance
 	{
+		private static void BarbarianMove(IUnit unit)
+		{
+			// Until confrontation has been implemented, barbarians delete themselves
+			Game.DisbandUnit(unit);
+		}
+
 		internal static void Move(IUnit unit)
 		{
 			if (unit.Owner == 0)
 			{
-				// Barbarians
-				// Until confrontation has been implemented, barbarians delete themselves
-				Game.DisbandUnit(unit);
+				BarbarianMove();
+				return;
 			}
-			else if (unit is Settlers)
+			
+			if (unit is Settlers)
 			{
 				if (!((Map[unit.X, unit.Y] is Grassland) || (Map[unit.X, unit.Y] is River) || (Map[unit.X, unit.Y] is Plains)))
 				{
