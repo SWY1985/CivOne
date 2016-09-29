@@ -122,7 +122,7 @@ namespace CivOne.Screens
 
 		public override bool MouseDown(ScreenEventArgs args)
 		{
-			if (args.X > 97 && args.X < 105)
+			if (!_city.BuildingSold && args.X > 97 && args.X < 105)
 			{
 				int yy = 2;
 				for (int i = (_page * 14); i < _improvements.Length && i < ((_page + 1) * 14); i++)
