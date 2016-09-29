@@ -36,6 +36,11 @@ namespace CivOne.Tasks
 			return new Message(new AdvisorMessage(advisor, message));
 		}
 
+		public static Message DisbandUnit(City city, IUnit unit)
+		{
+			return new Message(new DisbandUnit(city, unit));
+		}
+
 		public static Message NewGoverment(City city, params string[] message)
 		{
 			return new Message(new Newspaper(city, message, showGovernment: true));

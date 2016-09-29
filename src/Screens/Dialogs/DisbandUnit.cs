@@ -18,7 +18,7 @@ using CivOne.Templates;
 
 namespace CivOne.Screens.Dialogs
 {
-	internal class DisbandDialog : BaseDialog
+	internal class DisbandUnit : BaseDialog
 	{
 		private readonly Bitmap[] _textLines;
 
@@ -31,7 +31,7 @@ namespace CivOne.Screens.Dialogs
 			return output;
 		}
 
-		public DisbandDialog(City city, IUnit unit) : base(58, 72, TextBitmaps(city, unit).Max(b => b.Width) + 52, 62)
+		public DisbandUnit(City city, IUnit unit) : base(58, 72, TextBitmaps(city, unit).Max(b => b.Width) + 52, 62)
 		{
 			bool modernGovernment = Human.Advances.Any(a => a.Id == (int)Advance.Invention);
 			Bitmap governmentPortrait = Icons.GovernmentPortrait(Human.Government, Advisor.Defense, modernGovernment);
