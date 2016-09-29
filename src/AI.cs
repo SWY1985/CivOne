@@ -29,7 +29,7 @@ namespace CivOne
 		{
 			if (unit.Owner == 0)
 			{
-				BarbarianMove();
+				BarbarianMove(unit);
 				return;
 			}
 			
