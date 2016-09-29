@@ -508,8 +508,18 @@ namespace CivOne
 				}
 			}
 
-			if (ShieldIncome > 0)
+			if (ShieldIncome < 0)
+			{
+				int maxDistance = Units.Max(u => Common.DistanceToTile(X, Y, u.X, u.Y));
+				IUnit unit = Units.Last(u => Common.DistanceToTile(X, Y, u.X, u.Y) == maxDistance);
+				//GameTask.Enqueue(Message.General($"{Name} can't support", $"{unit.Name}."));
+				Common.AddScreen(new DisbandDialog(this, unit));
+			}
+			else if (ShieldIncome > 0)
+			{
 				Shields += ShieldIncome;
+			}
+
 			if (Shields >= (int)CurrentProduction.Price * 10)
 			{
 				if (CurrentProduction is IUnit)
