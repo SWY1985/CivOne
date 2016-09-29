@@ -181,6 +181,14 @@ namespace CivOne.GFX
 		{
 			_image.Palette = palette;
 		}
+
+		public void SetPalette(Color[] colours)
+		{
+			ColorPalette palette = _image.Palette;
+			for (int i = 1; i < colours.Length && i < 256; i++)
+				palette.Entries[i] = colours[i];
+			_image.Palette = palette;
+		}
 		
 		public Picture Cycle(int colour, ref Color[] colours)
 		{
