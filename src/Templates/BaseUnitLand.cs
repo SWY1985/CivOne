@@ -78,7 +78,7 @@ namespace CivOne.Templates
 		{
 			if (Player.IsHuman)
 			{
-				Message msgBox = Message.TribalHut(message);
+				Message msgBox = Message.General(message);
 				msgBox.Done += method;
 				GameTask.Enqueue(msgBox);
 				return;
