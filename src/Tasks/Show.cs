@@ -114,7 +114,7 @@ namespace CivOne.Tasks
 				ChooseGovernment chooseGovernment = new ChooseGovernment();
 				chooseGovernment.Closed += (s, a) => {
 					Human.Government = (s as ChooseGovernment).Result;
-					GameTask.Insert(Message.NewGoverment(null, $"{Human.TribeName} government", $"changed to {Human.Government}!"));
+					GameTask.Insert(Message.NewGoverment(null, $"{Human.TribeName} government", $"changed to {Human.Government.Name}!"));
 				};
 				return new Show(chooseGovernment);
 			}
