@@ -24,11 +24,13 @@ namespace CivOne.Screens
 	internal class CityBuildings : BaseScreen
 	{
 		private readonly City _city;
-		private readonly IProduction[] _improvements;
+		private IProduction[] _improvements;
 
 		private readonly Bitmap _background;
 		
 		private bool _update = true;
+		
+		public event EventHandler BuildingUpdate;
 
 		private int _page = 0;
 
@@ -111,7 +113,11 @@ namespace CivOne.Screens
 		private void SellBuilding(object sender, EventArgs args)
 		{
 			_city.SellBuilding((sender as ConfirmSell).Building);
+			_page = 0;
+			_improvements = GetImprovements.ToArray();
 			_update = true;
+			if (BuildingUpdate != null)
+				BuildingUpdate(this, null);
 		}
 
 		public override bool MouseDown(ScreenEventArgs args)

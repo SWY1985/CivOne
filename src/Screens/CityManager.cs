@@ -158,6 +158,13 @@ namespace CivOne.Screens
 			return false;
 		}
 
+		private void BuildingUpdate(object sender, EventArgs args)
+		{
+			_cityHeader.Update();
+			_cityMap.Update();
+			_cityProduction.Update();
+		}
+
 		private void HeaderUpdate(object sender, EventArgs args)
 		{
 			_cityResources.Update();
@@ -191,6 +198,7 @@ namespace CivOne.Screens
 			_subScreens.Add(_cityInfo = new CityInfo(_city, _background));
 			_subScreens.Add(_cityProduction = new CityProduction(_city, _background));
 
+			_cityBuildings.BuildingUpdate += BuildingUpdate;
 			_cityHeader.HeaderUpdate += HeaderUpdate;
 			_cityMap.MapUpdate += MapUpdate;
 		}
