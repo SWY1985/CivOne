@@ -430,6 +430,8 @@ namespace CivOne
 			}
 		}
 
+		public bool BuildingSold { get; private set; }
+
 		public void AddBuilding(IBuilding building)
 		{
 			_buildings.Add(building);
@@ -437,8 +439,9 @@ namespace CivOne
 
 		public void SellBuilding(IBuilding building)
 		{
-			_buildings.Remove(building);
+			RemoveBuilding(building);
 			Game.CurrentPlayer.Gold += building.SellPrice;
+			BuildingSold = true;
 		}
 
 		public void RemoveBuilding(IBuilding building)
@@ -551,6 +554,7 @@ namespace CivOne
 			Player.Gold += Taxes;
 			Player.Gold -= TotalMaintenance;
 			Player.Science += Science;
+			BuildingSold = false;
 			GameTask.Enqueue(new ProcessScience(Player));
 		}
 

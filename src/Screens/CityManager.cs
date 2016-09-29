@@ -160,6 +160,7 @@ namespace CivOne.Screens
 
 		private void BuildingUpdate(object sender, EventArgs args)
 		{
+			_cityFoodStorage.Update();
 			_cityHeader.Update();
 			_cityMap.Update();
 			_cityProduction.Update();
