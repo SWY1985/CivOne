@@ -12,5 +12,6 @@ namespace CivOne.Interfaces
 	public interface IProduction
 	{
 		byte Price { get; }
+		short BuyPrice { get; }
 	}
 }

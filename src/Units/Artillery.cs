@@ -16,7 +16,7 @@ namespace CivOne.Units
 {
 	internal class Artillery : BaseUnitLand
 	{
-		public Artillery() : base(6, 12, 2, 2)
+		public Artillery() : base(6, 12, 2, 2, 600)
 		{
 			Type = Unit.Artillery;
 			Name = "Artillery";

@@ -16,7 +16,7 @@ namespace CivOne.Units
 {
 	internal class Phalanx : BaseUnitLand
 	{
-		public Phalanx() : base(2, 1, 2, 1)
+		public Phalanx() : base(2, 1, 2, 1, 120)
 		{
 			Type = Unit.Phalanx;
 			Name = "Phalanx";

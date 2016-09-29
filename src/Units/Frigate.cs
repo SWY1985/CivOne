@@ -24,7 +24,7 @@ namespace CivOne.Units
 			}
 		}
 
-		public Frigate() : base(4, 2, 2, 3)
+		public Frigate() : base(4, 2, 2, 3, 320)
 		{
 			Type = Unit.Frigate;
 			Name = "Frigate";

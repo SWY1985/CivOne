@@ -114,7 +114,7 @@ namespace CivOne.Templates
 			if (player.HasWonder<MagellansExpedition>() || (!player.WonderObsolete<Lighthouse>() && player.HasWonder<Lighthouse>())) MovesLeft++;
 		}
 		
-		protected BaseUnitSea(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1, int range = 1) : base(price, attack, defense, move)
+		protected BaseUnitSea(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1, int range = 1, short buy = 50) : base(price, attack, defense, move, buy)
 		{
 			Class = UnitClass.Water;
 			_range = range;

@@ -16,7 +16,7 @@ namespace CivOne.Units
 {
 	internal class Battleship : BaseUnitSea
 	{
-		public Battleship() : base(16, 18, 12, 4, 2)
+		public Battleship() : base(16, 18, 12, 4, 2, 3200)
 		{
 			Type = Unit.Battleship;
 			Name = "Battleship";

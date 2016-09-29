@@ -71,6 +71,8 @@ namespace CivOne.Templates
 		protected Building Type { get; set; }
 		
 		public IAdvance RequiredTech { get; protected set; }
+		public short SellPrice { get; private set; }
+		public short BuyPrice { get; private set; }
 		public byte Price { get; protected set; }
 		public byte Maintenance { get; protected set; }
 		
@@ -116,14 +118,13 @@ namespace CivOne.Templates
 				return (byte)Type;
 			}
 		}
-
-		public short SellPrice { get; private set; }
 		
-		protected BaseBuilding(byte price = 1, byte maintenance = 0, short sellPrice = 40)
+		protected BaseBuilding(byte price = 1, byte maintenance = 0, short sell = 40, short buy = 50)
 		{
 			Price = price;
 			Maintenance = maintenance;
-			SellPrice = sellPrice;
+			BuyPrice = buy;
+			SellPrice = sell;
 		}
 	}
 }

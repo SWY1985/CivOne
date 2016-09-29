@@ -16,7 +16,7 @@ namespace CivOne.Units
 {
 	internal class Ironclad : BaseUnitSea
 	{
-		public Ironclad() : base(6, 4, 4, 4)
+		public Ironclad() : base(6, 4, 4, 4, 600)
 		{
 			Type = Unit.Ironclad;
 			Name = "Ironclad";

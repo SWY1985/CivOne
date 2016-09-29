@@ -16,7 +16,7 @@ namespace CivOne.Units
 {
 	internal class Catapult : BaseUnitLand
 	{
-		public Catapult() : base(4, 6, 1, 1)
+		public Catapult() : base(4, 6, 1, 1, 320)
 		{
 			Type = Unit.Catapult;
 			Name = "Catapult";
