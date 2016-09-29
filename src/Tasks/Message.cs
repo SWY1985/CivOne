@@ -46,9 +46,9 @@ namespace CivOne.Tasks
 			return new Message(new Newspaper(city, message, showGovernment: false));
 		}
 
-		public static Message TribalHut(params string[] message)
+		public static Message General(params string[] message)
 		{
-			return new Message(new TribalHut(message));
+			return new Message(new MessageBox(message));
 		}
 
 		public static Message Help(string title, params string[] message)

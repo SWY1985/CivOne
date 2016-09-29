@@ -13,14 +13,13 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
-//using CivOne.Interfaces;
 using CivOne.Templates;
 
 namespace CivOne.Screens.Dialogs
 {
-	internal class TribalHut : BaseDialog
+	internal class MessageBox : BaseDialog
 	{
-		public TribalHut(params string[] message) : base(100, 80, 9, 7, message)
+		public MessageBox(params string[] message) : base(100, 80, 9, 7, message)
 		{
 			for (int i = 0; i < TextLines.Length; i++)
 			{
