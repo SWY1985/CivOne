@@ -283,9 +283,10 @@ namespace CivOne.Templates
 			Explore();
 		}
 
-		public void SetHome(City home)
+		public void SetHome()
 		{
-			Home = home;
+			if (Map[X, Y].City == null) return;
+			Home = Map[X, Y].City;
 		}
 		
 		public virtual void SkipTurn()
@@ -394,7 +395,7 @@ namespace CivOne.Templates
 		protected GameMenu.Item MenuHomeCity()
 		{
 			GameMenu.Item item = new GameMenu.Item("Home City", "h");
-			item.Selected += (s, a) => SetHome(Map[X, Y].City);
+			item.Selected += (s, a) => SetHome();
 			return item;
 		}
 		

@@ -362,6 +362,9 @@ namespace CivOne.Screens
 					if (!args.Shift) break;
 					Game.DisbandUnit(Game.ActiveUnit);
 					return true;
+				case 'H':
+					Game.ActiveUnit.SetHome();
+					return true;
 				case 'I':
 					GameTask.Enqueue(Orders.BuildIrrigation(Game.ActiveUnit));
 					return true;
