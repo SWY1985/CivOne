@@ -191,11 +191,35 @@ namespace CivOne
 			}
 		}
 
+		private short TradeScience
+		{
+			get
+			{
+				return (short)Math.Round(((double)TradeTotal / 10) * Player.ScienceRate);
+			}
+		}
+
+		private short TradeLuxuries
+		{
+			get
+			{
+				return (short)Math.Round(((double)(TradeTotal - TradeScience) / (10 - Player.ScienceRate)) * Player.LuxuriesRate);
+			}
+		}
+
+		private short TradeTaxes
+		{
+			get
+			{
+				return (short)(TradeTotal - TradeLuxuries - TradeScience);
+			}
+		}
+
 		internal short Luxuries
 		{
 			get
 			{
-				short luxuries = (short)Math.Round(((double)(TradeTotal - Science) / (10 - Player.ScienceRate)) * Player.LuxuriesRate);
+				short luxuries = TradeLuxuries;
 				if (_buildings.Any(b => (b is Bank))) luxuries += (short)Math.Floor((double)luxuries * 0.5);
 				luxuries += (short)(Citizens.Count(c => c == Citizen.Entertainer) * 2);
 				return luxuries;
@@ -206,7 +230,7 @@ namespace CivOne
 		{
 			get
 			{
-				short taxes = (short)(TradeTotal - Luxuries - Science);
+				short taxes = TradeTaxes;
 				if (_buildings.Any(b => (b is MarketPlace))) taxes += (short)Math.Floor((double)taxes * 0.5);
 				if (_buildings.Any(b => (b is Bank))) taxes += (short)Math.Floor((double)taxes * 0.5);
 				taxes += (short)(Citizens.Count(c => c == Citizen.Taxman) * 2);
@@ -218,7 +242,7 @@ namespace CivOne
 		{
 			get
 			{
-				short science = (short)Math.Round(((double)TradeTotal / 10) * Player.ScienceRate);
+				short science = TradeScience;
 				if (HasBuilding<Library>()) science += (short)Math.Floor((double)science * 0.5);
 				if (HasBuilding<University>()) science += (short)Math.Floor((double)science * 0.5);
 				if (!Player.WonderObsolete<CopernicusObservatory>() && HasWonder<CopernicusObservatory>()) science += (short)Math.Floor((double)science * 1.0);
