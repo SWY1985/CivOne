@@ -30,7 +30,7 @@ namespace CivOne.Screens.Reports
 
 					_canvas.DrawText($"{player.TribeNamePlural}: {player.LeaderName}", 0, 5, 8, yy + 3);
 					_canvas.DrawText($"{player.TribeNamePlural}: {player.LeaderName}", 0, colour, 8, yy + 2);
-					_canvas.DrawText($"{player.Government}, {player.Gold}$, {unitCount} Units.", 0, colour, 160, yy + 2);
+					_canvas.DrawText($"{player.Government.Name}, {player.Gold}$, {unitCount} Units.", 0, colour, 160, yy + 2);
 				}
 				else
 				{
