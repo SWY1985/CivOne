@@ -22,6 +22,30 @@ namespace CivOne.Screens.Dialogs
 	{
 		private readonly Bitmap[] _textLines;
 
+		protected override void FirstUpdate()
+		{
+			int menuWidth = _textLines.Max(b => b.Width) + 5;
+			Menu menu = new Menu(Canvas.Image.Palette.Entries, Selection(45, 28, menuWidth, 10))
+			{
+				X = 103,
+				Y = 100,
+				Width = menuWidth,
+				ActiveColour = 11,
+				TextColour = 5,
+				FontId = 0
+			};
+			int i = 0;
+			foreach (string choice in new [] { "Unit Disbanded." })
+			{
+				menu.Items.Add(new Menu.Item(choice, i++));
+			}
+			menu.Items[0].Selected += Cancel;
+
+			menu.MissClick += Cancel;
+			menu.Cancel += Cancel;
+			AddMenu(menu);
+		}
+
 		private static Bitmap[] TextBitmaps(City city, IUnit unit)
 		{
 			string[] message = new string[] { $"{city.Name} can't support", $"{unit.Name}." };
