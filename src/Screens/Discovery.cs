@@ -83,7 +83,7 @@ namespace CivOne.Screens
 		public Discovery(IAdvance advance)
 		{
 			_advance = advance;
-			_modern = Human.Advances.Any(a => a.Id == (int)Advance.Electricity);
+			_modern = Human.Advances.Any(a => a.Id == (int)Advance.Electricity) && (advance.Id != (int)Advance.Electricity);
 
 			Picture background = Resources.Instance.LoadPIC(_modern ? "DISCOVR2" : "DISCOVR1");
 			
