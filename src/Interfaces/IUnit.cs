@@ -43,7 +43,7 @@ namespace CivOne.Interfaces
 		byte PartMoves { get; }
 		void SkipTurn();
 		void Explore();
-		void SetHome(City city);
+		void SetHome();
 		Picture GetUnit(byte colour, bool showState = true);
 		IEnumerable<GameMenu.Item> MenuItems { get; }
 	}
