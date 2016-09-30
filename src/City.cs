@@ -342,7 +342,13 @@ namespace CivOne
 		{
 			get
 			{
-				// TODO: Calculate buy price
+				if (Shields > 0)
+				{
+					double totalPrice = (double)CurrentProduction.BuyPrice / 2;
+					double progressLeft = 1 - (double)(1.0 / (CurrentProduction.Price * 10)) * Shields;
+
+					return (short)(Math.Floor(totalPrice * progressLeft));
+				}
 				return CurrentProduction.BuyPrice;
 			}
 		}
