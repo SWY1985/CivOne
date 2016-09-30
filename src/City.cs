@@ -381,8 +381,8 @@ namespace CivOne
 		{
 			if (Game.CurrentPlayer.Gold < BuyPrice) return false;
 
-			Shields = (int)CurrentProduction.Price * 10;
 			Game.CurrentPlayer.Gold -= BuyPrice;
+			Shields = (int)CurrentProduction.Price * 10;
 			return true;
 		}
 
