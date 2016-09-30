@@ -14,7 +14,7 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Riflemen : BaseUnitLand
+	internal class Riflemen : BaseUnitLand, IDefault
 	{
 		public Riflemen() : base(3, 3, 5, 1)
 		{

@@ -213,11 +213,10 @@ namespace CivOne
 			if (_cities.Any(c => c.X == x && c.Y == y))
 				return null;
 
-			City city = new City()
+			City city = new City(PlayerNumber(player))
 			{
 				X = (byte)x,
 				Y = (byte)y,
-				Owner = PlayerNumber(player),
 				Name = name,
 				Size = 1
 			};
@@ -472,11 +471,10 @@ namespace CivOne
 					
 					if (x == 0 && y == 0 && actualSize == 0 && owner == 0 && nameId == 0) continue;
 					
-					City city = new City()
+					City city = new City(owner)
 					{
 						X = x,
 						Y = y,
-						Owner = owner,
 						Name = name,
 						Size = actualSize
 					};

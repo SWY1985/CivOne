@@ -613,9 +613,10 @@ namespace CivOne
 			GameTask.Enqueue(new ProcessScience(Player));
 		}
 
-		internal City()
+		internal City(byte owner)
 		{
-			CurrentProduction = new Militia();
+			Owner = owner;
+			CurrentProduction = Reflect.GetUnits().Where(u => Player.ProductionAvailable(u)).OrderBy(u => (u is IDefault) ? -1 : (int)u.Type).First();
 			SetResourceTiles();
 		}
 	}
