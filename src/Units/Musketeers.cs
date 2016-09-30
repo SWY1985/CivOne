@@ -14,7 +14,7 @@ using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Musketeers : BaseUnitLand
+	internal class Musketeers : BaseUnitLand, IDefault
 	{
 		public Musketeers() : base(3, 2, 3, 1)
 		{
