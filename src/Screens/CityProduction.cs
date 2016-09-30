@@ -14,6 +14,7 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
+using CivOne.Screens.Dialogs;
 using CivOne.Templates;
 
 namespace CivOne.Screens
@@ -28,6 +29,12 @@ namespace CivOne.Screens
 
 		private void ForceUpdate(object sender, EventArgs args)
 		{
+			_update = true;
+		}
+
+		private void AcceptBuy(object sender, EventArgs args)
+		{
+			_city.Buy();
 			_update = true;
 		}
 
@@ -135,8 +142,18 @@ namespace CivOne.Screens
 
 		private bool Buy()
 		{
-			_city.Buy();
-			_update = true;
+			string name = (_city.CurrentProduction as ICivilopedia).Name;
+			short playerGold = Game.CurrentPlayer.Gold;
+			short buyPrice = _city.BuyPrice;
+			if (playerGold < buyPrice)
+			{
+				Common.AddScreen(new MessageBox("Cost to complete", $"{name}: ${buyPrice}", $"Treasury: ${playerGold}"));
+				return true;
+			}
+
+			ConfirmBuy confirmBuy = new ConfirmBuy(name, buyPrice, playerGold);
+			confirmBuy.Buy += AcceptBuy;
+			Common.AddScreen(confirmBuy);
 			return true;
 		}
 		
