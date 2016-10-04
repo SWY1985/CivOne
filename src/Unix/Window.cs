@@ -84,13 +84,13 @@ namespace CivOne
 		{
 			if (Common.Screens.Length == 0) return;
 			
-			Color[] colours = TopScreen.Canvas.Image.Palette.Entries;
+			Color[] colours = TopScreen.Canvas.Palette;
 			colours[0] = Color.Black;
 			
 			_canvas = new Picture(320, 200, colours);
 			foreach (IScreen screen in Common.Screens)
 			{
-				_canvas.AddLayer(screen.Canvas.Image, 0, 0);
+				_canvas.AddLayer(screen.Canvas, 0, 0);
 			}
 			
 			Gdk.Threads.Enter();
