@@ -9,10 +9,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using CivOne.Buildings;
-using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
@@ -26,7 +23,7 @@ namespace CivOne.Screens
 		private readonly City _city;
 		private IProduction[] _improvements;
 
-		private readonly Bitmap _background;
+		private readonly Picture _background;
 		
 		private bool _update = true;
 		
@@ -153,13 +150,13 @@ namespace CivOne.Screens
 			Destroy();
 		}
 
-		public CityBuildings(City city, Bitmap background)
+		public CityBuildings(City city, Picture background)
 		{
 			_city = city;
 			_improvements = GetImprovements.ToArray();
 			_background = background;
 
-			_canvas = new Picture(108, 97, background.Palette.Entries);
+			_canvas = new Picture(108, 97, background.Palette);
 		}
 	}
 }

@@ -8,7 +8,6 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.Drawing;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
@@ -22,7 +21,7 @@ namespace CivOne.Screens
 	{
 		private readonly City _city;
 
-		private readonly Bitmap _background;
+		private readonly Picture _background;
 		
 		private bool _update = true;
 		
@@ -46,7 +45,7 @@ namespace CivOne.Screens
 
 			for (int i = 0; i < count; i++)
 			{
-				Bitmap icon;
+				Picture icon;
 				if (i >= tile.Food + tile.Shield) icon = Icons.Trade;
 				else if (i >= tile.Food) icon = Icons.Shield;
 				else icon = Icons.Food; 
@@ -129,12 +128,12 @@ namespace CivOne.Screens
 			Destroy();
 		}
 
-		public CityMap(City city, Bitmap background)
+		public CityMap(City city, Picture background)
 		{
 			_city = city;
 			_background = background;
 
-			_canvas = new Picture(84, 82, background.Palette.Entries);
+			_canvas = new Picture(84, 82, background.Palette);
 		}
 	}
 }

@@ -51,7 +51,7 @@ namespace CivOne.Screens
 				for (int i = 0; i < _units.Length; i++)
 				{
 					IUnit unit = _units[i];
-					dialog.AddLayer(unit.GetUnit(unit.Owner).Image, 4, (i * 16) + 3);
+					dialog.AddLayer(unit.GetUnit(unit.Owner), 4, (i * 16) + 3);
 					dialog.DrawText(unit.Name + (unit.Veteran ? " (V)" : ""), 0, 15, 27, (i * 16) + 4);
 					dialog.DrawText(unit.Home == null ? "NONE" : unit.Home.Name, 0, 14, 27, (i * 16) + 12);
 				}

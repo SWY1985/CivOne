@@ -13,7 +13,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-using CivOne.Civilizations;
 using CivOne.Interfaces;
 
 namespace CivOne

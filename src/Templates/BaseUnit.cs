@@ -189,7 +189,7 @@ namespace CivOne.Templates
 			
 			Picture output = new Picture(320, 200);
 			
-			output.AddLayer(GetUnit(1).Image, 215, 47);
+			output.AddLayer(GetUnit(1), 215, 47);
 			
 			int yy = 76;
 			foreach (string line in text)
@@ -299,7 +299,7 @@ namespace CivOne.Templates
 		{
 			if (_iconCache[(int)Type] == null)
 			{
-				Bitmap icon = Resources.Instance.LoadPIC(string.Format("ICONPG{0}", page), true).GetPart(col * 160, row * 62, 160, 60);
+				Picture icon = Resources.Instance.LoadPIC(string.Format("ICONPG{0}", page), true).GetPart(col * 160, row * 62, 160, 60);
 				Picture.ReplaceColours(icon, (byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
 				_iconCache[(int)Type] = new Picture(icon);
 			}
@@ -314,12 +314,11 @@ namespace CivOne.Templates
 				int xx = (unitId % 20) * 16;
 				int yy = unitId < 20 ? 160 : 176;
 				
-				Bitmap image = (Bitmap)Resources.Instance.GetPart((Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? "SP257" : "SPRITES"), xx, yy, 16, 16).Clone();
-				if (Common.ColourLight[colour] == 15) Picture.ReplaceColours(image, new byte[] { 15, 10, 2 }, new byte[] { 11, Common.ColourLight[colour], Common.ColourDark[colour] });
-				else if (Common.ColourDark[colour] == 8) Picture.ReplaceColours(image, new byte[] { 7, 10, 2 }, new byte[] { 3, Common.ColourLight[colour], Common.ColourDark[colour] });
-				else Picture.ReplaceColours(image, new byte[] { 10, 2 }, new byte[] { Common.ColourLight[colour], Common.ColourDark[colour] });
+				Picture icon = Resources.Instance.GetPart((Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? "SP257" : "SPRITES"), xx, yy, 16, 16);
+				if (Common.ColourLight[colour] == 15) Picture.ReplaceColours(icon, new byte[] { 15, 10, 2 }, new byte[] { 11, Common.ColourLight[colour], Common.ColourDark[colour] });
+				else if (Common.ColourDark[colour] == 8) Picture.ReplaceColours(icon, new byte[] { 7, 10, 2 }, new byte[] { 3, Common.ColourLight[colour], Common.ColourDark[colour] });
+				else Picture.ReplaceColours(icon, new byte[] { 10, 2 }, new byte[] { Common.ColourLight[colour], Common.ColourDark[colour] });
 				
-				Picture icon = new Picture(image);
 				icon.FillRectangle(0, 0, 0, 16, 1);
 				icon.FillRectangle(0, 0, 1, 1, 15);
 				_unitCache[unitId, colour] = icon;
@@ -329,20 +328,20 @@ namespace CivOne.Templates
 			
 			if (Sentry)
 			{
-				Bitmap output = (Bitmap)_unitCache[unitId, colour].Image.Clone();
+				Picture output = new Picture(_unitCache[unitId, colour]);
 				Picture.ReplaceColours(output, new byte[] { 5, 8, }, new byte[] { 7, 7 });
 				return new Picture(output);
 			}
 			if (FortifyActive)
 			{
-				Picture unit = new Picture(_unitCache[unitId, colour].Image);
+				Picture unit = new Picture(_unitCache[unitId, colour]);
 				unit.DrawText("F", 0, 5, 8, 9, TextAlign.Center);
 				unit.DrawText("F", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
 				return unit; 
 			}
 			else if (_fortify)
 			{
-				Picture unit = new Picture(_unitCache[unitId, colour].Image);
+				Picture unit = new Picture(_unitCache[unitId, colour]);
 				unit.AddLayer(Icons.Fortify, 0, 0);
 				return unit; 
 			}

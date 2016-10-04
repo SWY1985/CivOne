@@ -252,12 +252,12 @@ namespace CivOne.GFX
 		{
 			if (!tile.Hut) return;
 			
-			Bitmap resource = Res.GetPart(graphics16 ? "SPRITES" : "SP257", 240, 112, 16, 16);
+			Picture resource = Res.GetPart(graphics16 ? "SPRITES" : "SP257", 240, 112, 16, 16);
 			Picture.ReplaceColours(resource, 3, 0);
 			output.AddLayer(resource, 0, 0);
 		}
 		
-		internal static Bitmap GetTile16(ITile tile, bool improvements, bool roads)
+		internal static Picture GetTile16(ITile tile, bool improvements, bool roads)
 		{
 			Picture output = new Picture(16, 16);
 			
@@ -289,7 +289,7 @@ namespace CivOne.GFX
 			if (tile.Special)
 			{
 				int terrainId = (int)tile.Type;
-				Bitmap resource = Res.GetPart("SPRITES", terrainId * 16, 112, 16, 16);
+				Picture resource = Res.GetPart("SPRITES", terrainId * 16, 112, 16, 16);
 				Picture.ReplaceColours(resource, 3, 0);
 				output.AddLayer(resource);
 			}
@@ -308,10 +308,10 @@ namespace CivOne.GFX
 			DrawFortress(ref output, tile, true);
 			DrawHut(ref output, tile, true);
 			
-			return output.Image;
+			return output;
 		}
 		
-		internal static Bitmap GetTile256(ITile tile, bool improvements, bool roads)
+		internal static Picture GetTile256(ITile tile, bool improvements, bool roads)
 		{
 			Picture output = new Picture(16, 16);
 			
@@ -361,13 +361,13 @@ namespace CivOne.GFX
 			if (!Map.TileIsType(tile, Terrain.Grassland1, Terrain.Grassland2) && tile.Special)
 			{
 				int terrainId = (int)tile.Type;
-				Bitmap resource = Res.GetPart("SP257", terrainId * 16, 112, 16, 16);
+				Picture resource = Res.GetPart("SP257", terrainId * 16, 112, 16, 16);
 				Picture.ReplaceColours(resource, 3, 0);
 				output.AddLayer(resource);
 			}
 			else if (tile.Type == Terrain.Grassland2)
 			{
-				Bitmap resource = Res.GetPart("SP257", 152, 40, 8, 8);
+				Picture resource = Res.GetPart("SP257", 152, 40, 8, 8);
 				Picture.ReplaceColours(resource, 3, 0);
 				output.AddLayer(resource, 4, 4);
 			}
@@ -385,7 +385,7 @@ namespace CivOne.GFX
 			DrawFortress(ref output, tile, true);
 			DrawHut(ref output, tile);
 			
-			return output.Image;
+			return output;
 		}
 		
 		internal static Picture GetIcon(Terrain terrain)
@@ -395,7 +395,7 @@ namespace CivOne.GFX
 			if (_icons[terrainId] != null)
 				return _icons[terrainId];
 			
-			Bitmap icon;
+			Picture icon;
 			switch (terrain)
 			{
 				case Terrain.Arctic:

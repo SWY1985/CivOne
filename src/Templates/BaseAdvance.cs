@@ -9,7 +9,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using CivOne.Enums;
@@ -86,19 +85,19 @@ namespace CivOne.Templates
 						yy += 4;
 						foreach (IUnit unit in Reflect.GetUnits().Where(u => u.RequiredTech != null && u.RequiredTech.Id == Id))
 						{
-							output.AddLayer(unit.GetUnit(Game.PlayerNumber(Human)).Image, 40, yy - 5);
+							output.AddLayer(unit.GetUnit(Game.PlayerNumber(Human)), 40, yy - 5);
 							output.DrawText(string.Format("{0} unit", unit.Name), 6, 12, 60, yy); yy += 12;
 						}
 						foreach (IBuilding building in Reflect.GetBuildings().Where(b => b.RequiredTech != null && b.RequiredTech.Id == Id))
 						{
 							if (building.SmallIcon != null)
-								output.AddLayer(building.SmallIcon.Image, 39, yy - 2);
+								output.AddLayer(building.SmallIcon, 39, yy - 2);
 							output.DrawText(string.Format("{0} improvement", building.Name), 6, 2, 60, yy); yy += 12;
 						}
 						foreach (IWonder wonder in Reflect.GetWonders().Where(w => w.RequiredTech != null && w.RequiredTech.Id == Id))
 						{
 							if (wonder.SmallIcon != null)
-								output.AddLayer(wonder.SmallIcon.Image, 39, yy - 2);
+								output.AddLayer(wonder.SmallIcon, 39, yy - 2);
 							output.DrawText(string.Format("{0} Wonder", wonder.Name), 6, 2, 60, yy); yy += 12;
 						}
 					}
@@ -128,9 +127,9 @@ namespace CivOne.Templates
 			int ww = col < 2 ? 112 : 96;
 			int hh = row < 2 ? 68 : 60;
 			
-			Bitmap icon = Resources.Instance.GetPart(string.Format("ICONPG{0}", page), xx, yy, ww, hh);
+			Picture icon = Resources.Instance.GetPart(string.Format("ICONPG{0}", page), xx, yy, ww, hh);
 			
-			Icon = new Picture(112, 68, icon.Palette.Entries);
+			Icon = new Picture(112, 68, icon.Palette);
 			Icon.AddLayer(icon, col < 2 ? 0 : 7, row < 2 ? 0 : 4);
 			Icon.FillRectangle(0, 110, 0, 2, 68);
 		}

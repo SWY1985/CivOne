@@ -9,7 +9,6 @@
 
 using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -70,9 +69,9 @@ namespace CivOne.Screens
 		{
 			if (Settings.GraphicsMode != GraphicsMode.Graphics256) return;
 			
-			ColorPalette palette = _pictures[_introPicture].Image.Palette;
+			Color[] palette = _pictures[_introPicture].Palette;
 			for (int i = 1; i < 256; i++)
-				palette.Entries[i] = FadeColour(Color.Black, _pictures[_introPicture].OriginalColours[i]);
+				palette[i] = FadeColour(Color.Black, _pictures[_introPicture].OriginalColours[i]);
 			_canvas.SetPalette(palette);
 		}
 		

@@ -8,20 +8,14 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
-using CivOne.Screens;
-using CivOne.Templates;
 
 namespace CivOne
 {
@@ -121,7 +115,7 @@ namespace CivOne
 			int sx = (int)Math.Floor((float)ClientSize.Width / 320);
 			int sy = (int)Math.Floor((float)ClientSize.Height / 200);
 			cursor = new Cursor[sx, sy];
-			Bitmap img = Resources.Instance.GetPart("SP257", x, y, 16, 16);
+			Bitmap img = Resources.Instance.GetPart("SP257", x, y, 16, 16).Image;
 			
 			for (int cx = 0; cx < sx; cx++)
 			for (int cy = 0; cy < sy; cy++)
@@ -251,13 +245,13 @@ namespace CivOne
 			_canvas = new Picture(320, 200, colours);
 			if (TopScreen is IModal)
 			{
-				_canvas.AddLayer(TopScreen.Canvas.Image, 0, 0);
+				_canvas.AddLayer(TopScreen.Canvas, 0, 0);
 			}
 			else
 			{
 				foreach (IScreen screen in Common.Screens)
 				{
-					_canvas.AddLayer(screen.Canvas.Image, 0, 0);
+					_canvas.AddLayer(screen.Canvas, 0, 0);
 				}
 			}
 			

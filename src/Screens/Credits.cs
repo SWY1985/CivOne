@@ -8,7 +8,6 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.Drawing.Imaging;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
@@ -116,8 +115,8 @@ namespace CivOne.Screens
 				_canvas.DrawText(_introText[_introLine], 4, _textColours[2], 160, 83, TextAlign.Center);
 			}
 			if (_introLeft == -320 && _noiseCounter > 0)
-            {
-                if (!_introSkipped) AddLayer(_pictures[1]);
+			{
+				if (!_introSkipped) AddLayer(_pictures[1]);
 				if (_logoSwipe < 320)
 				{
 					if (_logoSwipe > 0)
@@ -127,7 +126,7 @@ namespace CivOne.Screens
 				}
 				else
 				{
-					AddLayer(_pictures[2].Image);	
+					AddLayer(_pictures[2]);	
 				}
 				if (_introSkipped) AddLayer(_pictures[1]);
 			}

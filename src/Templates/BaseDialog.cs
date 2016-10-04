@@ -8,12 +8,10 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.Drawing;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
-using CivOne.Interfaces;
 
 namespace CivOne.Templates
 {
@@ -25,7 +23,7 @@ namespace CivOne.Templates
 		
 		protected Picture DialogBox { get; private set; }
 		
-		protected Bitmap[] TextLines { get; private set; }
+		protected Picture[] TextLines { get; private set; }
 
 		protected int TextWidth
 		{
@@ -43,9 +41,9 @@ namespace CivOne.Templates
 			}
 		}
 		
-		protected Bitmap Selection(int left, int top, int width, int height)
+		protected Picture Selection(int left, int top, int width, int height)
 		{
-			Bitmap background = (Bitmap)DialogBox.GetPart(left, top, width, height).Clone();
+			Picture background = DialogBox.GetPart(left, top, width, height);
 			Picture.ReplaceColours(background, new byte[] { 7, 22 }, new byte[] { 11, 3 });
 			return background;
 		}
@@ -66,7 +64,7 @@ namespace CivOne.Templates
 			if (_update)
 			{
 				_update = false;
-				_canvas.AddLayer(DialogBox.Image, _left, _top);
+				_canvas.AddLayer(DialogBox, _left, _top);
 
 				FirstUpdate();
 
@@ -91,7 +89,7 @@ namespace CivOne.Templates
 		{
 			Cursor = MouseCursor.Pointer;
 
-			Bitmap background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
+			Picture background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
 			
 			_canvas = new Picture(320, 200, Common.TopScreen.Palette);
 
@@ -117,7 +115,7 @@ namespace CivOne.Templates
 		{
 			_left = left;
 			_top = top;
-			TextLines = new Bitmap[message.Length];
+			TextLines = new Picture[message.Length];
 			for (int i = 0; i < message.Length; i++)
 				TextLines[i] = Resources.Instance.GetText(message[i], 0, 15);
 

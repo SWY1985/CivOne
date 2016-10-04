@@ -10,8 +10,6 @@
 using System;
 using System.Drawing;
 using System.Collections.Generic;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
@@ -32,7 +30,7 @@ namespace CivOne.Templates
 		}
 		protected void AddLayer(IScreen screen, int x = 0, int y = 0)
 		{
-			_canvas.AddLayer(screen.Canvas.Image, x, y);
+			_canvas.AddLayer(screen.Canvas, x, y);
 		}
 		protected void AddLayer(Picture picture, Point point)
 		{
@@ -40,15 +38,7 @@ namespace CivOne.Templates
 		}
 		protected void AddLayer(Picture picture, int x = 0, int y = 0)
 		{
-			_canvas.AddLayer(picture.Image, x, y);
-		}
-		protected void AddLayer(Bitmap bitmap, Point point)
-		{
-			AddLayer(bitmap, point.X, point.Y);
-		}
-		protected void AddLayer(Bitmap bitmap, int x = 0, int y = 0)
-		{
-			_canvas.AddLayer(bitmap, x, y);
+			_canvas.AddLayer(picture, x, y);
 		}
 
 		protected void DrawButton(string text, byte colour, byte colourDark, int x, int y, int width)

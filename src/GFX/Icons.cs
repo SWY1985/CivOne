@@ -19,155 +19,155 @@ namespace CivOne.GFX
 {
 	internal class Icons
 	{
-		private static Bitmap _food;
-		public static Bitmap Food
+		private static Picture _food;
+		public static Picture Food
 		{
 			get
 			{
 				if (_food == null)
 				{
-					_food = (Bitmap)Resources.Instance.GetPart("SP257", 128, 32, 8, 8);
+					_food = Resources.Instance.GetPart("SP257", 128, 32, 8, 8);
 					Picture.ReplaceColours(_food, 3, 0);
 
 					Picture temp = new Picture(_food);
 					temp.FillRectangle(0, 0, 0, 1, 8);
-					_food = temp.Image;
+					_food = temp;
 				}
 				return _food;
 			}
 		}
 
-		private static Bitmap _foodLoss;
-		public static Bitmap FoodLoss
+		private static Picture _foodLoss;
+		public static Picture FoodLoss
 		{
 			get
 			{
 				if (_foodLoss == null)
 				{
-					_foodLoss = (Bitmap)Resources.Instance.GetPart("SP257", 128, 32, 8, 8).Clone();
+					_foodLoss = Resources.Instance.GetPart("SP257", 128, 32, 8, 8);
 					Picture.ReplaceColours(_foodLoss, new byte[] { 3, 15 }, new byte[] { 0, 5 });
 
 					Picture temp = new Picture(_foodLoss);
 					temp.FillRectangle(0, 0, 0, 1, 8);
-					_foodLoss = temp.Image;
+					_foodLoss = temp;
 				}
 				return _foodLoss;
 			}
 		}
 		
-		private static Bitmap _shield;
-		public static Bitmap Shield
+		private static Picture _shield;
+		public static Picture Shield
 		{
 			get
 			{
 				if (_shield == null)
 				{
-					_shield = (Bitmap)Resources.Instance.GetPart("SP257", 136, 32, 8, 8);
+					_shield = Resources.Instance.GetPart("SP257", 136, 32, 8, 8);
 					Picture.ReplaceColours(_shield, 3, 0);
 				}
 				return _shield;
 			}
 		}
 		
-		private static Bitmap _shieldLoss;
-		public static Bitmap ShieldLoss
+		private static Picture _shieldLoss;
+		public static Picture ShieldLoss
 		{
 			get
 			{
 				if (_shieldLoss == null)
 				{
-					_shieldLoss = (Bitmap)Resources.Instance.GetPart("SP257", 136, 32, 8, 8).Clone();
+					_shieldLoss = Resources.Instance.GetPart("SP257", 136, 32, 8, 8);
 					Picture.ReplaceColours(_shieldLoss, new byte[] { 3, 15 }, new byte[] { 0, 5 });
 				}
 				return _shieldLoss;
 			}
 		}
 		
-		private static Bitmap _trade;
-		public static Bitmap Trade
+		private static Picture _trade;
+		public static Picture Trade
 		{
 			get
 			{
 				if (_trade == null)
 				{
-					_trade = (Bitmap)Resources.Instance.GetPart("SP257", 144, 32, 8, 8);
+					_trade = Resources.Instance.GetPart("SP257", 144, 32, 8, 8);
 					Picture.ReplaceColours(_trade, 3, 0);
 				}
 				return _trade;
 			}
 		}
 		
-		private static Bitmap _unhappy;
-		public static Bitmap Unhappy
+		private static Picture _unhappy;
+		public static Picture Unhappy
 		{
 			get
 			{
 				if (_unhappy == null)
 				{
-					_unhappy = (Bitmap)Resources.Instance.GetPart("SP257", 136, 40, 8, 8);
+					_unhappy = Resources.Instance.GetPart("SP257", 136, 40, 8, 8);
 					Picture.ReplaceColours(_unhappy, 3, 0);
 				}
 				return _unhappy;
 			}
 		}
 		
-		private static Bitmap _luxuries;
-		public static Bitmap Luxuries
+		private static Picture _luxuries;
+		public static Picture Luxuries
 		{
 			get
 			{
 				if (_luxuries == null)
 				{
-					_luxuries = (Bitmap)Resources.Instance.GetPart("SP257", 144, 40, 8, 8);
+					_luxuries = Resources.Instance.GetPart("SP257", 144, 40, 8, 8);
 					Picture.ReplaceColours(_luxuries, 3, 0);
 				}
 				return _luxuries;
 			}
 		}
 		
-		private static Bitmap _taxes;
-		public static Bitmap Taxes
+		private static Picture _taxes;
+		public static Picture Taxes
 		{
 			get
 			{
 				if (_taxes == null)
 				{
-					_taxes = (Bitmap)Resources.Instance.GetPart("SP257", 152, 32, 8, 8);
+					_taxes = Resources.Instance.GetPart("SP257", 152, 32, 8, 8);
 					Picture.ReplaceColours(_taxes, 3, 0);
 				}
 				return _taxes;
 			}
 		}
 		
-		private static Bitmap _science;
-		public static Bitmap Science
+		private static Picture _science;
+		public static Picture Science
 		{
 			get
 			{
 				if (_science == null)
 				{
-					_science = (Bitmap)Resources.Instance.GetPart("SP257", 128, 40, 8, 8);
+					_science = Resources.Instance.GetPart("SP257", 128, 40, 8, 8);
 					Picture.ReplaceColours(_science, 3, 0);
 				}
 				return _science;
 			}
 		}
 		
-		private static Bitmap _newspaper;
-		public static Bitmap Newspaper
+		private static Picture _newspaper;
+		public static Picture Newspaper
 		{
 			get
 			{
 				if (_newspaper == null)
 				{
-					_newspaper = (Bitmap)Resources.Instance.GetPart("SP257", 176, 128, 32, 16);
+					_newspaper = Resources.Instance.GetPart("SP257", 176, 128, 32, 16);
 				}
 				return _newspaper;
 			}
 		}
 
-		private static Bitmap _sellButton;
-		public static Bitmap SellButton
+		private static Picture _sellButton;
+		public static Picture SellButton
 		{
 			get
 			{
@@ -182,37 +182,37 @@ namespace CivOne.GFX
 						0,  5, 15, 15, 15,  5,  0,  0,
 						0,  0,  5,  5,  5,  0,  0,  0
 					};
-					_sellButton = (Bitmap)new Picture(8, 7, bytemap, Food.Palette.Entries).Image;
+					_sellButton = new Picture(8, 7, bytemap, Food.Palette);
 				}
 				return _sellButton;
 			}
 		}
 
-		private static Bitmap[] _citizen = new Bitmap[9];
-		public static Bitmap Citizen(Citizen citizen)
+		private static Picture[] _citizen = new Picture[9];
+		public static Picture Citizen(Citizen citizen)
 		{
 			if (_citizen[(int)citizen] == null)
 			{
-				_citizen[(int)citizen] = (Bitmap)Resources.Instance.GetPart("SP257", (8 * (int)citizen), 128, 8, 16);
+				_citizen[(int)citizen] = Resources.Instance.GetPart("SP257", (8 * (int)citizen), 128, 8, 16);
 			}
 			return _citizen[(int)citizen];
 		}
 
-		private static Bitmap[] _lamp = new Bitmap[4];
-		public static Bitmap Lamp(int stage)
+		private static Picture[] _lamp = new Picture[4];
+		public static Picture Lamp(int stage)
 		{
-			if (stage < 0 || stage >= 4)
+			if (stage < 0 || stage > 3)
 				return null;
 			
 			if (_lamp[stage] == null)
 			{
-				_lamp[stage] = (Bitmap)Resources.Instance.GetPart("SP257", 128 + (8 * stage), 48, 8, 8);
+				_lamp[stage] = Resources.Instance.GetPart("SP257", 128 + (8 * stage), 48, 8, 8);
 			}
 			return _lamp[stage];
 		}
 
-		private static Bitmap[,] _governmentPortrait = new Bitmap[7, 4];
-		public static Bitmap GovernmentPortrait(IGovernment government, Advisor advisor, bool modern)
+		private static Picture[,] _governmentPortrait = new Picture[7, 4];
+		public static Picture GovernmentPortrait(IGovernment government, Advisor advisor, bool modern)
 		{
 			string filename;
 			int governmentId;
@@ -237,11 +237,11 @@ namespace CivOne.GFX
 				filename = "GOVT0" + (modern ? "M" : "A");
 			}
 			if (_governmentPortrait[governmentId, (int)advisor] == null)
-				_governmentPortrait[governmentId, (int)advisor] = (Bitmap)Resources.Instance.GetPart(filename, (40 * (int)advisor), 0, 40, 60);
+				_governmentPortrait[governmentId, (int)advisor] = Resources.Instance.GetPart(filename, (40 * (int)advisor), 0, 40, 60);
 			return _governmentPortrait[governmentId, (int)advisor];
 		}
 
-		public static Bitmap City(City city, bool smallFont = false)
+		public static Picture City(City city, bool smallFont = false)
 		{
 			Picture output = new Picture(16, 16);
 			
@@ -251,7 +251,7 @@ namespace CivOne.GFX
 			output.FillRectangle(Common.ColourDark[city.Owner], 2, 1, 13, 13);
 			output.FillRectangle(Common.ColourLight[city.Owner], 2, 2, 12, 12);
 			
-			Bitmap resource = (Bitmap)Resources.Instance.GetPart("SP257", 192, 112, 16, 16).Clone();
+			Picture resource = Resources.Instance.GetPart("SP257", 192, 112, 16, 16);
 			Picture.ReplaceColours(resource, 3, 0);
 			Picture.ReplaceColours(resource, 5, Common.ColourDark[city.Owner]);
 			output.AddLayer(resource, 0, 0);
@@ -269,31 +269,31 @@ namespace CivOne.GFX
 				output.AddLayer(Fortify, 0, 0);
 			}
 			
-			return output.Image;
+			return output;
 		}
 
-		private static Bitmap _fortify;
-		public static Bitmap Fortify
+		private static Picture _fortify;
+		public static Picture Fortify
 		{
 			get
 			{
 				if (_fortify == null)
 				{
-					_fortify = (Bitmap)Resources.Instance.GetPart("SP257", 208, 112, 16, 16);
+					_fortify = Resources.Instance.GetPart("SP257", 208, 112, 16, 16);
 					Picture.ReplaceColours(_fortify, 3, 0);
 				}
 				return _fortify;
 			}
 		}
 
-		private static Bitmap _fortress;
-		public static Bitmap Fortress
+		private static Picture _fortress;
+		public static Picture Fortress
 		{
 			get
 			{
 				if (_fortress == null)
 				{
-					_fortress = (Bitmap)Resources.Instance.GetPart("SP257", 224, 112, 16, 16);
+					_fortress = Resources.Instance.GetPart("SP257", 224, 112, 16, 16);
 					Picture.ReplaceColours(_fortress, 3, 0);
 				}
 				return _fortress;

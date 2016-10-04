@@ -222,7 +222,7 @@ namespace CivOne.Screens
 			Destroy();
 		}
 		
-		public Menu(Color[] colours, Bitmap background = null)
+		public Menu(Color[] colours, Picture background = null)
 		{
 			if (background != null)
 			{

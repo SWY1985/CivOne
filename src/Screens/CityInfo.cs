@@ -7,7 +7,6 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using System;
 using System.Drawing;
 using System.Linq;
 using CivOne.Enums;
@@ -22,7 +21,7 @@ namespace CivOne.Screens
 	{
 		private readonly City _city;
 
-		private readonly Bitmap _background;
+		private readonly Picture _background;
 		
 		private CityInfoChoice _choice = CityInfoChoice.Info;
 		private bool _update = true;
@@ -38,7 +37,7 @@ namespace CivOne.Screens
 					int xx = 4 + ((i % 6) * 18);
 					int yy = 0 + (((i - (i % 6)) / 6) * 16);
 
-					output.AddLayer(units[i].GetUnit(units[i].Owner).Image, xx, yy);
+					output.AddLayer(units[i].GetUnit(units[i].Owner), xx, yy);
 					string homeCity = "NON.";
 					if (units[i].Home != null)
 						homeCity = $"{units[i].Home.Name.Substring(0, 3)}.";
@@ -208,12 +207,12 @@ namespace CivOne.Screens
 			Destroy();
 		}
 
-		public CityInfo(City city, Bitmap background)
+		public CityInfo(City city, Picture background)
 		{
 			_city = city;
 			_background = background;
 
-			_canvas = new Picture(136, 92, background.Palette.Entries);
+			_canvas = new Picture(136, 92, background.Palette);
 		}
 	}
 }

@@ -7,11 +7,9 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using System;
 using System.Drawing;
 using System.Linq;
 using CivOne.Enums;
-using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Templates;
 
@@ -19,11 +17,11 @@ namespace CivOne.Screens.Dialogs
 {
 	internal class AdvisorMessage : BaseDialog
 	{
-		private readonly Bitmap[] _textLines;
+		private readonly Picture[] _textLines;
 
-		private static Bitmap[] TextBitmaps(string[] message)
+		private static Picture[] TextBitmaps(string[] message)
 		{
-			Bitmap[] output = new Bitmap[message.Length];
+			Picture[] output = new Picture[message.Length];
 			for (int i = 0; i < message.Length; i++)
 				output[i] = Resources.Instance.GetText(message[i], 0, 15);
 			return output;
@@ -46,13 +44,13 @@ namespace CivOne.Screens.Dialogs
 
 			string[] advisorNames = new string[] { "Defense Minister", "Domestic Advisor", "Foreign Minister", "Science Advisor" };
 			bool modernGovernment = Human.Advances.Any(a => a.Id == (int)Advance.Invention);
-			Bitmap governmentPortrait = Icons.GovernmentPortrait(Human.Government, advisor, modernGovernment);
-			Color[] palette = Resources.Instance.LoadPIC("SP257").Image.Palette.Entries;
+			Picture governmentPortrait = Icons.GovernmentPortrait(Human.Government, advisor, modernGovernment);
+			
+			Color[] palette = Resources.Instance.LoadPIC("SP257").Palette;
 			for (int i = 144; i < 256; i++)
 			{
-				palette[i] = governmentPortrait.Palette.Entries[i];
+				palette[i] = governmentPortrait.Palette[i];
 			}
-
 			_canvas.SetPalette(palette);
 			
 			_textLines = TextBitmaps(message);

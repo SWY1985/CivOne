@@ -8,7 +8,6 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using CivOne.Enums;
@@ -150,7 +149,7 @@ namespace CivOne.Screens
 			((Input)sender).Close();
 		}
 		
-		private Bitmap DifficultyPicture
+		private Picture DifficultyPicture
 		{
 			get
 			{
@@ -184,13 +183,13 @@ namespace CivOne.Screens
 				ICivilization civ = _tribesAvailable[_tribe];
 				Game.CreateGame(_difficulty, _competition, civ, _leaderName, _tribeName, _tribeNamePlural);
 				
-				Bitmap[] borders = new Bitmap[8];
+				Picture[] borders = new Picture[8];
 				int index = 0;
 				for (int y = 0; y < 2; y++)
 				{
 					for (int x = 0; x < 4; x++)
 					{
-						borders[index] = (Bitmap)Resources.Instance.GetPart("SP299", 224 + (8 * x), 120 + (8 * y), 8, 8).Clone();
+						borders[index] = Resources.Instance.GetPart("SP299", 224 + (8 * x), 120 + (8 * y), 8, 8);
 						index++;
 					}
 				}

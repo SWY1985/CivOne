@@ -23,7 +23,7 @@ namespace CivOne.Screens
 		private readonly City _city;
 
 		private readonly IProduction[] _availableProduction;
-		private readonly Bitmap _background;
+		private readonly Picture _background;
 		private readonly int _fontId = 0;
 		private readonly List<IProduction[]> _pages = new List<IProduction[]>();
 
@@ -129,10 +129,10 @@ namespace CivOne.Screens
 				_canvas.FillRectangle(5, 80, 8, actualWidth + 2, height + 2);
 				AddLayer(menuGfx, 81, 9);
 				
-				Bitmap background = (Bitmap)menuGfx.GetPart(2, 3 + Resources.Instance.GetFontHeight(_fontId), itemWidth, Resources.Instance.GetFontHeight(_fontId) * menuItems.Count + 4).Clone();
+				Picture background = menuGfx.GetPart(2, 3 + Resources.Instance.GetFontHeight(_fontId), itemWidth, Resources.Instance.GetFontHeight(_fontId) * menuItems.Count + 4);
 				Picture.ReplaceColours(background, new byte[] { 7, 22 }, new byte[] { 11, 3 });
 
-				Menu menu = new Menu(Canvas.Image.Palette.Entries, background)
+				Menu menu = new Menu(Canvas.Palette, background)
 				{
 					X = 83,
 					Y = 12 + Resources.Instance.GetFontHeight(_fontId),
@@ -170,7 +170,7 @@ namespace CivOne.Screens
 		public CityChooseProduction(City city)
 		{
 			_city = city;
-			_background = (Bitmap)Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
+			_background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
 			
 			Cursor = MouseCursor.Pointer;
 

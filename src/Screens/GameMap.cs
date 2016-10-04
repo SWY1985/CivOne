@@ -15,7 +15,6 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
-using CivOne.IO;
 using CivOne.Tasks;
 using CivOne.Templates;
 using CivOne.Units;
@@ -29,7 +28,7 @@ namespace CivOne.Screens
 			public bool Visible;
 			public int X, Y;
 			public ITile Tile;
-			public Bitmap Image
+			public Picture Image
 			{
 				get
 				{

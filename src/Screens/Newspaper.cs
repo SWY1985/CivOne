@@ -10,10 +10,8 @@
 using System;
 using System.Drawing;
 using System.Linq;
-using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Events;
-using CivOne.Interfaces;
 using CivOne.IO;
 using CivOne.GFX;
 using CivOne.Templates;
@@ -59,7 +57,7 @@ namespace CivOne.Screens
 			bool modernGovernment = Human.Advances.Any(a => a.Id == (int)Advance.Invention);
 			Color[] palette = Resources.Instance.LoadPIC("SP257").Image.Palette.Entries;
 
-			Bitmap[] governmentPortraits = new Bitmap[4];
+			Picture[] governmentPortraits = new Picture[4];
 			if (showGovernment)
 			{
 				for (int i = 0; i < 4; i++)
@@ -69,7 +67,7 @@ namespace CivOne.Screens
 
 				for (int i = 144; i < 256; i++)
 				{
-					palette[i] = governmentPortraits[0].Palette.Entries[i];
+					palette[i] = governmentPortraits[0].Palette[i];
 				}
 			}
 			
@@ -128,7 +126,7 @@ namespace CivOne.Screens
 				{
 					AddLayer(Icons.Newspaper, xx, 100);
 				}
-				Bitmap background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
+				Picture background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
 				Picture dialog = new Picture(152, 15);
 				dialog.FillLayerTile(background);
 				dialog.FillRectangle(0, 151, 0, 1, 15);

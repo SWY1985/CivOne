@@ -16,7 +16,6 @@ using CivOne.Interfaces;
 using CivOne.Screens.Reports;
 using CivOne.Tasks;
 using CivOne.Templates;
-using CivOne.Units;
 
 namespace CivOne.Screens
 {
@@ -26,7 +25,7 @@ namespace CivOne.Screens
 		private readonly SideBar _sideBar;
 		private readonly GameMap _gameMap;
 		
-		private readonly Bitmap _menuBackground = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
+		private readonly Picture _menuBackground = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
 		
 		private GameMenu _gameMenu = null;
 		private int _menuX, _menuY;
