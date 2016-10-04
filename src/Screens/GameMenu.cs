@@ -112,7 +112,7 @@ namespace CivOne.Screens
 			int ww = MaxItemWidth + 17;
 			int hh = (Resources.Instance.GetFontHeight(0) * Items.Count) + 9;
 			
-			Bitmap background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
+			Picture background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
 			
 			// This is a workaround, until I figure out how to make bitmaps where Width doesn't divide by 4
 			int ow = ww;

@@ -16,7 +16,7 @@ namespace CivOne.IO
 	internal class PicFile
 	{
 		private readonly byte[] _bytes;
-        private readonly byte[,] _colourTable = null;
+		private readonly byte[,] _colourTable = null;
 		private readonly Color[] _palette16 = Common.GetPalette16;
 		private readonly Color[] _palette256 = new Color[256];
 		private byte[,] _picture16;

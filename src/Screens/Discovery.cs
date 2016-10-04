@@ -7,9 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
@@ -40,9 +38,9 @@ namespace CivOne.Screens
 		{
 			if (Settings.GraphicsMode != GraphicsMode.Graphics256) return;
 			
-			ColorPalette palette = _canvas.Image.Palette;
+			Color[] palette = _canvas.Palette;
 			for (int i = 86; i < 256; i++)
-				palette.Entries[i] = FadeColour(_canvas.OriginalColours[i], _advance.Icon.OriginalColours[i]);
+				palette[i] = FadeColour(_canvas.OriginalColours[i], _advance.Icon.OriginalColours[i]);
 			_canvas.SetPalette(palette);
 		}
 		

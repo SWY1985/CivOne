@@ -10,11 +10,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Governments;
 using CivOne.Interfaces;
-using CivOne.Screens.Dialogs;
 using CivOne.Tasks;
 using CivOne.Templates;
 using CivOne.Units;

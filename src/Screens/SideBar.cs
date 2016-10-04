@@ -24,7 +24,7 @@ namespace CivOne.Screens
 		private bool _update = true;
 		
 		private readonly Picture _miniMap, _demographics, _gameInfo;
-		private readonly Bitmap _background;
+		private readonly Picture _background;
 		
 		private void DrawMiniMap(uint gameTick = 0)
 		{
@@ -164,7 +164,7 @@ namespace CivOne.Screens
 				{
 					int ix = 7 + ((i % 4) * 16);
 					int iy = yy + (((i - (i % 4)) / 4) * 16);
-					_gameInfo.AddLayer(units[i].GetUnit(units[i].Owner).Image, ix, iy);
+					_gameInfo.AddLayer(units[i].GetUnit(units[i].Owner), ix, iy);
 				}
 			}
 			else

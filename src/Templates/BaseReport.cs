@@ -21,7 +21,7 @@ namespace CivOne.Templates
 	{
 		private bool _update = true;
 
-		protected readonly Bitmap[] Portrait = new Bitmap[4];
+		protected readonly Picture[] Portrait = new Picture[4];
 		
 		public override bool HasUpdate(uint gameTick)
 		{
@@ -49,10 +49,10 @@ namespace CivOne.Templates
 			{
 				Portrait[i] = Icons.GovernmentPortrait(Human.Government, (Advisor)Enum.Parse(typeof(Advisor), $"{i}"), modernGovernment); 
 			}
-			Color[] palette = Resources.Instance.LoadPIC("SP299").Image.Palette.Entries;
+			Color[] palette = Resources.Instance.LoadPIC("SP299").Palette;
 			for (int i = 144; i < 256; i++)
 			{
-				palette[i] = Portrait[0].Palette.Entries[i];
+				palette[i] = Portrait[0].Palette[i];
 			}
 
 			_canvas = new Picture(320, 200, palette);

@@ -22,7 +22,7 @@ namespace CivOne.Screens
 	{
 		private readonly City _city;
 
-		private readonly Bitmap _background;
+		private readonly Picture _background;
 
 		private readonly CityHeader _cityHeader;
 		private readonly CityResources _cityResources;
@@ -180,7 +180,7 @@ namespace CivOne.Screens
 		public CityManager(City city)
 		{
 			_city = city;
-			_background = (Bitmap)Resources.Instance.GetPart("SP299", 288, 120, 32, 16).Clone();
+			_background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
 			Picture.ReplaceColours(_background, new byte[] { 7, 22 }, new byte[] { 57, 9 });
 
 			Cursor = MouseCursor.Pointer;

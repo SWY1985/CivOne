@@ -8,8 +8,6 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.Drawing;
-using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -23,7 +21,7 @@ namespace CivOne.Screens
 	{
 		private readonly City _city;
 
-		private readonly Bitmap _background;
+		private readonly Picture _background;
 		
 		private bool _update = true;
 
@@ -190,12 +188,12 @@ namespace CivOne.Screens
 			Destroy();
 		}
 
-		public CityProduction(City city, Bitmap background)
+		public CityProduction(City city, Picture background)
 		{
 			_city = city;
 			_background = background;
 
-			_canvas = new Picture(88, 99, background.Palette.Entries);
+			_canvas = new Picture(88, 99, background.Palette);
 		}
 	}
 }

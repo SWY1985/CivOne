@@ -38,10 +38,10 @@ namespace CivOne.Screens
 		private int GetMenuWidth(string title, string[] items)
 		{
 			int i = 0;
-			Bitmap[] texts = new Bitmap[items.Length + 1];
+			Picture[] texts = new Picture[items.Length + 1];
 			texts[i++] = Resources.Instance.GetText(" " + title, MenuFont, 15);
 			foreach (string item in items)
-				texts[i++] = Resources.Instance.GetText(" " + item, MenuFont, 5);			
+				texts[i++] = Resources.Instance.GetText(" " + item, MenuFont, 5);
 			return (texts.Select(t => t.Width).Max()) + 6;
 		}
 		

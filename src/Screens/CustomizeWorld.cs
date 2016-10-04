@@ -8,8 +8,6 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.GFX;
@@ -25,10 +23,10 @@ namespace CivOne.Screens
 		private int GetMenuWidth(string title, string[] items)
 		{
 			int i = 0;
-			Bitmap[] texts = new Bitmap[items.Length + 1];
+			Picture[] texts = new Picture[items.Length + 1];
 			texts[i++] = Resources.Instance.GetText(" " + title, 0, 15);
 			foreach (string item in items)
-				texts[i++] = Resources.Instance.GetText(" " + item, 0, 5);			
+				texts[i++] = Resources.Instance.GetText(" " + item, 0, 5);
 			return (texts.Select(t => t.Width).Max()) + 6;
 		}
 		

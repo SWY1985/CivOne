@@ -21,9 +21,9 @@ namespace CivOne.GFX
 	internal class Resources
 	{
 		private readonly Dictionary<string, Picture> _cache = new Dictionary<string, Picture>();
-		private readonly Dictionary<string, Bitmap> _textCache = new Dictionary<string, Bitmap>();
+		private readonly Dictionary<string, Picture> _textCache = new Dictionary<string, Picture>();
 		private readonly List<Fontset> _fonts = new List<Fontset>();
-		private readonly Dictionary<Direction, Bitmap> _fog = new Dictionary<Direction, Bitmap>();
+		private readonly Dictionary<Direction, Picture> _fog = new Dictionary<Direction, Picture>();
 		
 		internal void ClearTextCache()
 		{
@@ -74,14 +74,14 @@ namespace CivOne.GFX
 			return new Size(width, height);
 		}
 		
-		public Bitmap GetText(string text, int font, byte colour)
+		public Picture GetText(string text, int font, byte colour)
 		{
 			return GetText(text, font, colour, colour);
 		}
 		
-		public Bitmap GetText(string text, int font, byte colourFirstLetter, byte colour)
+		public Picture GetText(string text, int font, byte colourFirstLetter, byte colour)
 		{
-			List<Bitmap> letters = new List<Bitmap>();
+			List<Picture> letters = new List<Picture>();
 			bool isFirstLetter = true;
 			foreach (char c in text)
 			{
@@ -90,18 +90,18 @@ namespace CivOne.GFX
 			}
 			
 			int width = 0, height = 0;
-			foreach (Bitmap letter in letters)
+			foreach (Picture letter in letters)
 			{
 				width += letter.Width + 1;
 				if (height < letter.Height) height = letter.Height;
 			}
 			
-			Bitmap output = new Bitmap(width, height, PixelFormat.Format8bppIndexed);
+			Picture output = new Picture(width, height);
 			
 			int xx = 0;
-			foreach (Bitmap letter in letters)
+			foreach (Picture letter in letters)
 			{
-				output = Picture.Combine(output, letter, new Point(xx, 0));
+				output.AddLayer(letter, xx, 0);
 				xx += letter.Width + 1;
 			}
 			
@@ -120,7 +120,7 @@ namespace CivOne.GFX
 			return _fonts[font].FontHeight;
 		}
 		
-		private Bitmap GetLetter(byte colour, int font, char letter)
+		private Picture GetLetter(byte colour, int font, char letter)
 		{
 			string key = string.Format("letter{0}|{1}|{2}", colour, font, letter);
 			if (!_textCache.ContainsKey(key))
@@ -130,7 +130,7 @@ namespace CivOne.GFX
 			return _textCache[key];
 		}
 		
-		public Bitmap GetPart(string filename, int x, int y, int width, int height)
+		public Picture GetPart(string filename, int x, int y, int width, int height)
 		{
 			return LoadPIC(filename).GetPart(x, y, width, height);
 		}
@@ -214,7 +214,7 @@ namespace CivOne.GFX
 			return palette1;
 		}
 		
-		public Bitmap GetTile(ITile tile, bool improvements = true, bool roads = true)
+		public Picture GetTile(ITile tile, bool improvements = true, bool roads = true)
 		{
 			if (Settings.Instance.GraphicsMode == GraphicsMode.Graphics16)
 			{
@@ -223,7 +223,7 @@ namespace CivOne.GFX
 			return TileResources.GetTile256(tile, improvements, roads);
 		}
 
-		public Bitmap GetFog(Direction direction)
+		public Picture GetFog(Direction direction)
 		{
 			if (!_fog.ContainsKey(direction)) return null;
 			return _fog[direction];
@@ -245,10 +245,10 @@ namespace CivOne.GFX
 		private Resources()
 		{
 			LoadFonts();
-			_fog.Add(Direction.West, (Bitmap)GetPart("SP257", 128, 128, 16, 16).Clone());
-			_fog.Add(Direction.South, (Bitmap)GetPart("SP257", 112, 128, 16, 16).Clone());
-			_fog.Add(Direction.East, (Bitmap)GetPart("SP257", 96, 128, 16, 16).Clone());
-			_fog.Add(Direction.North, (Bitmap)GetPart("SP257", 80, 128, 16, 16).Clone());
+			_fog.Add(Direction.West, GetPart("SP257", 128, 128, 16, 16));
+			_fog.Add(Direction.South, GetPart("SP257", 112, 128, 16, 16));
+			_fog.Add(Direction.East, GetPart("SP257", 96, 128, 16, 16));
+			_fog.Add(Direction.North, GetPart("SP257", 80, 128, 16, 16));
 		}
 	}
 }

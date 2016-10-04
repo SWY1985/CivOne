@@ -79,6 +79,6 @@ namespace CivOne.IO
 					if (textfile[i].StartsWith("*")) i--;
 				}
 			}
-        }
+		}
 	}
 }

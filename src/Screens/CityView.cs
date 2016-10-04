@@ -9,7 +9,6 @@
 
 using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
@@ -48,9 +47,9 @@ namespace CivOne.Screens
 		{
 			if (Settings.GraphicsMode != GraphicsMode.Graphics256) return;
 			
-			ColorPalette palette = _background.Image.Palette;
+			Color[] palette = _background.Palette;
 			for (int i = 1; i < 256; i++)
-				palette.Entries[i] = FadeColour(Color.Black, _background.OriginalColours[i]);
+				palette[i] = FadeColour(Color.Black, _background.OriginalColours[i]);
 			_canvas.SetPalette(palette);
 		}
 		
@@ -142,7 +141,7 @@ namespace CivOne.Screens
 				int actualWidth = width;
 				if (width % 4 > 0) width += (4 - (width % 4));
 				Picture dialog = new Picture(width, 37);
-				dialog.FillLayerTile((Bitmap)Resources.Instance.GetPart("SP299", 288, 120, 32, 16));
+				dialog.FillLayerTile(Resources.Instance.GetPart("SP299", 288, 120, 32, 16));
 				if (width > actualWidth)
 					dialog.FillRectangle(0, actualWidth, 0, width - actualWidth, 37);
 				dialog.AddBorder(15, 8, 0, 0, actualWidth, 37);
@@ -152,7 +151,7 @@ namespace CivOne.Screens
 				dialog.DrawText(lines[1], 5, 15, 4, 19);
 
 				_canvas.FillRectangle(5, 80, 8, actualWidth + 2, 39);
-				_canvas.AddLayer(dialog.Image, 81, 9); 
+				_canvas.AddLayer(dialog, 81, 9); 
 				return;
 			}
 			

@@ -81,7 +81,7 @@ namespace CivOne.Templates
 		
 		protected void SetSmallIcon(int col, int row)
 		{
-			Bitmap icon = (Bitmap)Resources.Instance.LoadPIC((Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? "SP299" : "SPRITES")).GetPart(160 + (19 * col), 50 + (10 * row), 20, 10).Clone();
+			Picture icon = Resources.Instance.LoadPIC((Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? "SP299" : "SPRITES")).GetPart(160 + (19 * col), 50 + (10 * row), 20, 10);
 			Picture.ReplaceColours(icon, 0, 5);
 			SmallIcon = new Picture(20, 10);
 			SmallIcon.FillRectangle(5, 0, 0, 20, 10);

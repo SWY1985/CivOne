@@ -8,10 +8,8 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
@@ -21,7 +19,7 @@ namespace CivOne.Screens
 {
 	internal class ChooseTech : BaseScreen
 	{
-		private readonly Bitmap _background;
+		private readonly Picture _background;
 		private readonly Picture _menuGfx;
 		private readonly IAdvance[] _availableAdvances;
 		private readonly int _menuHeight;
@@ -47,10 +45,10 @@ namespace CivOne.Screens
 			{
 				_update = false;
 
-				Bitmap background = (Bitmap)_menuGfx.GetPart(44, 35, 156, _menuHeight).Clone();
+				Picture background = _menuGfx.GetPart(44, 35, 156, _menuHeight);
 				Picture.ReplaceColours(background, new byte[] { 7, 22 }, new byte[] { 11, 3 });
 
-				Menu menu = new Menu(Canvas.Image.Palette.Entries, background)
+				Menu menu = new Menu(Canvas.Palette, background)
 				{
 					X = 83,
 					Y = 92,
@@ -81,18 +79,18 @@ namespace CivOne.Screens
 
 		public ChooseTech()
 		{
-			_background = (Bitmap)Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
+			_background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
 			_availableAdvances = Human.AvailableResearch.Take(8).ToArray();
 			_menuHeight = Resources.Instance.GetFontHeight(0) * _availableAdvances.Count();
 			
 			Cursor = MouseCursor.Pointer;
 
 			bool modernGovernment = Human.Advances.Any(a => a.Id == (int)Advance.Invention);
-			Bitmap governmentPortrait = Icons.GovernmentPortrait(Human.Government, Advisor.Science, modernGovernment);
-			Color[] palette = Resources.Instance.LoadPIC("SP257").Image.Palette.Entries;
+			Picture governmentPortrait = Icons.GovernmentPortrait(Human.Government, Advisor.Science, modernGovernment);
+			Color[] palette = Resources.Instance.LoadPIC("SP257").Palette;
 			for (int i = 144; i < 256; i++)
 			{
-				palette[i] = governmentPortrait.Palette.Entries[i];
+				palette[i] = governmentPortrait.Palette[i];
 			}
 			
 			_canvas = new Picture(320, 200, palette);

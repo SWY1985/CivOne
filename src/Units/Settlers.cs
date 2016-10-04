@@ -352,28 +352,28 @@ namespace CivOne.Units
 
 			if (BuildingRoad > 0)
 			{
-				Picture unit = new Picture(base.GetUnit(colour).Image);
+				Picture unit = new Picture(base.GetUnit(colour));
 				unit.DrawText("R", 0, 5, 8, 9, TextAlign.Center);
 				unit.DrawText("R", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
 				return unit; 
 			}
 			else if (BuildingIrrigation > 0)
 			{
-				Picture unit = new Picture(base.GetUnit(colour).Image);
+				Picture unit = new Picture(base.GetUnit(colour));
 				unit.DrawText("I", 0, 5, 8, 9, TextAlign.Center);
 				unit.DrawText("I", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
 				return unit; 
 			}
 			else if (BuildingMine > 0)
 			{
-				Picture unit = new Picture(base.GetUnit(colour).Image);
+				Picture unit = new Picture(base.GetUnit(colour));
 				unit.DrawText("M", 0, 5, 8, 9, TextAlign.Center);
 				unit.DrawText("M", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
 				return unit; 
 			}
 			else if (BuildingFortress > 0)
 			{
-				Picture unit = new Picture(base.GetUnit(colour).Image);
+				Picture unit = new Picture(base.GetUnit(colour));
 				unit.DrawText("F", 0, 5, 8, 9, TextAlign.Center);
 				unit.DrawText("F", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
 				return unit; 

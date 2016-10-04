@@ -52,9 +52,9 @@ namespace CivOne.GFX
 			}
 		}
 		
-		public Bitmap GetLetter(char character, byte colour)
+		public Picture GetLetter(char character, byte colour)
 		{
-			if (!_charWidths.ContainsKey(character) || !_characters.ContainsKey(character)) return new Bitmap(8, 8);
+			if (!_charWidths.ContainsKey(character) || !_characters.ContainsKey(character)) return new Picture(8, 8);
 			int ww = _charWidths[character];
 
 			byte[] pixels = new byte[ww * FontHeight];
@@ -87,21 +87,8 @@ namespace CivOne.GFX
 					}
 				}
 			}
-			
-			Bitmap output = new Bitmap(ww, FontHeight, System.Drawing.Imaging.PixelFormat.Format8bppIndexed);
-			for (int y = 0; y < FontHeight; y++)
-			{
-				BitmapData bmpData = output.LockBits(new Rectangle(0, y, ww, 1), ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
-				Marshal.Copy(pixels, (ww * y), bmpData.Scan0, ww);
-				output.UnlockBits(bmpData);
-			}
 
-			ColorPalette palette = output.Palette;
-			for (int i = 0; i < _colours.Length; i++)
-				palette.Entries[i] = _colours[i];
-			output.Palette = palette;
-
-			return output;
+			return new Picture(ww, FontHeight, pixels, _colours);
 		}
 
 		public Fontset(byte[] bytes, ushort offset, Color[] palette)

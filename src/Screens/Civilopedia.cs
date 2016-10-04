@@ -10,13 +10,11 @@
 using System;
 using System.Drawing;
 using System.Linq;
-using CivOne.Buildings;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Templates;
-using CivOne.Tiles;
 
 namespace CivOne.Screens
 {
@@ -322,13 +320,13 @@ namespace CivOne.Screens
 			_canvas = new Picture(320, 200, palette);
 			
 			int border = Common.Random.Next(2);
-			Bitmap[] borders = new Bitmap[8];
+			Picture[] borders = new Picture[8];
 			int index = 0;
 			for (int y = 0; y < 2; y++)
 			{
 				for (int x = 0; x < 4; x++)
 				{
-					borders[index] = (Bitmap)Resources.Instance.GetPart("SP299", ((border == 0) ? 192 : 224) + (8 * x), 120 + (8 * y), 8, 8).Clone();
+					borders[index] = Resources.Instance.GetPart("SP299", ((border == 0) ? 192 : 224) + (8 * x), 120 + (8 * y), 8, 8);
 					index++;
 				}
 			}
