@@ -358,6 +358,7 @@ namespace CivOne
 			DoubleBuffered = true;
 			MaximizeBox = false;
 			ClientSize = new Size(320 * Settings.Instance.ScaleX, 200 * Settings.Instance.ScaleY);
+			MinimumSize = new Size(320, 200);
 			FormBorderStyle = Settings.Instance.FullScreen ? FormBorderStyle.None : FormBorderStyle.Sizable;
 			WindowState = Settings.Instance.FullScreen ? FormWindowState.Maximized : FormWindowState.Normal;
 			Text = "CivOne";
