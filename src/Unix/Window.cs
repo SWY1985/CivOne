@@ -82,16 +82,7 @@ namespace CivOne
 		
 		private void ScreenUpdate()
 		{
-			if (Common.Screens.Length == 0) return;
-			
-			Color[] colours = TopScreen.Canvas.Palette;
-			colours[0] = Color.Black;
-			
-			_canvas = new Picture(320, 200, colours);
-			foreach (IScreen screen in Common.Screens)
-			{
-				_canvas.AddLayer(screen.Canvas, 0, 0);
-			}
+			if (Common.Screens.Length == 0 || Canvas == null) return;
 			
 			Gdk.Threads.Enter();
 			_window.QueueDraw();
@@ -290,8 +281,6 @@ namespace CivOne
 		
 		protected void OnExpose(object sender, Gtk.ExposeEventArgs args)
 		{
-			if (_canvas == null) return;
-			
 			Gdk.Pixbuf canvas = GetPixbuf(_canvas.Image).ScaleSimple(CanvasWidth, CanvasHeight, Gdk.InterpType.Nearest);
 			canvas.RenderToDrawable(args.Event.Window, _window.Style.BaseGC(Gtk.StateType.Normal), 0, 0, CanvasX, CanvasY, -1, -1, Gdk.RgbDither.None, 0, 0);
 		}
