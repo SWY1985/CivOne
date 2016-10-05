@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Threading;
@@ -19,8 +20,6 @@ namespace CivOne
 {
 	internal partial class Window
 	{
-		private Picture _canvas = null;
-		
 		private uint _gameTick = 0;
 		private Thread TickThread;
 		private AutoResetEvent _tickWaiter = new AutoResetEvent(true);
@@ -42,6 +41,33 @@ namespace CivOne
 			get
 			{
 				return Common.TopScreen;
+			}
+		}
+
+		private readonly Picture _canvas = new Picture(320, 200);
+		internal Picture Canvas
+		{
+			get
+			{
+				if (Common.Screens.Length == 0) return _canvas;
+
+				Color[] palette = TopScreen.Canvas.Image.Palette.Entries;
+				palette[0] = Color.Black;
+				_canvas.FillRectangle(0, 0, 0, _canvas.Width, _canvas.Height);
+				_canvas.SetPalette(palette);
+
+				if (TopScreen is IModal)
+				{
+					_canvas.AddLayer(TopScreen.Canvas, 0, 0);
+				}
+				else
+				{
+					foreach (IScreen screen in Common.Screens)
+					{
+						_canvas.AddLayer(screen.Canvas, 0, 0);
+					}
+				}
+				return _canvas;
 			}
 		}
 		
