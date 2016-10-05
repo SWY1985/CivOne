@@ -13,7 +13,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using CivOne.Enums;
-using CivOne.IO;
 
 namespace CivOne.GFX
 {
