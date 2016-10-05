@@ -246,62 +246,45 @@ namespace CivOne
 			
 			switch (args.Event.Key)
 			{
+				case Gdk.Key.F1: SendKeyDown(Key.F1, modifier); return;
+				case Gdk.Key.F2: SendKeyDown(Key.F2, modifier); return;
+				case Gdk.Key.F3: SendKeyDown(Key.F3, modifier); return;
+				case Gdk.Key.F4: SendKeyDown(Key.F4, modifier); return;
+				case Gdk.Key.F5: SendKeyDown(Key.F5, modifier); return;
+				case Gdk.Key.F6: SendKeyDown(Key.F6, modifier); return;
+				case Gdk.Key.F7: SendKeyDown(Key.F7, modifier); return;
+				case Gdk.Key.F8: SendKeyDown(Key.F8, modifier); return;
+				case Gdk.Key.F9: SendKeyDown(Key.F9, modifier); return;
+				case Gdk.Key.F10: SendKeyDown(Key.F10, modifier); return;
+				case Gdk.Key.F11: SendKeyDown(Key.F11, modifier); return;
+				case Gdk.Key.F12: SendKeyDown(Key.F12, modifier); return;
+
+				case Gdk.Key.KP_0: SendKeyDown(Key.NumPad0, modifier); return;
+				case Gdk.Key.KP_1: SendKeyDown(Key.NumPad1, modifier); return;
+				case Gdk.Key.KP_2: SendKeyDown(Key.NumPad2, modifier); return;
+				case Gdk.Key.KP_3: SendKeyDown(Key.NumPad3, modifier); return;
+				case Gdk.Key.KP_4: SendKeyDown(Key.NumPad4, modifier); return;
+				case Gdk.Key.KP_5: SendKeyDown(Key.NumPad5, modifier); return;
+				case Gdk.Key.KP_6: SendKeyDown(Key.NumPad6, modifier); return;
+				case Gdk.Key.KP_7: SendKeyDown(Key.NumPad7, modifier); return;
+				case Gdk.Key.KP_8: SendKeyDown(Key.NumPad8, modifier); return;
+				case Gdk.Key.KP_9: SendKeyDown(Key.NumPad9, modifier); return;
+				case Gdk.Key.Up: SendKeyDown(Key.Up, modifier); return;
+				case Gdk.Key.Down: SendKeyDown(Key.Down, modifier); return;
+				case Gdk.Key.Left: SendKeyDown(Key.Left, modifier); return;
+				case Gdk.Key.Right: SendKeyDown(Key.Right, modifier); return;
 				case Gdk.Key.Return:
-				case Gdk.Key.KP_Enter:
-					SendKeyDown(Key.Enter, modifier);
-					return;
+				case Gdk.Key.KP_Enter: SendKeyDown(Key.Enter, modifier); return;
 				case Gdk.Key.space:
-				case Gdk.Key.KP_Space:
-					SendKeyDown(Key.Space, modifier);
-					return;
-				case Gdk.Key.Up:
-					SendKeyDown(Key.Up, modifier);
-					return;
-				case Gdk.Key.Down:
-					SendKeyDown(Key.Down, modifier);
-					return;
-				case Gdk.Key.Left:
-					SendKeyDown(Key.Left, modifier);
-					return;
-				case Gdk.Key.Right:
-					SendKeyDown(Key.Right, modifier);
-					return;
-				case Gdk.Key.F1:
-					SendKeyDown(Key.F1, modifier);
-					return;
-				case Gdk.Key.F2:
-					SendKeyDown(Key.F2, modifier);
-					return;
-				case Gdk.Key.F3:
-					SendKeyDown(Key.F3, modifier);
-					return;
-				case Gdk.Key.F4:
-					SendKeyDown(Key.F4, modifier);
-					return;
-				case Gdk.Key.F5:
-					SendKeyDown(Key.F5, modifier);
-					return;
-				case Gdk.Key.F6:
-					SendKeyDown(Key.F6, modifier);
-					return;
-				case Gdk.Key.F7:
-					SendKeyDown(Key.F7, modifier);
-					return;
-				case Gdk.Key.F8:
-					SendKeyDown(Key.F8, modifier);
-					return;
-				case Gdk.Key.F9:
-					SendKeyDown(Key.F9, modifier);
-					return;
-				case Gdk.Key.F10:
-					SendKeyDown(Key.F10, modifier);
-					return;
-				case Gdk.Key.BackSpace:
-					SendKeyDown(Key.Backspace, modifier);
-					return;
-				default:
-					SendKeyDown(char.ToUpper((char)args.Event.Key), modifier);
-					return;
+				case Gdk.Key.KP_Space: SendKeyDown(Key.Space, modifier); return;
+				case Gdk.Key.BackSpace: SendKeyDown(Key.Backspace, modifier); return;
+				case Gdk.Key.period: SendKeyDown('.', modifier); return;
+				case Gdk.Key.comma: SendKeyDown(',', modifier); return;
+				case Gdk.Key.KP_Add:
+				case Gdk.Key.plus: SendKeyDown(Key.Plus, modifier); return;
+				case Gdk.Key.KP_Subtract:
+				case Gdk.Key.minus: SendKeyDown(Key.Minus, modifier); return;
+				default: SendKeyDown(char.ToUpper((char)args.Event.Key), modifier); return;
 			}
 		}
 		
