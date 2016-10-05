@@ -15,7 +15,6 @@ using System.Windows.Forms;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
-using CivOne.Interfaces;
 
 namespace CivOne
 {
@@ -236,27 +235,7 @@ namespace CivOne
 		{
 			args.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			args.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
-			
-			if (Common.Screens.Length == 0) return;
-			
-			Color[] colours = TopScreen.Canvas.Image.Palette.Entries;
-			colours[0] = Color.Black;
-			
-			_canvas = new Picture(320, 200, colours);
-			if (TopScreen is IModal)
-			{
-				_canvas.AddLayer(TopScreen.Canvas, 0, 0);
-			}
-			else
-			{
-				foreach (IScreen screen in Common.Screens)
-				{
-					_canvas.AddLayer(screen.Canvas, 0, 0);
-				}
-			}
-			
-			args.Graphics.Clear(Color.Black);
-			args.Graphics.DrawImage(_canvas.Image, CanvasX, CanvasY, CanvasWidth, CanvasHeight);
+			args.Graphics.DrawImage(Canvas.Image, CanvasX, CanvasY, CanvasWidth, CanvasHeight);
 		}
 		
 		private void OnKeyDown(object sender, KeyEventArgs args)
