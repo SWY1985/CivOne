@@ -290,7 +290,7 @@ namespace CivOne.Tasks
 			return new Orders()
 			{
 				_unit = unit,
-				_order = Order.Irrigate
+				_order = Order.Fortress
 			};
 		}
 
