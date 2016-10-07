@@ -247,7 +247,7 @@ namespace CivOne
 				return false;
 			
 			// Require Manhattan Project to be built for Nuclear unit
-			if ((unit is Nuclear) && Game.Instance.WonderBuilt<ManhattanProject>())
+			if ((unit is Nuclear) && !Game.Instance.WonderBuilt<ManhattanProject>())
 				return false;
 			
 			// Determine if the unit requires a tech
