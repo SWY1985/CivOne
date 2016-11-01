@@ -22,6 +22,7 @@ namespace CivOne
 		public static Random Random = new Random((int)DateTime.Now.Ticks);
 		
 		public static IAdvance[] Advances = Reflect.GetAdvances().ToArray();
+		public static IBuilding[] Buildings = Reflect.GetBuildings().ToArray();
 		public static ICivilization[] Civilizations
 		{
 			get
