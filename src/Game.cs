@@ -450,6 +450,9 @@ namespace CivOne
 				ushort humanPlayer = Common.BinaryReadUShort(br, 2);
 				ushort randomSeed = Common.BinaryReadUShort(br, 6);
 				ushort difficulty = Common.BinaryReadUShort(br, 10);
+				
+				Map.Instance.LoadMap(mapFile, randomSeed);
+
 				string[] leaderNames = Common.BinaryReadStrings(br, 16, 112, 14);
 				string[] tribeNamesPlural = Common.BinaryReadStrings(br, 128, 96, 12);
 				string[] tribeNames = Common.BinaryReadStrings(br, 224, 88, 11);
@@ -481,6 +484,7 @@ namespace CivOne
 						Size = actualSize
 					};
 					city.SetProduction(currentProduction);
+					city.SetResourceTiles(Common.BinaryReadBytes(br, i + 16, 6));
 					cities.Add(city);
 				}
 				List<IUnit> units = new List<IUnit>();
@@ -505,7 +509,6 @@ namespace CivOne
 				ushort competition = (ushort)(Common.BinaryReadUShort(br, 37820) + 1);
 				ushort civIdentity = Common.BinaryReadUShort(br, 37854);
 				
-				Map.Instance.LoadMap(mapFile, randomSeed);
 				_instance = new Game(difficulty, competition);
 				Console.WriteLine("Game instance loaded (difficulty: {0}, competition: {1})", difficulty, competition);
 				
