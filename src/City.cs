@@ -59,8 +59,8 @@ namespace CivOne
 				SetResourceTiles();
 			}
 		}
-		internal int Shields { get; private set; }
-		internal int Food { get; private set; }
+		internal int Shields { get; set; }
+		internal int Food { get; set; }
 		internal IProduction CurrentProduction { get; private set; }
 		private List<ITile> _resourceTiles = new List<ITile>();
 		private List<IBuilding> _buildings = new List<IBuilding>();
