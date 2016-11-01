@@ -519,6 +519,7 @@ namespace CivOne
 					Player player = (_instance._players[i] = new Player(civ, leaderNames[i], tribeNames[i], tribeNamesPlural[i]));
 					player.Gold = (short)Common.BinaryReadUShort(br, 312 + (i * 2));
 					player.Science = (short)Common.BinaryReadUShort(br, 328 + (i * 2));
+					player.Government = Reflect.GetGovernments().FirstOrDefault(x => x.Id == Common.BinaryReadUShort(br, 1336 + (i * 2)));
 					
 					// Set map visibility
 					for (int xx = 0; xx < 80; xx++)
