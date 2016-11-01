@@ -295,6 +295,11 @@ namespace CivOne.Templates
 			if (Map[X, Y].City == null) return;
 			Home = Map[X, Y].City;
 		}
+
+		public void SetHome(City city)
+		{
+			Home = city;
+		}
 		
 		public virtual void SkipTurn()
 		{

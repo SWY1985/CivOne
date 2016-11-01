@@ -461,8 +461,12 @@ namespace CivOne
 				for (int i = 0; i < 8; i++)
 					unitCount[i] = Common.BinaryReadUShort(br, 1752 + (i * 2));
 				List<City> cities = new List<City>();
+
+				Dictionary<byte, City> cityList = new Dictionary<byte, City>();
+				byte cityId = 255;
 				for (int i = 5384; i < 8968; i+= 28)
 				{
+					cityId++;
 					byte[] buildings = Common.BinaryReadBytes(br, i, 4);
 					byte x = Common.BinaryReadByte(br, i + 4);
 					byte y = Common.BinaryReadByte(br, i + 5);
@@ -503,6 +507,7 @@ namespace CivOne
 					}
 					
 					cities.Add(city);
+					cityList.Add(cityId, city);
 				}
 				List<IUnit> units = new List<IUnit>();
 				for (int i = 9920; i < 22208; i+= 12)
@@ -515,12 +520,17 @@ namespace CivOne
 					byte x = Common.BinaryReadByte(br, i + 1);
 					byte y = Common.BinaryReadByte(br, i + 2);
 					byte type = Common.BinaryReadByte(br, i + 3);
+					byte homeCity = Common.BinaryReadByte(br, i + 11);
 					
 					IUnit unit = CreateUnit((Unit)type, x, y);
 					if (unit == null) continue;
 
 					unit.Status = status;
 					unit.Owner = (byte)civ;
+					if (cityList.ContainsKey(homeCity))
+					{
+						unit.SetHome(cityList[homeCity]);
+					}
 					units.Add(unit);
 				}
 				ushort competition = (ushort)(Common.BinaryReadUShort(br, 37820) + 1);
