@@ -189,7 +189,7 @@ namespace CivOne
 		{
 			get
 			{
-				return _advances.Select(a => Reflect.GetAdvances().First(x => x.Id == a)).ToArray();
+				return _advances.Select(a => Common.Advances.First(x => x.Id == a)).ToArray();
 			}
 		}
 		
@@ -219,7 +219,7 @@ namespace CivOne
 		{
 			get
 			{
-				foreach (IAdvance advance in Reflect.GetAdvances().Where(a => !_advances.Contains(a.Id)))
+				foreach (IAdvance advance in Common.Advances.Where(a => !_advances.Contains(a.Id)))
 				{
 					if (advance.RequiredTechs.Length > 0 && !advance.RequiredTechs.All(a => _advances.Contains(a.Id))) continue;
 					yield return advance;

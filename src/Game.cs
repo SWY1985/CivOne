@@ -516,8 +516,9 @@ namespace CivOne
 				{
 					int identity = ((civIdentity >> i) & 0x1);
 					ICivilization civ = Common.Civilizations.Where(c => c.PreferredPlayerNumber == i).ToArray()[identity];
-					_instance._players[i] = new Player(civ, leaderNames[i], tribeNames[i], tribeNamesPlural[i]);
-					_instance._players[i].Gold = (short)Common.BinaryReadUShort(br, 312 + (i * 2));
+					Player player = (_instance._players[i] = new Player(civ, leaderNames[i], tribeNames[i], tribeNamesPlural[i]));
+					player.Gold = (short)Common.BinaryReadUShort(br, 312 + (i * 2));
+					player.Science = (short)Common.BinaryReadUShort(br, 328 + (i * 2));
 					
 					// Set map visibility
 					for (int xx = 0; xx < 80; xx++)
@@ -525,13 +526,28 @@ namespace CivOne
 					{
 						byte tile = visibility[(50 * xx) + yy];
 						if ((tile & (1 << i)) == 0) continue;
-						_instance._players[i].Explore(xx, yy, 0);
+						player.Explore(xx, yy, 0);
+					}
+
+					// Set civilization advances
+					for (int t = 0; t < 5; t++)
+					{
+						int offset = 1256 + (i * 10) + (t * 2);
+						ushort techFlag = Common.BinaryReadUShort(br, offset);
+						for (int b = 0; b < 16; b++)
+						{
+							if ((techFlag & (1 << b)) == 0) continue;
+							IAdvance advance = Common.Advances.FirstOrDefault(a => a.Id == (16 * t) + b);
+							if (advance == null) continue;
+							player.AddAdvance(advance);
+						}
 					}
 					
-					Console.WriteLine("- Player {0} is {1} of the {2}{3}", i, _instance._players[i].LeaderName, _instance._players[i].TribeNamePlural, (i == humanPlayer) ? " (human)" : "");
+					Console.WriteLine("- Player {0} is {1} of the {2}{3}", i, player.LeaderName, _instance._players[i].TribeNamePlural, (i == humanPlayer) ? " (human)" : "");
 				}
 				_instance.GameTurn = Common.BinaryReadUShort(br, 0);
 				_instance.HumanPlayer = _instance._players[humanPlayer];
+				_instance.HumanPlayer.CurrentResearch = Common.Advances.FirstOrDefault(a => a.Id == Common.BinaryReadUShort(br, 14));
 				
 				foreach (City city in cities)
 				{
