@@ -463,11 +463,13 @@ namespace CivOne
 				List<City> cities = new List<City>();
 				for (int i = 5384; i < 8968; i+= 28)
 				{
+					byte[] buildings = Common.BinaryReadBytes(br, i, 4);
 					byte x = Common.BinaryReadByte(br, i + 4);
 					byte y = Common.BinaryReadByte(br, i + 5);
 					byte actualSize = Common.BinaryReadByte(br, i + 7);
 					byte currentProduction = Common.BinaryReadByte(br, i + 9);
 					byte owner = Common.BinaryReadByte(br, i + 11);
+					byte[] resourceTiles = Common.BinaryReadBytes(br, i + 16, 6);
 					byte nameId = Common.BinaryReadByte(br, i + 22);
 					string name = cityNames[nameId];
 					
@@ -484,7 +486,18 @@ namespace CivOne
 						Size = actualSize
 					};
 					city.SetProduction(currentProduction);
-					city.SetResourceTiles(Common.BinaryReadBytes(br, i + 16, 6));
+					city.SetResourceTiles(resourceTiles);
+
+					// Set city buildings
+					for (int j = 0; j < 32; j++)
+					{
+						if (!Common.Buildings.Any(b => b.Id == j)) continue;
+						int bit = (j % 8);
+						int index = (j - bit) / 8;
+						if (((buildings[index] >> bit) & 1) == 0) continue;
+						city.AddBuilding(Common.Buildings.First(b => b.Id == j));
+					}
+					
 					cities.Add(city);
 				}
 				List<IUnit> units = new List<IUnit>();
