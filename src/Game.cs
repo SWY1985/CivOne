@@ -539,7 +539,11 @@ namespace CivOne
 							if ((techFlag & (1 << b)) == 0) continue;
 							IAdvance advance = Common.Advances.FirstOrDefault(a => a.Id == (16 * t) + b);
 							if (advance == null) continue;
-							player.AddAdvance(advance);
+							player.AddAdvance(advance, false);
+							
+							int originId = Common.BinaryReadUShort(br, 26720 + (advance.Id * 2));
+							if (originId == player.Civilization.Id)
+								_instance.SetAdvanceOrigin(advance, player);
 						}
 					}
 					
