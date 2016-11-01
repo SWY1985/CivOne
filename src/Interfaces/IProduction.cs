@@ -13,5 +13,6 @@ namespace CivOne.Interfaces
 	{
 		byte Price { get; }
 		short BuyPrice { get; }
+		byte ProductionId { get; }
 	}
 }

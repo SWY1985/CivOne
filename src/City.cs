@@ -287,6 +287,7 @@ namespace CivOne
 
 		private void SetResourceTiles()
 		{
+			if (!Game.Started) return;
 			while (_resourceTiles.Count > Size)
 				_resourceTiles.RemoveAt(_resourceTiles.Count - 1);
 			if (_resourceTiles.Count == Size) return;
@@ -358,6 +359,17 @@ namespace CivOne
 
 		public void SetProduction(IProduction production)
 		{
+			CurrentProduction = production;
+		}
+
+		internal void SetProduction(byte productionId)
+		{
+			IProduction production = Reflect.GetProduction().FirstOrDefault(p => p.ProductionId == productionId);
+			if (production == null)
+			{
+				Console.WriteLine($"Invalid production ID for {Name}: {productionId}");
+				return;
+			}
 			CurrentProduction = production;
 		}
 
@@ -615,6 +627,7 @@ namespace CivOne
 		internal City(byte owner)
 		{
 			Owner = owner;
+			if (!Game.Started) return;
 			CurrentProduction = Reflect.GetUnits().Where(u => Player.ProductionAvailable(u)).OrderBy(u => (u is IDefault) ? -1 : (int)u.Type).First();
 			SetResourceTiles();
 		}

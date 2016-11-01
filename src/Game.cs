@@ -463,11 +463,15 @@ namespace CivOne
 					byte x = Common.BinaryReadByte(br, i + 4);
 					byte y = Common.BinaryReadByte(br, i + 5);
 					byte actualSize = Common.BinaryReadByte(br, i + 7);
+					byte currentProduction = Common.BinaryReadByte(br, i + 9);
 					byte owner = Common.BinaryReadByte(br, i + 11);
 					byte nameId = Common.BinaryReadByte(br, i + 22);
 					string name = cityNames[nameId];
 					
 					if (x == 0 && y == 0 && actualSize == 0 && owner == 0 && nameId == 0) continue;
+
+					//TODO: For now, don't load destroyed cities
+					if (actualSize == 0) continue;
 					
 					City city = new City(owner)
 					{
@@ -476,6 +480,7 @@ namespace CivOne
 						Name = name,
 						Size = actualSize
 					};
+					city.SetProduction(currentProduction);
 					cities.Add(city);
 				}
 				List<IUnit> units = new List<IUnit>();

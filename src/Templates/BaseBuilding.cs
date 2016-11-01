@@ -72,6 +72,13 @@ namespace CivOne.Templates
 		public IAdvance RequiredTech { get; protected set; }
 		public short SellPrice { get; private set; }
 		public short BuyPrice { get; private set; }
+		public byte ProductionId
+		{
+			get
+			{
+				return (byte)(255 - Type);
+			}
+		}
 		public byte Price { get; protected set; }
 		public byte Maintenance { get; protected set; }
 		

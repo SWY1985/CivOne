@@ -68,6 +68,16 @@ namespace CivOne
 		{
 			return GetTypes<IWonder>().OrderBy(x => x.Id);
 		}
+
+		internal static IEnumerable<IProduction> GetProduction()
+		{
+			foreach (IProduction production in GetUnits())
+				yield return production;
+			foreach (IProduction production in GetBuildings())
+				yield return production;
+			foreach (IProduction production in GetWonders())
+				yield return production;
+		}
 		
 		internal static IEnumerable<IConcept> GetConcepts()
 		{
