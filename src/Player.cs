@@ -67,7 +67,19 @@ namespace CivOne
 
 		public byte Handicap { get; internal set; }
 		
-		public IGovernment Government { get; internal set; }
+		private IGovernment _government;
+		public IGovernment Government
+		{
+			get
+			{
+				return _government;
+			}
+			internal set
+			{
+				if (value == null) return;
+				_government = value;
+			}
+		}
 
 		private int _luxuriesRate = 0, _taxesRate = 5, _scienceRate = 5;
 		public int LuxuriesRate
