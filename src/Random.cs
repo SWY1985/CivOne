@@ -255,7 +255,7 @@ namespace CivOne
 		
 		public Random(int seed = -1, int seed2 = 0)
 		{
-			if (seed < 0)
+			if (seed == -1)
 				seed = ((int)DateTime.Now.Ticks & 0xFFFF);
 			DS5BDA = (short)seed;
 			DS5BDC = (short)seed2;
