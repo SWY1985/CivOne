@@ -175,6 +175,13 @@ namespace CivOne
 			return reader.ReadUInt16();
 		}
 		
+		public static byte[] BinaryReadBytes(BinaryReader reader, int position, int count)
+		{
+			if (reader.BaseStream.Position != position)
+				reader.BaseStream.Seek(position, SeekOrigin.Begin);
+			return reader.ReadBytes(count);
+		}
+		
 		private static string[] BytesToArray(byte[] bytes, int maxLength)
 		{
 			List<string> output = new List<string>();

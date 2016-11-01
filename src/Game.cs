@@ -509,12 +509,24 @@ namespace CivOne
 				_instance = new Game(difficulty, competition);
 				Console.WriteLine("Game instance loaded (difficulty: {0}, competition: {1})", difficulty, competition);
 				
+				// Load map visibility
+				byte[] visibility = Common.BinaryReadBytes(br, 22208, 4000);
+
 				for (int i = 0; i <= competition; i++)
 				{
 					int identity = ((civIdentity >> i) & 0x1);
 					ICivilization civ = Common.Civilizations.Where(c => c.PreferredPlayerNumber == i).ToArray()[identity];
 					_instance._players[i] = new Player(civ, leaderNames[i], tribeNames[i], tribeNamesPlural[i]);
 					_instance._players[i].Gold = (short)Common.BinaryReadUShort(br, 312 + (i * 2));
+					
+					// Set map visibility
+					for (int xx = 0; xx < 80; xx++)
+					for (int yy = 0; yy < 50; yy++)
+					{
+						byte tile = visibility[(50 * xx) + yy];
+						if ((tile & (1 << i)) == 0) continue;
+						_instance._players[i].Explore(xx, yy, 0);
+					}
 					
 					Console.WriteLine("- Player {0} is {1} of the {2}{3}", i, _instance._players[i].LeaderName, _instance._players[i].TribeNamePlural, (i == humanPlayer) ? " (human)" : "");
 				}
