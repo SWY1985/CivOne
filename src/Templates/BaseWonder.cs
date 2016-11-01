@@ -77,6 +77,13 @@ namespace CivOne.Templates
 		public IAdvance RequiredTech { get; protected set; }
 		public IAdvance ObsoleteTech { get; protected set; }
 		public short BuyPrice { get; private set; }
+		public byte ProductionId
+		{
+			get
+			{
+				return (byte)(Math.Abs((int)Type - 232));
+			}
+		}
 		public byte Price { get; protected set; }
 		
 		protected void SetSmallIcon(int col, int row)

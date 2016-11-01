@@ -221,6 +221,13 @@ namespace CivOne.Templates
 		public Unit Type { get; protected set; }
 		public City Home { get; protected set; }
 		public short BuyPrice { get; private set; }
+		public byte ProductionId
+		{
+			get
+			{
+				return (byte)Type;
+			}
+		}
 		public byte Price { get; protected set; }
 		public byte Attack { get; protected set; }
 		public byte Defense { get; protected set; }
