@@ -469,6 +469,8 @@ namespace CivOne
 					byte actualSize = Common.BinaryReadByte(br, i + 7);
 					byte currentProduction = Common.BinaryReadByte(br, i + 9);
 					byte owner = Common.BinaryReadByte(br, i + 11);
+					ushort food = Common.BinaryReadUShort(br, i + 12);
+					ushort shields = Common.BinaryReadUShort(br, i + 14);
 					byte[] resourceTiles = Common.BinaryReadBytes(br, i + 16, 6);
 					byte nameId = Common.BinaryReadByte(br, i + 22);
 					string name = cityNames[nameId];
@@ -483,7 +485,9 @@ namespace CivOne
 						X = x,
 						Y = y,
 						Name = name,
-						Size = actualSize
+						Size = actualSize,
+						Food = food,
+						Shields = shields
 					};
 					city.SetProduction(currentProduction);
 					city.SetResourceTiles(resourceTiles);
