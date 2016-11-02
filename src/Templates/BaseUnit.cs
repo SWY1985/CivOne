@@ -275,7 +275,29 @@ namespace CivOne.Templates
 				return Game.GetPlayer(Owner);
 			}
 		}
-		public byte Status { get; set; }
+		public byte Status
+		{
+			get
+			{
+				return 0;
+			}
+			set
+			{
+				bool[] bits = new bool[8];
+				for (int i = 0; i < 8; i++)
+					bits[i] = (((value >> i) & 1) > 0);
+				if (bits[0]) Sentry = true;
+				else if (bits[2]) FortifyActive = true;
+				else if (bits[3]) _fortify = true;
+				
+				if (this is Settlers)
+				{
+					(this as Settlers).SetStatus(bits);
+				}
+
+				Veteran = bits[5];
+			}
+		}
 		public byte MovesLeft { get; protected set; }
 		public byte PartMoves { get; protected set; }
 		
