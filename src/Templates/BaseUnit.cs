@@ -298,8 +298,8 @@ namespace CivOne.Templates
 				Veteran = bits[5];
 			}
 		}
-		public byte MovesLeft { get; protected set; }
-		public byte PartMoves { get; protected set; }
+		public byte MovesLeft { get; set; }
+		public byte PartMoves { get; set; }
 		
 		public virtual void NewTurn()
 		{
