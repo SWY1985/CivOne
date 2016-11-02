@@ -19,6 +19,21 @@ namespace CivOne.IO
 		private int[][] _dictionary;
 		private int _cursorPosition;
 
+		public int GetIndexOfEntry(int[] entry)
+		{
+			for (int i = 0; i < _dictionary.Length; i++)
+			{
+				if (_dictionary[i].Length != entry.Length) continue;
+				int equal = 0;
+				for (int j = 0; j < entry.Length; j++)
+					if (_dictionary[i][j] == entry[j])
+						equal++;
+				if (equal != entry.Length) continue;
+				return i;
+			}
+			return -1;
+		}
+
 		public int AddEntry(int[] entry)
 		{
 			if (_cursorPosition < _dictionary.Length)
