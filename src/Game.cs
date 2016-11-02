@@ -460,6 +460,9 @@ namespace CivOne
 				ushort[] unitCount = new ushort[8];
 				for (int i = 0; i < 8; i++)
 					unitCount[i] = Common.BinaryReadUShort(br, 1752 + (i * 2));
+				ushort[] wonderList = new ushort[21];
+				for (int i = 1; i <= 21; i++)
+					wonderList[i - 1] = Common.BinaryReadUShort(br, 34418 + (i * 2));
 				List<City> cities = new List<City>();
 
 				Dictionary<byte, City> cityList = new Dictionary<byte, City>();
@@ -504,6 +507,13 @@ namespace CivOne
 						int index = (j - bit) / 8;
 						if (((buildings[index] >> bit) & 1) == 0) continue;
 						city.AddBuilding(Common.Buildings.First(b => b.Id == j));
+					}
+
+					// Set city wonders
+					foreach (IWonder wonder in Common.Wonders)
+					{
+						if (wonderList[wonder.Id - 1] != cityId) continue;
+						city.AddWonder(wonder);
 					}
 					
 					cities.Add(city);
