@@ -27,6 +27,9 @@ namespace CivOne.Buildings
 			RequiredTech = new Masonry();
 			SetSmallIcon(0, 0);
 			Type = Building.Palace;
+			
+			// Civilopedia says the Maintenance cost is 5, but it is actually 0
+			SetFree();
 		}
 	}
 }
