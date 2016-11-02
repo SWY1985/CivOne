@@ -23,6 +23,7 @@ namespace CivOne
 		
 		public static IAdvance[] Advances = Reflect.GetAdvances().ToArray();
 		public static IBuilding[] Buildings = Reflect.GetBuildings().ToArray();
+		public static IWonder[] Wonders = Reflect.GetWonders().ToArray();
 		public static ICivilization[] Civilizations
 		{
 			get

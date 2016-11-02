@@ -536,6 +536,11 @@ namespace CivOne
 			_buildings.RemoveAll(b => b.Id == building.Id);
 		}
 
+		public void AddWonder(IWonder wonder)
+		{
+			_wonders.Add(wonder);
+		}
+
 		public void NewTurn()
 		{
 			Food += FoodIncome;
