@@ -520,6 +520,7 @@ namespace CivOne
 					byte x = Common.BinaryReadByte(br, i + 1);
 					byte y = Common.BinaryReadByte(br, i + 2);
 					byte type = Common.BinaryReadByte(br, i + 3);
+					byte moves = Common.BinaryReadByte(br, i + 4);
 					byte homeCity = Common.BinaryReadByte(br, i + 11);
 					
 					IUnit unit = CreateUnit((Unit)type, x, y);
@@ -527,6 +528,8 @@ namespace CivOne
 
 					unit.Status = status;
 					unit.Owner = (byte)civ;
+					unit.PartMoves = (byte)(moves % 3);
+					unit.MovesLeft = (byte)((moves - unit.PartMoves) / 3);
 					if (cityList.ContainsKey(homeCity))
 					{
 						unit.SetHome(cityList[homeCity]);
@@ -550,6 +553,9 @@ namespace CivOne
 					player.Gold = (short)Common.BinaryReadUShort(br, 312 + (i * 2));
 					player.Science = (short)Common.BinaryReadUShort(br, 328 + (i * 2));
 					player.Government = Reflect.GetGovernments().FirstOrDefault(x => x.Id == Common.BinaryReadUShort(br, 1336 + (i * 2)));
+
+					player.TaxesRate = (short)Common.BinaryReadUShort(br, 1848 + (i * 2));
+					player.LuxuriesRate = 10 - (short)Common.BinaryReadUShort(br, 35760 + (i * 2)) - player.TaxesRate;
 					
 					// Set map visibility
 					for (int xx = 0; xx < 80; xx++)
