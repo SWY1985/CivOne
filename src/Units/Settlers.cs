@@ -43,6 +43,14 @@ namespace CivOne.Units
 		public int BuildingMine { get; private set; }
 		public int BuildingFortress { get; private set; }
 
+		internal void SetStatus(bool[] bits)
+		{
+			BuildingRoad = (bits[1] && !bits[6] && !bits[7]) ? 2 : 0;
+			BuildingIrrigation = (!bits[1] && bits[6] && !bits[7]) ? 3 : 0;
+			BuildingMine = (!bits[1] && !bits[6] && bits[7]) ? 4 : 0;
+			BuildingFortress = (!bits[1] && bits[6] && bits[7]) ? 5 : 0;
+		}
+
 		public bool BuildRoad()
 		{
 			ITile tile = Map[X, Y];

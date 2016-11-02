@@ -331,6 +331,8 @@ namespace CivOne
 			if (((gameData[2] >> 1) & 1) > 0) _resourceTiles.Add(Tile[-1, 2]);
 			if (((gameData[2] >> 2) & 1) > 0) _resourceTiles.Add(Tile[-2, 1]);
 			if (((gameData[2] >> 3) & 1) > 0) _resourceTiles.Add(Tile[-2, -1]);
+
+			//TODO: Correctly load specialists
 		}
 
 		private void ResetResourceTiles()
