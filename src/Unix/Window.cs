@@ -25,9 +25,14 @@ namespace CivOne
 	internal partial class Window : IDisposable
 	{
 		private readonly Gtk.Window _window;
+
+		private Picture _cursorPointer, _cursorGoto;
+		private MouseCursor _currentCursor = MouseCursor.None;
 		
 		private bool _forceUpdate = false;
 		private bool _fullScreen = false;
+
+		private int _mouseX, _mouseY;
 		
 		private int CanvasX
 		{
@@ -101,10 +106,28 @@ namespace CivOne
 				Dispose();
 				return;
 			}
+
+			// Update cursor
+			if (Common.Screens.Length > 0 && _currentCursor != TopScreen.Cursor)
+			{
+				_currentCursor = TopScreen.Cursor;
+				_forceUpdate = true;
+			}
 			
 			// Refresh the screen if there's an update
 			if (HasUpdate || _forceUpdate) ScreenUpdate();
 			_forceUpdate = false;
+		}
+
+		private void LoadCursors()
+		{
+			using (Gdk.Pixmap inv = new Gdk.Pixmap(null, 1, 1, 1))
+			{
+				_window.GdkWindow.Cursor = new Gdk.Cursor(inv, inv, Gdk.Color.Zero, Gdk.Color.Zero, 0, 0);
+			}
+
+			_cursorPointer = Resources.Instance.GetPart("SP257", 112, 32, 16, 16);
+			_cursorGoto = Resources.Instance.GetPart("SP257", 32, 32, 16, 16);
 		}
 		
 		private void ToggleFullScreen()
@@ -223,8 +246,13 @@ namespace CivOne
 		private void OnMouseMove(object sender, Gtk.MotionNotifyEventArgs args)
 		{
 			if ((args.Event.State & (Gdk.ModifierType.Button1Mask | Gdk.ModifierType.Button3Mask)) > 0) OnMouseDrag(args);
-			
-			// TODO: Implement cursor
+
+			// Update cursor location and force an update
+			_mouseX = (int)args.Event.X / ScaleX;
+			_mouseY = (int)args.Event.Y / ScaleY;
+			if (_currentCursor == null)
+				return;
+			_forceUpdate = true;
 		}
 		
 		[GLib.ConnectBefore()]
@@ -278,10 +306,31 @@ namespace CivOne
 				default: SendKeyDown(char.ToUpper((char)args.Event.Key), modifier); return;
 			}
 		}
+
+		private Bitmap CanvasCursor
+		{
+			get
+			{
+				if (_currentCursor == MouseCursor.None)
+					return _canvas.Image;
+				
+				Picture canvas = new Picture(_canvas);
+				switch (_currentCursor)
+				{
+					case MouseCursor.Pointer:
+						canvas.AddLayer(_cursorPointer, _mouseX, _mouseY);
+						break;
+					case MouseCursor.Goto:
+						canvas.AddLayer(_cursorGoto, _mouseX, _mouseY);
+						break;
+				}
+				return canvas.Image;
+			}
+		}
 		
 		protected void OnExpose(object sender, Gtk.ExposeEventArgs args)
 		{
-			Gdk.Pixbuf canvas = GetPixbuf(_canvas.Image).ScaleSimple(CanvasWidth, CanvasHeight, Gdk.InterpType.Nearest);
+			Gdk.Pixbuf canvas = GetPixbuf(CanvasCursor).ScaleSimple(CanvasWidth, CanvasHeight, Gdk.InterpType.Nearest);
 			canvas.RenderToDrawable(args.Event.Window, _window.Style.BaseGC(Gtk.StateType.Normal), 0, 0, CanvasX, CanvasY, -1, -1, Gdk.RgbDither.None, 0, 0);
 		}
 		
@@ -348,6 +397,9 @@ namespace CivOne
 			// Start tick thread
 			TickThread = new Thread(new ThreadStart(SetGameTick));
 			TickThread.Start();
+			
+			// Load cursors
+			LoadCursors();
 		}
 		
 		public void Dispose()
