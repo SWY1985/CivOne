@@ -210,6 +210,7 @@ namespace CivOne
 		private void OnDelete(object sender, EventArgs args)
 		{
 			Common.Quit();
+			Dispose();
 		}
 		
 		private void OnMouseDown(object sender, Gtk.ButtonPressEventArgs args)
@@ -411,6 +412,7 @@ namespace CivOne
 			
 			Gdk.Threads.Leave();
 			Gtk.Application.Quit();
+			Environment.Exit(0);
 		}
 	}
 }
