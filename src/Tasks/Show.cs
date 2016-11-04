@@ -120,6 +120,14 @@ namespace CivOne.Tasks
 			}
 		}
 
+		public static Show DestroyUnit
+		{
+			get
+			{
+				return new Show(new DestroyUnit(Game.ActiveUnit));
+			}
+		}
+
 		private Show(IScreen screen)
 		{
 			_screen = screen;

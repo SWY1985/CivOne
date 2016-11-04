@@ -69,6 +69,20 @@ namespace CivOne.Templates
 			}
 		}
 		public MoveUnit Movement { get; private set; }
+
+		protected virtual bool Confront(int relX, int relY)
+		{
+			if (Class == UnitClass.Land && (this is Diplomat || this is Caravan))
+			{
+				// TODO: Perform other unit action (confront)
+				return false;
+			}
+
+			Movement = new MoveUnit(relX, relY);
+			Movement.Done += (s, a) => GameTask.Enqueue(Show.DestroyUnit);
+			GameTask.Insert(Movement);
+			return false;
+		}
 		
 		public virtual bool MoveTo(int relX, int relY)
 		{
@@ -78,8 +92,7 @@ namespace CivOne.Templates
 			if (moveTarget == null) return false;
 			if (moveTarget.Units.Any(u => u.Owner != Owner))
 			{
-				// TODO: Attack, or perform other unit action (confront)
-				return false;
+				return Confront(relX, relY);
 			}
 			if (Class == UnitClass.Land && !(this is Diplomat || this is Caravan) && !new ITile[] { Map[X, Y], moveTarget }.Any(t => t.IsOcean || t.City != null) && moveTarget.GetBorderTiles().SelectMany(t => t.Units).Any(u => u.Owner != Owner))
 			{
