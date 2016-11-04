@@ -15,17 +15,24 @@ using CivOne.Events;
 using CivOne.Interfaces;
 using CivOne.GFX;
 using CivOne.Templates;
+using CivOne.Wonders;
 
 namespace CivOne.Screens
 {
 	internal class CityView : BaseScreen, IModal
 	{
 		private const float FADE_STEP = 0.1f;
+		private const int NOISE_COUNT = 40;
 
 		private readonly City _city;
 		private readonly Picture _background;
 		private readonly bool _founded;
 		private readonly bool _firstView;
+		private readonly byte[,] _noiseMap;
+		
+		private int _noiseCounter = NOISE_COUNT;
+
+		private readonly Picture _overlay;
 
 		private bool _update = true;
 		
@@ -55,6 +62,18 @@ namespace CivOne.Screens
 		
 		public override bool HasUpdate(uint gameTick)
 		{
+			if (_noiseMap != null)
+			{
+				if (_noiseCounter > 0)
+				{
+					_overlay.ApplyNoise(_noiseMap, _noiseCounter--);
+					AddLayer(_background);
+					AddLayer(_overlay);
+					return true;
+				}
+				return false;
+			}
+
 			if (_founded && (_skip || _x > 120))
 			{
 				_fadeStep -= FADE_STEP;
@@ -117,15 +136,43 @@ namespace CivOne.Screens
 		{
 			return SkipAction();
 		}
+
+		private void DrawWonder(IWonder wonder, Picture picture = null)
+		{
+			if (picture == null) picture = _background;
+			if (wonder is Pyramids)
+			{
+				picture.AddLayer(Resources.Instance.GetPart("WONDERS2", 131, 54, 187, 29), 133, 0);
+				picture.AddLayer(Resources.Instance.GetPart("WONDERS2", 318, 54, 1, 29), 0, 0);
+			}
+			if (wonder is GreatWall)
+			{
+				picture.AddLayer(Resources.Instance.GetPart("WONDERS2", 1, 38, 66, 81), 0, 0);
+			}
+		}
 		
 		public CityView(City city, bool founded = false, bool firstView = false, IProduction production = null)
 		{
 			_city = city;
-			_background = Resources.Instance.LoadPIC("HILL");
+			_background = new Picture(Resources.Instance.LoadPIC("HILL"));
 			_founded = founded;
 			_firstView = firstView;
 			
 			_canvas = new Picture(320, 200, _background.Image.Palette.Entries);
+			_overlay = new Picture(_background);
+
+			if (city.Wonders.Any(b => b is Pyramids))
+			{
+				DrawWonder(new Pyramids());
+				if (!(production is Pyramids))
+					DrawWonder(new Pyramids(), _overlay);
+			}
+			if (city.Wonders.Any(b => b is GreatWall))
+			{
+				DrawWonder(new GreatWall());
+				if (!(production is GreatWall))
+					DrawWonder(new GreatWall(), _overlay);
+			}
 
 			AddLayer(_background);
 			
@@ -136,6 +183,13 @@ namespace CivOne.Screens
 
 			if (production != null)
 			{
+				_noiseMap = new byte[320, 200];
+				for (int x = 0; x < 320; x++)
+				for (int y = 0; y < 200; y++)
+				{
+					_noiseMap[x, y] = (byte)Common.Random.Next(1, _noiseCounter);
+				}
+
 				string[] lines =  new [] { $"{_city.Name} builds", $"{(production as ICivilopedia).Name}." };
 				int width = lines.Max(l => Resources.Instance.GetTextSize(5, l).Width) + 10;
 				int actualWidth = width;
@@ -150,8 +204,11 @@ namespace CivOne.Screens
 				dialog.DrawText(lines[1], 5, 5, 4, 20);
 				dialog.DrawText(lines[1], 5, 15, 4, 19);
 
-				_canvas.FillRectangle(5, 80, 8, actualWidth + 2, 39);
-				_canvas.AddLayer(dialog, 81, 9); 
+				foreach (Picture picture in new[] { _background, _overlay })
+				{
+					picture.FillRectangle(5, 80, 8, actualWidth + 2, 39);
+					picture.AddLayer(dialog, 81, 9);
+				}
 				return;
 			}
 			
