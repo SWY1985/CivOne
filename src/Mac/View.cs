@@ -67,13 +67,7 @@ namespace CivOne
 			Color[] colours = Common.Screens.LastOrDefault().Canvas.Image.Palette.Entries;
 			colours[0] = Color.Black;
 			
-			Picture _canvas = new Picture(320, 200, colours);
-			foreach (IScreen screen in Common.Screens)
-			{
-				_canvas.AddLayer(screen.Canvas.Image, 0, 0);
-			}
-			
-			CGImage image = ConvertImage(_canvas.Image);
+			CGImage image = ConvertImage((Window as Window).Canvas.Image);
 			NSGraphicsContext.CurrentContext.GraphicsPort.DrawImage(new RectangleF(0, 0, 640, 400), image);
 		}
 		
