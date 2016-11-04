@@ -25,7 +25,7 @@ namespace CivOne
 {
 	internal class View : NSView
 	{
-		public event EventHandler<ScreenEventArgs> OnMouseDown, OnMouseUp;
+		public event EventHandler<ScreenEventArgs> OnMouseMove, OnMouseDown, OnMouseUp;
 		public event EventHandler<KeyboardEventArgs> OnKeyDown;
 		
 		private int Height
@@ -67,7 +67,7 @@ namespace CivOne
 			Color[] colours = Common.Screens.LastOrDefault().Canvas.Image.Palette.Entries;
 			colours[0] = Color.Black;
 			
-			CGImage image = ConvertImage((Window as Window).Canvas.Image);
+			CGImage image = ConvertImage((Window as Window).CanvasCursor);
 			NSGraphicsContext.CurrentContext.GraphicsPort.DrawImage(new RectangleF(0, 0, 640, 400), image);
 		}
 		
@@ -82,6 +82,22 @@ namespace CivOne
 			}
 			
 			return new ScreenEventArgs((int)theEvent.LocationInWindow.X, Height - (int)theEvent.LocationInWindow.Y - 1, buttons);
+		}
+
+		public override void MouseExited(NSEvent theEvent)
+		{
+			NSCursor.Unhide();
+		}
+
+		public override void MouseEntered(NSEvent theEvent)
+		{
+			NSCursor.Hide();
+		}
+
+		public override void MouseMoved(NSEvent theEvent)
+		{
+			if (OnMouseMove == null) return;
+			OnMouseMove.Invoke(this, MouseEvent(theEvent));
 		}
 		
 		public override void MouseDown(NSEvent theEvent)
@@ -104,6 +120,11 @@ namespace CivOne
 		public override void RightMouseUp(NSEvent theEvent)
 		{
 			MouseUp(theEvent);
+		}
+
+		public View()
+		{
+			AddTrackingArea(new NSTrackingArea(new RectangleF(0, 0, 640, 400), NSTrackingAreaOptions.ActiveInKeyWindow | NSTrackingAreaOptions.MouseEnteredAndExited | NSTrackingAreaOptions.MouseMoved, this, null));
 		}
 	}
 }

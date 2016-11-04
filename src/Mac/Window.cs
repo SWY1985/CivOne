@@ -24,8 +24,13 @@ namespace CivOne
 	internal partial class Window : NSWindow
 	{
 		private static NSApplicationDelegate _app;
+
+		private Picture _cursorPointer, _cursorGoto;
+		private MouseCursor _currentCursor = MouseCursor.None;
 		
 		private bool _forceUpdate = false;
+
+		private int _mouseX, _mouseY;
 		
 		private int CanvasX
 		{
@@ -58,6 +63,27 @@ namespace CivOne
 				return 2;
 			}
 		}
+
+		internal Bitmap CanvasCursor
+		{
+			get
+			{
+				if (_currentCursor == MouseCursor.None)
+					return Canvas.Image;
+				
+				Picture canvas = new Picture(Canvas);
+				switch (_currentCursor)
+				{
+					case MouseCursor.Pointer:
+						canvas.AddLayer(_cursorPointer, _mouseX, _mouseY);
+						break;
+					case MouseCursor.Goto:
+						canvas.AddLayer(_cursorGoto, _mouseX, _mouseY);
+						break;
+				}
+				return canvas.Image;
+			}
+		}
 		
 		private void ScreenUpdate()
 		{
@@ -76,10 +102,23 @@ namespace CivOne
 				Dispose();
 				return;
 			}
+
+			// Update cursor
+			if (Common.Screens.Length > 0 && _currentCursor != TopScreen.Cursor)
+			{
+				_currentCursor = TopScreen.Cursor;
+				_forceUpdate = true;
+			}
 			
 			// Refresh the screen if there's an update
 			if (HasUpdate || _forceUpdate) InvokeOnMainThread(new NSAction(ScreenUpdate));
 			_forceUpdate = false;
+		}
+
+		private void LoadCursors()
+		{
+			_cursorPointer = Resources.Instance.GetPart("SP257", 112, 32, 16, 16);
+			_cursorGoto = Resources.Instance.GetPart("SP257", 32, 32, 16, 16);
 		}
 		
 		private void ScaleMouseEventArgs(ref ScreenEventArgs args)
@@ -130,6 +169,15 @@ namespace CivOne
 			
 			if (args == null || TopScreen == null) return;
 			_forceUpdate = TopScreen.KeyDown(args);
+		}
+		
+		private void MouseMove(object sender, ScreenEventArgs args)
+		{
+			// Update cursor location and force an update
+			_mouseX = (int)args.X / ScaleX;
+			_mouseY = (int)args.Y / ScaleY;
+			if (_currentCursor == MouseCursor.None) return;
+			_forceUpdate = true;
 		}
 		
 		private void MouseDown(object sender, ScreenEventArgs args)
@@ -192,12 +240,16 @@ namespace CivOne
 			
 			// Set View events
 			//(ContentView as View).OnKeyDown += KeyDown;
+			(ContentView as View).OnMouseMove += MouseMove;
 			(ContentView as View).OnMouseDown += MouseDown;
 			(ContentView as View).OnMouseUp += MouseUp;
 			
 			// Start tick thread
 			TickThread = new Thread(new ThreadStart(SetGameTick));
 			TickThread.Start();
+			
+			// Load cursors
+			LoadCursors();
 		}
 	}
 }
