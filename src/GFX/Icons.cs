@@ -226,7 +226,7 @@ namespace CivOne.GFX
 				governmentId = (modern ? 5 : 4);
 				filename = $"GOVT2" + (modern ? "M" : "A");
 			}
-			else if (government is Monarchy)
+			else if (government is Communism)
 			{
 				governmentId = 6;
 				filename = "GOVT3A";
