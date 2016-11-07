@@ -48,6 +48,7 @@ namespace CivOne.Screens
 		
 		private int _noiseCounter = NOISE_COUNT + 2;
 		private readonly byte[,] _noiseMap;
+		private readonly GamePlay _gamePlay;
 
 		private Picture _gameMap, _overlay = null;
 		
@@ -99,6 +100,7 @@ namespace CivOne.Screens
 			if (_noiseCounter == 0)
 			{
 				Game.DisbandUnit(_unit);
+				_gamePlay.HasUpdate(gameTick);
 				Destroy();
 				HandleClose();
 			}
@@ -145,7 +147,7 @@ namespace CivOne.Screens
 
 					if (t.Tile.City != null) continue;
 					
-					IUnit[] units = t.Tile.Units.Where(u => u != Game.ActiveUnit).ToArray();
+					IUnit[] units = t.Tile.Units.Where(u => u != _unit).ToArray();
 					if (t.Tile.Type == Terrain.Ocean)
 					{
 						// Always show naval units first at sea
@@ -153,7 +155,7 @@ namespace CivOne.Screens
 					}
 					if (units.Length == 0) continue;
 					
-					IUnit drawUnit = units.FirstOrDefault(u => u == Game.ActiveUnit);
+					IUnit drawUnit = units.FirstOrDefault(u => u == _unit);
 					drawUnit = units[0];
 
 					if (t.Tile.IsOcean && drawUnit.Class != UnitClass.Water && drawUnit.Sentry)
@@ -192,9 +194,9 @@ namespace CivOne.Screens
 			Cursor = MouseCursor.None;
 			_unit = unit;
 
-			GamePlay gamePlay = (GamePlay)Common.Screens.First(s => (s is GamePlay));
-			_x = gamePlay.X;
-			_y = gamePlay.Y;
+			_gamePlay = (GamePlay)Common.Screens.First(s => (s is GamePlay));
+			_x = _gamePlay.X;
+			_y = _gamePlay.Y;
 
 			_canvas = new Picture(320, 200, Common.TopScreen.Palette);
 			_gameMap = GameMap;
