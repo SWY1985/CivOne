@@ -253,7 +253,7 @@ namespace CivOne
 			return _ax + min;
 		}
 		
-		public Random(int seed = -1, int seed2 = 0)
+		public Random(int seed = -1)
 		{
 			if (seed == -1)
 				seed = (int)DateTime.Now.Ticks;
