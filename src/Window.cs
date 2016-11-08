@@ -95,7 +95,7 @@ namespace CivOne
 		{
 			get
 			{
-				return ScaleX * 320;
+				return (int)(ScaleX * 320);
 			}
 		}
 		
@@ -103,7 +103,7 @@ namespace CivOne
 		{
 			get
 			{
-				return ScaleY * 200;
+				return (int)(ScaleY * 200);
 			}
 		}
 		
