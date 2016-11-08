@@ -216,13 +216,12 @@ namespace CivOne
 			if (TickThread.IsAlive)
 			{
 				TickThread.Abort();
-				//args.Cancel = true;
 				Environment.Exit(0);
 			}
 		}
 		
 		private void OnLoad(object sender, EventArgs args)
-		{			
+		{
 			// Start tick thread
 			TickThread = new Thread(new ThreadStart(SetGameTick));
 			TickThread.Start();
