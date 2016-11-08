@@ -37,6 +37,12 @@
 				"args": ["msbuild", "${workspaceRoot}/CivOne.Win32.csproj", "/t:Rebuild"]
 			},
 			{
+				"taskName": "wpf",
+				"suppressTaskName": true,
+				"isBuildCommand": true,
+				"args": ["msbuild", "${workspaceRoot}/CivOne.WPF.csproj", "/t:Rebuild"]
+			},
+			{
 				"taskName": "run",
 				"suppressTaskName": true,
 				"isTestCommand": true,
