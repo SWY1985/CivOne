@@ -186,17 +186,6 @@ namespace CivOne
 		{
 			get
 			{
-				var sum = ResourceTiles.Sum(t => t.Trade);
-				if (Wonders.ToList().Any(x => x is Colossus))
-				{
-					foreach (var x in ResourceTiles)
-					{
-						if (x.Trade > 0)
-						{
-							sum += 1;
-						}
-					}
-				}
 				return ResourceTiles.Sum(t => t.Trade);
 			}
 		}
