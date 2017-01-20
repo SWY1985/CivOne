@@ -186,6 +186,16 @@ namespace CivOne
 		{
 			get
 			{
+				var sum = ResourceTiles.Sum(t => t.Trade);
+				{
+					foreach (var x in ResourceTiles)
+					{
+						if (x.Trade > 0)
+						{
+							sum += 1;
+						}
+					}
+				}
 				return ResourceTiles.Sum(t => t.Trade);
 			}
 		}
@@ -297,6 +307,9 @@ namespace CivOne
 				if (tiles.Count() > 0)
 					_resourceTiles.Add(tiles.First());
 			}
+			{
+				ApplyColossusTradeModifier();
+			}
 			UpdateSpecialists();
 		}
 
@@ -361,7 +374,22 @@ namespace CivOne
 				return;
 			}
 			_resourceTiles.Add(tile);
+			if (Wonders.Any(x => x is Colossus))
+			{
+				ApplyColossusTradeModifier();
+			}
 			UpdateSpecialists();
+		}
+
+		private void ApplyColossusTradeModifier()
+		{
+			foreach(var x in _resourceTiles)
+			{
+				if (x.Trade >= 1)
+				{
+					x.SpecialTrade = 1;
+				}
+			}
 		}
 
 		private Player Player

@@ -99,6 +99,8 @@ namespace CivOne.Templates
 		public abstract sbyte Food { get; }
 		public abstract sbyte Shield { get; }
 		public abstract sbyte Trade { get; }
+		public virtual sbyte BaseTrade { get; }
+		public virtual sbyte SpecialTrade { get; set; }
 		public abstract sbyte IrrigationFoodBonus { get; }
 		public abstract byte IrrigationCost { get; }
 		public abstract sbyte MiningShieldBonus { get; }
