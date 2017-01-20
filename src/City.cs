@@ -187,6 +187,7 @@ namespace CivOne
 			get
 			{
 				var sum = ResourceTiles.Sum(t => t.Trade);
+				if (Wonders.ToList().Any(x => x is Colossus))
 				{
 					foreach (var x in ResourceTiles)
 					{
@@ -307,6 +308,7 @@ namespace CivOne
 				if (tiles.Count() > 0)
 					_resourceTiles.Add(tiles.First());
 			}
+			if (Wonders.Any(x => x is Colossus))
 			{
 				ApplyColossusTradeModifier();
 			}
@@ -370,6 +372,7 @@ namespace CivOne
 			}
 			if (_resourceTiles.Contains(tile))
 			{
+				tile.SpecialTrade = 0;			// clear out Colossus effect.
 				_resourceTiles.Remove(tile);
 				return;
 			}
