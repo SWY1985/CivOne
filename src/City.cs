@@ -297,6 +297,10 @@ namespace CivOne
 				if (tiles.Count() > 0)
 					_resourceTiles.Add(tiles.First());
 			}
+			if (Wonders.Any(x => x is Colossus))
+			{
+				ApplyColossusTradeModifier();
+			}
 			UpdateSpecialists();
 		}
 
@@ -357,11 +361,27 @@ namespace CivOne
 			}
 			if (_resourceTiles.Contains(tile))
 			{
+				tile.SpecialTrade = 0;			// clear out Colossus effect.
 				_resourceTiles.Remove(tile);
 				return;
 			}
 			_resourceTiles.Add(tile);
+			if (Wonders.Any(x => x is Colossus))
+			{
+				ApplyColossusTradeModifier();
+			}
 			UpdateSpecialists();
+		}
+
+		private void ApplyColossusTradeModifier()
+		{
+			foreach(var x in _resourceTiles)
+			{
+				if (x.Trade >= 1)
+				{
+					x.SpecialTrade = 1;
+				}
+			}
 		}
 
 		private Player Player
