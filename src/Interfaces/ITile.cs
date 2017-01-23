@@ -26,6 +26,7 @@ namespace CivOne.Interfaces
 		sbyte Food { get; }
 		sbyte Shield { get; }
 		sbyte Trade { get; }
+		sbyte SpecialTrade { get; set; }		
 		sbyte IrrigationFoodBonus { get; }
 		byte IrrigationCost { get; }
 		sbyte MiningShieldBonus { get; }
