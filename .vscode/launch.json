@@ -15,7 +15,7 @@
 			// Absolute path to the runtime executable to be used.
 			"runtimeExecutable": null,
 			// Launch debug target in external console.
-			"externalConsole": true,
+			"console": "internalConsole",
 			// Command line arugments passed to the program.
 			"args": []
 		},
@@ -32,7 +32,7 @@
 			// Absolute path to the runtime executable to be used.
 			"runtimeExecutable": null,
 			// Launch debug target in external console.
-			"externalConsole": true,
+			"console": "internalConsole",
 			// Command line arugments passed to the program.
 			"args": ["setup"]
 		}

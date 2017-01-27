@@ -145,6 +145,10 @@ namespace CivOne.Screens
 				picture.AddLayer(Resources.Instance.GetPart("WONDERS2", 131, 54, 187, 29), 133, 0);
 				picture.AddLayer(Resources.Instance.GetPart("WONDERS2", 318, 54, 1, 29), 0, 0);
 			}
+			if (wonder is Colossus)
+			{
+				picture.AddLayer(Resources.Instance.GetPart("WONDERS2", 88, 97, 124, 39), 170, 0);
+			}
 			if (wonder is GreatWall)
 			{
 				picture.AddLayer(Resources.Instance.GetPart("WONDERS2", 1, 38, 66, 81), 0, 0);
@@ -166,6 +170,12 @@ namespace CivOne.Screens
 				DrawWonder(new Pyramids());
 				if (!(production is Pyramids))
 					DrawWonder(new Pyramids(), _overlay);
+			}
+			if (city.Wonders.Any(b => b is Colossus))
+			{
+				DrawWonder(new Colossus());
+				if (!(production is Colossus))
+					DrawWonder(new Colossus(), _overlay);
 			}
 			if (city.Wonders.Any(b => b is GreatWall))
 			{
