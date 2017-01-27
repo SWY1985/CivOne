@@ -297,7 +297,8 @@ namespace CivOne
 				if (tiles.Count() > 0)
 					_resourceTiles.Add(tiles.First());
 			}
-			if (Wonders.Any(x => x is Colossus))
+
+			if (HasWonder<Colossus>() && !this.Player.WonderObsolete<Colossus>())
 			{
 				ApplyColossusTradeModifier();
 			}
@@ -366,7 +367,7 @@ namespace CivOne
 				return;
 			}
 			_resourceTiles.Add(tile);
-			if (Wonders.Any(x => x is Colossus))
+			if (HasWonder<Colossus>() && !this.Player.WonderObsolete<Colossus>())
 			{
 				ApplyColossusTradeModifier();
 			}
@@ -559,6 +560,10 @@ namespace CivOne
 		public void AddWonder(IWonder wonder)
 		{
 			_wonders.Add(wonder);
+			if (wonder is Colossus && !this.Player.WonderObsolete<Colossus>())
+			{
+				ResetResourceTiles();
+			}
 		}
 
 		public void NewTurn()
