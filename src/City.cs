@@ -375,7 +375,7 @@ namespace CivOne
 
 		private void ApplyColossusTradeModifier()
 		{
-			foreach(var x in _resourceTiles)
+			foreach(ITile x in _resourceTiles)
 			{
 				if (x.Trade >= 1)
 				{
