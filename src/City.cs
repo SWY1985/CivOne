@@ -676,7 +676,7 @@ namespace CivOne
 				if (CurrentProduction is IWonder && !Game.Instance.BuiltWonders.Any(w => w.Id == (CurrentProduction as IWonder).Id))
 				{
 					Shields = 0;
-					_wonders.Add(CurrentProduction as IWonder);
+					AddWonder(CurrentProduction as IWonder);
 					GameTask.Enqueue(new ImprovementBuilt(this, (CurrentProduction as IWonder)));
 				}
 			}
