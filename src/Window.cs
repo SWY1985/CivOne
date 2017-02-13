@@ -38,6 +38,8 @@ namespace CivOne
 		private Picture _cursorPointer, _cursorGoto;
 
 		private int _mouseX, _mouseY;
+
+		private KeyModifier _keyModifier = KeyModifier.None;
 		
 		private static void LoadResources()
 		{
@@ -122,48 +124,61 @@ namespace CivOne
 
 		private KeyboardEventArgs ConvertKeyboardEvents(KeyboardKeyEventArgs args)
 		{
-			KeyModifier modifier = KeyModifier.None;
-			if (args.Control) modifier |= KeyModifier.Control;
-			if (args.Shift) modifier |= KeyModifier.Shift;
-			if (args.Alt) modifier |= KeyModifier.Alt;
+			// KeyModifier modifier = KeyModifier.None;
+			// if (args.Control) modifier |= KeyModifier.Control;
+			// if (args.Shift) modifier |= KeyModifier.Shift;
+			// if (args.Alt) modifier |= KeyModifier.Alt;
 
 			switch (args.Key)
 			{
-				case TkKey.F1: return new KeyboardEventArgs(CivKey.F1, modifier);
-				case TkKey.F2: return new KeyboardEventArgs(CivKey.F2, modifier);
-				case TkKey.F3: return new KeyboardEventArgs(CivKey.F3, modifier);
-				case TkKey.F4: return new KeyboardEventArgs(CivKey.F4, modifier);
-				case TkKey.F5: return new KeyboardEventArgs(CivKey.F5, modifier);
-				case TkKey.F6: return new KeyboardEventArgs(CivKey.F6, modifier);
-				case TkKey.F7: return new KeyboardEventArgs(CivKey.F7, modifier);
-				case TkKey.F8: return new KeyboardEventArgs(CivKey.F8, modifier);
-				case TkKey.F9: return new KeyboardEventArgs(CivKey.F9, modifier);
-				case TkKey.F10: return new KeyboardEventArgs(CivKey.F10, modifier);
-				case TkKey.F11: return new KeyboardEventArgs(CivKey.F11, modifier);
-				case TkKey.F12: return new KeyboardEventArgs(CivKey.F12, modifier);
-				case TkKey.Keypad0: return new KeyboardEventArgs(CivKey.NumPad0, modifier);
-				case TkKey.Keypad1: return new KeyboardEventArgs(CivKey.NumPad1, modifier);
-				case TkKey.Keypad2: return new KeyboardEventArgs(CivKey.NumPad2, modifier);
-				case TkKey.Keypad3: return new KeyboardEventArgs(CivKey.NumPad3, modifier);
-				case TkKey.Keypad4: return new KeyboardEventArgs(CivKey.NumPad4, modifier);
-				case TkKey.Keypad5: return new KeyboardEventArgs(CivKey.NumPad5, modifier);
-				case TkKey.Keypad6: return new KeyboardEventArgs(CivKey.NumPad6, modifier);
-				case TkKey.Keypad7: return new KeyboardEventArgs(CivKey.NumPad7, modifier);
-				case TkKey.Keypad8: return new KeyboardEventArgs(CivKey.NumPad8, modifier);
-				case TkKey.Keypad9: return new KeyboardEventArgs(CivKey.NumPad9, modifier);
-				case TkKey.Up: return new KeyboardEventArgs(CivKey.Up, modifier);
-				case TkKey.Left: return new KeyboardEventArgs(CivKey.Left, modifier);
-				case TkKey.Right: return new KeyboardEventArgs(CivKey.Right, modifier);
-				case TkKey.Down: return new KeyboardEventArgs(CivKey.Down, modifier);
-				case TkKey.Enter: return new KeyboardEventArgs(CivKey.Enter, modifier);
-				case TkKey.Space: return new KeyboardEventArgs(CivKey.Space, modifier);
-				case TkKey.Escape: return new KeyboardEventArgs(CivKey.Escape, modifier);
-				case TkKey.Delete: return new KeyboardEventArgs(CivKey.Delete, modifier);
-				case TkKey.Back: return new KeyboardEventArgs(CivKey.Backspace, modifier);
-				case TkKey.Period: return new KeyboardEventArgs('.', modifier);
-				case TkKey.Comma: return new KeyboardEventArgs(',', modifier);
-				case TkKey.Plus: return new KeyboardEventArgs(CivKey.Plus, modifier);
-				case TkKey.Minus: return new KeyboardEventArgs(CivKey.Minus, modifier);
+				case TkKey.F1: return new KeyboardEventArgs(CivKey.F1, _keyModifier);
+				case TkKey.F2: return new KeyboardEventArgs(CivKey.F2, _keyModifier);
+				case TkKey.F3: return new KeyboardEventArgs(CivKey.F3, _keyModifier);
+				case TkKey.F4: return new KeyboardEventArgs(CivKey.F4, _keyModifier);
+				case TkKey.F5: return new KeyboardEventArgs(CivKey.F5, _keyModifier);
+				case TkKey.F6: return new KeyboardEventArgs(CivKey.F6, _keyModifier);
+				case TkKey.F7: return new KeyboardEventArgs(CivKey.F7, _keyModifier);
+				case TkKey.F8: return new KeyboardEventArgs(CivKey.F8, _keyModifier);
+				case TkKey.F9: return new KeyboardEventArgs(CivKey.F9, _keyModifier);
+				case TkKey.F10: return new KeyboardEventArgs(CivKey.F10, _keyModifier);
+				case TkKey.F11: return new KeyboardEventArgs(CivKey.F11, _keyModifier);
+				case TkKey.F12: return new KeyboardEventArgs(CivKey.F12, _keyModifier);
+				case TkKey.Keypad0: return new KeyboardEventArgs(CivKey.NumPad0, _keyModifier);
+				case TkKey.Keypad1: return new KeyboardEventArgs(CivKey.NumPad1, _keyModifier);
+				case TkKey.Keypad2: return new KeyboardEventArgs(CivKey.NumPad2, _keyModifier);
+				case TkKey.Keypad3: return new KeyboardEventArgs(CivKey.NumPad3, _keyModifier);
+				case TkKey.Keypad4: return new KeyboardEventArgs(CivKey.NumPad4, _keyModifier);
+				case TkKey.Keypad5: return new KeyboardEventArgs(CivKey.NumPad5, _keyModifier);
+				case TkKey.Keypad6: return new KeyboardEventArgs(CivKey.NumPad6, _keyModifier);
+				case TkKey.Keypad7: return new KeyboardEventArgs(CivKey.NumPad7, _keyModifier);
+				case TkKey.Keypad8: return new KeyboardEventArgs(CivKey.NumPad8, _keyModifier);
+				case TkKey.Keypad9: return new KeyboardEventArgs(CivKey.NumPad9, _keyModifier);
+				case TkKey.Up: return new KeyboardEventArgs(CivKey.Up, _keyModifier);
+				case TkKey.Left: return new KeyboardEventArgs(CivKey.Left, _keyModifier);
+				case TkKey.Right: return new KeyboardEventArgs(CivKey.Right, _keyModifier);
+				case TkKey.Down: return new KeyboardEventArgs(CivKey.Down, _keyModifier);
+				case TkKey.KeypadEnter:
+				case TkKey.Enter: return new KeyboardEventArgs(CivKey.Enter, _keyModifier);
+				case TkKey.Space: return new KeyboardEventArgs(CivKey.Space, _keyModifier);
+				case TkKey.Escape: return new KeyboardEventArgs(CivKey.Escape, _keyModifier);
+				case TkKey.Delete: return new KeyboardEventArgs(CivKey.Delete, _keyModifier);
+				case TkKey.Back: return new KeyboardEventArgs(CivKey.Backspace, _keyModifier);
+				case TkKey.Period: return new KeyboardEventArgs('.', _keyModifier);
+				case TkKey.Comma: return new KeyboardEventArgs(',', _keyModifier);
+				case TkKey.KeypadPlus:
+				case TkKey.Plus: return new KeyboardEventArgs(CivKey.Plus, _keyModifier);
+				case TkKey.KeypadMinus:
+				case TkKey.Minus: return new KeyboardEventArgs(CivKey.Minus, _keyModifier);
+				case TkKey.Number0: return new KeyboardEventArgs('0', _keyModifier);
+				case TkKey.Number1: return new KeyboardEventArgs('1', _keyModifier);
+				case TkKey.Number2: return new KeyboardEventArgs('2', _keyModifier);
+				case TkKey.Number3: return new KeyboardEventArgs('3', _keyModifier);
+				case TkKey.Number4: return new KeyboardEventArgs('4', _keyModifier);
+				case TkKey.Number5: return new KeyboardEventArgs('5', _keyModifier);
+				case TkKey.Number6: return new KeyboardEventArgs('6', _keyModifier);
+				case TkKey.Number7: return new KeyboardEventArgs('7', _keyModifier);
+				case TkKey.Number8: return new KeyboardEventArgs('8', _keyModifier);
+				case TkKey.Number9: return new KeyboardEventArgs('9', _keyModifier);
 			}
 
 			return null;
@@ -171,11 +186,24 @@ namespace CivOne
 
 		private void OnKeyDown(object sender, KeyboardKeyEventArgs args)
 		{
+			_keyModifier = KeyModifier.None;
+			if (args.Control) _keyModifier |= KeyModifier.Control;
+			if (args.Shift) _keyModifier |= KeyModifier.Shift;
+			if (args.Alt) _keyModifier |= KeyModifier.Alt;
+
 			if (TopScreen == null) return;
 			KeyboardEventArgs keyArgs = ConvertKeyboardEvents(args);
 
 			if (keyArgs == null) return;
 			TopScreen.KeyDown(keyArgs);
+		}
+
+		private void OnKeyUp(object sender, KeyboardKeyEventArgs args)
+		{
+			_keyModifier = KeyModifier.None;
+			if (args.Control) _keyModifier |= KeyModifier.Control;
+			if (args.Shift) _keyModifier |= KeyModifier.Shift;
+			if (args.Alt) _keyModifier |= KeyModifier.Alt;
 		}
 
 		private void OnMouseDown(object sender, MouseEventArgs args)
@@ -217,7 +245,11 @@ namespace CivOne
 		protected override void OnKeyPress(KeyPressEventArgs args)
 		{
 			if (TopScreen == null) return;
-			TopScreen.KeyDown(new KeyboardEventArgs(char.ToUpper((char)args.KeyChar), KeyModifier.None));
+			char keyChar = (char)args.KeyChar;
+			if (char.IsLetter(keyChar))
+			{
+				TopScreen.KeyDown(new KeyboardEventArgs(char.ToUpper((char)args.KeyChar), _keyModifier));
+			}
 		}
 
 		protected override void OnUpdateFrame(FrameEventArgs args)
@@ -256,6 +288,7 @@ namespace CivOne
 			Common.AddScreen(startScreen);
 
 			KeyDown += OnKeyDown;
+			KeyUp += OnKeyUp;
 			MouseDown += OnMouseDown;
 			MouseUp += OnMouseUp;
 		}
