@@ -7,16 +7,36 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
+
 namespace CivOne
 {
 	internal class Program
 	{
-		private static void Main()
+		private static void Main(string[] args)
 		{
-			using (Window window = new Window())
+			string screen = null;
+			if (args.Length > 0)
+			{
+				switch (args[0])
+				{
+					case "demo":
+						screen = "demo";
+						break;
+					case "setup":
+						screen = "setup";
+						break;
+				}
+			}
+			
+			Console.WriteLine("Game Start");
+			
+			using (Window window = new Window(screen))
 			{
 				window.Run(60.0);
 			}
+			
+			Console.WriteLine("Game End");
 		}
 	}
 }
