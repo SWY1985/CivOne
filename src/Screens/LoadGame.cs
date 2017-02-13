@@ -9,7 +9,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using CivOne.Enums;
@@ -166,7 +165,7 @@ namespace CivOne.Screens
 			}
 			else if (args.Key == Key.Enter)
 			{
-				_menu = new Menu(Canvas.Image.Palette.Entries)
+				_menu = new Menu(Canvas.Palette)
 				{
 					Title = "Select Load File...",
 					X = 51,

@@ -9,7 +9,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing.Imaging;
 using System.Linq;
 using System.Threading;
 using CivOne.Interfaces;
@@ -648,39 +647,41 @@ namespace CivOne
 		
 		public void SaveBitmap()
 		{
-			string filename = Common.CaptureFilename;
-			if (filename == null) return;
+			// string filename = Common.CaptureFilename;
+			// if (filename == null) return;
 			
-			Picture bmp = new Picture(WIDTH * 16, HEIGHT * 16, Resources.Instance.LoadPIC("SP257").Image.Palette.Entries);
+			// Picture bmp = new Picture(WIDTH * 16, HEIGHT * 16, Resources.Instance.LoadPIC("SP257").Palette);
 			
-			for (int x = 0; x < WIDTH; x++)
-			for (int y = 0; y < HEIGHT; y++)
-			{
-				bmp.AddLayer(Resources.Instance.GetTile(_tiles[x, y]), x * 16, y * 16);
-			}
+			// for (int x = 0; x < WIDTH; x++)
+			// for (int y = 0; y < HEIGHT; y++)
+			// {
+			// 	bmp.AddLayer(Resources.Instance.GetTile(_tiles[x, y]), x * 16, y * 16);
+			// }
 			
-			bmp.Image.Save(filename, ImageFormat.Png);
-			Console.WriteLine("DEBUG: Map saved as bitmap");
+			// bmp.Image.Save(filename, ImageFormat.Png);
+			// Console.WriteLine("DEBUG: Map saved as bitmap");
+			throw new NotImplementedException();
 		}
 		
 		private void SaveContinentBitmap()
 		{
-			Picture bmp = new Picture(WIDTH * 16, HEIGHT * 16, Resources.Instance.LoadPIC("SP257").Image.Palette.Entries);
+			// Picture bmp = new Picture(WIDTH * 16, HEIGHT * 16, Resources.Instance.LoadPIC("SP257").Palette);
 			
-			for (int x = 0; x < WIDTH; x++)
-			for (int y = 0; y < HEIGHT; y++)
-			{
-				bmp.AddLayer(Resources.Instance.GetTile(_tiles[x, y]), x * 16, y * 16);
-				//bmp.FillRectangle(_tiles[x, y].ContinentId, (x * 16) + 4, (y * 16) + 4, 8, 8);
-				bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, 5, (x * 16 + 8), (y * 16 + 3), TextAlign.Center);
-				bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, 5, (x * 16 + 7), (y * 16 + 4), TextAlign.Center);
-				bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, 5, (x * 16 + 9), (y * 16 + 4), TextAlign.Center);
-				bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, 5, (x * 16 + 8), (y * 16 + 5), TextAlign.Center);
-				bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, _tiles[x, y].ContinentId, (x * 16 + 8), (y * 16 + 4), TextAlign.Center);
-			}
+			// for (int x = 0; x < WIDTH; x++)
+			// for (int y = 0; y < HEIGHT; y++)
+			// {
+			// 	bmp.AddLayer(Resources.Instance.GetTile(_tiles[x, y]), x * 16, y * 16);
+			// 	//bmp.FillRectangle(_tiles[x, y].ContinentId, (x * 16) + 4, (y * 16) + 4, 8, 8);
+			// 	bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, 5, (x * 16 + 8), (y * 16 + 3), TextAlign.Center);
+			// 	bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, 5, (x * 16 + 7), (y * 16 + 4), TextAlign.Center);
+			// 	bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, 5, (x * 16 + 9), (y * 16 + 4), TextAlign.Center);
+			// 	bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, 5, (x * 16 + 8), (y * 16 + 5), TextAlign.Center);
+			// 	bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, _tiles[x, y].ContinentId, (x * 16 + 8), (y * 16 + 4), TextAlign.Center);
+			// }
 			
-			bmp.Image.Save("capture/map.png", ImageFormat.Png);
-			Console.WriteLine("DEBUG: Map saved as bitmap");
+			// bmp.Image.Save("capture/map.png", ImageFormat.Png);
+			// Console.WriteLine("DEBUG: Map saved as bitmap");
+			throw new NotImplementedException();
 		}
 		
 		private void GenerateThread()

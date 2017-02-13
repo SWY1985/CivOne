@@ -7,16 +7,9 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-namespace CivOne
+namespace CivOne.GFX
 {
-	internal class Program
+	public class Bitmap
 	{
-		private static void Main()
-		{
-			using (Window window = new Window())
-			{
-				window.Run(60.0);
-			}
-		}
 	}
 }

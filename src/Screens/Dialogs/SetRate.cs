@@ -54,7 +54,7 @@ namespace CivOne.Screens.Dialogs
 
 		protected override void FirstUpdate()
 		{
-			Menu menu = new Menu(Canvas.Image.Palette.Entries, Selection(3, 12, ItemWidth, (_menuItems.Length * Resources.Instance.GetFontHeight(FONT_ID)) + 4))
+			Menu menu = new Menu(Canvas.Palette, Selection(3, 12, ItemWidth, (_menuItems.Length * Resources.Instance.GetFontHeight(FONT_ID)) + 4))
 			{
 				X = 103,
 				Y = 92,

@@ -173,7 +173,7 @@ namespace CivOne.Screens
 		private void CreateMenu()
 		{
 			if (HasMenu) return;
-			Menu menu = new Menu(Canvas.Image.Palette.Entries)
+			Menu menu = new Menu(Canvas.Palette)
 			{
 				X = 103,
 				Y = 144,
@@ -212,7 +212,7 @@ namespace CivOne.Screens
 			Console.WriteLine("Main Menu: Load a Saved Game");
 			CloseMenus();
 			
-			_overlay = new LoadGame(_canvas.Image.Palette.Entries);
+			_overlay = new LoadGame(_canvas.Palette);
 		}
 		
 		private void Earth(object sender, EventArgs args)
@@ -292,7 +292,7 @@ namespace CivOne.Screens
 			}
 			_menuColours = new byte[] { 8, 15, 7 };
 			
-			_canvas = new Picture(320, 200, _pictures[2].Image.Palette.Entries);
+			_canvas = new Picture(320, 200, _pictures[2].Palette);
 		}
 	}
 }

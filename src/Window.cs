@@ -7,22 +7,48 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using System.Drawing;
-using System.Drawing.Imaging;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using CivOne.IO;
+using OpenTK;
+using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL;
+using OpenTK.Input;
+using CivOne.Enums;
+using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Screens;
 
+using TkKey = OpenTK.Input.Key;
+using TkMouseButton = OpenTK.Input.MouseButton;
+using CivKey = CivOne.Enums.Key;
+using CivMouseButton = CivOne.Enums.MouseButton;
+using CivMouseCursor = CivOne.Enums.MouseCursor;
+
 namespace CivOne
 {
-	internal partial class Window
+	internal class Window : GameWindow
 	{
 		private uint _gameTick = 0;
-		private Thread TickThread;
-		private AutoResetEvent _tickWaiter = new AutoResetEvent(true);
+
+		private bool _update = false;
+
+		private Picture _cursorPointer, _cursorGoto;
+
+		private int _mouseX, _mouseY;
+		
+		private static void LoadResources()
+		{
+			ThreadStart civilopediaDelegate = new ThreadStart(Reflect.PreloadCivilopedia);
+			Thread civilopedia = new Thread(new ThreadStart(Reflect.PreloadCivilopedia))
+			{
+				IsBackground = true
+			};
+			
+			civilopedia.Start();
+		}
 		
 		// Returns whether any changes have been made to the screen.
 		private bool HasUpdate
@@ -35,7 +61,7 @@ namespace CivOne
 				return (Common.Screens.Count(x => x.HasUpdate(_gameTick / 4)) > 0);
 			}
 		}
-		
+
 		protected IScreen TopScreen
 		{
 			get
@@ -51,8 +77,8 @@ namespace CivOne
 			{
 				if (Common.Screens.Length == 0) return _canvas;
 
-				Color[] palette = TopScreen.Canvas.Image.Palette.Entries;
-				palette[0] = Color.Black;
+				CivOne.GFX.Color[] palette = TopScreen.Canvas.Palette;
+				palette[0] = CivOne.GFX.Color.Black;
 				_canvas.FillRectangle(0, 0, 0, _canvas.Width, _canvas.Height);
 				_canvas.SetPalette(palette);
 
@@ -67,94 +93,160 @@ namespace CivOne
 						_canvas.AddLayer(screen.Canvas, 0, 0);
 					}
 				}
+
+				// Draw the mouse cursor
+				switch (TopScreen.Cursor)
+				{
+					case CivMouseCursor.Pointer:
+						_canvas.AddLayer(_cursorPointer, _mouseX, _mouseY);
+						break;
+					case CivMouseCursor.Goto:
+						_canvas.AddLayer(_cursorGoto, _mouseX, _mouseY);
+						break;
+				}
+
 				return _canvas;
 			}
 		}
-		
-		private void GameTick()
+
+		private IEnumerable<int> GetCanvas()
 		{
-			while (true)
+			Picture canvas = Canvas;
+			byte[,] bitmap = canvas.ScaleBitmap(2, 2);
+			for (int yy = bitmap.GetLength(1) - 1; yy >= 0; yy--)
+			for (int xx = 0; xx < bitmap.GetLength(0); xx++)
 			{
-				_tickWaiter.WaitOne();
-				RefreshWindow();
-				_gameTick += (uint)(GameTask.Fast ? 1 : 4);
+				yield return canvas.Palette[bitmap[xx, yy]].GetHashCode();
 			}
 		}
-		
-		private void SetGameTick()
+
+		private KeyboardEventArgs ConvertKeyboardEvents(KeyboardKeyEventArgs args)
 		{
-			new Thread(new ThreadStart(GameTick)).Start();
-			while (true)
+			KeyModifier modifier = KeyModifier.None;
+			if (args.Control) modifier |= KeyModifier.Control;
+			if (args.Shift) modifier |= KeyModifier.Shift;
+			if (args.Alt) modifier |= KeyModifier.Alt;
+
+			switch (args.Key)
 			{
-				Thread.Sleep(1000 / (GameTask.Fast ? 60 : 15));
-				_tickWaiter.Set();
+				case TkKey.F1: return new KeyboardEventArgs(CivKey.F1, modifier);
+				case TkKey.F2: return new KeyboardEventArgs(CivKey.F2, modifier);
+				case TkKey.F3: return new KeyboardEventArgs(CivKey.F3, modifier);
+				case TkKey.F4: return new KeyboardEventArgs(CivKey.F4, modifier);
+				case TkKey.F5: return new KeyboardEventArgs(CivKey.F5, modifier);
+				case TkKey.F6: return new KeyboardEventArgs(CivKey.F6, modifier);
+				case TkKey.F7: return new KeyboardEventArgs(CivKey.F7, modifier);
+				case TkKey.F8: return new KeyboardEventArgs(CivKey.F8, modifier);
+				case TkKey.F9: return new KeyboardEventArgs(CivKey.F9, modifier);
+				case TkKey.F10: return new KeyboardEventArgs(CivKey.F10, modifier);
+				case TkKey.F11: return new KeyboardEventArgs(CivKey.F11, modifier);
+				case TkKey.F12: return new KeyboardEventArgs(CivKey.F12, modifier);
+				case TkKey.Keypad0: return new KeyboardEventArgs(CivKey.NumPad0, modifier);
+				case TkKey.Keypad1: return new KeyboardEventArgs(CivKey.NumPad1, modifier);
+				case TkKey.Keypad2: return new KeyboardEventArgs(CivKey.NumPad2, modifier);
+				case TkKey.Keypad3: return new KeyboardEventArgs(CivKey.NumPad3, modifier);
+				case TkKey.Keypad4: return new KeyboardEventArgs(CivKey.NumPad4, modifier);
+				case TkKey.Keypad5: return new KeyboardEventArgs(CivKey.NumPad5, modifier);
+				case TkKey.Keypad6: return new KeyboardEventArgs(CivKey.NumPad6, modifier);
+				case TkKey.Keypad7: return new KeyboardEventArgs(CivKey.NumPad7, modifier);
+				case TkKey.Keypad8: return new KeyboardEventArgs(CivKey.NumPad8, modifier);
+				case TkKey.Keypad9: return new KeyboardEventArgs(CivKey.NumPad9, modifier);
+				case TkKey.Up: return new KeyboardEventArgs(CivKey.Up, modifier);
+				case TkKey.Left: return new KeyboardEventArgs(CivKey.Left, modifier);
+				case TkKey.Right: return new KeyboardEventArgs(CivKey.Right, modifier);
+				case TkKey.Down: return new KeyboardEventArgs(CivKey.Down, modifier);
+				case TkKey.Enter: return new KeyboardEventArgs(CivKey.Enter, modifier);
+				case TkKey.Space: return new KeyboardEventArgs(CivKey.Space, modifier);
+				case TkKey.Escape: return new KeyboardEventArgs(CivKey.Escape, modifier);
+				case TkKey.Delete: return new KeyboardEventArgs(CivKey.Delete, modifier);
+				case TkKey.Back: return new KeyboardEventArgs(CivKey.Backspace, modifier);
+				case TkKey.Period: return new KeyboardEventArgs('.', modifier);
+				case TkKey.Comma: return new KeyboardEventArgs(',', modifier);
+				case TkKey.Plus: return new KeyboardEventArgs(CivKey.Plus, modifier);
+				case TkKey.Minus: return new KeyboardEventArgs(CivKey.Minus, modifier);
 			}
+
+			return null;
 		}
-		
-		private int CanvasWidth
+
+		private void OnKeyDown(object sender, KeyboardKeyEventArgs args)
 		{
-			get
-			{
-				return (int)(ScaleX * 320);
-			}
+			if (TopScreen == null) return;
+			KeyboardEventArgs keyArgs = ConvertKeyboardEvents(args);
+
+			if (keyArgs == null) return;
+			TopScreen.KeyDown(keyArgs);
 		}
-		
-		private int CanvasHeight
+
+		private void OnMouseDown(object sender, MouseEventArgs args)
 		{
-			get
-			{
-				return (int)(ScaleY * 200);
-			}
+			if (TopScreen == null) return;
+
+			CivMouseButton buttons = CivMouseButton.None;
+			if (args.Mouse.IsButtonDown(TkMouseButton.Left)) buttons = CivMouseButton.Left;
+			else if (args.Mouse.IsButtonDown(TkMouseButton.Right)) buttons = CivMouseButton.Right;
+			TopScreen.MouseDown(new ScreenEventArgs(_mouseX, _mouseY, buttons));
 		}
-		
-		private void SaveScreen()
+
+		private void OnMouseUp(object sender, MouseEventArgs args)
 		{
-			string filename = Common.CaptureFilename;
-			if (filename == null) return;
+			if (TopScreen == null) return;
+
+			CivMouseButton buttons = CivMouseButton.None;
+			if (args.Mouse.IsButtonUp(TkMouseButton.Left)) buttons = CivMouseButton.Left;
+			else if (args.Mouse.IsButtonUp(TkMouseButton.Right)) buttons = CivMouseButton.Right;
+			TopScreen.MouseUp(new ScreenEventArgs(_mouseX, _mouseY, buttons));
+		}
+
+		protected override void OnResize(EventArgs args)
+		{
+			GL.Viewport(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width, ClientRectangle.Height);
+		}
+
+		protected override void OnLoad(EventArgs args)
+		{
+			GL.Disable(EnableCap.DepthTest);
+
+			// Load cursor graphics
+			_cursorPointer = Resources.Instance.GetPart("SP257", 112, 32, 16, 16);
+			_cursorGoto = Resources.Instance.GetPart("SP257", 32, 32, 16, 16);
 			
-			Picture capture = new Picture(_canvas);
-			Picture.ReplaceColours(capture, 0, 5); 
-			capture.Image.Save(filename, ImageFormat.Png);
-		}
-		
-		public static bool CheckFiles()
-		{
-			if (FileSystem.DataFilesExist())
-				return true;
-			FileSystem.CopyDataFiles(BrowseDataFolder());
-			return FileSystem.DataFilesExist();
-		}
-		
-		private static void LoadResources()
-		{
-			ThreadStart civilopediaDelegate = new ThreadStart(Reflect.PreloadCivilopedia);
-			Thread civilopedia = new Thread(new ThreadStart(Reflect.PreloadCivilopedia))
-			{
-				IsBackground = true
-			};
-			
-			civilopedia.Start();
-		}
-		
-		private void Init(string screen)
-		{
 			// Load the first screen
-			IScreen startScreen;
-			switch (screen)
-			{
-				case "demo":
-					startScreen = new Demo();
-					break;
-				case "setup":
-					startScreen = new Setup();
-					break;
-				default:
-					startScreen = new Credits();
-					break;
-			}
+			IScreen startScreen = new Credits();
+			
 			Common.AddScreen(startScreen);
 			
 			LoadResources();
+		}
+
+		protected override void OnKeyPress(KeyPressEventArgs args)
+		{
+			if (TopScreen == null) return;
+			TopScreen.KeyDown(new KeyboardEventArgs(char.ToUpper((char)args.KeyChar), KeyModifier.None));
+		}
+
+		protected override void OnUpdateFrame(FrameEventArgs args)
+		{
+			_mouseX = Mouse.X / 2;
+			_mouseY = Mouse.Y / 2;
+
+			_gameTick += (uint)(GameTask.Fast ? 4 : 1);
+			if (_gameTick % 4 != 0) return;
+			_update = HasUpdate;
+		}
+
+		protected override void OnRenderFrame(FrameEventArgs args)
+		{
+			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+			GL.DrawPixels<int>(640, 400, PixelFormat.Rgba, PixelType.UnsignedInt8888Reversed, GetCanvas().ToArray());
+			SwapBuffers();
+		}
+
+		public Window() : base(640, 400, OpenTK.Graphics.GraphicsMode.Default, "CivOne", GameWindowFlags.FixedWindow, DisplayDevice.Default, 4, 0, GraphicsContextFlags.ForwardCompatible)
+		{
+			KeyDown += OnKeyDown;
+			MouseDown += OnMouseDown;
+			MouseUp += OnMouseUp;
 		}
 	}
 }

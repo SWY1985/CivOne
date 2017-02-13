@@ -49,7 +49,7 @@ namespace CivOne.Screens
 			Cursor = MouseCursor.None;
 			
 			_background = Resources.Instance.LoadPIC("ARCH");
-			_canvas = new Picture(320, 200, _background.Image.Palette.Entries);
+			_canvas = new Picture(320, 200, _background.Palette);
 			AddLayer(_background);
 			
 			// Load text and replace strings

@@ -86,7 +86,7 @@ namespace CivOne.Templates
 		{
 			if ((grassTile && _iconsCacheGrass[col, row] == null) || (!grassTile && _iconsCache[col, row] == null))
 			{
-				Icon = new Picture(52, 50, Resources.Instance.LoadPIC("CITYPIX2").Image.Palette.Entries);
+				Icon = new Picture(52, 50, Resources.Instance.LoadPIC("CITYPIX2").Palette);
 				
 				if (grassTile)
 				{

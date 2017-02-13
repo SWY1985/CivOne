@@ -24,7 +24,8 @@ namespace CivOne.IO
 			
 			Regex rgx = new Regex("[^a-zA-Z0-9 -_]");
 			List<string> textLines = new List<string>();
-			using (StreamReader sr = new StreamReader(Path.Combine(Settings.Instance.DataDirectory, filename)))
+			using (FileStream fs = new FileStream(Path.Combine(Settings.Instance.DataDirectory, filename), FileMode.Open, FileAccess.Read))
+			using (StreamReader sr = new StreamReader(fs))
 				while (!sr.EndOfStream)
 					textLines.Add(rgx.Replace(sr.ReadLine(), "").Trim());
 			return textLines.ToArray();

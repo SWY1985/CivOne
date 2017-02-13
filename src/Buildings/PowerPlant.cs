@@ -25,7 +25,7 @@ namespace CivOne.Buildings
 			if (_iconCache == null)
 			{
 				SetIcon(4, 1, false);
-				Picture icon = new Picture(52, 50, Icon.Image.Palette.Entries);
+				Picture icon = new Picture(52, 50, Icon.Palette);
 				icon.AddLayer(Icon.GetPart(31, 0, 20, 50), 1);
 				icon.AddLayer(Icon.GetPart(0, 0, 32, 50), 19);
 				icon.FillRectangle(0, 50, 0, 2, 50);
