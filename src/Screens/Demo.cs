@@ -38,7 +38,7 @@ namespace CivOne.Screens
 					break;
 			}
 			
-			_canvas = new Picture(320, 200, logo.Image.Palette.Entries);
+			_canvas = new Picture(320, 200, logo.Palette);
 			AddLayer(background, 0, 0);
 			AddLayer(logo, 0, 0);
 			

@@ -7,16 +7,16 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-namespace CivOne
+namespace CivOne.GFX
 {
-	internal class Program
+	public struct Point
 	{
-		private static void Main()
+		public int X, Y;
+		
+		public Point(int x, int y)
 		{
-			using (Window window = new Window())
-			{
-				window.Run(60.0);
-			}
+			X = x;
+			Y = y;
 		}
 	}
 }

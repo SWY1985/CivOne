@@ -8,7 +8,6 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.Drawing;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.GFX;
@@ -72,7 +71,7 @@ namespace CivOne.Screens
 
 				AddLayer(menuGfx, 25, 17);
 
-				Menu menu = new Menu(Canvas.Image.Palette.Entries, menuBackground)
+				Menu menu = new Menu(Canvas.Palette, menuBackground)
 				{
 					X = 27,
 					Y = 28,
@@ -115,7 +114,7 @@ namespace CivOne.Screens
 		{
 			Cursor = MouseCursor.Pointer;
 
-			Color[] palette = Resources.Instance.LoadPIC("SP257").Image.Palette.Entries;
+			Color[] palette = Resources.Instance.LoadPIC("SP257").Palette;
 			
 			_canvas = new Picture(320, 200, palette);
 			_canvas.AddLayer(Common.Screens.Last().Canvas, 0, 0);

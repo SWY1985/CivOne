@@ -32,7 +32,7 @@ namespace CivOne.Screens
 		
 		private Menu CreateMenu(string title, EventHandler setChoice, params string[] menuTexts)
 		{
-			Menu menu = new Menu(Canvas.Image.Palette.Entries)
+			Menu menu = new Menu(Canvas.Palette)
 			{
 				Title = title,
 				X = 163,
@@ -83,7 +83,7 @@ namespace CivOne.Screens
 			if (Common.HasScreenType(typeof(Input))) return;
 			
 			ICivilization civ = _tribesAvailable[_tribe];
-			Input input = new Input(_canvas.Image.Palette.Entries, civ.LeaderName, 6, 5, 11, 168, 105, 109, 10, 13);
+			Input input = new Input(_canvas.Palette, civ.LeaderName, 6, 5, 11, 168, 105, 109, 10, 13);
 			input.Accept += LeaderName_Accept;
 			input.Cancel += LeaderName_Accept;
 			Common.AddScreen(input);
@@ -126,7 +126,7 @@ namespace CivOne.Screens
 			CloseMenus();
 			
 			ICivilization civ = _tribesAvailable[_tribe];
-			Input input = new Input(_canvas.Image.Palette.Entries, civ.NamePlural, 6, 5, 11, 168, 105, 109, 10, 11);
+			Input input = new Input(_canvas.Palette, civ.NamePlural, 6, 5, 11, 168, 105, 109, 10, 11);
 			input.Accept += TribeName_Accept;
 			input.Cancel += TribeName_Accept;
 			Common.AddScreen(input);
@@ -259,7 +259,7 @@ namespace CivOne.Screens
 			}
 			
 			// Draw background
-			_canvas = new Picture(320, 200, _background.Image.Palette.Entries);
+			_canvas = new Picture(320, 200, _background.Palette);
 			if (_difficulty == -1)
 			{
 				AddLayer(_background);
@@ -314,7 +314,7 @@ namespace CivOne.Screens
 			
 			_background = Resources.Instance.LoadPIC("DIFFS");
 			
-			_canvas = new Picture(320, 200, _background.Image.Palette.Entries);
+			_canvas = new Picture(320, 200, _background.Palette);
 			AddLayer(_background);
 			
 			_menuItemsDifficulty = new[] { "Chieftain (easiest)", "Warlord", "Prince", "King", "Emperor (toughest)" };

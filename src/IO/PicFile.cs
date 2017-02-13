@@ -8,8 +8,8 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.Drawing;
 using System.IO;
+using CivOne.GFX;
 
 namespace CivOne.IO
 {
@@ -117,7 +117,7 @@ namespace CivOne.IO
 					continue;
 				}
 				byte red = _bytes[index++], green = _bytes[index++], blue = _bytes[index++];
-				_palette256[i] = Color.FromArgb(255, red * 4, green * 4, blue * 4);
+				_palette256[i] = new Color(255, red * 4, green * 4, blue * 4);
 			}
 			
 			// always set colour 0 to transparent
@@ -134,7 +134,7 @@ namespace CivOne.IO
 		{
 			byte bits = _bytes[index++];
 			byte[] img = new byte[length - 5];
-			Array.Copy(_bytes, index, img, 0, length - 5);
+			Array.Copy(_bytes, index, img, 0, (int)(length - 5));
 
 			byte[] output;
 

@@ -22,18 +22,25 @@ namespace CivOne
 		{
 			get
 			{
-				yield return Assembly.GetExecutingAssembly();
-				foreach(string file in Directory.GetFiles(Settings.Instance.PluginsDirectory, "*.dll"))
-				{
-					yield return Assembly.LoadFile(file);
-				}
+				yield return typeof(Program).GetTypeInfo().Assembly;
+				//TODO: Load plugins
+				// foreach(string file in Directory.GetFiles(Settings.Instance.PluginsDirectory, "*.dll"))
+				// {
+				// 	yield return Assembly.LoadFile(file);
+				// }
 			}
 		}
 		
 		private static IEnumerable<T> GetTypes<T>()
 		{
 			foreach (Assembly asm in GetAssemblies)
-			foreach (Type type in asm.GetTypes().Where(t => typeof(T).IsAssignableFrom(t) && t.IsClass && !t.IsAbstract))
+			foreach (Type type in asm.GetTypes().Where(t => typeof(T).GetTypeInfo().IsAssignableFrom(t) && t.GetTypeInfo().IsClass && !t.GetTypeInfo().IsAbstract))
+			{
+				yield return (T)Activator.CreateInstance(type);
+			}
+
+			foreach (Assembly asm in GetAssemblies)
+			foreach (Type type in asm.GetTypes().Where(t => (t is T) && t.GetTypeInfo().IsClass && !t.GetTypeInfo().IsAbstract))
 			{
 				yield return (T)Activator.CreateInstance(type);
 			}

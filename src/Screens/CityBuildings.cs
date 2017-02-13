@@ -36,7 +36,7 @@ namespace CivOne.Screens
 			int xx = (offset % 2 == 0) ? 21 : 1;
 			int yy = -1 + (6 * offset);
 			if (yy < 0)
-				AddLayer(wonder.SmallIcon.GetPart(0, Math.Abs(yy), wonder.SmallIcon.Image.Width, wonder.SmallIcon.Image.Height + yy), xx, 0);
+				AddLayer(wonder.SmallIcon.GetPart(0, Math.Abs(yy), wonder.SmallIcon.Width, wonder.SmallIcon.Height + yy), xx, 0);
 			else
 				AddLayer(wonder.SmallIcon, xx, yy);
 			
@@ -53,7 +53,7 @@ namespace CivOne.Screens
 			int xx = (offset % 2 == 0) ? 21 : 1;
 			int yy = -1 + (6 * offset);
 			if (yy < 0)
-				AddLayer(building.SmallIcon.GetPart(0, Math.Abs(yy), building.SmallIcon.Image.Width, building.SmallIcon.Image.Height + yy), xx, 0);
+				AddLayer(building.SmallIcon.GetPart(0, Math.Abs(yy), building.SmallIcon.Width, building.SmallIcon.Height + yy), xx, 0);
 			else
 				AddLayer(building.SmallIcon, xx, yy);
 

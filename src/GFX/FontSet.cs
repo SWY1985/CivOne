@@ -9,7 +9,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+using CivOne.GFX;
 
 namespace CivOne.GFX
 {

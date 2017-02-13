@@ -26,7 +26,7 @@ namespace CivOne
 		{
 			get
 			{
-				return new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).Parent.FullName;
+				return Directory.GetCurrentDirectory();
 			}
 		}
 		
@@ -183,7 +183,8 @@ namespace CivOne
 		{
 			string filename = Path.Combine(SettingsDirectory, settingName);
 			if (!File.Exists(filename)) return null;
-			using (StreamReader sr = new StreamReader(filename))
+			using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
+			using (StreamReader sr = new StreamReader(fs))
 			{
 				string value = sr.ReadToEnd();
 				
@@ -196,7 +197,8 @@ namespace CivOne
 		private void SetSetting(string settingName, string value)
 		{
 			string filename = Path.Combine(SettingsDirectory, settingName);
-			using (StreamWriter sw = new StreamWriter(filename, false))
+			using (FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write))
+			using (StreamWriter sw = new StreamWriter(fs))
 			{
 				sw.Write(value);
 				
