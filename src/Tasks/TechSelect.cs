@@ -9,7 +9,6 @@
 
 using System;
 using System.Linq;
-using CivOne.Interfaces;
 using CivOne.Screens;
 
 namespace CivOne.Tasks
