@@ -211,11 +211,6 @@ namespace CivOne
 			_cursorPointer = Resources.Instance.GetPart("SP257", 112, 32, 16, 16);
 			_cursorGoto = Resources.Instance.GetPart("SP257", 32, 32, 16, 16);
 			
-			// Load the first screen
-			IScreen startScreen = new Credits();
-			
-			Common.AddScreen(startScreen);
-			
 			LoadResources();
 		}
 
@@ -242,8 +237,24 @@ namespace CivOne
 			SwapBuffers();
 		}
 
-		public Window() : base(640, 400, OpenTK.Graphics.GraphicsMode.Default, "CivOne", GameWindowFlags.FixedWindow, DisplayDevice.Default, 4, 0, GraphicsContextFlags.ForwardCompatible)
+		public Window(string screen) : base(640, 400, OpenTK.Graphics.GraphicsMode.Default, "CivOne", GameWindowFlags.FixedWindow, DisplayDevice.Default, 4, 0, GraphicsContextFlags.ForwardCompatible)
 		{
+			// Load the first screen
+			IScreen startScreen;
+			switch (screen)
+			{
+				case "demo":
+					startScreen = new Demo();
+					break;
+				case "setup":
+					startScreen = new Setup();
+					break;
+				default:
+					startScreen = new Credits();
+					break;
+			}
+			Common.AddScreen(startScreen);
+
 			KeyDown += OnKeyDown;
 			MouseDown += OnMouseDown;
 			MouseUp += OnMouseUp;
