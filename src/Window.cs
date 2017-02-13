@@ -257,6 +257,8 @@ namespace CivOne
 			_mouseX = Mouse.X / 2;
 			_mouseY = Mouse.Y / 2;
 
+			CursorVisible = (_mouseX <= 0 || _mouseX >= 319 || _mouseY <= 0 || _mouseY >= 199);
+
 			_gameTick += (uint)(GameTask.Fast ? 4 : 1);
 			if (_gameTick % 4 != 0) return;
 			_update = HasUpdate;
