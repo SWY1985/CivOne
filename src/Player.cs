@@ -374,6 +374,11 @@ namespace CivOne
 
 		public void NewTurn()
 		{
+			if (!Game.GetCities().Any(x => x.Owner == Game.Instance.PlayerNumber(this)) && !Game.Instance.GetUnits().Any(x => x.Owner == Game.Instance.PlayerNumber(this)))
+			{
+				GameTask.Enqueue(Turn.GameOver(this));
+			}
+
 			if (_anarchy == 0 && Government is Anarchy)
 			{
 				GameTask.Enqueue(Show.ChooseGovernment);

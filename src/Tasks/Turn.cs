@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using CivOne.Interfaces;
+using CivOne.Screens;
 
 namespace CivOne.Tasks
 {
@@ -16,6 +17,8 @@ namespace CivOne.Tasks
 		private ITurn _turnObject = null;
 		private IUnit _unit = null;
 		private bool _endTurn = false;
+
+		private Player _gameOver = null;
 
 		public override void Run()
 		{
@@ -30,6 +33,17 @@ namespace CivOne.Tasks
 			else if (_endTurn)
 			{
 				Game.EndTurn();
+			}
+			else if (_gameOver != null)
+			{
+				if (_gameOver.IsHuman)
+				{
+					Common.AddScreen(new GameOver());
+				}
+				else
+				{
+					// TODO: Spawn barbarians or respawn civilization
+				}
 			}
 			EndTask();
 			return;
@@ -56,6 +70,14 @@ namespace CivOne.Tasks
 			return new Turn()
 			{
 				_endTurn = true
+			};
+		}
+
+		public static Turn GameOver(Player player)
+		{
+			return new Turn()
+			{
+				_gameOver = player
 			};
 		}
 
