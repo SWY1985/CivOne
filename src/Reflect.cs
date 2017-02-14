@@ -21,7 +21,7 @@ namespace CivOne
 		{
 			get
 			{
-				yield return typeof(Program).GetTypeInfo().Assembly;
+				yield return typeof(Reflect).GetTypeInfo().Assembly;
 				//TODO: Load plugins
 				// foreach(string file in Directory.GetFiles(Settings.Instance.PluginsDirectory, "*.dll"))
 				// {
