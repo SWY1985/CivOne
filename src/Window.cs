@@ -10,7 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
+using System.Threading.Tasks;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -78,13 +78,7 @@ namespace CivOne
 		
 		private static void LoadResources()
 		{
-			ThreadStart civilopediaDelegate = new ThreadStart(Reflect.PreloadCivilopedia);
-			Thread civilopedia = new Thread(new ThreadStart(Reflect.PreloadCivilopedia))
-			{
-				IsBackground = true
-			};
-			
-			civilopedia.Start();
+			Task.Run(() => Reflect.PreloadCivilopedia());
 		}
 		
 		// Returns whether any changes have been made to the screen.
