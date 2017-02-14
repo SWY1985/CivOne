@@ -68,6 +68,8 @@ namespace CivOne
 		public void ChangeTileType(int x, int y, Terrain type)
 		{
 			bool special = TileIsSpecial(x, y);
+			bool road = _tiles[x, y].Road;
+			bool railRoad = _tiles[x, y].RailRoad;
 			switch(type)
 			{
 				case Terrain.Forest: _tiles[x, y] = new Forest(x, y, special); break;
@@ -84,6 +86,8 @@ namespace CivOne
 				case Terrain.Arctic: _tiles[x, y] = new Arctic(x, y, special); break;
 				case Terrain.Ocean: _tiles[x, y] = new Ocean(x, y, special); break;
 			}
+			_tiles[x, y].Road = road;
+			_tiles[x, y].RailRoad = railRoad;
 		}
 		
 		private int ModGrid(int x, int y)
