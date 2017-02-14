@@ -147,7 +147,7 @@ namespace CivOne
 		{
 			Picture canvas = Canvas;
 			int[] colors = canvas.Palette.Select(x => x.GetHashCode()).ToArray();
-			byte[,] bitmap = canvas.ScaleBitmap(ScaleX, ScaleY);
+			byte[,] bitmap = canvas.GetBitmap;
 			for (int yy = bitmap.GetLength(1) - 1; yy >= 0; yy--)
 			for (int xx = 0; xx < bitmap.GetLength(0); xx++)
 			{
@@ -295,7 +295,17 @@ namespace CivOne
 		protected override void OnRenderFrame(FrameEventArgs args)
 		{
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-			GL.DrawPixels<int>(DrawWidth, DrawHeight, PixelFormat.Rgba, PixelType.UnsignedInt8888Reversed, GetCanvas().ToArray());
+
+			int fbId = GL.GenFramebuffer();
+			GL.Viewport(0, 0, 320, 200);
+			GL.DrawPixels<int>(320, 200, PixelFormat.Rgba, PixelType.UnsignedInt8888Reversed, GetCanvas().ToArray());
+			GL.BindFramebuffer(FramebufferTarget.Framebuffer, fbId);
+
+			GL.BindFramebuffer(FramebufferTarget.ReadFramebuffer, fbId);
+			GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+			GL.BlitFramebuffer(0, 0, 320, 200, 0, 0, DrawWidth, DrawHeight, ClearBufferMask.ColorBufferBit, BlitFramebufferFilter.Nearest);
+			GL.BindFramebuffer(FramebufferTarget.ReadFramebuffer, 0);
+			
 			SwapBuffers();
 		}
 
