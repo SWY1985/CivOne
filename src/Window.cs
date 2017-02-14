@@ -151,7 +151,7 @@ namespace CivOne
 			for (int yy = bitmap.GetLength(1) - 1; yy >= 0; yy--)
 			for (int xx = 0; xx < bitmap.GetLength(0); xx++)
 			{
-				yield return colors[bitmap[xx, yy]].GetHashCode();
+				yield return colors[bitmap[xx, yy]];
 			}
 		}
 
