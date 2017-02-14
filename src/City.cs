@@ -580,7 +580,7 @@ namespace CivOne
 
 				if (Size == 10 && !_buildings.Any(b => b.Id == (int)Building.Aqueduct))
 				{
-					GameTask.Enqueue(Message.Advisor(Advisor.Domestic, $"{Name} requires an AQUADUCT", "for further growth."));
+					GameTask.Enqueue(Message.Advisor(Advisor.Domestic, $"{Name} requires an AQUEDUCT", "for further growth."));
 				}
 				else
 				{
