@@ -41,6 +41,8 @@ namespace CivOne
 
 		private KeyModifier _keyModifier = KeyModifier.None;
 
+		private WindowState _previousState = WindowState.Normal;
+
 		private int ScaleX
 		{
 			get
@@ -253,6 +255,20 @@ namespace CivOne
 			if (args.Control) _keyModifier |= KeyModifier.Control;
 			if (args.Shift) _keyModifier |= KeyModifier.Shift;
 			if (args.Alt) _keyModifier |= KeyModifier.Alt;
+
+			if (_keyModifier == KeyModifier.Alt && args.Key == TkKey.Enter)
+			{
+				if (WindowState == WindowState.Fullscreen)
+				{
+					Console.WriteLine("Windowed mode");
+					WindowState = _previousState;
+					return;
+				}
+				Console.WriteLine("Fullscreen mode");
+				_previousState = WindowState;
+				WindowState = WindowState.Fullscreen;
+				return;
+			}
 
 			if (TopScreen == null) return;
 			KeyboardEventArgs keyArgs = ConvertKeyboardEvents(args);
