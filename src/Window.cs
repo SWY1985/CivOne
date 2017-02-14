@@ -45,7 +45,7 @@ namespace CivOne
 		{
 			get
 			{
-				return (ClientRectangle.Width - (ClientRectangle.Width % 320)) / 320;
+				return (ClientRectangle.Width - (ClientRectangle.Width % CanvasWidth)) / CanvasWidth;
 			}
 		}
 
@@ -53,15 +53,18 @@ namespace CivOne
 		{
 			get
 			{
-				return (ClientRectangle.Height - (ClientRectangle.Height % 200)) / 200;
+				return (ClientRectangle.Height - (ClientRectangle.Height % CanvasHeight)) / CanvasHeight;
 			}
 		}
+
+		private int CanvasWidth { get; set; }
+		private int CanvasHeight { get; set; }
 
 		private int DrawWidth
 		{
 			get
 			{
-				return (ClientRectangle.Width - (ClientRectangle.Width % 320));
+				return (ClientRectangle.Width - (ClientRectangle.Width % CanvasWidth));
 			}
 		}
 
@@ -69,7 +72,7 @@ namespace CivOne
 		{
 			get
 			{
-				return (ClientRectangle.Height - (ClientRectangle.Height % 200));
+				return (ClientRectangle.Height - (ClientRectangle.Height % CanvasHeight));
 			}
 		}
 		
@@ -129,23 +132,61 @@ namespace CivOne
 				}
 
 				// Draw the mouse cursor
-				switch (TopScreen.Cursor)
+				if (_mouseX >= 0 && _mouseX < DrawWidth && _mouseY >= 0 && _mouseY < DrawHeight)
 				{
-					case CivMouseCursor.Pointer:
-						_canvas.AddLayer(_cursorPointer, _mouseX, _mouseY);
-						break;
-					case CivMouseCursor.Goto:
-						_canvas.AddLayer(_cursorGoto, _mouseX, _mouseY);
-						break;
+					switch (TopScreen.Cursor)
+					{
+						case CivMouseCursor.Pointer:
+							_canvas.AddLayer(_cursorPointer, _mouseX, _mouseY);
+							break;
+						case CivMouseCursor.Goto:
+							_canvas.AddLayer(_cursorGoto, _mouseX, _mouseY);
+							break;
+					}
 				}
 
 				return _canvas;
 			}
 		}
 
+		private void ScreenBorder(int x1, int y1, int x2, int y2)
+		{
+			int ww = ClientSize.Width;
+			int hh = ClientSize.Height;
+
+			GL.MatrixMode(MatrixMode.Projection);
+			GL.LoadIdentity();
+			GL.Ortho(0, ClientSize.Width, ClientSize.Height, 0, -1, 1);
+			GL.Begin(PrimitiveType.Quads);
+
+			GL.Color3(0, 0, 0); GL.Vertex2(0, 0);
+			GL.Color3(0, 0, 0); GL.Vertex2(x1, 0);
+			GL.Color3(0, 0, 0); GL.Vertex2(x1, hh);
+			GL.Color3(0, 0, 0); GL.Vertex2(0, hh);
+
+			GL.Color3(0, 0, 0); GL.Vertex2(x2, 0);
+			GL.Color3(0, 0, 0); GL.Vertex2(ww, 0);
+			GL.Color3(0, 0, 0); GL.Vertex2(ww, ClientSize.Height);
+			GL.Color3(0, 0, 0); GL.Vertex2(x2, ClientSize.Height);
+
+			GL.Color3(0, 0, 0); GL.Vertex2(x1, 0);
+			GL.Color3(0, 0, 0); GL.Vertex2(x2, 0);
+			GL.Color3(0, 0, 0); GL.Vertex2(x2, y1);
+			GL.Color3(0, 0, 0); GL.Vertex2(x1, y1);
+
+			GL.Color3(0, 0, 0); GL.Vertex2(x1, y2);
+			GL.Color3(0, 0, 0); GL.Vertex2(x2, y2);
+			GL.Color3(0, 0, 0); GL.Vertex2(x2, hh);
+			GL.Color3(0, 0, 0); GL.Vertex2(x1, hh);
+
+			GL.End();
+		}
+
 		private IEnumerable<int> GetCanvas()
 		{
 			Picture canvas = Canvas;
+			CanvasWidth = canvas.Width;
+			CanvasHeight = canvas.Height;
 			int[] colors = canvas.Palette.Select(x => x.GetHashCode()).ToArray();
 			byte[,] bitmap = canvas.GetBitmap;
 			for (int yy = bitmap.GetLength(1) - 1; yy >= 0; yy--)
@@ -282,10 +323,15 @@ namespace CivOne
 
 		protected override void OnUpdateFrame(FrameEventArgs args)
 		{
-			_mouseX = Mouse.X / 2;
-			_mouseY = Mouse.Y / 2;
+			int x1 = (ClientSize.Width - DrawWidth) / 2;
+			int y1 = (ClientSize.Height - DrawHeight) / 2;
+			int x2 = x1 + DrawWidth;
+			int y2 = y1 + DrawHeight;
 
-			CursorVisible = (_mouseX <= 0 || _mouseX >= 319 || _mouseY <= 0 || _mouseY >= 199);
+			_mouseX = (Mouse.X - x1) / ScaleX;
+			_mouseY = (Mouse.Y - y1) / ScaleY;
+
+			CursorVisible = (_mouseX <= 0 || _mouseX >= (CanvasWidth - 1) || _mouseY <= 0 || _mouseY >= (CanvasHeight - 1));
 
 			_gameTick += (uint)(GameTask.Fast ? 4 : 1);
 			if (_gameTick % 4 != 0) return;
@@ -294,23 +340,27 @@ namespace CivOne
 
 		protected override void OnRenderFrame(FrameEventArgs args)
 		{
-			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+			GL.Clear(ClearBufferMask.ColorBufferBit);
 
-			int fbId = GL.GenFramebuffer();
-			GL.Viewport(0, 0, 320, 200);
-			GL.DrawPixels<int>(320, 200, PixelFormat.Rgba, PixelType.UnsignedInt8888Reversed, GetCanvas().ToArray());
-			GL.BindFramebuffer(FramebufferTarget.Framebuffer, fbId);
+			int[] canvas = GetCanvas().ToArray();
+			int x1 = (ClientSize.Width - DrawWidth) / 2;
+			int y1 = (ClientSize.Height - DrawHeight) / 2;
+			int x2 = x1 + DrawWidth;
+			int y2 = y1 + DrawHeight;
 
-			GL.BindFramebuffer(FramebufferTarget.ReadFramebuffer, fbId);
-			GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
-			GL.BlitFramebuffer(0, 0, 320, 200, 0, 0, DrawWidth, DrawHeight, ClearBufferMask.ColorBufferBit, BlitFramebufferFilter.Nearest);
-			GL.BindFramebuffer(FramebufferTarget.ReadFramebuffer, 0);
+			GL.DrawPixels<int>(CanvasWidth, CanvasHeight, PixelFormat.Rgba, PixelType.UnsignedInt8888Reversed, canvas);
+			GL.BlitFramebuffer(0, 0, CanvasWidth, CanvasHeight, x1, y1, x2, y2, ClearBufferMask.ColorBufferBit, BlitFramebufferFilter.Nearest);
+
+			ScreenBorder(x1, y1, x2, y2);
 			
 			SwapBuffers();
 		}
 
 		public Window(string screen) : base(640, 400, OpenTK.Graphics.GraphicsMode.Default, "CivOne", GameWindowFlags.Default, DisplayDevice.Default, 4, 0, GraphicsContextFlags.ForwardCompatible)
 		{
+			CanvasWidth = 320;
+			CanvasHeight = 200;
+
 			// Load the first screen
 			IScreen startScreen;
 			switch (screen)
