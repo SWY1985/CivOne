@@ -805,9 +805,7 @@ namespace CivOne
 			_climate = climate;
 			_age = age;
 			
-			Task.Run(() => {
-				GenerateThread();
-			});
+			Task.Run(() => GenerateThread());
 		}
 		
 		public void LoadMap()
@@ -824,9 +822,7 @@ namespace CivOne
 			_age = -1;
 			FixedStartPositions = true;
 			
-			Task.Run(() => {
-				LoadMapThread();
-			});
+			Task.Run(() => LoadMapThread());
 		}
 		
 		public ITile this[int x, int y]
