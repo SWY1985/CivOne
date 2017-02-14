@@ -40,6 +40,38 @@ namespace CivOne
 		private int _mouseX, _mouseY;
 
 		private KeyModifier _keyModifier = KeyModifier.None;
+
+		private int ScaleX
+		{
+			get
+			{
+				return (ClientRectangle.Width - (ClientRectangle.Width % 320)) / 320;
+			}
+		}
+
+		private int ScaleY
+		{
+			get
+			{
+				return (ClientRectangle.Height - (ClientRectangle.Height % 200)) / 200;
+			}
+		}
+
+		private int DrawWidth
+		{
+			get
+			{
+				return (ClientRectangle.Width - (ClientRectangle.Width % 320));
+			}
+		}
+
+		private int DrawHeight
+		{
+			get
+			{
+				return (ClientRectangle.Height - (ClientRectangle.Height % 200));
+			}
+		}
 		
 		private static void LoadResources()
 		{
@@ -113,19 +145,13 @@ namespace CivOne
 
 		private IEnumerable<int> GetCanvas()
 		{
-			int ScaleX = 2, ScaleY = 2;
-
-			int[] colors = Canvas.Palette.Select(x => x.GetHashCode()).ToArray();
-			byte[,] bitmap = Canvas.GetBitmap;
-			int width = bitmap.GetLength(0) * ScaleX;
-			int height = bitmap.GetLength(1) * ScaleY;
-
-			for (int yy = height - 1; yy >= 0; yy--)
-			for (int xx = 0; xx < width; xx++)
+			Picture canvas = Canvas;
+			int[] colors = canvas.Palette.Select(x => x.GetHashCode()).ToArray();
+			byte[,] bitmap = canvas.ScaleBitmap(ScaleX, ScaleY);
+			for (int yy = bitmap.GetLength(1) - 1; yy >= 0; yy--)
+			for (int xx = 0; xx < bitmap.GetLength(0); xx++)
 			{
-				int sx = (xx - (xx % ScaleX)) / ScaleX;
-				int sy = (yy - (yy % ScaleY)) / ScaleY;
-				yield return colors[bitmap[sx, sy]].GetHashCode();
+				yield return colors[bitmap[xx, yy]].GetHashCode();
 			}
 		}
 
@@ -269,11 +295,11 @@ namespace CivOne
 		protected override void OnRenderFrame(FrameEventArgs args)
 		{
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-			GL.DrawPixels<int>(640, 400, PixelFormat.Rgba, PixelType.UnsignedInt8888Reversed, GetCanvas().ToArray());
+			GL.DrawPixels<int>(DrawWidth, DrawHeight, PixelFormat.Rgba, PixelType.UnsignedInt8888Reversed, GetCanvas().ToArray());
 			SwapBuffers();
 		}
 
-		public Window(string screen) : base(640, 400, OpenTK.Graphics.GraphicsMode.Default, "CivOne", GameWindowFlags.FixedWindow, DisplayDevice.Default, 4, 0, GraphicsContextFlags.ForwardCompatible)
+		public Window(string screen) : base(640, 400, OpenTK.Graphics.GraphicsMode.Default, "CivOne", GameWindowFlags.Default, DisplayDevice.Default, 4, 0, GraphicsContextFlags.ForwardCompatible)
 		{
 			// Load the first screen
 			IScreen startScreen;
