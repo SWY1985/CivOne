@@ -40,7 +40,7 @@ namespace CivOne.Screens
 		{
 			Picture background = Resources.Instance.LoadPIC("CBACK");
 			
-			_canvas = new Picture(320, 200, background.Image.Palette.Entries);
+			_canvas = new Picture(320, 200, background.Palette);
 			
 			AddLayer(background);
 			AddLayer(Resources.Instance.GetPart("CASTLE0", 0, 1, 52, 99), 135, 37);

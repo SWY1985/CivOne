@@ -32,7 +32,7 @@ namespace CivOne.Screens
 		
 		private Menu CreateMenu(int y, string title, EventHandler setChoice, params string[] menuTexts)
 		{
-			Menu menu = new Menu(Canvas.Image.Palette.Entries)
+			Menu menu = new Menu(Canvas.Palette)
 			{
 				Title = title,
 				X = 203,
@@ -108,7 +108,7 @@ namespace CivOne.Screens
 			
 			Picture background = Resources.Instance.LoadPIC("CUSTOM");
 			
-			_canvas = new Picture(320, 200, background.Image.Palette.Entries);
+			_canvas = new Picture(320, 200, background.Palette);
 			AddLayer(background, 0, 0);
 		}
 	}

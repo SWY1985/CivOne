@@ -11,10 +11,8 @@ using System;
 
 namespace CivOne
 {
-	class Program
+	internal class Program
 	{
-		
-		[STAThread]
 		private static void Main(string[] args)
 		{
 			string screen = null;
@@ -31,15 +29,12 @@ namespace CivOne
 				}
 			}
 			
-			if (!Window.CheckFiles())
-			{
-				Console.WriteLine("- Fatal error: Data directory is missing file(s).");
-				Environment.Exit(1);
-			}
-			
 			Console.WriteLine("Game Start");
 			
-			Window.CreateWindow(screen);
+			using (Window window = new Window(screen))
+			{
+				window.Run(60.0);
+			}
 			
 			Console.WriteLine("Game End");
 		}

@@ -9,10 +9,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using CivOne.GFX;
 using CivOne.Interfaces;
 
 namespace CivOne
@@ -217,21 +217,21 @@ namespace CivOne
 					_palette16 = new Color[]
 					{
 						Color.Transparent,
-						Color.FromArgb(shades[0], shades[0], shades[2]),
-						Color.FromArgb(shades[0], shades[2], shades[0]),
-						Color.FromArgb(shades[0], shades[2], shades[2]),
-						Color.FromArgb(shades[2], shades[0], shades[0]),
-						Color.FromArgb(shades[0], shades[0], shades[0]),
-						Color.FromArgb(shades[2], shades[1], shades[0]),
-						Color.FromArgb(shades[2], shades[2], shades[2]),
-						Color.FromArgb(shades[1], shades[1], shades[1]),
-						Color.FromArgb(shades[1], shades[1], shades[3]),
-						Color.FromArgb(shades[1], shades[3], shades[1]),
-						Color.FromArgb(shades[1], shades[3], shades[3]),
-						Color.FromArgb(shades[3], shades[1], shades[1]),
-						Color.FromArgb(shades[3], shades[1], shades[3]),
-						Color.FromArgb(shades[3], shades[3], shades[1]),
-						Color.FromArgb(shades[3], shades[3], shades[3]),
+						new Color(shades[0], shades[0], shades[2]),
+						new Color(shades[0], shades[2], shades[0]),
+						new Color(shades[0], shades[2], shades[2]),
+						new Color(shades[2], shades[0], shades[0]),
+						new Color(shades[0], shades[0], shades[0]),
+						new Color(shades[2], shades[1], shades[0]),
+						new Color(shades[2], shades[2], shades[2]),
+						new Color(shades[1], shades[1], shades[1]),
+						new Color(shades[1], shades[1], shades[3]),
+						new Color(shades[1], shades[3], shades[1]),
+						new Color(shades[1], shades[3], shades[3]),
+						new Color(shades[3], shades[1], shades[1]),
+						new Color(shades[3], shades[1], shades[3]),
+						new Color(shades[3], shades[3], shades[1]),
+						new Color(shades[3], shades[3], shades[3]),
 					};
 				}
 				return _palette16;

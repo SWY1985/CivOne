@@ -8,7 +8,6 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.Drawing;
 using System.Text;
 using CivOne.Enums;
 using CivOne.Events;
@@ -106,7 +105,18 @@ namespace CivOne.Screens
 					if (!args.Shift) c = Char.ToLower(c);
 					//if (args.KeyData == Keys.OemPeriod) c = '.';
 					//if (args.KeyData == Keys.Oemcomma) c = ',';
-					if (args.Shift && (c >= '0' && c <= '9')) c -= (char)16;
+					if (args.Shift && (c >= '0' && c <= '9'))
+					{
+						switch (c)
+						{
+							case '6': c = '^'; break;
+							case '7': c = '&'; break;
+							case '8': c = '*'; break;
+							case '9': c = '('; break;
+							case '0': c = ')'; break;
+							default: c -= (char)16; break;
+						}
+					}
 					if (!Resources.Instance.ValidCharacter(_fontId, c)) return false;
 					
 					if (_cursorPosition == -1)

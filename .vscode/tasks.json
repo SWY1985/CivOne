@@ -1,58 +1,16 @@
 {
 	"version": "0.1.0",
-	"linux": {
-		"command": "xbuild",
-		"args": ["CivOne.Unix.csproj", "/t:Rebuild"]
-	},
-	"osx": {
-		"command": "sh",
-		"isShellCommand": true,
-		"showOutput": "always",
-		"tasks": [
-			{
-				"taskName": "build",
-				"suppressTaskName": true,
-				"isBuildCommand": true,
-				"args": ["xbuild", "CivOne.Mac.csproj", "/t:Rebuild"]
-			},
-			{
-				"taskName": "run",
-				"suppressTaskName": true,
-				"isTestCommand": true,
-				"args": ["${workspaceRoot}/resources/osx/osx-run.sh"],
-				"showOutput": "always"
-			}
-		]
-	},
-	"windows": {
-		"command": "cmd",
-		"isShellCommand": true,
-		"showOutput": "always",
-		"args": ["/C"],
-		"tasks": [
-			{
-				"taskName": "build",
-				"suppressTaskName": true,
-				"isBuildCommand": true,
-				"args": ["msbuild", "${workspaceRoot}/CivOne.Win32.csproj", "/t:Rebuild"]
-			},
-			{
-				"taskName": "wpf",
-				"suppressTaskName": true,
-				"isBuildCommand": true,
-				"args": ["msbuild", "${workspaceRoot}/CivOne.WPF.csproj", "/t:Rebuild"]
-			},
-			{
-				"taskName": "run",
-				"suppressTaskName": true,
-				"isTestCommand": true,
-				"args": ["${workspaceRoot}/bin/CivOne.exe"]
-			},
-			{
-				"taskName": "setup",
-				"suppressTaskName": true,
-				"args": ["${workspaceRoot}/bin/CivOne.exe", "setup"]
-			}
-		]
-	}
+	"command": "dotnet",
+	"isShellCommand": true,
+	"args": [],
+	"tasks": [
+		{
+			"taskName": "build",
+			"args": [
+				"${workspaceRoot}//project.json"
+			],
+			"isBuildCommand": true,
+			"problemMatcher": "$msCompile"
+		}
+	]
 }

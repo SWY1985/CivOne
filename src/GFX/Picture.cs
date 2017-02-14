@@ -9,9 +9,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
 using CivOne.Enums;
 
 namespace CivOne.GFX
@@ -27,24 +24,25 @@ namespace CivOne.GFX
 		{
 			get
 			{
-				Bitmap output = new Bitmap(Width, Height, PixelFormat.Format8bppIndexed);
-				for (int y = 0; y < Height; y++)
-				{
-					byte[] imgData = new byte[Width];
-					for (int x = 0; x < Width; x++)
-					{
-						imgData[x] = _bitmap[x, y];
-					}
-					BitmapData bmpData = output.LockBits(new Rectangle(0, y, Width, 1), ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
-					Marshal.Copy(imgData, 0, bmpData.Scan0, Width);
-					output.UnlockBits(bmpData);
-				}
+				// Bitmap output = new Bitmap(Width, Height, PixelFormat.Format8bppIndexed);
+				// for (int y = 0; y < Height; y++)
+				// {
+				// 	byte[] imgData = new byte[Width];
+				// 	for (int x = 0; x < Width; x++)
+				// 	{
+				// 		imgData[x] = _bitmap[x, y];
+				// 	}
+				// 	BitmapData bmpData = output.LockBits(new Rectangle(0, y, Width, 1), ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
+				// 	Marshal.Copy(imgData, 0, bmpData.Scan0, Width);
+				// 	output.UnlockBits(bmpData);
+				// }
 				
-				ColorPalette palette = output.Palette;
-				for (int i = 0; i < Palette.Length; i++)
-					palette.Entries[i] = Palette[i];
-				output.Palette = palette;
-				return output;
+				// ColorPalette palette = output.Palette;
+				// for (int i = 0; i < Palette.Length; i++)
+				// 	palette.Entries[i] = Palette[i];
+				// output.Palette = palette;
+				// return output;
+				throw new NotImplementedException();
 			}
 		}
 
@@ -100,6 +98,21 @@ namespace CivOne.GFX
 				return _bitmap;
 			}
 		}
+
+		public byte[,] ScaleBitmap(int scaleX, int scaleY)
+		{
+			byte[,] output = new byte[Width * scaleX, Height * scaleY];
+			for (int yy = 0; yy < Height; yy++)
+			for (int xx = 0; xx < Width; xx++)
+			{
+				for (int sy = 0; sy < scaleY; sy++)
+				for (int sx = 0; sx < scaleX; sx++)
+				{
+					output[(xx * scaleX) + sx, (yy * scaleY) + sy] = _bitmap[xx, yy];
+				}
+			}
+			return output;
+		}
 		
 		public static void ReplaceColours(Picture image, byte colourFrom, byte colourTo)
 		{
@@ -117,23 +130,24 @@ namespace CivOne.GFX
 		}
 		public static void Clip(ref Bitmap image, int top, int right, int bottom, int left)
 		{
-			byte[] pixels = new byte[image.Width * image.Height];
+			// byte[] pixels = new byte[image.Width * image.Height];
 			
-			BitmapData bmpData = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed);
+			// BitmapData bmpData = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed);
 			
-			IntPtr pointer = bmpData.Scan0;
-			Marshal.Copy(pointer, pixels, 0, pixels.Length);
-			int index = 0;
-			for (int y = 0; y < image.Height; y++)
-			{
-				for (int x = 0; x < image.Width; x++)
-				{
-					if (x < left || x > (image.Width - 1 - right) || y < top || y > (image.Height - 1 - bottom)) pixels[index] = 0;
-					index++;
-				}
-			}
-			Marshal.Copy(pixels, 0, pointer, pixels.Length);
-			image.UnlockBits(bmpData);
+			// IntPtr pointer = bmpData.Scan0;
+			// Marshal.Copy(pointer, pixels, 0, pixels.Length);
+			// int index = 0;
+			// for (int y = 0; y < image.Height; y++)
+			// {
+			// 	for (int x = 0; x < image.Width; x++)
+			// 	{
+			// 		if (x < left || x > (image.Width - 1 - right) || y < top || y > (image.Height - 1 - bottom)) pixels[index] = 0;
+			// 		index++;
+			// 	}
+			// }
+			// Marshal.Copy(pixels, 0, pointer, pixels.Length);
+			// image.UnlockBits(bmpData);
+			throw new NotImplementedException();
 		}
 		
 		public void FillRectangle(byte colour, int left, int top, int width, int height)
@@ -145,44 +159,46 @@ namespace CivOne.GFX
 		
 		public static void FillRectangle(Bitmap image, byte colour, int top, int left, int width, int height)
 		{
-			byte[] pixels = new byte[image.Width * image.Height];
+			// byte[] pixels = new byte[image.Width * image.Height];
 			
-			BitmapData bmpData = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed);
+			// BitmapData bmpData = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed);
 			
-			IntPtr pointer = bmpData.Scan0;
-			Marshal.Copy(pointer, pixels, 0, pixels.Length);
-			int index = 0;
-			for (int y = 0; y < image.Height; y++)
-			{
-				for (int x = 0; x < image.Width; x++)
-				{
-					if (x >= left && x < (left + width) && y >= top && y < (top + height)) pixels[index] = colour;
-					index++;
-				}
-			}
-			Marshal.Copy(pixels, 0, pointer, pixels.Length);
-			image.UnlockBits(bmpData);
+			// IntPtr pointer = bmpData.Scan0;
+			// Marshal.Copy(pointer, pixels, 0, pixels.Length);
+			// int index = 0;
+			// for (int y = 0; y < image.Height; y++)
+			// {
+			// 	for (int x = 0; x < image.Width; x++)
+			// 	{
+			// 		if (x >= left && x < (left + width) && y >= top && y < (top + height)) pixels[index] = colour;
+			// 		index++;
+			// 	}
+			// }
+			// Marshal.Copy(pixels, 0, pointer, pixels.Length);
+			// image.UnlockBits(bmpData);
+			throw new NotImplementedException();
 		}
 		
 		public static void ReplaceColoursClip(Bitmap image, byte colourFrom, byte colourTo, int top, int right, int bottom, int left)
 		{
-			byte[] pixels = new byte[image.Width * image.Height];
+			// byte[] pixels = new byte[image.Width * image.Height];
 			
-			BitmapData bmpData = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed);
+			// BitmapData bmpData = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadWrite, PixelFormat.Format8bppIndexed);
 			
-			IntPtr pointer = bmpData.Scan0;
-			Marshal.Copy(pointer, pixels, 0, pixels.Length);
-			int index = 0;
-			for (int y = 0; y < image.Height; y++)
-			{
-				for (int x = 0; x < image.Width; x++)
-				{
-					if ((x < left || x > (image.Width - 1 - right) || y < top || y > (image.Height - 1 - bottom)) && pixels[index] == colourFrom) pixels[index] = colourTo;
-					index++;
-				}
-			}
-			Marshal.Copy(pixels, 0, pointer, pixels.Length);
-			image.UnlockBits(bmpData);
+			// IntPtr pointer = bmpData.Scan0;
+			// Marshal.Copy(pointer, pixels, 0, pixels.Length);
+			// int index = 0;
+			// for (int y = 0; y < image.Height; y++)
+			// {
+			// 	for (int x = 0; x < image.Width; x++)
+			// 	{
+			// 		if ((x < left || x > (image.Width - 1 - right) || y < top || y > (image.Height - 1 - bottom)) && pixels[index] == colourFrom) pixels[index] = colourTo;
+			// 		index++;
+			// 	}
+			// }
+			// Marshal.Copy(pixels, 0, pointer, pixels.Length);
+			// image.UnlockBits(bmpData);
+			throw new NotImplementedException();
 		}
 		
 		public void DrawText(string text, int font, byte colour, int x, int y, TextAlign align = TextAlign.Left)
@@ -362,28 +378,6 @@ namespace CivOne.GFX
 			for (int i = 0; i < colours.Length; i++)
 				_palette[i] = colours[i];
 			_bitmap = bytes;
-
-			/*
-			_cache = new Dictionary<string, Bitmap>();
-			_originalColours = colours;
-			_palette = colours;
-			_bitmap = bytes;
-			
-			_image = new Bitmap(bytes.GetLength(0), bytes.GetLength(1), PixelFormat.Format8bppIndexed);
-			for (int y = 0; y < _image.Height; y++)
-			{
-				byte[] imgData = new byte[_image.Width];
-				for (int x = 0; x < _image.Width; x++)
-				{
-					imgData[x] = bytes[x, y];
-				}
-				BitmapData bmpData = _image.LockBits(new Rectangle(0, y, _image.Width, 1), ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
-				Marshal.Copy(imgData, 0, bmpData.Scan0, _image.Width);
-				_image.UnlockBits(bmpData);
-			}
-			
-			for (int i = 0; i < colours.Length; i++)
-				_palette[i] = colours[i];*/
 		}
 		
 		public Picture(Picture picture) : this(picture.Width, picture.Height, picture.Palette)

@@ -7,7 +7,6 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using System.Drawing;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.GFX;
@@ -23,7 +22,7 @@ namespace CivOne.Screens.Dialogs
 		protected override void FirstUpdate()
 		{
 			int menuWidth = _textLines.Max(b => b.Width) + 5;
-			Menu menu = new Menu(Canvas.Image.Palette.Entries, Selection(45, 28, menuWidth, 10))
+			Menu menu = new Menu(Canvas.Palette, Selection(45, 28, menuWidth, 10))
 			{
 				X = 103,
 				Y = 100,
