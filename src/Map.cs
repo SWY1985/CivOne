@@ -10,7 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
+using System.Threading.Tasks;
 using CivOne.Interfaces;
 using CivOne.Enums;
 using CivOne.GFX;
@@ -805,7 +805,9 @@ namespace CivOne
 			_climate = climate;
 			_age = age;
 			
-			new Thread(new ThreadStart(GenerateThread)).Start();
+			Task.Run(() => {
+				GenerateThread();
+			});
 		}
 		
 		public void LoadMap()
@@ -822,7 +824,9 @@ namespace CivOne
 			_age = -1;
 			FixedStartPositions = true;
 			
-			new Thread(new ThreadStart(LoadMapThread)).Start();
+			Task.Run(() => {
+				LoadMapThread();
+			});
 		}
 		
 		public ITile this[int x, int y]
