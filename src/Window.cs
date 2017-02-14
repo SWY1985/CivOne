@@ -113,22 +113,24 @@ namespace CivOne
 
 		private IEnumerable<int> GetCanvas()
 		{
-			Picture canvas = Canvas;
-			byte[,] bitmap = canvas.ScaleBitmap(2, 2);
-			for (int yy = bitmap.GetLength(1) - 1; yy >= 0; yy--)
-			for (int xx = 0; xx < bitmap.GetLength(0); xx++)
+			int ScaleX = 2, ScaleY = 2;
+
+			int[] colors = Canvas.Palette.Select(x => x.GetHashCode()).ToArray();
+			byte[,] bitmap = Canvas.GetBitmap;
+			int width = bitmap.GetLength(0) * ScaleX;
+			int height = bitmap.GetLength(1) * ScaleY;
+
+			for (int yy = height - 1; yy >= 0; yy--)
+			for (int xx = 0; xx < width; xx++)
 			{
-				yield return canvas.Palette[bitmap[xx, yy]].GetHashCode();
+				int sx = (xx - (xx % ScaleX)) / ScaleX;
+				int sy = (yy - (yy % ScaleY)) / ScaleY;
+				yield return colors[bitmap[sx, sy]].GetHashCode();
 			}
 		}
 
 		private KeyboardEventArgs ConvertKeyboardEvents(KeyboardKeyEventArgs args)
 		{
-			// KeyModifier modifier = KeyModifier.None;
-			// if (args.Control) modifier |= KeyModifier.Control;
-			// if (args.Shift) modifier |= KeyModifier.Shift;
-			// if (args.Alt) modifier |= KeyModifier.Alt;
-
 			switch (args.Key)
 			{
 				case TkKey.F1: return new KeyboardEventArgs(CivKey.F1, _keyModifier);
