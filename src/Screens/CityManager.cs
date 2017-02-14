@@ -9,7 +9,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -185,7 +184,7 @@ namespace CivOne.Screens
 
 			Cursor = MouseCursor.Pointer;
 			
-			Color[] palette = Resources.Instance.LoadPIC("SP257").Image.Palette.Entries;
+			Color[] palette = Resources.Instance.LoadPIC("SP257").Palette;
 			
 			_canvas = new Picture(320, 200, palette);
 			_canvas.FillRectangle(5, 0, 0, 320, 200);

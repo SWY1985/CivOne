@@ -8,8 +8,8 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -42,12 +42,12 @@ namespace CivOne.Screens
 			
 			int titleX = 204, iconX = 8, iconY = 8;
 			string category = "(unknown)";
-			if (typeof(ITile).IsAssignableFrom(_singlePage.GetType())) { category = "Terrain Type"; iconX = 23; iconY = 4; }
-			else if (typeof(IBuilding).IsAssignableFrom(_singlePage.GetType())) { category = "City Improvement"; iconX = 36; iconY = 16; }
-			else if (typeof(IWonder).IsAssignableFrom(_singlePage.GetType())) { category = "Wonder of the World"; titleX = 160; }
-			else if (typeof(IUnit).IsAssignableFrom(_singlePage.GetType())) { category = "Military Units"; titleX = 224; }
-			else if (typeof(IAdvance).IsAssignableFrom(_singlePage.GetType())) { category = "Civilization Advance"; }
-			else if (typeof(IConcept).IsAssignableFrom(_singlePage.GetType())) { category = "Game Concepts"; titleX = 160; }
+			if (typeof(ITile).GetTypeInfo().IsAssignableFrom(_singlePage.GetType())) { category = "Terrain Type"; iconX = 23; iconY = 4; }
+			else if (typeof(IBuilding).GetTypeInfo().IsAssignableFrom(_singlePage.GetType())) { category = "City Improvement"; iconX = 36; iconY = 16; }
+			else if (typeof(IWonder).GetTypeInfo().IsAssignableFrom(_singlePage.GetType())) { category = "Wonder of the World"; titleX = 160; }
+			else if (typeof(IUnit).GetTypeInfo().IsAssignableFrom(_singlePage.GetType())) { category = "Military Units"; titleX = 224; }
+			else if (typeof(IAdvance).GetTypeInfo().IsAssignableFrom(_singlePage.GetType())) { category = "Civilization Advance"; }
+			else if (typeof(IConcept).GetTypeInfo().IsAssignableFrom(_singlePage.GetType())) { category = "Game Concepts"; titleX = 160; }
 			
 			if (!_icon) titleX = 160;
 			if (_singlePage.Icon != null && _icon)
@@ -84,7 +84,7 @@ namespace CivOne.Screens
 			
 			if (_singlePage == null)
 			{
-				_canvas = new Picture(320, 200, Resources.WorldMapTiles.Image.Palette.Entries);
+				_canvas = new Picture(320, 200, Resources.WorldMapTiles.Palette);
 				
 				_canvas.FillRectangle(14, 0, 0, 320, 200);
 				_canvas.FillRectangle(15, 60, 2, 200, 9);
@@ -218,7 +218,7 @@ namespace CivOne.Screens
 		
 		private void DrawTerrainText()
 		{
-			if (!typeof(ITile).IsAssignableFrom(_singlePage.GetType())) return;
+			if (!typeof(ITile).GetTypeInfo().IsAssignableFrom(_singlePage.GetType())) return;
 			
 			ITile tile = (ITile)_singlePage;
 			int move = 1, defense = 0;
@@ -315,8 +315,8 @@ namespace CivOne.Screens
 
 			_update = false;
 			_singlePage = page;
-			Color[] palette = Resources.Instance.LoadPIC("SP257").Image.Palette.Entries;
-			if (page.Icon != null) palette = Resources.PaletteCombine(palette, page.Icon.Image.Palette.Entries, 16);
+			Color[] palette = Resources.Instance.LoadPIC("SP257").Palette;
+			if (page.Icon != null) palette = Resources.PaletteCombine(palette, page.Icon.Palette, 16);
 			_canvas = new Picture(320, 200, palette);
 			
 			int border = Common.Random.Next(2);

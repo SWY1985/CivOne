@@ -8,7 +8,6 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.Drawing;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -59,7 +58,7 @@ namespace CivOne.Screens
 		
 		private void MenuBarGame(object sender, EventArgs args)
 		{
-			_gameMenu = new GameMenu(_canvas.Image.Palette.Entries);
+			_gameMenu = new GameMenu(_canvas.Palette);
 			_gameMenu.Items.Add(new GameMenu.Item("Tax Rate"));
 			_gameMenu.Items.Add(new GameMenu.Item("Luxuries Rate"));
 			_gameMenu.Items.Add(new GameMenu.Item("FindCity") { Enabled = false });
@@ -86,7 +85,7 @@ namespace CivOne.Screens
 		{
 			if (Game.ActiveUnit == null) return;
 
-			_gameMenu = new GameMenu(_canvas.Image.Palette.Entries);
+			_gameMenu = new GameMenu(_canvas.Palette);
 			_gameMenu.Items.AddRange(Game.ActiveUnit.MenuItems);
 			
 			_menuX = 72;
@@ -97,7 +96,7 @@ namespace CivOne.Screens
 		
 		private void MenuBarAdvisors(object sender, EventArgs args)
 		{
-			_gameMenu = new GameMenu(_canvas.Image.Palette.Entries);
+			_gameMenu = new GameMenu(_canvas.Palette);
 			_gameMenu.Items.Add(new GameMenu.Item("City Status (F1)"));
 			_gameMenu.Items.Add(new GameMenu.Item("Military Advisor (F2)"));
 			_gameMenu.Items.Add(new GameMenu.Item("Intelligence Advisor (F3)"));
@@ -120,7 +119,7 @@ namespace CivOne.Screens
 		
 		private void MenuBarWorld(object sender, EventArgs args)
 		{
-			_gameMenu = new GameMenu(_canvas.Image.Palette.Entries);
+			_gameMenu = new GameMenu(_canvas.Palette);
 			_gameMenu.Items.Add(new GameMenu.Item("Wonders of the World (F7)"));
 			_gameMenu.Items.Add(new GameMenu.Item("Top 5 Cities (F8)"));
 			_gameMenu.Items.Add(new GameMenu.Item("Civilization Score (F9)"));
@@ -139,7 +138,7 @@ namespace CivOne.Screens
 		
 		private void MenuBarCivilopedia(object sender, EventArgs args)
 		{
-			_gameMenu = new GameMenu(_canvas.Image.Palette.Entries);
+			_gameMenu = new GameMenu(_canvas.Palette);
 			_gameMenu.Items.Add(new GameMenu.Item("Complete"));
 			_gameMenu.Items.Add(new GameMenu.Item("Civilization Advances"));
 			_gameMenu.Items.Add(new GameMenu.Item("City Improvements"));
@@ -343,7 +342,7 @@ namespace CivOne.Screens
 		{
 			Cursor = MouseCursor.Pointer;
 			
-			Color[] palette = Resources.Instance.LoadPIC("SP257").Image.Palette.Entries;
+			Color[] palette = Resources.Instance.LoadPIC("SP257").Palette;
 			
 			_canvas = new Picture(320, 200, palette);
 			_canvas.FillRectangle(5, 0, 0, 320, 200);

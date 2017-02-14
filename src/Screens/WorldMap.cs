@@ -40,7 +40,7 @@ namespace CivOne.Screens
 		
 		public WorldMap()
 		{
-			_canvas = new Picture(320, 200, Resources.WorldMapTiles.Image.Palette.Entries);
+			_canvas = new Picture(320, 200, Resources.WorldMapTiles.Palette);
 			
 			for (int x = 0; x < Map.WIDTH; x++)
 			for (int y = 0; y < Map.HEIGHT; y++)

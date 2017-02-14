@@ -7,12 +7,9 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using CivOne.Enums;
-using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.IO;
 using CivOne.Screens;

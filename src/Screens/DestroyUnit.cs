@@ -8,7 +8,6 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;

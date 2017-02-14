@@ -8,7 +8,6 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.Drawing;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
@@ -55,7 +54,7 @@ namespace CivOne.Screens
 			Cursor = MouseCursor.None;
 
 			bool modernGovernment = Human.Advances.Any(a => a.Id == (int)Advance.Invention);
-			Color[] palette = Resources.Instance.LoadPIC("SP257").Image.Palette.Entries;
+			Color[] palette = Resources.Instance.LoadPIC("SP257").Palette;
 
 			Picture[] governmentPortraits = new Picture[4];
 			if (showGovernment)
@@ -122,7 +121,7 @@ namespace CivOne.Screens
 			}
 			else
 			{
-				for (int xx = 0; xx < _canvas.Image.Width; xx += Icons.Newspaper.Width)
+				for (int xx = 0; xx < _canvas.Width; xx += Icons.Newspaper.Width)
 				{
 					AddLayer(Icons.Newspaper, xx, 100);
 				}

@@ -9,7 +9,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
@@ -490,7 +489,7 @@ namespace CivOne.Screens
 			_x = 0;
 			_y = 0;
 			
-			_palette = Resources.Instance.LoadPIC("SP257").Image.Palette.Entries;
+			_palette = Resources.Instance.LoadPIC("SP257").Palette;
 		}
 	}
 }

@@ -8,7 +8,6 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
 using CivOne.Enums;
@@ -76,7 +75,7 @@ namespace CivOne.Templates
 		{
 			get
 			{
-				return Canvas.Image.Palette.Entries;
+				return Canvas.Palette;
 			}
 		}
 		public virtual MouseCursor Cursor { get; protected set; }

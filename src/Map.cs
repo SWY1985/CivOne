@@ -9,9 +9,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing.Imaging;
 using System.Linq;
-using System.Threading;
+using System.Threading.Tasks;
 using CivOne.Interfaces;
 using CivOne.Enums;
 using CivOne.GFX;
@@ -69,6 +68,8 @@ namespace CivOne
 		public void ChangeTileType(int x, int y, Terrain type)
 		{
 			bool special = TileIsSpecial(x, y);
+			bool road = _tiles[x, y].Road;
+			bool railRoad = _tiles[x, y].RailRoad;
 			switch(type)
 			{
 				case Terrain.Forest: _tiles[x, y] = new Forest(x, y, special); break;
@@ -85,6 +86,8 @@ namespace CivOne
 				case Terrain.Arctic: _tiles[x, y] = new Arctic(x, y, special); break;
 				case Terrain.Ocean: _tiles[x, y] = new Ocean(x, y, special); break;
 			}
+			_tiles[x, y].Road = road;
+			_tiles[x, y].RailRoad = railRoad;
 		}
 		
 		private int ModGrid(int x, int y)
@@ -648,39 +651,41 @@ namespace CivOne
 		
 		public void SaveBitmap()
 		{
-			string filename = Common.CaptureFilename;
-			if (filename == null) return;
+			// string filename = Common.CaptureFilename;
+			// if (filename == null) return;
 			
-			Picture bmp = new Picture(WIDTH * 16, HEIGHT * 16, Resources.Instance.LoadPIC("SP257").Image.Palette.Entries);
+			// Picture bmp = new Picture(WIDTH * 16, HEIGHT * 16, Resources.Instance.LoadPIC("SP257").Palette);
 			
-			for (int x = 0; x < WIDTH; x++)
-			for (int y = 0; y < HEIGHT; y++)
-			{
-				bmp.AddLayer(Resources.Instance.GetTile(_tiles[x, y]), x * 16, y * 16);
-			}
+			// for (int x = 0; x < WIDTH; x++)
+			// for (int y = 0; y < HEIGHT; y++)
+			// {
+			// 	bmp.AddLayer(Resources.Instance.GetTile(_tiles[x, y]), x * 16, y * 16);
+			// }
 			
-			bmp.Image.Save(filename, ImageFormat.Png);
-			Console.WriteLine("DEBUG: Map saved as bitmap");
+			// bmp.Image.Save(filename, ImageFormat.Png);
+			// Console.WriteLine("DEBUG: Map saved as bitmap");
+			throw new NotImplementedException();
 		}
 		
 		private void SaveContinentBitmap()
 		{
-			Picture bmp = new Picture(WIDTH * 16, HEIGHT * 16, Resources.Instance.LoadPIC("SP257").Image.Palette.Entries);
+			// Picture bmp = new Picture(WIDTH * 16, HEIGHT * 16, Resources.Instance.LoadPIC("SP257").Palette);
 			
-			for (int x = 0; x < WIDTH; x++)
-			for (int y = 0; y < HEIGHT; y++)
-			{
-				bmp.AddLayer(Resources.Instance.GetTile(_tiles[x, y]), x * 16, y * 16);
-				//bmp.FillRectangle(_tiles[x, y].ContinentId, (x * 16) + 4, (y * 16) + 4, 8, 8);
-				bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, 5, (x * 16 + 8), (y * 16 + 3), TextAlign.Center);
-				bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, 5, (x * 16 + 7), (y * 16 + 4), TextAlign.Center);
-				bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, 5, (x * 16 + 9), (y * 16 + 4), TextAlign.Center);
-				bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, 5, (x * 16 + 8), (y * 16 + 5), TextAlign.Center);
-				bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, _tiles[x, y].ContinentId, (x * 16 + 8), (y * 16 + 4), TextAlign.Center);
-			}
+			// for (int x = 0; x < WIDTH; x++)
+			// for (int y = 0; y < HEIGHT; y++)
+			// {
+			// 	bmp.AddLayer(Resources.Instance.GetTile(_tiles[x, y]), x * 16, y * 16);
+			// 	//bmp.FillRectangle(_tiles[x, y].ContinentId, (x * 16) + 4, (y * 16) + 4, 8, 8);
+			// 	bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, 5, (x * 16 + 8), (y * 16 + 3), TextAlign.Center);
+			// 	bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, 5, (x * 16 + 7), (y * 16 + 4), TextAlign.Center);
+			// 	bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, 5, (x * 16 + 9), (y * 16 + 4), TextAlign.Center);
+			// 	bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, 5, (x * 16 + 8), (y * 16 + 5), TextAlign.Center);
+			// 	bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, _tiles[x, y].ContinentId, (x * 16 + 8), (y * 16 + 4), TextAlign.Center);
+			// }
 			
-			bmp.Image.Save("capture/map.png", ImageFormat.Png);
-			Console.WriteLine("DEBUG: Map saved as bitmap");
+			// bmp.Image.Save("capture/map.png", ImageFormat.Png);
+			// Console.WriteLine("DEBUG: Map saved as bitmap");
+			throw new NotImplementedException();
 		}
 		
 		private void GenerateThread()
@@ -800,7 +805,7 @@ namespace CivOne
 			_climate = climate;
 			_age = age;
 			
-			new Thread(new ThreadStart(GenerateThread)).Start();
+			Task.Run(() => GenerateThread());
 		}
 		
 		public void LoadMap()
@@ -817,7 +822,7 @@ namespace CivOne
 			_age = -1;
 			FixedStartPositions = true;
 			
-			new Thread(new ThreadStart(LoadMapThread)).Start();
+			Task.Run(() => LoadMapThread());
 		}
 		
 		public ITile this[int x, int y]

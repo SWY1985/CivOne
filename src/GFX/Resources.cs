@@ -9,8 +9,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using CivOne.Enums;
 using CivOne.Interfaces;
@@ -52,7 +50,7 @@ namespace CivOne.GFX
 			
 			foreach (ushort offset in fontOffsets)
 			{
-				_fonts.Add(new Fontset(file, offset, LoadPIC("SP257").Image.Palette.Entries));
+				_fonts.Add(new Fontset(file, offset, LoadPIC("SP257").Palette));
 			}
 		}
 		
@@ -196,7 +194,7 @@ namespace CivOne.GFX
 				if (_worldMapTiles == null)
 				{
 					Picture sp299 = Resources.Instance.LoadPIC("SP299");
-					_worldMapTiles = new Picture(48, 8, sp299.Image.Palette.Entries);
+					_worldMapTiles = new Picture(48, 8, sp299.Palette);
 					_worldMapTiles.AddLayer(sp299.GetPart(160, 111, 48, 8));
 				}
 				return _worldMapTiles;
@@ -205,7 +203,7 @@ namespace CivOne.GFX
 		
 		public static Color[] PaletteCombine(Color[] palette1, Color[] palette2, byte start = 0, byte end = 255)
 		{
-			Color invisible = Color.FromArgb(252, 84, 252);
+			Color invisible = new Color(252, 84, 252);
 			for (int i = start; i < end; i++)
 			{
 				if (palette2[i] == invisible) continue;
