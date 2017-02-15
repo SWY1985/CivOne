@@ -36,6 +36,13 @@ namespace CivOne.Screens
 		{
 			if (_update)
 			{
+				_canvas.FillRectangle(5, 0, 0, 320, 8);
+				_canvas.DrawText("GAME", FONT_ID, 15, 7, 8, 1, TextAlign.Left);
+				_canvas.DrawText("ORDERS", FONT_ID, 15, 7, 64, 1, TextAlign.Left);
+				_canvas.DrawText("ADVISORS", FONT_ID, 15, 7, 128, 1, TextAlign.Left);
+				_canvas.DrawText("WORLD", FONT_ID, 15, 7, 192, 1, TextAlign.Left);
+				_canvas.DrawText("CIVILOPEDIA", FONT_ID, 15, 7, 240, 1, TextAlign.Left);
+
 				_update = false;
 				return true;
 			}
@@ -97,16 +104,17 @@ namespace CivOne.Screens
 
 			return false;
 		}
+
+		public void Resize()
+		{
+			_update = true;
+		}
 		
 		public MenuBar(Color[] palette)
 		{
 			_canvas = new Picture(320, 8, palette);
 			_canvas.FillRectangle(5, 0, 0, 320, 8);
-			_canvas.DrawText("GAME", FONT_ID, 15, 7, 8, 1, TextAlign.Left);
-			_canvas.DrawText("ORDERS", FONT_ID, 15, 7, 64, 1, TextAlign.Left);
-			_canvas.DrawText("ADVISORS", FONT_ID, 15, 7, 128, 1, TextAlign.Left);
-			_canvas.DrawText("WORLD", FONT_ID, 15, 7, 192, 1, TextAlign.Left);
-			_canvas.DrawText("CIVILOPEDIA", FONT_ID, 15, 7, 240, 1, TextAlign.Left);
+			_update = true;
 			
 			_rectMenus = new Rectangle[5];
 			_rectMenus[0] = new Rectangle(0, 0, 56, 8);

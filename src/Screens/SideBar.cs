@@ -22,7 +22,8 @@ namespace CivOne.Screens
 	{
 		private bool _update = true;
 		
-		private readonly Picture _miniMap, _demographics, _gameInfo;
+		private readonly Picture _miniMap, _demographics;
+		private Picture _gameInfo;
 		private readonly Picture _background;
 		
 		private void DrawMiniMap(uint gameTick = 0)
@@ -113,11 +114,11 @@ namespace CivOne.Screens
 			IUnit unit = Game.ActiveUnit;
 			
 			_gameInfo.FillLayerTile(_background);
-			_gameInfo.AddBorder(15, 8, 0, 0, 80, 103);
+			_gameInfo.AddBorder(15, 8, 0, 0, 80, _gameInfo.Height);
 			
 			if (Game.CurrentPlayer != Human || GameTask.Any())
 			{
-				_gameInfo.FillRectangle((byte)((gameTick % 4 < 2) ? 15 : 8), 2, 95, 6, 6);
+				_gameInfo.FillRectangle((byte)((gameTick % 4 < 2) ? 15 : 8), 2, _gameInfo.Height - 8, 6, 6);
 				return;
 			}
 
@@ -233,6 +234,13 @@ namespace CivOne.Screens
 			}
 		}
 		
+		public void Resize(int height)
+		{
+			_canvas = new Picture(80, height, _canvas.Palette);
+			_gameInfo = new Picture(80, (height - 89), _canvas.Palette);
+			_update = true;
+		}
+
 		public SideBar(Color[] palette)
 		{
 			_background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
