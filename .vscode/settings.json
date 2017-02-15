@@ -1,8 +1,6 @@
 // These are the settings for editing CivOne in Visual Studio Code.
-// Please do not change them! 
+// Please do not change them!
 {
-	// Suppress the warning that the .NET CLI is not on the path.
-	"csharp.suppressDotnetInstallWarning": true,
 	// Controls if the editor should automatically close brackets after opening them.
 	"editor.autoClosingBrackets": false,
 	// Controls if the editor will insert spaces for tabs. If set to auto, the value will be guessed based on the opened file.

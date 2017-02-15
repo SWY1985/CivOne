@@ -1,8 +1,10 @@
+// These are the settings for editing CivOne in Visual Studio Code.
+// Please do not change them!
 {
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": ".NET Core Launch (console)",
+			"name": "Launch Game",
 			"type": "coreclr",
 			"request": "launch",
 			"preLaunchTask": "build",
@@ -14,7 +16,31 @@
 			"internalConsoleOptions": "openOnSessionStart"
 		},
 		{
-			"name": ".NET Core Attach",
+			"name": "Launch Setup",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "build",
+			"program": "${workspaceRoot}\\bin\\Debug\\netcoreapp1.1\\CivOne.dll",
+			"args": ["setup"],
+			"cwd": "${workspaceRoot}",
+			"externalConsole": false,
+			"stopAtEntry": false,
+			"internalConsoleOptions": "openOnSessionStart"
+		},
+		{
+			"name": "Launch Demo",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "build",
+			"program": "${workspaceRoot}\\bin\\Debug\\netcoreapp1.1\\CivOne.dll",
+			"args": ["demo"],
+			"cwd": "${workspaceRoot}",
+			"externalConsole": false,
+			"stopAtEntry": false,
+			"internalConsoleOptions": "openOnSessionStart"
+		},
+		{
+			"name": "Attach Process",
 			"type": "coreclr",
 			"request": "attach",
 			"processId": "${command.pickProcess}"
