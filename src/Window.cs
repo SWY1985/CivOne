@@ -47,7 +47,19 @@ namespace CivOne
 		{
 			get
 			{
-				return (ClientRectangle.Width - (ClientRectangle.Width % CanvasWidth)) / CanvasWidth;
+				switch (Settings.Instance.AspectRatio)
+				{
+					case AspectRatio.Fixed:
+					case AspectRatio.ScaledFixed:
+					case AspectRatio.Expand:
+						int scaleX = (ClientRectangle.Width - (ClientRectangle.Width % CanvasWidth)) / CanvasWidth;
+						int scaleY = (ClientRectangle.Height - (ClientRectangle.Height % CanvasHeight)) / CanvasHeight;
+						if (scaleX > scaleY)
+							return scaleY;
+						return scaleX;
+					default:
+						return (ClientRectangle.Width - (ClientRectangle.Width % CanvasWidth)) / CanvasWidth;
+				}
 			}
 		}
 
@@ -55,7 +67,19 @@ namespace CivOne
 		{
 			get
 			{
-				return (ClientRectangle.Height - (ClientRectangle.Height % CanvasHeight)) / CanvasHeight;
+				switch (Settings.Instance.AspectRatio)
+				{
+					case AspectRatio.Fixed:
+					case AspectRatio.ScaledFixed:
+					case AspectRatio.Expand:
+						int scaleX = (ClientRectangle.Width - (ClientRectangle.Width % CanvasWidth)) / CanvasWidth;
+						int scaleY = (ClientRectangle.Height - (ClientRectangle.Height % CanvasHeight)) / CanvasHeight;
+						if (scaleY > scaleX)
+							return scaleX;
+						return scaleY;
+					default:
+						return (ClientRectangle.Height - (ClientRectangle.Height % CanvasHeight)) / CanvasHeight;
+				}
 			}
 		}
 
@@ -66,7 +90,7 @@ namespace CivOne
 		{
 			get
 			{
-				return (ClientRectangle.Width - (ClientRectangle.Width % CanvasWidth));
+				return CanvasWidth * ScaleX;
 			}
 		}
 
@@ -74,7 +98,7 @@ namespace CivOne
 		{
 			get
 			{
-				return (ClientRectangle.Height - (ClientRectangle.Height % CanvasHeight));
+				return CanvasHeight * ScaleY;
 			}
 		}
 		
@@ -189,6 +213,38 @@ namespace CivOne
 			for (int xx = 0; xx < bitmap.GetLength(0); xx++)
 			{
 				yield return colors[bitmap[xx, yy]];
+			}
+		}
+
+		private void GetBorders(out int x1, out int y1, out int x2, out int y2)
+		{
+			x1 = (ClientSize.Width - DrawWidth) / 2;
+			y1 = (ClientSize.Height - DrawHeight) / 2;
+			x2 = x1 + DrawWidth;
+			y2 = y1 + DrawHeight;
+
+			switch (Settings.Instance.AspectRatio)
+			{
+				case AspectRatio.Scaled:
+					x1 = 0;
+					y1 = 0;
+					x2 = ClientSize.Width;
+					y2 = ClientSize.Height;
+					break;
+				case AspectRatio.ScaledFixed:
+					float scaleX = (float)ClientSize.Width / CanvasWidth;
+					float scaleY = (float)ClientSize.Height / CanvasHeight;
+					if (scaleX > scaleY) scaleX = scaleY;
+					else if (scaleY > scaleX) scaleY = scaleX;
+
+					int drawWidth = (int)((float)CanvasWidth * scaleX);
+					int drawHeight = (int)((float)CanvasHeight * scaleY);
+
+					x1 = (ClientSize.Width - drawWidth) / 2;
+					y1 = (ClientSize.Height - drawHeight) / 2;
+					x2 = x1 + drawWidth;
+					y2 = y1 + drawHeight;
+					break;
 			}
 		}
 
@@ -346,15 +402,29 @@ namespace CivOne
 				return;
 			}
 
-			int x1 = (ClientSize.Width - DrawWidth) / 2;
-			int y1 = (ClientSize.Height - DrawHeight) / 2;
-			int x2 = x1 + DrawWidth;
-			int y2 = y1 + DrawHeight;
+			float scaleX = (float)ClientSize.Width / CanvasWidth;
+			float scaleY = (float)ClientSize.Height / CanvasHeight;
+			int x1, y1, x2, y2;
+			GetBorders(out x1, out y1, out x2, out y2);
 
 			if (WindowState != WindowState.Minimized && this.Focused)
 			{
-				_mouseX = (Mouse.X - x1) / ScaleX;
-				_mouseY = (Mouse.Y - y1) / ScaleY;
+				switch (Settings.Instance.AspectRatio)
+				{
+					case AspectRatio.Scaled:
+
+						break;
+					case AspectRatio.ScaledFixed:
+						if (scaleX > scaleY) scaleX = scaleY;
+						else if (scaleY > scaleX) scaleY = scaleX;
+						break;
+					default:
+						scaleX = ScaleX;
+						scaleY = ScaleY;
+						break;
+				}
+				_mouseX = (int)((Mouse.X - x1) / scaleX);
+				_mouseY = (int)((Mouse.Y - y1) / scaleY);
 
 				CursorVisible = (_mouseX <= 0 || _mouseX >= (CanvasWidth - 1) || _mouseY <= 0 || _mouseY >= (CanvasHeight - 1));
 			}
@@ -373,15 +443,67 @@ namespace CivOne
 			GL.Clear(ClearBufferMask.ColorBufferBit);
 
 			int[] canvas = GetCanvas().ToArray();
-			int x1 = (ClientSize.Width - DrawWidth) / 2;
-			int y1 = (ClientSize.Height - DrawHeight) / 2;
-			int x2 = x1 + DrawWidth;
-			int y2 = y1 + DrawHeight;
+			// int x1 = (ClientSize.Width - DrawWidth) / 2;
+			// int y1 = (ClientSize.Height - DrawHeight) / 2;
+			// int x2 = x1 + DrawWidth;
+			// int y2 = y1 + DrawHeight;
+
+			// BlitFramebufferFilter fbFilter;
+			// switch (Settings.Instance.AspectRatio)
+			// {
+			// 	case AspectRatio.Scaled:
+			// 		x1 = 0;
+			// 		y1 = 0;
+			// 		x2 = ClientSize.Width;
+			// 		y2 = ClientSize.Height;
+			// 		fbFilter = BlitFramebufferFilter.Linear;
+			// 		break;
+			// 	case AspectRatio.ScaledFixed:
+			// 		float scaleX = (float)ClientSize.Width / CanvasWidth;
+			// 		float scaleY = (float)ClientSize.Height / CanvasHeight;
+			// 		if (scaleX > scaleY) scaleX = scaleY;
+			// 		else if (scaleY > scaleX) scaleY = scaleX;
+
+			// 		int drawWidth = (int)((float)CanvasWidth * scaleX);
+			// 		int drawHeight = (int)((float)CanvasHeight * scaleY);
+
+			// 		x1 = (ClientSize.Width - drawWidth) / 2;
+			// 		y1 = (ClientSize.Height - drawHeight) / 2;
+			// 		x2 = x1 + drawWidth;
+			// 		y2 = y1 + drawHeight;
+			// 		fbFilter = BlitFramebufferFilter.Linear;
+			// 		break;
+			// 	default:
+			// 		fbFilter = BlitFramebufferFilter.Nearest;
+			// 		break;
+			// }
+
+			BlitFramebufferFilter fbFilter;
+			int x1, y1, x2, y2;
+			GetBorders(out x1, out y1, out x2, out y2);
+			switch (Settings.Instance.AspectRatio)
+			{
+				case AspectRatio.Scaled:
+				case AspectRatio.ScaledFixed:
+					fbFilter = BlitFramebufferFilter.Linear;
+					break;
+				default:
+					fbFilter = BlitFramebufferFilter.Nearest;
+					break;
+			}
 
 			GL.DrawPixels<int>(CanvasWidth, CanvasHeight, PixelFormat.Rgba, PixelType.UnsignedInt8888Reversed, canvas);
-			GL.BlitFramebuffer(0, 0, CanvasWidth, CanvasHeight, x1, y1, x2, y2, ClearBufferMask.ColorBufferBit, BlitFramebufferFilter.Nearest);
+			GL.BlitFramebuffer(0, 0, CanvasWidth, CanvasHeight, x1, y1, x2, y2, ClearBufferMask.ColorBufferBit, fbFilter);
 
-			ScreenBorder(x1, y1, x2, y2);
+			switch (Settings.Instance.AspectRatio)
+			{
+				case AspectRatio.Scaled:
+				case AspectRatio.Expand:
+					break;
+				default:
+					ScreenBorder(x1, y1, x2, y2);
+					break;
+			}
 			
 			SwapBuffers();
 		}

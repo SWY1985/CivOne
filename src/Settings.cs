@@ -20,6 +20,7 @@ namespace CivOne
 		private bool _fullScreen = false;
 		private bool _rightSideBar = false;
 		private int _scale = 2;
+		private AspectRatio _aspectRatio = AspectRatio.Auto;
 		private bool _revealWorld = false;
 		
 		internal string BinDirectory
@@ -124,6 +125,21 @@ namespace CivOne
 				if (value < 1 || value > 4) return;
 				_scale = value;
 				SetSetting("Scale", _scale.ToString());
+				Common.ReloadSettings = true;
+			}
+		}
+
+		internal AspectRatio AspectRatio
+		{
+			get
+			{
+				return _aspectRatio;
+			}
+			set
+			{
+				_aspectRatio = value;
+				string saveValue = ((int)_aspectRatio).ToString();
+				SetSetting("AspectRatio", saveValue);
 				Common.ReloadSettings = true;
 			}
 		}
@@ -232,6 +248,7 @@ namespace CivOne
 			bool fullScreen = _fullScreen;
 			bool rightSideBar = _rightSideBar;
 			int scale = _scale;
+			int aspectRatio = (int)_aspectRatio;
 			bool revealWorld = false;
 			
 			// Read settings
@@ -239,6 +256,7 @@ namespace CivOne
 			fullScreen = (GetSetting("FullScreen") == "1");
 			rightSideBar = (GetSetting("SideBar") == "1");
 			Int32.TryParse(GetSetting("Scale"), out scale);
+			Int32.TryParse(GetSetting("AspectRatio"), out aspectRatio);
 			revealWorld = (GetSetting("RevealWorld") == "1");
 			
 			// Set settings
@@ -247,6 +265,7 @@ namespace CivOne
 			_rightSideBar = rightSideBar;
 			if (scale < 1 || scale > 4) scale = 2;
 			_scale = scale;
+			_aspectRatio = (AspectRatio)aspectRatio;
 			_revealWorld = revealWorld;
 
 			// Set game options
