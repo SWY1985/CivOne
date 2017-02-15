@@ -58,7 +58,22 @@ namespace CivOne.Templates
 					FortifyActive = true;
 			}
 		}
-		public bool Sentry { get; set; }
+
+		private bool _sentry;
+		public bool Sentry
+		{
+			get
+			{
+				return _sentry;
+		 	}
+			set
+			{
+				if (!(_sentry = value) || !Game.Started) return;
+				MovesLeft = 0;
+				PartMoves = 0;
+				MovementDone(Map[X, Y]);
+			}
+		}
 
 		public bool Moving
 		{
@@ -160,7 +175,7 @@ namespace CivOne.Templates
 
 		protected virtual void MovementDone(ITile previousTile)
 		{
-			MovesLeft--;
+			if (MovesLeft > 0) MovesLeft--;
 
 			if (Tile.Hut)
 			{
