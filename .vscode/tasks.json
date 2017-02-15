@@ -1,3 +1,5 @@
+// These are the settings for editing CivOne in Visual Studio Code.
+// Please do not change them!
 {
 	"version": "0.1.0",
 	"command": "dotnet",
