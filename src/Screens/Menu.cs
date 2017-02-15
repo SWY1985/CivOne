@@ -12,11 +12,12 @@ using System.Collections.Generic;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
+using CivOne.Interfaces;
 using CivOne.Templates;
 
 namespace CivOne.Screens
 {
-	public class Menu : BaseScreen
+	public class Menu : BaseScreen, IExpand
 	{
 		public class Item
 		{
@@ -214,6 +215,13 @@ namespace CivOne.Screens
 			ActiveItem = index;
 			_change = true;
 			return true;
+		}
+
+		public void Resize(int width, int height)
+		{
+			_canvas = new Picture(width, height, _canvas.Palette);
+			_change = true;
+			HasUpdate(0);
 		}
 		
 		public void Close()

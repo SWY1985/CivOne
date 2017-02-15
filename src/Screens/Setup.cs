@@ -11,11 +11,12 @@ using System;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.GFX;
+using CivOne.Interfaces;
 using CivOne.Templates;
 
 namespace CivOne.Screens
 {
-	internal class Setup : BaseScreen
+	internal class Setup : BaseScreen, IExpand
 	{
 		private const int MenuFont = 6;
 		
@@ -157,7 +158,7 @@ namespace CivOne.Screens
 		private void AspectRatioMenu()
 		{
 			Menu menu = CreateMenu("ASPECT RATIO:", AspectRatioChoice, "Automatic", "Fixed", "Scaled (blurry)", "Scaled and fixed (blurry)", "Expand (experimental)", "Back");
-			menu.Items[4].Enabled = false; // Expand: Not yet implemented
+			// menu.Items[4].Enabled = false; // Expand: Not yet implemented
 			menu.ActiveItem = (int)Settings.AspectRatio;
 			AddMenu(menu);
 		}
@@ -307,6 +308,20 @@ namespace CivOne.Screens
 			}
 			CloseMenus();
 			SettingsMenu(4);
+		}
+
+		public void Resize(int width, int height)
+		{
+			_canvas = new Picture(width, height, _canvas.Palette);
+			_canvas.FillRectangle(3, 0, 0, width, height);
+
+			foreach (Menu menu in Common.Screens.Where(x => x is Menu))
+			{
+				int menuHeight = GetMenuHeight(menu.Title, menu.Items.Select(x => x.Text).ToArray());
+
+				menu.X = (width - menu.Width) / 2;
+				menu.Y = (height - menuHeight) / 2;
+			}
 		}
 		
 		public Setup()

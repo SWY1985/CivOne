@@ -127,11 +127,38 @@ namespace CivOne
 			}
 		}
 
-		private readonly Picture _canvas = new Picture(320, 200);
+		private Picture _canvas = new Picture(320, 200);
 		internal Picture Canvas
 		{
 			get
 			{
+				if (ScaleX < 1 || ScaleY < 1)
+				{
+					CanvasWidth = 320;
+					CanvasHeight = 200;
+				}
+				else if (Settings.Instance.AspectRatio == AspectRatio.Expand)
+				{
+					int scale = 1;
+					int scaleX = (ClientRectangle.Width - (ClientRectangle.Width % CanvasWidth)) / 320;
+					int scaleY = (ClientRectangle.Height - (ClientRectangle.Height % CanvasHeight)) / 200;
+					if (scaleX > scaleY) scale = scaleY;
+					else scale = scaleX;
+
+					CanvasWidth = (int)(ClientSize.Width / scale);
+					CanvasHeight = (int)(ClientSize.Height / scale);
+				}
+				else
+				{
+					CanvasWidth = 320;
+					CanvasHeight = 200;
+				}
+
+				if (_canvas.Width != CanvasWidth  || _canvas.Height != CanvasHeight)
+				{
+					_canvas = new Picture(CanvasWidth, CanvasHeight);
+				}
+
 				if (Common.Screens.Length == 0) return _canvas;
 
 				CivOne.GFX.Color[] palette = TopScreen.Canvas.Palette;
@@ -147,6 +174,10 @@ namespace CivOne
 				{
 					foreach (IScreen screen in Common.Screens)
 					{
+						if (screen is IExpand && (screen.Canvas.Width != CanvasWidth || screen.Canvas.Height != CanvasHeight))
+						{
+							(screen as IExpand).Resize(CanvasWidth, CanvasHeight);
+						}
 						_canvas.AddLayer(screen.Canvas, 0, 0);
 					}
 				}
