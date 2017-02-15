@@ -49,6 +49,8 @@ namespace CivOne.Screens
 		private int _x, _y;
 		private IUnit _lastUnit;
 
+		private int _tilesX = 15, _tilesY = 12;
+
 		internal int X
 		{
 			get
@@ -69,8 +71,8 @@ namespace CivOne.Screens
 		{
 			get
 			{
-				for (int x = 0; x < 15; x++)
-				for (int y = 0; y < 12; y++)
+				for (int x = 0; x < _tilesX; x++)
+				for (int y = 0; y < _tilesY; y++)
 				{
 					int tx = _x + x;
 					int ty = _y + y;
@@ -137,7 +139,7 @@ namespace CivOne.Screens
 				else
 				{
 					_centerChanged = false;
-					_canvas = new Picture(240, 192, _palette);
+					_canvas = new Picture(_canvas.Width, _canvas.Height, _palette);
 				}
 
 				foreach (RenderTile t in renderTiles)
@@ -295,7 +297,7 @@ namespace CivOne.Screens
 		{
 			if (Game.ActiveUnit == null)
 				return false;
-			return (!Map.QueryMapPart(_x + 1, _y + 1, 13, 10).Any(t => t.X == Game.ActiveUnit.X + relX && t.Y == Game.ActiveUnit.Y + relY));
+			return (!Map.QueryMapPart(_x + 1, _y + 1, (_tilesX - 2), (_tilesY - 2)).Any(t => t.X == Game.ActiveUnit.X + relX && t.Y == Game.ActiveUnit.Y + relY));
 		}
 
 		private bool MoveTo(int relX, int relY)
@@ -466,7 +468,7 @@ namespace CivOne.Screens
 				while (_x < 0) _x += Map.WIDTH;
 				while (_x >= Map.WIDTH) _x -= Map.WIDTH;
 				while (_y < 0) _y++;
-				while (_y + 12 > Map.HEIGHT) _y--;
+				while (_y + _tilesY > Map.HEIGHT) _y--;
 				_update = true;
 				
 				if (city != null)
@@ -482,6 +484,17 @@ namespace CivOne.Screens
 				}
 			}
 			return _update;
+		}
+
+		public void Resize(int width, int height)
+		{
+			_tilesX = (int)Math.Ceiling((double)width / 16);
+			_tilesY = (int)Math.Ceiling((double)height / 16);
+
+			_canvas = new Picture(width, height, _canvas.Palette);
+			
+			while (_y + _tilesY > Map.HEIGHT) _y--;
+			_update = true;
 		}
 		
 		public GameMap()

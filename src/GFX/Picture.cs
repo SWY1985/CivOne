@@ -153,8 +153,14 @@ namespace CivOne.GFX
 		public void FillRectangle(byte colour, int left, int top, int width, int height)
 		{
 			for (int yy = top; yy < top + height; yy++)
-			for (int xx = left; xx < left + width; xx++)
-				_bitmap[xx, yy] = colour;
+			{
+				if(yy >= Height) continue;
+				for (int xx = left; xx < left + width; xx++)
+				{
+					if(xx >= Width) continue;
+					_bitmap[xx, yy] = colour;
+				}
+			}
 		}
 		
 		public static void FillRectangle(Bitmap image, byte colour, int top, int left, int width, int height)
