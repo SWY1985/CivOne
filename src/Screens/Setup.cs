@@ -89,21 +89,31 @@ namespace CivOne.Screens
 		
 		private void SettingsMenu(int activeItem = 0)
 		{
-			string graphicsMode, fullScreen, sideBar, scale, revealWorld;
+			string graphicsMode, fullScreen, sideBar, scale, aspectRatio, revealWorld;
 			switch (Settings.GraphicsMode)
 			{
 				case GraphicsMode.Graphics256: graphicsMode = "256 colors"; break;
 				case GraphicsMode.Graphics16: graphicsMode = "16 colors"; break;
 				default: graphicsMode = "unknown"; break;
 			}
+
+			switch (Settings.AspectRatio)
+			{
+				case AspectRatio.Fixed: aspectRatio = "Fixed"; break;
+				case AspectRatio.Scaled: aspectRatio = "Scaled (blurry)"; break;
+				case AspectRatio.ScaledFixed: aspectRatio = "Scaled and fixed (blurry)"; break;
+				case AspectRatio.Expand: aspectRatio = "Expand (experimental)"; break;
+				default: aspectRatio = "Automatic"; break;
+			}
 			
 			graphicsMode = string.Format("Graphics Mode: {0}", graphicsMode);
 			fullScreen = string.Format("Full Screen: {0}", Settings.FullScreen ? "yes" : "no");
 			sideBar = string.Format("Side bar location: {0}", Settings.RightSideBar ? "right" : "left");
 			scale = string.Format("Window scale: {0}x", Settings.Scale);
+			aspectRatio = string.Format("Aspect ratio: {0}", aspectRatio);
 			revealWorld = string.Format("Reveal World: {0}", Settings.RevealWorld ? "yes" : "no");
 			
-			Menu menu = CreateMenu("SETTINGS:", SettingsChoice, graphicsMode, fullScreen, sideBar, scale, revealWorld, "Back");
+			Menu menu = CreateMenu("SETTINGS:", SettingsChoice, graphicsMode, fullScreen, sideBar, scale, aspectRatio, revealWorld, "Back");
 			menu.ActiveItem = activeItem;
 			AddMenu(menu);
 		}
@@ -141,6 +151,14 @@ namespace CivOne.Screens
 		{
 			Menu menu = CreateMenu("WINDOW SCALE:", WindowScaleChoice, "1x", "2x", "3x", "4x", "Back");
 			menu.ActiveItem = Settings.Scale - 1;
+			AddMenu(menu);
+		}
+		
+		private void AspectRatioMenu()
+		{
+			Menu menu = CreateMenu("ASPECT RATIO:", AspectRatioChoice, "Automatic", "Fixed", "Scaled (blurry)", "Scaled and fixed (blurry)", "Expand (experimental)", "Back");
+			menu.Items[4].Enabled = false; // Expand: Not yet implemented
+			menu.ActiveItem = (int)Settings.AspectRatio;
 			AddMenu(menu);
 		}
 		
@@ -193,10 +211,13 @@ namespace CivOne.Screens
 				case 3: // Scale
 					WindowScaleMenu();
 					break;
-				case 4: // Reveal World
+				case 4: // Scale
+					AspectRatioMenu();
+					break;
+				case 5: // Reveal World
 					RevealWorldMenu();
 					break;
-				case 5: // Back
+				case 6: // Back
 					MainMenu();
 					break;
 			}
@@ -256,6 +277,17 @@ namespace CivOne.Screens
 			if (choice < 4)
 			{
 				Settings.Scale = (choice + 1);
+			}
+			CloseMenus();
+			SettingsMenu(3);
+		}
+
+		private void AspectRatioChoice(object sender, EventArgs args)
+		{
+			int choice = (sender as Menu.Item).Value;
+			if (choice < 5)
+			{
+				Settings.AspectRatio = (AspectRatio)(choice);
 			}
 			CloseMenus();
 			SettingsMenu(3);
