@@ -307,6 +307,7 @@ namespace CivOne
 
 		protected override void OnResize(EventArgs args)
 		{
+			if (WindowState == WindowState.Minimized) return;
 			GL.Viewport(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width, ClientRectangle.Height);
 		}
 
@@ -338,10 +339,17 @@ namespace CivOne
 			int x2 = x1 + DrawWidth;
 			int y2 = y1 + DrawHeight;
 
-			_mouseX = (Mouse.X - x1) / ScaleX;
-			_mouseY = (Mouse.Y - y1) / ScaleY;
+			if (WindowState != WindowState.Minimized && this.Focused)
+			{
+				_mouseX = (Mouse.X - x1) / ScaleX;
+				_mouseY = (Mouse.Y - y1) / ScaleY;
 
-			CursorVisible = (_mouseX <= 0 || _mouseX >= (CanvasWidth - 1) || _mouseY <= 0 || _mouseY >= (CanvasHeight - 1));
+				CursorVisible = (_mouseX <= 0 || _mouseX >= (CanvasWidth - 1) || _mouseY <= 0 || _mouseY >= (CanvasHeight - 1));
+			}
+			else if (!CursorVisible)
+			{
+				CursorVisible = true;
+			}
 
 			_gameTick += (uint)(GameTask.Fast ? 4 : 1);
 			if (_gameTick % 4 != 0) return;
