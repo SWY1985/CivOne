@@ -315,6 +315,12 @@ namespace CivOne
 		{
 			GL.Disable(EnableCap.DepthTest);
 
+			// Set full screen
+			if (Settings.Instance.FullScreen)
+			{
+				WindowState = WindowState.Fullscreen;
+			} 
+
 			// Load cursor graphics
 			_cursorPointer = Resources.Instance.GetPart("SP257", 112, 32, 16, 16);
 			_cursorGoto = Resources.Instance.GetPart("SP257", 32, 32, 16, 16);
@@ -374,7 +380,7 @@ namespace CivOne
 			SwapBuffers();
 		}
 
-		public Window(string screen) : base(640, 400, OpenTK.Graphics.GraphicsMode.Default, "CivOne", GameWindowFlags.Default, DisplayDevice.Default, 4, 0, GraphicsContextFlags.ForwardCompatible)
+		public Window(string screen) : base(320 * Settings.Instance.ScaleX, 200 * Settings.Instance.ScaleX, OpenTK.Graphics.GraphicsMode.Default, "CivOne", GameWindowFlags.Default, DisplayDevice.Default, 4, 0, GraphicsContextFlags.ForwardCompatible)
 		{
 			CanvasWidth = 320;
 			CanvasHeight = 200;
