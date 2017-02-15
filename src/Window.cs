@@ -340,6 +340,12 @@ namespace CivOne
 
 		protected override void OnUpdateFrame(FrameEventArgs args)
 		{
+			if (Common.EndGame)
+			{
+				Close();
+				return;
+			}
+
 			int x1 = (ClientSize.Width - DrawWidth) / 2;
 			int y1 = (ClientSize.Height - DrawHeight) / 2;
 			int x2 = x1 + DrawWidth;
