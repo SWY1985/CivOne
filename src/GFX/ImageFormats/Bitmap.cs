@@ -14,7 +14,7 @@ namespace CivOne.GFX.ImageFormats
 {
 	public class Bitmap : IImageFormat
 	{
-		public byte[] Save()
+		public byte[] GetBytes()
 		{
 			throw new NotImplementedException();
 		}

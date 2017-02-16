@@ -232,7 +232,7 @@ namespace CivOne.GFX.ImageFormats
 			}
 		}
 
-		public byte[] Save()
+		public byte[] GetBytes()
 		{
 			throw new NotImplementedException();
 		}

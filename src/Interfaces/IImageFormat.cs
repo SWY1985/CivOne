@@ -11,6 +11,6 @@ namespace CivOne.Interfaces
 {
 	internal interface IImageFormat
 	{
-		byte[] Save();
+		byte[] GetBytes();
 	}
 }
