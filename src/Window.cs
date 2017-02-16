@@ -358,7 +358,7 @@ namespace CivOne
 				return;
 			}
 
-			if (_keyModifier == KeyModifier.Control && args.Key == TkKey.F6)
+			if (_keyModifier == KeyModifier.Control && args.Key == TkKey.F5)
 			{
 				string filename = Common.CaptureFilename;
 				using (CivOne.GFX.ImageFormats.GifFile file = new CivOne.GFX.ImageFormats.GifFile(_canvas))
