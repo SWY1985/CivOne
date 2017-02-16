@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using CivOne.Enums;
+using CivOne.GFX.ImageFormats;
 
 namespace CivOne.GFX
 {
