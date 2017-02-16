@@ -22,7 +22,7 @@ namespace CivOne.IO
 
 			public void Add(int entry, int dictionarySize)
 			{
-				int codeLength = CodeLength(dictionarySize);
+				int codeLength = CodeLength(dictionarySize - 1);
 				for (int bit = 0; bit < codeLength; bit++)
 				{
 					int outputBit = (entry & (0x01 << bit)) >> bit;
@@ -85,8 +85,11 @@ namespace CivOne.IO
 					entry = newEntry;
 					continue;
 				}
-				byteList.Add(dictionary[string.Join(",", entry)], dictionary.Count - 1);
-				dictionary.Add(string.Join(",", newEntry), dictionary.Count);
+				byteList.Add(dictionary[string.Join(",", entry)], dictionary.Count);
+				if (dictionary.Count < 4095)
+				{
+					dictionary.Add(string.Join(",", newEntry), dictionary.Count);
+				}
 				entry = new byte[] { input[i] };
 			}
 
