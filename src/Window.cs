@@ -489,40 +489,6 @@ namespace CivOne
 			GL.Clear(ClearBufferMask.ColorBufferBit);
 
 			int[] canvas = GetCanvas().ToArray();
-			// int x1 = (ClientSize.Width - DrawWidth) / 2;
-			// int y1 = (ClientSize.Height - DrawHeight) / 2;
-			// int x2 = x1 + DrawWidth;
-			// int y2 = y1 + DrawHeight;
-
-			// BlitFramebufferFilter fbFilter;
-			// switch (Settings.Instance.AspectRatio)
-			// {
-			// 	case AspectRatio.Scaled:
-			// 		x1 = 0;
-			// 		y1 = 0;
-			// 		x2 = ClientSize.Width;
-			// 		y2 = ClientSize.Height;
-			// 		fbFilter = BlitFramebufferFilter.Linear;
-			// 		break;
-			// 	case AspectRatio.ScaledFixed:
-			// 		float scaleX = (float)ClientSize.Width / CanvasWidth;
-			// 		float scaleY = (float)ClientSize.Height / CanvasHeight;
-			// 		if (scaleX > scaleY) scaleX = scaleY;
-			// 		else if (scaleY > scaleX) scaleY = scaleX;
-
-			// 		int drawWidth = (int)((float)CanvasWidth * scaleX);
-			// 		int drawHeight = (int)((float)CanvasHeight * scaleY);
-
-			// 		x1 = (ClientSize.Width - drawWidth) / 2;
-			// 		y1 = (ClientSize.Height - drawHeight) / 2;
-			// 		x2 = x1 + drawWidth;
-			// 		y2 = y1 + drawHeight;
-			// 		fbFilter = BlitFramebufferFilter.Linear;
-			// 		break;
-			// 	default:
-			// 		fbFilter = BlitFramebufferFilter.Nearest;
-			// 		break;
-			// }
 
 			BlitFramebufferFilter fbFilter;
 			int x1, y1, x2, y2;
