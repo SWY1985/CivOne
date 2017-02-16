@@ -40,14 +40,6 @@ namespace CivOne.IO
 			}
 		}
 
-		private static Dictionary<string, int> GetDictionary
-		{
-			get
-			{
-				return Enumerable.Range(0, 256).ToDictionary(x => x.ToString(), x => x);
-			}
-		}
-
 		private static byte CodeLength(int input)
 		{
 			for (int i = 31; i >= 0; i--)
@@ -57,16 +49,51 @@ namespace CivOne.IO
 			return 1;
 		}
 
-		public static byte[] Decode(byte[] input)
-		{
-			// Dictionary<byte[], int> dictionary = GetDictionary;
+		// private static IEnumerable<int> GetInts(byte[] input, bool clearEnd, int maxBits, out Dictionary<int, byte[]> dictionary)
+		// {
+		// 	dictionary = Enumerable.Range(0, 256).ToDictionary(x => x, x => new byte[] { (byte)x });
+		// 	if (clearEnd)
+		// 	{
+		// 		dictionary.Add(dictionary.Count, new byte[0]);
+		// 		dictionary.Add(dictionary.Count, new byte[0]);
+		// 	}
 
-			return new byte[0];
-		}
+		// 	byte[] prevEntry = new byte[0];
+		// 	int bit = 0;
+		// 	int output = 0;
+		// 	int codeLength = CodeLength(dictionary.Count - 1);
+		// 	foreach (byte b in input)
+		// 	for (int i = 0; i < 8; i++)
+		// 	{
+		// 		output |= (b & (0x01 << i)) >> bit++;
+		// 		if (bit > codeLength)
+		// 		{
+		// 			yield return output;
+		// 			bit = 0;
+		// 			output = 0;
+		// 		}
+		// 	}
+			
+		// 	byte[] entry = dictionary[input[0]];
+		// }
 
-		public static byte[] Encode(byte[] input, bool clearEnd = false)
+		// public static IEnumerable<byte> Decode(byte[] input, bool clearEnd = false, int maxBits = 11)
+		// {
+		// 	Dictionary<int, byte[]> dictionary;
+		// 	int[] intInput = GetInts(input, clearEnd, maxBits, out dictionary);
+
+
+		// 	for (int i = 1; i < input.Length; i++)
+		// 	{
+		// 		byte[] newEntry = entry.Append(input[i])
+		// 	}
+
+		// 	return new byte[0];
+		// }
+
+		public static byte[] Encode(byte[] input, bool clearEnd = false, int maxBits = 11)
 		{
-			Dictionary<string, int> dictionary = GetDictionary;
+			Dictionary<string, int> dictionary = Enumerable.Range(0, 256).ToDictionary(x => x.ToString(), x => x);
 			ByteList byteList = new ByteList();
 
 			if (clearEnd)
@@ -86,7 +113,7 @@ namespace CivOne.IO
 					continue;
 				}
 				byteList.Add(dictionary[string.Join(",", entry)], dictionary.Count);
-				if (dictionary.Count < 4095)
+				if (dictionary.Count < ((0x01 << maxBits) - 1))
 				{
 					dictionary.Add(string.Join(",", newEntry), dictionary.Count);
 				}
