@@ -9,11 +9,12 @@
 
 using System;
 using System.IO;
-using CivOne.GFX;
+using CivOne.Interfaces;
+using CivOne.IO;
 
-namespace CivOne.IO
+namespace CivOne.GFX.ImageFormats
 {
-	internal class PicFile
+	internal class PicFile : IImageFormat
 	{
 		private readonly byte[] _bytes;
 		private readonly byte[,] _colourTable = null;
@@ -229,6 +230,11 @@ namespace CivOne.IO
 					_picture16[x, y] = colourTable[col256, (y + x) % 2];
 				}
 			}
+		}
+
+		public byte[] Save()
+		{
+			throw new NotImplementedException();
 		}
 		
 		public PicFile(string filename)

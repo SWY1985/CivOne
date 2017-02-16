@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using CivOne.Enums;
+using CivOne.GFX.ImageFormats;
 using CivOne.Interfaces;
 using CivOne.IO;
 
