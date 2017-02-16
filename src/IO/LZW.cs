@@ -105,51 +105,5 @@ namespace CivOne.IO
 
 			return byteList.ToArray();
 		}
-
-		// public static byte[] Encode(byte[] input)
-		// {
-		// 	Dictionary<byte[], int> dictionary = GetDictionary;
-		// 	ByteList byteList = new ByteList();
-			
-		// 	byte[] entry = new byte[0];
-		// 	for (int i = 0; i < input.Length; i++)
-		// 	{
-		// 		byte[] newEntry = entry.Append(input[i]).ToArray();
-		// 		if (dictionary.Keys.Any(k => k.SequenceEqual(newEntry)))
-		// 		{
-		// 			entry = newEntry;
-		// 			continue;
-		// 		}
-		// 		byteList.Add(dictionary.Where(k => k.Key.SequenceEqual(entry)).First().Value, dictionary.Count);
-		// 		dictionary.Add(newEntry, dictionary.Count);
-		// 		entry = new byte[] { input[i] };
-		// 	}
-		// 	return byteList.ToArray();
-		// }
-
-		// public static byte[] Encode(byte[] input)
-		// {
-		// 	Dictionary<byte[], int> dictionary = GetDictionary;
-		// 	// List<int> encoded = new List<int>();
-		// 	ByteList byteList = new ByteList();
-			
-		// 	byte[] entry = new byte[0];
-		// 	for (int i = 0; i < input.Length; i++)
-		// 	{
-		// 		byte[] newEntry = entry.Append(input[i]).ToArray();
-		// 		if (dictionary.Keys.Any(k => k.SequenceEqual(newEntry)))
-		// 		{
-		// 			entry = newEntry;
-		// 			continue;
-		// 		}
-		// 		byteList.Add(dictionary.Where(k => k.Key.SequenceEqual(entry)).First().Value, dictionary.Count);
-		// 		// encoded.Add(dictionary.Where(k => k.Key.SequenceEqual(entry)).First().Value);
-		// 		dictionary.Add(newEntry, dictionary.Count);
-		// 		entry = new byte[] { input[i] };
-		// 	}
-		// 	return byteList.ToArray();
-
-		// 	// return IntToBytes(encoded.ToArray()).ToArray();
-		// }
 	}
 }
