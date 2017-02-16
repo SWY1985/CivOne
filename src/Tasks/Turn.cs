@@ -14,11 +14,22 @@ namespace CivOne.Tasks
 {
 	internal class Turn : GameTask, IFast
 	{
+		private const int TURN_TIME = 5;
+
 		private ITurn _turnObject = null;
 		private IUnit _unit = null;
 		private bool _endTurn = false;
 
 		private Player _gameOver = null;
+
+		private int _step = 0;
+
+		protected override bool Step()
+		{
+			if (_step-- <= 0)
+				EndTask();
+			return true;
+		}
 
 		public override void Run()
 		{
@@ -33,6 +44,8 @@ namespace CivOne.Tasks
 			else if (_endTurn)
 			{
 				Game.EndTurn();
+				_step = TURN_TIME;
+				return;
 			}
 			else if (_gameOver != null)
 			{
