@@ -97,7 +97,7 @@ namespace CivOne
 			{
 				for (int i = 1; i < 99999; i++)
 				{
-					string filename = Path.Combine(Settings.Instance.CaptureDirectory, string.Format("capture{0:00000}.png", i));
+					string filename = Path.Combine(Settings.Instance.CaptureDirectory, $"capture{i:00000}.gif");
 					if (File.Exists(filename)) continue;
 					return filename;
 				}

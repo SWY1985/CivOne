@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using OpenTK;
@@ -354,6 +355,20 @@ namespace CivOne
 				Console.WriteLine("Fullscreen mode");
 				_previousState = WindowState;
 				WindowState = WindowState.Fullscreen;
+				return;
+			}
+
+			if (_keyModifier == KeyModifier.Control && args.Key == TkKey.F6)
+			{
+				string filename = Common.CaptureFilename;
+				using (CivOne.GFX.ImageFormats.GifFile file = new CivOne.GFX.ImageFormats.GifFile(_canvas))
+				using (FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write))
+				using (StreamWriter sw = new StreamWriter(fs))
+				{
+					byte[] output = file.GetBytes();
+					fs.Write(output, 0, output.Length);
+					Console.WriteLine($"Screenshot saved: {filename}");
+				}
 				return;
 			}
 
