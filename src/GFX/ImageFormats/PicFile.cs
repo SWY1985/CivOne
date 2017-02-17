@@ -236,15 +236,24 @@ namespace CivOne.GFX.ImageFormats
 		private IEnumerable<byte> GetColourPaletteBytes()
 		{
 			// Length is always 770, startIndex is always 0, endIndex is always 255
-			foreach (byte b in BitConverter.GetBytes((uint)770)) yield return b;
+			foreach (byte b in BitConverter.GetBytes((ushort)770)) yield return b;
 			yield return (byte)0x00;
 			yield return (byte)0xFF;
 
 			foreach (Color color in _palette256)
 			{
-				yield return color.R;
-				yield return color.G;
-				yield return color.B;
+				yield return (byte)(color.R / 4);
+				yield return (byte)(color.G / 4);
+				yield return (byte)(color.B / 4);
+			}
+		}
+
+		private IEnumerable<byte> GetPictureData(byte[,] input)
+		{
+			for (int yy = 0; yy < _picture256.GetLength(1); yy++)
+			for (int xx = 0; xx < input.GetLength(0); xx++)
+			{
+				yield return input[xx, yy];
 			}
 		}
 
@@ -255,22 +264,30 @@ namespace CivOne.GFX.ImageFormats
 			{
 				if (HasPalette16)
 				{
-					br.Write((uint)0x3045);
+					br.Write((ushort)0x3045);
 					throw new NotImplementedException();
 				}
 				if (HasPalette256)
 				{
-					br.Write((uint)0x304D);
+					br.Write((ushort)0x304D);
 					br.Write(GetColourPaletteBytes().ToArray());
 				}
 				if (HasPicture256)
 				{
-					br.Write((uint)0x3058);
-					throw new NotImplementedException();
+					br.Write((ushort)0x3058);
+
+					byte[] encoded = RLECodec.Encode(GetPictureData(_picture256).ToArray());
+					encoded = LZW.Encode(encoded);
+					
+					br.Write((ushort)(encoded.Length + 5));
+					br.Write((ushort)_picture256.GetLength(0));
+					br.Write((ushort)_picture256.GetLength(1));
+					br.Write((byte)11);
+					br.Write(encoded);
 				}
 				if (HasPalette16)
 				{
-					br.Write((uint)0x3158);
+					br.Write((ushort)0x3158);
 					throw new NotImplementedException();
 				}
 				return ms.ToArray();
