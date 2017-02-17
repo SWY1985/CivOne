@@ -24,12 +24,10 @@ namespace CivOne.IO
 			using (MemoryStream ms = new MemoryStream())
 			{
 				byte value = input[0];
-				int length = 0;
 				for (int i = 0; i < input.Length; i++)
 				{
 					if (input[i] != RLE_REPEAT || input[i + 1] == 0)
 					{
-						length++;
 						value = input[i];
 						ms.WriteByte(value);
 						if (input[i] == RLE_REPEAT && input[i + 1] == 0) i++;
@@ -37,10 +35,8 @@ namespace CivOne.IO
 					}
 
 					int repeat = input[i + 1];
-					int start = length;
-					length += (repeat - 1);
 
-					ms.Write(Enumerable.Repeat(value, (length - start)).ToArray(), 0, (length - start));
+					ms.Write(Enumerable.Repeat(value, repeat).ToArray(), 0, repeat - 1);
 					i++;
 				}
 				return ms.ToArray();
