@@ -141,13 +141,22 @@ namespace CivOne
 				else if (Settings.Instance.AspectRatio == AspectRatio.Expand)
 				{
 					int scale = 1;
-					int scaleX = (ClientRectangle.Width - (ClientRectangle.Width % CanvasWidth)) / 320;
-					int scaleY = (ClientRectangle.Height - (ClientRectangle.Height % CanvasHeight)) / 200;
+					int scaleX = (ClientRectangle.Width - (ClientRectangle.Width % 320)) / 320;
+					int scaleY = (ClientRectangle.Height - (ClientRectangle.Height % 200)) / 200;
 					if (scaleX > scaleY) scale = scaleY;
 					else scale = scaleX;
 
 					CanvasWidth = (int)(ClientSize.Width / scale);
 					CanvasHeight = (int)(ClientSize.Height / scale);
+
+					// Make sure the canvas resolution is a multiple of 4
+					CanvasWidth -= (CanvasWidth % 4);
+					CanvasHeight -= (CanvasHeight % 4);
+
+					// Set maximum bounds to 512x384, the maximum logical boundaries 
+					// according this this table: https://github.com/SWY1985/CivOne/wiki/Settings#expand-experimental
+					if (CanvasWidth > 512) CanvasWidth = 512;
+					if (CanvasHeight > 384) CanvasHeight = 384;
 				}
 				else
 				{
@@ -510,7 +519,6 @@ namespace CivOne
 			switch (Settings.Instance.AspectRatio)
 			{
 				case AspectRatio.Scaled:
-				case AspectRatio.Expand:
 					break;
 				default:
 					ScreenBorder(x1, y1, x2, y2);
