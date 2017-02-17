@@ -328,10 +328,7 @@ namespace CivOne.GFX.ImageFormats
 			using (FileStream fs = new FileStream(filename, FileMode.Open))
 			{
 				_bytes = new byte[fs.Length];
-				for (int i = 0; i < fs.Length; i++)
-				{
-					_bytes[i] = (byte)fs.ReadByte();
-				}
+				fs.Read(_bytes, 0, _bytes.Length);
 			}
 			
 			int index = 0;
