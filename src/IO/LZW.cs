@@ -34,6 +34,11 @@ namespace CivOne.IO
 				}
 			}
 
+			public void Close()
+			{
+				_byteList.Add(_byte);
+			}
+
 			public byte[] ToArray()
 			{
 				return _byteList.ToArray();
@@ -54,9 +59,9 @@ namespace CivOne.IO
 			Dictionary<string, int> dictionary = Enumerable.Range(0, 256).ToDictionary(x => x.ToString(), x => x);
 			ByteList byteList = new ByteList();
 
+			dictionary.Add("CLR", dictionary.Count);
 			if (clearEnd)
 			{
-				dictionary.Add("CLR", dictionary.Count);
 				dictionary.Add("END", dictionary.Count);
 				byteList.Add(dictionary["CLR"], dictionary.Count);
 			}
@@ -87,6 +92,7 @@ namespace CivOne.IO
 			{
 				byteList.Add(dictionary["END"], dictionary.Count);
 			}
+			byteList.Close();
 
 			return byteList.ToArray();
 		}
