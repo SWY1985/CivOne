@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System.IO;
 using System.Linq;
 
 namespace CivOne.IO
@@ -17,47 +18,33 @@ namespace CivOne.IO
 	internal class RLECodec
 	{
 		private const int RLE_REPEAT = 0x90;
-		
+
 		public static byte[] Decode(byte[] input)
 		{
-			if (input == null)
+			using (MemoryStream ms = new MemoryStream())
 			{
-				return null;
-			}
-
-			byte[] output = new byte[Arrays.DEFAULT_LENGTH];
-			output[0] = input[0];
-			int length = 1;
-
-			for (int i = 1; i < input.Length; i++)
-			{
-				if (input[i] != RLE_REPEAT || input[i + 1] == 0)
+				byte value = input[0];
+				int length = 0;
+				for (int i = 0; i < input.Length; i++)
 				{
-					if (output.Length - length < 1)
+					if (input[i] != RLE_REPEAT || input[i + 1] == 0)
 					{
-						Arrays.Expand(ref output);
+						length++;
+						value = input[i];
+						ms.WriteByte(value);
+						if (input[i] == RLE_REPEAT && input[i + 1] == 0) i++;
+						continue;
 					}
-					output[length++] = input[i];
-					if (input[i] == RLE_REPEAT && input[i + 1] == 0) i++;
-					continue;
+
+					int repeat = input[i + 1];
+					int start = length;
+					length += (repeat - 1);
+
+					ms.Write(Enumerable.Repeat(value, (length - start)).ToArray(), 0, (length - start));
+					i++;
 				}
-
-				int repeat = input[i + 1];
-				int start = length;
-				byte value = output[length - 1];
-
-				if ((output.Length - length) < repeat - 1)
-				{
-					Arrays.Expand(ref output);
-				}
-				length += (repeat - 1);
-
-				for (int j = start; j < length; j++)
-					output[j] = value;
-				i++;
+				return ms.ToArray();
 			}
-
-			return output;
 		}
 	}
 }

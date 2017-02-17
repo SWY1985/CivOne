@@ -22,13 +22,6 @@ namespace CivOne.IO
 			array = output;
 		}
 
-		internal static void Expand(ref byte[] array, int expandSize = DEFAULT_LENGTH)
-		{
-			byte[] output = new byte[array.Length + expandSize];
-			Array.Copy(array, output, array.Length);
-			array = output;
-		}
-
 		internal static void Truncate(ref int[] array, int truncateSize)
 		{
 			int[] output = new int[array.Length - truncateSize];
