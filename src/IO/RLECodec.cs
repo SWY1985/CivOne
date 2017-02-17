@@ -7,6 +7,8 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System.Linq;
+
 namespace CivOne.IO
 {
 	/// <remarks>
@@ -15,15 +17,15 @@ namespace CivOne.IO
 	internal class RLECodec
 	{
 		private const int RLE_REPEAT = 0x90;
-				
-		public static int[] Decode(int[] input)
+		
+		public static byte[] Decode(byte[] input)
 		{
 			if (input == null)
 			{
 				return null;
 			}
 
-			int[] output = new int[Arrays.DEFAULT_LENGTH];
+			byte[] output = new byte[Arrays.DEFAULT_LENGTH];
 			output[0] = input[0];
 			int length = 1;
 
@@ -42,7 +44,7 @@ namespace CivOne.IO
 
 				int repeat = input[i + 1];
 				int start = length;
-				int value = output[length - 1];
+				byte value = output[length - 1];
 
 				if ((output.Length - length) < repeat - 1)
 				{
