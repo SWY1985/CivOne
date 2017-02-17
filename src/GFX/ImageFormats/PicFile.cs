@@ -154,14 +154,8 @@ namespace CivOne.GFX.ImageFormats
 				using (BinaryReader br = new BinaryReader(ms))
 				{
 					int[] indexes = LZWDecoder.ConvertByteStream(br, img.Length, bits);
-					int[] decoded = LZWDecoder.Decode(indexes);
-					int[] bytes = RLECodec.Decode(decoded);
-
-					output = new byte[bytes.Length];
-					for (int i = 0; i < bytes.Length; i++)
-					{
-						output[i] = (byte)bytes[i];
-					}
+					byte[] decoded = LZWDecoder.Decode(indexes).Select(x => (byte)x).ToArray();
+					output = RLECodec.Decode(decoded);
 				}
 			}
 			
