@@ -8,7 +8,9 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using CivOne.Interfaces;
 using CivOne.IO;
 
@@ -22,6 +24,11 @@ namespace CivOne.GFX.ImageFormats
 		private readonly Color[] _palette256 = new Color[256];
 		private byte[,] _picture16;
 		private byte[,] _picture256;
+
+		public bool HasPalette16 { get; internal set; }
+		public bool HasPalette256 { get; internal set; }
+		public bool HasPicture16 { get; internal set; }
+		public bool HasPicture256 { get; internal set; }
 
 		public Color[] GetPalette16
 		{
@@ -231,10 +238,61 @@ namespace CivOne.GFX.ImageFormats
 				}
 			}
 		}
+		
+		private IEnumerable<byte> GetColourPaletteBytes()
+		{
+			// Length is always 770, startIndex is always 0, endIndex is always 255
+			foreach (byte b in BitConverter.GetBytes((uint)770)) yield return b;
+			yield return (byte)0x00;
+			yield return (byte)0xFF;
+
+			foreach (Color color in _palette256)
+			{
+				yield return color.R;
+				yield return color.G;
+				yield return color.B;
+			}
+		}
 
 		public byte[] GetBytes()
 		{
-			throw new NotImplementedException();
+			using (MemoryStream ms = new MemoryStream())
+			using (BinaryWriter br = new BinaryWriter(ms))
+			{
+				if (HasPalette16)
+				{
+					br.Write((uint)0x3045);
+					throw new NotImplementedException();
+				}
+				if (HasPalette256)
+				{
+					br.Write((uint)0x304D);
+					br.Write(GetColourPaletteBytes().ToArray());
+				}
+				if (HasPicture256)
+				{
+					br.Write((uint)0x3058);
+					throw new NotImplementedException();
+				}
+				if (HasPalette16)
+				{
+					br.Write((uint)0x3158);
+					throw new NotImplementedException();
+				}
+				return ms.ToArray();
+			}
+		}
+
+		public PicFile(Picture picture)
+		{
+			_palette256 = picture.Palette;
+			_picture16 = picture.GetBitmap;
+			_picture256 = picture.GetBitmap;
+
+			HasPalette16 = false;
+			HasPicture16 = false;
+			HasPalette256 = true;
+			HasPicture256 = true;
 		}
 		
 		public PicFile(string filename)
@@ -244,7 +302,7 @@ namespace CivOne.GFX.ImageFormats
 				// fix for case sensitive file systems
 				foreach (string fileEntry in Directory.GetFiles(Settings.Instance.DataDirectory))
 				{
-					if (Path.GetFileName(fileEntry).ToLower() != string.Format("{0}.pic", filename.ToLower())) continue;
+					if (Path.GetFileName(fileEntry).ToLower() != $"{filename.ToLower()}.pic") continue;
 					filename = fileEntry;
 				}
 			}
@@ -252,7 +310,7 @@ namespace CivOne.GFX.ImageFormats
 			// generate an exception if the file is not found
 			if (!File.Exists(filename))
 			{
-				throw new FileNotFoundException(string.Format("File not found: {0}.PIC", filename.ToUpper()));
+				throw new FileNotFoundException($"File not found: {filename.ToUpper()}.PIC");
 			}
 
 			// read all bytes into a byte array
@@ -273,16 +331,20 @@ namespace CivOne.GFX.ImageFormats
 				{
 					case 0x3045:
 						_colourTable = ReadColourTable(ref index);
+						HasPalette16 = true;
 						break;
 					case 0x304D:
 						ReadColourPalette(ref index);
+						HasPalette256 = true;
 						break;
 					case 0x3058:
 						ReadPictureX0(ref index);
 						ConvertPictureX0(_colourTable);
+						HasPicture256 = true;
 						break;
 					case 0x3158:
 						ReadPictureX1(ref index);
+						HasPicture16 = true;
 						break;
 				}
 			}
