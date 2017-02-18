@@ -372,7 +372,6 @@ namespace CivOne
 				string filename = Common.CaptureFilename;
 				using (CivOne.GFX.ImageFormats.GifFile file = new CivOne.GFX.ImageFormats.GifFile(_canvas))
 				using (FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write))
-				using (StreamWriter sw = new StreamWriter(fs))
 				{
 					byte[] output = file.GetBytes();
 					fs.Write(output, 0, output.Length);
