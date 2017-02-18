@@ -155,7 +155,7 @@ namespace CivOne.GFX.ImageFormats
 				{
 					int[] indexes = LZWDecoder.ConvertByteStream(br, img.Length, bits);
 					byte[] decoded = LZWDecoder.Decode(indexes).Select(x => (byte)x).ToArray();
-					output = RLECodec.Decode(decoded);
+					output = RLE.Decode(decoded);
 				}
 			}
 			
@@ -276,7 +276,7 @@ namespace CivOne.GFX.ImageFormats
 				{
 					br.Write((ushort)0x3058);
 
-					byte[] encoded = RLECodec.Encode(GetPictureData(_picture256).ToArray());
+					byte[] encoded = RLE.Encode(GetPictureData(_picture256).ToArray());
 					encoded = LZW.Encode(encoded);
 					
 					br.Write((ushort)(encoded.Length + 5));

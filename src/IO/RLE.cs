@@ -12,10 +12,7 @@ using System.Linq;
 
 namespace CivOne.IO
 {
-	/// <remarks>
-	/// This code is based on JCivED source code by darkpanda. <http://sourceforge.net/projects/jcived/>
-	/// </remarks>
-	internal class RLECodec
+	internal class RLE
 	{
 		private const int RLE_REPEAT = 0x90;
 		private const int RLE_ESCAPE = 0x00;
