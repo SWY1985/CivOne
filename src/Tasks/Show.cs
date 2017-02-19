@@ -80,6 +80,14 @@ namespace CivOne.Tasks
 			}
 		}
 
+		public static Show SaveGame
+		{
+			get
+			{
+				return new Show(new SaveGame());
+			}
+		}
+
 		public static Show CityManager(City city)
 		{
 			return new Show(new CityManager(city));
