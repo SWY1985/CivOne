@@ -63,7 +63,7 @@ namespace CivOne.Screens
 			_gameMenu.Items.Add(new GameMenu.Item("Luxuries Rate"));
 			_gameMenu.Items.Add(new GameMenu.Item("FindCity") { Enabled = false });
 			_gameMenu.Items.Add(new GameMenu.Item("Options"));
-			_gameMenu.Items.Add(new GameMenu.Item("Save Game") { Enabled = false });
+			_gameMenu.Items.Add(new GameMenu.Item("Save Game") { Enabled = (Game.GameTurn > 0) });
 			_gameMenu.Items.Add(new GameMenu.Item("REVOLUTION!"));
 			_gameMenu.Items.Add(new GameMenu.Item(null));
 			_gameMenu.Items.Add(new GameMenu.Item("Retire") { Enabled = false });
@@ -72,6 +72,7 @@ namespace CivOne.Screens
 			_gameMenu.Items[0].Selected += (s, a) => GameTask.Enqueue(Show.TaxRate);
 			_gameMenu.Items[1].Selected += (s, a) => GameTask.Enqueue(Show.LuxuryRate);
 			_gameMenu.Items[3].Selected += (s, a) => GameTask.Enqueue(Show.Options);
+			_gameMenu.Items[4].Selected += (s, a) => GameTask.Enqueue(Show.SaveGame);
 			_gameMenu.Items[5].Selected += (s, a) => GameTask.Enqueue(Show.Revolution);
 			_gameMenu.Items[8].Selected += (s, a) => GameTask.Enqueue(Show.ConfirmQuit);
 			
