@@ -94,7 +94,7 @@ namespace CivOne.GFX.ImageFormats
 				// No local colour table
 				writer.Write((byte)0x00);
 
-				byte[] encoded = LZW.Encode(GetPixels.ToArray(), true, 12);
+				byte[] encoded = LZW.Encode(GetPixels.ToArray(), true, false, 12);
 				
 				// Code length
 				writer.Write((byte)0x08);
