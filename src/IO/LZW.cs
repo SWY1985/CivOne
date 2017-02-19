@@ -46,42 +46,6 @@ namespace CivOne.IO
 			}
 		}
 
-		private class ByteArray
-		{
-			public byte[] Bytes { get; private set; }
-			private readonly string _byteString;
-			public override string ToString()
-			{
-				return _byteString;
-			}
-			public static ByteArray Empty
-			{
-				get
-				{
-					return new ByteArray(new byte[0]);
-				}
-			}
-			
-			public override bool Equals (object obj)
-			{
-				if (obj == null || GetType() != obj.GetType()) return false;
-
-				return (obj as ByteArray).ToString() == ToString();
-			}
-
-			// override object.GetHashCode
-			public override int GetHashCode()
-			{
-				return ToString().GetHashCode();
-			}
-
-			public ByteArray(byte[] bytes)
-			{
-				Bytes = bytes;
-				_byteString = string.Join(",", bytes);
-			}
-		}
-
 		private static byte CodeLength(int input)
 		{
 			for (int i = 31; i >= 0; i--)
@@ -91,15 +55,15 @@ namespace CivOne.IO
 			return 1;
 		}
 
-		private static Dictionary<int, ByteArray> DecodeDictionary(bool clearEnd)
+		private static void DecodeDictionary(bool clearEnd, out Dictionary<int, byte[]> dictionary, out List<string> valueList)
 		{
-			Dictionary<int, ByteArray> output = Enumerable.Range(0, 256).ToDictionary(x => x, x => new ByteArray(new byte[] { (byte)x }));
-			output.Add(output.Count, ByteArray.Empty);
+			dictionary = Enumerable.Range(0, 256).ToDictionary(x => x, x => new byte[] { (byte)x });
+			dictionary.Add(dictionary.Count, new byte[0]);
 			if (clearEnd)
 			{
-				output.Add(output.Count, ByteArray.Empty);
+				dictionary.Add(dictionary.Count, new byte[0]);
 			}
-			return output;
+			valueList= new List<string>(dictionary.Values.Select(x => string.Join(",", x)));
 		}
 		
 		public static byte[] Decode(byte[] input, bool clearEnd = false, bool flushDictionary = true, int maxBits = 11)
@@ -107,7 +71,10 @@ namespace CivOne.IO
 			using (MemoryStream ms = new MemoryStream())
 			using (BinaryWriter bw = new BinaryWriter(ms))
 			{
-				Dictionary<int, ByteArray> dictionary = DecodeDictionary(clearEnd);
+				Dictionary<int, byte[]> dictionary;
+				List<string> values;
+
+				DecodeDictionary(clearEnd, out dictionary, out values);
 
 				int value = 0;
 				int counter = 0;
@@ -123,24 +90,28 @@ namespace CivOne.IO
 						
 						if (!dictionary.ContainsKey(value) && (flushDictionary || dictionary.Count < ((0x01 << maxBits) - 1)))
 						{
-							dictionary.Add(dictionary.Count, new ByteArray(entry.Append(entry[0]).ToArray()));
+							byte[] bytes = entry.Append(entry[0]).ToArray();
+							dictionary.Add(dictionary.Count, bytes);
+							values.Add(string.Join(",", bytes));
 						}
 						
-						ByteArray outVal = dictionary[value];
-						ByteArray newEntry = new ByteArray(entry.Append(outVal.Bytes[0]).ToArray());
-						bw.Write(outVal.Bytes);
+						byte[] outVal = dictionary[value];
+						byte[] newEntry = entry.Append(outVal[0]).ToArray();
+						bw.Write(outVal);
 
-						if (!dictionary.ContainsValue(newEntry) && (flushDictionary || dictionary.Count < ((0x01 << maxBits) - 1)))
+						string stringValue = string.Join(",", newEntry);
+						if (!values.Contains(stringValue) && (flushDictionary || dictionary.Count < ((0x01 << maxBits) - 1)))
 						{
 							dictionary.Add(dictionary.Count, newEntry);
+							values.Add(stringValue);
 						}
-						entry = outVal.Bytes;
+						entry = outVal;
 						value = 0;
 						counter = 0;
 						
 						if (flushDictionary && CodeLength(dictionary.Count) > maxBits)
 						{
-							dictionary = DecodeDictionary(clearEnd);
+							DecodeDictionary(clearEnd, out dictionary, out values);
 							entry = new byte[0];
 						}
 					}
@@ -150,15 +121,24 @@ namespace CivOne.IO
 			}
 		}
 
-		public static byte[] Encode(byte[] input, bool clearEnd = false, int maxBits = 11)
+		private static Dictionary<string, int> EncodeDictionary(bool clearEnd)
 		{
-			Dictionary<string, int> dictionary = Enumerable.Range(0, 256).ToDictionary(x => x.ToString(), x => x);
-			ByteList byteList = new ByteList();
-
-			dictionary.Add("CLR", dictionary.Count);
+			Dictionary<string, int> output = Enumerable.Range(0, 256).ToDictionary(x => x.ToString(), x => x);
+			output.Add("CLR", output.Count);
 			if (clearEnd)
 			{
-				dictionary.Add("END", dictionary.Count);
+				output.Add("END", output.Count);
+			}
+			return output;
+		}
+
+		public static byte[] Encode(byte[] input, bool clearEnd = false, bool flushDictionary = true, int maxBits = 11)
+		{
+			Dictionary<string, int> dictionary = EncodeDictionary(clearEnd);
+			ByteList byteList = new ByteList();
+
+			if (clearEnd)
+			{
 				byteList.Add(dictionary["CLR"], dictionary.Count);
 			}
 			
@@ -176,6 +156,17 @@ namespace CivOne.IO
 				{
 					dictionary.Add(string.Join(",", newEntry), dictionary.Count);
 				}
+				else
+				{
+					// if (flushDictionary && CodeLength(dictionary.Count - 1) > maxBits)
+					if (flushDictionary)
+					{
+						dictionary = EncodeDictionary(clearEnd);
+						entry = new byte[0];
+						continue;
+					}
+				}
+				
 				entry = new byte[] { input[i] };
 			}
 
