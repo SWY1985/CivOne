@@ -152,19 +152,22 @@ namespace CivOne.IO
 					continue;
 				}
 				byteList.Add(dictionary[string.Join(",", entry)], dictionary.Count);
-				if (dictionary.Count < ((0x01 << maxBits) - 1))
+				if (flushDictionary)
 				{
-					dictionary.Add(string.Join(",", newEntry), dictionary.Count);
-				}
-				else
-				{
-					// if (flushDictionary && CodeLength(dictionary.Count - 1) > maxBits)
-					if (flushDictionary)
+					if (CodeLength(dictionary.Count) <= maxBits)
+					{
+						dictionary.Add(string.Join(",", newEntry), dictionary.Count);
+					}
+					else
 					{
 						dictionary = EncodeDictionary(clearEnd);
 						entry = new byte[0];
 						continue;
 					}
+				}
+				else if (CodeLength(dictionary.Count + 1) <= maxBits)
+				{
+					dictionary.Add(string.Join(",", newEntry), dictionary.Count);
 				}
 				
 				entry = new byte[] { input[i] };
