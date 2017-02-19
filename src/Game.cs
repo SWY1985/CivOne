@@ -626,43 +626,52 @@ namespace CivOne
 
 				bw.Write(GameTurn);
 				bw.Write((ushort)PlayerNumber(HumanPlayer));
-				// TODO: Human player Civ bitflag
-				bw.Write((ushort)0);
-				//
+				bw.Write((ushort)(0x01 << PlayerNumber(HumanPlayer)));
 				bw.Write(randomSeed);
-				bw.Write((ushort)Common.TurnToYear(GameTurn));
-				bw.Write(Difficulty);
+				bw.Write((short)Common.TurnToYear(GameTurn));
+				bw.Write((ushort)Difficulty);
 				bw.Write(activeCivilizations);
 				if (HumanPlayer.CurrentResearch == null)
 					bw.Write((ushort)0x00);
 				else
 					bw.Write((ushort)HumanPlayer.CurrentResearch.Id);
+
+				// Leader names
 				for (int i = 0; i < 8; i++)
 				{
 					if (_players.GetUpperBound(0) < i)
 					{
-						bw.Write(new string((char)0x00, 14));
+						for (int x = 0; x < 14; x++)
+						{
+							bw.Write((byte)0x00);
+						}
 						continue;
 					}
-					bw.Write(_players[i].LeaderName.PadRight(14, (char)0x00));
+					bw.Write(_players[i].LeaderName.PadRight(14, (char)0x00).Select(x => (byte)x).ToArray());
 				}
 				for (int i = 0; i < 8; i++)
 				{
 					if (_players.GetUpperBound(0) < i)
 					{
-						bw.Write(new string((char)0x00, 12));
+						for (int x = 0; x < 12; x++)
+						{
+							bw.Write((byte)0x00);
+						}
 						continue;
 					}
-					bw.Write(_players[i].Civilization.NamePlural.PadRight(12, (char)0x00));
+					bw.Write(_players[i].Civilization.NamePlural.PadRight(12, (char)0x00).Select(x => (byte)x).ToArray());
 				}
 				for (int i = 0; i < 8; i++)
 				{
 					if (_players.GetUpperBound(0) < i)
 					{
-						bw.Write(new string((char)0x00, 12));
+						for (int x = 0; x < 11; x++)
+						{
+							bw.Write((byte)0x00);
+						}
 						continue;
 					}
-					bw.Write(_players[i].Civilization.Name.PadRight(11, (char)0x00));
+					bw.Write(_players[i].Civilization.Name.PadRight(11, (char)0x00).Select(x => (byte)x).ToArray());
 				}
 
 				// Player gold
@@ -880,7 +889,7 @@ namespace CivOne
 				}
 
 				// TODO: Continent building site counts
-				for (int i = 0; i < 128; i++)
+				for (int i = 0; i < 32; i++)
 				{
 					bw.Write((byte)0);
 				}
@@ -960,7 +969,7 @@ namespace CivOne
 					{
 						for (int x = 0; x < (12 * 128); x++)
 						{
-							bw.Write((short)x);
+							bw.Write((byte)x);
 						}
 						continue;
 					}
@@ -1064,10 +1073,10 @@ namespace CivOne
 				{
 					if (_cities.Count() - 1 < i)
 					{
-						bw.Write(_cityNames[i].PadRight(13, (char)0x00));
+						bw.Write(_cityNames[i].PadRight(13, (char)0x00).Select(x => (byte)x).ToArray());
 						continue;
 					}
-					bw.Write(_cities[i].Name.PadRight(13, (char)0x00));
+					bw.Write(_cities[i].Name.PadRight(13, (char)0x00).Select(x => (byte)x).ToArray());
 				}
 
 				// TODO: Replay data
