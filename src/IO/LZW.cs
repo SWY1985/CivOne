@@ -161,8 +161,6 @@ namespace CivOne.IO
 					else
 					{
 						dictionary = EncodeDictionary(clearEnd);
-						entry = new byte[0];
-						continue;
 					}
 				}
 				else if (CodeLength(dictionary.Count + 1) <= maxBits)
