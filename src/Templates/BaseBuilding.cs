@@ -90,12 +90,12 @@ namespace CivOne.Templates
 				
 				if (grassTile)
 				{
-					Picture grass = Resources.Instance.LoadPIC("CITYPIX2", true).GetPart(250, 0, 52, 50);
+					Picture grass = Resources.Instance.LoadPIC("CITYPIX2").GetPart(250, 0, 52, 50);
 					Picture.ReplaceColours(grass, 1, 0);
 					Icon.AddLayer(grass);
 				}
 				
-				Picture icon = Resources.Instance.LoadPIC("CITYPIX2", true).GetPart(col * 50, row * 50, 52, 50);
+				Picture icon = Resources.Instance.LoadPIC("CITYPIX2").GetPart(col * 50, row * 50, 52, 50);
 				Picture.ReplaceColours(icon, 1, 0);
 				Icon.AddLayer(icon);
 				Icon.FillRectangle(0, 50, 0, 2, 50);
