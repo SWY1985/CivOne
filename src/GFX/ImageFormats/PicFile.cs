@@ -18,6 +18,7 @@ namespace CivOne.GFX.ImageFormats
 {
 	internal class PicFile : IImageFormat
 	{
+		private static Dictionary<string, PicFile> _cache = new Dictionary<string, PicFile>();
 		private readonly byte[] _bytes;
 		private readonly byte[,] _colourTable = null;
 		private readonly Color[] _palette16 = Common.GetPalette16;
@@ -143,24 +144,8 @@ namespace CivOne.GFX.ImageFormats
 			byte bits = _bytes[index++];
 			byte[] img = new byte[length - 5];
 			Array.Copy(_bytes, index, img, 0, (int)(length - 5));
-
-			byte[] output;
-
-			using (MemoryStream ms = new MemoryStream())
-			{
-				foreach (byte b in img) ms.WriteByte(b);
-				ms.Flush();
-				ms.Position = 0;
-				using (BinaryReader br = new BinaryReader(ms))
-				{
-					int[] indexes = LZWDecoder.ConvertByteStream(br, img.Length, bits);
-					byte[] decoded = LZWDecoder.Decode(indexes).Select(x => (byte)x).ToArray();
-					output = RLE.Decode(decoded);
-				}
-			}
-			
 			index += (int)(length - 5);
-			return output;
+			return RLE.Decode(LZW.Decode(img));
 		}
 		
 		/// <summary>
@@ -181,6 +166,11 @@ namespace CivOne.GFX.ImageFormats
 			{
 				for (int x = 0; x < width; x++)
 				{
+					if (image.Length <= c)
+					{
+						_picture256[x, y] = 0;
+						continue;
+					}
 					_picture256[x, y] = image[c++];
 				}
 			}
@@ -356,6 +346,10 @@ namespace CivOne.GFX.ImageFormats
 						break;
 				}
 			}
+
+			// _cache.Add(file, this);
+
+			Console.WriteLine($"Loaded {filename}");
 		}
 	}
 }
