@@ -55,6 +55,16 @@ namespace CivOne.IO
 			return 1;
 		}
 
+		private static byte[] Append(byte[] array, params byte[] bytes)
+		{
+			byte[] output = new byte[array.Length + bytes.Length];
+			for (int i = 0; i < array.Length; i++)
+				output[i] = array[i];
+			for (int i = 0; i < bytes.Length; i++)
+				output[i + array.Length] = bytes[i];
+			return output;
+		}
+
 		private static void DecodeDictionary(bool clearEnd, out Dictionary<int, byte[]> dictionary, out List<string> valueList)
 		{
 			dictionary = Enumerable.Range(0, 256).ToDictionary(x => x, x => new byte[] { (byte)x });
@@ -90,13 +100,13 @@ namespace CivOne.IO
 						
 						if (!dictionary.ContainsKey(value) && (flushDictionary || dictionary.Count < ((0x01 << maxBits) - 1)))
 						{
-							byte[] bytes = entry.Append(entry[0]).ToArray();
+							byte[] bytes = Append(entry, entry[0]);
 							dictionary.Add(dictionary.Count, bytes);
 							values.Add(string.Join(",", bytes));
 						}
 						
 						byte[] outVal = dictionary[value];
-						byte[] newEntry = entry.Append(outVal[0]).ToArray();
+						byte[] newEntry = Append(entry, outVal[0]);
 						bw.Write(outVal);
 
 						string stringValue = string.Join(",", newEntry);
@@ -145,7 +155,7 @@ namespace CivOne.IO
 			byte[] entry = new byte[0];
 			for (int i = 0; i < input.Length; i++)
 			{
-				byte[] newEntry = entry.Append(input[i]).ToArray();
+				byte[] newEntry = Append(entry, input[i]);
 				if (dictionary.ContainsKey(string.Join(",", newEntry)))
 				{
 					entry = newEntry;
