@@ -168,6 +168,19 @@ namespace CivOne.Screens
 			{
 				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 51, 151, 49, 49), 0, 72);
 			}
+
+			if (typeof(T) == typeof(CityWalls))
+			{
+				Picture wall = Resources.Instance.GetPart("CITYPIX2", 251, 101, 43, 49);
+				Picture door = Resources.Instance.GetPart("CITYPIX2", 51, 101, 49, 49);
+
+				//0, 108
+				for (int xx = 0; xx < 142; xx += 43)
+					picture.AddLayer(wall, xx, 108);
+				picture.AddLayer(door, 142, 108);
+				for (int xx = 191; xx < 320; xx += 43)
+					picture.AddLayer(wall, xx, 108);
+			}
 		}
 		
 		public CityView(City city, bool founded = false, bool firstView = false, IProduction production = null)
@@ -204,6 +217,13 @@ namespace CivOne.Screens
 				DrawBuilding<Aqueduct>();
 				if (!(production is Aqueduct))
 					DrawBuilding<Aqueduct>( _overlay);
+			}
+
+			if (city.Buildings.Any(b => b is CityWalls))
+			{
+				DrawBuilding<CityWalls>();
+				if (!(production is CityWalls))
+					DrawBuilding<CityWalls>( _overlay);
 			}
 
 			AddLayer(_background);
