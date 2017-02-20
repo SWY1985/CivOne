@@ -31,7 +31,7 @@ namespace CivOne.Screens
 			
 			if (_textLines.Length <= _currentLine)
 			{
-				Environment.Exit(0);
+				Common.Quit();
 			}
 			
 			AddLayer(_background);
