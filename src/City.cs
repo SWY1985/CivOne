@@ -259,6 +259,17 @@ namespace CivOne
 			}
 		}
 
+		internal byte Status
+		{
+			get
+			{
+				byte output = 0;
+				if (Map[X, Y].GetBorderTiles().Any(t => t.IsOcean)) output |= (0x01 << 1); // Coastal city
+				if (BuildingSold) output |= (0x01 << 7); // Building sold this turn
+				return output;
+			}
+		}
+
 		internal IEnumerable<ITile> ResourceTiles
 		{
 			get
@@ -560,7 +571,7 @@ namespace CivOne
 		public void AddWonder(IWonder wonder)
 		{
 			_wonders.Add(wonder);
-			if (wonder is Colossus && !this.Player.WonderObsolete<Colossus>())
+			if (Game.Started && wonder is Colossus && !this.Player.WonderObsolete<Colossus>())
 			{
 				ResetResourceTiles();
 			}
