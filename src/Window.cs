@@ -477,8 +477,23 @@ namespace CivOne
 						scaleY = ScaleY;
 						break;
 				}
-				_mouseX = (int)((Mouse.X - x1) / scaleX);
-				_mouseY = (int)((Mouse.Y - y1) / scaleY);
+
+				bool mouseMove =
+					(_mouseX != (_mouseX = (int)((Mouse.X - x1) / scaleX))) |
+					(_mouseY != (_mouseY = (int)((Mouse.Y - y1) / scaleY)));
+				
+				if (mouseMove)
+				{
+					CivMouseButton buttons = CivMouseButton.None;
+					MouseState mouse = Mouse.GetState();
+					
+					if (mouse.IsButtonDown(TkMouseButton.Left)) buttons |= CivMouseButton.Left;
+					else if (mouse.IsButtonDown(TkMouseButton.Right)) buttons |= CivMouseButton.Right;
+					if (buttons != CivMouseButton.None)
+					{
+						TopScreen.MouseDrag(new ScreenEventArgs(_mouseX, _mouseY, buttons));
+					}
+				}
 
 				CursorVisible = (_mouseX <= 0 || _mouseX >= (CanvasWidth - 1) || _mouseY <= 0 || _mouseY >= (CanvasHeight - 1));
 			}
