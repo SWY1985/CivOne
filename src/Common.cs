@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
 
@@ -151,6 +152,15 @@ namespace CivOne
 			if (year < 0)
 				return string.Format("{0} BC", -year);
 			return string.Format("{0} AD", year);
+		}
+
+		internal static int CitizenGroup(Citizen citizen)
+		{
+			int output = (int)citizen;
+			output -= (output % 2);
+			output /= 2;
+			if (output > 3) output = 3;
+			return output;
 		}
 		
 		public static bool InCityRange(int x1, int y1, int x2, int y2)
