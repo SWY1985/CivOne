@@ -14,7 +14,7 @@ namespace CivOne.Tasks
 {
 	internal class Turn : GameTask, IFast
 	{
-		private const int TURN_TIME = 5;
+		private const int TURN_TIME = 10;
 
 		private ITurn _turnObject = null;
 		private IUnit _unit = null;
@@ -26,8 +26,11 @@ namespace CivOne.Tasks
 
 		protected override bool Step()
 		{
-			if (_step-- <= 0)
+			if (_endTurn && _step-- <= 0)
+			{
+				Game.EndTurn();
 				EndTask();
+			}
 			return true;
 		}
 
@@ -43,8 +46,13 @@ namespace CivOne.Tasks
 			}
 			else if (_endTurn)
 			{
+				if (Game.PlayerNumber(Game.CurrentPlayer) == Game.PlayerNumber(Human))
+				{
+					_step = TURN_TIME;
+					return;
+				}
 				Game.EndTurn();
-				_step = TURN_TIME;
+				EndTask();
 				return;
 			}
 			else if (_gameOver != null)
