@@ -162,6 +162,7 @@ namespace CivOne
 		internal bool CivilopediaText { get; set; }
 		internal bool EndOfTurn { get; set; }
 		internal bool InstantAdvice { get; set; }
+		internal bool AutoSave { get; set; }
 
 		internal void RevealWorldCheat()
 		{
@@ -270,6 +271,7 @@ namespace CivOne
 
 			// Set game options
 			EndOfTurn = false;
+			AutoSave = true;
 		}
 	}
 }
