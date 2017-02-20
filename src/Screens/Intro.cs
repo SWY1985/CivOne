@@ -11,18 +11,19 @@ using System;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
+using CivOne.Interfaces;
 using CivOne.IO;
 using CivOne.Templates;
 
 namespace CivOne.Screens
 {
-	internal class Intro : BaseScreen
+	internal class Intro : BaseScreen, IExpand, IFast
 	{
 		private const float FADE_STEP = 0.0625F;
 		
 		private readonly string[] _introText;
 		private readonly Picture[] _pictures;
-		
+
 		private float _fadeStep = 0.0F;
 		private int _introTicks = 0;
 		private int _introLine = 1;
@@ -160,7 +161,19 @@ namespace CivOne.Screens
 				return false;
 			}
 			
-			AddLayer(_pictures[_introPicture]);
+			int x = (_canvas.Width - 320) / 2;
+			int y = (_canvas.Height - 200) / 2;
+			if (x != 0 || y != 0)
+			{
+				_canvas.FillRectangle(_pictures[_introPicture].GetBitmap[0, 0], 0, 0, _canvas.Width, _canvas.Height);
+				_canvas.FillRectangle(0, x, y, 320, 200);
+				_canvas.FillRectangle(_pictures[_introPicture].GetBitmap[10, 100], x, y, 320, 200);
+				AddLayer(_pictures[_introPicture], x, y);
+			}
+			else
+			{
+				AddLayer(_pictures[_introPicture]);
+			}
 			
 			if (_fadeStep < 1.0F) return true;
 			
@@ -168,7 +181,7 @@ namespace CivOne.Screens
 			string introLine = _introText[_introLine];
 			while (introLine == string.Empty)
 				introLine = _introText[_introLine - (++previousText)];
-			_canvas.DrawText(introLine, 6, TextColour, 160, 160, TextAlign.Center);
+			_canvas.DrawText(introLine, 6, TextColour, x + 160, y + 160, TextAlign.Center);
 			
 			if (_introTicks % 30 == 1) LogIntroText();
 			return true;
@@ -225,6 +238,13 @@ namespace CivOne.Screens
 				return true;
 			}
 			return false;
+		}
+
+		public void Resize(int width, int height)
+		{
+			_canvas = new Picture(width, height, _canvas.Palette);
+			_canvas.FillRectangle(0, 0, 0, width, height);
+			HasUpdate(0);
 		}
 		
 		public Intro()

@@ -155,10 +155,10 @@ namespace CivOne.GFX
 		{
 			for (int yy = top; yy < top + height; yy++)
 			{
-				if(yy >= Height) continue;
+				if(yy < 0 || yy >= Height) continue;
 				for (int xx = left; xx < left + width; xx++)
 				{
-					if(xx >= Width) continue;
+					if(xx < 0 || xx >= Width) continue;
 					_bitmap[xx, yy] = colour;
 				}
 			}
