@@ -452,7 +452,7 @@ namespace CivOne
 		{
 			if (Common.EndGame)
 			{
-				Close();
+				Exit();
 				return;
 			}
 
