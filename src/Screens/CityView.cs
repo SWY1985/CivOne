@@ -9,6 +9,7 @@
 
 using System;
 using System.Linq;
+using CivOne.Buildings;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Interfaces;
@@ -61,6 +62,12 @@ namespace CivOne.Screens
 		
 		public override bool HasUpdate(uint gameTick)
 		{
+			if (gameTick % 4 == 0)
+			{
+				_canvas.Cycle(64, 79);
+				_update = true;
+			}
+
 			if (_noiseMap != null)
 			{
 				if (_noiseCounter > 0)
@@ -136,7 +143,6 @@ namespace CivOne.Screens
 			return SkipAction();
 		}
 
-		// private void DrawWonder(IWonder wonder, Picture picture = null)
 		private void DrawWonder<T>(Picture picture = null) where T : IWonder
 		{
 			if (picture == null) picture = _background;
@@ -152,6 +158,15 @@ namespace CivOne.Screens
 			if (typeof(T) == typeof(GreatWall))
 			{
 				picture.AddLayer(Resources.Instance.GetPart("WONDERS2", 1, 38, 66, 81), 0, 0);
+			}
+		}
+
+		private void DrawBuilding<T>(Picture picture = null) where T : IBuilding
+		{
+			if (picture == null) picture = _background;
+			if (typeof(T) == typeof(Aqueduct))
+			{
+				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 51, 151, 49, 49), 0, 72);
 			}
 		}
 		
@@ -182,6 +197,13 @@ namespace CivOne.Screens
 				DrawWonder<GreatWall>();
 				if (!(production is GreatWall))
 					DrawWonder<GreatWall>( _overlay);
+			}
+
+			// if (city.Buildings.Any(b => b is Aqueduct))
+			{
+				DrawBuilding<Aqueduct>();
+				if (!(production is Aqueduct))
+					DrawBuilding<Aqueduct>( _overlay);
 			}
 
 			AddLayer(_background);
