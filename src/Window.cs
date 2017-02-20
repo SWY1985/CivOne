@@ -42,6 +42,8 @@ namespace CivOne
 
 		private KeyModifier _keyModifier = KeyModifier.None;
 
+		private CivMouseButton _mouseButtons = CivMouseButton.None;
+
 		private WindowState _previousState = WindowState.Normal;
 
 		private int ScaleX
@@ -401,7 +403,8 @@ namespace CivOne
 
 			CivMouseButton buttons = CivMouseButton.None;
 			if (args.Mouse.IsButtonDown(TkMouseButton.Left)) buttons |= CivMouseButton.Left;
-			else if (args.Mouse.IsButtonDown(TkMouseButton.Right)) buttons = CivMouseButton.Right;
+			if (args.Mouse.IsButtonDown(TkMouseButton.Right)) buttons = CivMouseButton.Right;
+			_mouseButtons = buttons;
 			TopScreen.MouseDown(new ScreenEventArgs(_mouseX, _mouseY, buttons));
 		}
 
@@ -410,8 +413,8 @@ namespace CivOne
 			if (TopScreen == null) return;
 
 			CivMouseButton buttons = CivMouseButton.None;
-			if (args.Mouse.IsButtonUp(TkMouseButton.Left)) buttons = CivMouseButton.Left;
-			else if (args.Mouse.IsButtonUp(TkMouseButton.Right)) buttons = CivMouseButton.Right;
+			if (args.Mouse.IsButtonUp(TkMouseButton.Left) && (_mouseButtons & CivMouseButton.Left) > 0) buttons |= CivMouseButton.Left;
+			if (args.Mouse.IsButtonUp(TkMouseButton.Right) && (_mouseButtons & CivMouseButton.Right) > 0) buttons |= CivMouseButton.Right;
 			TopScreen.MouseUp(new ScreenEventArgs(_mouseX, _mouseY, buttons));
 		}
 
@@ -488,7 +491,7 @@ namespace CivOne
 					MouseState mouse = Mouse.GetState();
 					
 					if (mouse.IsButtonDown(TkMouseButton.Left)) buttons |= CivMouseButton.Left;
-					else if (mouse.IsButtonDown(TkMouseButton.Right)) buttons |= CivMouseButton.Right;
+					if (mouse.IsButtonDown(TkMouseButton.Right)) buttons |= CivMouseButton.Right;
 					if (buttons != CivMouseButton.None)
 					{
 						TopScreen.MouseDrag(new ScreenEventArgs(_mouseX, _mouseY, buttons));
