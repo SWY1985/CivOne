@@ -137,7 +137,8 @@ namespace CivOne.Templates
 							foreach (ITile tile in Map[X, Y].GetBorderTiles())
 							{
 								if (tile.City != null || tile.Units.Length > 0) continue;
-								if (Common.Random.Next(0, 10) < 8) continue;
+								if (Common.Random.Next(0, 10) < 6) continue;
+								if (tile.IsOcean) continue;
 								Game.Instance.CreateUnit(Common.Random.Next(0, 100) < 50 ? Unit.Cavalry : Unit.Legion, tile.X, tile.Y, 0, true);
 								count++;
 							}
