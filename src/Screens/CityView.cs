@@ -9,6 +9,7 @@
 
 using System;
 using System.Linq;
+using CivOne.Advances;
 using CivOne.Buildings;
 using CivOne.Enums;
 using CivOne.Events;
@@ -275,7 +276,20 @@ namespace CivOne.Screens
 				FadeColours();
 				return;
 			}
-			//TODO: Render citizens
+
+			int i = 0;
+			int group = -1;
+			int offsetX = 24;
+			bool modern = Human.HasAdvance<Industrialization>();
+			foreach (Citizen citizen in _city.Citizens)
+			{
+				if (group != (group = Common.CitizenGroup(citizen)) && group > 0) offsetX += 8;
+
+				int sx = ((int)(citizen) * 35) + 1, sy = (modern ? 1 : 52);
+				int sw = 34, sh = (modern ? 50 : 52);
+				int dx = (int)(citizen) + offsetX + (11 * i++), dy = 140;
+				AddLayer(Resources.Instance.GetPart("POP", sx, sy, sw, sh), dx, dy);
+			}
 		}
 	}
 }
