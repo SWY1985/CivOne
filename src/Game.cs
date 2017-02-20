@@ -381,6 +381,10 @@ namespace CivOne
 				// Does the current unit still have moves left?
 				if (_units[_activeUnit].Owner == _currentPlayer && (_units[_activeUnit].MovesLeft > 0 || _units[_activeUnit].PartMoves > 0) && !_units[_activeUnit].Sentry && !_units[_activeUnit].Fortify)
 					return _units[_activeUnit];
+
+				// Task busy, don't change the active unit
+				if (GameTask.Any())
+					return _units[_activeUnit];
 				
 				// Check if any units are still available for this player
 				if (!_units.Any(u => u.Owner == _currentPlayer && (u.MovesLeft > 0 || u.PartMoves > 0) && !u.Busy))

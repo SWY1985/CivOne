@@ -21,6 +21,12 @@ namespace CivOne.Templates
 	{
 		protected override void MovementDone(ITile previousTile)
 		{
+			if (Tile.Hut)
+			{
+				Tile.Hut = false;
+				TribalHut();
+			}
+
 			if (previousTile.Road && Tile.Road)
 			{
 				if (Tile.RailRoad && previousTile.RailRoad && Tile.City == null)
@@ -64,12 +70,6 @@ namespace CivOne.Templates
 					PartMoves = 0;
 				}
 			}
-			
-			if (Tile.Hut)
-			{
-				Tile.Hut = false;
-				TribalHut();
-			}
 		}
 
 		private void TribalHutMessage(EventHandler method, params string[] message)
@@ -78,7 +78,7 @@ namespace CivOne.Templates
 			{
 				Message msgBox = Message.General(message);
 				msgBox.Done += method;
-				GameTask.Enqueue(msgBox);
+				GameTask.Insert(msgBox);
 				return;
 			}
 			method(this, null);
