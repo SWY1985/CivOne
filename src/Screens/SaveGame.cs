@@ -76,6 +76,7 @@ namespace CivOne.Screens
 		
 		private readonly Color[] _palette;
 		private char _driveLetter = 'C';
+		private readonly int _gameId;
 		private bool _update = true;
 		private Menu _menu;
 		
@@ -149,6 +150,14 @@ namespace CivOne.Screens
 			}
 			else if (args.Key == Key.Enter)
 			{
+				if (_gameId >= 0)
+				{
+					SaveGameFile file = GetSaveGames().ToArray()[_gameId];
+					Game.Save(file.SveFile, file.MapFile);
+					Close();
+					return true;
+				}
+
 				_menu = new Menu(Canvas.Palette)
 				{
 					Title = "Select Save File...",
@@ -212,6 +221,13 @@ namespace CivOne.Screens
 		public SaveGame()
 		{
 			_palette = Resources.Instance.LoadPIC("SP257").Palette;
+			_gameId = -1;
+		}
+		
+		public SaveGame(int gameId)
+		{
+			_palette = Resources.Instance.LoadPIC("SP257").Palette;
+			_gameId = gameId;
 		}
 	}
 }

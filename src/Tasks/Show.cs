@@ -88,6 +88,16 @@ namespace CivOne.Tasks
 			}
 		}
 
+		public static Show AutoSave
+		{
+			get
+			{
+				if (Game.GameTurn % 50 != 0) return null;
+				int gameId = ((Game.GameTurn / 50) % 6) + 4;
+				return new Show(new SaveGame(gameId));
+			}
+		}
+
 		public static Show CityManager(City city)
 		{
 			return new Show(new CityManager(city));

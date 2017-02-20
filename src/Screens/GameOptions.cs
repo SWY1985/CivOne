@@ -46,6 +46,13 @@ namespace CivOne.Screens
 			Close();
 		}
 
+		private void MenuAutoSave(object sender, EventArgs args)
+		{
+			Settings.AutoSave = !Settings.AutoSave;
+			CloseMenus();
+			Close();
+		}
+
 		private void MenuEndOfTurn(object sender, EventArgs args)
 		{
 			Settings.EndOfTurn = !Settings.EndOfTurn;
@@ -86,7 +93,7 @@ namespace CivOne.Screens
 				menu.Cancel += MenuCancel;
 
 				menu.Items.Add(new Menu.Item($"{(Settings.InstantAdvice ? '^' : ' ')}Instant Advice"));
-				menu.Items.Add(new Menu.Item(" AutoSave") { Enabled = false });
+				menu.Items.Add(new Menu.Item($"{(Settings.AutoSave ? '^' : ' ')}AutoSave"));
 				menu.Items.Add(new Menu.Item($"{(Settings.EndOfTurn ? '^' : ' ')}End of Turn"));
 				menu.Items.Add(new Menu.Item($"{(Settings.Animations ? '^' : ' ')}Animations"));
 				menu.Items.Add(new Menu.Item(" Sound") { Enabled = false });
@@ -95,6 +102,7 @@ namespace CivOne.Screens
 				menu.Items.Add(new Menu.Item(" Palace") { Enabled = false });
 
 				menu.Items[0].Selected += MenuInstantAdvice;
+				menu.Items[1].Selected += MenuAutoSave;
 				menu.Items[2].Selected += MenuEndOfTurn;
 				menu.Items[3].Selected += MenuAnimations;
 				menu.Items[6].Selected += MenuCivilopediaText;

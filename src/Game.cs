@@ -141,6 +141,10 @@ namespace CivOne
 			{
 				_currentPlayer = 0;
 				GameTurn++;
+				if (GameTurn % 50 == 0 && Settings.AutoSave)
+				{
+					GameTask.Enqueue(Show.AutoSave);
+				}
 			}
 
 			foreach (IUnit unit in _units.Where(u => u.Owner == _currentPlayer))
