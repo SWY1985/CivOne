@@ -33,7 +33,7 @@ namespace CivOne
 		private static IEnumerable<T> GetTypes<T>()
 		{
 			foreach (Assembly asm in GetAssemblies)
-			foreach (Type type in asm.GetTypes().Where(t => typeof(T).GetTypeInfo().IsAssignableFrom(t) && t.GetTypeInfo().IsClass && !t.GetTypeInfo().IsAbstract))
+			foreach (Type type in asm.GetTypes().Where(t => typeof(T).GetTypeInfo().IsAssignableFrom(t.GetTypeInfo()) && t.GetTypeInfo().IsClass && !t.GetTypeInfo().IsAbstract))
 			{
 				yield return (T)Activator.CreateInstance(type);
 			}

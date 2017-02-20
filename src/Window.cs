@@ -400,7 +400,7 @@ namespace CivOne
 			if (TopScreen == null) return;
 
 			CivMouseButton buttons = CivMouseButton.None;
-			if (args.Mouse.IsButtonDown(TkMouseButton.Left)) buttons = CivMouseButton.Left;
+			if (args.Mouse.IsButtonDown(TkMouseButton.Left)) buttons |= CivMouseButton.Left;
 			else if (args.Mouse.IsButtonDown(TkMouseButton.Right)) buttons = CivMouseButton.Right;
 			TopScreen.MouseDown(new ScreenEventArgs(_mouseX, _mouseY, buttons));
 		}

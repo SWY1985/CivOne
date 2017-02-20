@@ -42,12 +42,12 @@ namespace CivOne.Screens
 			
 			int titleX = 204, iconX = 8, iconY = 8;
 			string category = "(unknown)";
-			if (typeof(ITile).GetTypeInfo().IsAssignableFrom(_singlePage.GetType())) { category = "Terrain Type"; iconX = 23; iconY = 4; }
-			else if (typeof(IBuilding).GetTypeInfo().IsAssignableFrom(_singlePage.GetType())) { category = "City Improvement"; iconX = 36; iconY = 16; }
-			else if (typeof(IWonder).GetTypeInfo().IsAssignableFrom(_singlePage.GetType())) { category = "Wonder of the World"; titleX = 160; }
-			else if (typeof(IUnit).GetTypeInfo().IsAssignableFrom(_singlePage.GetType())) { category = "Military Units"; titleX = 224; }
-			else if (typeof(IAdvance).GetTypeInfo().IsAssignableFrom(_singlePage.GetType())) { category = "Civilization Advance"; }
-			else if (typeof(IConcept).GetTypeInfo().IsAssignableFrom(_singlePage.GetType())) { category = "Game Concepts"; titleX = 160; }
+			if (typeof(ITile).GetTypeInfo().IsAssignableFrom(_singlePage.GetType().GetTypeInfo())) { category = "Terrain Type"; iconX = 23; iconY = 4; }
+			else if (typeof(IBuilding).GetTypeInfo().IsAssignableFrom(_singlePage.GetType().GetTypeInfo())) { category = "City Improvement"; iconX = 36; iconY = 16; }
+			else if (typeof(IWonder).GetTypeInfo().IsAssignableFrom(_singlePage.GetType().GetTypeInfo())) { category = "Wonder of the World"; titleX = 160; }
+			else if (typeof(IUnit).GetTypeInfo().IsAssignableFrom(_singlePage.GetType().GetTypeInfo())) { category = "Military Units"; titleX = 224; }
+			else if (typeof(IAdvance).GetTypeInfo().IsAssignableFrom(_singlePage.GetType().GetTypeInfo())) { category = "Civilization Advance"; }
+			else if (typeof(IConcept).GetTypeInfo().IsAssignableFrom(_singlePage.GetType().GetTypeInfo())) { category = "Game Concepts"; titleX = 160; }
 			
 			if (!_icon) titleX = 160;
 			if (_singlePage.Icon != null && _icon)
@@ -218,7 +218,7 @@ namespace CivOne.Screens
 		
 		private void DrawTerrainText()
 		{
-			if (!typeof(ITile).GetTypeInfo().IsAssignableFrom(_singlePage.GetType())) return;
+			if (!typeof(ITile).GetTypeInfo().IsAssignableFrom(_singlePage.GetType().GetTypeInfo())) return;
 			
 			ITile tile = (ITile)_singlePage;
 			int move = 1, defense = 0;
