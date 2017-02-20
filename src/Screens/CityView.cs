@@ -199,7 +199,7 @@ namespace CivOne.Screens
 					DrawWonder<GreatWall>( _overlay);
 			}
 
-			// if (city.Buildings.Any(b => b is Aqueduct))
+			if (city.Buildings.Any(b => b is Aqueduct))
 			{
 				DrawBuilding<Aqueduct>();
 				if (!(production is Aqueduct))
