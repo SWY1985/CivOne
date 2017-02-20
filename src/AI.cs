@@ -21,8 +21,23 @@ namespace CivOne
 	{
 		private static void BarbarianMove(IUnit unit)
 		{
-			// Until confrontation has been implemented, barbarians delete themselves
-			Game.DisbandUnit(unit);
+			ITile[] tiles = unit.Tile.GetBorderTiles().Where(t => !t.IsOcean && t.Units.Any(u => u.Owner != 0)).ToArray();
+			if (tiles.Length == 0)
+			{
+				// No adjecent units found
+				Game.DisbandUnit(unit);
+				return;
+			}
+			else
+			{
+				ITile moveTo = tiles[Common.Random.Next(tiles.Length)];
+				int relX = moveTo.X - unit.X;
+				int relY = moveTo.Y - unit.Y;
+				while (relX < -1) relX += 80;
+				while (relX > 1) relX -= 80;
+
+				unit.MoveTo(relX, relY);
+			}
 		}
 
 		internal static void Move(IUnit unit)
