@@ -136,19 +136,20 @@ namespace CivOne.Screens
 			return SkipAction();
 		}
 
-		private void DrawWonder(IWonder wonder, Picture picture = null)
+		// private void DrawWonder(IWonder wonder, Picture picture = null)
+		private void DrawWonder<T>(Picture picture = null) where T : IWonder
 		{
 			if (picture == null) picture = _background;
-			if (wonder is Pyramids)
+			if (typeof(T) == typeof(Pyramids))
 			{
 				picture.AddLayer(Resources.Instance.GetPart("WONDERS2", 131, 54, 187, 29), 133, 0);
 				picture.AddLayer(Resources.Instance.GetPart("WONDERS2", 318, 54, 1, 29), 0, 0);
 			}
-			if (wonder is Colossus)
+			if (typeof(T) == typeof(Colossus))
 			{
 				picture.AddLayer(Resources.Instance.GetPart("WONDERS2", 88, 97, 124, 39), 170, 0);
 			}
-			if (wonder is GreatWall)
+			if (typeof(T) == typeof(GreatWall))
 			{
 				picture.AddLayer(Resources.Instance.GetPart("WONDERS2", 1, 38, 66, 81), 0, 0);
 			}
@@ -166,21 +167,21 @@ namespace CivOne.Screens
 
 			if (city.Wonders.Any(b => b is Pyramids))
 			{
-				DrawWonder(new Pyramids());
+				DrawWonder<Pyramids>();
 				if (!(production is Pyramids))
-					DrawWonder(new Pyramids(), _overlay);
+					DrawWonder<Pyramids>(_overlay);
 			}
 			if (city.Wonders.Any(b => b is Colossus))
 			{
-				DrawWonder(new Colossus());
+				DrawWonder<Colossus>();
 				if (!(production is Colossus))
-					DrawWonder(new Colossus(), _overlay);
+					DrawWonder<Colossus>(_overlay);
 			}
 			if (city.Wonders.Any(b => b is GreatWall))
 			{
-				DrawWonder(new GreatWall());
+				DrawWonder<GreatWall>();
 				if (!(production is GreatWall))
-					DrawWonder(new GreatWall(), _overlay);
+					DrawWonder<GreatWall>( _overlay);
 			}
 
 			AddLayer(_background);
