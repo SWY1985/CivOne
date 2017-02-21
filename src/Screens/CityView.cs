@@ -26,12 +26,15 @@ namespace CivOne.Screens
 		private const int NOISE_COUNT = 40;
 
 		private readonly City _city;
+		private readonly IProduction _production;
 		private readonly Picture _background;
 		private readonly bool _founded;
 		private readonly bool _firstView;
 		private readonly byte[,] _noiseMap;
 		
 		private int _noiseCounter = NOISE_COUNT;
+
+		private int _houseType = 0;
 
 		private readonly Picture _overlay;
 
@@ -183,58 +186,151 @@ namespace CivOne.Screens
 					picture.AddLayer(wall, xx, 108);
 			}
 		}
+
+		private byte[,] GetCityMap
+		{
+			get
+			{
+				Common.SetRandomSeedFromName(_city.Name);
+				
+				// This is experimental code, not the same as the original game
+				int ww = 4 + (_city.Size % 2 * 4);
+				int hh = 4 + (((_city.Size - 1) % 2) * 4);
+				byte[,] cityMap = new byte[ww, hh];
+				_houseType = Common.Random.Next(2);
+				for (int ii = 0; ii < _city.Size; ii++)
+				for (int t = 0; t < 10; t++)
+				{
+					int xx = Common.Random.Next(ww);
+					int yy = Common.Random.Next(hh);
+					int type = Common.Random.Next(8);
+					if (type < 3)
+					{
+						// house 1
+						cityMap[xx, yy] = 1;
+					}
+					else if (type < 6)
+					{
+						// house 2
+						cityMap[xx, yy] = 2;
+					}
+					else
+					{
+						// tree
+						cityMap[xx, yy] = 3;
+					}
+				}
+				for (int xx = 5; xx < ww; xx += 6)
+				{
+					bool road = false;
+					for (int yy = 0; yy < hh; yy++)
+					{
+						cityMap[xx, yy] = 0;
+						if (cityMap[xx - 1, yy] != 0 || (xx + 1 < ww && cityMap[xx + 1, yy] != 0))
+						{
+							road = true;
+						}
+					}
+					if (!road) continue;
+					for (int yy = 0; yy < hh; yy++)
+					{
+						byte roadType = 8;
+						if (yy == 0) roadType = 4;
+						if (yy == (hh - 1)) roadType = 7;
+						cityMap[xx, yy] = roadType;
+					}
+				}
+
+				return cityMap;
+			}
+		}
+
+		private void DrawBuildings()
+		{
+			byte[,] cityMap = GetCityMap;
+			int ww = cityMap.GetUpperBound(0);
+			int hh = cityMap.GetUpperBound(1);
+
+			if (_city.Wonders.Any(b => b is Pyramids))
+			{
+				DrawWonder<Pyramids>();
+				if (!(_production is Pyramids))
+					DrawWonder<Pyramids>(_overlay);
+			}
+			if (_city.Wonders.Any(b => b is Colossus))
+			{
+				DrawWonder<Colossus>();
+				if (!(_production is Colossus))
+					DrawWonder<Colossus>(_overlay);
+			}
+			if (_city.Wonders.Any(b => b is GreatWall))
+			{
+				DrawWonder<GreatWall>();
+				if (!(_production is GreatWall))
+					DrawWonder<GreatWall>( _overlay);
+			}
+
+			if (_city.Buildings.Any(b => b is Aqueduct))
+			{
+				DrawBuilding<Aqueduct>();
+				if (!(_production is Aqueduct))
+					DrawBuilding<Aqueduct>( _overlay);
+			}
+			
+			for (int yy = (hh - 1); yy >= 0; yy--)
+			for (int xx = 0; xx < ww; xx++)
+			{
+				int dx = 96 + (16 * xx) + (yy * 8);
+				int dy = 106 - (yy * 8);
+				Picture building;
+				switch (cityMap[xx, yy])
+				{
+					case 1:
+						building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * _houseType), 1, 31, 31);
+						break;
+					case 2:
+						building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * _houseType), 33, 31, 31);
+						break;
+					case 3:
+					case 4:
+					case 5:
+					case 6:
+					case 7:
+					case 8:
+					case 9:
+					case 10:
+						building = Resources.Instance.GetPart("CITYPIX1", 0 + (24 * (cityMap[xx,yy] - 3)), 65, 24, 8);
+						dx -= 5;
+						dy += 24;
+						break;
+					default: continue;
+				}
+				_background.AddLayer(building, dx, dy);
+			}
+
+			if (_city.Buildings.Any(b => b is CityWalls))
+			{
+				DrawBuilding<CityWalls>();
+				if (!(_production is CityWalls))
+					DrawBuilding<CityWalls>( _overlay);
+			}
+		}
 		
 		public CityView(City city, bool founded = false, bool firstView = false, IProduction production = null)
 		{
 			_city = city;
+			_production = production;
 			_background = new Picture(Resources.Instance.LoadPIC("HILL"));
 			_founded = founded;
 			_firstView = firstView;
 			
 			_canvas = new Picture(320, 200, _background.Palette);
 			_overlay = new Picture(_background);
-
-			Common.SetRandomSeedFromName(_city.Name);
-
-			if (city.Wonders.Any(b => b is Pyramids))
-			{
-				DrawWonder<Pyramids>();
-				if (!(production is Pyramids))
-					DrawWonder<Pyramids>(_overlay);
-			}
-			if (city.Wonders.Any(b => b is Colossus))
-			{
-				DrawWonder<Colossus>();
-				if (!(production is Colossus))
-					DrawWonder<Colossus>(_overlay);
-			}
-			if (city.Wonders.Any(b => b is GreatWall))
-			{
-				DrawWonder<GreatWall>();
-				if (!(production is GreatWall))
-					DrawWonder<GreatWall>( _overlay);
-			}
-
-			if (city.Buildings.Any(b => b is Aqueduct))
-			{
-				DrawBuilding<Aqueduct>();
-				if (!(production is Aqueduct))
-					DrawBuilding<Aqueduct>( _overlay);
-			}
-
-			if (city.Buildings.Any(b => b is CityWalls))
-			{
-				DrawBuilding<CityWalls>();
-				if (!(production is CityWalls))
-					DrawBuilding<CityWalls>( _overlay);
-			}
-
-			AddLayer(_background);
 			
-			if (founded)
-			{
-				return;
-			}
+			if (founded) return;
+
+			DrawBuildings();
+			AddLayer(_background);
 
 			if (production != null)
 			{
