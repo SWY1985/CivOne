@@ -21,6 +21,7 @@ namespace CivOne.GFX
 	{
 		private readonly Dictionary<string, Picture> _cache = new Dictionary<string, Picture>();
 		private readonly Dictionary<string, Picture> _textCache = new Dictionary<string, Picture>();
+		private readonly IFont _defaultFont = new DefaultFont();
 		private readonly List<Fontset> _fonts = new List<Fontset>();
 		private readonly Dictionary<Direction, Picture> _fog = new Dictionary<Direction, Picture>();
 		
@@ -32,10 +33,17 @@ namespace CivOne.GFX
 		private void LoadFonts()
 		{
 			byte[] file;
-			using (FileStream fs = new FileStream(Path.Combine(Settings.Instance.DataDirectory, "FONTS.CV"), FileMode.Open))
+			string filename = Path.Combine(Settings.Instance.DataDirectory, "FONTS.CV");
+			if (!File.Exists(filename))
+			{
+				Console.WriteLine("Font file not found, fallback to default font");
+				return;
+			}
+
+			using (FileStream fs = new FileStream(filename, FileMode.Open))
 			{
 				file = new byte[fs.Length];
-				for (int i = 0; i < fs.Length; i++) file[i] = (byte)fs.ReadByte();
+				fs.Read(file, 0, file.Length);
 			}
 			
 			List<ushort> fontOffsets = new List<ushort>();
@@ -58,7 +66,7 @@ namespace CivOne.GFX
 		public bool ValidCharacter(int fontId, char c)
 		{
 			byte asciiChar = (byte)c;
-			return (asciiChar >= _fonts[fontId].FirstChar && asciiChar <= _fonts[fontId].LastChar);
+			return (asciiChar >= Font(fontId).FirstChar && asciiChar <= Font(fontId).LastChar);
 		}
 		
 		public Size GetTextSize(int font, string text)
@@ -113,10 +121,17 @@ namespace CivOne.GFX
 		{
 			return GetLetter(5, font, letter).Size;
 		}
+
+		private IFont Font(int font)
+		{
+			if (font < 0 || (_fonts.Count - 1) < font)
+				return _defaultFont;
+			return _fonts[font];
+		}
 		
 		public int GetFontHeight(int font)
 		{
-			return _fonts[font].FontHeight;
+			return Font(font).FontHeight;
 		}
 		
 		private Picture GetLetter(byte colour, int font, char letter)
@@ -124,7 +139,7 @@ namespace CivOne.GFX
 			string key = string.Format("letter{0}|{1}|{2}", colour, font, letter);
 			if (!_textCache.ContainsKey(key))
 			{
-				_textCache.Add(key, _fonts[font].GetLetter(letter, colour));
+				_textCache.Add(key, Font(font).GetLetter(letter, colour));
 			}
 			return _textCache[key];
 		}
