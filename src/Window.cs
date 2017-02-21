@@ -20,6 +20,7 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
+using CivOne.IO;
 using CivOne.Screens;
 
 using TkKey = OpenTK.Input.Key;
@@ -565,6 +566,11 @@ namespace CivOne
 					break;
 			}
 			Common.AddScreen(startScreen);
+
+			if (!FileSystem.DataFilesExist())
+			{
+				Common.AddScreen(new MissingFiles());
+			}
 
 			KeyDown += OnKeyDown;
 			KeyUp += OnKeyUp;

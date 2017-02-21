@@ -118,7 +118,7 @@ namespace CivOne.GFX
 			_characters.Add((char)89, new bool[,] { { B1, B1, B0, B0, B0, B0, B0 }, { B0, B0, B1, B0, B0, B0, B0 }, { B0, B0, B0, B1, B1, B1, B1 }, { B0, B0, B1, B0, B0, B0, B0 }, { B1, B1, B0, B0, B0, B0, B0 } });
 			_characters.Add((char)90, new bool[,] { { B1, B0, B0, B0, B0, B1, B1 }, { B1, B0, B0, B1, B1, B0, B1 }, { B1, B0, B1, B0, B0, B0, B1 }, { B1, B1, B0, B0, B0, B0, B1 } });
 			_characters.Add((char)91, new bool[,] { { B1, B1, B1, B1, B1, B1, B1 }, { B1, B0, B0, B0, B0, B0, B1 } });
-			_characters.Add((char)92, new bool[,] { { B0, B0, B0, B1, B0, B0, B0 }, { B0, B0, B1, B0, B1, B0, B0 }, { B0, B1, B0, B1, B1, B1, B0 }, { B0, B0, B1, B1, B1, B0, B0 }, { B0, B0, B0, B1, B0, B0, B0 } });
+			_characters.Add((char)92, new bool[,] { { B0, B1, B0, B0, B0, B0, B0 }, { B0, B0, B1, B0, B0, B0, B0 }, { B0, B0, B0, B1, B0, B0, B0 }, { B0, B0, B0, B0, B1, B0, B0 }, { B0, B0, B0, B0, B0, B1, B0 } });
 			_characters.Add((char)93, new bool[,] { { B1, B0, B0, B0, B0, B0, B1 }, { B1, B1, B1, B1, B1, B1, B1 } });
 			_characters.Add((char)94, new bool[,] { { B0, B0, B0, B1, B0, B0, B0 }, { B0, B0, B0, B0, B1, B0, B0 }, { B0, B0, B0, B1, B0, B0, B0 }, { B0, B0, B1, B0, B0, B0, B0 }, { B0, B1, B0, B0, B0, B0, B0 } });
 			_characters.Add((char)95, new bool[,] { { B0, B0, B1, B1, B1, B0, B0 }, { B0, B1, B1, B1, B1, B1, B0 }, { B0, B1, B1, B1, B1, B1, B0 }, { B0, B1, B1, B1, B1, B1, B0 }, { B0, B0, B1, B1, B1, B0, B0 } });
