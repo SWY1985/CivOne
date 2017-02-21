@@ -165,7 +165,7 @@ namespace CivOne.Screens
 			}
 		}
 
-		private void DrawBuilding<T>(Picture picture = null) where T : IBuilding
+		private void DrawBuilding<T>(Picture picture = null, int x = -1, int y = -1) where T : IBuilding
 		{
 			if (picture == null) picture = _background;
 			if (typeof(T) == typeof(Aqueduct))
@@ -184,6 +184,26 @@ namespace CivOne.Screens
 				picture.AddLayer(door, 142, 108);
 				for (int xx = 191; xx < 320; xx += 43)
 					picture.AddLayer(wall, xx, 108);
+			}
+
+			if (typeof(T) == typeof(Barracks))
+			{
+				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 1, 1, 49, 49), x, y);
+			}
+
+			if (typeof(T) == typeof(Granary))
+			{
+				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 1, 51, 49, 49), x, y);
+			}
+
+			if (typeof(T) == typeof(Temple))
+			{
+				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 1, 101, 49, 49), x, y);
+			}
+
+			if (typeof(T) == typeof(MarketPlace))
+			{
+				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 1, 151, 49, 49), x, y);
 			}
 		}
 
@@ -241,6 +261,36 @@ namespace CivOne.Screens
 					}
 				}
 
+				foreach (Type type in new Type[] { typeof(Barracks), typeof(Granary), typeof(Temple), typeof(MarketPlace) })
+				{
+					if (_city.HasBuilding(type))
+					{
+						byte id;
+						if (type == typeof(Barracks)) id = 128;
+						else if (type == typeof(Granary)) id = 129;
+						else if (type == typeof(Temple)) id = 130;
+						else if (type == typeof(MarketPlace)) id = 131;
+						else continue;
+
+						for (int i = 0; i < 1000; i++)
+						{
+							int xx = Common.Random.Next(ww - 1);
+							int yy = Common.Random.Next(hh - 1);
+							if (xx % 6 == 5 || xx % 6 == 0) continue;
+							if (cityMap[xx, yy] > 127 ||
+								cityMap[xx + 1, yy] > 127 ||
+								cityMap[xx, yy + 1] > 127 ||
+								cityMap[xx + 1, yy + 1] > 127) continue;
+
+							cityMap[xx, yy] = id;
+							cityMap[xx + 1, yy] = 255;
+							cityMap[xx, yy + 1] = 255;
+							cityMap[xx + 1, yy + 1] = 255;
+							break;
+						}
+					}
+				}
+
 				return cityMap;
 			}
 		}
@@ -267,14 +317,14 @@ namespace CivOne.Screens
 			{
 				DrawWonder<GreatWall>();
 				if (!(_production is GreatWall))
-					DrawWonder<GreatWall>( _overlay);
+					DrawWonder<GreatWall>(_overlay);
 			}
 
 			if (_city.Buildings.Any(b => b is Aqueduct))
 			{
 				DrawBuilding<Aqueduct>();
 				if (!(_production is Aqueduct))
-					DrawBuilding<Aqueduct>( _overlay);
+					DrawBuilding<Aqueduct>(_overlay);
 			}
 			
 			for (int yy = (hh - 1); yy >= 0; yy--)
@@ -303,9 +353,34 @@ namespace CivOne.Screens
 						dx -= 5;
 						dy += 24;
 						break;
+					case 128: // Barracks
+						dy -= 18;
+						DrawBuilding<Barracks>(x: dx, y: dy);
+						if (!(_production is Barracks))
+							DrawBuilding<Barracks>(_overlay, dx, dy);
+						continue;
+					case 129: // Granary
+						dy -= 18;
+						DrawBuilding<Granary>(x: dx, y: dy);
+						if (!(_production is Granary))
+							DrawBuilding<Granary>(_overlay, dx, dy);
+						continue;
+					case 130: // Temple
+						dy -= 18;
+						DrawBuilding<Temple>(x: dx, y: dy);
+						if (!(_production is Temple))
+							DrawBuilding<Temple>(_overlay, dx, dy);
+						continue;
+					case 131: // MarketPlace
+						dy -= 18;
+						DrawBuilding<MarketPlace>(x: dx, y: dy);
+						if (!(_production is MarketPlace))
+							DrawBuilding<MarketPlace>(_overlay, dx, dy);
+						continue;
 					default: continue;
 				}
 				_background.AddLayer(building, dx, dy);
+				_overlay.AddLayer(building, dx, dy);
 			}
 
 			if (_city.Buildings.Any(b => b is CityWalls))

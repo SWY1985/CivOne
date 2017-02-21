@@ -87,6 +87,11 @@ namespace CivOne
 			return _buildings.Any(b => b.Id == building.Id);
 		}
 
+		public bool HasBuilding(Type type)
+		{
+			return _buildings.Any(b => b.GetType() == type);
+		}
+
 		public bool HasBuilding<T>() where T : IBuilding
 		{
 			return _buildings.Any(b => b is T);
