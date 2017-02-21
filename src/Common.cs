@@ -67,6 +67,16 @@ namespace CivOne
 				return Common.Screens.LastOrDefault();
 			}
 		}
+
+		internal static void SetRandomSeedFromName(string name)
+		{
+			short number = 0;
+			foreach (byte charByte in name)
+			{
+				number += charByte;
+			}
+			SetRandomSeed(number);
+		}
 		
 		internal static void SetRandomSeed(short seed)
 		{
