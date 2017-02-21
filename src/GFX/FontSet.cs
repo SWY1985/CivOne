@@ -9,10 +9,11 @@
 
 using System;
 using System.Collections.Generic;
+using CivOne.Interfaces;
 
 namespace CivOne.GFX
 {
-	internal class Fontset
+	internal class Fontset : IFont
 	{
 		private readonly byte _fontAsciiFirst;
 		private readonly byte _fontAsciiLast;
