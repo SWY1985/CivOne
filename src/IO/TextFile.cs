@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -24,6 +25,11 @@ namespace CivOne.IO
 			
 			Regex rgx = new Regex("[^a-zA-Z0-9 -_]");
 			List<string> textLines = new List<string>();
+			if (!File.Exists(Path.Combine(Settings.Instance.DataDirectory, filename)))
+			{
+				Console.WriteLine($"File not found: {filename}");
+				return new string[0];
+			}
 			using (FileStream fs = new FileStream(Path.Combine(Settings.Instance.DataDirectory, filename), FileMode.Open, FileAccess.Read))
 			using (StreamReader sr = new StreamReader(fs))
 				while (!sr.EndOfStream)

@@ -257,5 +257,22 @@ namespace CivOne
 				return _palette16;
 			}
 		}
+
+		private static Color[] _palette256;
+		public static Color[] GetPalette256
+		{
+			get
+			{
+				if (_palette256 == null)
+				{
+					_palette256 = new Color[256];
+					for (int i = 0; i < 256; i++)
+					{
+						_palette256[i] = GetPalette16[i % 16];
+					}
+				}
+				return _palette256;
+			}
+		}
 	}
 }

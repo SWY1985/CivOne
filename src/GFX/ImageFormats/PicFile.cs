@@ -311,7 +311,19 @@ namespace CivOne.GFX.ImageFormats
 			// generate an exception if the file is not found
 			if (!File.Exists(filename))
 			{
-				throw new FileNotFoundException($"File not found: {filename.ToUpper()}.PIC");
+				Console.WriteLine($"File not found: {filename.ToUpper()}.PIC");
+				HasPalette16 = true;
+				HasPalette256 = true;
+				_palette256 = Common.GetPalette256;
+				_picture16 = new byte[320, 200];
+				_picture256 = new byte[320, 200];
+				for (int yy = 0; yy < 200; yy++)
+				for (int xx = 0; xx < 320; xx++)
+				{
+					_picture16[xx, yy] = 1;
+					_picture256[xx, yy] = 1;
+				}
+				return;
 			}
 
 			// read all bytes into a byte array

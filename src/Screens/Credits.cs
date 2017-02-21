@@ -271,6 +271,7 @@ namespace CivOne.Screens
 		public Credits()
 		{
 			_introText = TextFile.Instance.LoadArray("CREDITS");
+			if (_introText.Length == 0) _introText = new string[25];
 			_pictures = new Picture[3];
 			for (int i = 0; i < 2; i++)
 				_pictures[i] = Resources.Instance.LoadPIC(string.Format("BIRTH{0}", i), true);
