@@ -88,6 +88,8 @@ namespace CivOne.GFX
 		
 		public Picture GetText(string text, int font, byte colourFirstLetter, byte colour)
 		{
+			if (text == null) text = "[MISSING STRING]";
+
 			List<Picture> letters = new List<Picture>();
 			bool isFirstLetter = true;
 			foreach (char c in text)

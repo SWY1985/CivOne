@@ -328,7 +328,8 @@ namespace CivOne.Screens
 		{
 			Cursor = MouseCursor.Pointer;
 			
-			Color[] palette = Resources.Instance.LoadPIC("SP257").Palette;
+			// Color[] palette = Resources.Instance.LoadPIC("SP257").Palette;
+			Color[] palette = Common.GetPalette256;
 			
 			_canvas = new Picture(320, 200, palette);
 			_canvas.FillRectangle(3, 0, 0, 320, 200);
