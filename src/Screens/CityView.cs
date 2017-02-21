@@ -194,6 +194,8 @@ namespace CivOne.Screens
 			_canvas = new Picture(320, 200, _background.Palette);
 			_overlay = new Picture(_background);
 
+			Common.SetRandomSeedFromName(_city.Name);
+
 			if (city.Wonders.Any(b => b is Pyramids))
 			{
 				DrawWonder<Pyramids>();
