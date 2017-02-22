@@ -71,9 +71,10 @@ namespace CivOne.Screens
 			_gameMenu.Items.Add(new GameMenu.Item(null));
 			if (debugMenu)
 			{
-				_gameMenu.Items.Add(new GameMenu.Item("Debug options") { Enabled = false });
-				_gameMenu.Items.Add(new GameMenu.Item(null));
 				quitItem += 2;
+				_gameMenu.Items.Add(new GameMenu.Item("Debug Options"));
+				_gameMenu.Items.Add(new GameMenu.Item(null));
+				_gameMenu.Items[7].Selected += (s, a) => GameTask.Enqueue(Show.DebugOptions);
 			}
 			_gameMenu.Items.Add(new GameMenu.Item("Retire") { Enabled = false });
 			_gameMenu.Items.Add(new GameMenu.Item("QUIT to DOS"));

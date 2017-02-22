@@ -78,7 +78,7 @@ namespace CivOne
 			{
 				return _gameTurn;
 			}
-			private set
+			set
 			{
 				_gameTurn = value;
 				Console.WriteLine($"Turn {_gameTurn}: {GameYear}");
