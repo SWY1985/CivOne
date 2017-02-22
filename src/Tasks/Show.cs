@@ -80,6 +80,14 @@ namespace CivOne.Tasks
 			}
 		}
 
+		public static Show DebugOptions
+		{
+			get
+			{
+				return new Show(new DebugOptions());
+			}
+		}
+
 		public static Show SaveGame
 		{
 			get

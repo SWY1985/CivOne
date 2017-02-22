@@ -144,6 +144,16 @@ namespace CivOne
 				_reloadSettings = value;
 			}
 		}
+
+		public static ushort YearToTurn(int year)
+		{
+			if (year < -4000) return 0;
+			if (year < 1000) return (ushort)Math.Floor(((double)year + 4000) / 20);
+			if (year < 1500) return (ushort)Math.Floor(((double)year + 1500) / 10);
+			if (year < 1750) return (ushort)Math.Floor(((double)year) / 5);
+			if (year < 1850) return (ushort)Math.Floor(((double)year - 1050) / 2);
+			return (ushort)(year - 1450);
+		}
 		
 		public static int TurnToYear(ushort turn)
 		{
