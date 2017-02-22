@@ -33,30 +33,9 @@ namespace CivOne.Screens
 			Close();
 		}
 
-		private void MenuCivilopediaText(object sender, EventArgs args)
+		private void MenuSetPlayerGold(object sender, EventArgs args)
 		{
-			Settings.CivilopediaText = !Settings.CivilopediaText;
-			CloseMenus();
-			Close();
-		}
-
-		private void MenuInstantAdvice(object sender, EventArgs args)
-		{
-			Settings.InstantAdvice = !Settings.InstantAdvice;
-			CloseMenus();
-			Close();
-		}
-
-		private void MenuAutoSave(object sender, EventArgs args)
-		{
-			Settings.AutoSave = !Settings.AutoSave;
-			CloseMenus();
-			Close();
-		}
-
-		private void MenuEndOfTurn(object sender, EventArgs args)
-		{
-			Settings.EndOfTurn = !Settings.EndOfTurn;
+			Common.AddScreen(new SetPlayerGold());
 			CloseMenus();
 			Close();
 		}
@@ -94,7 +73,7 @@ namespace CivOne.Screens
 				menu.Cancel += MenuCancel;
 
 				menu.Items.Add(new Menu.Item("Set game year"));
-				menu.Items.Add(new Menu.Item("Set player gold") { Enabled = false });
+				menu.Items.Add(new Menu.Item("Set player gold"));
 				menu.Items.Add(new Menu.Item("Set player lightbulbs") { Enabled = false });
 				menu.Items.Add(new Menu.Item("Set player advances") { Enabled = false });
 				menu.Items.Add(new Menu.Item("Set city size") { Enabled = false });
@@ -102,21 +81,8 @@ namespace CivOne.Screens
 				menu.Items.Add(new Menu.Item("Spawn unit") { Enabled = false });
 				menu.Items.Add(new Menu.Item("Meet with king") { Enabled = false });
 
-				// menu.Items.Add(new Menu.Item($"{(Settings.InstantAdvice ? '^' : ' ')}Instant Advice"));
-				// menu.Items.Add(new Menu.Item($"{(Settings.AutoSave ? '^' : ' ')}AutoSave"));
-				// menu.Items.Add(new Menu.Item($"{(Settings.EndOfTurn ? '^' : ' ')}End of Turn"));
-				// menu.Items.Add(new Menu.Item($"{(Settings.Animations ? '^' : ' ')}Animations"));
-				// menu.Items.Add(new Menu.Item(" Sound") { Enabled = false });
-				// menu.Items.Add(new Menu.Item(" Enemy Moves") { Enabled = false });
-				// menu.Items.Add(new Menu.Item($"{(Settings.CivilopediaText ? '^' : ' ')}Civilopedia Text"));
-				// menu.Items.Add(new Menu.Item(" Palace") { Enabled = false });
-
 				menu.Items[0].Selected += MenuSetGameYear;
-				// menu.Items[1].Selected += MenuAutoSave;
-				// menu.Items[2].Selected += MenuEndOfTurn;
-				// menu.Items[3].Selected += MenuAnimations;
-				// menu.Items[6].Selected += MenuCivilopediaText;
-
+				menu.Items[1].Selected += MenuSetPlayerGold;
 
 				_canvas.FillRectangle(5, 24, 16, 105, menu.RowHeight * (menu.Items.Count + 1));
 
