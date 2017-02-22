@@ -18,6 +18,8 @@ using CivOne.GFX;
 using CivOne.Templates;
 using CivOne.Wonders;
 
+using Bld = CivOne.Buildings;
+
 namespace CivOne.Screens
 {
 	internal class CityView : BaseScreen, IModal
@@ -187,105 +189,126 @@ namespace CivOne.Screens
 			}
 
 			if (typeof(T) == typeof(Barracks))
-			{
 				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 1, 1, 49, 49), x, y);
-			}
-
 			if (typeof(T) == typeof(Granary))
-			{
 				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 1, 51, 49, 49), x, y);
-			}
-
 			if (typeof(T) == typeof(Temple))
-			{
 				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 1, 101, 49, 49), x, y);
-			}
-
 			if (typeof(T) == typeof(MarketPlace))
-			{
 				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 1, 151, 49, 49), x, y);
-			}
+			if (typeof(T) == typeof(Library))
+				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 51, 1, 49, 49), x, y);
+			if (typeof(T) == typeof(Courthouse))
+				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 51, 51, 49, 49), x, y);
+			if (typeof(T) == typeof(Bank))
+				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 101, 1, 49, 49), x, y);
+			if (typeof(T) == typeof(Cathedral))
+				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 101, 51, 49, 49), x, y);
+			if (typeof(T) == typeof(Bld.University))
+				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 101, 101, 49, 49), x, y);
+			if (typeof(T) == typeof(Colosseum))
+				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 151, 1, 49, 49), x, y);
 		}
 
-		private byte[,] GetCityMap
+		private CityViewMap[,] GetCityMap
 		{
 			get
 			{
 				Common.SetRandomSeedFromName(_city.Name);
+				_houseType = Common.Random.Next(2);
+
+				CityViewMap[,] cityMap = new CityViewMap[18,11];
+				for (int yy = 0; yy < 11; yy++)
+				for (int xx = 0; xx < 18; xx++)
+				{
+					if (xx == 6 || xx == 11 || yy == 2 || yy == 6)
+						cityMap[xx, yy] = CityViewMap.Road;
+					if ((xx < 2 && yy < 3) || (xx > 16 && yy > 8))
+						cityMap[xx, yy] = CityViewMap.Occupied;
+				}
 				
 				// This is experimental code, not the same as the original game
-				int ww = 4 + (_city.Size % 2 * 4);
-				int hh = 4 + (((_city.Size - 1) % 2) * 4);
-				byte[,] cityMap = new byte[ww, hh];
-				_houseType = Common.Random.Next(2);
+				int ww = 4 + _city.Size;
+				int hh = 4 + (_city.Size - 1);
+				if (ww > 18) ww = 18;
+				if (hh > 11) hh = 11;
+
 				for (int ii = 0; ii < _city.Size; ii++)
-				for (int t = 0; t < 10; t++)
+				for (int t = 0; t < 16; t++)
 				{
-					int xx = Common.Random.Next(ww);
+					int xx = Common.Random.Next(ww) + ((18 - ww) / 2);
 					int yy = Common.Random.Next(hh);
 					int type = Common.Random.Next(8);
-					if (type < 3)
-					{
-						// house 1
-						cityMap[xx, yy] = 1;
-					}
-					else if (type < 6)
-					{
-						// house 2
-						cityMap[xx, yy] = 2;
-					}
+					if (cityMap[xx, yy] != CityViewMap.Empty) continue;
+					if (type < 6)
+						cityMap[xx, yy] = CityViewMap.House;
 					else
-					{
-						// tree
-						cityMap[xx, yy] = 3;
-					}
+						cityMap[xx, yy] = CityViewMap.Tree;
 				}
-				for (int xx = 5; xx < ww; xx += 6)
+				
+				for (int yy = 0; yy < 11; yy++)
+				for (int xx = 0; xx < 18; xx++)
 				{
-					bool road = false;
-					for (int yy = 0; yy < hh; yy++)
+					if ((int)cityMap[xx, yy] > 1)
 					{
-						cityMap[xx, yy] = 0;
-						if (cityMap[xx - 1, yy] != 0 || (xx + 1 < ww && cityMap[xx + 1, yy] != 0))
-						{
-							road = true;
-						}
+						if ((xx == 0 || (cityMap[xx - 1, yy] != CityViewMap.House && cityMap[xx - 1, yy] != CityViewMap.Tree)) &&
+							(xx == 17 || (cityMap[xx + 1, yy] != CityViewMap.House && cityMap[xx + 1, yy] != CityViewMap.Tree)) &&
+							(yy == 0 || (cityMap[xx, yy - 1] != CityViewMap.House && cityMap[xx, yy - 1] != CityViewMap.Tree)) &&
+							(yy == 10 || (cityMap[xx, yy + 1] != CityViewMap.House && cityMap[xx, yy + 1] != CityViewMap.Tree))) cityMap[xx, yy] = CityViewMap.Empty;
 					}
-					if (!road) continue;
-					for (int yy = 0; yy < hh; yy++)
-					{
-						byte roadType = 8;
-						if (yy == 0) roadType = 4;
-						if (yy == (hh - 1)) roadType = 7;
-						cityMap[xx, yy] = roadType;
-					}
+					if (cityMap[xx, yy] != CityViewMap.Road) continue;
+					if ((xx == 0 || (int)cityMap[xx - 1, yy] > 1) ||
+						(xx == 17 || (int)cityMap[xx + 1, yy] > 1) ||
+						(yy == 0 || (int)cityMap[xx, yy - 1] > 1) ||
+						(yy == 10 || (int)cityMap[xx, yy + 1] > 1)) continue;
+					cityMap[xx, yy] = CityViewMap.Empty;
+				}
+				
+				for (int yy = 0; yy < 11; yy++)
+				for (int xx = 0; xx < 18; xx++)
+				{
+					if (cityMap[xx, yy] != CityViewMap.Empty) continue;
+					if (!(xx == 6 || xx == 11 || yy == 2 || yy == 6)) continue;
+					if (((xx == 0 || (int)cityMap[xx - 1, yy] != 1) ? 1 : 0) +
+						((xx == 17 || (int)cityMap[xx + 1, yy] != 1) ? 1 : 0) +
+						((yy == 0 || (int)cityMap[xx, yy - 1] != 1) ? 1 : 0) +
+						((yy == 10 || (int)cityMap[xx, yy + 1] != 1 ? 1 : 0)) > 1) continue;
+					cityMap[xx, yy] = CityViewMap.Road;
 				}
 
-				foreach (Type type in new Type[] { typeof(Barracks), typeof(Granary), typeof(Temple), typeof(MarketPlace) })
+				
+				foreach (Type type in new Type[] { typeof(Barracks), typeof(Granary), typeof(Temple), typeof(MarketPlace), typeof(Library), typeof(Courthouse), typeof(Bank), typeof(Cathedral), typeof(Bld.University), typeof(Colosseum) })
 				{
 					if (_city.HasBuilding(type))
 					{
-						byte id;
-						if (type == typeof(Barracks)) id = 128;
-						else if (type == typeof(Granary)) id = 129;
-						else if (type == typeof(Temple)) id = 130;
-						else if (type == typeof(MarketPlace)) id = 131;
+						CityViewMap id;
+						if (type == typeof(Barracks)) id = CityViewMap.Barracks;
+						else if (type == typeof(Granary)) id = CityViewMap.Granary;
+						else if (type == typeof(Temple)) id = CityViewMap.Temple;
+						else if (type == typeof(MarketPlace)) id = CityViewMap.MarketPlace;
+						else if (type == typeof(Library)) id = CityViewMap.Library;
+						else if (type == typeof(Courthouse)) id = CityViewMap.Courthouse;
+						else if (type == typeof(Bank)) id = CityViewMap.Bank;
+						else if (type == typeof(Cathedral)) id = CityViewMap.Cathedral;
+						else if (type == typeof(Bld.University)) id = CityViewMap.University;
+						else if (type == typeof(Colosseum)) id = CityViewMap.Colosseum;
 						else continue;
 
 						for (int i = 0; i < 1000; i++)
 						{
-							int xx = Common.Random.Next(ww - 1);
-							int yy = Common.Random.Next(hh - 1);
-							if (xx % 6 == 5 || xx % 6 == 0) continue;
-							if (cityMap[xx, yy] > 127 ||
-								cityMap[xx + 1, yy] > 127 ||
-								cityMap[xx, yy + 1] > 127 ||
-								cityMap[xx + 1, yy + 1] > 127) continue;
+							int xx = Common.Random.Next(15) + 1;
+							int yy = Common.Random.Next(10);
+							if (xx == 6 || xx == 11 || yy == 2 || yy == 6) continue;
+							if (xx == 5 || xx == 10 || yy == 1 || yy == 5) continue;
+							if ((int)cityMap[xx, yy] > 3 ||
+								(int)cityMap[xx + 1, yy] > 3 ||
+								(int)cityMap[xx, yy + 1] > 3 ||
+								(int)cityMap[xx + 1, yy + 1] > 3) continue;
 
 							cityMap[xx, yy] = id;
-							cityMap[xx + 1, yy] = 255;
-							cityMap[xx, yy + 1] = 255;
-							cityMap[xx + 1, yy + 1] = 255;
+							cityMap[xx + 1, yy] = CityViewMap.Occupied;
+							cityMap[xx, yy + 1] = CityViewMap.Occupied;
+							cityMap[xx + 1, yy + 1] = CityViewMap.Occupied;
 							break;
 						}
 					}
@@ -297,9 +320,7 @@ namespace CivOne.Screens
 
 		private void DrawBuildings()
 		{
-			byte[,] cityMap = GetCityMap;
-			int ww = cityMap.GetUpperBound(0);
-			int hh = cityMap.GetUpperBound(1);
+			CityViewMap[,] cityMap = GetCityMap;
 
 			if (_city.Wonders.Any(b => b is Pyramids))
 			{
@@ -327,55 +348,97 @@ namespace CivOne.Screens
 					DrawBuilding<Aqueduct>(_overlay);
 			}
 			
-			for (int yy = (hh - 1); yy >= 0; yy--)
-			for (int xx = 0; xx < ww; xx++)
+			for (int yy = 10; yy >= 0; yy--)
+			for (int xx = 0; xx < 18; xx++)
 			{
-				int dx = 96 + (16 * xx) + (yy * 8);
+				int dx = 0 + (16 * xx) + (yy * 8);
 				int dy = 106 - (yy * 8);
 				Picture building;
 				switch (cityMap[xx, yy])
 				{
-					case 1:
+					case CityViewMap.House:
 						building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * _houseType), 1, 31, 31);
 						break;
-					case 2:
-						building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * _houseType), 33, 31, 31);
-						break;
-					case 3:
-					case 4:
-					case 5:
-					case 6:
-					case 7:
-					case 8:
-					case 9:
-					case 10:
-						building = Resources.Instance.GetPart("CITYPIX1", 0 + (24 * (cityMap[xx,yy] - 3)), 65, 24, 8);
+					case CityViewMap.Tree:
+						building = Resources.Instance.GetPart("CITYPIX1", 0, 65, 24, 8);
 						dx -= 5;
 						dy += 24;
 						break;
-					case 128: // Barracks
+					case CityViewMap.Road:
+						Direction road = 0;
+						if (yy < cityMap.GetUpperBound(1) && cityMap[xx, yy + 1] == CityViewMap.Road) road |= Direction.North;
+						if (xx < cityMap.GetUpperBound(0) && cityMap[xx + 1, yy] == CityViewMap.Road) road |= Direction.East;
+						if (yy > 0 && cityMap[xx, yy - 1] == CityViewMap.Road) road |= Direction.South;
+						if (xx > 0 && cityMap[xx - 1, yy] == CityViewMap.Road) road |= Direction.West;
+
+						int sx = (int)road;
+						int sy = 65;
+						if (sx == 0) continue;
+						if (sx > 7) sy += 8;
+						sx = (sx % 8) * 24;
+						building = Resources.Instance.GetPart("CITYPIX1", sx, sy, 24, 8);
+						dx -= 5;
+						dy += 24;
+						break;
+					case CityViewMap.Barracks:
 						dy -= 18;
 						DrawBuilding<Barracks>(x: dx, y: dy);
 						if (!(_production is Barracks))
 							DrawBuilding<Barracks>(_overlay, dx, dy);
 						continue;
-					case 129: // Granary
+					case CityViewMap.Granary:
 						dy -= 18;
 						DrawBuilding<Granary>(x: dx, y: dy);
 						if (!(_production is Granary))
 							DrawBuilding<Granary>(_overlay, dx, dy);
 						continue;
-					case 130: // Temple
+					case CityViewMap.Temple:
 						dy -= 18;
 						DrawBuilding<Temple>(x: dx, y: dy);
 						if (!(_production is Temple))
 							DrawBuilding<Temple>(_overlay, dx, dy);
 						continue;
-					case 131: // MarketPlace
+					case CityViewMap.MarketPlace:
 						dy -= 18;
 						DrawBuilding<MarketPlace>(x: dx, y: dy);
 						if (!(_production is MarketPlace))
 							DrawBuilding<MarketPlace>(_overlay, dx, dy);
+						continue;
+					case CityViewMap.Library:
+						dy -= 18;
+						DrawBuilding<Library>(x: dx, y: dy);
+						if (!(_production is Library))
+							DrawBuilding<Library>(_overlay, dx, dy);
+						continue;
+					case CityViewMap.Courthouse:
+						dy -= 18;
+						DrawBuilding<Courthouse>(x: dx, y: dy);
+						if (!(_production is Courthouse))
+							DrawBuilding<Courthouse>(_overlay, dx, dy);
+						continue;
+					case CityViewMap.Bank:
+						dy -= 18;
+						DrawBuilding<Bank>(x: dx, y: dy);
+						if (!(_production is Bank))
+							DrawBuilding<Bank>(_overlay, dx, dy);
+						continue;
+					case CityViewMap.Cathedral:
+						dy -= 18;
+						DrawBuilding<Cathedral>(x: dx, y: dy);
+						if (!(_production is Cathedral))
+							DrawBuilding<Cathedral>(_overlay, dx, dy);
+						continue;
+					case CityViewMap.University:
+						dy -= 18;
+						DrawBuilding<Bld.University>(x: dx, y: dy);
+						if (!(_production is Bld.University))
+							DrawBuilding<Bld.University>(_overlay, dx, dy);
+						continue;
+					case CityViewMap.Colosseum:
+						dy -= 18;
+						DrawBuilding<Colosseum>(x: dx, y: dy);
+						if (!(_production is Colosseum))
+							DrawBuilding<Colosseum>(_overlay, dx, dy);
 						continue;
 					default: continue;
 				}
