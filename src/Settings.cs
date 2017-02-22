@@ -22,6 +22,7 @@ namespace CivOne
 		private int _scale = 2;
 		private AspectRatio _aspectRatio = AspectRatio.Auto;
 		private bool _revealWorld = false;
+		private bool _debugMenu = false;
 		
 		internal string BinDirectory
 		{
@@ -70,6 +71,8 @@ namespace CivOne
 				return Path.Combine(BinDirectory, "settings");
 			}
 		}
+
+		// Settings
 		
 		internal GraphicsMode GraphicsMode
 		{
@@ -96,20 +99,6 @@ namespace CivOne
 			{
 				_fullScreen = value;
 				SetSetting("FullScreen", _fullScreen ? "1" : "0");
-				Common.ReloadSettings = true;
-			}
-		}
-		
-		internal bool RightSideBar
-		{
-			get
-			{
-				return _rightSideBar;
-			}
-			set
-			{
-				_rightSideBar = value;
-				SetSetting("SideBar", _rightSideBar ? "1" : "0");
 				Common.ReloadSettings = true;
 			}
 		}
@@ -143,6 +132,8 @@ namespace CivOne
 				Common.ReloadSettings = true;
 			}
 		}
+
+		// Patches
 		
 		internal bool RevealWorld
 		{
@@ -157,6 +148,36 @@ namespace CivOne
 				Common.ReloadSettings = true;
 			}
 		}
+		
+		internal bool RightSideBar
+		{
+			get
+			{
+				return _rightSideBar;
+			}
+			set
+			{
+				_rightSideBar = value;
+				SetSetting("SideBar", _rightSideBar ? "1" : "0");
+				Common.ReloadSettings = true;
+			}
+		}
+		
+		internal bool DebugMenu
+		{
+			get
+			{
+				return _debugMenu;
+			}
+			set
+			{
+				_debugMenu = value;
+				SetSetting("DebugMenu", _debugMenu ? "1" : "0");
+				Common.ReloadSettings = true;
+			}
+		}
+
+		// In game settings
 
 		internal bool Animations { get; set; }
 		internal bool CivilopediaText { get; set; }
@@ -251,6 +272,7 @@ namespace CivOne
 			int scale = _scale;
 			int aspectRatio = (int)_aspectRatio;
 			bool revealWorld = false;
+			bool debugMenu = false;
 			
 			// Read settings
 			Int32.TryParse(GetSetting("GraphicsMode"), out graphicsMode);
@@ -259,6 +281,7 @@ namespace CivOne
 			Int32.TryParse(GetSetting("Scale"), out scale);
 			Int32.TryParse(GetSetting("AspectRatio"), out aspectRatio);
 			revealWorld = (GetSetting("RevealWorld") == "1");
+			debugMenu = (GetSetting("DebugMenu") == "1");
 			
 			// Set settings
 			if (graphicsMode > 0 && graphicsMode < 3) _graphicsMode = (GraphicsMode)graphicsMode;
@@ -268,6 +291,7 @@ namespace CivOne
 			_scale = scale;
 			_aspectRatio = (AspectRatio)aspectRatio;
 			_revealWorld = revealWorld;
+			_debugMenu = debugMenu;
 
 			// Set game options
 			EndOfTurn = false;
