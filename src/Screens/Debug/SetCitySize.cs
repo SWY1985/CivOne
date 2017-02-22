@@ -99,7 +99,7 @@ namespace CivOne.Screens.Debug
 			else
 			{
 				_selectedCity.Size = citySize;
-				GameTask.Enqueue(Message.General($"{_selectedCity.Name} size set to {citySize}~."));
+				GameTask.Enqueue(Message.General($"{_selectedCity.Name} size set to {citySize}."));
 			}
 
 			if (Accept != null)
