@@ -58,6 +58,9 @@ namespace CivOne.Screens
 		
 		private void MenuBarGame(object sender, EventArgs args)
 		{
+			bool debugMenu = Settings.DebugMenu;
+			int quitItem = 8;
+
 			_gameMenu = new GameMenu(_canvas.Palette);
 			_gameMenu.Items.Add(new GameMenu.Item("Tax Rate"));
 			_gameMenu.Items.Add(new GameMenu.Item("Luxuries Rate"));
@@ -66,6 +69,12 @@ namespace CivOne.Screens
 			_gameMenu.Items.Add(new GameMenu.Item("Save Game") { Enabled = (Game.GameTurn > 0) });
 			_gameMenu.Items.Add(new GameMenu.Item("REVOLUTION!"));
 			_gameMenu.Items.Add(new GameMenu.Item(null));
+			if (debugMenu)
+			{
+				_gameMenu.Items.Add(new GameMenu.Item("Debug options") { Enabled = false });
+				_gameMenu.Items.Add(new GameMenu.Item(null));
+				quitItem += 2;
+			}
 			_gameMenu.Items.Add(new GameMenu.Item("Retire") { Enabled = false });
 			_gameMenu.Items.Add(new GameMenu.Item("QUIT to DOS"));
 			
@@ -74,7 +83,7 @@ namespace CivOne.Screens
 			_gameMenu.Items[3].Selected += (s, a) => GameTask.Enqueue(Show.Options);
 			_gameMenu.Items[4].Selected += (s, a) => GameTask.Enqueue(Show.SaveGame);
 			_gameMenu.Items[5].Selected += (s, a) => GameTask.Enqueue(Show.Revolution);
-			_gameMenu.Items[8].Selected += (s, a) => GameTask.Enqueue(Show.ConfirmQuit);
+			_gameMenu.Items[quitItem].Selected += (s, a) => GameTask.Enqueue(Show.ConfirmQuit);
 			
 			_menuX = 16;
 			_menuY = 8;

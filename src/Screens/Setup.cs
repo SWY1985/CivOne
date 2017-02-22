@@ -82,7 +82,6 @@ namespace CivOne.Screens
 		private void MainMenu(int activeItem = 0)
 		{
 			Menu menu = CreateMenu("CIVONE SETUP:", MainChoice, "Settings", "Patches", "Mods", "Launch Game", "Quit");
-			menu.Items[1].Enabled = false; // Patches: Not yet implemented
 			menu.Items[2].Enabled = false; // Mods: Not yet implemented
 			menu.ActiveItem = activeItem;
 			AddMenu(menu);
@@ -90,7 +89,7 @@ namespace CivOne.Screens
 		
 		private void SettingsMenu(int activeItem = 0)
 		{
-			string graphicsMode, fullScreen, sideBar, scale, aspectRatio, revealWorld;
+			string graphicsMode, fullScreen, scale, aspectRatio;
 			switch (Settings.GraphicsMode)
 			{
 				case GraphicsMode.Graphics256: graphicsMode = "256 colors"; break;
@@ -109,12 +108,10 @@ namespace CivOne.Screens
 			
 			graphicsMode = string.Format("Graphics Mode: {0}", graphicsMode);
 			fullScreen = string.Format("Full Screen: {0}", Settings.FullScreen ? "yes" : "no");
-			sideBar = string.Format("Side bar location: {0}", Settings.RightSideBar ? "right" : "left");
 			scale = string.Format("Window scale: {0}x", Settings.Scale);
 			aspectRatio = string.Format("Aspect ratio: {0}", aspectRatio);
-			revealWorld = string.Format("Reveal World: {0}", Settings.RevealWorld ? "yes" : "no");
 			
-			Menu menu = CreateMenu("SETTINGS:", SettingsChoice, graphicsMode, fullScreen, sideBar, scale, aspectRatio, revealWorld, "Back");
+			Menu menu = CreateMenu("SETTINGS:", SettingsChoice, graphicsMode, fullScreen, scale, aspectRatio, "Back");
 			menu.ActiveItem = activeItem;
 			AddMenu(menu);
 		}
@@ -141,13 +138,6 @@ namespace CivOne.Screens
 			AddMenu(menu);
 		}
 		
-		private void SideBarMenu()
-		{
-			Menu menu = CreateMenu("SIDE BAR LOCATION:", SideBarChoice, "Left (default)", "Right", "Back");
-			menu.ActiveItem = Settings.RightSideBar ? 1 : 0;
-			AddMenu(menu);
-		}
-		
 		private void WindowScaleMenu()
 		{
 			Menu menu = CreateMenu("WINDOW SCALE:", WindowScaleChoice, "1x", "2x", "3x", "4x", "Back");
@@ -158,8 +148,20 @@ namespace CivOne.Screens
 		private void AspectRatioMenu()
 		{
 			Menu menu = CreateMenu("ASPECT RATIO:", AspectRatioChoice, "Automatic", "Fixed", "Scaled (blurry)", "Scaled and fixed (blurry)", "Expand (experimental)", "Back");
-			// menu.Items[4].Enabled = false; // Expand: Not yet implemented
 			menu.ActiveItem = (int)Settings.AspectRatio;
+			AddMenu(menu);
+		}
+		
+		private void PatchesMenu(int activeItem = 0)
+		{
+			string revealWorld, sideBar, debugMenu;
+
+			revealWorld = $"Reveal World: {(Settings.RevealWorld ? "yes" : "no")}";
+			sideBar = $"Side bar location: {(Settings.RightSideBar ? "right" : "left")}";
+			debugMenu = $"Show debug menu: {(Settings.DebugMenu ? "yes" : "no")}";
+			
+			Menu menu = CreateMenu("PATCHES:", PatchesChoice, revealWorld, sideBar, debugMenu, "Back");
+			menu.ActiveItem = activeItem;
 			AddMenu(menu);
 		}
 		
@@ -167,6 +169,20 @@ namespace CivOne.Screens
 		{
 			Menu menu = CreateMenu("REVEAL WORLD:", RevealWorldChoice, "No (default)", "Yes", "Back");
 			menu.ActiveItem = Settings.RevealWorld ? 1 : 0;
+			AddMenu(menu);
+		}
+		
+		private void SideBarMenu()
+		{
+			Menu menu = CreateMenu("SIDE BAR LOCATION:", SideBarChoice, "Left (default)", "Right", "Back");
+			menu.ActiveItem = Settings.RightSideBar ? 1 : 0;
+			AddMenu(menu);
+		}
+		
+		private void DebugMenuMenu()
+		{
+			Menu menu = CreateMenu("SHOW DEBUG MENU:", DebugMenuChoice, "No (default)", "Yes", "Back");
+			menu.ActiveItem = Settings.DebugMenu ? 1 : 0;
 			AddMenu(menu);
 		}
 		
@@ -179,7 +195,9 @@ namespace CivOne.Screens
 					CloseMenus();
 					SettingsMenu();
 					break;
-				case 1: // Patches: Not yet implemented
+				case 1: // Patches
+					CloseMenus();
+					PatchesMenu();
 					return;
 				case 2: // Mods: Not yet implemented
 					return;
@@ -206,19 +224,13 @@ namespace CivOne.Screens
 				case 1: // Full Screen
 					FullScreenMenu();
 					break;
-				case 2: // Side bar
-					SideBarMenu();
-					break;
-				case 3: // Scale
+				case 2: // Scale
 					WindowScaleMenu();
 					break;
-				case 4: // Scale
+				case 3: // Aspect Ratio
 					AspectRatioMenu();
 					break;
-				case 5: // Reveal World
-					RevealWorldMenu();
-					break;
-				case 6: // Back
+				case 4: // Back
 					MainMenu();
 					break;
 			}
@@ -256,22 +268,6 @@ namespace CivOne.Screens
 			SettingsMenu(1);
 		}
 		
-		private void SideBarChoice(object sender, EventArgs args)
-		{
-			int choice = (sender as Menu.Item).Value;
-			switch (choice)
-			{
-				case 0: // left
-					Settings.RightSideBar = false;
-					break;
-				case 1: // right
-					Settings.RightSideBar = true;
-					break;
-			}
-			CloseMenus();
-			SettingsMenu(2);
-		}
-		
 		private void WindowScaleChoice(object sender, EventArgs args)
 		{
 			int choice = (sender as Menu.Item).Value;
@@ -280,7 +276,7 @@ namespace CivOne.Screens
 				Settings.Scale = (choice + 1);
 			}
 			CloseMenus();
-			SettingsMenu(3);
+			SettingsMenu(2);
 		}
 
 		private void AspectRatioChoice(object sender, EventArgs args)
@@ -292,6 +288,27 @@ namespace CivOne.Screens
 			}
 			CloseMenus();
 			SettingsMenu(3);
+		}
+
+		private void PatchesChoice(object sender, EventArgs args)
+		{
+			CloseMenus();
+			int choice = (sender as Menu.Item).Value;
+			switch (choice)
+			{
+				case 0: // Reveal World
+					RevealWorldMenu();
+					break;
+				case 1: // Side bar
+					SideBarMenu();
+					break;
+				case 2: // Debug Menu
+					DebugMenuMenu();
+					break;
+				case 3: // Back
+					MainMenu(1);
+					break;
+			}
 		}
 		
 		private void RevealWorldChoice(object sender, EventArgs args)
@@ -307,7 +324,39 @@ namespace CivOne.Screens
 					break;
 			}
 			CloseMenus();
-			SettingsMenu(4);
+			PatchesMenu(0);
+		}
+		
+		private void SideBarChoice(object sender, EventArgs args)
+		{
+			int choice = (sender as Menu.Item).Value;
+			switch (choice)
+			{
+				case 0: // left
+					Settings.RightSideBar = false;
+					break;
+				case 1: // right
+					Settings.RightSideBar = true;
+					break;
+			}
+			CloseMenus();
+			PatchesMenu(1);
+		}
+		
+		private void DebugMenuChoice(object sender, EventArgs args)
+		{
+			int choice = (sender as Menu.Item).Value;
+			switch (choice)
+			{
+				case 0: // left
+					Settings.DebugMenu = false;
+					break;
+				case 1: // right
+					Settings.DebugMenu = true;
+					break;
+			}
+			CloseMenus();
+			PatchesMenu(2);
 		}
 
 		public void Resize(int width, int height)
