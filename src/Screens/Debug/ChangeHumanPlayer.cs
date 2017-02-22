@@ -11,16 +11,13 @@ using System;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.GFX;
-using CivOne.Tasks;
 using CivOne.Templates;
 
 namespace CivOne.Screens.Debug
 {
-	internal class SetPlayerScience : BaseScreen
+	internal class ChangeHumanPlayer : BaseScreen
 	{
 		private readonly Menu _civSelect;
-
-		private Input _input;
 
 		private Player _selectedPlayer = null;
 
@@ -28,50 +25,23 @@ namespace CivOne.Screens.Debug
 
 		public event EventHandler Accept, Cancel;
 
-		private void CivSelect_Accept(object sender, EventArgs args)
+		private void ChangePlayer_Accept(object sender, EventArgs args)
 		{
-			Cursor = MouseCursor.None;
-
-			_canvas = new Picture(320, 200, Common.Screens.Last().Canvas.OriginalColours);
-
-			_canvas.FillRectangle(11, 80, 80, 161, 33);
-			_canvas.FillRectangle(15, 81, 81, 159, 31);
-			_canvas.DrawText("Set Player Science...", 0, 5, 88, 82);
-			_canvas.FillRectangle(5, 88, 95, 105, 14);
-			_canvas.FillRectangle(15, 89, 96, 103, 12);
-
 			_selectedPlayer = Game.GetPlayer((byte)_civSelect.ActiveItem);
 
-			_input = new Input(_canvas.Palette, _selectedPlayer.Science.ToString(), 0, 5, 11, 90, 97, 101, 10, 5);
-			_input.Accept += PlayerScience_Accept;
-			_input.Cancel += PlayerScience_Cancel;
-
-			CloseMenus();
-		}
-
-		private void PlayerScience_Accept(object sender, EventArgs args)
-		{
-			Value = (sender as Input).Text;
-			
-			short playerScience;
-			if (!short.TryParse(Value, out playerScience) || playerScience < 0 || playerScience > 30000)
+			if (_selectedPlayer != Game.HumanPlayer)
 			{
-				GameTask.Enqueue(Message.Error("-- DEBUG: Set Player Sience --", $"The value {Value} is invalid or out of range.", "Please enter a value between 0 and", "30000."));
-			}
-			else
-			{
-				if (playerScience > _selectedPlayer.ScienceCost) playerScience = _selectedPlayer.ScienceCost;
-				_selectedPlayer.Science = playerScience;
-				GameTask.Enqueue(Message.General($"{_selectedPlayer.TribeName} science set to {playerScience}~."));
+				Game.HumanPlayer = _selectedPlayer;
+				Game.EndTurn();
 			}
 
 			if (Accept != null)
 				Accept(this, null);
-			((Input)sender).Close();
+			CloseMenus();
 			Destroy();
 		}
 
-		private void PlayerScience_Cancel(object sender, EventArgs args)
+		private void ChangePlayer_Cancel(object sender, EventArgs args)
 		{
 			if (Cancel != null)
 				Cancel(this, null);
@@ -87,14 +57,10 @@ namespace CivOne.Screens.Debug
 				AddMenu(_civSelect);
 				return false;
 			}
-			else if (_selectedPlayer != null && !Common.HasScreenType(typeof(Input)))
-			{
-				Common.AddScreen(_input);
-			}
 			return false;
 		}
 
-		public SetPlayerScience()
+		public ChangeHumanPlayer()
 		{
 			Cursor = MouseCursor.Pointer;
 
@@ -102,7 +68,7 @@ namespace CivOne.Screens.Debug
 
 			int fontHeight = Resources.Instance.GetFontHeight(0);
 			int hh = (fontHeight * (Game.Players.Count() + 1)) + 5;
-			int ww = 120;
+			int ww = 108;
 
 			int xx = (320 - ww) / 2;
 			int yy = (200 - hh) / 2;
@@ -116,7 +82,7 @@ namespace CivOne.Screens.Debug
 
 			_canvas.FillRectangle(5, xx - 1, yy - 1, ww + 2, hh + 2);
 			_canvas.AddLayer(menuGfx, xx, yy);
-			_canvas.DrawText("Set Player Science...", 0, 15, xx + 8, yy + 3);
+			_canvas.DrawText("Change Human Player...", 0, 15, xx + 8, yy + 3);
 
 			_civSelect = new Menu(Canvas.Palette, menuBackground)
 			{
@@ -133,11 +99,11 @@ namespace CivOne.Screens.Debug
 			foreach (Player player in Game.Players)
 			{
 				_civSelect.Items.Add(new Menu.Item(player.TribeNamePlural));
-				_civSelect.Items[_civSelect.Items.Count() - 1].Selected += CivSelect_Accept;
+				_civSelect.Items[_civSelect.Items.Count() - 1].Selected += ChangePlayer_Accept;
 			}
 
-			_civSelect.Cancel += PlayerScience_Cancel;
-			_civSelect.MissClick += PlayerScience_Cancel;
+			_civSelect.Cancel += ChangePlayer_Cancel;
+			_civSelect.MissClick += ChangePlayer_Cancel;
 			_civSelect.ActiveItem = Game.PlayerNumber(Human);
 		}
 	}

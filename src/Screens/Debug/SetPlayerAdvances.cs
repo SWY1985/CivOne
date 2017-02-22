@@ -87,6 +87,7 @@ namespace CivOne.Screens.Debug
 			_advanceSelect.Items[_advanceSelect.Items.Count() - 1].Selected += PlayerAdvances_More;
 
 			_advanceSelect.Cancel += PlayerAdvances_Cancel;
+			_advanceSelect.MissClick += PlayerAdvances_Cancel;
 			_advanceSelect.ActiveItem = (_advanceSelect.Items.Count() - 1);
 		}
 
@@ -188,6 +189,7 @@ namespace CivOne.Screens.Debug
 			}
 
 			_civSelect.Cancel += PlayerAdvances_Cancel;
+			_civSelect.MissClick += PlayerAdvances_Cancel;
 			_civSelect.ActiveItem = Game.PlayerNumber(Human);
 		}
 	}

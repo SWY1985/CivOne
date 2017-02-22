@@ -136,6 +136,7 @@ namespace CivOne.Screens.Debug
 			}
 
 			_civSelect.Cancel += PlayerGold_Cancel;
+			_civSelect.MissClick += PlayerGold_Cancel;
 			_civSelect.ActiveItem = Game.PlayerNumber(Human);
 		}
 	}

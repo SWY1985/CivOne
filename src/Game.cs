@@ -93,11 +93,7 @@ namespace CivOne
 			}
 		}
 		
-		internal Player HumanPlayer
-		{
-			get;
-			private set;
-		}
+		internal Player HumanPlayer { get; set; }
 		
 		internal Player CurrentPlayer
 		{
