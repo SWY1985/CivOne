@@ -114,7 +114,7 @@ namespace CivOne.Screens.Debug
 
 		private void PlayerAdvances_Accept(object sender, EventArgs args)
 		{
-			IAdvance advance = _advances[_advanceSelect.ActiveItem];
+			IAdvance advance = _advances[_advanceSelect.ActiveItem + _index];
 			if (_selectedPlayer.HasAdvance(advance))
 				_selectedPlayer.DeleteAdvance(advance);
 			else
