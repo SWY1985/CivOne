@@ -40,6 +40,13 @@ namespace CivOne.Screens
 			Close();
 		}
 
+		private void MenuSetPlayerScience(object sender, EventArgs args)
+		{
+			Common.AddScreen(new SetPlayerScience());
+			CloseMenus();
+			Close();
+		}
+
 		public override bool HasUpdate(uint gameTick)
 		{
 			if (_update)
@@ -74,7 +81,7 @@ namespace CivOne.Screens
 
 				menu.Items.Add(new Menu.Item("Set game year"));
 				menu.Items.Add(new Menu.Item("Set player gold"));
-				menu.Items.Add(new Menu.Item("Set player lightbulbs") { Enabled = false });
+				menu.Items.Add(new Menu.Item("Set player science"));
 				menu.Items.Add(new Menu.Item("Set player advances") { Enabled = false });
 				menu.Items.Add(new Menu.Item("Set city size") { Enabled = false });
 				menu.Items.Add(new Menu.Item("Change human player") { Enabled = false });
@@ -83,6 +90,7 @@ namespace CivOne.Screens
 
 				menu.Items[0].Selected += MenuSetGameYear;
 				menu.Items[1].Selected += MenuSetPlayerGold;
+				menu.Items[2].Selected += MenuSetPlayerScience;
 
 				_canvas.FillRectangle(5, 24, 16, 105, menu.RowHeight * (menu.Items.Count + 1));
 
