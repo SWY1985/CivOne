@@ -56,7 +56,7 @@ namespace CivOne.Screens.Debug
 			short playerScience;
 			if (!short.TryParse(Value, out playerScience) || playerScience < 0 || playerScience > 30000)
 			{
-				GameTask.Enqueue(Message.Error("-- DEBUG: Set Player Sience --", $"The value {Value} is invalid or out of range.", "Please enter a value between 0 and", "30000."));
+				GameTask.Enqueue(Message.Error("-- DEBUG: Set Player Science --", $"The value {Value} is invalid or out of range.", "Please enter a value between 0 and", "30000."));
 			}
 			else
 			{
