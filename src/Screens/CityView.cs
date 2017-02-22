@@ -376,6 +376,7 @@ namespace CivOne.Screens
 						if (sx == 0) continue;
 						if (sx > 7) sy += 8;
 						sx = (sx % 8) * 24;
+						if (Game.GetPlayer(_city.Owner).HasAdvance<Automobile>()) sy += 16;
 						building = Resources.Instance.GetPart("CITYPIX1", sx, sy, 24, 8);
 						dx -= 5;
 						dy += 24;
