@@ -37,14 +37,6 @@ namespace CivOne.Screens.Debug
 			_canvas = new Picture(320, 200, Common.Screens.Last().Canvas.OriginalColours);
 
 			IAdvance[] advances = _advances.Skip(_index).Take(15).ToArray();
-			foreach (Player player in Game.Players)
-			{
-				_civSelect.Items.Add(new Menu.Item(player.TribeNamePlural));
-				_civSelect.Items[_civSelect.Items.Count() - 1].Selected += CivSelect_Accept;
-			}
-
-			_civSelect.Cancel += PlayerAdvances_Cancel;
-			_civSelect.ActiveItem = Game.PlayerNumber(Human);
 
 			int fontHeight = Resources.Instance.GetFontHeight(0);
 			int hh = (fontHeight * (advances.Length + 2)) + 5;
@@ -93,14 +85,6 @@ namespace CivOne.Screens.Debug
 
 		private void CivSelect_Accept(object sender, EventArgs args)
 		{
-			_canvas = new Picture(320, 200, Common.Screens.Last().Canvas.OriginalColours);
-
-			_canvas.FillRectangle(11, 80, 80, 161, 33);
-			_canvas.FillRectangle(15, 81, 81, 159, 31);
-			_canvas.DrawText("Set Player Advances...", 0, 5, 88, 82);
-			_canvas.FillRectangle(5, 88, 95, 105, 14);
-			_canvas.FillRectangle(15, 89, 96, 103, 12);
-
 			_selectedPlayer = Game.GetPlayer((byte)_civSelect.ActiveItem);
 
 			CloseMenus();

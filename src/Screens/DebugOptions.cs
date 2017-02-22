@@ -54,6 +54,13 @@ namespace CivOne.Screens
 			Close();
 		}
 
+		private void MenuSetCitySize(object sender, EventArgs args)
+		{
+			Common.AddScreen(new SetCitySize());
+			CloseMenus();
+			Close();
+		}
+
 		private void MenuChangeHumanPlayer(object sender, EventArgs args)
 		{
 			Common.AddScreen(new ChangeHumanPlayer());
@@ -104,7 +111,7 @@ namespace CivOne.Screens
 				menu.Items.Add(new Menu.Item("Set player gold"));
 				menu.Items.Add(new Menu.Item("Set player science"));
 				menu.Items.Add(new Menu.Item("Set player advances"));
-				menu.Items.Add(new Menu.Item("Set city size") { Enabled = false });
+				menu.Items.Add(new Menu.Item("Set city size"));
 				menu.Items.Add(new Menu.Item("Change human player"));
 				menu.Items.Add(new Menu.Item("Spawn unit") { Enabled = false });
 				menu.Items.Add(new Menu.Item("Meet with king"));
@@ -113,6 +120,7 @@ namespace CivOne.Screens
 				menu.Items[1].Selected += MenuSetPlayerGold;
 				menu.Items[2].Selected += MenuSetPlayerScience;
 				menu.Items[3].Selected += MenuSetPlayerAdvances;
+				menu.Items[4].Selected += MenuSetCitySize;
 				menu.Items[5].Selected += MenuChangeHumanPlayer;
 				menu.Items[7].Selected += MenuMeetWithKing;
 
