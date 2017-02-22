@@ -54,6 +54,13 @@ namespace CivOne.Screens
 			Close();
 		}
 
+		private void MenuChangeHumanPlayer(object sender, EventArgs args)
+		{
+			Common.AddScreen(new ChangeHumanPlayer());
+			CloseMenus();
+			Close();
+		}
+
 		public override bool HasUpdate(uint gameTick)
 		{
 			if (_update)
@@ -81,7 +88,7 @@ namespace CivOne.Screens
 					TextColour = 5,
 					DisabledColour = 3,
 					FontId = 0,
-					Indent = 2
+					Indent = 8
 				};
 				menu.MissClick += MenuCancel;
 				menu.Cancel += MenuCancel;
@@ -91,7 +98,7 @@ namespace CivOne.Screens
 				menu.Items.Add(new Menu.Item("Set player science"));
 				menu.Items.Add(new Menu.Item("Set player advances"));
 				menu.Items.Add(new Menu.Item("Set city size") { Enabled = false });
-				menu.Items.Add(new Menu.Item("Change human player") { Enabled = false });
+				menu.Items.Add(new Menu.Item("Change human player"));
 				menu.Items.Add(new Menu.Item("Spawn unit") { Enabled = false });
 				menu.Items.Add(new Menu.Item("Meet with king") { Enabled = false });
 
@@ -99,6 +106,7 @@ namespace CivOne.Screens
 				menu.Items[1].Selected += MenuSetPlayerGold;
 				menu.Items[2].Selected += MenuSetPlayerScience;
 				menu.Items[3].Selected += MenuSetPlayerAdvances;
+				menu.Items[5].Selected += MenuChangeHumanPlayer;
 
 				_canvas.FillRectangle(5, 24, 16, 105, menu.RowHeight * (menu.Items.Count + 1));
 
