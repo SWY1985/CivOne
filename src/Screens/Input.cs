@@ -103,8 +103,7 @@ namespace CivOne.Screens
 				default:
 					char c = args.KeyChar;
 					if (!args.Shift) c = Char.ToLower(c);
-					//if (args.KeyData == Keys.OemPeriod) c = '.';
-					//if (args.KeyData == Keys.Oemcomma) c = ',';
+					if (args.Key == Key.Minus) c = '-';
 					if (args.Shift && (c >= '0' && c <= '9'))
 					{
 						switch (c)
