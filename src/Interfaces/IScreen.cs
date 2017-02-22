@@ -25,5 +25,6 @@ namespace CivOne.Interfaces
 		bool MouseDown(ScreenEventArgs args);
 		bool MouseUp(ScreenEventArgs args);
 		bool MouseDrag(ScreenEventArgs args);
+		bool MouseMove(ScreenEventArgs args);
 	}
 }

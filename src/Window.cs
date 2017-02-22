@@ -497,6 +497,8 @@ namespace CivOne
 					{
 						TopScreen.MouseDrag(new ScreenEventArgs(_mouseX, _mouseY, buttons));
 					}
+
+					TopScreen.MouseMove(new ScreenEventArgs(_mouseX, _mouseY, buttons));
 				}
 
 				CursorVisible = (_mouseX <= 0 || _mouseX >= (CanvasWidth - 1) || _mouseY <= 0 || _mouseY >= (CanvasHeight - 1));
