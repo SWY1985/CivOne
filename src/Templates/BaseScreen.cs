@@ -96,6 +96,10 @@ namespace CivOne.Templates
 		{
 			return false;
 		}
+		public virtual bool MouseMove(ScreenEventArgs args)
+		{
+			return false;
+		}
 		
 		protected bool HasMenu
 		{

@@ -68,6 +68,13 @@ namespace CivOne.Screens
 			Close();
 		}
 
+		private void MenuSpawnUnit(object sender, EventArgs args)
+		{
+			Common.AddScreen(new SpawnUnit());
+			CloseMenus();
+			Close();
+		}
+
 		private void MenuMeetWithKing(object sender, EventArgs args)
 		{
 			Common.AddScreen(new MeetWithKing());
@@ -107,14 +114,14 @@ namespace CivOne.Screens
 				menu.MissClick += MenuCancel;
 				menu.Cancel += MenuCancel;
 
-				menu.Items.Add(new Menu.Item("Set game year"));
-				menu.Items.Add(new Menu.Item("Set player gold"));
-				menu.Items.Add(new Menu.Item("Set player science"));
-				menu.Items.Add(new Menu.Item("Set player advances"));
-				menu.Items.Add(new Menu.Item("Set city size"));
-				menu.Items.Add(new Menu.Item("Change human player"));
-				menu.Items.Add(new Menu.Item("Spawn unit") { Enabled = false });
-				menu.Items.Add(new Menu.Item("Meet with king"));
+				menu.Items.Add(new Menu.Item("Set Game Year"));
+				menu.Items.Add(new Menu.Item("Set Player Gold"));
+				menu.Items.Add(new Menu.Item("Set Player Science"));
+				menu.Items.Add(new Menu.Item("Set Player Advances"));
+				menu.Items.Add(new Menu.Item("Set City Size"));
+				menu.Items.Add(new Menu.Item("Change Human Player"));
+				menu.Items.Add(new Menu.Item("Spawn Unit"));
+				menu.Items.Add(new Menu.Item("Meet With King"));
 
 				menu.Items[0].Selected += MenuSetGameYear;
 				menu.Items[1].Selected += MenuSetPlayerGold;
@@ -122,6 +129,7 @@ namespace CivOne.Screens
 				menu.Items[3].Selected += MenuSetPlayerAdvances;
 				menu.Items[4].Selected += MenuSetCitySize;
 				menu.Items[5].Selected += MenuChangeHumanPlayer;
+				menu.Items[6].Selected += MenuSpawnUnit;
 				menu.Items[7].Selected += MenuMeetWithKing;
 
 				_canvas.FillRectangle(5, 24, 16, 105, menu.RowHeight * (menu.Items.Count + 1));
