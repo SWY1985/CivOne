@@ -186,6 +186,11 @@ namespace CivOne
 			if (!setOrigin) return;
 			Game.Instance.SetAdvanceOrigin(advance, this);
 		}
+
+		public void DeleteAdvance(IAdvance advance)
+		{
+			_advances.RemoveAll(x => x.GetType() == advance.GetType());
+		}
 		
 		public string LatestAdvance
 		{
