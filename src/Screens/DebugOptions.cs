@@ -61,6 +61,13 @@ namespace CivOne.Screens
 			Close();
 		}
 
+		private void MenuMeetWithKing(object sender, EventArgs args)
+		{
+			Common.AddScreen(new MeetWithKing());
+			CloseMenus();
+			Close();
+		}
+
 		public override bool HasUpdate(uint gameTick)
 		{
 			if (_update)
@@ -100,13 +107,14 @@ namespace CivOne.Screens
 				menu.Items.Add(new Menu.Item("Set city size") { Enabled = false });
 				menu.Items.Add(new Menu.Item("Change human player"));
 				menu.Items.Add(new Menu.Item("Spawn unit") { Enabled = false });
-				menu.Items.Add(new Menu.Item("Meet with king") { Enabled = false });
+				menu.Items.Add(new Menu.Item("Meet with king"));
 
 				menu.Items[0].Selected += MenuSetGameYear;
 				menu.Items[1].Selected += MenuSetPlayerGold;
 				menu.Items[2].Selected += MenuSetPlayerScience;
 				menu.Items[3].Selected += MenuSetPlayerAdvances;
 				menu.Items[5].Selected += MenuChangeHumanPlayer;
+				menu.Items[7].Selected += MenuMeetWithKing;
 
 				_canvas.FillRectangle(5, 24, 16, 105, menu.RowHeight * (menu.Items.Count + 1));
 

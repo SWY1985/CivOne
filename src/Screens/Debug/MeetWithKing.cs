@@ -15,7 +15,7 @@ using CivOne.Templates;
 
 namespace CivOne.Screens.Debug
 {
-	internal class ChangeHumanPlayer : BaseScreen
+	internal class MeetWithKing : BaseScreen
 	{
 		private readonly Menu _civSelect;
 
@@ -25,14 +25,13 @@ namespace CivOne.Screens.Debug
 
 		public event EventHandler Accept, Cancel;
 
-		private void ChangePlayer_Accept(object sender, EventArgs args)
+		private void MeetKing_Accept(object sender, EventArgs args)
 		{
 			_selectedPlayer = Game.GetPlayer((byte)_civSelect.ActiveItem);
 
 			if (_selectedPlayer != Game.HumanPlayer)
 			{
-				Game.HumanPlayer = _selectedPlayer;
-				Game.EndTurn();
+				Common.AddScreen(new King(_selectedPlayer));
 			}
 
 			if (Accept != null)
@@ -41,10 +40,11 @@ namespace CivOne.Screens.Debug
 			Destroy();
 		}
 
-		private void ChangePlayer_Cancel(object sender, EventArgs args)
+		private void MeetKing_Cancel(object sender, EventArgs args)
 		{
 			if (Cancel != null)
 				Cancel(this, null);
+			((Input)sender).Close();
 			CloseMenus();
 			Destroy();
 		}
@@ -59,7 +59,7 @@ namespace CivOne.Screens.Debug
 			return false;
 		}
 
-		public ChangeHumanPlayer()
+		public MeetWithKing()
 		{
 			Cursor = MouseCursor.Pointer;
 
@@ -98,11 +98,14 @@ namespace CivOne.Screens.Debug
 			foreach (Player player in Game.Players)
 			{
 				_civSelect.Items.Add(new Menu.Item(player.TribeNamePlural));
-				_civSelect.Items[_civSelect.Items.Count() - 1].Selected += ChangePlayer_Accept;
+				if (player == Game.HumanPlayer || Game.PlayerNumber(player) == 0)
+					_civSelect.Items[_civSelect.Items.Count() - 1].Enabled = false;
+				else
+					_civSelect.Items[_civSelect.Items.Count() - 1].Selected += MeetKing_Accept;
 			}
 
-			_civSelect.Cancel += ChangePlayer_Cancel;
-			_civSelect.MissClick += ChangePlayer_Cancel;
+			_civSelect.Cancel += MeetKing_Cancel;
+			_civSelect.MissClick += MeetKing_Cancel;
 			_civSelect.ActiveItem = Game.PlayerNumber(Human);
 		}
 	}
