@@ -64,7 +64,7 @@ namespace CivOne.Screens
 			_gameMenu = new GameMenu(_canvas.Palette);
 			_gameMenu.Items.Add(new GameMenu.Item("Tax Rate"));
 			_gameMenu.Items.Add(new GameMenu.Item("Luxuries Rate"));
-			_gameMenu.Items.Add(new GameMenu.Item("FindCity") { Enabled = false });
+			_gameMenu.Items.Add(new GameMenu.Item("FindCity"));
 			_gameMenu.Items.Add(new GameMenu.Item("Options"));
 			_gameMenu.Items.Add(new GameMenu.Item("Save Game") { Enabled = (Game.GameTurn > 0) });
 			_gameMenu.Items.Add(new GameMenu.Item("REVOLUTION!"));
@@ -81,6 +81,7 @@ namespace CivOne.Screens
 			
 			_gameMenu.Items[0].Selected += (s, a) => GameTask.Enqueue(Show.TaxRate);
 			_gameMenu.Items[1].Selected += (s, a) => GameTask.Enqueue(Show.LuxuryRate);
+			_gameMenu.Items[2].Selected += (s, a) => GameTask.Enqueue(Show.Search);
 			_gameMenu.Items[3].Selected += (s, a) => GameTask.Enqueue(Show.Options);
 			_gameMenu.Items[4].Selected += (s, a) => GameTask.Enqueue(Show.SaveGame);
 			_gameMenu.Items[5].Selected += (s, a) => GameTask.Enqueue(Show.Revolution);
@@ -275,6 +276,9 @@ namespace CivOne.Screens
 					return true;
 				case Key.Minus:
 					GameTask.Enqueue(Show.LuxuryRate);
+					return true;
+				case Key.Slash:
+					GameTask.Enqueue(Show.Search);
 					return true;
 			}
 			return _gameMap.KeyDown(args);
