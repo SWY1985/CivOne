@@ -344,6 +344,8 @@ namespace CivOne
 				case TkKey.Number7: return new KeyboardEventArgs('7', _keyModifier);
 				case TkKey.Number8: return new KeyboardEventArgs('8', _keyModifier);
 				case TkKey.Number9: return new KeyboardEventArgs('9', _keyModifier);
+				case TkKey.KeypadDivide:
+				case TkKey.Slash: return new KeyboardEventArgs(CivKey.Slash, _keyModifier);
 			}
 
 			return null;

@@ -116,6 +116,22 @@ namespace CivOne.Tasks
 			return new Show(new UnitStack(x, y));
 		}
 
+		public static Show Search
+		{
+			get
+			{
+				Search search = new Search();
+				search.Accept += (s, a) =>
+				{
+					City city = (s as Search).City;
+					if (city == null) return;
+					GamePlay gamePlay = (GamePlay)Common.Screens.First(x => x.GetType() == typeof(GamePlay));
+					gamePlay.CenterOnPoint(city.X, city.Y);
+				};
+				return new Show(search);
+			}
+		}
+
 		public static Show ConfirmQuit
 		{
 			get
