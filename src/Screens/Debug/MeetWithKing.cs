@@ -19,6 +19,8 @@ namespace CivOne.Screens.Debug
 	{
 		private readonly Menu _civSelect;
 
+		private readonly Player[] _players;
+
 		private Player _selectedPlayer = null;
 
 		public string Value { get; private set; }
@@ -27,7 +29,7 @@ namespace CivOne.Screens.Debug
 
 		private void MeetKing_Accept(object sender, EventArgs args)
 		{
-			_selectedPlayer = Game.GetPlayer((byte)_civSelect.ActiveItem);
+			_selectedPlayer = _players[_civSelect.ActiveItem];
 
 			if (_selectedPlayer != Game.HumanPlayer)
 			{
@@ -64,10 +66,11 @@ namespace CivOne.Screens.Debug
 			Cursor = MouseCursor.Pointer;
 
 			_canvas = new Picture(320, 200, Common.Screens.Last().Canvas.OriginalColours);
+			_players = Game.Players.Where(p => Game.PlayerNumber(p) != 0 && p != Human).ToArray();
 
 			int fontHeight = Resources.Instance.GetFontHeight(0);
-			int hh = (fontHeight * (Game.Players.Count() + 1)) + 5;
-			int ww = 108;
+			int hh = (fontHeight * (_players.Length + 1)) + 5;
+			int ww = 144;
 
 			int xx = (320 - ww) / 2;
 			int yy = (200 - hh) / 2;
@@ -81,7 +84,7 @@ namespace CivOne.Screens.Debug
 
 			_canvas.FillRectangle(5, xx - 1, yy - 1, ww + 2, hh + 2);
 			_canvas.AddLayer(menuGfx, xx, yy);
-			_canvas.DrawText("Change Human Player...", 0, 15, xx + 8, yy + 3);
+			_canvas.DrawText("Meet With King", 0, 15, xx + 8, yy + 3);
 
 			_civSelect = new Menu(Canvas.Palette, menuBackground)
 			{
@@ -95,13 +98,10 @@ namespace CivOne.Screens.Debug
 				Indent = 8
 			};
 
-			foreach (Player player in Game.Players)
+			foreach (Player player in _players)
 			{
-				_civSelect.Items.Add(new Menu.Item(player.TribeNamePlural));
-				if (player == Game.HumanPlayer || Game.PlayerNumber(player) == 0)
-					_civSelect.Items[_civSelect.Items.Count() - 1].Enabled = false;
-				else
-					_civSelect.Items[_civSelect.Items.Count() - 1].Selected += MeetKing_Accept;
+				_civSelect.Items.Add(new Menu.Item($"{player.LeaderName} ({player.TribeName})"));
+				_civSelect.Items[_civSelect.Items.Count() - 1].Selected += MeetKing_Accept;
 			}
 
 			_civSelect.Cancel += MeetKing_Cancel;
