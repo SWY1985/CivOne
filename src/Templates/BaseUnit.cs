@@ -93,7 +93,7 @@ namespace CivOne.Templates
 			}
 
 			Movement = new MoveUnit(relX, relY);
-			Movement.Done += (s, a) => GameTask.Enqueue(Show.DestroyUnit);
+			Movement.Done += (s, a) => GameTask.Insert(Show.DestroyUnit(this));
 			GameTask.Insert(Movement);
 			return false;
 		}
