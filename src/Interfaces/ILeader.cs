@@ -7,19 +7,14 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using CivOne.Interfaces;
+using CivOne.Enums;
+using CivOne.GFX;
 
 namespace CivOne.Interfaces
 {
-	public interface ICivilization
+	public interface ILeader
 	{
-		int Id { get; }
-		string Name { get; }
-		string NamePlural { get; }
-		ILeader Leader { get; }
-		byte PreferredPlayerNumber { get; }
-		byte StartX { get; }
-		byte StartY { get; }
-		string[] CityNames { get; }
+		string Name { get; set; }
+		Picture GetPortrait(FaceState state = FaceState.Neutral);
 	}
 }

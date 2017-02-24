@@ -7,74 +7,36 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using CivOne.Interfaces;
+using CivOne.Leaders;
+using CivOne.Templates;
 
 namespace CivOne.Civilizations
 {
-	internal class Zulu : ICivilization
+	internal class Zulu : BaseCivilization<Shaka>
 	{
-		public int Id
+		public Zulu() : base(9, 2, "Zulu", "Zulus")
 		{
-			get
+			StartX = 42;
+			StartY = 42;
+			CityNames = new string[]
 			{
-				return 9;
-			}
-		}
-
-		public string Name
-		{
-			get { return "Zulu"; }
-		}
-
-		public string NamePlural
-		{
-			get { return "Zulus"; }
-		}
-
-		public string LeaderName
-		{
-			get { return "Shaka"; }
-		}
-
-		public byte PreferredPlayerNumber
-		{
-			get { return 2; }
-		}
-
-		public byte StartX
-		{
-			get { return 42; }
-		}
-
-		public byte StartY
-		{
-			get { return 42; }
-		}
-		
-		public string[] CityNames
-		{
-			get
-			{
-				return new string[]
-				{
-					"Zimbabwe",
-					"Ulundi",
-					"Bapedi",
-					"Hlobane",
-					"Isandhlwala",
-					"Intombe",
-					"Mpondo",
-					"Ngome",
-					"Swazi",
-					"Tugela",
-					"Umtata",
-					"Umfolozi",
-					"Ibabanago",
-					"Isipezi",
-					"Amatikulu",
-					"Zunquin"
-				};
-			}
+				"Zimbabwe",
+				"Ulundi",
+				"Bapedi",
+				"Hlobane",
+				"Isandhlwala",
+				"Intombe",
+				"Mpondo",
+				"Ngome",
+				"Swazi",
+				"Tugela",
+				"Umtata",
+				"Umfolozi",
+				"Ibabanago",
+				"Isipezi",
+				"Amatikulu",
+				"Zunquin"
+			};
 		}
 	}
 }

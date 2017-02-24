@@ -7,74 +7,36 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using CivOne.Interfaces;
+using CivOne.Leaders;
+using CivOne.Templates;
 
 namespace CivOne.Civilizations
 {
-	internal class French : ICivilization
+	internal class French : BaseCivilization<Napoleon>
 	{
-		public int Id
+		public French() : base(10, 3, "French", "French")
 		{
-			get
+			StartX = 33;
+			StartY = 16;
+			CityNames = new string[]
 			{
-				return 10;
-			}
-		}
-
-		public string Name
-		{
-			get { return "French"; }
-		}
-
-		public string NamePlural
-		{
-			get { return "French"; }
-		}
-
-		public string LeaderName
-		{
-			get { return "Napoleon"; }
-		}
-
-		public byte PreferredPlayerNumber
-		{
-			get { return 3; }
-		}
-
-		public byte StartX
-		{
-			get { return 33; }
-		}
-
-		public byte StartY
-		{
-			get { return 16; }
-		}
-		
-		public string[] CityNames
-		{
-			get
-			{
-				return new string[]
-				{
-					"Paris",
-					"Orleans",
-					"Lyons",
-					"Tours",
-					"Chartres",
-					"Bordeaux",
-					"Rouen",
-					"Avignon",
-					"Marseilles",
-					"Grenoble",
-					"Dijon",
-					"Amiens",
-					"Cherbourg",
-					"Poitiers",
-					"Toulouse",
-					"Bayonne"
-				};
-			}
+				"Paris",
+				"Orleans",
+				"Lyons",
+				"Tours",
+				"Chartres",
+				"Bordeaux",
+				"Rouen",
+				"Avignon",
+				"Marseilles",
+				"Grenoble",
+				"Dijon",
+				"Amiens",
+				"Cherbourg",
+				"Poitiers",
+				"Toulouse",
+				"Bayonne"
+			};
 		}
 	}
 }

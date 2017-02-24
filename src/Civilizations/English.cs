@@ -7,74 +7,36 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using CivOne.Interfaces;
+using CivOne.Leaders;
+using CivOne.Templates;
 
 namespace CivOne.Civilizations
 {
-	internal class English : ICivilization
+	internal class English : BaseCivilization<Elizabeth>
 	{
-		public int Id
+		public English() : base(13, 6, "English", "English")
 		{
-			get
+			StartX = 31;
+			StartY = 14;
+			CityNames = new string[]
 			{
-				return 13;
-			}
-		}
-
-		public string Name
-		{
-			get { return "English"; }
-		}
-
-		public string NamePlural
-		{
-			get { return "English"; }
-		}
-
-		public string LeaderName
-		{
-			get { return "Elizabeth I"; }
-		}
-
-		public byte PreferredPlayerNumber
-		{
-			get { return 6; }
-		}
-
-		public byte StartX
-		{
-			get { return 31; }
-		}
-
-		public byte StartY
-		{
-			get { return 14; }
-		}
-		
-		public string[] CityNames
-		{
-			get
-			{
-				return new string[]
-				{
-					"London",
-					"Coventry",
-					"Birmingham",
-					"Dover",
-					"Nottingham",
-					"York",
-					"Liverpool",
-					"Brighton",
-					"Oxford",
-					"Reading",
-					"Exeter",
-					"Cambridge",
-					"Hastings",
-					"Canterbury",
-					"Banbury",
-					"Newcastle"
-				};
-			}
+				"London",
+				"Coventry",
+				"Birmingham",
+				"Dover",
+				"Nottingham",
+				"York",
+				"Liverpool",
+				"Brighton",
+				"Oxford",
+				"Reading",
+				"Exeter",
+				"Cambridge",
+				"Hastings",
+				"Canterbury",
+				"Banbury",
+				"Newcastle"
+			};
 		}
 	}
 }

@@ -7,74 +7,36 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using CivOne.Interfaces;
+using CivOne.Leaders;
+using CivOne.Templates;
 
 namespace CivOne.Civilizations
 {
-	internal class Roman : ICivilization
+	internal class Roman : BaseCivilization<Caesar>
 	{
-		public int Id
+		public Roman() : base(1, 1, "Roman", "Romans")
 		{
-			get
+			StartX = 36;
+			StartY = 19;
+			CityNames = new string[]
 			{
-				return 1;
-			}
-		}
-
-		public string Name
-		{
-			get { return "Roman"; }
-		}
-
-		public string NamePlural
-		{
-			get { return "Romans"; }
-		}
-
-		public string LeaderName
-		{
-			get { return "Caesar"; }
-		}
-
-		public byte PreferredPlayerNumber
-		{
-			get { return 1; }
-		}
-
-		public byte StartX
-		{
-			get { return 36; }
-		}
-
-		public byte StartY
-		{
-			get { return 19; }
-		}
-		
-		public string[] CityNames
-		{
-			get
-			{
-				return new string[]
-				{
-					"Rome",
-					"Caesarea",
-					"Carthage",
-					"Nicopolis",
-					"Byzantium",
-					"Brundisium",
-					"Syracuse",
-					"Antioch",
-					"Palmyra",
-					"Cyrene",
-					"Gordion",
-					"Tyrus",
-					"Jerusalem",
-					"Seleucia",
-					"Ravenna",
-					"Artaxata"
-				};
-			}
+				"Rome",
+				"Caesarea",
+				"Carthage",
+				"Nicopolis",
+				"Byzantium",
+				"Brundisium",
+				"Syracuse",
+				"Antioch",
+				"Palmyra",
+				"Cyrene",
+				"Gordion",
+				"Tyrus",
+				"Jerusalem",
+				"Seleucia",
+				"Ravenna",
+				"Artaxata"
+			};
 		}
 	}
 }
