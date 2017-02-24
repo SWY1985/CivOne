@@ -23,7 +23,7 @@ namespace CivOne
 	public class Player : BaseInstance, ITurn
 	{
 		private readonly ICivilization _civilization;
-		private readonly string _leaderName, _tribeName, _tribeNamePlural;
+		private readonly string _tribeName, _tribeNamePlural;
 
 		private readonly bool[,] _explored = new bool[Map.WIDTH, Map.HEIGHT];
 		private readonly bool[,] _visible = new bool[Map.WIDTH, Map.HEIGHT];
@@ -45,7 +45,7 @@ namespace CivOne
 		{
 			get
 			{
-				return _leaderName;
+				return _civilization.Leader.Name;
 			}
 		}
 		
@@ -394,7 +394,7 @@ namespace CivOne
 		public Player(ICivilization civilization, string customLeaderName = null, string customTribeName = null, string customTribeNamePlural = null)
 		{
 			_civilization = civilization;
-			_leaderName = customLeaderName ?? _civilization.LeaderName;
+			if (customLeaderName != null) _civilization.Leader.Name = customLeaderName;
 			_tribeName = customTribeName ?? _civilization.Name;
 			_tribeNamePlural = customTribeNamePlural ?? _civilization.NamePlural;
 			Government = new Despotism();

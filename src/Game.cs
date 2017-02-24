@@ -562,7 +562,6 @@ namespace CivOne
 				for (int i = 0; i <= competition; i++)
 				{
 					int identity = ((civIdentity >> i) & 0x1);
-					// ICivilization civ = Common.Civilizations.Where(c => c.PreferredPlayerNumber == i).ToArray()[identity];
 					ICivilization[] civs = Common.Civilizations.Where(c => c.PreferredPlayerNumber == i).ToArray();
 					ICivilization civ = civs[identity];
 					Player player = (_instance._players[i] = new Player(civ, leaderNames[i], tribeNames[i], tribeNamesPlural[i]));

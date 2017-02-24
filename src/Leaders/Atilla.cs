@@ -7,19 +7,24 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using CivOne.Enums;
+using CivOne.GFX;
 using CivOne.Interfaces;
 
-namespace CivOne.Interfaces
+namespace CivOne.Leaders
 {
-	public interface ICivilization
+	public class Atilla : ILeader
 	{
-		int Id { get; }
-		string Name { get; }
-		string NamePlural { get; }
-		ILeader Leader { get; }
-		byte PreferredPlayerNumber { get; }
-		byte StartX { get; }
-		byte StartY { get; }
-		string[] CityNames { get; }
+		public string Name { get; set; }
+
+		public Picture GetPortrait(FaceState state)
+		{
+			return new Picture(139, 133, Common.GetPalette256);
+		}
+
+		public Atilla()
+		{
+			Name = "Atilla";
+		}
 	}
 }

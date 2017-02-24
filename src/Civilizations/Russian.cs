@@ -7,74 +7,36 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using CivOne.Interfaces;
+using CivOne.Leaders;
+using CivOne.Templates;
 
 namespace CivOne.Civilizations
 {
-	internal class Russian : ICivilization
+	internal class Russian : BaseCivilization<Stalin>
 	{
-		public int Id
+		public Russian() : base(8, 1, "Russian", "Russians")
 		{
-			get
+			StartX = 44;
+			StartY = 12;
+			CityNames = new string[]
 			{
-				return 8;
-			}
-		}
-
-		public string Name
-		{
-			get { return "Russian"; }
-		}
-
-		public string NamePlural
-		{
-			get { return "Russians"; }
-		}
-
-		public string LeaderName
-		{
-			get { return "Stalin"; }
-		}
-
-		public byte PreferredPlayerNumber
-		{
-			get { return 1; }
-		}
-
-		public byte StartX
-		{
-			get { return 44; }
-		}
-
-		public byte StartY
-		{
-			get { return 12; }
-		}
-		
-		public string[] CityNames
-		{
-			get
-			{
-				return new string[]
-				{
-					"Moscow",
-					"Leningrad",
-					"Kiev",
-					"Minsk",
-					"Smolensk",
-					"Odessa",
-					"Sevastopol",
-					"Tblisi",
-					"Sverdlovsk",
-					"Yakutsk",
-					"Vladivostok",
-					"Novograd",
-					"Krasnoyarsk",
-					"Riga",
-					"Rostov",
-					"Atrakhan"
-				};
-			}
+				"Moscow",
+				"Leningrad",
+				"Kiev",
+				"Minsk",
+				"Smolensk",
+				"Odessa",
+				"Sevastopol",
+				"Tblisi",
+				"Sverdlovsk",
+				"Yakutsk",
+				"Vladivostok",
+				"Novograd",
+				"Krasnoyarsk",
+				"Riga",
+				"Rostov",
+				"Atrakhan"
+			};
 		}
 	}
 }

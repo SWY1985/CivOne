@@ -83,7 +83,7 @@ namespace CivOne.Screens
 			if (Common.HasScreenType(typeof(Input))) return;
 			
 			ICivilization civ = _tribesAvailable[_tribe];
-			Input input = new Input(_canvas.Palette, civ.LeaderName, 6, 5, 11, 168, 105, 109, 10, 13);
+			Input input = new Input(_canvas.Palette, civ.Leader.Name, 6, 5, 11, 168, 105, 109, 10, 13);
 			input.Accept += LeaderName_Accept;
 			input.Cancel += LeaderName_Accept;
 			Common.AddScreen(input);
@@ -291,7 +291,7 @@ namespace CivOne.Screens
 				if (args.Key == Key.Enter)
 				{
 					ICivilization civ = _tribesAvailable[_tribe];
-					_leaderName = civ.LeaderName;
+					_leaderName = civ.Leader.Name;
 					return true;
 				}
 				return false;

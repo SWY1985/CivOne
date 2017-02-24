@@ -7,74 +7,36 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using CivOne.Interfaces;
+using CivOne.Leaders;
+using CivOne.Templates;
 
 namespace CivOne.Civilizations
 {
-	internal class Aztec : ICivilization
+	internal class Aztec : BaseCivilization<Montezuma>
 	{
-		public int Id
+		public Aztec() : base(11, 4, "Aztec", "Aztecs")
 		{
-			get
+			StartX = 5;
+			StartY = 23;
+			CityNames = new string[]
 			{
-				return 11;
-			}
-		}
-
-		public string Name
-		{
-			get { return "Aztec"; }
-		}
-
-		public string NamePlural
-		{
-			get { return "Aztecs"; }
-		}
-
-		public string LeaderName
-		{
-			get { return "Montezuma"; }
-		}
-
-		public byte PreferredPlayerNumber
-		{
-			get { return 4; }
-		}
-
-		public byte StartX
-		{
-			get { return 5; }
-		}
-
-		public byte StartY
-		{
-			get { return 23; }
-		}
-		
-		public string[] CityNames
-		{
-			get
-			{
-				return new string[]
-				{
-					"Tenochtitlan",
-					"Chiauhtia",
-					"Chapultapec",
-					"Coatepec",
-					"Ayontzinco",
-					"Itzapalapa",
-					"Itzapam",
-					"Mitxcoac",
-					"Tucubaya",
-					"Tecamac",
-					"Tepezinco",
-					"Ticoman",
-					"Tlaxcala",
-					"Xaltocan",
-					"Xicalango",
-					"Zumpanco"
-				};
-			}
+				"Tenochtitlan",
+				"Chiauhtia",
+				"Chapultapec",
+				"Coatepec",
+				"Ayontzinco",
+				"Itzapalapa",
+				"Itzapam",
+				"Mitxcoac",
+				"Tucubaya",
+				"Tecamac",
+				"Tepezinco",
+				"Ticoman",
+				"Tlaxcala",
+				"Xaltocan",
+				"Xicalango",
+				"Zumpanco"
+			};
 		}
 	}
 }

@@ -20,7 +20,9 @@ namespace CivOne.Screens
 {
 	internal class King : BaseScreen
 	{
-		private readonly Picture _background, _leader;
+		private readonly Player _player;
+
+		private readonly Picture _background;
 
 		private bool _update = true;
 		
@@ -45,6 +47,8 @@ namespace CivOne.Screens
 		
 		public King(Player player)
 		{
+			_player = player;
+
 			bool modern = player.HasAdvance<Invention>();
 			int govId = 0;
 			if (player.Government is Gov.Monarchy)
@@ -59,41 +63,17 @@ namespace CivOne.Screens
 
 			_background = Resources.Instance.LoadPIC($"BACK{govId}{(modern ? "M" : "A")}");
 
-			string leader = null;
-			if (player.Civilization is Roman) leader = "KING10";
-			if (player.Civilization is Babylonian) leader = "KING07";
-			if (player.Civilization is German) leader = "KING12";
-			if (player.Civilization is Egyptian) leader = "KING01";
-			if (player.Civilization is American) leader = "KING04";
-			if (player.Civilization is Greek) leader = "KING13";
-			if (player.Civilization is Indian) leader = "KING02";
-			if (player.Civilization is Russian) leader = "KING08";
-			if (player.Civilization is Zulu) leader = "KING03";
-			if (player.Civilization is French) leader = "KING11";
-			if (player.Civilization is Aztec) leader = "KING09";
-			if (player.Civilization is Chinese) leader = "KING06";
-			if (player.Civilization is English) leader = "KING00";
-			if (player.Civilization is Mongol) leader = "KING05";
-
-			if (leader != null)
-			{
-				_leader = Resources.Instance.LoadPIC(leader);
-			}
-			else
-			{
-				_leader = new Picture(320, 200, _background.Palette);
-			}
-
 			Picture.ReplaceColours(_background, 0, 5);
+			Picture portrait = _player.Civilization.Leader.GetPortrait();
 			
 			_canvas = new Picture(320, 200, _background.Palette);
 			for (int i = 64; i < 144; i++)
 			{
-				_canvas.Palette[i] = _leader.Palette[i];
+				_canvas.Palette[i] = portrait.Palette[i];
 			}
 			
 			AddLayer(_background);
-			AddLayer(_leader.GetPart(181, 67, 139, 133), 90, 0);
+			AddLayer(portrait, 90, 0);
 		}
 	}
 }

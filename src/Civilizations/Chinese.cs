@@ -7,74 +7,36 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using CivOne.Interfaces;
+using CivOne.Leaders;
+using CivOne.Templates;
 
 namespace CivOne.Civilizations
 {
-	internal class Chinese : ICivilization
+	internal class Chinese : BaseCivilization<Mao>
 	{
-		public int Id
+		public Chinese() : base(12, 5, "Chinese", "Chinese")
 		{
-			get
+			StartX = 66;
+			StartY = 19;
+			CityNames = new string[]
 			{
-				return 12;
-			}
-		}
-
-		public string Name
-		{
-			get { return "Chinese"; }
-		}
-
-		public string NamePlural
-		{
-			get { return "Chinese"; }
-		}
-
-		public string LeaderName
-		{
-			get { return "Mao Tse Tung"; }
-		}
-
-		public byte PreferredPlayerNumber
-		{
-			get { return 5; }
-		}
-
-		public byte StartX
-		{
-			get { return 66; }
-		}
-
-		public byte StartY
-		{
-			get { return 19; }
-		}
-		
-		public string[] CityNames
-		{
-			get
-			{
-				return new string[]
-				{
-					"Peking",
-					"Shanghai",
-					"Canton",
-					"Nanking",
-					"Tsingtao",
-					"Hangchow",
-					"Tientsin",
-					"Tatung",
-					"Macao",
-					"Anyang",
-					"Shantung",
-					"Chinan",
-					"Kaifeng",
-					"Ningpo",
-					"Paoting",
-					"Yangchow"
-				};
-			}
+				"Peking",
+				"Shanghai",
+				"Canton",
+				"Nanking",
+				"Tsingtao",
+				"Hangchow",
+				"Tientsin",
+				"Tatung",
+				"Macao",
+				"Anyang",
+				"Shantung",
+				"Chinan",
+				"Kaifeng",
+				"Ningpo",
+				"Paoting",
+				"Yangchow"
+			};
 		}
 	}
 }
