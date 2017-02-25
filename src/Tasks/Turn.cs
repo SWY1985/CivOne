@@ -43,7 +43,6 @@ namespace CivOne.Tasks
 			else if (_unit != null)
 			{
 				AI.Move(_unit);
-				System.Console.WriteLine("AI MOVE");
 			}
 			else if (_endTurn)
 			{
