@@ -268,13 +268,16 @@ namespace CivOne.Templates
 			}
 			if (Class == UnitClass.Land && !(this is Diplomat || this is Caravan) && !new ITile[] { Map[X, Y], moveTarget }.Any(t => t.IsOcean || t.City != null) && moveTarget.GetBorderTiles().SelectMany(t => t.Units).Any(u => u.Owner != Owner))
 			{
-				IUnit[] targetUnits = moveTarget.GetBorderTiles().SelectMany(t => t.Units).Where(u => u.Owner != Owner).ToArray();
-				IUnit[] borderUnits = Map[X, Y].GetBorderTiles().SelectMany(t => t.Units).Where(u => u.Owner != Owner).ToArray();
-
-				if (borderUnits.Any(u => targetUnits.Any(t => t.X == u.X && t.Y == u.Y)))
+				if (!moveTarget.Units.Any(x => x.Owner == Owner))
 				{
-					GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText($"ERROR/ZOC")));
-					return false;
+					IUnit[] targetUnits = moveTarget.GetBorderTiles().SelectMany(t => t.Units).Where(u => u.Owner != Owner).ToArray();
+					IUnit[] borderUnits = Map[X, Y].GetBorderTiles().SelectMany(t => t.Units).Where(u => u.Owner != Owner).ToArray();
+
+					if (borderUnits.Any(u => targetUnits.Any(t => t.X == u.X && t.Y == u.Y)))
+					{
+						GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText($"ERROR/ZOC")));
+						return false;
+					}
 				}
 			}
 			if (moveTarget.City != null && Map[X, Y][relX, relY].City.Owner != Owner)
