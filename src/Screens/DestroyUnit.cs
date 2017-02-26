@@ -90,6 +90,8 @@ namespace CivOne.Screens
 				while (xx >= 80) xx -= 80;
 
 				_overlay.AddLayer(_unit.GetUnit(_unit.Owner), cx + (xx * 16), cy + (yy * 16));
+				if (_unit.Tile.Units.Length > 1)
+					_overlay.AddLayer(_unit.GetUnit(_unit.Owner), cx + (xx * 16) - 1, cy + (yy * 16) - 1);
 			}
 			_overlay.ApplyNoise(_noiseMap, --_noiseCounter);
 
@@ -98,7 +100,17 @@ namespace CivOne.Screens
 
 			if (_noiseCounter == 0)
 			{
-				Game.DisbandUnit(_unit);
+				IUnit[] units;
+				if (_unit.Tile.Units.Length > 1 && _unit.Tile.City == null && !_unit.Tile.Fortress)
+				{
+					units = _unit.Tile.Units;
+				}
+				else
+				{
+					units = new IUnit[] { _unit };
+				}
+				foreach (IUnit unit in units)
+					Game.DisbandUnit(unit);
 				_gamePlay.HasUpdate(gameTick);
 				Destroy();
 				HandleClose();
@@ -146,6 +158,12 @@ namespace CivOne.Screens
 
 					if (t.Tile.City != null) continue;
 					
+					if (_unit != Game.ActiveUnit && t.Tile.Units.Any(x => x == _unit))
+					{
+						// Unit is attacked, it is not in a city or fortress, destroy them all
+						if (t.Tile.City == null && !t.Tile.Fortress) continue;
+					}
+
 					IUnit[] units = t.Tile.Units.Where(u => u != _unit).ToArray();
 					if (t.Tile.Type == Terrain.Ocean)
 					{
@@ -162,7 +180,7 @@ namespace CivOne.Screens
 						// Do not draw sentried land units at sea
 						continue;
 					}
-
+					
 					output.AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position);
 					if (units.Length == 1) continue;
 					output.AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position.X - 1, t.Position.Y - 1);
