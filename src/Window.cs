@@ -497,10 +497,10 @@ namespace CivOne
 					if (mouse.IsButtonDown(TkMouseButton.Right)) buttons |= CivMouseButton.Right;
 					if (buttons != CivMouseButton.None)
 					{
-						TopScreen.MouseDrag(new ScreenEventArgs(_mouseX, _mouseY, buttons));
+						TopScreen?.MouseDrag(new ScreenEventArgs(_mouseX, _mouseY, buttons));
 					}
 
-					TopScreen.MouseMove(new ScreenEventArgs(_mouseX, _mouseY, buttons));
+					TopScreen?.MouseMove(new ScreenEventArgs(_mouseX, _mouseY, buttons));
 				}
 
 				CursorVisible = (_mouseX <= 0 || _mouseX >= (CanvasWidth - 1) || _mouseY <= 0 || _mouseY >= (CanvasHeight - 1));
@@ -569,11 +569,15 @@ namespace CivOne
 					startScreen = new Credits();
 					break;
 			}
-			Common.AddScreen(startScreen);
-
 			if (!FileSystem.DataFilesExist())
 			{
-				Common.AddScreen(new MissingFiles());
+				MissingFiles missingFiles = new MissingFiles();
+				missingFiles.Closed += (s, a) => Common.AddScreen(startScreen);
+				Common.AddScreen(missingFiles);
+			}
+			else
+			{
+				Common.AddScreen(startScreen);
 			}
 
 			KeyDown += OnKeyDown;
