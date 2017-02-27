@@ -435,11 +435,11 @@ namespace CivOne
 			if (Settings.Instance.FullScreen)
 			{
 				WindowState = WindowState.Fullscreen;
-			} 
+			}
 
 			// Load cursor graphics
-			_cursorPointer = Resources.Instance.GetPart("SP257", 112, 32, 16, 16);
-			_cursorGoto = Resources.Instance.GetPart("SP257", 32, 32, 16, 16);
+			_cursorPointer = Icons.Cursor(CivMouseCursor.Pointer, (Settings.Instance.CursorType == CursorType.Builtin));
+			_cursorGoto = Icons.Cursor(CivMouseCursor.Goto, (Settings.Instance.CursorType == CursorType.Builtin));
 			
 			LoadResources();
 		}
