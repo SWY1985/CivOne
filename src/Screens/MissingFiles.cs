@@ -41,7 +41,7 @@ namespace CivOne.Screens
 
 		private void Menu_Copy(object sender, EventArgs args)
 		{
-			string path = Native.FolderBrowser();
+			string path = Native.FolderBrowser("Location of Civilization data files");
 			if (path == null)
 			{
 				// User pressed cancel
