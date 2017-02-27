@@ -12,6 +12,7 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
+using CivOne.IO;
 using CivOne.Templates;
 
 namespace CivOne.Screens
@@ -154,13 +155,20 @@ namespace CivOne.Screens
 		
 		private void PatchesMenu(int activeItem = 0)
 		{
-			string revealWorld, sideBar, debugMenu;
+			string revealWorld, sideBar, debugMenu, cursorType;
+			switch (Settings.CursorType)
+			{
+				case CursorType.Builtin: cursorType = "Built-in"; break;
+				case CursorType.Native: cursorType = "Native"; break;
+				default: cursorType = "Default"; break;
+			}
 
 			revealWorld = $"Reveal World: {(Settings.RevealWorld ? "yes" : "no")}";
 			sideBar = $"Side bar location: {(Settings.RightSideBar ? "right" : "left")}";
 			debugMenu = $"Show debug menu: {(Settings.DebugMenu ? "yes" : "no")}";
+			cursorType = $"Mouse cursor type: {cursorType}";
 			
-			Menu menu = CreateMenu("PATCHES:", PatchesChoice, revealWorld, sideBar, debugMenu, "Back");
+			Menu menu = CreateMenu("PATCHES:", PatchesChoice, revealWorld, sideBar, debugMenu, cursorType, "Back");
 			menu.ActiveItem = activeItem;
 			AddMenu(menu);
 		}
@@ -183,6 +191,18 @@ namespace CivOne.Screens
 		{
 			Menu menu = CreateMenu("SHOW DEBUG MENU:", DebugMenuChoice, "No (default)", "Yes", "Back");
 			menu.ActiveItem = Settings.DebugMenu ? 1 : 0;
+			AddMenu(menu);
+		}
+
+		private void CursorTypeMenu()
+		{
+			Menu menu = CreateMenu("MOUSE CURSOR TYPE:", CursorTypeChoice, "Default", "Built-in", "Native", "Back");
+			menu.ActiveItem = (int)Settings.CursorType;
+			if (menu.ActiveItem == (int)CursorType.Default && !FileSystem.DataFilesExist(FileSystem.MouseCursorFiles))
+			{
+				menu.ActiveItem = (int)CursorType.Builtin;
+			}
+			menu.Items[0].Enabled = (FileSystem.DataFilesExist(FileSystem.MouseCursorFiles));
 			AddMenu(menu);
 		}
 		
@@ -305,7 +325,10 @@ namespace CivOne.Screens
 				case 2: // Debug Menu
 					DebugMenuMenu();
 					break;
-				case 3: // Back
+				case 3: // Cursor Type
+					CursorTypeMenu();
+					break;
+				case 4: // Back
 					MainMenu(1);
 					break;
 			}
@@ -357,6 +380,25 @@ namespace CivOne.Screens
 			}
 			CloseMenus();
 			PatchesMenu(2);
+		}
+		
+		private void CursorTypeChoice(object sender, EventArgs args)
+		{
+			int choice = (sender as Menu.Item).Value;
+			switch (choice)
+			{
+				case 0:
+					Settings.CursorType = CursorType.Default;
+					break;
+				case 1:
+					Settings.CursorType = CursorType.Builtin;
+					break;
+				case 2:
+					Settings.CursorType = CursorType.Native;
+					break;
+			}
+			CloseMenus();
+			PatchesMenu(3);
 		}
 
 		public void Resize(int width, int height)
