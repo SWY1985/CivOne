@@ -233,17 +233,49 @@ namespace CivOne.Screens
 				if (ww > 18) ww = 18;
 				if (hh > 11) hh = 11;
 
+				//int bx = Common.Random.Next(ww) + ((18 - ww) / 2);
+				//int by = Common.Random.Next(hh);
+				int bx = (ww / 2) + ((18 - ww) / 2);
+				int by = (hh / 2);
 				for (int ii = 0; ii < _city.Size; ii++)
-				for (int t = 0; t < 16; t++)
 				{
-					int xx = Common.Random.Next(ww) + ((18 - ww) / 2);
-					int yy = Common.Random.Next(hh);
-					int type = Common.Random.Next(8);
-					if (cityMap[xx, yy] != CityViewMap.Empty) continue;
-					if (type < 6)
-						cityMap[xx, yy] = CityViewMap.House;
-					else
-						cityMap[xx, yy] = CityViewMap.Tree;
+					for (int t = 0; t < 16; t++)
+					{
+						int relX = Common.Random.Next(-1, 2);
+						int relY = Common.Random.Next(-1, 2);
+						if (relX == 0 && relY == 0) continue;
+						//if (relX != 0 && relY != 0) continue;
+						bx += relX;
+						by += relY;
+						while (bx < ((18 - ww) / 2)) bx++;
+						while (bx >= ww + ((18 - ww) / 2)) bx--;
+						while (by < 0) by++;
+						while (by >= hh) by--;
+						// int xx = Common.Random.Next(ww) + ((18 - ww) / 2);
+						// int yy = Common.Random.Next(hh);
+						int type = Common.Random.Next(8);
+						if (cityMap[bx, by] != CityViewMap.Empty) continue;
+						if (type < 6)
+							cityMap[bx, by] = CityViewMap.House;
+						else
+							cityMap[bx, by] = CityViewMap.Tree;
+					}
+					for (int i = 0; i < 1000; i++)
+					{
+						bx = Common.Random.Next(ww) + ((18 - ww) / 2);
+						by = Common.Random.Next(hh);
+						if (cityMap[bx, by] != CityViewMap.Empty) continue;
+						for (int ix = -1; ix < 2; ix++)
+						for (int iy = -1; iy < 2; iy++)
+						{
+							if (Math.Abs(ix) == Math.Abs(iy)) continue;
+							if (bx + ix < ((18 - ww) / 2)) continue;
+							if (bx + ix >= ww + ((18 - ww) / 2)) continue;
+							if (by + iy < 0) continue;
+							if (by + iy >= hh) continue;
+							if (cityMap[bx + ix, by + iy] != CityViewMap.Empty) { i = 1000; break; }
+						}
+					}
 				}
 				
 				for (int yy = 0; yy < 11; yy++)
