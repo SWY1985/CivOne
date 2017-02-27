@@ -10,6 +10,7 @@
 using System;
 using System.IO;
 using CivOne.Enums;
+using CivOne.IO;
 
 namespace CivOne
 {
@@ -23,6 +24,7 @@ namespace CivOne
 		private AspectRatio _aspectRatio = AspectRatio.Auto;
 		private bool _revealWorld = false;
 		private bool _debugMenu = false;
+		private CursorType _cursorType = CursorType.Default;
 		
 		internal string BinDirectory
 		{
@@ -176,6 +178,26 @@ namespace CivOne
 				Common.ReloadSettings = true;
 			}
 		}
+		
+		internal CursorType CursorType
+		{
+			get
+			{
+				if (_cursorType == CursorType.Default && !FileSystem.DataFilesExist(FileSystem.MouseCursorFiles))
+				{
+					// Cursor file not found, revert to built in mouse cursorType
+					_cursorType = CursorType.Builtin;
+				}
+				return _cursorType;
+			}
+			set
+			{
+				_cursorType = value;
+				string saveValue = ((int)_cursorType).ToString();
+				SetSetting("CursorType", saveValue);
+				Common.ReloadSettings = true;
+			}
+		}
 
 		// In game settings
 
@@ -273,6 +295,7 @@ namespace CivOne
 			int aspectRatio = (int)_aspectRatio;
 			bool revealWorld = false;
 			bool debugMenu = false;
+			int cursorType = (int)_cursorType;
 			
 			// Read settings
 			Int32.TryParse(GetSetting("GraphicsMode"), out graphicsMode);
@@ -282,6 +305,7 @@ namespace CivOne
 			Int32.TryParse(GetSetting("AspectRatio"), out aspectRatio);
 			revealWorld = (GetSetting("RevealWorld") == "1");
 			debugMenu = (GetSetting("DebugMenu") == "1");
+			Int32.TryParse(GetSetting("CursorType"), out cursorType);
 			
 			// Set settings
 			if (graphicsMode > 0 && graphicsMode < 3) _graphicsMode = (GraphicsMode)graphicsMode;
@@ -292,6 +316,7 @@ namespace CivOne
 			_aspectRatio = (AspectRatio)aspectRatio;
 			_revealWorld = revealWorld;
 			_debugMenu = debugMenu;
+			_cursorType = (CursorType)cursorType;
 
 			// Set game options
 			EndOfTurn = false;
