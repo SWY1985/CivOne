@@ -10,7 +10,6 @@
 using System;
 using System.IO;
 using CivOne.Enums;
-using CivOne.IO;
 
 namespace CivOne
 {
@@ -183,11 +182,6 @@ namespace CivOne
 		{
 			get
 			{
-				if (_cursorType == CursorType.Default && !FileSystem.DataFilesExist(FileSystem.MouseCursorFiles))
-				{
-					// Cursor file not found, revert to built in mouse cursorType
-					_cursorType = CursorType.Builtin;
-				}
 				return _cursorType;
 			}
 			set

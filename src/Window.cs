@@ -47,6 +47,8 @@ namespace CivOne
 
 		private WindowState _previousState = WindowState.Normal;
 
+		private CursorType _cursorType = CursorType.Native;
+
 		private int ScaleX
 		{
 			get
@@ -131,6 +133,21 @@ namespace CivOne
 			}
 		}
 
+		private void LoadCursorGraphics()
+		{
+			if (_cursorType == Settings.Instance.CursorType) return;
+
+			_cursorType = Settings.Instance.CursorType;
+			
+			if (_cursorType == CursorType.Default && !FileSystem.DataFilesExist(FileSystem.MouseCursorFiles))
+			{
+				_cursorType = CursorType.Builtin;
+			}
+
+			_cursorPointer = Icons.Cursor(CivMouseCursor.Pointer, (_cursorType == CursorType.Builtin));
+			_cursorGoto = Icons.Cursor(CivMouseCursor.Goto, (_cursorType == CursorType.Builtin));
+		}
+
 		private Picture _canvas = new Picture(320, 200);
 		internal Picture Canvas
 		{
@@ -196,7 +213,7 @@ namespace CivOne
 				}
 
 				// Draw the mouse cursor
-				if (_mouseX >= 0 && _mouseX < DrawWidth && _mouseY >= 0 && _mouseY < DrawHeight)
+				if (_cursorType != CursorType.Native && _mouseX >= 0 && _mouseX < DrawWidth && _mouseY >= 0 && _mouseY < DrawHeight)
 				{
 					switch (TopScreen.Cursor)
 					{
@@ -436,11 +453,8 @@ namespace CivOne
 			{
 				WindowState = WindowState.Fullscreen;
 			}
-
-			// Load cursor graphics
-			_cursorPointer = Icons.Cursor(CivMouseCursor.Pointer, (Settings.Instance.CursorType == CursorType.Builtin));
-			_cursorGoto = Icons.Cursor(CivMouseCursor.Goto, (Settings.Instance.CursorType == CursorType.Builtin));
 			
+			LoadCursorGraphics();
 			LoadResources();
 		}
 
@@ -460,6 +474,11 @@ namespace CivOne
 			{
 				Exit();
 				return;
+			}
+
+			if (Common.ReloadSettings)
+			{
+				LoadCursorGraphics();
 			}
 
 			float scaleX = (float)ClientSize.Width / CanvasWidth;
@@ -503,7 +522,7 @@ namespace CivOne
 					TopScreen?.MouseMove(new ScreenEventArgs(_mouseX, _mouseY, buttons));
 				}
 
-				CursorVisible = (_mouseX <= 0 || _mouseX >= (CanvasWidth - 1) || _mouseY <= 0 || _mouseY >= (CanvasHeight - 1));
+				CursorVisible = (_cursorType == CursorType.Native) || (_mouseX <= 0 || _mouseX >= (CanvasWidth - 1) || _mouseY <= 0 || _mouseY >= (CanvasHeight - 1));
 			}
 			else if (!CursorVisible)
 			{
