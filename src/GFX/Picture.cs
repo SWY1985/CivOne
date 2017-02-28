@@ -326,6 +326,7 @@ namespace CivOne.GFX
 				{
 					if (xx + offset.X >= imageWidth) continue;
 					if (layer[xx, yy] == 0) continue;
+					if (xx + offset.X < 0 || yy + offset.Y < 0) continue;
 					_bitmap[xx + offset.X, yy + offset.Y] = layer[xx, yy];
 				}
 			}

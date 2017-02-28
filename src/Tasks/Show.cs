@@ -166,6 +166,11 @@ namespace CivOne.Tasks
 			return new Show(new DestroyUnit(unit));
 		}
 
+		public static Show CaptureCity(City city)
+		{
+			return new Show(CityView.Capture(city));
+		}
+
 		private Show(IScreen screen)
 		{
 			_screen = screen;

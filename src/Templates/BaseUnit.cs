@@ -231,7 +231,28 @@ namespace CivOne.Templates
 			}
 
 			Movement = new MoveUnit(relX, relY);
-			if (AttackOutcome(this, Map[X, Y][relX, relY]))
+			
+			ITile moveTarget = Map[X, Y][relX, relY];
+			if (moveTarget == null) return false;
+			if (!moveTarget.Units.Any(u => u.Owner != Owner) && moveTarget.City != null)
+			{
+				if (!moveTarget.City.HasBuilding<CityWalls>())
+				{
+					// TODO: Shrink city size
+				}
+				Movement.Done += (s, a) =>
+				{
+					Show captureCity = Show.CaptureCity(moveTarget.City);
+					captureCity.Done += (s1, a1) =>
+					{
+						moveTarget.City.Owner = Owner;
+						GameTask.Insert(Show.CityManager(moveTarget.City));
+					};
+					GameTask.Insert(captureCity);
+					MoveEnd(s, a);
+				};
+			}
+			else if (AttackOutcome(this, Map[X, Y][relX, relY]))
 			{
 				Movement.Done += (s, a) =>
 				{
@@ -282,8 +303,8 @@ namespace CivOne.Templates
 			}
 			if (moveTarget.City != null && Map[X, Y][relX, relY].City.Owner != Owner)
 			{
-				// TODO: Attack, take city or perform other unit action (confront)
-				return false;
+				Confront(relX, relY);
+				return true;
 			}
 
 			if (!MoveTargets.Any(t => t.X == moveTarget.X && t.Y == moveTarget.Y))
