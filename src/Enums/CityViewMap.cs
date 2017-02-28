@@ -15,6 +15,7 @@ namespace CivOne.Enums
 		Road = 1,
 		House = 2,
 		Tree = 3,
+		LargeHouse = 4,
 		Barracks,
 		Granary,
 		Temple,

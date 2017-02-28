@@ -32,6 +32,7 @@ namespace CivOne.Screens
 		private readonly Picture _background;
 		private readonly bool _founded;
 		private readonly bool _firstView;
+		private readonly bool _captured;
 		private readonly byte[,] _noiseMap;
 		
 		private int _noiseCounter = NOISE_COUNT;
@@ -39,10 +40,11 @@ namespace CivOne.Screens
 		private int _houseType = 0;
 
 		private readonly Picture _overlay;
+		private readonly Picture[] _invaders;
 
 		private bool _update = true;
 		
-		private int _x = 80;
+		private int _x = 80, _y = 138;
 		private float _fadeStep = 1.0f;
 		private bool _skip = false;
 
@@ -72,6 +74,20 @@ namespace CivOne.Screens
 			{
 				_canvas.Cycle(64, 79);
 				_update = true;
+			}
+
+			if (_captured)
+			{
+				AddLayer(_background);
+				int frame = (_x % 30) / 3;
+				for (int i = 7; i >= 0; i--)
+				{
+					int xx = (_x - 65) - (48 * i);
+					if (xx + 78 <= 0) continue;
+					AddLayer(_invaders[frame], xx, _y);
+				}
+				_x++;
+				return true;
 			}
 
 			if (_noiseMap != null)
@@ -233,8 +249,6 @@ namespace CivOne.Screens
 				if (ww > 18) ww = 18;
 				if (hh > 11) hh = 11;
 
-				//int bx = Common.Random.Next(ww) + ((18 - ww) / 2);
-				//int by = Common.Random.Next(hh);
 				int bx = (ww / 2) + ((18 - ww) / 2);
 				int by = (hh / 2);
 				for (int ii = 0; ii < _city.Size; ii++)
@@ -244,15 +258,12 @@ namespace CivOne.Screens
 						int relX = Common.Random.Next(-1, 2);
 						int relY = Common.Random.Next(-1, 2);
 						if (relX == 0 && relY == 0) continue;
-						//if (relX != 0 && relY != 0) continue;
 						bx += relX;
 						by += relY;
 						while (bx < ((18 - ww) / 2)) bx++;
 						while (bx >= ww + ((18 - ww) / 2)) bx--;
 						while (by < 0) by++;
 						while (by >= hh) by--;
-						// int xx = Common.Random.Next(ww) + ((18 - ww) / 2);
-						// int yy = Common.Random.Next(hh);
 						int type = Common.Random.Next(8);
 						if (cityMap[bx, by] != CityViewMap.Empty) continue;
 						if (type < 6)
@@ -486,8 +497,13 @@ namespace CivOne.Screens
 					DrawBuilding<CityWalls>( _overlay);
 			}
 		}
+
+		public static CityView Capture(City city)
+		{
+			return new CityView(city, captured: true);
+		}
 		
-		public CityView(City city, bool founded = false, bool firstView = false, IProduction production = null)
+		public CityView(City city, bool founded = false, bool firstView = false, IProduction production = null, bool captured = false)
 		{
 			_city = city;
 			_production = production;
@@ -502,6 +518,54 @@ namespace CivOne.Screens
 
 			DrawBuildings();
 			AddLayer(_background);
+			
+			if (_captured = captured)
+			{
+				Picture invaders;
+				int xx = 0, yy = 2, ww = 78, hh = 60;
+				if (Game.CurrentPlayer.HasAdvance<Conscription>())
+				{
+					invaders = Resources.Instance.LoadPIC("INVADERS");
+				}
+				else if (Game.CurrentPlayer.HasAdvance<Gunpowder>())
+				{
+					invaders = Resources.Instance.LoadPIC("INVADER2");
+				}
+				else
+				{
+					invaders = Resources.Instance.LoadPIC("INVADER3");
+					xx = 1;
+					yy = 1;
+					ww = 78;
+					hh = 65;
+					_y = 133;
+				}
+
+				_invaders = new Picture[10];
+				for (int ii = 0; ii < 10; ii++)
+				{
+					int frameX = (ii % 4);
+					int frameY = (ii - frameX) / 4;
+					_invaders[ii] = invaders.GetPart(xx + (frameX * (ww + 1)), yy + (frameY * (hh + 1)), ww, hh);
+				}
+				_x = 0;
+				
+				string[] lines =  new [] { $"{Game.CurrentPlayer.TribeNamePlural} capture", $"{city.Name}. 0 gold", "pieces plundered." };
+				int width = lines.Max(l => Resources.Instance.GetTextSize(5, l).Width) + 10;
+				if (width % 4 > 0) width += (4 - (width % 4));
+				Picture dialog = new Picture(width, 52);
+				dialog.FillLayerTile(Resources.Instance.GetPart("SP299", 288, 120, 32, 16));
+				dialog.AddBorder(15, 8, 0, 0, width, 52);
+				dialog.DrawText(lines[0], 5, 5, 4, 5);
+				dialog.DrawText(lines[0], 5, 15, 4, 4);
+				dialog.DrawText(lines[1], 5, 5, 4, 20);
+				dialog.DrawText(lines[1], 5, 15, 4, 19);
+				dialog.DrawText(lines[2], 5, 5, 4, 35);
+				dialog.DrawText(lines[2], 5, 15, 4, 34);
+
+				_background.FillRectangle(5, 80, 8, width + 2, 54);
+				_background.AddLayer(dialog, 81, 9);
+			}
 
 			if (production != null)
 			{
@@ -533,6 +597,8 @@ namespace CivOne.Screens
 				}
 				return;
 			}
+
+			if (captured) return;
 			
 			_canvas.DrawText(_city.Name, 5, 5, 161, 3, TextAlign.Center);
 			_canvas.DrawText(_city.Name, 5, 15, 160, 2, TextAlign.Center);
