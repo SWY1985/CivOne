@@ -7,7 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using System.Linq;
+using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -80,7 +80,8 @@ namespace CivOne.Screens
 		public Discovery(IAdvance advance)
 		{
 			_advance = advance;
-			_modern = Human.Advances.Any(a => a.Id == (int)Advance.Electricity) && (advance.Id != (int)Advance.Electricity);
+			_modern = Human.HasAdvance<Electricity>() && (advance.Id != (int)Advance.Electricity);
+			string scientistName = Human.HasAdvance<Medicine>() ? "scientists" : "wise men";
 
 			Picture background = Resources.Instance.LoadPIC(_modern ? "DISCOVR2" : "DISCOVR1");
 			
@@ -91,7 +92,7 @@ namespace CivOne.Screens
 
 			string[] text = new string[]
 			{
-				$"{Human.TribeName} wise men",
+				$"{Human.TribeName} {scientistName}",
 				"discover the secret",
 				$"of {advance.Name}!"
 			};
