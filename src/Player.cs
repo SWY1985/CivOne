@@ -182,6 +182,8 @@ namespace CivOne
 
 		public void AddAdvance(IAdvance advance, bool setOrigin = true)
 		{
+			if (Game.Started && Game.CurrentPlayer.CurrentResearch?.Id == advance.Id)
+				GameTask.Enqueue(new TechSelect(Game.CurrentPlayer));
 			_advances.Add(advance.Id);
 			if (!setOrigin) return;
 			Game.Instance.SetAdvanceOrigin(advance, this);
@@ -189,7 +191,7 @@ namespace CivOne
 
 		public void DeleteAdvance(IAdvance advance)
 		{
-			_advances.RemoveAll(x => x.GetType() == advance.GetType());
+			_advances.RemoveAll(x => x == advance.Id);
 		}
 		
 		public string LatestAdvance
