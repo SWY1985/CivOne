@@ -148,6 +148,16 @@ namespace CivOne.Templates
 				if (tech.Id == id) return true;
 			return false;
 		}
+
+		public bool Is<T>() where T : IAdvance
+		{
+			return (this is T);
+		}
+
+		public bool Not<T>() where T : IAdvance
+		{
+			return !(this is T);
+		}
 		
 		protected BaseAdvance(params Advance[] requiredTechs)
 		{
