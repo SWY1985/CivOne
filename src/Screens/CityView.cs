@@ -572,13 +572,9 @@ namespace CivOne.Screens
 
 				string[] lines =  new [] { $"{_city.Name} builds", $"{(production as ICivilopedia).Name}." };
 				int width = lines.Max(l => Resources.Instance.GetTextSize(5, l).Width) + 10;
-				int actualWidth = width;
-				if (width % 4 > 0) width += (4 - (width % 4));
 				Picture dialog = new Picture(width, 37);
 				dialog.FillLayerTile(Resources.Instance.GetPart("SP299", 288, 120, 32, 16));
-				if (width > actualWidth)
-					dialog.FillRectangle(0, actualWidth, 0, width - actualWidth, 37);
-				dialog.AddBorder(15, 8, 0, 0, actualWidth, 37);
+				dialog.AddBorder(15, 8, 0, 0, width, 37);
 				dialog.DrawText(lines[0], 5, 5, 4, 5);
 				dialog.DrawText(lines[0], 5, 15, 4, 4);
 				dialog.DrawText(lines[1], 5, 5, 4, 20);
@@ -586,7 +582,7 @@ namespace CivOne.Screens
 
 				foreach (Picture picture in new[] { _background, _overlay })
 				{
-					picture.FillRectangle(5, 80, 8, actualWidth + 2, 39);
+					picture.FillRectangle(5, 80, 8, width + 2, 39);
 					picture.AddLayer(dialog, 81, 9);
 				}
 				return;
