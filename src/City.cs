@@ -576,9 +576,21 @@ namespace CivOne
 		public void AddWonder(IWonder wonder)
 		{
 			_wonders.Add(wonder);
-			if (Game.Started && wonder is Colossus && !this.Player.WonderObsolete<Colossus>())
+			if (Game.Started)
 			{
-				ResetResourceTiles();
+				if (wonder is Colossus && !Player.WonderObsolete<Colossus>())
+				{
+					ResetResourceTiles();
+				}
+				if ((wonder is Lighthouse && !Player.WonderObsolete<Lighthouse>()) ||
+					(wonder is MagellansExpedition && !Player.WonderObsolete<MagellansExpedition>()))
+				{
+					// Apply Lighthouse/Magellan's Expedition wonder effects in the first turn
+					foreach (IUnit unit in Game.GetUnits().Where(x => x.Owner == Owner && x.Class ==  UnitClass.Water && x.MovesLeft == x.Move))
+					{
+						unit.MovesLeft++;
+					}
+				}
 			}
 		}
 
