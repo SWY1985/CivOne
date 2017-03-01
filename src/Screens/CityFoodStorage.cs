@@ -63,11 +63,6 @@ namespace CivOne.Screens
 			_update = true;
 		}
 
-		public void Close()
-		{
-			Destroy();
-		}
-
 		public CityFoodStorage(City city, Picture background)
 		{
 			_city = city;

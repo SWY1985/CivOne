@@ -33,7 +33,6 @@ namespace CivOne.Screens
 				if (!_units.Any())
 				{
 					// No units, close the dialog
-					HandleClose();
 					Destroy();
 					return true;
 				}
@@ -63,7 +62,6 @@ namespace CivOne.Screens
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
-			HandleClose();
 			Destroy();
 			return true;
 		}
@@ -87,7 +85,6 @@ namespace CivOne.Screens
 				}
 			}
 
-			HandleClose();
 			Destroy();
 			return true;
 		}

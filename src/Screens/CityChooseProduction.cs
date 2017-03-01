@@ -32,8 +32,7 @@ namespace CivOne.Screens
 		
 		private void MenuCancel(object sender, EventArgs args)
 		{
-			CloseMenus();
-			Close();
+			Destroy();
 		}
 
 		private void ProductionChoice(object sender, EventArgs args)
@@ -158,12 +157,6 @@ namespace CivOne.Screens
 				_update = false;
 			}
 			return true;
-		}
-
-		public void Close()
-		{
-			HandleClose();
-			Destroy();
 		}
 
 		public CityChooseProduction(City city)

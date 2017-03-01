@@ -75,11 +75,6 @@ namespace CivOne.Screens
 			return true;
 		}
 
-		public void Close()
-		{
-			Destroy();
-		}
-
 		public CityUnits(City city, Picture background)
 		{
 			_city = city;

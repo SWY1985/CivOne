@@ -26,7 +26,6 @@ namespace CivOne.Screens
 		{
 			_done = true;
 			_input.Close();
-			HandleClose();
 			Destroy();
 		}
 

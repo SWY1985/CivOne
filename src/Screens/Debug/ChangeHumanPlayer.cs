@@ -37,7 +37,6 @@ namespace CivOne.Screens.Debug
 
 			if (Accept != null)
 				Accept(this, null);
-			CloseMenus();
 			Destroy();
 		}
 
@@ -45,7 +44,6 @@ namespace CivOne.Screens.Debug
 		{
 			if (Cancel != null)
 				Cancel(this, null);
-			CloseMenus();
 			Destroy();
 		}
 

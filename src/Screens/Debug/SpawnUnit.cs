@@ -114,7 +114,6 @@ namespace CivOne.Screens.Debug
 		{
 			if (Cancel != null)
 				Cancel(this, null);
-			CloseMenus();
 			Destroy();
 		}
 		

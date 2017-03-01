@@ -41,7 +41,7 @@ namespace CivOne.Screens.Debug
 
 			if (Accept != null)
 				Accept(this, null);
-			((Input)sender).Close();
+			((Input)sender)?.Close();
 			Destroy();
 		}
 
@@ -49,7 +49,7 @@ namespace CivOne.Screens.Debug
 		{
 			if (Cancel != null)
 				Cancel(this, null);
-			((Input)sender).Close();
+			((Input)sender)?.Close();
 			Destroy();
 		}
 

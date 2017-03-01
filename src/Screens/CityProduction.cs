@@ -183,11 +183,6 @@ namespace CivOne.Screens
 			return false;
 		}
 
-		public void Close()
-		{
-			Destroy();
-		}
-
 		public CityProduction(City city, Picture background)
 		{
 			_city = city;

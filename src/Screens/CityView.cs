@@ -107,7 +107,7 @@ namespace CivOne.Screens
 				_fadeStep -= FADE_STEP;
 				if (_fadeStep <= 0.0f)
 				{
-					Close();
+					Destroy();
 					return true;
 				}
 				FadeColours();
@@ -147,12 +147,6 @@ namespace CivOne.Screens
 			else
 				HandleClose();
 			return true;
-		}
-
-		private void Close()
-		{
-			Destroy();
-			HandleClose();
 		}
 		
 		public override bool KeyDown(KeyboardEventArgs args)

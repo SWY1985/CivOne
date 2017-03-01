@@ -297,7 +297,6 @@ namespace CivOne.Screens
 
 		private void Close()
 		{
-			HandleClose();
 			Destroy();
 		}
 		

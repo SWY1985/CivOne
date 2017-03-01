@@ -57,14 +57,12 @@ namespace CivOne.Screens
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
-			HandleClose();
 			Destroy();
 			return true;
 		}
 		
 		public override bool MouseDown(ScreenEventArgs args)
 		{
-			HandleClose();
 			Destroy();
 			return true;
 		}

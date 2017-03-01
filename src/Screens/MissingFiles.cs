@@ -34,8 +34,6 @@ namespace CivOne.Screens
 
 		private void Menu_Continue(object sender, EventArgs args)
 		{
-			HandleClose();
-			CloseMenus();
 			Destroy();
 		}
 
