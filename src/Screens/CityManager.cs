@@ -42,7 +42,6 @@ namespace CivOne.Screens
 		{
 			_cityHeader.Close();
 			Destroy();
-			HandleClose();
 		}
 		
 		private void DrawLayer(IScreen layer, uint gameTick, int x, int y)

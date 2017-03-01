@@ -124,6 +124,7 @@ namespace CivOne.Templates
 		protected void Destroy()
 		{
 			CloseMenus();
+			HandleClose();
 			Common.DestroyScreen(this);
 		}
 	}

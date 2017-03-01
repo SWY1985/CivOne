@@ -12,6 +12,7 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Screens.Debug;
+using CivOne.Tasks;
 using CivOne.Templates;
 
 namespace CivOne.Screens
@@ -22,64 +23,57 @@ namespace CivOne.Screens
 		
 		private void MenuCancel(object sender, EventArgs args)
 		{
-			CloseMenus();
-			Close();
+			Destroy();
 		}
 
 		private void MenuSetGameYear(object sender, EventArgs args)
 		{
 			Common.AddScreen(new SetGameYear());
-			CloseMenus();
-			Close();
+			Destroy();
 		}
 
 		private void MenuSetPlayerGold(object sender, EventArgs args)
 		{
 			Common.AddScreen(new SetPlayerGold());
-			CloseMenus();
-			Close();
+			Destroy();
 		}
 
 		private void MenuSetPlayerScience(object sender, EventArgs args)
 		{
 			Common.AddScreen(new SetPlayerScience());
-			CloseMenus();
-			Close();
+			Destroy();
 		}
 
 		private void MenuSetPlayerAdvances(object sender, EventArgs args)
 		{
-			Common.AddScreen(new SetPlayerAdvances());
-			CloseMenus();
-			Close();
+			GameTask.Enqueue(Show.Screen<SetPlayerAdvances>());
+			// Common.AddScreen(new SetPlayerAdvances());
+			Destroy();
 		}
 
 		private void MenuSetCitySize(object sender, EventArgs args)
 		{
 			Common.AddScreen(new SetCitySize());
-			CloseMenus();
-			Close();
+			Destroy();
 		}
 
 		private void MenuChangeHumanPlayer(object sender, EventArgs args)
 		{
-			Common.AddScreen(new ChangeHumanPlayer());
-			CloseMenus();
-			Close();
+			GameTask.Enqueue(Show.Screen<ChangeHumanPlayer>());
+			// Common.AddScreen(new ChangeHumanPlayer());
+			Destroy();
 		}
 
 		private void MenuSpawnUnit(object sender, EventArgs args)
 		{
 			Common.AddScreen(new SpawnUnit());
-			CloseMenus();
-			Close();
+			Destroy();
 		}
 
 		private void MenuMeetWithKing(object sender, EventArgs args)
 		{
 			Common.AddScreen(new MeetWithKing());
-			CloseMenus();
-			Close();
+			Destroy();
 		}
 
 		public override bool HasUpdate(uint gameTick)
@@ -137,12 +131,6 @@ namespace CivOne.Screens
 				AddMenu(menu);
 			}
 			return true;
-		}
-
-		public void Close()
-		{
-			HandleClose();
-			Destroy();
 		}
 
 		public DebugOptions()

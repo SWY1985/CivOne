@@ -171,6 +171,11 @@ namespace CivOne.Tasks
 			return new Show(CityView.Capture(city));
 		}
 
+		public static Show Screen<T>() where T : IScreen, new()
+		{
+			return new Show(new T());
+		}
+
 		private Show(IScreen screen)
 		{
 			_screen = screen;

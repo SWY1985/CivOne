@@ -96,7 +96,7 @@ namespace CivOne.Screens
 
 			SaveGameFile file = GetSaveGames().ToArray()[item];
 			Game.Save(file.SveFile, file.MapFile);
-			Close();
+			Destroy();
 		}
 		
 		private void DrawDriveQuestion()
@@ -141,7 +141,7 @@ namespace CivOne.Screens
 			if (args.Key == Key.Escape)
 			{
 				Console.WriteLine("Cancel");
-				Close();
+				Destroy();
 				return true;
 			}
 			else if (_menu != null)
@@ -154,7 +154,7 @@ namespace CivOne.Screens
 				{
 					SaveGameFile file = GetSaveGames().ToArray()[_gameId];
 					Game.Save(file.SveFile, file.MapFile);
-					Close();
+					Destroy();
 					return true;
 				}
 
@@ -210,12 +210,6 @@ namespace CivOne.Screens
 			if (_menu != null)
 				return _menu.MouseDrag(args);
 			return false;
-		}
-
-		public void Close()
-		{
-			HandleClose();
-			Destroy();
 		}
 		
 		public SaveGame()

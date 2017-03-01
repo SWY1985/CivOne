@@ -113,7 +113,6 @@ namespace CivOne.Screens
 					Game.DisbandUnit(unit);
 				_gamePlay.HasUpdate(gameTick);
 				Destroy();
-				HandleClose();
 			}
 
 			return true;

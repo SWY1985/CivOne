@@ -28,8 +28,7 @@ namespace CivOne.Screens
 		private void AdvanceChoice(object sender, EventArgs args)
 		{
 			Human.CurrentResearch = _availableAdvances[(sender as Menu.Item).Value];
-			CloseMenus();
-			Close();
+			Destroy();
 		}
 
 		private void AdvanceContext(object sender, EventArgs args)
@@ -68,12 +67,6 @@ namespace CivOne.Screens
 				return true;
 			}
 			return true;
-		}
-
-		public void Close()
-		{
-			HandleClose();
-			Destroy();
 		}
 
 		public ChooseTech()

@@ -123,11 +123,6 @@ namespace CivOne.Screens
 			return true;
 		}
 
-		public void Close()
-		{
-			Destroy();
-		}
-
 		public CityMap(City city, Picture background)
 		{
 			_city = city;

@@ -60,21 +60,15 @@ namespace CivOne.Screens
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
 			if (_fadeStep >= 1.0F)
-				Close();
+				Destroy();
 			return true;
 		}
 		
 		public override bool MouseDown(ScreenEventArgs args)
 		{
 			if (_fadeStep >= 1.0F)
-				Close();
+				Destroy();
 			return true;
-		}
-
-		private void Close()
-		{
-			HandleClose();
-			Destroy();
 		}
 		
 		public Discovery(IAdvance advance)

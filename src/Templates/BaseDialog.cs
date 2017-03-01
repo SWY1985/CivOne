@@ -50,7 +50,6 @@ namespace CivOne.Templates
 
 		protected virtual void Cancel(object sender = null, EventArgs args = null)
 		{
-			HandleClose();
 			Destroy();
 		}
 

@@ -105,8 +105,7 @@ namespace CivOne.Screens.Debug
 			if (Accept != null)
 				Accept(this, null);
 			if (sender is Input)
-				((Input)sender).Close();
-			CloseMenus();
+				((Input)sender)?.Close();
 			Destroy();
 		}
 
@@ -141,8 +140,7 @@ namespace CivOne.Screens.Debug
 			if (Cancel != null)
 				Cancel(this, null);
 			if (sender is Input)
-				((Input)sender).Close();
-			CloseMenus();
+				((Input)sender)?.Close();
 			Destroy();
 		}
 
