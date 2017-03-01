@@ -69,6 +69,7 @@ namespace CivOne.Templates
 		 	}
 			set
 			{
+				if (_sentry == value) return;
 				if (!(_sentry = value) || !Game.Started) return;
 				MovesLeft = 0;
 				PartMoves = 0;
