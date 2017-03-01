@@ -23,6 +23,8 @@ namespace CivOne.Screens.Debug
 
 		private readonly Menu _civSelect;
 
+		private readonly GamePlay _gamePlay;
+
 		private Menu _unitSelect;
 
 		private int _index = 0;
@@ -38,6 +40,25 @@ namespace CivOne.Screens.Debug
 		private bool _hasUpdate = false;
 
 		private int _unitX, _unitY;
+
+		private int UnitX
+		{
+			get
+			{
+				int output = _gamePlay.X + _unitX;
+				while (output < 0) output += Map.WIDTH;
+				while (output >= Map.WIDTH) output -= Map.WIDTH;
+				return output;
+			}
+		}
+
+		private int UnitY
+		{
+			get
+			{
+				return _gamePlay.Y + _unitY;
+			}
+		}
 
 		private void UnitsMenu()
 		{
@@ -106,7 +127,6 @@ namespace CivOne.Screens.Debug
 		private void SpawnUnit_Accept(object sender, EventArgs args)
 		{
 			_selectedUnit = _units[_unitSelect.ActiveItem + _index];
-			Cursor = MouseCursor.Goto;
 			CloseMenus();
 		}
 
@@ -116,19 +136,38 @@ namespace CivOne.Screens.Debug
 				Cancel(this, null);
 			Destroy();
 		}
+
+		private bool ValidTile
+		{
+			get
+			{
+				if (_unitX < 0 || _unitY < 0) return false;
+				ITile tile = Map[UnitX, UnitY];
+				if (tile.Units.Any(x => x.Owner != Game.PlayerNumber(_selectedPlayer))) return false;
+				if (_selectedUnit.Class == UnitClass.Land && tile.Type == Terrain.Ocean)
+				{
+					if (!tile.Units.Any(x => x.Class == UnitClass.Water && x is IBoardable)) return false;
+					
+					int capacity = tile.Units.Where(x => x.Class == UnitClass.Water && x is IBoardable).Sum(x => (x as IBoardable).Cargo);
+					int unitCount = tile.Units.Count(x => x.Class == UnitClass.Land);
+					return (unitCount < capacity);
+				}
+				if (_selectedUnit.Class == UnitClass.Water && tile.Type != Terrain.Ocean)
+				{
+					return (tile.City != null && tile.City.Owner == Game.PlayerNumber(_selectedPlayer));
+				}
+				return true;
+			}
+		}
 		
 		public override bool MouseDown(ScreenEventArgs args)
 		{
 			if (_selectedUnit == null) return false;
 
-			if (_unitX > -1 && _unitY > -1)
+			if (ValidTile)
 			{
-				GamePlay gamePlay = (GamePlay)Common.Screens.First(s => (s is GamePlay));
-				int ux = gamePlay.X + _unitX;
-				int uy = gamePlay.Y + _unitY;
-				while (ux < 0) ux += 80;
-				while (ux >= 80) ux -= 80;
-				Game.CreateUnit(_selectedUnit.Type, ux, uy, Game.PlayerNumber(_selectedPlayer), true);
+				IUnit unit = Game.CreateUnit(_selectedUnit.Type, UnitX, UnitY, Game.PlayerNumber(_selectedPlayer), true);
+				if (unit.Class == UnitClass.Land && Map[UnitX, UnitY].Type == Terrain.Ocean) unit.Sentry = true;
 			}
 			Destroy();
 			return true;
@@ -172,7 +211,8 @@ namespace CivOne.Screens.Debug
 				if (xx > 320 || yy > 200) return false;
 
 				_canvas = new Picture(320, 200, Common.Screens.Last().Canvas.OriginalColours);
-				if (_unitX == -1 || _unitY == -1) return _hasUpdate;
+				Cursor = ValidTile ? MouseCursor.Goto : MouseCursor.Pointer;
+				if (!ValidTile) return _hasUpdate;
 				_canvas.AddLayer(_selectedUnit.GetUnit(Game.PlayerNumber(_selectedPlayer), false), xx, yy);
 				
 				return _hasUpdate;
@@ -185,6 +225,7 @@ namespace CivOne.Screens.Debug
 			Cursor = MouseCursor.Pointer;
 
 			_canvas = new Picture(320, 200, Common.Screens.Last().Canvas.OriginalColours);
+			_gamePlay = (GamePlay)Common.Screens.First(s => (s is GamePlay));
 
 			int fontHeight = Resources.Instance.GetFontHeight(0);
 			int hh = (fontHeight * (Game.Players.Count() + 1)) + 5;
