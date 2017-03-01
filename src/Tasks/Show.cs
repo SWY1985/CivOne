@@ -72,30 +72,6 @@ namespace CivOne.Tasks
 			}
 		}
 
-		public static Show Options
-		{
-			get
-			{
-				return new Show(new GameOptions());
-			}
-		}
-
-		public static Show DebugOptions
-		{
-			get
-			{
-				return new Show(new DebugOptions());
-			}
-		}
-
-		public static Show SaveGame
-		{
-			get
-			{
-				return new Show(new SaveGame());
-			}
-		}
-
 		public static Show AutoSave
 		{
 			get
@@ -129,22 +105,6 @@ namespace CivOne.Tasks
 					gamePlay.CenterOnPoint(city.X, city.Y);
 				};
 				return new Show(search);
-			}
-		}
-
-		public static Show ConfirmQuit
-		{
-			get
-			{
-				return new Show(new ConfirmQuit());
-			}
-		}
-
-		public static Show Revolution
-		{
-			get
-			{
-				return new Show(new Revolution());
 			}
 		}
 

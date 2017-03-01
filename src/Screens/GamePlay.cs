@@ -12,6 +12,7 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
+using CivOne.Screens.Dialogs;
 using CivOne.Screens.Reports;
 using CivOne.Tasks;
 using CivOne.Templates;
@@ -74,7 +75,7 @@ namespace CivOne.Screens
 				quitItem += 2;
 				_gameMenu.Items.Add(new GameMenu.Item("Debug Options"));
 				_gameMenu.Items.Add(new GameMenu.Item(null));
-				_gameMenu.Items[7].Selected += (s, a) => GameTask.Enqueue(Show.DebugOptions);
+				_gameMenu.Items[7].Selected += (s, a) => GameTask.Enqueue(Show.Screen<DebugOptions>());
 			}
 			_gameMenu.Items.Add(new GameMenu.Item("Retire") { Enabled = false });
 			_gameMenu.Items.Add(new GameMenu.Item("QUIT to DOS"));
@@ -82,10 +83,10 @@ namespace CivOne.Screens
 			_gameMenu.Items[0].Selected += (s, a) => GameTask.Enqueue(Show.TaxRate);
 			_gameMenu.Items[1].Selected += (s, a) => GameTask.Enqueue(Show.LuxuryRate);
 			_gameMenu.Items[2].Selected += (s, a) => GameTask.Enqueue(Show.Search);
-			_gameMenu.Items[3].Selected += (s, a) => GameTask.Enqueue(Show.Options);
-			_gameMenu.Items[4].Selected += (s, a) => GameTask.Enqueue(Show.SaveGame);
-			_gameMenu.Items[5].Selected += (s, a) => GameTask.Enqueue(Show.Revolution);
-			_gameMenu.Items[quitItem].Selected += (s, a) => GameTask.Enqueue(Show.ConfirmQuit);
+			_gameMenu.Items[3].Selected += (s, a) => GameTask.Enqueue(Show.Screen<GameOptions>());
+			_gameMenu.Items[4].Selected += (s, a) => GameTask.Enqueue(Show.Screen<SaveGame>());
+			_gameMenu.Items[5].Selected += (s, a) => GameTask.Enqueue(Show.Screen<Revolution>());
+			_gameMenu.Items[quitItem].Selected += (s, a) => GameTask.Enqueue(Show.Screen<ConfirmQuit>());
 			
 			_menuX = 16;
 			_menuY = 8;
