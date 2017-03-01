@@ -28,51 +28,49 @@ namespace CivOne.Screens
 
 		private void MenuSetGameYear(object sender, EventArgs args)
 		{
-			Common.AddScreen(new SetGameYear());
+			GameTask.Enqueue(Show.Screen<SetGameYear>());
 			Destroy();
 		}
 
 		private void MenuSetPlayerGold(object sender, EventArgs args)
 		{
-			Common.AddScreen(new SetPlayerGold());
+			GameTask.Enqueue(Show.Screen<SetPlayerGold>());
 			Destroy();
 		}
 
 		private void MenuSetPlayerScience(object sender, EventArgs args)
 		{
-			Common.AddScreen(new SetPlayerScience());
+			GameTask.Enqueue(Show.Screen<SetPlayerScience>());
 			Destroy();
 		}
 
 		private void MenuSetPlayerAdvances(object sender, EventArgs args)
 		{
 			GameTask.Enqueue(Show.Screen<SetPlayerAdvances>());
-			// Common.AddScreen(new SetPlayerAdvances());
 			Destroy();
 		}
 
 		private void MenuSetCitySize(object sender, EventArgs args)
 		{
-			Common.AddScreen(new SetCitySize());
+			GameTask.Enqueue(Show.Screen<SetCitySize>());
 			Destroy();
 		}
 
 		private void MenuChangeHumanPlayer(object sender, EventArgs args)
 		{
 			GameTask.Enqueue(Show.Screen<ChangeHumanPlayer>());
-			// Common.AddScreen(new ChangeHumanPlayer());
 			Destroy();
 		}
 
 		private void MenuSpawnUnit(object sender, EventArgs args)
 		{
-			Common.AddScreen(new SpawnUnit());
+			GameTask.Enqueue(Show.Screen<SpawnUnit>());
 			Destroy();
 		}
 
 		private void MenuMeetWithKing(object sender, EventArgs args)
 		{
-			Common.AddScreen(new MeetWithKing());
+			GameTask.Enqueue(Show.Screen<MeetWithKing>());
 			Destroy();
 		}
 
