@@ -32,6 +32,7 @@ namespace CivOne.Screens
 		
 		private void MenuCancel(object sender, EventArgs args)
 		{
+			CloseMenus();
 			Destroy();
 		}
 

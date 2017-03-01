@@ -55,7 +55,7 @@ namespace CivOne.Screens.Debug
 
 		public override bool HasUpdate(uint gameTick)
 		{
-			if (!Common.HasScreenType(typeof(Input)))
+			if (!Common.HasScreenType<Input>())
 			{
 				Common.AddScreen(_input);
 			}

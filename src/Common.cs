@@ -93,13 +93,9 @@ namespace CivOne
 			_screens.Remove(screen);
 		}
 		
-		internal static bool HasScreenType(Type type)
+		internal static bool HasScreenType<T>() where T : IScreen
 		{
-			foreach (IScreen screen in _screens)
-			{
-				if (screen.GetType() == type) return true;
-			}
-			return false;
+			return _screens.Any(x => x is T);
 		}
 		
 		internal static string CaptureFilename

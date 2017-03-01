@@ -56,6 +56,8 @@ namespace CivOne.Tasks
 
 		private void CityViewed(object sender, EventArgs args)
 		{
+			if (Common.HasScreenType<CityManager>()) return;
+
 			CityManager cityManager = new CityManager(_city);
 			cityManager.Closed += CityManagerClosed;
 			Common.AddScreen(cityManager);

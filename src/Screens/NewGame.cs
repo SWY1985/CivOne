@@ -80,7 +80,7 @@ namespace CivOne.Screens
 		
 		private void InputLeaderName()
 		{
-			if (Common.HasScreenType(typeof(Input))) return;
+			if (Common.HasScreenType<Input>()) return;
 			
 			ICivilization civ = _tribesAvailable[_tribe];
 			Input input = new Input(_canvas.Palette, civ.Leader.Name, 6, 5, 11, 168, 105, 109, 10, 13);

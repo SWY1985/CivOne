@@ -179,7 +179,7 @@ namespace CivOne.Screens
 						// No active unit on this tile, show top unit
 						drawUnit = units[0];
 					}
-					else if (!Common.HasScreenType(typeof(Input)) && ((gameTick % 4) >= 2 || drawUnit.Moving))
+					else if (!Common.HasScreenType<Input>() && ((gameTick % 4) >= 2 || drawUnit.Moving))
 					{
 						// Active unit on this tile or unit is currently moving. Drawing happens later.
 						continue;

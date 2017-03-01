@@ -91,7 +91,7 @@ namespace CivOne.Screens
 				_pictures[1].ApplyNoise(_noiseMap, --_noiseCounter);
 			}
 			
-			if (_noiseCounter == 0 && HasMenu && !Common.HasScreenType(typeof(Menu)) && (_overlay == null || LoadGameCancel))
+			if (_noiseCounter == 0 && HasMenu && !Common.HasScreenType<Menu>() && (_overlay == null || LoadGameCancel))
 			{
 				CreateMenu();
 			}

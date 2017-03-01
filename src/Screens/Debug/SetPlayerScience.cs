@@ -86,7 +86,7 @@ namespace CivOne.Screens.Debug
 				AddMenu(_civSelect);
 				return false;
 			}
-			else if (_selectedPlayer != null && !Common.HasScreenType(typeof(Input)))
+			else if (_selectedPlayer != null && !Common.HasScreenType<Input>())
 			{
 				Common.AddScreen(_input);
 			}
