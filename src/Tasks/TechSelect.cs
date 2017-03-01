@@ -39,7 +39,7 @@ namespace CivOne.Tasks
 				return;
 			}
 
-			if (_player.Science == 0)
+			if (_player.Science == 0 && _player.Cities.Sum(x => x.Science) == 0)
 			{
 				// This task is only for human players
 				EndTask();
