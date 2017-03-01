@@ -112,19 +112,15 @@ namespace CivOne.Screens
 				}
 				itemWidth += 10;
 
-				int actualWidth = itemWidth + 14;
-				int width = actualWidth;
-				if ((width % 4) > 0) width += (4 - (width % 4));
+				int width = itemWidth + 14;
 				int height = _menuHeight + 10 + Resources.Instance.GetFontHeight(_fontId);
 				Picture menuGfx = new Picture(width, height);
 				menuGfx.FillLayerTile(_background);
-				if (width > actualWidth)
-					menuGfx.FillRectangle(0, actualWidth, 0, width - actualWidth, height);
-				menuGfx.AddBorder(15, 8, 0, 0, actualWidth, height);
+				menuGfx.AddBorder(15, 8, 0, 0, width, height);
 				menuGfx.DrawText(menuHeaderText, _fontId, 15, 4, 4);
-				menuGfx.DrawText($"(Help available)", 1, 10, actualWidth, height - Resources.Instance.GetFontHeight(1), TextAlign.Right);
+				menuGfx.DrawText($"(Help available)", 1, 10, width, height - Resources.Instance.GetFontHeight(1), TextAlign.Right);
 
-				_canvas.FillRectangle(5, 80, 8, actualWidth + 2, height + 2);
+				_canvas.FillRectangle(5, 80, 8, width + 2, height + 2);
 				AddLayer(menuGfx, 81, 9);
 				
 				Picture background = menuGfx.GetPart(2, 3 + Resources.Instance.GetFontHeight(_fontId), itemWidth, Resources.Instance.GetFontHeight(_fontId) * menuItems.Count + 4);

@@ -97,15 +97,9 @@ namespace CivOne.Templates
 			top -= 1;
 			width += 2;
 			height += 2;
-
-			int actualWidth = width;
-			if ((actualWidth % 4) > 0)
-				actualWidth += (4 - (width % 4));
 			
-			DialogBox = new Picture(actualWidth, height);
+			DialogBox = new Picture(width, height);
 			DialogBox.FillLayerTile(background, 1, 1);
-			if (actualWidth > width)
-				DialogBox.FillRectangle(0, width, 0, (actualWidth - width), height);
 			DialogBox.AddBorder(15, 8, 1, 1, width - 2, height - 2);
 			DialogBox.AddBorder(5, 5, 0, 0, width, height);
 		}
