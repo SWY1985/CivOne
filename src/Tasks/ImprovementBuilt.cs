@@ -20,6 +20,8 @@ namespace CivOne.Tasks
 
 		private void ClosedCityView(object sender, EventArgs args)
 		{
+			if (Common.HasScreenType<CityManager>()) return;
+			
 			CityManager cityManager = new CityManager(_city);
 			cityManager.Closed += (s, a) => EndTask();
 			Common.AddScreen(cityManager);
