@@ -416,6 +416,7 @@ namespace CivOne
 				foreach (IUnit unit in Reflect.GetUnits().Where(u => Player.ProductionAvailable(u)))
 				{
 					if (unit.Class == UnitClass.Water && !Map[X, Y].GetBorderTiles().Any(t => t.IsOcean)) continue;
+					if (unit is Nuclear && !Game.WonderBuilt<ManhattanProject>()) continue;
 					yield return unit;
 				}
 				foreach (IBuilding building in Reflect.GetBuildings().Where(b => Player.ProductionAvailable(b) && !_buildings.Any(x => x.Id == b.Id)))
