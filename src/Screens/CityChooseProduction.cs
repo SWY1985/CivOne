@@ -58,7 +58,7 @@ namespace CivOne.Screens
 				ProductionChoice(sender, args);
 				return;
 			}
-			ICivilopedia page = (_city.AvailableProduction.ToArray()[(sender as Menu.Item).Value] as ICivilopedia);
+			ICivilopedia page = (_pages[_page][(sender as Menu.Item).Value] as ICivilopedia);
 			Common.AddScreen(new Civilopedia(page, icon: false));
 		}
 
