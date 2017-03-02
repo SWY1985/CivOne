@@ -118,7 +118,7 @@ namespace CivOne
 		{
 			get
 			{
-				if (!GameTask.Update() && (_gameTick % 4) > 0) return false;
+				if (!GameTask.Update() && (!GameTask.Fast && (_gameTick % 4) > 0)) return false;
 				if (Common.Screens.Any(x => x is IModal))
 					return Common.Screens.Last(x => x is IModal).HasUpdate(_gameTick / 4);
 				return (Common.Screens.Count(x => x.HasUpdate(_gameTick / 4)) > 0);
@@ -446,6 +446,7 @@ namespace CivOne
 
 		protected override void OnLoad(EventArgs args)
 		{
+			GL.Enable(EnableCap.Texture2D);
 			GL.Disable(EnableCap.DepthTest);
 
 			// Set full screen
@@ -530,42 +531,54 @@ namespace CivOne
 			}
 
 			_gameTick += (uint)(GameTask.Fast ? 4 : 1);
-			if (_gameTick % 4 != 0) return;
 			_update = HasUpdate;
 		}
 
 		protected override void OnRenderFrame(FrameEventArgs args)
 		{
-			GL.Clear(ClearBufferMask.ColorBufferBit);
-
-			int[] canvas = GetCanvas().ToArray();
-
-			BlitFramebufferFilter fbFilter;
+			int ww = ClientSize.Width;
+			int hh = ClientSize.Height;
 			int x1, y1, x2, y2;
 			GetBorders(out x1, out y1, out x2, out y2);
+
+			GL.MatrixMode(MatrixMode.Projection);
+			GL.LoadIdentity();
+			GL.Ortho(0, ClientSize.Width, ClientSize.Height, 0, -1, 1);
+			
+			int textureId = 0;
+			int[] canvas = GetCanvas().ToArray();
+
+			GL.BindTexture(TextureTarget.Texture2D, textureId);
+			GL.TexImage2D<int>(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, CanvasWidth, CanvasHeight, 0, PixelFormat.Rgba, PixelType.UnsignedByte, canvas);
+
 			switch (Settings.Instance.AspectRatio)
 			{
 				case AspectRatio.Scaled:
 				case AspectRatio.ScaledFixed:
-					fbFilter = BlitFramebufferFilter.Linear;
+					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
 					break;
 				default:
-					fbFilter = BlitFramebufferFilter.Nearest;
+					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
 					break;
 			}
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
 
-			GL.DrawPixels<int>(CanvasWidth, CanvasHeight, PixelFormat.Rgba, PixelType.UnsignedInt8888Reversed, canvas);
-			GL.BlitFramebuffer(0, 0, CanvasWidth, CanvasHeight, x1, y1, x2, y2, ClearBufferMask.ColorBufferBit, fbFilter);
+			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-			switch (Settings.Instance.AspectRatio)
-			{
-				case AspectRatio.Scaled:
-					break;
-				default:
-					ScreenBorder(x1, y1, x2, y2);
-					break;
-			}
-			
+			GL.BindTexture(TextureTarget.Texture2D, textureId);
+
+			GL.Begin(PrimitiveType.Quads);
+			GL.TexCoord2(0, 1); GL.Vertex2(x1, y1);
+			GL.TexCoord2(1, 1); GL.Vertex2(x2, y1);
+			GL.TexCoord2(1, 0); GL.Vertex2(x2, y2);
+			GL.TexCoord2(0, 0); GL.Vertex2(x1, y2);
+			GL.End();
+
+			GL.Flush();
+
 			SwapBuffers();
 		}
 
