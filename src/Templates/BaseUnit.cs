@@ -246,6 +246,8 @@ namespace CivOne.Templates
 					Show captureCity = Show.CaptureCity(moveTarget.City);
 					captureCity.Done += (s1, a1) =>
 					{
+						if (moveTarget.City.HasBuilding<Palace>())
+							moveTarget.City.RemoveBuilding<Palace>();
 						moveTarget.City.Owner = Owner;
 						GameTask.Insert(Show.CityManager(moveTarget.City));
 					};
