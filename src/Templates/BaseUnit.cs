@@ -237,19 +237,22 @@ namespace CivOne.Templates
 			if (moveTarget == null) return false;
 			if (!moveTarget.Units.Any(u => u.Owner != Owner) && moveTarget.City != null)
 			{
-				if (!moveTarget.City.HasBuilding<CityWalls>())
+				City capturedCity = moveTarget.City;
+				if (!capturedCity.HasBuilding<CityWalls>())
 				{
-					// TODO: Shrink city size
+					capturedCity.Size--;
 				}
 				Movement.Done += (s, a) =>
 				{
-					Show captureCity = Show.CaptureCity(moveTarget.City);
+					Show captureCity = Show.CaptureCity(capturedCity);
 					captureCity.Done += (s1, a1) =>
 					{
-						if (moveTarget.City.HasBuilding<Palace>())
-							moveTarget.City.RemoveBuilding<Palace>();
-						moveTarget.City.Owner = Owner;
-						GameTask.Insert(Show.CityManager(moveTarget.City));
+						if (capturedCity.HasBuilding<Palace>())
+							capturedCity.RemoveBuilding<Palace>();
+						capturedCity.Owner = Owner;
+						if (capturedCity.Size == 0) return;
+						
+						GameTask.Insert(Show.CityManager(capturedCity));
 					};
 					GameTask.Insert(captureCity);
 					MoveEnd(s, a);
