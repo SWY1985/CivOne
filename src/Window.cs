@@ -582,7 +582,7 @@ namespace CivOne
 			SwapBuffers();
 		}
 
-		public Window(string screen) : base(320 * Settings.Instance.ScaleX, 200 * Settings.Instance.ScaleX, OpenTK.Graphics.GraphicsMode.Default, "CivOne", GameWindowFlags.Default, DisplayDevice.Default, 4, 0, GraphicsContextFlags.ForwardCompatible)
+		public Window(string screen) : base(320 * Settings.Instance.ScaleX, 200 * Settings.Instance.ScaleX, OpenTK.Graphics.GraphicsMode.Default, "CivOne", GameWindowFlags.Default, DisplayDevice.Default, 1, 0, GraphicsContextFlags.ForwardCompatible)
 		{
 			CanvasWidth = 320;
 			CanvasHeight = 200;
