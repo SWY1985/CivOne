@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -53,6 +54,12 @@ namespace CivOne.Screens
 		
 		public override bool HasUpdate(uint gameTick)
 		{
+			if (Common.Screens.Count(x => x is CityManager) > 1)
+			{
+				Destroy();
+				return false;
+			}
+
 			if (_cityHeader.HasUpdate(gameTick)) _update = true;
 			if (_cityResources.HasUpdate(gameTick)) _update = true;
 			if (_cityUnits.HasUpdate(gameTick)) _update = true;
