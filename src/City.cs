@@ -574,6 +574,11 @@ namespace CivOne
 			_buildings.RemoveAll(b => b.Id == building.Id);
 		}
 
+		public void RemoveBuilding<T>() where T : IBuilding
+		{
+			_buildings.RemoveAll(b => b is T);
+		}
+
 		public void AddWonder(IWonder wonder)
 		{
 			_wonders.Add(wonder);
@@ -683,7 +688,7 @@ namespace CivOne
 					{
 						foreach (City city in Game.Instance.GetCities().Where(c => c.Owner == Owner))
 						{
-							// Remove palace from all buildings.
+							// Remove palace from all cites.
 							city.RemoveBuilding(CurrentProduction as Palace);
 						}
 						_buildings.Add(CurrentProduction as IBuilding);
