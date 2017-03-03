@@ -5,7 +5,6 @@
 		"emitEntryPoint": true
 	},
 	"dependencies": {
-		"OpenTK.NETCore": "1.1.2571.6431"
 	},
 	"frameworks": {
 		"netcoreapp1.1": {
