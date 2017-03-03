@@ -305,6 +305,37 @@ namespace CivOne.GFX
 			FillRectangle(colourDark, x + depth, y + depth, w - (depth * 2), 1);
 			FillRectangle(colourDark, w - depth, y + depth, 1, h - (depth * 2) + 1);
 		}
+
+		public void AddLine(byte colour, int x1, int y1, int x2, int y2)
+		{
+			if (x1 > x2)
+			{
+				AddLine(colour, x2, y2, x1, y1);
+				return;
+			}
+
+			int difX = (x2 - x1), difY = (y2 - y1);
+			float xx = x1, yy = y1, incX, incY;
+			int steps;
+			if (Math.Abs(difX) < Math.Abs(difY))
+			{
+				incX = ((float)difX / difY);
+				incY = 1;
+				steps = difY;
+			}
+			else
+			{
+				incX = 1;
+				incY = ((float)difY / difX);
+				steps = difX;
+			}
+			for (int i = 0; i < steps; i++)
+			{
+				_bitmap[(int)Math.Round(xx), (int)Math.Round(yy)] = colour;
+				xx += incX;
+				yy += incY;
+			}
+		}
 		
 		public void AddLayer(Picture layer, int x = 0, int y = 0)
 		{

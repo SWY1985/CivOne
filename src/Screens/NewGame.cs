@@ -246,9 +246,17 @@ namespace CivOne.Screens
 			else
 			{
 				Destroy();
-				Common.AddScreen(new GamePlay());
+
+				GamePlay gamePlay = new GamePlay();
+				Common.AddScreen(gamePlay);
+				IUnit startUnit = Game.GetUnits().First(x => x.Owner == Game.PlayerNumber(Game.Human));
+				gamePlay.CenterOnPoint(startUnit.X, startUnit.Y);
+				
 				if (Game.Difficulty == 0)
+				{
+					GameTask.Enqueue(Show.InterfaceHelp);
 					GameTask.Enqueue(Message.Help("--- Civilization Note ---", TextFile.Instance.GetGameText("HELP/FIRSTMOVE")));
+				}
 				return true;
 			}
 			
