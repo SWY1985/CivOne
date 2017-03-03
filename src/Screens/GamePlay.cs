@@ -226,6 +226,8 @@ namespace CivOne.Screens
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
+			if (GameTask.Any()) return true;
+
 			if (CheckShift56(args))
 				return true;
 			
