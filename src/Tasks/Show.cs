@@ -38,12 +38,20 @@ namespace CivOne.Tasks
 			}
 		}
 
+		public static Show InterfaceHelp
+		{
+			get
+			{
+				return new Show(Overlay.InterfaceHelp);
+			}
+		}
+
 		public static Show Terrain
 		{
 			get
 			{
 				GamePlay gamePlay = (GamePlay)Common.Screens.First(s => (s is GamePlay));
-				return new Show(Overlay.Terrain(gamePlay.X, gamePlay.Y));
+				return new Show(Overlay.TerrainView(gamePlay.X, gamePlay.Y));
 			}
 		}
 

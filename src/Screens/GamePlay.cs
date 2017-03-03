@@ -390,7 +390,12 @@ namespace CivOne.Screens
 			_menuBar.WorldSelected += MenuBarWorld;
 			_menuBar.CivilopediaSelected += MenuBarCivilopedia;
 
-			GameTask.Enqueue(Turn.End());
+			while (Game.CurrentPlayer != Game.HumanPlayer)
+			{
+				// TODO: Handle game turns before human player, instead of skipping them
+				GameTask.Enqueue(Turn.End());
+				GameTask.Update();
+			}
 		}
 	}
 }

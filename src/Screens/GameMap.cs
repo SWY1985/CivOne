@@ -276,7 +276,7 @@ namespace CivOne.Screens
 		
 		internal void CenterOnPoint(int x, int y)
 		{
-			_x = x - 8;
+			_x = x - 7;
 			_y = y - 6;
 			while (_y < 0) _y++;
 			while (_y + 11 >= Map.HEIGHT) _y--;
@@ -286,11 +286,7 @@ namespace CivOne.Screens
 		private void CenterOnUnit()
 		{
 			if (Game.ActiveUnit == null) return;
-			_x = Game.ActiveUnit.X - 8;
-			_y = Game.ActiveUnit.Y - 6;
-			while (_y < 0) _y++;
-			while (_y + 11 >= Map.HEIGHT) _y--;
-			_centerChanged = true;
+			CenterOnPoint(Game.ActiveUnit.X, Game.ActiveUnit.Y);
 		}
 
 		private bool ShouldCenter(int relX = 0, int relY = 0)
