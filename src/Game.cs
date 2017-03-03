@@ -218,7 +218,7 @@ namespace CivOne
 				Name = name,
 				Size = 1
 			};
-			if (!_cities.Any(c => c.Owner == city.Owner))
+			if (!_cities.Any(c => c.Size > 0 && c.Owner == city.Owner))
 			{
 				Palace palace = new Palace();
 				palace.SetFree();
@@ -236,7 +236,9 @@ namespace CivOne
 		{
 			foreach (IUnit unit in _units.Where(u => u.Home == city).ToArray())
 				_units.Remove(unit);
-			_cities.Remove(city);
+			// _cities.Remove(city);
+			city.X = 255;
+			city.Y = 255;
 		}
 		
 		internal City GetCity(int x, int y)

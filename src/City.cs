@@ -51,9 +51,9 @@ namespace CivOne
 				_size = value;
 				if (_size == 0)
 				{
-					Game.DestroyCity(this);
 					Map[X, Y].Road = false;
 					Map[X, Y].Irrigation = false;
+					Game.DestroyCity(this);
 					return;
 				}
 				SetResourceTiles();
