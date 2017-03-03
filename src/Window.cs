@@ -230,39 +230,6 @@ namespace CivOne
 			}
 		}
 
-		private void ScreenBorder(int x1, int y1, int x2, int y2)
-		{
-			int ww = ClientSize.Width;
-			int hh = ClientSize.Height;
-
-			GL.MatrixMode(MatrixMode.Projection);
-			GL.LoadIdentity();
-			GL.Ortho(0, ClientSize.Width, ClientSize.Height, 0, -1, 1);
-			GL.Begin(PrimitiveType.Quads);
-
-			GL.Color3(0, 0, 0); GL.Vertex2(0, 0);
-			GL.Color3(0, 0, 0); GL.Vertex2(x1, 0);
-			GL.Color3(0, 0, 0); GL.Vertex2(x1, hh);
-			GL.Color3(0, 0, 0); GL.Vertex2(0, hh);
-
-			GL.Color3(0, 0, 0); GL.Vertex2(x2, 0);
-			GL.Color3(0, 0, 0); GL.Vertex2(ww, 0);
-			GL.Color3(0, 0, 0); GL.Vertex2(ww, ClientSize.Height);
-			GL.Color3(0, 0, 0); GL.Vertex2(x2, ClientSize.Height);
-
-			GL.Color3(0, 0, 0); GL.Vertex2(x1, 0);
-			GL.Color3(0, 0, 0); GL.Vertex2(x2, 0);
-			GL.Color3(0, 0, 0); GL.Vertex2(x2, y1);
-			GL.Color3(0, 0, 0); GL.Vertex2(x1, y1);
-
-			GL.Color3(0, 0, 0); GL.Vertex2(x1, y2);
-			GL.Color3(0, 0, 0); GL.Vertex2(x2, y2);
-			GL.Color3(0, 0, 0); GL.Vertex2(x2, hh);
-			GL.Color3(0, 0, 0); GL.Vertex2(x1, hh);
-
-			GL.End();
-		}
-
 		private IEnumerable<int> GetCanvas()
 		{
 			Picture canvas = Canvas;
