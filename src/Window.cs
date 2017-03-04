@@ -9,13 +9,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
-using OpenTK.Input;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -23,27 +21,14 @@ using CivOne.Interfaces;
 using CivOne.IO;
 using CivOne.Screens;
 
-using TkKey = OpenTK.Input.Key;
-using TkMouseButton = OpenTK.Input.MouseButton;
-using CivKey = CivOne.Enums.Key;
-using CivMouseButton = CivOne.Enums.MouseButton;
-using CivMouseCursor = CivOne.Enums.MouseCursor;
-
 namespace CivOne
 {
-	internal class Window : GameWindow
+	internal partial class Window : GameWindow
 	{
 		private uint _gameTick = 0;
 
 		private bool _update = false;
 
-		private Picture _cursorPointer, _cursorGoto;
-
-		private int _mouseX, _mouseY;
-
-		private KeyModifier _keyModifier = KeyModifier.None;
-
-		private CivMouseButton _mouseButtons = CivMouseButton.None;
 
 		private WindowState _previousState = WindowState.Normal;
 
@@ -133,21 +118,6 @@ namespace CivOne
 			}
 		}
 
-		private void LoadCursorGraphics()
-		{
-			if (_cursorType == Settings.Instance.CursorType) return;
-
-			_cursorType = Settings.Instance.CursorType;
-			
-			if (_cursorType == CursorType.Default && !FileSystem.DataFilesExist(FileSystem.MouseCursorFiles))
-			{
-				_cursorType = CursorType.Builtin;
-			}
-
-			_cursorPointer = Icons.Cursor(CivMouseCursor.Pointer, (_cursorType == CursorType.Builtin));
-			_cursorGoto = Icons.Cursor(CivMouseCursor.Goto, (_cursorType == CursorType.Builtin));
-		}
-
 		private Picture _canvas = new Picture(320, 200);
 		internal Picture Canvas
 		{
@@ -212,19 +182,7 @@ namespace CivOne
 					}
 				}
 
-				// Draw the mouse cursor
-				if (_cursorType != CursorType.Native && _mouseX >= 0 && _mouseX < DrawWidth && _mouseY >= 0 && _mouseY < DrawHeight)
-				{
-					switch (TopScreen.Cursor)
-					{
-						case CivMouseCursor.Pointer:
-							_canvas.AddLayer(_cursorPointer, _mouseX, _mouseY);
-							break;
-						case CivMouseCursor.Goto:
-							_canvas.AddLayer(_cursorGoto, _mouseX, _mouseY);
-							break;
-					}
-				}
+				DrawMouseCursor(_canvas);
 
 				return _canvas;
 			}
@@ -276,135 +234,6 @@ namespace CivOne
 			}
 		}
 
-		private KeyboardEventArgs ConvertKeyboardEvents(KeyboardKeyEventArgs args)
-		{
-			switch (args.Key)
-			{
-				case TkKey.F1: return new KeyboardEventArgs(CivKey.F1, _keyModifier);
-				case TkKey.F2: return new KeyboardEventArgs(CivKey.F2, _keyModifier);
-				case TkKey.F3: return new KeyboardEventArgs(CivKey.F3, _keyModifier);
-				case TkKey.F4: return new KeyboardEventArgs(CivKey.F4, _keyModifier);
-				case TkKey.F5: return new KeyboardEventArgs(CivKey.F5, _keyModifier);
-				case TkKey.F6: return new KeyboardEventArgs(CivKey.F6, _keyModifier);
-				case TkKey.F7: return new KeyboardEventArgs(CivKey.F7, _keyModifier);
-				case TkKey.F8: return new KeyboardEventArgs(CivKey.F8, _keyModifier);
-				case TkKey.F9: return new KeyboardEventArgs(CivKey.F9, _keyModifier);
-				case TkKey.F10: return new KeyboardEventArgs(CivKey.F10, _keyModifier);
-				case TkKey.F11: return new KeyboardEventArgs(CivKey.F11, _keyModifier);
-				case TkKey.F12: return new KeyboardEventArgs(CivKey.F12, _keyModifier);
-				case TkKey.Keypad0: return new KeyboardEventArgs(CivKey.NumPad0, _keyModifier);
-				case TkKey.Keypad1: return new KeyboardEventArgs(CivKey.NumPad1, _keyModifier);
-				case TkKey.Keypad2: return new KeyboardEventArgs(CivKey.NumPad2, _keyModifier);
-				case TkKey.Keypad3: return new KeyboardEventArgs(CivKey.NumPad3, _keyModifier);
-				case TkKey.Keypad4: return new KeyboardEventArgs(CivKey.NumPad4, _keyModifier);
-				case TkKey.Keypad5: return new KeyboardEventArgs(CivKey.NumPad5, _keyModifier);
-				case TkKey.Keypad6: return new KeyboardEventArgs(CivKey.NumPad6, _keyModifier);
-				case TkKey.Keypad7: return new KeyboardEventArgs(CivKey.NumPad7, _keyModifier);
-				case TkKey.Keypad8: return new KeyboardEventArgs(CivKey.NumPad8, _keyModifier);
-				case TkKey.Keypad9: return new KeyboardEventArgs(CivKey.NumPad9, _keyModifier);
-				case TkKey.Up: return new KeyboardEventArgs(CivKey.Up, _keyModifier);
-				case TkKey.Left: return new KeyboardEventArgs(CivKey.Left, _keyModifier);
-				case TkKey.Right: return new KeyboardEventArgs(CivKey.Right, _keyModifier);
-				case TkKey.Down: return new KeyboardEventArgs(CivKey.Down, _keyModifier);
-				case TkKey.KeypadEnter:
-				case TkKey.Enter: return new KeyboardEventArgs(CivKey.Enter, _keyModifier);
-				case TkKey.Space: return new KeyboardEventArgs(CivKey.Space, _keyModifier);
-				case TkKey.Escape: return new KeyboardEventArgs(CivKey.Escape, _keyModifier);
-				case TkKey.Delete: return new KeyboardEventArgs(CivKey.Delete, _keyModifier);
-				case TkKey.Back: return new KeyboardEventArgs(CivKey.Backspace, _keyModifier);
-				case TkKey.Period: return new KeyboardEventArgs('.', _keyModifier);
-				case TkKey.Comma: return new KeyboardEventArgs(',', _keyModifier);
-				case TkKey.KeypadPlus:
-				case TkKey.Plus: return new KeyboardEventArgs(CivKey.Plus, _keyModifier);
-				case TkKey.KeypadMinus:
-				case TkKey.Minus: return new KeyboardEventArgs(CivKey.Minus, _keyModifier);
-				case TkKey.Number0: return new KeyboardEventArgs('0', _keyModifier);
-				case TkKey.Number1: return new KeyboardEventArgs('1', _keyModifier);
-				case TkKey.Number2: return new KeyboardEventArgs('2', _keyModifier);
-				case TkKey.Number3: return new KeyboardEventArgs('3', _keyModifier);
-				case TkKey.Number4: return new KeyboardEventArgs('4', _keyModifier);
-				case TkKey.Number5: return new KeyboardEventArgs('5', _keyModifier);
-				case TkKey.Number6: return new KeyboardEventArgs('6', _keyModifier);
-				case TkKey.Number7: return new KeyboardEventArgs('7', _keyModifier);
-				case TkKey.Number8: return new KeyboardEventArgs('8', _keyModifier);
-				case TkKey.Number9: return new KeyboardEventArgs('9', _keyModifier);
-				case TkKey.KeypadDivide:
-				case TkKey.Slash: return new KeyboardEventArgs(CivKey.Slash, _keyModifier);
-			}
-
-			return null;
-		}
-
-		private void OnKeyDown(object sender, KeyboardKeyEventArgs args)
-		{
-			_keyModifier = KeyModifier.None;
-			if (args.Control) _keyModifier |= KeyModifier.Control;
-			if (args.Shift) _keyModifier |= KeyModifier.Shift;
-			if (args.Alt) _keyModifier |= KeyModifier.Alt;
-
-			if (_keyModifier == KeyModifier.Alt && args.Key == TkKey.Enter)
-			{
-				if (WindowState == WindowState.Fullscreen)
-				{
-					Console.WriteLine("Windowed mode");
-					WindowState = _previousState;
-					return;
-				}
-				Console.WriteLine("Fullscreen mode");
-				_previousState = WindowState;
-				WindowState = WindowState.Fullscreen;
-				return;
-			}
-
-			if (_keyModifier == KeyModifier.Control && args.Key == TkKey.F5)
-			{
-				string filename = Common.CaptureFilename;
-				using (CivOne.GFX.ImageFormats.GifFile file = new CivOne.GFX.ImageFormats.GifFile(_canvas))
-				using (FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write))
-				{
-					byte[] output = file.GetBytes();
-					fs.Write(output, 0, output.Length);
-					Console.WriteLine($"Screenshot saved: {filename}");
-				}
-				return;
-			}
-
-			if (TopScreen == null) return;
-			KeyboardEventArgs keyArgs = ConvertKeyboardEvents(args);
-
-			if (keyArgs == null) return;
-			TopScreen.KeyDown(keyArgs);
-		}
-
-		private void OnKeyUp(object sender, KeyboardKeyEventArgs args)
-		{
-			_keyModifier = KeyModifier.None;
-			if (args.Control) _keyModifier |= KeyModifier.Control;
-			if (args.Shift) _keyModifier |= KeyModifier.Shift;
-			if (args.Alt) _keyModifier |= KeyModifier.Alt;
-		}
-
-		private void OnMouseDown(object sender, MouseEventArgs args)
-		{
-			if (TopScreen == null) return;
-
-			CivMouseButton buttons = CivMouseButton.None;
-			if (args.Mouse.IsButtonDown(TkMouseButton.Left)) buttons |= CivMouseButton.Left;
-			if (args.Mouse.IsButtonDown(TkMouseButton.Right)) buttons = CivMouseButton.Right;
-			_mouseButtons = buttons;
-			TopScreen.MouseDown(new ScreenEventArgs(_mouseX, _mouseY, buttons));
-		}
-
-		private void OnMouseUp(object sender, MouseEventArgs args)
-		{
-			if (TopScreen == null) return;
-
-			CivMouseButton buttons = CivMouseButton.None;
-			if (args.Mouse.IsButtonUp(TkMouseButton.Left) && (_mouseButtons & CivMouseButton.Left) > 0) buttons |= CivMouseButton.Left;
-			if (args.Mouse.IsButtonUp(TkMouseButton.Right) && (_mouseButtons & CivMouseButton.Right) > 0) buttons |= CivMouseButton.Right;
-			TopScreen.MouseUp(new ScreenEventArgs(_mouseX, _mouseY, buttons));
-		}
-
 		protected override void OnResize(EventArgs args)
 		{
 			if (WindowState == WindowState.Minimized) return;
@@ -451,8 +280,6 @@ namespace CivOne
 
 			float scaleX = (float)ClientSize.Width / CanvasWidth;
 			float scaleY = (float)ClientSize.Height / CanvasHeight;
-			int x1, y1, x2, y2;
-			GetBorders(out x1, out y1, out x2, out y2);
 
 			if (WindowState != WindowState.Minimized && this.Focused)
 			{
@@ -471,26 +298,7 @@ namespace CivOne
 						break;
 				}
 
-				bool mouseMove =
-					(_mouseX != (_mouseX = (int)((Mouse.X - x1) / scaleX))) |
-					(_mouseY != (_mouseY = (int)((Mouse.Y - y1) / scaleY)));
-				
-				if (mouseMove)
-				{
-					CivMouseButton buttons = CivMouseButton.None;
-					MouseState mouse = Mouse.GetState();
-					
-					if (mouse.IsButtonDown(TkMouseButton.Left)) buttons |= CivMouseButton.Left;
-					if (mouse.IsButtonDown(TkMouseButton.Right)) buttons |= CivMouseButton.Right;
-					if (buttons != CivMouseButton.None)
-					{
-						TopScreen?.MouseDrag(new ScreenEventArgs(_mouseX, _mouseY, buttons));
-					}
-
-					TopScreen?.MouseMove(new ScreenEventArgs(_mouseX, _mouseY, buttons));
-				}
-
-				CursorVisible = (_cursorType == CursorType.Native) || (_mouseX <= 0 || _mouseX >= (CanvasWidth - 1) || _mouseY <= 0 || _mouseY >= (CanvasHeight - 1));
+				OnMouseMove(scaleX, scaleY);
 			}
 			else if (!CursorVisible)
 			{
