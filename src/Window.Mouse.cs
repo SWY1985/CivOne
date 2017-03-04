@@ -24,6 +24,8 @@ namespace CivOne
 
 		private Picture _cursorPointer, _cursorGoto;
 
+		private CursorType _cursorType = CursorType.Native;
+
 		private int _mouseX, _mouseY;
 
 		private void LoadCursorGraphics()
