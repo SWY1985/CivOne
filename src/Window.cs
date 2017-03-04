@@ -15,7 +15,6 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using CivOne.Enums;
-using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.IO;
@@ -29,10 +28,7 @@ namespace CivOne
 
 		private bool _update = false;
 
-
 		private WindowState _previousState = WindowState.Normal;
-
-		private CursorType _cursorType = CursorType.Native;
 
 		private int ScaleX
 		{
@@ -253,16 +249,6 @@ namespace CivOne
 			
 			LoadCursorGraphics();
 			LoadResources();
-		}
-
-		protected override void OnKeyPress(KeyPressEventArgs args)
-		{
-			if (TopScreen == null) return;
-			char keyChar = (char)args.KeyChar;
-			if (char.IsLetter(keyChar))
-			{
-				TopScreen.KeyDown(new KeyboardEventArgs(char.ToUpper((char)args.KeyChar), _keyModifier));
-			}
 		}
 
 		protected override void OnUpdateFrame(FrameEventArgs args)

@@ -14,6 +14,7 @@ using CivOne.Events;
 
 using TkKey = OpenTK.Input.Key;
 using TkKeyArgs = OpenTK.Input.KeyboardKeyEventArgs;
+using TkKeyPressArgs = OpenTK.KeyPressEventArgs;
 using TkWinState = OpenTK.WindowState;
 
 namespace CivOne
@@ -128,6 +129,16 @@ namespace CivOne
 			if (args.Control) _keyModifier |= KeyModifier.Control;
 			if (args.Shift) _keyModifier |= KeyModifier.Shift;
 			if (args.Alt) _keyModifier |= KeyModifier.Alt;
+		}
+
+		protected override void OnKeyPress(TkKeyPressArgs args)
+		{
+			if (TopScreen == null) return;
+			char keyChar = (char)args.KeyChar;
+			if (char.IsLetter(keyChar))
+			{
+				TopScreen.KeyDown(new KeyboardEventArgs(char.ToUpper((char)args.KeyChar), _keyModifier));
+			}
 		}
 	}
 }
