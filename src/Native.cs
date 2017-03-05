@@ -15,7 +15,9 @@ namespace CivOne
 {
 	internal partial class Native
 	{
-		private static Platform Platform
+		private static IntPtr _handle = IntPtr.Zero;
+
+		internal static Platform Platform
 		{
 			get
 			{
@@ -26,7 +28,7 @@ namespace CivOne
 			}
 		}
 
-		public static string FolderBrowser(string caption = "")
+		internal static string FolderBrowser(string caption = "")
 		{
 			switch (Platform)
 			{
@@ -49,8 +51,45 @@ namespace CivOne
 						return null;
 					}
 					return Marshal.PtrToStringUni(bufferAddress);
+				case Platform.Linux:
+					IntPtr title = StringToIntPtr(caption);
+					IntPtr test = gtk_file_chooser_dialog_new(title, IntPtr.Zero, 2, IntPtr.Zero);
+					g_free(title);
+
+					AddButton(test, "Cancel", -6);
+					AddButton(test, "OK", -5);
+
+					string output = null;
+					if (gtk_dialog_run(test) == -5)
+					{
+						IntPtr response = gtk_file_chooser_get_filename(test);
+						string test2 = GetFileName(response);
+						g_free(response);
+						output = test2;
+					}
+					gtk_widget_destroy(test);
+					while (gtk_events_pending())
+						gtk_main_iteration();
+					return output;
 				default:
 					return null;
+			}
+		}
+
+		internal static void Init(IntPtr handle)
+		{
+			_handle = handle;
+
+			switch (Platform)
+			{
+				case Platform.Windows:
+					break;
+				case Platform.Linux:
+					// Init GTK
+					IntPtr argv = new IntPtr(0);
+					int argc = 0;
+					gtk_init(ref argc, ref argv);
+					break;
 			}
 		}
 	}
