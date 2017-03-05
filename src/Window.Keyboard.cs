@@ -53,6 +53,7 @@ namespace CivOne
 				case TkKey.Left: return new KeyboardEventArgs(Key.Left, _keyModifier);
 				case TkKey.Right: return new KeyboardEventArgs(Key.Right, _keyModifier);
 				case TkKey.Down: return new KeyboardEventArgs(Key.Down, _keyModifier);
+				case TkKey.Unknown: // Somehow, the keypad enter key registers as Unknown on some systems
 				case TkKey.KeypadEnter:
 				case TkKey.Enter: return new KeyboardEventArgs(Key.Enter, _keyModifier);
 				case TkKey.Space: return new KeyboardEventArgs(Key.Space, _keyModifier);
