@@ -105,7 +105,10 @@ namespace CivOne
 				TopScreen?.MouseMove(new ScreenEventArgs(_mouseX, _mouseY, buttons));
 			}
 
-			CursorVisible = (_cursorType == CursorType.Native) || (_mouseX <= 0 || _mouseX >= (CanvasWidth - 1) || _mouseY <= 0 || _mouseY >= (CanvasHeight - 1));
+			if (Native.Platform == Platform.Windows)
+			{
+				CursorVisible = (_cursorType == CursorType.Native) || (_mouseX <= 0 || _mouseX >= (CanvasWidth - 1) || _mouseY <= 0 || _mouseY >= (CanvasHeight - 1));
+			}
 		}
 	}
 }

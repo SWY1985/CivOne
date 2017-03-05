@@ -377,6 +377,9 @@ namespace CivOne
 			KeyUp += OnKeyUp;
 			MouseDown += OnMouseDown;
 			MouseUp += OnMouseUp;
+
+			// Run OS native functions for initialization
+			Native.Init(WindowInfo.Handle);
 		}
 	}
 }
