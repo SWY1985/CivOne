@@ -116,7 +116,7 @@ namespace CivOne.Screens
 			_gameInfo.FillLayerTile(_background);
 			_gameInfo.AddBorder(15, 8, 0, 0, 80, _gameInfo.Height);
 			
-			if (Game.CurrentPlayer != Human || GameTask.Any())
+			if (Game.CurrentPlayer != Human || (GameTask.Any() && !GameTask.Is<Show>() && !GameTask.Is<Message>()))
 			{
 				_gameInfo.FillRectangle((byte)((gameTick % 4 < 2) ? 15 : 8), 2, _gameInfo.Height - 8, 6, 6);
 				return;
