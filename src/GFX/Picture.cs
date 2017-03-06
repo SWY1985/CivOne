@@ -308,28 +308,24 @@ namespace CivOne.GFX
 
 		public void AddLine(byte colour, int x1, int y1, int x2, int y2)
 		{
-			if (x1 > x2)
-			{
-				AddLine(colour, x2, y2, x1, y1);
-				return;
-			}
-
 			int difX = (x2 - x1), difY = (y2 - y1);
 			float xx = x1, yy = y1, incX, incY;
 			int steps;
 			if (Math.Abs(difX) < Math.Abs(difY))
 			{
 				incX = ((float)difX / difY);
-				incY = 1;
+				incY = difY < 0 ? -1 : 1;
+				if (difY < 0) incX = -incX;
 				steps = difY;
 			}
 			else
 			{
-				incX = 1;
+				incX = difX < 0 ? -1 : 1;
 				incY = ((float)difY / difX);
+				if (difX < 0) incY = -incY;
 				steps = difX;
 			}
-			for (int i = 0; i < steps; i++)
+			for (int i = 0; i < Math.Abs(steps); i++)
 			{
 				_bitmap[(int)Math.Round(xx), (int)Math.Round(yy)] = colour;
 				xx += incX;

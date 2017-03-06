@@ -45,7 +45,8 @@ namespace CivOne.Screens
 			get
 			{
 				IUnit startUnit = Game.GetUnits().First(x => x.Owner == Game.PlayerNumber(Game.Human));
-				// GamePlay gamePlay = (GamePlay)Common.Screens.First(x => x is GamePlay);
+				IUnit activeUnit = Game.ActiveUnit;
+				((GamePlay)Common.Screens.First(x => x is GamePlay)).HasUpdate(0);
 				int offset = 0;
 				if (Settings.RightSideBar)
 				{
@@ -61,7 +62,6 @@ namespace CivOne.Screens
 					yield return new HelpLabel("Active Unit", 88, 170, 40, 128);
 				}
 				
-				// 65, 49
 				for (int yy = -1; yy <= 1; yy++)
 				for (int xx = -1; xx <= 1; xx++)
 				{
@@ -87,7 +87,6 @@ namespace CivOne.Screens
 					if (tile.Hut) text = "Village";
 					yield return new HelpLabel(text, 170 + (65 * xx) + offset, 100 + (49 * yy), 200 + (xx * 16) + offset, 112 + (yy * 16));
 				}
-				// startUnit.Tile[-1, -1]
 			}
 		}
 		
@@ -102,10 +101,10 @@ namespace CivOne.Screens
 					{
 						Size textSize = Resources.Instance.GetTextSize(0, helpLabel.Text);
 
-						Picture label = new Picture(textSize.Width + 12, textSize.Height + 10);
+						Picture label = new Picture(textSize.Width + 11, textSize.Height + 9);
 						label.FillLayerTile(background);
-						label.AddBorder(5, 5, 0, 0, label.Width, label.Height);
 						label.AddBorder(15, 8, 1, 1, label.Width - 2, label.Height - 2);
+						label.AddBorder(5, 5, 0, 0, label.Width, label.Height);
 						label.DrawText(helpLabel.Text, 0, 15, 5, 5);
 
 						_canvas.AddLine(15, helpLabel.PointX, helpLabel.PointY, helpLabel.X + 5, helpLabel.Y + 6);
