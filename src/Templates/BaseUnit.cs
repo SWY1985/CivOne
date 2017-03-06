@@ -237,6 +237,13 @@ namespace CivOne.Templates
 			if (moveTarget == null) return false;
 			if (!moveTarget.Units.Any(u => u.Owner != Owner) && moveTarget.City != null)
 			{
+				if (Class != UnitClass.Land)
+				{
+					GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText($"ERROR/OCCUPY")));
+					Movement = null;
+					return false;
+				}
+
 				City capturedCity = moveTarget.City;
 				if (!capturedCity.HasBuilding<CityWalls>())
 				{
