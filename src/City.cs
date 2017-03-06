@@ -673,7 +673,7 @@ namespace CivOne
 					IUnit unit = Game.Instance.CreateUnit((CurrentProduction as IUnit).Type, X, Y, Owner);
 					unit.SetHome();
 					unit.Veteran = (_buildings.Any(b => (b is Barracks)));
-					if ((unit is Settlers) || (unit is Diplomat) || (unit is Caravan))
+					if (Owner == Game.PlayerNumber(Game.Human) && (unit is Settlers || unit is Diplomat || unit is Caravan))
 					{
 						GameTask advisorMessage = Message.Advisor(Advisor.Defense, $"{this.Name} builds {unit.Name}.");
 						advisorMessage.Done += (s, a) => GameTask.Insert(Show.CityManager(this));
