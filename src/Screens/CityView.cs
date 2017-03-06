@@ -161,7 +161,7 @@ namespace CivOne.Screens
 			return SkipAction();
 		}
 
-		private void DrawWonder<T>(Picture picture = null) where T : IWonder
+		private void DrawWonder<T>(Picture picture = null, int x = -1, int y = -1) where T : IWonder
 		{
 			if (picture == null) picture = _background;
 			if (typeof(T) == typeof(Pyramids))
@@ -177,6 +177,33 @@ namespace CivOne.Screens
 			{
 				picture.AddLayer(Resources.Instance.GetPart("WONDERS2", 1, 38, 66, 81), 0, 0);
 			}
+			if (typeof(T) == typeof(HooverDam))
+			{
+				picture.AddLayer(Resources.Instance.GetPart("WONDERS2", 1, 14, 147, 20), 1, 9);
+			}
+			if (typeof(T) == typeof(Lighthouse))
+			{
+				picture.AddLayer(Resources.Instance.GetPart("WONDERS", 229, 116, 40, 83), x, y);
+			}
+			if (typeof(T) == typeof(HangingGardens))
+			{
+				picture.AddLayer(Resources.Instance.GetPart("WONDERS", 159, 149, 69, 50), x, y);
+			}
+			if (typeof(T) == typeof(Oracle))
+			{
+				picture.AddLayer(Resources.Instance.GetPart("WONDERS", 164, 97, 64, 51), x, y);
+			}
+			if (typeof(T) == typeof(DarwinsVoyage))
+			{
+				picture.AddLayer(Resources.Instance.GetPart("WONDERS", 40, 69, 62, 47), x, y);
+			}
+		}
+
+		private void DrawWonderOverlay<T>(int x, int y, int offset) where T : IWonder
+		{
+			DrawWonder<T>(x: x, y: y + offset);
+			if (!(_production is T))
+				DrawWonder<T>(_overlay, x, y + offset);
 		}
 
 		private void DrawBuilding<T>(Picture picture = null, int x = -1, int y = -1) where T : IBuilding
@@ -337,10 +364,12 @@ namespace CivOne.Screens
 				}
 
 				
-				foreach (Type type in new Type[] { typeof(Barracks), typeof(Granary), typeof(Temple), typeof(MarketPlace), typeof(Library), typeof(Courthouse), typeof(Bank), typeof(Cathedral), typeof(UniversityBuilding), typeof(Colosseum), typeof(Factory), typeof(MfgPlant), typeof(SdiDefense), typeof(RecyclingCenter), typeof(NuclearPlant) })
+				foreach (Type type in new Type[] { typeof(Barracks), typeof(Granary), typeof(Temple), typeof(MarketPlace), typeof(Library), typeof(Courthouse), typeof(Bank), typeof(Cathedral), typeof(UniversityBuilding), typeof(Colosseum), typeof(Factory), typeof(MfgPlant), typeof(SdiDefense), typeof(RecyclingCenter), typeof(NuclearPlant), typeof(Lighthouse), typeof(HangingGardens), typeof(Oracle), typeof(DarwinsVoyage) })
 				{
-					if (_city.HasBuilding(type))
+					if (_city.HasBuilding(type) || _city.HasWonder(type))
 					{
+						int sizeX = 2, sizeY = 2;
+
 						CityViewMap id;
 						if (type == typeof(Barracks)) id = CityViewMap.Barracks;
 						else if (type == typeof(Granary)) id = CityViewMap.Granary;
@@ -357,6 +386,10 @@ namespace CivOne.Screens
 						else if (type == typeof(SdiDefense)) id = CityViewMap.SdiDefense;
 						else if (type == typeof(RecyclingCenter)) id = CityViewMap.RecyclingCenter;
 						else if (type == typeof(NuclearPlant)) id = CityViewMap.NuclearPlant;
+						else if (type == typeof(Lighthouse)) id = CityViewMap.Lighthouse;
+						else if (type == typeof(HangingGardens)) { id = CityViewMap.HangingGardens; sizeX = 3; sizeY = 3; }
+						else if (type == typeof(Oracle)) { id = CityViewMap.Oracle; sizeX = 3; sizeY = 3; }
+						else if (type == typeof(DarwinsVoyage)) { id = CityViewMap.DarwinsVoyage; sizeX = 3; sizeY = 3; }
 						else continue;
 
 						for (int i = 0; i < 1000; i++)
@@ -365,15 +398,25 @@ namespace CivOne.Screens
 							int yy = Common.Random.Next(10);
 							if (xx == 6 || xx == 11 || yy == 2 || yy == 6) continue;
 							if (xx == 5 || xx == 10 || yy == 1 || yy == 5) continue;
-							if ((int)cityMap[xx, yy] > 3 ||
-								(int)cityMap[xx + 1, yy] > 3 ||
-								(int)cityMap[xx, yy + 1] > 3 ||
-								(int)cityMap[xx + 1, yy + 1] > 3) continue;
+							if (xx + sizeX > cityMap.GetLength(0) || yy + sizeY > cityMap.GetLength(1)) continue;
+							if ((int)cityMap[xx, yy] > 3) continue;
+							bool invalid = false;
+							for (int oy = 0; oy < sizeY; oy++)
+							for (int ox = 0; ox < sizeX; ox++)
+							{
+								if ((int)cityMap[xx + ox, yy + oy] <= 3) continue;
+								invalid = true;
+								break; 
+							}
+							if (invalid) continue;
 
 							cityMap[xx, yy] = id;
-							cityMap[xx + 1, yy] = CityViewMap.Occupied;
-							cityMap[xx, yy + 1] = CityViewMap.Occupied;
-							cityMap[xx + 1, yy + 1] = CityViewMap.Occupied;
+							for (int oy = 0; oy < sizeY; oy++)
+							for (int ox = 0; ox < sizeX; ox++)
+							{
+								if (ox == 0 && oy == 0) continue;
+								cityMap[xx + ox, yy + oy] = CityViewMap.Occupied;
+							}
 							break;
 						}
 					}
@@ -405,6 +448,12 @@ namespace CivOne.Screens
 				if (!(_production is GreatWall))
 					DrawWonder<GreatWall>(_overlay);
 			}
+			if (_city.Wonders.Any(b => b is HooverDam))
+			{
+				DrawWonder<HooverDam>();
+				if (!(_production is HooverDam))
+					DrawWonder<HooverDam>(_overlay);
+			}
 
 			if (_city.Buildings.Any(b => b is Aqueduct))
 			{
@@ -413,8 +462,8 @@ namespace CivOne.Screens
 					DrawBuilding<Aqueduct>(_overlay);
 			}
 			
-			for (int yy = 10; yy >= 0; yy--)
 			for (int xx = 0; xx < 18; xx++)
+			for (int yy = 10; yy >= 0; yy--)
 			{
 				int dx = 0 + (16 * xx) + (yy * 8);
 				int dy = 106 - (yy * 8);
@@ -490,6 +539,19 @@ namespace CivOne.Screens
 						continue;
 					case CityViewMap.NuclearPlant:
 						DrawBuildingOverlay<NuclearPlant>(dx, dy);
+						continue;
+					case CityViewMap.Lighthouse:
+						DrawWonderOverlay<Lighthouse>(dx, dy, -52);
+						continue;
+					//
+					case CityViewMap.HangingGardens:
+						DrawWonderOverlay<HangingGardens>(dx, dy, -19);
+						continue;
+					case CityViewMap.Oracle:
+						DrawWonderOverlay<Oracle>(dx, dy, -20);
+						continue;
+					case CityViewMap.DarwinsVoyage:
+						DrawWonderOverlay<DarwinsVoyage>(dx, dy, -16);
 						continue;
 					default: continue;
 				}

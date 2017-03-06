@@ -31,6 +31,10 @@ namespace CivOne.Enums
 		SdiDefense,
 		RecyclingCenter,
 		NuclearPlant,
+		HangingGardens,
+		Lighthouse,
+		Oracle,
+		DarwinsVoyage,
 		Occupied = 255
 	}
 }

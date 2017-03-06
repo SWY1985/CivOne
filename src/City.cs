@@ -49,7 +49,7 @@ namespace CivOne
 			set
 			{
 				if (X == 255 || Y == 255) return;
-				
+
 				_size = value;
 				if (_size == 0)
 				{
@@ -103,6 +103,11 @@ namespace CivOne
 		public bool HasWonder(IWonder wonder)
 		{
 			return _wonders.Any(w => w.Id == wonder.Id);
+		}
+
+		public bool HasWonder(Type type)
+		{
+			return _wonders.Any(w => w.GetType() == type);
 		}
 
 		public bool HasWonder<T>() where T : IWonder
