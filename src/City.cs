@@ -729,6 +729,10 @@ namespace CivOne
 			Player.Science += Science;
 			BuildingSold = false;
 			GameTask.Enqueue(new ProcessScience(Player));
+
+			if (Player == Game.Human) return;
+			
+			AI.CityProduction(this);
 		}
 
 		internal City(byte owner)

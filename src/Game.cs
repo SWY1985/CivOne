@@ -352,6 +352,7 @@ namespace CivOne
 		
 		public void DisbandUnit(IUnit unit)
 		{
+			if (unit == null) return;
 			if (!_units.Contains(unit)) return;
 			if (unit.Tile is Ocean && unit is IBoardable)
 			{
