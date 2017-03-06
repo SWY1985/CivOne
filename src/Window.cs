@@ -236,6 +236,11 @@ namespace CivOne
 			GL.Viewport(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width, ClientRectangle.Height);
 		}
 
+		private void OnChangeFocus(object sender, EventArgs args)
+		{
+			OnResize(args);
+		}
+
 		protected override void OnLoad(EventArgs args)
 		{
 			GL.Enable(EnableCap.Texture2D);
@@ -373,6 +378,7 @@ namespace CivOne
 				Common.AddScreen(startScreen);
 			}
 
+			FocusedChanged += OnChangeFocus;
 			KeyDown += OnKeyDown;
 			KeyUp += OnKeyUp;
 			MouseDown += OnMouseDown;
