@@ -56,6 +56,7 @@ namespace CivOne
 					Game.DestroyCity(this);
 					return;
 				}
+				if (Food > FoodRequired) Food = FoodRequired;
 				SetResourceTiles();
 			}
 		}
