@@ -256,6 +256,10 @@ namespace CivOne.Templates
 					{
 						if (capturedCity.HasBuilding<Palace>())
 							capturedCity.RemoveBuilding<Palace>();
+						capturedCity.Food = 0;
+						capturedCity.Shields = 0;
+						while (capturedCity.Units.Length > 0)
+							Game.DisbandUnit(capturedCity.Units[0]);
 						capturedCity.Owner = Owner;
 						if (capturedCity.Size == 0) return;
 						
