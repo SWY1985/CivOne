@@ -18,7 +18,7 @@ using CivOne.GFX;
 using CivOne.Templates;
 using CivOne.Wonders;
 
-using Bld = CivOne.Buildings;
+using UniversityBuilding = CivOne.Buildings.University;
 
 namespace CivOne.Screens
 {
@@ -197,7 +197,6 @@ namespace CivOne.Screens
 				Picture wall = Resources.Instance.GetPart(_buildingFile, 251, 101, 43, 49);
 				Picture door = Resources.Instance.GetPart(_buildingFile, 51, 101, 49, 49);
 
-				//0, 108
 				for (int xx = 0; xx < 142; xx += 43)
 					picture.AddLayer(wall, xx, 108);
 				picture.AddLayer(door, 142, 108);
@@ -221,10 +220,27 @@ namespace CivOne.Screens
 				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 101, 1, 49, 49), x, y);
 			if (typeof(T) == typeof(Cathedral))
 				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 101, 51, 49, 49), x, y);
-			if (typeof(T) == typeof(Bld.University))
+			if (typeof(T) == typeof(UniversityBuilding))
 				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 101, 101, 49, 49), x, y);
 			if (typeof(T) == typeof(Colosseum))
 				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 151, 1, 49, 49), x, y);
+			if (typeof(T) == typeof(Factory))
+				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 151, 51, 49, 49), x, y);
+			if (typeof(T) == typeof(MfgPlant))
+				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 151, 101, 49, 49), x, y);
+			if (typeof(T) == typeof(SdiDefense))
+				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 151, 151, 49, 49), x, y);
+			if (typeof(T) == typeof(RecyclingCenter))
+				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 201, 1, 49, 49), x, y);
+			if (typeof(T) == typeof(NuclearPlant))
+				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 201, 151, 49, 49), x, y);
+		}
+
+		private void DrawBuildingOverlay<T>(int x, int y, int offset = -18) where T : IBuilding
+		{
+			DrawBuilding<T>(x: x, y: y + offset);
+			if (!(_production is T))
+				DrawBuilding<T>(_overlay, x, y + offset);
 		}
 
 		private CityViewMap[,] GetCityMap
@@ -321,7 +337,7 @@ namespace CivOne.Screens
 				}
 
 				
-				foreach (Type type in new Type[] { typeof(Barracks), typeof(Granary), typeof(Temple), typeof(MarketPlace), typeof(Library), typeof(Courthouse), typeof(Bank), typeof(Cathedral), typeof(Bld.University), typeof(Colosseum) })
+				foreach (Type type in new Type[] { typeof(Barracks), typeof(Granary), typeof(Temple), typeof(MarketPlace), typeof(Library), typeof(Courthouse), typeof(Bank), typeof(Cathedral), typeof(UniversityBuilding), typeof(Colosseum), typeof(Factory), typeof(MfgPlant), typeof(SdiDefense), typeof(RecyclingCenter), typeof(NuclearPlant) })
 				{
 					if (_city.HasBuilding(type))
 					{
@@ -334,8 +350,13 @@ namespace CivOne.Screens
 						else if (type == typeof(Courthouse)) id = CityViewMap.Courthouse;
 						else if (type == typeof(Bank)) id = CityViewMap.Bank;
 						else if (type == typeof(Cathedral)) id = CityViewMap.Cathedral;
-						else if (type == typeof(Bld.University)) id = CityViewMap.University;
+						else if (type == typeof(UniversityBuilding)) id = CityViewMap.University;
 						else if (type == typeof(Colosseum)) id = CityViewMap.Colosseum;
+						else if (type == typeof(Factory)) id = CityViewMap.Factory;
+						else if (type == typeof(MfgPlant)) id = CityViewMap.MfgPlant;
+						else if (type == typeof(SdiDefense)) id = CityViewMap.SdiDefense;
+						else if (type == typeof(RecyclingCenter)) id = CityViewMap.RecyclingCenter;
+						else if (type == typeof(NuclearPlant)) id = CityViewMap.NuclearPlant;
 						else continue;
 
 						for (int i = 0; i < 1000; i++)
@@ -426,64 +447,49 @@ namespace CivOne.Screens
 						dy += 24;
 						break;
 					case CityViewMap.Barracks:
-						dy -= 18;
-						DrawBuilding<Barracks>(x: dx, y: dy);
-						if (!(_production is Barracks))
-							DrawBuilding<Barracks>(_overlay, dx, dy);
+						DrawBuildingOverlay<Barracks>(dx, dy);
 						continue;
 					case CityViewMap.Granary:
-						dy -= 18;
-						DrawBuilding<Granary>(x: dx, y: dy);
-						if (!(_production is Granary))
-							DrawBuilding<Granary>(_overlay, dx, dy);
+						DrawBuildingOverlay<Granary>(dx, dy);
 						continue;
 					case CityViewMap.Temple:
-						dy -= 18;
-						DrawBuilding<Temple>(x: dx, y: dy);
-						if (!(_production is Temple))
-							DrawBuilding<Temple>(_overlay, dx, dy);
+						DrawBuildingOverlay<Temple>(dx, dy);
 						continue;
 					case CityViewMap.MarketPlace:
-						dy -= 18;
-						DrawBuilding<MarketPlace>(x: dx, y: dy);
-						if (!(_production is MarketPlace))
-							DrawBuilding<MarketPlace>(_overlay, dx, dy);
+						DrawBuildingOverlay<MarketPlace>(dx, dy);
 						continue;
 					case CityViewMap.Library:
-						dy -= 18;
-						DrawBuilding<Library>(x: dx, y: dy);
-						if (!(_production is Library))
-							DrawBuilding<Library>(_overlay, dx, dy);
+						DrawBuildingOverlay<Library>(dx, dy);
 						continue;
 					case CityViewMap.Courthouse:
-						dy -= 18;
-						DrawBuilding<Courthouse>(x: dx, y: dy);
-						if (!(_production is Courthouse))
-							DrawBuilding<Courthouse>(_overlay, dx, dy);
+						DrawBuildingOverlay<Courthouse>(dx, dy);
 						continue;
 					case CityViewMap.Bank:
-						dy -= 18;
-						DrawBuilding<Bank>(x: dx, y: dy);
-						if (!(_production is Bank))
-							DrawBuilding<Bank>(_overlay, dx, dy);
+						DrawBuildingOverlay<Bank>(dx, dy);
 						continue;
 					case CityViewMap.Cathedral:
-						dy -= 18;
-						DrawBuilding<Cathedral>(x: dx, y: dy);
-						if (!(_production is Cathedral))
-							DrawBuilding<Cathedral>(_overlay, dx, dy);
+						DrawBuildingOverlay<Cathedral>(dx, dy);
 						continue;
 					case CityViewMap.University:
-						dy -= 18;
-						DrawBuilding<Bld.University>(x: dx, y: dy);
-						if (!(_production is Bld.University))
-							DrawBuilding<Bld.University>(_overlay, dx, dy);
+						DrawBuildingOverlay<UniversityBuilding>(dx, dy);
 						continue;
 					case CityViewMap.Colosseum:
-						dy -= 18;
-						DrawBuilding<Colosseum>(x: dx, y: dy);
-						if (!(_production is Colosseum))
-							DrawBuilding<Colosseum>(_overlay, dx, dy);
+						DrawBuildingOverlay<Colosseum>(dx, dy);
+						continue;
+					case CityViewMap.Factory:
+						DrawBuildingOverlay<Factory>(dx, dy);
+						continue;
+					case CityViewMap.MfgPlant:
+						DrawBuildingOverlay<MfgPlant>(dx, dy);
+						continue;
+					case CityViewMap.SdiDefense:
+						DrawBuildingOverlay<SdiDefense>(dx, dy);
+						continue;
+					case CityViewMap.RecyclingCenter:
+						DrawBuildingOverlay<RecyclingCenter>(dx, dy);
+						continue;
+					case CityViewMap.NuclearPlant:
+						DrawBuildingOverlay<NuclearPlant>(dx, dy);
 						continue;
 					default: continue;
 				}

@@ -26,6 +26,11 @@ namespace CivOne.Enums
 		Cathedral,
 		University,
 		Colosseum,
+		Factory,
+		MfgPlant,
+		SdiDefense,
+		RecyclingCenter,
+		NuclearPlant,
 		Occupied = 255
 	}
 }
