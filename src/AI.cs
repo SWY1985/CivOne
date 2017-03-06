@@ -9,11 +9,17 @@
 
 using System;
 using System.Linq;
+using CivOne.Advances;
+using CivOne.Buildings;
+using CivOne.Enums;
+using CivOne.Governments;
 using CivOne.Interfaces;
 using CivOne.Tasks;
 using CivOne.Templates;
 using CivOne.Tiles;
 using CivOne.Units;
+
+using Democratic = CivOne.Governments.Democracy;
 
 namespace CivOne
 {
@@ -25,6 +31,19 @@ namespace CivOne
 			if (tiles.Length == 0)
 			{
 				// No adjecent units found
+				if (unit.Class != UnitClass.Land) Game.DisbandUnit(unit);
+				if (Common.Random.Next(10) < 7)
+				{
+					for (int i = 0; i < 1000; i++)
+					{
+						int relX = Common.Random.Next(-1, 2);
+						int relY = Common.Random.Next(-1, 2);
+						if (relX == 0 && relY == 0) continue;
+						if (Map[unit.X, unit.Y][relX, relY] is Ocean) continue;
+						unit.MoveTo(relX, relY);
+						return;
+					}
+				}
 				Game.DisbandUnit(unit);
 				return;
 			}
@@ -50,25 +69,93 @@ namespace CivOne
 			
 			if (unit is Settlers)
 			{
-				if (!((Map[unit.X, unit.Y] is Grassland) || (Map[unit.X, unit.Y] is River) || (Map[unit.X, unit.Y] is Plains)))
+				ITile tile = unit.Tile;
+
+				bool hasCity = (tile.City != null);
+				bool validCity = (tile is Grassland || tile is River || tile is Plains) && (tile.City == null);
+				bool validIrrigaton = (tile is Grassland || tile is River || tile is Plains || tile is Desert) && (tile.City == null) && (!tile.Mine) && (!tile.Irrigation);
+				bool validMine = (tile is Mountains || tile is Hills) && (tile.City == null) && (!tile.Mine) && (!tile.Irrigation);
+				bool validRoad = (tile.City == null) && tile.Road;
+				int nearestCity = 255;
+				int nearestOwnCity = 255;
+				
+				if (Game.GetCities().Any()) nearestCity = Game.GetCities().Min(x => Common.DistanceToTile(x.X, x.Y, tile.X, tile.Y));
+				if (Game.GetCities().Any(x => x.Owner == unit.Owner)) nearestOwnCity = Game.GetCities().Where(x => x.Owner == unit.Owner).Min(x => Common.DistanceToTile(x.X, x.Y, tile.X, tile.Y));
+				
+				if (validCity && nearestCity > 3)
 				{
-					for (int i = 0; i < 1000; i++)
-					{
-						int relX = Common.Random.Next(-1, 2);
-						int relY = Common.Random.Next(-1, 2);
-						if (relX == 0 && relY == 0) continue;
-						if (Map[unit.X, unit.Y][relX, relY] is Ocean) continue;
-						unit.MoveTo(relX, relY);
-						return;
-					}
-					unit.SkipTurn();
+					GameTask.Enqueue(Orders.FoundCity(unit as Settlers));
 					return;
 				}
-				GameTask.Enqueue(Orders.FoundCity(unit as Settlers));
+				else if (nearestOwnCity < 3)
+				{
+					switch (Common.Random.Next(5 * nearestOwnCity))
+					{
+						case 0:
+							if (validRoad)
+							{
+								GameTask.Enqueue(Orders.BuildRoad(unit));
+								return;
+							}
+							break;
+						case 1:
+							if (validIrrigaton)
+							{
+								GameTask.Enqueue(Orders.BuildIrrigation(unit));
+								return;
+							}
+							break;
+						case 2:
+							if (validMine)
+							{
+								GameTask.Enqueue(Orders.BuildMines(unit));
+								return;
+							}
+							break;
+					}
+				}
+
+				for (int i = 0; i < 1000; i++)
+				{
+					int relX = Common.Random.Next(-1, 2);
+					int relY = Common.Random.Next(-1, 2);
+					if (relX == 0 && relY == 0) continue;
+					if (Map[unit.X, unit.Y][relX, relY] is Ocean) continue;
+					unit.MoveTo(relX, relY);
+					return;
+				}
+				unit.SkipTurn();
+				return;
+			}
+			else if (unit is Militia || unit is Phalanx || unit is Musketeers || unit is Riflemen || unit is MechInf)
+			{
+				unit.Fortify = true;
+				while (unit.Tile.City != null && unit.Tile.Units.Count(x => x is Militia || x is Phalanx || x is Musketeers || x is Riflemen || x is MechInf) > 2)
+				{
+					IUnit disband = null;
+					IUnit[] units = unit.Tile.Units.Where(x => x != unit).ToArray();
+					if ((disband = unit.Tile.Units.FirstOrDefault(x => x is Militia)) != null) { Game.DisbandUnit(disband); continue; }
+					if ((disband = unit.Tile.Units.FirstOrDefault(x => x is Phalanx)) != null) { Game.DisbandUnit(disband); continue; }
+					if ((disband = unit.Tile.Units.FirstOrDefault(x => x is Musketeers)) != null) { Game.DisbandUnit(disband); continue; }
+					if ((disband = unit.Tile.Units.FirstOrDefault(x => x is Riflemen)) != null) { Game.DisbandUnit(disband); continue; }
+					if ((disband = unit.Tile.Units.FirstOrDefault(x => x is MechInf)) != null) { Game.DisbandUnit(disband); continue; }
+				}
 			}
 			else
 			{
-				unit.Fortify = true;
+				if (unit.Class != UnitClass.Land) Game.DisbandUnit(unit);
+
+				for (int i = 0; i < 1000; i++)
+				{
+					int relX = Common.Random.Next(-1, 2);
+					int relY = Common.Random.Next(-1, 2);
+					if (relX == 0 && relY == 0) continue;
+					if (Map[unit.X, unit.Y][relX, relY] is Ocean) continue;
+					unit.MoveTo(relX, relY);
+					return;
+				}
+				unit.SkipTurn();
+				return;
 			}
 		}
 
@@ -84,6 +171,83 @@ namespace CivOne
 			player.CurrentResearch = advances[Common.Random.Next(0, advances.Length)];
 
 			Console.WriteLine($"AI: {player.LeaderName} of the {player.TribeNamePlural} starts researching {player.CurrentResearch.Name}.");
+		}
+
+		internal static void CityProduction(City city)
+		{
+			Player player = Game.GetPlayer(city.Owner);
+			IProduction production = null;
+
+			// Create 2 defensive units per city
+			if (player.HasAdvance<LaborUnion>())
+			{
+				if (city.Tile.Units.Count(x => x is MechInf) < 2) production = new MechInf();
+			}
+			else if (player.HasAdvance<Conscription>())
+			{
+				if (city.Tile.Units.Count(x => x is Riflemen) < 2) production = new Riflemen();
+			}
+			else if (player.HasAdvance<Gunpowder>())
+			{
+				if (city.Tile.Units.Count(x => x is Musketeers) < 2) production = new Musketeers();
+			}
+			else if (player.HasAdvance<BronzeWorking>())
+			{
+				if (city.Tile.Units.Count(x => x is BronzeWorking) < 2) production = new Phalanx();
+			}
+			else
+			{
+				if (city.Tile.Units.Count(x => x is Militia) < 2) production = new Militia();
+			}
+			
+			// Create city improvements
+			if (production == null)
+			{
+				if (!city.HasBuilding<Barracks>()) production = new Barracks();
+				else if (player.HasAdvance<Pottery>() && !city.HasBuilding<Granary>()) production = new Granary();
+				else if (player.HasAdvance<CeremonialBurial>() && !city.HasBuilding<Temple>()) production = new Temple();
+				else if (player.HasAdvance<Masonry>() && !city.HasBuilding<CityWalls>()) production = new CityWalls();
+			}
+
+			// Create Settlers
+			if (production == null)
+			{
+				if (city.Size > 4 && !city.Units.Any(x => x is Settlers) && player.Cities.Length < 10) production = new Settlers();
+			}
+
+			// Create some other unit
+			if (production == null)
+			{
+				if (city.Units.Length < 4)
+				{
+					if (player.Government is Republic || player.Government is Democratic)
+					{
+						if (player.HasAdvance<Writing>()) production = new Diplomat();
+					}
+					else 
+					{
+						if (player.HasAdvance<Automobile>()) production = new Armor();
+						else if (player.HasAdvance<Metallurgy>()) production = new Cannon();
+						else if (player.HasAdvance<Chivalry>()) production = new Knights();
+						else if (player.HasAdvance<TheWheel>()) production = new Chariot();
+						else if (player.HasAdvance<HorsebackRiding>()) production = new Cavalry();
+						else if (player.HasAdvance<IronWorking>()) production = new Legion();
+					}
+				}
+				else
+				{
+					if (player.HasAdvance<Trade>()) production = new Caravan();
+				}
+			}
+
+			// Set random production
+			if (production == null)
+			{
+				IProduction[] items = city.AvailableProduction.ToArray();
+				production = items[Common.Random.Next(items.Length)];
+			}
+
+			city.SetProduction(production);
 		}
 	}
 }
