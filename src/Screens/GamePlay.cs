@@ -397,8 +397,7 @@ namespace CivOne.Screens
 
 			while (Game.CurrentPlayer != Game.HumanPlayer)
 			{
-				// TODO: Handle game turns before human player, instead of skipping them
-				GameTask.Enqueue(Turn.End());
+				Game.Instance.Update();
 				GameTask.Update();
 			}
 		}
