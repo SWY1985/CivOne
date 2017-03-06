@@ -273,7 +273,10 @@ namespace CivOne.Templates
 					if (MovesLeft == 0)
 						PartMoves = 0;
 					else if (MovesLeft > 0)
-						MovesLeft--;
+					{
+						// MovesLeft--;
+						MovementDone(Tile);
+					}
 					Movement = null;
 				};
 			}
