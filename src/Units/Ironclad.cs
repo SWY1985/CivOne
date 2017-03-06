@@ -20,7 +20,7 @@ namespace CivOne.Units
 			Type = Unit.Ironclad;
 			Name = "Ironclad";
 			RequiredTech = new SteamEngine();
-			ObsoleteTech = null;
+			ObsoleteTech = new Combustion();
 			SetIcon('A', 0, 1);
 		}
 	}
