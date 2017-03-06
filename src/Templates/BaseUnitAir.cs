@@ -49,6 +49,8 @@ namespace CivOne.Templates
 		public override void SkipTurn()
 		{
 			MovesLeft = 0;
+			if (FuelLeft == Move)
+				FuelLeft -= Move;
 			FuelLeft -= (FuelLeft % Move);
 			HandleFuel();
 		}
