@@ -48,6 +48,8 @@ namespace CivOne.Screens
 		private float _fadeStep = 1.0f;
 		private bool _skip = false;
 
+		private string _buildingFile = null;
+
 		public event EventHandler Skipped;
 		
 		private Color FadeColour(Color colour1, Color colour2)
@@ -179,16 +181,21 @@ namespace CivOne.Screens
 
 		private void DrawBuilding<T>(Picture picture = null, int x = -1, int y = -1) where T : IBuilding
 		{
+			if (_buildingFile == null)
+			{
+				_buildingFile = Game.GetPlayer(_city.Owner).HasAdvance<Invention>() ? "CITYPIX3" : "CITYPIX2";
+			}
+
 			if (picture == null) picture = _background;
 			if (typeof(T) == typeof(Aqueduct))
 			{
-				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 51, 151, 49, 49), 0, 72);
+				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 51, 151, 49, 49), 0, 72);
 			}
 
 			if (typeof(T) == typeof(CityWalls))
 			{
-				Picture wall = Resources.Instance.GetPart("CITYPIX2", 251, 101, 43, 49);
-				Picture door = Resources.Instance.GetPart("CITYPIX2", 51, 101, 49, 49);
+				Picture wall = Resources.Instance.GetPart(_buildingFile, 251, 101, 43, 49);
+				Picture door = Resources.Instance.GetPart(_buildingFile, 51, 101, 49, 49);
 
 				//0, 108
 				for (int xx = 0; xx < 142; xx += 43)
@@ -199,25 +206,25 @@ namespace CivOne.Screens
 			}
 
 			if (typeof(T) == typeof(Barracks))
-				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 1, 1, 49, 49), x, y);
+				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 1, 1, 49, 49), x, y);
 			if (typeof(T) == typeof(Granary))
-				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 1, 51, 49, 49), x, y);
+				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 1, 51, 49, 49), x, y);
 			if (typeof(T) == typeof(Temple))
-				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 1, 101, 49, 49), x, y);
+				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 1, 101, 49, 49), x, y);
 			if (typeof(T) == typeof(MarketPlace))
-				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 1, 151, 49, 49), x, y);
+				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 1, 151, 49, 49), x, y);
 			if (typeof(T) == typeof(Library))
-				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 51, 1, 49, 49), x, y);
+				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 51, 1, 49, 49), x, y);
 			if (typeof(T) == typeof(Courthouse))
-				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 51, 51, 49, 49), x, y);
+				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 51, 51, 49, 49), x, y);
 			if (typeof(T) == typeof(Bank))
-				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 101, 1, 49, 49), x, y);
+				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 101, 1, 49, 49), x, y);
 			if (typeof(T) == typeof(Cathedral))
-				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 101, 51, 49, 49), x, y);
+				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 101, 51, 49, 49), x, y);
 			if (typeof(T) == typeof(Bld.University))
-				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 101, 101, 49, 49), x, y);
+				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 101, 101, 49, 49), x, y);
 			if (typeof(T) == typeof(Colosseum))
-				picture.AddLayer(Resources.Instance.GetPart("CITYPIX2", 151, 1, 49, 49), x, y);
+				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 151, 1, 49, 49), x, y);
 		}
 
 		private CityViewMap[,] GetCityMap

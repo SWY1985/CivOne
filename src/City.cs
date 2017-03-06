@@ -48,6 +48,8 @@ namespace CivOne
 			}
 			set
 			{
+				if (X == 255 || Y == 255) return;
+				
 				_size = value;
 				if (_size == 0)
 				{
