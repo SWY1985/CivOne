@@ -461,7 +461,8 @@ namespace CivOne.Screens
 				if (!(_production is Aqueduct))
 					DrawBuilding<Aqueduct>(_overlay);
 			}
-			
+
+			int stage = (int)Math.Floor((double)(Game.GetPlayer(_city.Owner).Advances.Count() - 9) / 2);
 			for (int xx = 0; xx < 18; xx++)
 			for (int yy = 10; yy >= 0; yy--)
 			{
@@ -471,7 +472,125 @@ namespace CivOne.Screens
 				switch (cityMap[xx, yy])
 				{
 					case CityViewMap.House:
-						building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * _houseType), 1, 31, 31);
+						int centerDistance = Math.Max(Math.Abs(9 - xx), yy);
+						if (stage >= 20)
+						{
+							if (_city.Size > 8 && Common.Random.Next((_city.Size - 7) * 2) > centerDistance)
+							{
+								if (Common.Random.Next(10) > 5)
+								{
+									building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 8), (Common.Random.Next(10) > 5) ? 1 : 33, 31, 31);
+								}
+								else
+								{
+									building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 9), (Common.Random.Next(10) > 5) ? 1 : 33, 31, 31);
+								}
+							}
+							else
+							{
+								if (Common.Random.Next(10) > 5)
+								{
+									building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 6), 33, 31, 31);
+								}
+								else
+								{
+									building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 7), 33, 31, 31);
+								}
+							}
+						}
+						else if (stage >= 16)
+						{
+							if (Common.Random.Next(stage - 16) > centerDistance)
+							{
+								if (Common.Random.Next(10) > 5)
+								{
+									building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 6), 1, 31, 31);
+								}
+								else
+								{
+									building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 7), 1, 31, 31);
+								}
+							}
+							else
+							{
+								if (Common.Random.Next(10) > 5)
+								{
+									building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 4), 33, 31, 31);
+								}
+								else
+								{
+									building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 5), 33, 31, 31);
+								}
+							}
+						}
+						else if (stage >= 7)
+						{
+							if (Common.Random.Next(stage - 7) > centerDistance)
+							{
+								if (Common.Random.Next(10) > 5)
+								{
+									building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 4), 1, 31, 31);
+								}
+								else
+								{
+									building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 5), 1, 31, 31);
+								}
+							}
+							else
+							{
+								if (Common.Random.Next(10) > 5)
+								{
+									building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 2), 33, 31, 31);
+								}
+								else
+								{
+									building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 3), 33, 31, 31);
+								}
+							}
+						}
+						else if (stage >= 1)
+						{
+							if (Common.Random.Next(stage) > centerDistance)
+							{
+								if (Common.Random.Next(10) > 5)
+								{
+									if (Common.Random.Next((stage - 5) * 4) > centerDistance)
+									{
+										building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 2), 33, 31, 31);
+									}
+									else
+									{
+										building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 2), 1, 31, 31);
+									}
+								}
+								else
+								{
+									if (Common.Random.Next((stage - 5) * 4) > centerDistance)
+									{
+										building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 3), 33, 31, 31);
+									}
+									else
+									{
+										building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 3), 1, 31, 31);
+									}
+								}
+							}
+							else
+							{
+								building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * _houseType), 33, 31, 31);
+							}
+						}
+						else
+						{
+							if (Common.Random.Next((-3 - stage)) > centerDistance)
+							{
+								building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * _houseType), 33, 31, 31);
+							}
+							else
+							{
+								building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * _houseType), 1, 31, 31);
+							}
+						}
 						break;
 					case CityViewMap.Tree:
 						building = Resources.Instance.GetPart("CITYPIX1", 0, 65, 24, 8);
