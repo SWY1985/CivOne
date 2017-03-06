@@ -647,12 +647,18 @@ namespace CivOne
 			{
 				int maxDistance = Units.Max(u => Common.DistanceToTile(X, Y, u.X, u.Y));
 				IUnit unit = Units.Last(u => Common.DistanceToTile(X, Y, u.X, u.Y) == maxDistance);
-				Message message = Message.DisbandUnit(this, unit);
-				message.Done += (s, a) => {
+				if (Owner == Game.PlayerNumber(Human))
+				{
+					Message message = Message.DisbandUnit(this, unit);
+					message.Done += (s, a) => {
+						Game.DisbandUnit(unit);
+					};
+					GameTask.Enqueue(message);
+				}
+				else
+				{
 					Game.DisbandUnit(unit);
-				};
-				GameTask.Enqueue(message);
-				//Common.AddScreen(new DisbandDialog(this, unit));
+				}
 			}
 			else if (ShieldIncome > 0)
 			{
