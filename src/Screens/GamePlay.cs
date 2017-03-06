@@ -181,6 +181,11 @@ namespace CivOne.Screens
 		
 		public override bool HasUpdate(uint gameTick)
 		{
+			if (Common.TopScreen is GamePlay && !GameTask.Any())
+			{
+				Game.Update();
+			}
+
 			if (gameTick == _lastGameTick)
 			{
 				_gameMap.MustUpdate(gameTick);

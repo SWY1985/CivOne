@@ -296,7 +296,7 @@ namespace CivOne
 				CursorVisible = true;
 			}
 
-			_gameTick += (uint)(GameTask.Fast ? 4 : 1);
+			_gameTick += (uint)(GameTask.Fast ? (4 - (_gameTick % 4)) : 1);
 			_update = HasUpdate;
 		}
 

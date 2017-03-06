@@ -154,18 +154,17 @@ namespace CivOne
 			GameTask.Enqueue(Turn.New(CurrentPlayer));
 
 			if (CurrentPlayer == HumanPlayer) return;
-
-			// Enqueue AI moves
-			foreach (IUnit unit in _units.Where(u => u.Owner == _currentPlayer))
-			{
-				GameTask.Enqueue(Turn.Move(unit));
-			}
-			GameTask.Enqueue(Turn.End());
 		}
 		
 		public void Update()
 		{
-
+			if (CurrentPlayer == HumanPlayer) return;
+			if (ActiveUnit != null && (ActiveUnit.MovesLeft > 0 || ActiveUnit.PartMoves > 0))
+			{
+				GameTask.Enqueue(Turn.Move(ActiveUnit));
+				return;
+			}
+			GameTask.Enqueue(Turn.End());
 		}
 
 		private int GetCityIndex(ICivilization civilization)

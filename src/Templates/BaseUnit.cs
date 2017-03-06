@@ -310,7 +310,7 @@ namespace CivOne.Templates
 					IUnit[] targetUnits = moveTarget.GetBorderTiles().SelectMany(t => t.Units).Where(u => u.Owner != Owner).ToArray();
 					IUnit[] borderUnits = Map[X, Y].GetBorderTiles().SelectMany(t => t.Units).Where(u => u.Owner != Owner).ToArray();
 
-					if (borderUnits.Any(u => targetUnits.Any(t => t.X == u.X && t.Y == u.Y)))
+					if (borderUnits.Any(u => u.Owner == Game.PlayerNumber(Human) && targetUnits.Any(t => t.X == u.X && t.Y == u.Y)))
 					{
 						GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText($"ERROR/ZOC")));
 						return false;
