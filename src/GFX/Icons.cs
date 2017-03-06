@@ -305,7 +305,7 @@ namespace CivOne.GFX
 							{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0,}
 						}, Common.GetPalette256);
 					}
-					return Resources.Instance.GetPart("SP257", 112, 32, 16, 16);
+					return Resources.Instance.GetPart("SP257", 113, 33, 15, 15);
 				case MouseCursor.Goto:
 					if (builtIn)
 					{
@@ -326,7 +326,7 @@ namespace CivOne.GFX
 							{ 0,15,15,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,}
 						}, Common.GetPalette256);
 					}
-					return Resources.Instance.GetPart("SP257", 32, 32, 16, 16);
+					return Resources.Instance.GetPart("SP257", 33, 33, 15, 15);
 			}
 			return new Picture(16, 16);
 		}
