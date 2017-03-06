@@ -39,7 +39,7 @@ namespace CivOne
 						int relX = Common.Random.Next(-1, 2);
 						int relY = Common.Random.Next(-1, 2);
 						if (relX == 0 && relY == 0) continue;
-						if (Map[unit.X, unit.Y][relX, relY] is Ocean) continue;
+						if (unit.Tile[relX, relY] is Ocean) continue;
 						unit.MoveTo(relX, relY);
 						return;
 					}
@@ -120,7 +120,7 @@ namespace CivOne
 					int relX = Common.Random.Next(-1, 2);
 					int relY = Common.Random.Next(-1, 2);
 					if (relX == 0 && relY == 0) continue;
-					if (Map[unit.X, unit.Y][relX, relY] is Ocean) continue;
+					if (unit.Tile[relX, relY] is Ocean) continue;
 					unit.MoveTo(relX, relY);
 					return;
 				}
@@ -150,7 +150,7 @@ namespace CivOne
 					int relX = Common.Random.Next(-1, 2);
 					int relY = Common.Random.Next(-1, 2);
 					if (relX == 0 && relY == 0) continue;
-					if (Map[unit.X, unit.Y][relX, relY] is Ocean) continue;
+					if (unit.Tile[relX, relY] is Ocean) continue;
 					unit.MoveTo(relX, relY);
 					return;
 				}

@@ -103,17 +103,20 @@ namespace CivOne.Units
 					PartMoves = 0;
 					return true;
 				}
-				GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText("ERROR/NOIRR")));
+				if (Owner == Game.PlayerNumber(Game.Human))
+					GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText("ERROR/NOIRR")));
 				return false;
 			}
 			else
 			{
 				if (((tile is Desert) || (tile is Grassland) || (tile is Hills) || (tile is Plains) || (tile is River)) && tile.City == null)
 				{
-					GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText("ERROR/NOWATER")));
+					if (Owner == Game.PlayerNumber(Game.Human))
+						GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText("ERROR/NOWATER")));
 					return true;
 				}
-				GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText("ERROR/NOIRR")));
+				if (Owner == Game.PlayerNumber(Game.Human))
+					GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText("ERROR/NOIRR")));
 			}
 			return false;
 		}
