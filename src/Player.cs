@@ -33,6 +33,8 @@ namespace CivOne
 		private short _gold;
 		private IAdvance _currentResearch = null;
 
+		private int _destroyTurn = -1;
+
 		public ICivilization Civilization
 		{
 			get
@@ -340,6 +342,35 @@ namespace CivOne
 			if (production is IWonder)
 				return WonderAvailable(production as IWonder);
 			return true;
+		}
+
+		public int DestroyTurn
+		{
+			get
+			{
+				return _destroyTurn;
+			}
+		}
+
+		public bool IsDestroyed
+		{
+			get
+			{
+				if (Game.PlayerNumber(this) == 0) return false;
+				if (_destroyTurn != -1) return true;
+				if (Cities.Length == 0 && !Game.GetUnits().Any(x => x.Owner == Game.PlayerNumber(this) && x.Home == null))
+				{
+					while (true)
+					{
+						IUnit unit = Game.GetUnits().FirstOrDefault(x => x.Owner == Game.PlayerNumber(this));
+						if (unit == null) break;
+						Game.DisbandUnit(unit);
+					}
+					_destroyTurn = Game.GameTurn;
+					return true;
+				}
+				return false;
+			}
 		}
 
 		public void Explore(int x, int y, int range = 1, bool sea = false)

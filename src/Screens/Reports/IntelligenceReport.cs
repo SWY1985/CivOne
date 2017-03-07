@@ -20,6 +20,7 @@ namespace CivOne.Screens.Reports
 			int yy = 30;
 			foreach (Player player in Game.Players.Where(p => Game.PlayerNumber(p) > 0))
 			{
+				if (player.DestroyTurn >= 0) continue;
 				_canvas.FillRectangle(9, 4, yy, 314, 1);
 
 				byte id = Game.PlayerNumber(player);

@@ -26,18 +26,14 @@ namespace CivOne.Screens.Dialogs
 			return output;
 		}
 
-		private static int GetLeft(Advisor advisor)
+		private static int DialogWidth(string[] message)
 		{
-			switch (advisor)
-			{
-				case Advisor.Domestic:
-					return 58;
-				default:
-					return 38;
-			}
+			int maxWidth = TextBitmaps(message).Max(b => b.Width) + 52;
+			if (maxWidth < 94) maxWidth = 94;
+			return maxWidth;
 		}
 
-		public AdvisorMessage(Advisor advisor, string[] message) : base(GetLeft(advisor), 72, TextBitmaps(message).Max(b => b.Width) + 52, 62)
+		public AdvisorMessage(Advisor advisor, string[] message, bool leftAlign) : base((leftAlign ? 38 : 58), 72, DialogWidth(message) + 52, 62)
 		{
 			Cursor = MouseCursor.None;
 

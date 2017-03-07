@@ -143,6 +143,11 @@ namespace CivOne
 				}
 			}
 
+			if (CurrentPlayer.DestroyTurn == -1 && CurrentPlayer.IsDestroyed)
+			{
+				GameTask.Enqueue(Message.Advisor(Advisor.Defense, false, CurrentPlayer.Civilization.Name, "civilization", "destroyed", $"by {Game.GetPlayer(0).Civilization.NamePlural}!"));
+			}
+
 			foreach (IUnit unit in _units.Where(u => u.Owner == _currentPlayer))
 			{
 				GameTask.Enqueue(Turn.New(unit));
