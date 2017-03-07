@@ -34,6 +34,7 @@ namespace CivOne.Interfaces
 		byte Borders { get; }
 		ITile GetBorderTile(Direction direction);
 		IEnumerable<ITile> GetBorderTiles();
+		IEnumerable<ITile> Cross();
 		Terrain GetBorderType(Direction direction);
 		bool Road { get; set; }
 		bool RailRoad { get; set; }
