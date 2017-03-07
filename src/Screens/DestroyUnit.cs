@@ -47,7 +47,6 @@ namespace CivOne.Screens
 		
 		private int _noiseCounter = NOISE_COUNT + 2;
 		private readonly byte[,] _noiseMap;
-		private readonly GamePlay _gamePlay;
 
 		private Picture _gameMap, _overlay = null;
 		
@@ -111,7 +110,7 @@ namespace CivOne.Screens
 				}
 				foreach (IUnit unit in units)
 					Game.DisbandUnit(unit);
-				_gamePlay.HasUpdate(gameTick);
+				Common.GamePlay.HasUpdate(gameTick);
 				Destroy();
 			}
 
@@ -210,11 +209,10 @@ namespace CivOne.Screens
 			Cursor = MouseCursor.None;
 			_unit = unit;
 
-			_gamePlay = (GamePlay)Common.Screens.First(s => (s is GamePlay));
-			_x = _gamePlay.X;
-			_y = _gamePlay.Y;
+			_x = Common.GamePlay.X;
+			_y = Common.GamePlay.Y;
 
-			_canvas = new Picture(320, 200, Common.TopScreen.Palette);
+			_canvas = new Picture(320, 200, Common.GamePlay.Palette);
 			_gameMap = GameMap;
 
 			_noiseMap = new byte[320, 200];

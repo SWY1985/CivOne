@@ -56,6 +56,11 @@ namespace CivOne.Screens
 		{
 			_gameMap.CenterOnPoint(x, y);
 		}
+
+		internal void RefreshMap()
+		{
+			_gameMap.ForceRefresh();
+		}
 		
 		private void MenuBarGame(object sender, EventArgs args)
 		{
