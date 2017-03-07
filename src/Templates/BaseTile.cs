@@ -125,13 +125,23 @@ namespace CivOne.Templates
 		public IEnumerable<ITile> GetBorderTiles()
 		{
 			for (int relY = -1; relY <= 1; relY++)
+			for (int relX = -1; relX <= 1; relX++)
 			{
-				for (int relX = -1; relX <= 1; relX++)
-				{
-					if (relX == 0 && relY == 0) continue;
-					if (this[relX, relY] == null) continue;
-					yield return this[relX, relY];
-				}
+				if (relX == 0 && relY == 0) continue;
+				if (this[relX, relY] == null) continue;
+				yield return this[relX, relY];
+			}
+		}
+
+		public IEnumerable<ITile> Cross()
+		{
+			for (int relY = -1; relY <= 1; relY++)
+			for (int relX = -1; relX <= 1; relX++)
+			{
+				if (relX == 0 && relY == 0) continue;
+				if (relX != 0 && relY != 0) continue;
+				if (this[relX, relY] == null) continue;
+				yield return this[relX, relY];
 			}
 		}
 		
