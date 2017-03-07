@@ -127,7 +127,7 @@ namespace CivOne.Screens
 		
 		public override bool HasUpdate(uint gameTick)
 		{
-			if (_update)
+			if (_update || _centerChanged)
 			{
 				RenderTile[] renderTiles = RenderTiles.ToArray();
 				if (Game.MovingUnit != null && !_centerChanged)
