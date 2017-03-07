@@ -111,6 +111,7 @@ namespace CivOne.Screens
 				foreach (IUnit unit in units)
 					Game.DisbandUnit(unit);
 				Common.GamePlay.HasUpdate(gameTick);
+				Common.GamePlay.RefreshMap();
 				Destroy();
 			}
 
