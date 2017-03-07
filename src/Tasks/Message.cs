@@ -26,13 +26,20 @@ namespace CivOne.Tasks
 
 		public override void Run()
 		{
+			if (_screen is AdvisorMessage && Common.HasScreenType<AdvisorMessage>())
+			{
+				//TODO: Figure out why advisor message is started twice
+				EndTask();
+				return;
+			}
+
 			_screen.Closed += ClosedMessage;
 			Common.AddScreen(_screen);
 		}
 
-		public static Message Advisor(Advisor advisor, params string[] message)
+		public static Message Advisor(Advisor advisor, bool leftAlign, params string[] message)
 		{
-			return new Message(new AdvisorMessage(advisor, message));
+			return new Message(new AdvisorMessage(advisor, message, leftAlign));
 		}
 
 		public static Message DisbandUnit(City city, IUnit unit)

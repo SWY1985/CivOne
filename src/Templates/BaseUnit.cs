@@ -254,6 +254,8 @@ namespace CivOne.Templates
 					Show captureCity = Show.CaptureCity(capturedCity);
 					captureCity.Done += (s1, a1) =>
 					{
+						Player previousOwner = Game.GetPlayer(capturedCity.Owner);
+
 						if (capturedCity.HasBuilding<Palace>())
 							capturedCity.RemoveBuilding<Palace>();
 						capturedCity.Food = 0;
@@ -261,8 +263,11 @@ namespace CivOne.Templates
 						while (capturedCity.Units.Length > 0)
 							Game.DisbandUnit(capturedCity.Units[0]);
 						capturedCity.Owner = Owner;
-						if (capturedCity.Size == 0) return;
 						
+						if (previousOwner.IsDestroyed)
+							GameTask.Enqueue(Message.Advisor(Advisor.Defense, false, previousOwner.Civilization.Name, "civilization", "destroyed", $"by {Game.GetPlayer(Owner).Civilization.NamePlural}!"));
+						
+						if (capturedCity.Size == 0) return;
 						GameTask.Insert(Show.CityManager(capturedCity));
 					};
 					GameTask.Insert(captureCity);
@@ -278,7 +283,6 @@ namespace CivOne.Templates
 						PartMoves = 0;
 					else if (MovesLeft > 0)
 					{
-						// MovesLeft--;
 						MovementDone(Tile);
 					}
 					Movement = null;
