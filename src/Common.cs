@@ -15,6 +15,7 @@ using System.Text;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
+using CivOne.Screens;
 
 namespace CivOne
 {
@@ -62,9 +63,17 @@ namespace CivOne
 		{
 			get
 			{
-				if (Common.Screens.Any(x => x is IModal))
-					return Common.Screens.Last(x => x is IModal);
-				return Common.Screens.LastOrDefault();
+				if (_screens.Any(x => x is IModal))
+					return _screens.Last(x => x is IModal);
+				return _screens.LastOrDefault();
+			}
+		}
+
+		public static GamePlay GamePlay
+		{
+			get
+			{
+				return (GamePlay)_screens.FirstOrDefault(x => x is GamePlay);
 			}
 		}
 
