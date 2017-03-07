@@ -273,6 +273,11 @@ namespace CivOne.Screens
 			
 			return false;
 		}
+
+		internal void ForceRefresh()
+		{
+			_centerChanged = true;
+		}
 		
 		internal void CenterOnPoint(int x, int y)
 		{
