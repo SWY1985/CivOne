@@ -90,7 +90,7 @@ namespace CivOne.Templates
 
 			Picture background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
 			
-			_canvas = new Picture(320, 200, Common.TopScreen.Palette);
+			_canvas = new Picture(320, 200, Common.GamePlay.Palette);
 
 			// We expand the size to add space for the black border
 			left -= 1;
