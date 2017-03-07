@@ -41,7 +41,7 @@ namespace CivOne.Screens
 					if (tile == null) continue;
 
 					// Flash active unit
-					if (activeUnit != null && gameTick % 4 <= 1 && (tile.X == activeUnit.X && tile.Y == activeUnit.Y))
+					if (activeUnit != null && activeUnit.Owner == Game.PlayerNumber(Human) && gameTick % 4 <= 1 && (tile.X == activeUnit.X && tile.Y == activeUnit.Y))
 					{
 						_miniMap[xx + 1, yy + 1] = 15;
 						continue;

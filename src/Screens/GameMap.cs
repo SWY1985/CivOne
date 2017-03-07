@@ -251,7 +251,7 @@ namespace CivOne.Screens
 					AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position.X - 1, t.Position.Y - 1);
 				}
 				
-				if (Game.MovingUnit != null)
+				if (Game.MovingUnit != null && (Settings.RevealWorld || Game.MovingUnit.Owner == Game.PlayerNumber(Game.Human) ||Game.Human.Visible(Game.MovingUnit.Tile)))
 				{
 					IUnit unit = Game.MovingUnit;
 					if (renderTiles.Any(t => (t.Tile.X == unit.X && t.Tile.Y == unit.Y)))
