@@ -363,9 +363,14 @@ namespace CivOne
 				int totalCargo = unit.Tile.Units.Where(u => u is IBoardable).Sum(u => (u as IBoardable).Cargo) - (unit as IBoardable).Cargo;
 				while (unit.Tile.Units.Count(u => u.Class != UnitClass.Water) > totalCargo)
 				{
-					_units.Remove(unit.Tile.Units.First(u => u.Class != UnitClass.Water));
+					IUnit subUnit = unit.Tile.Units.First(u => u.Class != UnitClass.Water);
+					subUnit.X = 255;
+					subUnit.Y = 255;
+					_units.Remove(subUnit);
 				} 
 			}
+			unit.X = 255;
+			unit.Y = 255;
 			_units.Remove(unit);
 		}
 
