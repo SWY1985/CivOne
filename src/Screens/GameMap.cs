@@ -177,7 +177,10 @@ namespace CivOne.Screens
 					if (drawUnit == null)
 					{
 						// No active unit on this tile, show top unit
-						drawUnit = units[0];
+						if (t.Tile.IsOcean)
+							drawUnit = units.OrderBy(x => x.Class == UnitClass.Land ? 1 : 0).FirstOrDefault();
+						else
+							drawUnit = units[0];
 					}
 					else if (!Common.HasScreenType<Input>() && ((gameTick % 4) >= 2 || drawUnit.Moving))
 					{
@@ -191,9 +194,9 @@ namespace CivOne.Screens
 						continue;
 					}
 
-					AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position);
+					AddLayer(drawUnit.GetUnit(drawUnit.Owner), t.Position);
 					if (units.Length == 1) continue;
-					AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position.X - 1, t.Position.Y - 1);
+					AddLayer(drawUnit.GetUnit(drawUnit.Owner), t.Position.X - 1, t.Position.Y - 1);
 				}
 				
 				foreach (RenderTile t in renderTiles.Reverse())
