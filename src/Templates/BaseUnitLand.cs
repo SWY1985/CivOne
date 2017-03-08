@@ -21,6 +21,12 @@ namespace CivOne.Templates
 	{
 		protected override void MovementDone(ITile previousTile)
 		{
+			if (previousTile.IsOcean || Tile.IsOcean)
+			{
+				MovesLeft = 0;
+				PartMoves = 0;
+			}
+
 			if (Tile.Hut)
 			{
 				Tile.Hut = false;
