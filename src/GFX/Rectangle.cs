@@ -33,7 +33,7 @@ namespace CivOne.GFX
 		{
 			get
 			{
-				return X + Width;
+				return X + Width - 1;
 			}
 		}
 		
@@ -41,7 +41,7 @@ namespace CivOne.GFX
 		{
 			get
 			{
-				return Y + Height;
+				return Y + Height - 1;
 			}
 		}
 
