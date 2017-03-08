@@ -40,7 +40,7 @@ namespace CivOne.Screens
 			}
 		}
 
-		private const int NOISE_COUNT = 16;
+		private const int NOISE_COUNT = 8;
 
 		private IUnit _unit;
 		private int _x, _y;
