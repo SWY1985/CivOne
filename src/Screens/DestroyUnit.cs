@@ -49,6 +49,8 @@ namespace CivOne.Screens
 		private readonly byte[,] _noiseMap;
 
 		private Picture _gameMap, _overlay = null;
+
+		private Picture[] _destroySprites = null;
 		
 		private IEnumerable<RenderTile> RenderTiles
 		{
@@ -79,7 +81,7 @@ namespace CivOne.Screens
 			int cx = Settings.RightSideBar ? 0 : 80;
 			int cy = 8;
 
-			if (_overlay == null)
+			if (_overlay == null || Settings.DestroyAnimation == DestroyAnimation.Sprites)
 			{
 				_overlay = new Picture(_canvas);
 
@@ -91,8 +93,21 @@ namespace CivOne.Screens
 				_overlay.AddLayer(_unit.GetUnit(_unit.Owner), cx + (xx * 16), cy + (yy * 16));
 				if (_unit.Tile.Units.Length > 1)
 					_overlay.AddLayer(_unit.GetUnit(_unit.Owner), cx + (xx * 16) - 1, cy + (yy * 16) - 1);
+				
+				if (Settings.DestroyAnimation == DestroyAnimation.Sprites)
+				{
+					int step = 8 - _noiseCounter--;
+					if (step >= 0 && step < 8)
+					{
+						_overlay.AddLayer(_destroySprites[step], cx + (xx * 16), cy + (yy * 16));
+					}
+				}
 			}
-			_overlay.ApplyNoise(_noiseMap, --_noiseCounter);
+
+			if (Settings.DestroyAnimation == DestroyAnimation.Noise)
+			{
+				_overlay.ApplyNoise(_noiseMap, --_noiseCounter);
+			}
 
 			AddLayer(_gameMap, cx, cy);
 			AddLayer(_overlay, 0, 0);
@@ -216,11 +231,24 @@ namespace CivOne.Screens
 			_canvas = new Picture(320, 200, Common.GamePlay.Palette);
 			_gameMap = GameMap;
 
-			_noiseMap = new byte[320, 200];
-			for (int x = 0; x < 320; x++)
-			for (int y = 0; y < 200; y++)
+			switch (Settings.DestroyAnimation)
 			{
-				_noiseMap[x, y] = (byte)Common.Random.Next(1, NOISE_COUNT);
+				case DestroyAnimation.Sprites:
+					_destroySprites = new Picture[8];
+					for (int i = 0; i < 8; i++)
+					{
+						_destroySprites[i] = Resources.Instance.GetPart("SP257", 16 * i, 96, 16, 16);
+						Picture.ReplaceColours(_destroySprites[i], 9, 0);
+					}
+					break;
+				case DestroyAnimation.Noise:
+					_noiseMap = new byte[320, 200];
+					for (int x = 0; x < 320; x++)
+					for (int y = 0; y < 200; y++)
+					{
+						_noiseMap[x, y] = (byte)Common.Random.Next(1, NOISE_COUNT);
+					}
+					break;
 			}
 		}
 	}

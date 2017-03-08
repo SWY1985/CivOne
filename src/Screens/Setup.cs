@@ -155,7 +155,7 @@ namespace CivOne.Screens
 		
 		private void PatchesMenu(int activeItem = 0)
 		{
-			string revealWorld, sideBar, debugMenu, cursorType;
+			string revealWorld, sideBar, debugMenu, cursorType, destroyAnimation;
 			switch (Settings.CursorType)
 			{
 				case CursorType.Builtin: cursorType = "Built-in"; break;
@@ -163,12 +163,19 @@ namespace CivOne.Screens
 				default: cursorType = "Default"; break;
 			}
 
+			switch (Settings.DestroyAnimation)
+			{
+				case DestroyAnimation.Noise: destroyAnimation = "Noise"; break;
+				default: destroyAnimation = "Sprites (original)"; break;
+			}
+
 			revealWorld = $"Reveal World: {(Settings.RevealWorld ? "yes" : "no")}";
 			sideBar = $"Side bar location: {(Settings.RightSideBar ? "right" : "left")}";
 			debugMenu = $"Show debug menu: {(Settings.DebugMenu ? "yes" : "no")}";
 			cursorType = $"Mouse cursor type: {cursorType}";
+			destroyAnimation = $"Destroy animation: {destroyAnimation}";
 			
-			Menu menu = CreateMenu("PATCHES:", PatchesChoice, revealWorld, sideBar, debugMenu, cursorType, "Back");
+			Menu menu = CreateMenu("PATCHES:", PatchesChoice, revealWorld, sideBar, debugMenu, cursorType, destroyAnimation, "Back");
 			menu.ActiveItem = activeItem;
 			AddMenu(menu);
 		}
@@ -203,6 +210,13 @@ namespace CivOne.Screens
 				menu.ActiveItem = (int)CursorType.Builtin;
 			}
 			menu.Items[0].Enabled = (FileSystem.DataFilesExist(FileSystem.MouseCursorFiles));
+			AddMenu(menu);
+		}
+
+		private void DestroyAnimationMenu()
+		{
+			Menu menu = CreateMenu("DESTROY ANIMATION:", DestroyAnimationChoice, "Sprites (original)", "Noise", "Back");
+			menu.ActiveItem = (int)Settings.DestroyAnimation;
 			AddMenu(menu);
 		}
 		
@@ -328,7 +342,10 @@ namespace CivOne.Screens
 				case 3: // Cursor Type
 					CursorTypeMenu();
 					break;
-				case 4: // Back
+				case 4: // Destroy Animation
+					DestroyAnimationMenu();
+					break;
+				case 5: // Back
 					MainMenu(1);
 					break;
 			}
@@ -399,6 +416,22 @@ namespace CivOne.Screens
 			}
 			CloseMenus();
 			PatchesMenu(3);
+		}
+
+		private void DestroyAnimationChoice(object sender, EventArgs args)
+		{
+			int choice = (sender as Menu.Item).Value;
+			switch (choice)
+			{
+				case 0:
+					Settings.DestroyAnimation = DestroyAnimation.Sprites;
+					break;
+				case 1:
+					Settings.DestroyAnimation = DestroyAnimation.Noise;
+					break;
+			}
+			CloseMenus();
+			PatchesMenu(4);
 		}
 
 		public void Resize(int width, int height)
