@@ -358,7 +358,7 @@ namespace CivOne
 			{
 				if (Game.PlayerNumber(this) == 0) return false;
 				if (_destroyTurn != -1) return true;
-				if (Cities.Length == 0 && !Game.GetUnits().Any(x => x.Owner == Game.PlayerNumber(this) && x.Home == null))
+				if (Cities.Length == 0 && !Game.GetUnits().Any(x => x.Owner == Game.PlayerNumber(this) && (x is Settlers && x.Home == null)))
 				{
 					while (true)
 					{
