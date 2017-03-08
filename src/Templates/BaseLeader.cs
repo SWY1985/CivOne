@@ -28,15 +28,34 @@ namespace CivOne.Templates
 			}
 		}
 
-		private readonly Picture _picture;
+		private readonly Picture _picture, _portraitSmall;
 		private readonly int _overlayX;
 		private readonly int _overlayY;
 
 		public Picture GetPortrait(FaceState state = FaceState.Neutral)
 		{
 			Picture output = _picture.GetPart(181, 67, 139, 133);
-			// TODO: Add face states
+			switch (state)
+			{
+				case FaceState.Smiling:
+					output.AddLayer(_picture.GetPart(1, 51, 59, 49), _overlayX, _overlayY);
+					break;
+				case FaceState.Angry:
+					output.AddLayer(_picture.GetPart(1, 151, 59, 49), _overlayX, _overlayY);
+					break;
+				default:
+					// TODO: Add other states
+					break;
+			}
 			return output;
+		}
+
+		public Picture PortraitSmall
+		{
+			get
+			{
+				return _portraitSmall;
+			}
 		}
 
 		public BaseLeader(string name, string picFile, int overlayX, int overlayY)
@@ -45,6 +64,18 @@ namespace CivOne.Templates
 			_picture = Resources.Instance.LoadPIC(picFile);
 			_overlayX = overlayX;
 			_overlayY = overlayY;
+			if (picFile.StartsWith("KING"))
+			{
+				int id;
+				if (int.TryParse(picFile.Substring(4), out id) && id >= 0 && id <= 13)
+				{
+					int col = (id % 7);
+					int row = (id - col) / 7;
+					_portraitSmall = Resources.Instance.GetPart("SLAM2", (28 * col) + 1, 34 * row, 27, 33);
+					return;
+				}
+			}
+			_portraitSmall = new Picture(27, 33, Common.GetPalette256);
 		}
 	}
 }

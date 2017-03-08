@@ -16,5 +16,6 @@ namespace CivOne.Interfaces
 	{
 		string Name { get; set; }
 		Picture GetPortrait(FaceState state = FaceState.Neutral);
+		Picture PortraitSmall { get; }
 	}
 }

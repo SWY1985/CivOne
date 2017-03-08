@@ -22,6 +22,14 @@ namespace CivOne.Leaders
 			return new Picture(139, 133, Common.GetPalette256);
 		}
 
+		public Picture PortraitSmall
+		{
+			get
+			{
+				return new Picture(27, 33, Common.GetPalette256);
+			}
+		}
+
 		public Atilla()
 		{
 			Name = "Atilla";
