@@ -19,6 +19,7 @@ using CivOne.Tasks;
 using CivOne.Templates;
 using CivOne.Tiles;
 using CivOne.Units;
+using CivOne.Wonders;
 
 namespace CivOne
 {
@@ -300,6 +301,15 @@ namespace CivOne
 			if (unit == null) return null;
 
 			unit.Owner = owner;
+			if (unit.Class == UnitClass.Water)
+			{
+				Player player = GetPlayer(owner);
+				if ((player.HasWonder<Lighthouse>() && !player.WonderObsolete<Lighthouse>()) ||
+					(player.HasWonder<MagellansExpedition>() && !player.WonderObsolete<MagellansExpedition>()))
+				{
+					unit.MovesLeft++;
+				}
+			}
 			if (endTurn)
 				unit.SkipTurn();
 			_instance._units.Add(unit);
