@@ -277,7 +277,7 @@ namespace CivOne.Screens
 				if (_tribe == -1)
 					AddLayer(_background.GetPart(140, 0, 180, 200), 140);
 				int pictureStack = (_competition <= 0) ? 0 : _competition;
-				for (int i = pictureStack; i >= 0; i--)
+				for (int i = pictureStack; i > 0; i--)
 				{
 					AddLayer(DifficultyPicture, 22 + (i * 2), 100 + (i * 3));
 				}
