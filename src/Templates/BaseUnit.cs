@@ -543,6 +543,10 @@ namespace CivOne.Templates
 				_fortify = true;
 			}
 			MovesLeft = Move;
+			if (Class == UnitClass.Land && Tile.IsOcean)
+			{
+				MovesLeft = 1;
+			}
 			Explore();
 		}
 
