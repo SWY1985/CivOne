@@ -24,6 +24,8 @@ namespace CivOne
 		private bool _revealWorld = false;
 		private bool _debugMenu = false;
 		private CursorType _cursorType = CursorType.Default;
+
+		private DestroyAnimation _destroyAnimation = DestroyAnimation.Sprites;
 		
 		internal string BinDirectory
 		{
@@ -193,6 +195,21 @@ namespace CivOne
 			}
 		}
 
+		internal DestroyAnimation DestroyAnimation
+		{
+			get
+			{
+				return _destroyAnimation;
+			}
+			set
+			{
+				_destroyAnimation = value;
+				string saveValue = ((int)_destroyAnimation).ToString();
+				SetSetting("DestroyAnimation", saveValue);
+				Common.ReloadSettings = true;
+			}
+		}
+
 		// In game settings
 
 		internal bool Animations { get; set; }
@@ -290,6 +307,7 @@ namespace CivOne
 			bool revealWorld = false;
 			bool debugMenu = false;
 			int cursorType = (int)_cursorType;
+			int destroyAnimation = (int)_destroyAnimation;
 			
 			// Read settings
 			Int32.TryParse(GetSetting("GraphicsMode"), out graphicsMode);
@@ -300,6 +318,7 @@ namespace CivOne
 			revealWorld = (GetSetting("RevealWorld") == "1");
 			debugMenu = (GetSetting("DebugMenu") == "1");
 			Int32.TryParse(GetSetting("CursorType"), out cursorType);
+			Int32.TryParse(GetSetting("DestroyAnimation"), out destroyAnimation);
 			
 			// Set settings
 			if (graphicsMode > 0 && graphicsMode < 3) _graphicsMode = (GraphicsMode)graphicsMode;
@@ -311,6 +330,7 @@ namespace CivOne
 			_revealWorld = revealWorld;
 			_debugMenu = debugMenu;
 			_cursorType = (CursorType)cursorType;
+			_destroyAnimation = (DestroyAnimation)destroyAnimation;
 
 			// Set game options
 			EndOfTurn = false;
