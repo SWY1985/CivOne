@@ -29,7 +29,7 @@ namespace CivOne.Tasks
 
 		public override void Run()
 		{
-			if (_city.Owner != Game.PlayerNumber(Human))
+			if (Human != _city.Owner)
 			{
 				Console.WriteLine($"{_city.Name} builds {(_improvement as ICivilopedia).Name}.");
 				EndTask();

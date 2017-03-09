@@ -99,8 +99,8 @@ namespace CivOne.Screens
 				case 1:
 					AddLayer(_background);
 					AddLayer(_enemies[_enemy].Leader.GetPortrait(FaceState.Angry), 90, 0);
-					_canvas.DrawText($"{_enemies[_enemy].DestroyYear}: {Game.HumanPlayer.Civilization.NamePlural} destroy", 5, 20, 159, 152, TextAlign.Center);
-					_canvas.DrawText($"{_enemies[_enemy].DestroyYear}: {Game.HumanPlayer.Civilization.NamePlural} destroy", 5, 23, 159, 151, TextAlign.Center);
+					_canvas.DrawText($"{_enemies[_enemy].DestroyYear}: {Human.Civilization.NamePlural} destroy", 5, 20, 159, 152, TextAlign.Center);
+					_canvas.DrawText($"{_enemies[_enemy].DestroyYear}: {Human.Civilization.NamePlural} destroy", 5, 23, 159, 151, TextAlign.Center);
 					_canvas.DrawText($"{_enemies[_enemy].Civilization.Name} civilization!", 5, 20, 159, 168, TextAlign.Center);
 					_canvas.DrawText($"{_enemies[_enemy].Civilization.Name} civilization!", 5, 23, 159, 167, TextAlign.Center);
 					break;
@@ -109,8 +109,8 @@ namespace CivOne.Screens
 					if (_noiseCounter < -2) _timer = 90;
 					AddLayer(_background);
 					AddLayer(_overlay);
-					_canvas.DrawText($"{_enemies[_enemy].DestroyYear}: {Game.HumanPlayer.Civilization.NamePlural} destroy", 5, 20, 159, 152, TextAlign.Center);
-					_canvas.DrawText($"{_enemies[_enemy].DestroyYear}: {Game.HumanPlayer.Civilization.NamePlural} destroy", 5, 23, 159, 151, TextAlign.Center);
+					_canvas.DrawText($"{_enemies[_enemy].DestroyYear}: {Human.Civilization.NamePlural} destroy", 5, 20, 159, 152, TextAlign.Center);
+					_canvas.DrawText($"{_enemies[_enemy].DestroyYear}: {Human.Civilization.NamePlural} destroy", 5, 23, 159, 151, TextAlign.Center);
 					_canvas.DrawText($"{_enemies[_enemy].Civilization.Name} civilization!", 5, 20, 159, 168, TextAlign.Center);
 					_canvas.DrawText($"{_enemies[_enemy].Civilization.Name} civilization!", 5, 23, 159, 167, TextAlign.Center);
 					break;
@@ -148,7 +148,7 @@ namespace CivOne.Screens
 				_noiseMap[x, y] = (byte)Common.Random.Next(1, NOISE_COUNT);
 			}
 
-			_enemies = Game.Players.Where(x => Game.PlayerNumber(x) != 0 && x != Game.Human).OrderBy(x => x.DestroyTurn).Select(x =>
+			_enemies = Game.Players.Where(x => x != 0 && x != Game.Human).OrderBy(x => x.DestroyTurn).Select(x =>
 			new Enemy()
 			{
 				DestroyYear = Common.YearString((ushort)x.DestroyTurn),

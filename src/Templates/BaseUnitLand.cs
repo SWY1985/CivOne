@@ -182,7 +182,7 @@ namespace CivOne.Templates
 					TribalHut(HutResult.MetalDeposits);
 					break;
 				case 3:
-					if (NearestCity < 4 || !Game.Instance.GetCities().Any(c => c.Owner == Game.Instance.PlayerNumber(Player)))
+					if (NearestCity < 4 || !Game.Instance.GetCities().Any(c => Player == c.Owner))
 					{
 						TribalHut(HutResult.FriendlyTribe);
 						break;

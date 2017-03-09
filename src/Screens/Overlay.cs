@@ -44,7 +44,7 @@ namespace CivOne.Screens
 		{
 			get
 			{
-				IUnit startUnit = Game.GetUnits().First(x => x.Owner == Game.PlayerNumber(Game.Human));
+				IUnit startUnit = Game.GetUnits().First(x => Game.Human == x.Owner);
 				IUnit activeUnit = Game.ActiveUnit;
 				((GamePlay)Common.Screens.First(x => x is GamePlay)).HasUpdate(0);
 				int offset = 0;

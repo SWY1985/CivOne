@@ -8,7 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.Linq;
+using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -43,7 +43,7 @@ namespace CivOne.Templates
 		
 		public BaseReport(string title, byte backgroundColour)
 		{
-			bool modernGovernment = Human.Advances.Any(a => a.Id == (int)Advance.Invention);
+			bool modernGovernment = Human.HasAdvance<Invention>();
 			for (int i = 0; i < 4; i++)
 			{
 				Portrait[i] = Icons.GovernmentPortrait(Human.Government, (Advisor)Enum.Parse(typeof(Advisor), $"{i}"), modernGovernment); 

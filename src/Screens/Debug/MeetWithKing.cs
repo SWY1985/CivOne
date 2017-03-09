@@ -64,7 +64,7 @@ namespace CivOne.Screens.Debug
 			Cursor = MouseCursor.Pointer;
 
 			_canvas = new Picture(320, 200, Common.Screens.Last().Canvas.OriginalColours);
-			_players = Game.Players.Where(p => Game.PlayerNumber(p) != 0 && p != Human).ToArray();
+			_players = Game.Players.Where(p => p != 0 && p != Human).ToArray();
 
 			int fontHeight = Resources.Instance.GetFontHeight(0);
 			int hh = (fontHeight * (_players.Length + 1)) + 5;
