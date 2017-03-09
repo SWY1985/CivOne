@@ -26,6 +26,11 @@ namespace CivOne.Tasks
 
 		protected override bool Step()
 		{
+			if (_unit != null)
+			{
+				AI.Move(_unit);
+				EndTask();
+			}
 			if (_endTurn && _step-- <= 0)
 			{
 				Game.EndTurn();
@@ -42,7 +47,7 @@ namespace CivOne.Tasks
 			}
 			else if (_unit != null)
 			{
-				AI.Move(_unit);
+				return;
 			}
 			else if (_endTurn)
 			{
