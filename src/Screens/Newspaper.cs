@@ -8,7 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.Linq;
+using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.IO;
@@ -52,7 +52,7 @@ namespace CivOne.Screens
 		{
 			Cursor = MouseCursor.None;
 
-			bool modernGovernment = Human.Advances.Any(a => a.Id == (int)Advance.Invention);
+			bool modernGovernment = Human.HasAdvance<Invention>();
 			Color[] palette = Resources.Instance.LoadPIC("SP257").Palette;
 
 			Picture[] governmentPortraits = new Picture[4];

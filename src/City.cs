@@ -615,7 +615,7 @@ namespace CivOne
 			{
 				Food = 0;
 				Size--;
-				if (Owner == Game.Instance.PlayerNumber(Game.Instance.HumanPlayer))
+				if (Human == Owner)
 				{
 					GameTask.Enqueue(Message.Newspaper(this, "Food storage exhausted", $"in {Name}!", "Famine feared."));
 				}
@@ -647,7 +647,7 @@ namespace CivOne
 			{
 				int maxDistance = Units.Max(u => Common.DistanceToTile(X, Y, u.X, u.Y));
 				IUnit unit = Units.Last(u => Common.DistanceToTile(X, Y, u.X, u.Y) == maxDistance);
-				if (Owner == Game.PlayerNumber(Human))
+				if (Human == Owner)
 				{
 					Message message = Message.DisbandUnit(this, unit);
 					message.Done += (s, a) => {
@@ -679,7 +679,7 @@ namespace CivOne
 					IUnit unit = Game.Instance.CreateUnit((CurrentProduction as IUnit).Type, X, Y, Owner);
 					unit.SetHome();
 					unit.Veteran = (_buildings.Any(b => (b is Barracks)));
-					if (Owner == Game.PlayerNumber(Game.Human) && (unit is Settlers || unit is Diplomat || unit is Caravan))
+					if (Human == Owner && (unit is Settlers || unit is Diplomat || unit is Caravan))
 					{
 						GameTask advisorMessage = Message.Advisor(Advisor.Defense, true, $"{this.Name} builds {unit.Name}.");
 						advisorMessage.Done += (s, a) => GameTask.Insert(Show.CityManager(this));
@@ -736,7 +736,7 @@ namespace CivOne
 			BuildingSold = false;
 			GameTask.Enqueue(new ProcessScience(Player));
 
-			if (Player == Game.Human) return;
+			if (Player == Human) return;
 			
 			AI.CityProduction(this);
 		}

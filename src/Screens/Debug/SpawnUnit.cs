@@ -143,7 +143,7 @@ namespace CivOne.Screens.Debug
 			{
 				if (_unitX < 0 || _unitY < 0) return false;
 				ITile tile = Map[UnitX, UnitY];
-				if (tile.Units.Any(x => x.Owner != Game.PlayerNumber(_selectedPlayer))) return false;
+				if (tile.Units.Any(x => _selectedPlayer != x.Owner)) return false;
 				if (_selectedUnit.Class == UnitClass.Land && tile.Type == Terrain.Ocean)
 				{
 					if (!tile.Units.Any(x => x.Class == UnitClass.Water && x is IBoardable)) return false;
@@ -154,7 +154,7 @@ namespace CivOne.Screens.Debug
 				}
 				if (_selectedUnit.Class == UnitClass.Water && tile.Type != Terrain.Ocean)
 				{
-					return (tile.City != null && tile.City.Owner == Game.PlayerNumber(_selectedPlayer));
+					return (tile.City != null && _selectedPlayer == tile.City.Owner);
 				}
 				return true;
 			}

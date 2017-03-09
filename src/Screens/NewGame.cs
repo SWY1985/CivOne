@@ -249,7 +249,7 @@ namespace CivOne.Screens
 
 				GamePlay gamePlay = new GamePlay();
 				Common.AddScreen(gamePlay);
-				IUnit startUnit = Game.GetUnits().First(x => x.Owner == Game.PlayerNumber(Game.Human));
+				IUnit startUnit = Game.GetUnits().First(x => Game.Human == x.Owner);
 				gamePlay.CenterOnPoint(startUnit.X, startUnit.Y);
 				
 				if (Game.Difficulty == 0)

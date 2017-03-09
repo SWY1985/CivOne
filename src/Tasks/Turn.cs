@@ -46,7 +46,7 @@ namespace CivOne.Tasks
 			}
 			else if (_endTurn)
 			{
-				if (Game.PlayerNumber(Game.CurrentPlayer) == Game.PlayerNumber(Human))
+				if (Game.CurrentPlayer.IsHuman)
 				{
 					_step = TURN_TIME;
 					return;

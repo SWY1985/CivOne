@@ -138,7 +138,7 @@ namespace CivOne
 		{
 			get
 			{
-				return Game.Instance.GetCities().Where(c => c.Owner == _civilization.PreferredPlayerNumber).ToArray();
+				return Game.Instance.GetCities().Where(c => this == c.Owner).ToArray();
 			}
 		}
 
@@ -356,13 +356,13 @@ namespace CivOne
 		{
 			get
 			{
-				if (Game.PlayerNumber(this) == 0) return false;
+				if (this == 0) return false;
 				if (_destroyTurn != -1) return true;
-				if (Cities.Length == 0 && !Game.GetUnits().Any(x => x.Owner == Game.PlayerNumber(this) && (x is Settlers && x.Home == null)))
+				if (Cities.Length == 0 && !Game.GetUnits().Any(x => this == x.Owner && (x is Settlers && x.Home == null)))
 				{
 					while (true)
 					{
-						IUnit unit = Game.GetUnits().FirstOrDefault(x => x.Owner == Game.PlayerNumber(this));
+						IUnit unit = Game.GetUnits().FirstOrDefault(x => this == x.Owner);
 						if (unit == null) break;
 						Game.DisbandUnit(unit);
 					}
@@ -412,7 +412,7 @@ namespace CivOne
 
 		public void NewTurn()
 		{
-			if (!Game.GetCities().Any(x => x.Owner == Game.Instance.PlayerNumber(this)) && !Game.Instance.GetUnits().Any(x => x.Owner == Game.Instance.PlayerNumber(this)))
+			if (!Game.GetCities().Any(x => this == x.Owner) && !Game.Instance.GetUnits().Any(x => this == x.Owner))
 			{
 				GameTask.Enqueue(Turn.GameOver(this));
 			}
@@ -422,6 +422,40 @@ namespace CivOne
 				GameTask.Enqueue(Show.ChooseGovernment);
 			}
 			if (_anarchy > 0) _anarchy--;
+		}
+
+		public override bool Equals (object obj)
+		{
+			if (obj is byte)
+				return Game.PlayerNumber(this) == (byte)obj;
+			if (obj is Player)
+				return Game.PlayerNumber(this) == Game.PlayerNumber(obj as Player);
+			return false;
+		}
+		
+		public override int GetHashCode()
+		{
+			return Game.PlayerNumber(this);
+		}
+
+		public static explicit operator Player(byte playerNumber)
+		{
+			return Game.GetPlayer(playerNumber);
+		}
+
+		public static explicit operator byte(Player player)
+		{
+			return Game.PlayerNumber(player);
+		}
+
+		public static bool operator ==(Player p1, byte p2)
+		{
+			return Game.PlayerNumber(p1) == p2;
+		}
+
+		public static bool operator !=(Player p1, byte p2)
+		{
+			return Game.PlayerNumber(p1) != p2;
 		}
 		
 		public Player(ICivilization civilization, string customLeaderName = null, string customTribeName = null, string customTribeNamePlural = null)

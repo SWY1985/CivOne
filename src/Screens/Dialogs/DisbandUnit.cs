@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Linq;
+using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
@@ -54,7 +55,7 @@ namespace CivOne.Screens.Dialogs
 
 		public DisbandUnit(City city, IUnit unit) : base(58, 72, TextPictures(city, unit).Max(b => b.Width) + 52, 62)
 		{
-			bool modernGovernment = Human.Advances.Any(a => a.Id == (int)Advance.Invention);
+			bool modernGovernment = Human.HasAdvance<Invention>();
 			Picture governmentPortrait = Icons.GovernmentPortrait(Human.Government, Advisor.Defense, modernGovernment);
 			
 			Color[] palette = Resources.Instance.LoadPIC("SP257").Palette;

@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Linq;
+using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Templates;
@@ -38,7 +39,7 @@ namespace CivOne.Screens.Dialogs
 			Cursor = MouseCursor.None;
 
 			string[] advisorNames = new string[] { "Defense Minister", "Domestic Advisor", "Foreign Minister", "Science Advisor" };
-			bool modernGovernment = Human.Advances.Any(a => a.Id == (int)Advance.Invention);
+			bool modernGovernment = Human.HasAdvance<Invention>();
 			Picture governmentPortrait = Icons.GovernmentPortrait(Human.Government, advisor, modernGovernment);
 			
 			Color[] palette = Resources.Instance.LoadPIC("SP257").Palette;

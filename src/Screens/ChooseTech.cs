@@ -9,6 +9,7 @@
 
 using System;
 using System.Linq;
+using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
@@ -77,7 +78,7 @@ namespace CivOne.Screens
 			
 			Cursor = MouseCursor.Pointer;
 
-			bool modernGovernment = Human.Advances.Any(a => a.Id == (int)Advance.Invention);
+			bool modernGovernment = Human.HasAdvance<Invention>();
 			Picture governmentPortrait = Icons.GovernmentPortrait(Human.Government, Advisor.Science, modernGovernment);
 			Color[] palette = Resources.Instance.LoadPIC("SP257").Palette;
 			for (int i = 144; i < 256; i++)

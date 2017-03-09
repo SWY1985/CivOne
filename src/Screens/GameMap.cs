@@ -112,7 +112,7 @@ namespace CivOne.Screens
 			}
 			else if (activeUnit != _lastUnit && ShouldCenter())
 			{
-				if (activeUnit.Owner != Game.PlayerNumber(Human))
+				if (Human != activeUnit.Owner)
 				{
 					if (!Settings.RevealWorld && !Human.Visible(activeUnit.X, activeUnit.Y))
 					{
@@ -237,7 +237,7 @@ namespace CivOne.Screens
 						continue;
 					}
 
-					if (drawUnit.Owner == Game.PlayerNumber(Human) && (gameTick % 4) >= 2 && !GameTask.Any())
+					if (Human == drawUnit.Owner && (gameTick % 4) >= 2 && !GameTask.Any())
 					{
 						// Unit is owned by human player, blink status is off and no tasks are running. Do not draw unit.
 						continue;
@@ -254,7 +254,7 @@ namespace CivOne.Screens
 					AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position.X - 1, t.Position.Y - 1);
 				}
 				
-				if (Game.MovingUnit != null && (Settings.RevealWorld || Game.MovingUnit.Owner == Game.PlayerNumber(Game.Human) ||Game.Human.Visible(Game.MovingUnit.Tile)))
+				if (Game.MovingUnit != null && (Settings.RevealWorld || Game.Human == Game.MovingUnit.Owner ||Game.Human.Visible(Game.MovingUnit.Tile)))
 				{
 					IUnit unit = Game.MovingUnit;
 					if (renderTiles.Any(t => (t.Tile.X == unit.X && t.Tile.Y == unit.Y)))
@@ -467,11 +467,11 @@ namespace CivOne.Screens
 			}
 			if ((args.Buttons & MouseButton.Left) > 0)
 			{
-				if (city != null && (city.Owner == Game.PlayerNumber(Human) || Settings.RevealWorld))
+				if (city != null && (Human == city.Owner || Settings.RevealWorld))
 				{
 					Common.AddScreen(new CityManager(city));
 				}
-				else if (Map[xx, yy].Units.Any(u => u.Owner == Game.PlayerNumber(Human)))
+				else if (Map[xx, yy].Units.Any(u => Human == u.Owner))
 				{
 					GameTask.Enqueue(Show.UnitStack(xx, yy));
 				}
