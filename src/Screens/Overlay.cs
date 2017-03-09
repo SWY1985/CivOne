@@ -19,6 +19,8 @@ namespace CivOne.Screens
 {
 	internal class Overlay : BaseScreen
 	{
+		private const float FADE_STEP = 0.1F;
+
 		private struct HelpLabel
 		{
 			public int X, Y;
@@ -39,6 +41,52 @@ namespace CivOne.Screens
 		private bool _showTerrain = false;
 
 		private int _x, _y;
+
+		private bool _closing = false;
+
+		private float _fadeStep = 1.0F;
+		
+		private float FadeStep
+		{
+			get
+			{
+				return _fadeStep;
+			}
+			set
+			{
+				_fadeStep = value;
+				if (_fadeStep < 0.0F) _fadeStep = 0.0F;
+				if (_fadeStep > 1.0F) _fadeStep = 1.0F;
+			}
+		}
+		
+		private Color FadeColour(Color colour1, Color colour2)
+		{
+			int r = (int)(((float)colour1.R * (1.0F - _fadeStep)) + ((float)colour2.R * _fadeStep));
+			int g = (int)(((float)colour1.G * (1.0F - _fadeStep)) + ((float)colour2.G * _fadeStep));
+			int b = (int)(((float)colour1.B * (1.0F - _fadeStep)) + ((float)colour2.B * _fadeStep));
+			return new Color(r, g, b);
+		}
+		
+		private void FadeColours()
+		{
+			if (Settings.GraphicsMode != GraphicsMode.Graphics256) return;
+			
+			Color[] palette = _canvas.Palette;
+			for (int i = 1; i < 256; i++)
+				palette[i] = FadeColour(Color.Black, _canvas.OriginalColours[i]);
+			_canvas.SetPalette(palette);
+		}
+		
+		private bool HandleScreenFadeOut()
+		{
+			if (FadeStep > 0.0F)
+			{
+				FadeStep -= FADE_STEP;
+				FadeColours();
+			}
+			return true;
+		}
 
 		private IEnumerable<HelpLabel> HelpLabels
 		{
@@ -92,6 +140,13 @@ namespace CivOne.Screens
 		
 		public override bool HasUpdate(uint gameTick)
 		{
+			if (_closing)
+			{
+				HandleScreenFadeOut();
+				if (_fadeStep == 0.0F) Destroy();
+				return true;
+			}
+
 			if (_update)
 			{
 				if (_interfaceHelp)
@@ -143,12 +198,22 @@ namespace CivOne.Screens
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
+			if (_interfaceHelp)
+			{
+				_closing = true;
+				return true;
+			}
 			Destroy();
 			return true;
 		}
 		
 		public override bool MouseDown(ScreenEventArgs args)
 		{
+			if (_interfaceHelp)
+			{
+				_closing = true;
+				return true;
+			}
 			Destroy();
 			return true;
 		}
