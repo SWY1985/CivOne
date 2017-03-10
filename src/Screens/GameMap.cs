@@ -306,6 +306,10 @@ namespace CivOne.Screens
 			{
 				viewRange = (Game.ActiveUnit as BaseUnitSea).Range;
 			}
+			if (Game.ActiveUnit.Class == UnitClass.Air)
+			{
+				viewRange = 2;
+			}
 			return (!Map.QueryMapPart(_x + viewRange, _y + viewRange, (_tilesX - (viewRange * 2)), (_tilesY - (viewRange * 2))).Any(t => t.X == Game.ActiveUnit.X + relX && t.Y == Game.ActiveUnit.Y + relY));
 		}
 
