@@ -1311,6 +1311,7 @@ namespace CivOne
 					// Map position is fixed, don't check anything
 					x = _players[player].Civilization.StartX;
 					y = _players[player].Civilization.StartY;
+					if (Map[x, y].Hut) Map[x, y].Hut = false;
 				}
 				else
 				{
