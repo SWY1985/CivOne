@@ -213,6 +213,7 @@ namespace CivOne.Screens.Debug
 				
 				unit.Explore();
 				_hasUpdate = true;
+				Common.GamePlay.RefreshMap();
 			}
 			if ((args.Buttons & MouseButton.Left) > 0 || !ValidTile)
 			{
