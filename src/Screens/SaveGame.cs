@@ -77,6 +77,7 @@ namespace CivOne.Screens
 		private readonly Color[] _palette;
 		private char _driveLetter = 'C';
 		private readonly int _gameId;
+		private readonly int _border = Common.Random.Next(2);
 		private bool _update = true;
 		private Menu _menu;
 		
@@ -103,6 +104,8 @@ namespace CivOne.Screens
 		{
 			_canvas = new Picture(320, 200, _palette);
 			_canvas.FillRectangle(15, 0, 0, 320, 200);
+			DrawBorder(_border);
+
 			_canvas.DrawText("Which drive contains your", 0, 5, 92, 72, TextAlign.Left);
 			_canvas.DrawText("Save Game disk?", 0, 5, 104, 80, TextAlign.Left);
 			
@@ -121,6 +124,7 @@ namespace CivOne.Screens
 				{
 					_canvas = new Picture(320, 200, _palette);
 					_canvas.FillRectangle(15, 0, 0, 320, 200);
+					DrawBorder(_border);
 					AddLayer(_menu);
 					return true;
 				}
