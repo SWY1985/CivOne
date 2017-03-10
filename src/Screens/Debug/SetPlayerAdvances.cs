@@ -26,6 +26,8 @@ namespace CivOne.Screens.Debug
 
 		private int _index = 0;
 
+		private int _selected = -1;
+
 		private Player _selectedPlayer = null;
 
 		public string Value { get; private set; }
@@ -80,7 +82,10 @@ namespace CivOne.Screens.Debug
 
 			_advanceSelect.Cancel += PlayerAdvances_Cancel;
 			_advanceSelect.MissClick += PlayerAdvances_Cancel;
-			_advanceSelect.ActiveItem = (_advanceSelect.Items.Count() - 1);
+			if (_selected == -1)
+				_advanceSelect.ActiveItem = (_advanceSelect.Items.Count() - 1);
+			else
+				_advanceSelect.ActiveItem = (_selected + 1);
 		}
 
 		private void CivSelect_Accept(object sender, EventArgs args)
@@ -100,6 +105,7 @@ namespace CivOne.Screens.Debug
 		private void PlayerAdvances_Accept(object sender, EventArgs args)
 		{
 			IAdvance advance = _advances[_advanceSelect.ActiveItem + _index];
+			_selected = _advanceSelect.ActiveItem;
 			if (_selectedPlayer.HasAdvance(advance))
 				_selectedPlayer.DeleteAdvance(advance);
 			else

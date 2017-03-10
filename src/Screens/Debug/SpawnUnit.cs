@@ -14,7 +14,6 @@ using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Templates;
-using CivOne.Wonders;
 
 namespace CivOne.Screens.Debug
 {
