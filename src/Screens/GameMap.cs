@@ -301,7 +301,12 @@ namespace CivOne.Screens
 		{
 			if (Game.ActiveUnit == null)
 				return false;
-			return (!Map.QueryMapPart(_x + 1, _y + 1, (_tilesX - 2), (_tilesY - 2)).Any(t => t.X == Game.ActiveUnit.X + relX && t.Y == Game.ActiveUnit.Y + relY));
+			int viewRange = 1;
+			if (Game.ActiveUnit.Class == UnitClass.Water)
+			{
+				viewRange = (Game.ActiveUnit as BaseUnitSea).Range;
+			}
+			return (!Map.QueryMapPart(_x + viewRange, _y + viewRange, (_tilesX - (viewRange * 2)), (_tilesY - (viewRange * 2))).Any(t => t.X == Game.ActiveUnit.X + relX && t.Y == Game.ActiveUnit.Y + relY));
 		}
 
 		private bool MoveTo(int relX, int relY)
