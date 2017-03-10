@@ -22,8 +22,6 @@ namespace CivOne.Screens
 {
 	internal class NewGame : BaseScreen
 	{
-		private const float FADE_STEP = 0.1F;
-
 		private ICivilization[] _tribesAvailable;
 		private string[] _menuItemsDifficulty, _menuItemsCompetition, _menuItemsTribes;
 		
@@ -31,50 +29,6 @@ namespace CivOne.Screens
 		private int _difficulty = -1, _competition = -1, _tribe = -1;
 		private string _leaderName = null, _tribeName = null, _tribeNamePlural = null;
 		private bool _done = false, _showIntroText = false;
-
-		private float _fadeStep = 1.0F;
-		
-		private float FadeStep
-		{
-			get
-			{
-				return _fadeStep;
-			}
-			set
-			{
-				_fadeStep = value;
-				if (_fadeStep < 0.0F) _fadeStep = 0.0F;
-				if (_fadeStep > 1.0F) _fadeStep = 1.0F;
-			}
-		}
-		
-		private Color FadeColour(Color colour1, Color colour2)
-		{
-			int r = (int)(((float)colour1.R * (1.0F - _fadeStep)) + ((float)colour2.R * _fadeStep));
-			int g = (int)(((float)colour1.G * (1.0F - _fadeStep)) + ((float)colour2.G * _fadeStep));
-			int b = (int)(((float)colour1.B * (1.0F - _fadeStep)) + ((float)colour2.B * _fadeStep));
-			return new Color(r, g, b);
-		}
-		
-		private void FadeColours()
-		{
-			if (Settings.GraphicsMode != GraphicsMode.Graphics256) return;
-			
-			Color[] palette = _canvas.Palette;
-			for (int i = 1; i < 256; i++)
-				palette[i] = FadeColour(Color.Black, _canvas.OriginalColours[i]);
-			_canvas.SetPalette(palette);
-		}
-		
-		private bool HandleScreenFadeOut()
-		{
-			if (FadeStep > 0.0F)
-			{
-				FadeStep -= FADE_STEP;
-				FadeColours();
-			}
-			return true;
-		}
 		
 		private Menu CreateMenu(string title, EventHandler setChoice, params string[] menuTexts)
 		{
@@ -262,9 +216,8 @@ namespace CivOne.Screens
 				_showIntroText = true;
 				return true;
 			}
-			else if (_fadeStep > 0)
+			else if (HandleScreenFadeOut())
 			{
-				HandleScreenFadeOut();
 				return true;
 			}
 			else
