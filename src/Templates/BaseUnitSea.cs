@@ -20,6 +20,14 @@ namespace CivOne.Templates
 	{
 		private readonly int _range;
 
+		public int Range
+		{
+			get
+			{
+				return _range;
+			}
+		}
+
 		protected override void MovementDone(ITile previousTile)
 		{
 			if ((this is IBoardable) && previousTile.Units.Any(u => u.Class == UnitClass.Land))
