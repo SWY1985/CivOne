@@ -229,32 +229,8 @@ namespace CivOne.Screens
 				ICivilization civ = _tribesAvailable[_tribe];
 				Game.CreateGame(_difficulty, _competition, civ, _leaderName, _tribeName, _tribeNamePlural);
 				
-				Picture[] borders = new Picture[8];
-				int index = 0;
-				for (int y = 0; y < 2; y++)
-				{
-					for (int x = 0; x < 4; x++)
-					{
-						borders[index] = Resources.Instance.GetPart("SP299", 224 + (8 * x), 120 + (8 * y), 8, 8);
-						index++;
-					}
-				}
-				
 				_canvas.FillRectangle(15, 0, 0, 320, 200);
-				for (int x = 8; x < 312; x += 8)
-				{
-					AddLayer(borders[4], x, 0);
-					AddLayer(borders[6], x, 192);
-				}
-				for (int y = 8; y < 192; y += 8)
-				{
-					AddLayer(borders[7], 0, y);
-					AddLayer(borders[5], 312, y);
-				}
-				AddLayer(borders[0], 0, 0);
-				AddLayer(borders[1], 312, 0);
-				AddLayer(borders[2], 0, 192);
-				AddLayer(borders[3], 312, 192);
+				DrawBorder(Common.Random.Next(2));
 				
 				AddLayer(DifficultyPicture, 134, 20);
 				
