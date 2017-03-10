@@ -11,6 +11,7 @@ using System;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.GFX;
+using CivOne.Interfaces;
 using CivOne.Templates;
 
 namespace CivOne.Screens
@@ -19,6 +20,8 @@ namespace CivOne.Screens
 	{
 		private int _landMass = -1, _temperature = -1, _climate = -1, _age = -1;
 		private bool _hasUpdate = true;
+
+		private bool _closing = false;
 		
 		private int GetMenuWidth(string title, string[] items)
 		{
@@ -85,6 +88,17 @@ namespace CivOne.Screens
 		
 		public override bool HasUpdate(uint gameTick)
 		{
+			if (_closing)
+			{
+				if (!HandleScreenFadeOut())
+				{
+					Destroy();
+					Map.Generate(_landMass, _temperature, _climate, _age);
+					Common.AddScreen(new Intro());
+				}
+				return true;
+			}
+			
 			if (!_hasUpdate) return false;
 			
 			if (_landMass < 0) AddMenu(CreateMenu(6, "LAND MASS:", SetLandMass, "Small", "Normal", "Large"));
@@ -93,9 +107,12 @@ namespace CivOne.Screens
 			else if (_age < 0) AddMenu(CreateMenu(156, "AGE:", SetAge, "3 billion years", "4 billion years", "5 billion years"));
 			else
 			{
-				Destroy();
-				Map.Generate(_landMass, _temperature, _climate, _age);
-				Common.AddScreen(new Intro());
+				_closing = true;
+				Cursor = MouseCursor.None;
+				foreach (IScreen menu in _menus)
+					AddLayer(menu.Canvas);
+				CloseMenus();
+				return true;
 			}
 			
 			_hasUpdate = false;

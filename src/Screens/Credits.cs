@@ -224,10 +224,7 @@ namespace CivOne.Screens
 		{
 			
 			Console.WriteLine("Main Menu: Start a New Game");
-			// Destroy();
 			Map.Generate();
-			// Common.AddScreen(new Intro());
-			// _nextScreen = new Intro();
 			StartIntro();
 		}
 		
@@ -243,10 +240,7 @@ namespace CivOne.Screens
 		private void Earth(object sender, EventArgs args)
 		{
 			Console.WriteLine("Main Menu: EARTH");
-			// Destroy();
 			Map.LoadMap();
-			// Common.AddScreen(new Intro());
-			// _nextScreen = new Intro();
 			StartIntro();
 		}
 		
