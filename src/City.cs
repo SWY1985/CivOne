@@ -232,7 +232,8 @@ namespace CivOne
 			get
 			{
 				short luxuries = TradeLuxuries;
-				if (_buildings.Any(b => (b is Bank))) luxuries += (short)Math.Floor((double)luxuries * 0.5);
+				if (HasBuilding<MarketPlace>()) luxuries += (short)Math.Floor((double)luxuries * 0.5);
+				if (HasBuilding<Bank>()) luxuries += (short)Math.Floor((double)luxuries * 0.5);
 				luxuries += (short)(Citizens.Count(c => c == Citizen.Entertainer) * 2);
 				return luxuries;
 			}
@@ -243,8 +244,8 @@ namespace CivOne
 			get
 			{
 				short taxes = TradeTaxes;
-				if (_buildings.Any(b => (b is MarketPlace))) taxes += (short)Math.Floor((double)taxes * 0.5);
-				if (_buildings.Any(b => (b is Bank))) taxes += (short)Math.Floor((double)taxes * 0.5);
+				if (HasBuilding<MarketPlace>()) taxes += (short)Math.Floor((double)taxes * 0.5);
+				if (HasBuilding<Bank>()) taxes += (short)Math.Floor((double)taxes * 0.5);
 				taxes += (short)(Citizens.Count(c => c == Citizen.Taxman) * 2);
 				return taxes;
 			}
