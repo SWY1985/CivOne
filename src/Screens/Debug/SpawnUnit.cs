@@ -14,6 +14,7 @@ using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Templates;
+using CivOne.Wonders;
 
 namespace CivOne.Screens.Debug
 {
@@ -22,8 +23,6 @@ namespace CivOne.Screens.Debug
 		private readonly IUnit[] _units = Reflect.GetUnits().OrderBy(x => (int)x.Type).ToArray();
 
 		private readonly Menu _civSelect;
-
-		private readonly GamePlay _gamePlay;
 
 		private Menu _unitSelect;
 
@@ -45,7 +44,7 @@ namespace CivOne.Screens.Debug
 		{
 			get
 			{
-				int output = _gamePlay.X + _unitX;
+				int output = Common.GamePlay.X + _unitX;
 				while (output < 0) output += Map.WIDTH;
 				while (output >= Map.WIDTH) output -= Map.WIDTH;
 				return output;
@@ -56,7 +55,7 @@ namespace CivOne.Screens.Debug
 		{
 			get
 			{
-				return _gamePlay.Y + _unitY;
+				return Common.GamePlay.Y + _unitY;
 			}
 		}
 
@@ -144,6 +143,10 @@ namespace CivOne.Screens.Debug
 				if (_unitX < 0 || _unitY < 0) return false;
 				ITile tile = Map[UnitX, UnitY];
 				if (tile.Units.Any(x => _selectedPlayer != x.Owner)) return false;
+				if (_selectedUnit.Class == UnitClass.Land && tile.City != null)
+				{
+					return (_selectedPlayer == tile.City.Owner);
+				}
 				if (_selectedUnit.Class == UnitClass.Land && tile.Type == Terrain.Ocean)
 				{
 					if (!tile.Units.Any(x => x.Class == UnitClass.Water && x is IBoardable)) return false;
@@ -159,6 +162,31 @@ namespace CivOne.Screens.Debug
 				return true;
 			}
 		}
+
+		private void SidebarHint()
+		{
+			int xx = (Settings.RightSideBar ? 240 : 0);
+			_canvas.FillRectangle(15, xx, 153, 79, 1);
+			_canvas.FillRectangle(9, xx, 154, 80, 46);
+			_canvas.FillRectangle(1, xx + 1, 155, 78, 44);
+			_canvas.DrawText("Left click:", 1, 15, xx + 3, 157);
+			_canvas.DrawText("One unit", 1, 15, xx + 8, 164);
+			_canvas.DrawText("Right click:", 1, 15, xx + 3, 171);
+			_canvas.DrawText("Multiple units", 1, 15, xx + 8, 178);
+			_canvas.DrawText("Escape key:", 1, 15, xx + 3, 185);
+			_canvas.DrawText("Cancel", 1, 15, xx + 8, 192);
+		}
+		
+		public override bool KeyDown(KeyboardEventArgs args)
+		{
+			switch (args.Key)
+			{
+				case Key.Escape:
+					Destroy();
+					return true;
+			}
+			return false;
+		}
 		
 		public override bool MouseDown(ScreenEventArgs args)
 		{
@@ -166,10 +194,31 @@ namespace CivOne.Screens.Debug
 
 			if (ValidTile)
 			{
-				IUnit unit = Game.CreateUnit(_selectedUnit.Type, UnitX, UnitY, Game.PlayerNumber(_selectedPlayer), true);
+				IUnit unit = Game.CreateUnit(_selectedUnit.Type, UnitX, UnitY, Game.PlayerNumber(_selectedPlayer), false);
 				if (unit.Class == UnitClass.Land && Map[UnitX, UnitY].Type == Terrain.Ocean) unit.Sentry = true;
+
+				if (Game.PlayerNumber(_selectedPlayer) < Game.PlayerNumber(Game.CurrentPlayer))
+				{
+					unit.MovesLeft = 0;
+				}
+
+				if (unit.Class == UnitClass.Land && Map[UnitX, UnitY].Hut)
+				{
+					Map[UnitX, UnitY].Hut = false;
+				}
+
+				if (unit.Class == UnitClass.Air)
+				{
+					(unit as BaseUnitAir).FuelLeft = (unit as BaseUnitAir).TotalFuel;
+				}
+				
+				unit.Explore();
+				_hasUpdate = true;
 			}
-			Destroy();
+			if ((args.Buttons & MouseButton.Left) > 0 || !ValidTile)
+			{
+				Destroy();
+			}
 			return true;
 		}
 
@@ -210,7 +259,8 @@ namespace CivOne.Screens.Debug
 
 				if (xx > 320 || yy > 200) return false;
 
-				_canvas = new Picture(320, 200, Common.Screens.Last().Canvas.OriginalColours);
+				_canvas = new Picture(320, 200, Common.GamePlay.Palette);
+				SidebarHint();
 				Cursor = ValidTile ? MouseCursor.Goto : MouseCursor.Pointer;
 				if (!ValidTile) return _hasUpdate;
 				_canvas.AddLayer(_selectedUnit.GetUnit(Game.PlayerNumber(_selectedPlayer), false), xx, yy);
@@ -224,8 +274,7 @@ namespace CivOne.Screens.Debug
 		{
 			Cursor = MouseCursor.Pointer;
 
-			_canvas = new Picture(320, 200, Common.Screens.Last().Canvas.OriginalColours);
-			_gamePlay = (GamePlay)Common.Screens.First(s => (s is GamePlay));
+			_canvas = new Picture(320, 200, Common.GamePlay.Palette);
 
 			int fontHeight = Resources.Instance.GetFontHeight(0);
 			int hh = (fontHeight * (Game.Players.Count() + 1)) + 5;

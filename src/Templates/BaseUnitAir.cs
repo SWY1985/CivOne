@@ -21,7 +21,7 @@ namespace CivOne.Templates
 	internal abstract class BaseUnitAir : BaseUnit
 	{
 		public int TotalFuel { get; protected set; }
-		public int FuelLeft { get; protected set; }
+		public int FuelLeft { get; set; }
 
 		private void HandleFuel()
 		{
