@@ -35,6 +35,8 @@ namespace CivOne.Screens
 		private bool _update = true;
 		private int _startIndex = 0;
 		private byte _pageNumber = 1;
+
+		private bool _closing = false;
 		
 		private void DrawPageTitle()
 		{
@@ -80,6 +82,15 @@ namespace CivOne.Screens
 		
 		public override bool HasUpdate(uint gameTick)
 		{
+			if (_closing)
+			{
+				if((_singlePage != null && !_discovered) || !HandleScreenFadeOut())
+				{
+					Close();
+				}
+				return true;
+			}
+
 			if (!_update) return false;
 			
 			if (_singlePage == null)
@@ -122,19 +133,22 @@ namespace CivOne.Screens
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
+			if (_closing) return false;
 			if (_singlePage != null && NextPage())
 			{
 				return true;
 			}
-			Close();
+			_closing = true;
 			return true;
 		}
 		
 		public override bool MouseDown(ScreenEventArgs args)
 		{
+			if (_closing) return false;
 			if (_singlePage != null)
 			{
-				if (!NextPage()) Close();
+				if (!NextPage()) 
+					_closing = true;
 				return true;
 			}
 			
@@ -150,7 +164,7 @@ namespace CivOne.Screens
 				}
 				else
 				{
-					Close();
+					_closing = true;
 					return true;
 				}
 			}
