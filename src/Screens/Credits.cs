@@ -42,6 +42,8 @@ namespace CivOne.Screens
 		private int _introLine = -1;
 		
 		private IScreen _overlay = null;
+
+		private IScreen _nextScreen = null;
 		
 		private void HandleIntroText()
 		{
@@ -69,6 +71,17 @@ namespace CivOne.Screens
 		
 		public override bool HasUpdate(uint gameTick)
 		{
+			if (_nextScreen != null)
+			{
+				if (!HandleScreenFadeOut(Speed.Slow))
+				{
+					Common.AddScreen(_nextScreen);
+					Destroy();
+					return true;
+				}
+				return true;
+			}
+
 			if (_done && (_overlay == null || !_overlay.HasUpdate(gameTick))) return false;	
 			
 			// Updates
@@ -197,13 +210,25 @@ namespace CivOne.Screens
 			
 			AddMenu(menu);
 		}
+
+		private void StartIntro()
+		{
+			Cursor = MouseCursor.None;
+			foreach (IScreen menu in _menus)
+				AddLayer(menu.Canvas);
+			CloseMenus();
+			_nextScreen = new Intro();
+		}
 		
 		private void StartNewGame(object sender, EventArgs args)
 		{
+			
 			Console.WriteLine("Main Menu: Start a New Game");
-			Destroy();
+			// Destroy();
 			Map.Generate();
-			Common.AddScreen(new Intro());
+			// Common.AddScreen(new Intro());
+			// _nextScreen = new Intro();
+			StartIntro();
 		}
 		
 		private void LoadSavedGame(object sender, EventArgs args)
@@ -218,9 +243,11 @@ namespace CivOne.Screens
 		private void Earth(object sender, EventArgs args)
 		{
 			Console.WriteLine("Main Menu: EARTH");
-			Destroy();
+			// Destroy();
 			Map.LoadMap();
-			Common.AddScreen(new Intro());
+			// Common.AddScreen(new Intro());
+			// _nextScreen = new Intro();
+			StartIntro();
 		}
 		
 		private void CustomizeWorld(object sender, EventArgs args)

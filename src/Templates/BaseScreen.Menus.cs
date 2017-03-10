@@ -14,7 +14,7 @@ namespace CivOne.Templates
 {
 	public abstract partial class BaseScreen
 	{
-		private readonly List<Screens.Menu> _menus = new List<Screens.Menu>();
+		protected readonly List<Screens.Menu> _menus = new List<Screens.Menu>();
 
 		protected bool HasMenu
 		{
