@@ -74,6 +74,12 @@ namespace CivOne.Screens
 			Destroy();
 		}
 
+		private void MenuRevealWorld(object sender, EventArgs args)
+		{
+			Settings.Instance.RevealWorldCheat();
+			Destroy();
+		}
+
 		public override bool HasUpdate(uint gameTick)
 		{
 			if (_update)
@@ -81,13 +87,13 @@ namespace CivOne.Screens
 				_update = false;
 
 				Picture background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
-				Picture menuGfx = new Picture(124, 79);
+				Picture menuGfx = new Picture(132, 87);
 				menuGfx.FillLayerTile(background);
-				menuGfx.AddBorder(15, 8, 0, 0, 123, 79);
-				menuGfx.FillRectangle(0, 123, 0, 1, 79);
+				menuGfx.AddBorder(15, 8, 0, 0, 131, 87);
+				menuGfx.FillRectangle(0, 131, 0, 1, 87);
 				menuGfx.DrawText("Debug Options:", 0, 15, 4, 4);
 
-				Picture menuBackground = menuGfx.GetPart(2, 11, 120, 64);
+				Picture menuBackground = menuGfx.GetPart(2, 11, 128, 72);
 				Picture.ReplaceColours(menuBackground, new byte[] { 7, 22 }, new byte[] { 11, 3 });
 
 				AddLayer(menuGfx, 25, 17);
@@ -96,7 +102,7 @@ namespace CivOne.Screens
 				{
 					X = 27,
 					Y = 28,
-					Width = 119,
+					Width = 127,
 					ActiveColour = 11,
 					TextColour = 5,
 					DisabledColour = 3,
@@ -114,6 +120,7 @@ namespace CivOne.Screens
 				menu.Items.Add(new Menu.Item("Change Human Player"));
 				menu.Items.Add(new Menu.Item("Spawn Unit"));
 				menu.Items.Add(new Menu.Item("Meet With King"));
+				menu.Items.Add(new Menu.Item("Toggle Reveal World"));
 
 				menu.Items[0].Selected += MenuSetGameYear;
 				menu.Items[1].Selected += MenuSetPlayerGold;
@@ -123,6 +130,7 @@ namespace CivOne.Screens
 				menu.Items[5].Selected += MenuChangeHumanPlayer;
 				menu.Items[6].Selected += MenuSpawnUnit;
 				menu.Items[7].Selected += MenuMeetWithKing;
+				menu.Items[8].Selected += MenuRevealWorld;
 
 				_canvas.FillRectangle(5, 24, 16, 105, menu.RowHeight * (menu.Items.Count + 1));
 
@@ -139,7 +147,7 @@ namespace CivOne.Screens
 			
 			_canvas = new Picture(320, 200, palette);
 			_canvas.AddLayer(Common.Screens.Last().Canvas, 0, 0);
-			_canvas.FillRectangle(5, 24, 16, 125, 81);
+			_canvas.FillRectangle(5, 24, 16, 133, 89);
 		}
 	}
 }
