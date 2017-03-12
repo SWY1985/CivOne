@@ -123,14 +123,14 @@ namespace CivOne
 				if (government is Anarchy || government is Despotism)
 				{
 					int costs = 0;
-					for (int i = 0; i < Units.Count(u => (!(u is Diplomat) || (u is Caravan))); i++)
+					for (int i = 0; i < Units.Count(u => (!(u is Diplomat) && !(u is Caravan))); i++)
 					{
 						if (i < _size) continue;
 						costs++;
 					}
 					return costs;
 				}
-				return Units.Count(u => (!(u is Diplomat) || (u is Caravan)));
+				return Units.Count(u => (!(u is Diplomat) && !(u is Caravan)));
 			}
 		}
 
