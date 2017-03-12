@@ -42,9 +42,16 @@ namespace CivOne.Screens
 					if (tile == null) continue;
 
 					// Flash active unit
-					if (activeUnit != null && Human == activeUnit.Owner && gameTick % 4 <= 1 && (tile.X == activeUnit.X && tile.Y == activeUnit.Y))
+					if (activeUnit != null && Human == activeUnit.Owner && (tile.X == activeUnit.X && tile.Y == activeUnit.Y))
 					{
-						_miniMap[xx + 1, yy + 1] = 15;
+						if (gameTick % 4 <= 1)
+						{
+							_miniMap[xx + 1, yy + 1] = 15;
+						}
+						else
+						{
+							_miniMap[xx + 1, yy + 1] = (byte)(tile.IsOcean ? 1 : 2);
+						}
 						continue;
 					}
 
