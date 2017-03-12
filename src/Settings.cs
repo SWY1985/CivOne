@@ -31,7 +31,7 @@ namespace CivOne
 		{
 			get
 			{
-				return Directory.GetCurrentDirectory();
+				return Native.StorageFolder;
 			}
 		}
 		
