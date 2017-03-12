@@ -39,7 +39,7 @@ namespace CivOne.Screens
 					int yy = 1 + (((i - (i % 7)) / 7) * 16);
 
 					// Diplomat and Caravan units cost nothing.
-					if (!(units[i] is Diplomat) || (units[i] is Caravan))
+					if (!(units[i] is Diplomat) && !(units[i] is Caravan))
 					{
 						int shields = 0, food = 0;
 						IGovernment government = Game.GetPlayer(_city.Owner).Government;
