@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using CivOne.Enums;
 
@@ -25,6 +26,14 @@ namespace CivOne
 				if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) return Platform.Linux;
 				if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) return Platform.macOS;
 				return Platform.Unknown;
+			}
+		}
+
+		internal static string StorageFolder
+		{
+			get
+			{
+				return Directory.GetCurrentDirectory();
 			}
 		}
 
