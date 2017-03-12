@@ -308,7 +308,7 @@ namespace CivOne.Templates
 			if (moveTarget == null) return false;
 			if (moveTarget.Units.Any(u => u.Owner != Owner))
 			{
-				if (Tile.IsOcean)
+				if (Class == UnitClass.Land && Tile.IsOcean)
 				{
 					GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText($"ERROR/AMPHIB")));
 					return false;
