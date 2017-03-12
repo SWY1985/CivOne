@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.Globalization;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
@@ -97,7 +98,7 @@ namespace CivOne.Screens
 			_demographics.FillRectangle(2, 3, 13, 74, 1);
 			if (Human.Population > 0)
 			{
-				string population = $"{Human.Population:n0}".Replace(".", ",");
+				string population = string.Format("{0:n0}", Human.Population, new CultureInfo("en-US"));
 				_demographics.DrawText($"{population}#", 0, 5, 2, 15, TextAlign.Left);
 			}
 			_demographics.DrawText(Game.GameYear, 0, 5, 2, 23, TextAlign.Left);

@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System.Globalization;
 using System.Linq;
 using CivOne.Buildings;
 using CivOne.Enums;
@@ -81,7 +82,7 @@ namespace CivOne.Screens.Reports
 			y += 8;
 			if (y <= 190)
 			{
-				string population = $"{Human.Population:n0}".Replace(".", ",");
+				string population = string.Format("{0:n0}", Human.Population, new CultureInfo("en-US"));
 				if (Human.Population == 0) population = "00,000";
 				int happy = 0;
 				int content = 100;

@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.Globalization;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
@@ -30,7 +31,7 @@ namespace CivOne.Screens
 		{
 			if (_update)
 			{
-				string population = $"{_city.Population:n0}".Replace(".", ",");
+				string population = string.Format("{0:n0}", _city.Population, new CultureInfo("en-US"));
 
 				_canvas.FillLayerTile(_background);
 				_canvas.AddBorder(1, 1, 0, 0, 207, 21);
