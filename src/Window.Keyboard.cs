@@ -60,8 +60,6 @@ namespace CivOne
 				case TkKey.Escape: return new KeyboardEventArgs(Key.Escape, _keyModifier);
 				case TkKey.Delete: return new KeyboardEventArgs(Key.Delete, _keyModifier);
 				case TkKey.Back: return new KeyboardEventArgs(Key.Backspace, _keyModifier);
-				case TkKey.Period: return new KeyboardEventArgs('.', _keyModifier);
-				case TkKey.Comma: return new KeyboardEventArgs(',', _keyModifier);
 				case TkKey.KeypadPlus:
 				case TkKey.Plus: return new KeyboardEventArgs(Key.Plus, _keyModifier);
 				case TkKey.KeypadMinus:
@@ -136,6 +134,10 @@ namespace CivOne
 		{
 			if (TopScreen == null) return;
 			char keyChar = (char)args.KeyChar;
+			if (keyChar == '.' || keyChar == ',')
+			{
+				TopScreen.KeyDown(new KeyboardEventArgs(keyChar));
+			}
 			if (char.IsLetter(keyChar))
 			{
 				TopScreen.KeyDown(new KeyboardEventArgs(char.ToUpper((char)args.KeyChar), _keyModifier));
