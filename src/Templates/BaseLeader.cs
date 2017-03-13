@@ -28,12 +28,18 @@ namespace CivOne.Templates
 			}
 		}
 
-		private readonly Picture _picture, _portraitSmall;
+		private readonly string _picFile = null;
 		private readonly int _overlayX;
 		private readonly int _overlayY;
+		private Picture _picture, _portraitSmall;
 
 		public Picture GetPortrait(FaceState state = FaceState.Neutral)
 		{
+			if (_picture == null)
+			{
+				_picture = Resources.Instance.LoadPIC(_picFile);
+			}
+
 			Picture output = _picture.GetPart(181, 67, 139, 133);
 			switch (state)
 			{
@@ -61,7 +67,7 @@ namespace CivOne.Templates
 		public BaseLeader(string name, string picFile, int overlayX, int overlayY)
 		{
 			Name = name;
-			_picture = Resources.Instance.LoadPIC(picFile);
+			_picFile = picFile;
 			_overlayX = overlayX;
 			_overlayY = overlayY;
 			if (picFile.StartsWith("KING"))
