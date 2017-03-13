@@ -35,6 +35,31 @@ namespace CivOne.Screens
 				return _text;
 			}
 		}
+
+		private bool AppendCharacter(char character)
+		{
+			if (!Resources.Instance.ValidCharacter(_fontId, character)) return false;
+			
+			if (_cursorPosition == -1)
+			{
+				_text = string.Empty;
+				_cursorPosition = 0;
+			}
+			
+			StringBuilder sb = new StringBuilder(_text);
+			if (_text.Length > _cursorPosition)
+			{
+				sb[_cursorPosition] = character;
+			}
+			else
+			{
+				sb.Append(character);
+			}
+			_text = sb.ToString();
+			_cursorPosition++;
+			while (_cursorPosition >= _maxLength) _cursorPosition--;
+			return true;
+		}
 		
 		public override bool HasUpdate(uint gameTick)
 		{
@@ -72,6 +97,17 @@ namespace CivOne.Screens
 			StringBuilder sb;
 			switch (args.Key)
 			{
+				case Key.NumPad0:
+				case Key.NumPad1:
+				case Key.NumPad2:
+				case Key.NumPad3:
+				case Key.NumPad4:
+				case Key.NumPad5:
+				case Key.NumPad6:
+				case Key.NumPad7:
+				case Key.NumPad8:
+				case Key.NumPad9:
+					return AppendCharacter((char)('0' + (args.Key - Key.NumPad0)));
 				case Key.Left:
 					if (_cursorPosition > 0) _cursorPosition--;
 					else _cursorPosition = 0;
@@ -122,28 +158,7 @@ namespace CivOne.Screens
 							default: c -= (char)16; break;
 						}
 					}
-					if (!Resources.Instance.ValidCharacter(_fontId, c)) return false;
-					
-					if (_cursorPosition == -1)
-					{
-						_text = string.Empty;
-						_cursorPosition = 0;
-					}
-					
-					sb = new StringBuilder(_text);
-					if (_text.Length > _cursorPosition)
-					{
-						sb[_cursorPosition] = c;
-					}
-					else
-					{
-						sb.Append(c);
-					}
-					_text = sb.ToString();
-					_cursorPosition++;
-					while (_cursorPosition >= _maxLength) _cursorPosition--;
-					
-					return true;
+					return AppendCharacter(c);
 			}
 			return false;
 		}
