@@ -280,10 +280,12 @@ namespace CivOne.Templates
 				{
 					GameTask.Insert(Show.DestroyUnit(Map[X, Y][relX, relY].Units.First()));
 					if (MovesLeft == 0)
+					{
 						PartMoves = 0;
+					}
 					else if (MovesLeft > 0)
 					{
-						MovementDone(Tile);
+						MovesLeft--;
 					}
 					Movement = null;
 				};
