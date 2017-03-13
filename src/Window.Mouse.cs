@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -28,6 +29,8 @@ namespace CivOne
 
 		private int _mouseX, _mouseY;
 
+		private bool _showCursor = false;
+
 		private void LoadCursorGraphics()
 		{
 			if (_cursorType == Settings.Instance.CursorType) return;
@@ -41,12 +44,14 @@ namespace CivOne
 
 			_cursorPointer = Icons.Cursor(MouseCursor.Pointer, (_cursorType == CursorType.Builtin));
 			_cursorGoto = Icons.Cursor(MouseCursor.Goto, (_cursorType == CursorType.Builtin));
+
+			OnMouseEnter(this, EventArgs.Empty);
 		}
 
 		private void DrawMouseCursor(Picture canvas)
 		{
 			// Draw the mouse cursor
-			if (_cursorType != CursorType.Native && _mouseX >= 0 && _mouseX < DrawWidth && _mouseY >= 0 && _mouseY < DrawHeight)
+			if (_cursorType != CursorType.Native && _showCursor && _mouseX >= 0 && _mouseX < DrawWidth && _mouseY >= 0 && _mouseY < DrawHeight)
 			{
 				switch (TopScreen.Cursor)
 				{
@@ -81,6 +86,25 @@ namespace CivOne
 			TopScreen.MouseUp(new ScreenEventArgs(_mouseX, _mouseY, buttons));
 		}
 
+		private void OnMouseEnter(object sender, EventArgs args)
+		{
+			if (_cursorType != CursorType.Native)
+			{
+				if (!_showCursor) Native.HideCursor();
+				_showCursor = true;
+				return;
+			}
+
+			if (_showCursor) Native.ShowCursor();
+			_showCursor = false;
+		}
+
+		private void OnMouseLeave(object sender, EventArgs args)
+		{
+			if (_showCursor) Native.ShowCursor();
+			_showCursor = false;
+		}
+
 		private void OnMouseMove(float scaleX, float scaleY)
 		{
 			int x1, y1, x2, y2;
@@ -103,11 +127,6 @@ namespace CivOne
 				}
 
 				TopScreen?.MouseMove(new ScreenEventArgs(_mouseX, _mouseY, buttons));
-			}
-
-			if (Native.Platform == Platform.Windows)
-			{
-				CursorVisible = (_cursorType == CursorType.Native) || (_mouseX <= 0 || _mouseX >= (CanvasWidth - 1) || _mouseY <= 0 || _mouseY >= (CanvasHeight - 1));
 			}
 		}
 	}

@@ -85,6 +85,26 @@ namespace CivOne
 			}
 		}
 
+		internal static void ShowCursor()
+		{
+			switch (Platform)
+			{
+				case Platform.Windows:
+					ShowCursor(true);
+					break;
+			}
+		}
+
+		internal static void HideCursor()
+		{
+			switch (Platform)
+			{
+				case Platform.Windows:
+					ShowCursor(false);
+					break;
+			}
+		}
+
 		internal static void Init(IntPtr handle)
 		{
 			_handle = handle;

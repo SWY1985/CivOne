@@ -291,10 +291,6 @@ namespace CivOne
 
 				OnMouseMove(scaleX, scaleY);
 			}
-			else if (!CursorVisible)
-			{
-				CursorVisible = true;
-			}
 
 			_gameTick++;
 			_update = HasUpdate;
@@ -383,6 +379,8 @@ namespace CivOne
 			KeyUp += OnKeyUp;
 			MouseDown += OnMouseDown;
 			MouseUp += OnMouseUp;
+			MouseEnter += OnMouseEnter;
+			MouseLeave += OnMouseLeave;
 
 			// Run OS native functions for initialization
 			Native.Init(WindowInfo.Handle);
