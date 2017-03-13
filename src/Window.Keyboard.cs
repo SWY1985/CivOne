@@ -59,6 +59,8 @@ namespace CivOne
 				case TkKey.Space: return new KeyboardEventArgs(Key.Space, _keyModifier);
 				case TkKey.Escape: return new KeyboardEventArgs(Key.Escape, _keyModifier);
 				case TkKey.Delete: return new KeyboardEventArgs(Key.Delete, _keyModifier);
+				case TkKey.Home: return new KeyboardEventArgs(Key.Home, _keyModifier);
+				case TkKey.End: return new KeyboardEventArgs(Key.End, _keyModifier);
 				case TkKey.Back: return new KeyboardEventArgs(Key.Backspace, _keyModifier);
 				case TkKey.KeypadPlus:
 				case TkKey.Plus: return new KeyboardEventArgs(Key.Plus, _keyModifier);
