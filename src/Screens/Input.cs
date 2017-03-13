@@ -126,8 +126,18 @@ namespace CivOne.Screens
 						Accept(this, null);
 					break;
 				case Key.Delete:
-					//TODO: Handle delete
-					break;
+					if (_cursorPosition < _text.Length)
+					{
+						sb = new StringBuilder();
+						for (int i = 0; i < _text.Length; i++)
+						{
+							if (i == _cursorPosition) continue;
+							sb.Append(_text[i]);
+						}
+						_text = sb.ToString();
+						return true;
+					}
+					return false;
 				case Key.Home:
 					_cursorPosition = 0;
 					return true;
