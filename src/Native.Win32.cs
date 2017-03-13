@@ -35,5 +35,8 @@ namespace CivOne
 
 		[DllImport("shell32.dll", CharSet=CharSet.Unicode)]
 		private static extern bool SHGetPathFromIDList(IntPtr pidl, IntPtr pszPath);
+
+		[DllImport("user32.dll")]
+		public static extern int ShowCursor(bool bShow);
 	}
 }
