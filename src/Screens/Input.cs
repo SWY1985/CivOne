@@ -92,6 +92,12 @@ namespace CivOne.Screens
 				case Key.Delete:
 					//TODO: Handle delete
 					break;
+				case Key.Home:
+					_cursorPosition = 0;
+					return true;
+				case Key.End:
+					_cursorPosition = _text.Length;
+					return true;
 				case Key.Backspace:
 					if (_cursorPosition <= 0) return false;
 					
