@@ -82,7 +82,7 @@ namespace CivOne.Screens.Reports
 			y += 8;
 			if (y <= 190)
 			{
-				string population = string.Format("{0:n0}", Human.Population, new CultureInfo("en-US"));
+				string population = Human.Population.ToString("n0", new CultureInfo("en-US"));
 				if (Human.Population == 0) population = "00,000";
 				int happy = 0;
 				int content = 100;
