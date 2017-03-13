@@ -175,6 +175,8 @@ namespace CivOne
 
 		internal static void CityProduction(City city)
 		{
+			if (city == null || city.Size == 0 || city.Tile == null) return;
+
 			Player player = Game.GetPlayer(city.Owner);
 			IProduction production = null;
 
