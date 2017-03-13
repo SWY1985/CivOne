@@ -190,9 +190,7 @@ namespace CivOne.Screens
 
 			Cursor = MouseCursor.Pointer;
 			
-			Color[] palette = Resources.Instance.LoadPIC("SP257").Palette;
-			
-			_canvas = new Picture(320, 200, palette);
+			_canvas = new Picture(320, 200, Common.GamePlay.Palette);
 			_canvas.FillRectangle(5, 0, 0, 320, 200);
 			
 			_subScreens.Add(_cityHeader = new CityHeader(_city, _background));
