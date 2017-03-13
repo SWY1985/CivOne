@@ -338,14 +338,17 @@ namespace CivOne
 			return _units.ToArray();
 		}
 
-		internal void MovementDone()
+		internal void MovementDone(ITile tile)
 		{
-			foreach (City city in _cities)
+			for (int relY = -3; relY <= 3; relY++)
+			for (int relX = -3; relX <= 3; relX++)
 			{
-				foreach (ITile tile in city.ResourceTiles.Where(t => city.ValidTile(t)))
+				City city = tile[relX, relY].City;
+				if (city == null) continue;
+				foreach (ITile cityTile in city.ResourceTiles.Where(t => !city.ValidTile(t)))
 				{
 					city.RelocateResourceTile(tile);
-				} 
+				}
 			}
 		}
 

@@ -384,7 +384,7 @@ namespace CivOne.Templates
 			
 			Explore();
 			MovementDone(previousTile);
-			Game.MovementDone();
+			Game.MovementDone(Tile);
 		}
 
 		protected virtual void MovementDone(ITile previousTile)
