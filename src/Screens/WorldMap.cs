@@ -62,7 +62,7 @@ namespace CivOne.Screens
 				
 				AddLayer(Resources.WorldMapTiles.GetPart(xx, yy, 4, 4), x * 4, y * 4);
 				
-				if ((city = tile.City) != null)
+				if ((city = tile.City) != null && city.Size > 0)
 				{
 					_canvas.FillRectangle(Common.ColourLight[city.Owner], x * 4, y * 4, 4, 4);
 				}
