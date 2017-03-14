@@ -343,13 +343,14 @@ namespace CivOne
 			return _units.ToArray();
 		}
 
-		internal void UpdateResources(ITile tile)
+		internal void UpdateResources(ITile tile, bool ownerCities = true)
 		{
 			for (int relY = -3; relY <= 3; relY++)
 			for (int relX = -3; relX <= 3; relX++)
 			{
 				if (tile[relX, relY] == null) continue;
 				City city = tile[relX, relY].City;
+				if (!ownerCities && CurrentPlayer == city.Owner) continue;
 				if (city == null) continue;
 				foreach (ITile cityTile in city.ResourceTiles.Where(t => city.InvalidTile(t)))
 				{
