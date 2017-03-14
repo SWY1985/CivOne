@@ -1104,7 +1104,7 @@ namespace CivOne
 				// Tech origins
 				for (byte i = 0; i < 72; i++)
 				{
-					if (!_advanceOrigin.ContainsKey(i))
+					if (_advanceOrigin == null || !_advanceOrigin.ContainsKey(i))
 					{
 						bw.Write((ushort)0);
 						continue;
