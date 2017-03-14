@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using CivOne.Enums;
 using CivOne.Templates;
 
@@ -42,7 +43,9 @@ namespace CivOne.Tiles
 		{
 			get
 			{
-				return (sbyte)(1 + (Mine ? 1 : 0));
+				sbyte output = (sbyte)(1 + (Mine ? 1 : 0));
+				if (RailRoad) output = (sbyte)Math.Floor((double)output * 1.5);
+				return output;
 			}
 		}
 		
