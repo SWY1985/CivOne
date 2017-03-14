@@ -328,7 +328,7 @@ namespace CivOne.Screens
 
 			_update = false;
 			_singlePage = page;
-			Color[] palette = Resources.Instance.LoadPIC("SP257").Palette;
+			Color[] palette = Common.GamePlay.Palette;
 			if (page.Icon != null) palette = Resources.PaletteCombine(palette, page.Icon.Palette, 16);
 			_canvas = new Picture(320, 200, palette);
 			

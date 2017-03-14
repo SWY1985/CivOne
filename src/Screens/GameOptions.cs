@@ -120,10 +120,8 @@ namespace CivOne.Screens
 		public GameOptions()
 		{
 			Cursor = MouseCursor.Pointer;
-
-			Color[] palette = Resources.Instance.LoadPIC("SP257").Palette;
 			
-			_canvas = new Picture(320, 200, palette);
+			_canvas = new Picture(320, 200, Common.GamePlay.Palette);
 			_canvas.AddLayer(Common.Screens.Last().Canvas, 0, 0);
 			_canvas.FillRectangle(5, 24, 16, 105, 81);
 		}

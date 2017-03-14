@@ -48,7 +48,7 @@ namespace CivOne.Templates
 			{
 				Portrait[i] = Icons.GovernmentPortrait(Human.Government, (Advisor)Enum.Parse(typeof(Advisor), $"{i}"), modernGovernment); 
 			}
-			Color[] palette = Resources.Instance.LoadPIC("SP299").Palette;
+			Color[] palette = Common.GamePlay.Palette;
 			for (int i = 144; i < 256; i++)
 			{
 				palette[i] = Portrait[0].Palette[i];
