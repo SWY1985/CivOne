@@ -36,7 +36,12 @@ namespace CivOne.Screens
 				int foodPerLine = (_city.Size + 1);
 				int foodWidth = 8;
 				int foodHeight = 8;
-				if (_city.Size > 10) foodWidth /= 4;
+				// if (_city.Size > 10) foodWidth /= 4;
+				for (int i = 0; i < 7; i++)
+				{
+					if ((_city.Size * foodWidth) <= 80) break;
+					foodWidth--;
+				}
 				int width = 8 + (_city.Size * foodWidth);
 				if (width < 88)
 					_canvas.FillRectangle(1, 2 + width, 9, 88 - width, 82);
