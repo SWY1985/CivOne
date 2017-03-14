@@ -241,6 +241,10 @@ namespace CivOne
 			{
 				Map[x, y].Irrigation = true;
 			}
+			if (!Map[x, y].RailRoad)
+			{
+				Map[x, y].Road = true;
+			}
 			_cities.Add(city);
 			Game.UpdateResources(city.Tile);
 			return city;

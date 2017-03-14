@@ -214,7 +214,7 @@ namespace CivOne.GFX
 			for (int i = 0; i < directions.Length; i++)
 			{
 				if ((borderTile = tile.GetBorderTile(directions[i])) == null) continue;
-				if (!borderTile.Road) continue;
+				if (!(borderTile.Road || borderTile.RailRoad) || (tile.City != null && borderTile.City != null)) continue;
 				output.AddLayer(Res.GetPart(graphics16 ? "SPRITES" : "SP257", (i * 16), 48, 16, 16), 0, 0);
 				connected = true;
 			}
@@ -224,22 +224,24 @@ namespace CivOne.GFX
 		
 		private static void DrawRailRoad(ref Picture output, ITile tile, bool graphics16 = false)
 		{
-			if (!tile.RailRoad) return;
-						
+			if (!tile.RailRoad && tile.City == null) return;
+			
 			bool connected = false;
 			ITile borderTile = null;
 			Direction[] directions = new [] { Direction.North, Direction.NorthEast, Direction.East, Direction.SouthEast, Direction.South, Direction.SouthWest, Direction.West, Direction.NorthWest };
 			for (int i = 0; i < directions.Length; i++)
 			{
 				if ((borderTile = tile.GetBorderTile(directions[i])) == null) continue;
-				if (!borderTile.Road || borderTile.RailRoad) continue;
+				// if (!borderTile.Road || borderTile.RailRoad || (tile.City != null && borderTile.City != null)) continue;
+				if (!borderTile.Road || borderTile.RailRoad || borderTile.City != null) continue;
 				output.AddLayer(Res.GetPart(graphics16 ? "SPRITES" : "SP257", (i * 16), 48, 16, 16), 0, 0);
 				connected = true;
 			}
 			for (int i = 0; i < directions.Length; i++)
 			{
 				if ((borderTile = tile.GetBorderTile(directions[i])) == null) continue;
-				if (!borderTile.RailRoad) continue;
+				if (!borderTile.RailRoad && tile.City == null && borderTile.City == null) continue;
+				if (tile.City != null && borderTile.City == null && !borderTile.RailRoad) continue;
 				output.AddLayer(Res.GetPart(graphics16 ? "SPRITES" : "SP257", 128 + (i * 16), 96, 16, 16), 0, 0);
 				connected = true;
 			}

@@ -33,9 +33,9 @@ namespace CivOne.Templates
 				TribalHut();
 			}
 
-			if (previousTile.Road && Tile.Road)
+			if ((previousTile.Road || previousTile.RailRoad) && (Tile.Road || Tile.RailRoad))
 			{
-				if (Tile.RailRoad && previousTile.RailRoad && previousTile.City == null)
+				if ((Tile.RailRoad || Tile.City != null) && previousTile.RailRoad)
 				{
 					// No moves lost
 				}
