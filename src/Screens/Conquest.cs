@@ -123,13 +123,11 @@ namespace CivOne.Screens
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
-			Destroy();
-			return true;
-		}
-		
-		public override bool MouseDown(ScreenEventArgs args)
-		{
-			Destroy();
+			if (_step < 1)
+			{
+				_timer = NOISE_COUNT;
+				_step = 1;
+			}
 			return true;
 		}
 		
