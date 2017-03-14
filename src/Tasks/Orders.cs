@@ -100,6 +100,7 @@ namespace CivOne.Tasks
 					Game.DisbandUnit(_unit);
 				}
 			}
+			Game.UpdateResources(_city.Tile);
 			EndTask();
 		}
 

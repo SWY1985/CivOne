@@ -296,10 +296,10 @@ namespace CivOne
 		{
 			if (ResourceTiles.Any(t => t.X == tile.X && t.Y == tile.Y))
 				return false;
-			return ValidTile(tile);
+			return InvalidTile(tile);
 		}
 
-		internal bool ValidTile(ITile tile)
+		internal bool InvalidTile(ITile tile)
 		{
 			return (tile.City != null || Game.GetCities().Any(c => c.ResourceTiles.Any(t => t.X == tile.X && t.Y == tile.Y)) || tile.Units.Any(u => u.Owner != Owner));
 		}
@@ -374,6 +374,7 @@ namespace CivOne
 
 		public void RelocateResourceTile(ITile tile)
 		{
+			if (tile.X == X && tile.Y == Y) return;
 			SetResourceTile(tile);
 			SetResourceTiles();
 		}
