@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Templates;
@@ -27,18 +28,25 @@ namespace CivOne.Screens
 			int income = _city.FoodIncome;
 			int width = 8;
 			for (int i = 0; i < 7; i++)
-				if (((costs + income) * width) > 116) width--;
+			{
+				if (((costs + Math.Abs(income)) * width) <= 116) break;
+				width--;
+			}
 
 			for (int i = 0; (i < costs) && (i < costs + income); i++)
 			{
 				AddLayer(Icons.Food, 1 + (width * i), 9);
 			}
 			for (int i = 0; i < income; i++)
+			{
 				AddLayer(Icons.Food, 5 + (width * costs) + (width * i), 9);
+			}
 			if (income < 0)
 			{
 				for (int i = 0; i < -income; i++)
+				{
 					AddLayer(Icons.FoodLoss, 5 + (width * (costs + income)) + (width * i), 9);
+				}
 			}
 		}
 
@@ -48,16 +56,25 @@ namespace CivOne.Screens
 			int income = _city.ShieldIncome;
 			int width = 8;
 			for (int i = 0; i < 7; i++)
-				if (((costs + income) * width) > 116) width--;
+			{
+				if (((costs + Math.Abs(income)) * width) <= 116) break;
+				width--;
+			}
 			
 			for (int i = 0; (i < costs) && (i < costs + income); i++)
+			{
 				AddLayer(Icons.Shield, 1 + (width * i), 17);
+			}
 			for (int i = 0; i < income; i++)
+			{
 				AddLayer(Icons.Shield, (costs > 0 ? 5 : 1) + (width * costs) + (width * i), 17);
+			}
 			if (income < 0)
 			{
 				for (int i = 0; i < -income; i++)
+				{
 					AddLayer(Icons.ShieldLoss, 5 + (8 * (costs + income)) + (width * i), 17);
+				}
 			}
 		}
 
@@ -65,14 +82,22 @@ namespace CivOne.Screens
 		{
 			int width = 8;
 			for (int i = 0; i < 7; i++)
-				if ((_city.TradeTotal * width) > 116) width--;
+			{
+				if ((_city.TradeTotal * width) <= 116) break;
+				width--;
+			}
 			
 			for (int i = 0; i < _city.TradeTotal; i++)
+			{
 				AddLayer(Icons.Trade, 1 + (width * i), 25);
+			}
 			
 			width = 8;
 			for (int i = 0; i < 7; i++)
-				if (((_city.Luxuries + _city.Luxuries + _city.Taxes) * width) > 116) width--;
+			{
+				if (((_city.Luxuries + _city.Taxes + _city.Science + 8) * width) <= 116) break;
+				width--;
+			}
 			
 			int xx = 1;
 			for (int i = 0; i < _city.Luxuries; i++)
