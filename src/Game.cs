@@ -242,6 +242,7 @@ namespace CivOne
 				Map[x, y].Irrigation = true;
 			}
 			_cities.Add(city);
+			Game.UpdateResources(city.Tile);
 			return city;
 		}
 
@@ -338,7 +339,7 @@ namespace CivOne
 			return _units.ToArray();
 		}
 
-		internal void MovementDone(ITile tile)
+		internal void UpdateResources(ITile tile)
 		{
 			for (int relY = -3; relY <= 3; relY++)
 			for (int relX = -3; relX <= 3; relX++)
@@ -346,7 +347,7 @@ namespace CivOne
 				if (tile[relX, relY] == null) continue;
 				City city = tile[relX, relY].City;
 				if (city == null) continue;
-				foreach (ITile cityTile in city.ResourceTiles.Where(t => !city.ValidTile(t)))
+				foreach (ITile cityTile in city.ResourceTiles.Where(t => city.InvalidTile(t)))
 				{
 					city.RelocateResourceTile(tile);
 				}
