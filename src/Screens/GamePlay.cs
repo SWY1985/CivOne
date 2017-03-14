@@ -385,7 +385,7 @@ namespace CivOne.Screens
 			
 			Color[] palette = Resources.Instance.LoadPIC("SP257").Palette;
 			
-			_canvas = new Picture(320, 200, Common.GamePlay.Palette);
+			_canvas = new Picture(320, 200, palette);
 			_canvas.FillRectangle(5, 0, 0, 320, 200);
 			
 			_rightSideBar = Settings.RightSideBar;
