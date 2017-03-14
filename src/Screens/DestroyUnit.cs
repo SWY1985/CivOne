@@ -42,7 +42,8 @@ namespace CivOne.Screens
 
 		private const int NOISE_COUNT = 8;
 
-		private IUnit _unit;
+		private readonly IUnit _unit;
+		private readonly bool _stack;
 		private int _x, _y;
 		
 		private int _noiseCounter = NOISE_COUNT + 2;
@@ -115,7 +116,7 @@ namespace CivOne.Screens
 			if (_noiseCounter == 0)
 			{
 				IUnit[] units;
-				if (_unit.Tile.Units.Length > 1 && _unit.Tile.City == null && !_unit.Tile.Fortress)
+				if (_unit.Tile.Units.Length > 1 && _unit.Tile.City == null && !_unit.Tile.Fortress && _stack)
 				{
 					units = _unit.Tile.Units;
 				}
@@ -220,10 +221,11 @@ namespace CivOne.Screens
 			}
 		}
 
-		internal DestroyUnit(IUnit unit)
+		internal DestroyUnit(IUnit unit, bool stack)
 		{
 			Cursor = MouseCursor.None;
 			_unit = unit;
+			_stack = stack;
 
 			_x = Common.GamePlay.X;
 			_y = Common.GamePlay.Y;

@@ -278,7 +278,7 @@ namespace CivOne.Templates
 			{
 				Movement.Done += (s, a) =>
 				{
-					GameTask.Insert(Show.DestroyUnit(Map[X, Y][relX, relY].Units.First()));
+					GameTask.Insert(Show.DestroyUnit(Map[X, Y][relX, relY].Units.First(), true));
 					if (MovesLeft == 0)
 					{
 						PartMoves = 0;
@@ -294,7 +294,7 @@ namespace CivOne.Templates
 			{
 				Movement.Done += (s, a) =>
 				{
-					GameTask.Insert(Show.DestroyUnit(this));
+					GameTask.Insert(Show.DestroyUnit(this, false));
 					Movement = null;
 				};
 			}
