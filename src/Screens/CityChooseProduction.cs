@@ -163,9 +163,7 @@ namespace CivOne.Screens
 			
 			Cursor = MouseCursor.Pointer;
 
-			Color[] palette = Resources.Instance.LoadPIC("SP257").Palette;
-			
-			_canvas = new Picture(320, 200, palette);
+			_canvas = new Picture(320, 200, Common.GamePlay.Palette);
 
 			_availableProduction = _city.AvailableProduction.ToArray();
 			_menuHeight = Resources.Instance.GetFontHeight(0) * _availableProduction.Length;
