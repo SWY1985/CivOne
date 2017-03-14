@@ -55,15 +55,7 @@ namespace CivOne.Screens
 					string leaderName = ReadStrings(br, 16, 112, 14)[humanPlayer];
 					string civName = ReadStrings(br, 128, 96, 12)[humanPlayer];
 					string tribeName = ReadStrings(br, 224, 88, 11)[humanPlayer];
-					
-					string title = "Chief";
-					switch (difficultyLevel)
-					{
-						case 1: title = "Lord"; break;
-						case 2: title = "Prince"; break;
-						case 3: title = "King"; break;
-						case 4: title = "Emperor"; break;
-					}
+					string title = Common.DifficultyName(difficultyLevel);
 					
 					Name = string.Format("{0} {1}, {2}/{3}", title, leaderName, civName, turn);
 					Difficulty = (int)difficultyLevel;
@@ -95,6 +87,8 @@ namespace CivOne.Screens
 			int item = (sender as Menu.Item).Value;
 			
 			SaveGameFile file = GetSaveGames().ToArray()[item];
+
+			SaveGame.SelectedGame = (item > 3 ? 3 : item);
 			
 			Console.WriteLine("Load game: {0}", file.Name);
 			

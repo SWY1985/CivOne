@@ -56,15 +56,7 @@ namespace CivOne.Screens
 					string leaderName = ReadStrings(br, 16, 112, 14)[humanPlayer];
 					string civName = ReadStrings(br, 128, 96, 12)[humanPlayer];
 					string tribeName = ReadStrings(br, 224, 88, 11)[humanPlayer];
-					
-					string title = "Chief";
-					switch (difficultyLevel)
-					{
-						case 1: title = "Lord"; break;
-						case 2: title = "Prince"; break;
-						case 3: title = "King"; break;
-						case 4: title = "Emperor"; break;
-					}
+					string title = Common.DifficultyName(difficultyLevel);
 					
 					Name = string.Format("{0} {1}, {2}/{3}", title, leaderName, civName, turn);
 					Difficulty = (int)difficultyLevel;
@@ -74,11 +66,14 @@ namespace CivOne.Screens
 			}
 		}
 		
+		internal static int SelectedGame = 0;
+		
 		private readonly Color[] _palette;
 		private char _driveLetter = 'C';
-		private readonly int _gameId;
 		private readonly int _border = Common.Random.Next(2);
+		private int _gameId;
 		private bool _update = true;
+		private bool _saving = false;
 		private Menu _menu;
 		
 		private IEnumerable<SaveGameFile> GetSaveGames()
@@ -97,7 +92,10 @@ namespace CivOne.Screens
 
 			SaveGameFile file = GetSaveGames().ToArray()[item];
 			Game.Save(file.SveFile, file.MapFile);
-			Destroy();
+			_gameId = item;
+			SelectedGame = item;
+			_saving = true;
+			_update = true;
 		}
 		
 		private void DrawDriveQuestion()
@@ -118,7 +116,33 @@ namespace CivOne.Screens
 		
 		public override bool HasUpdate(uint gameTick)
 		{
-			if (_menu != null)
+			if (_saving)
+			{
+				if (!_update) return false;
+				Cursor = MouseCursor.None;
+				_update = false;
+				_canvas = new Picture(320, 200, _palette);
+				_canvas.FillRectangle(15, 0, 0, 320, 200);
+				DrawBorder(_border);
+
+				if (_menu != null)
+				{
+					AddLayer(_menu);
+					_menu.Close();
+					_menu = null;
+				}
+
+				DrawPanel(64, 86, 124, 41);
+				_canvas.DrawText($"{char.ToLower(_driveLetter)}:CIVIL{_gameId}.SVE", 0, 5, 75, 91);
+				_canvas.DrawText($"{Common.DifficultyName(Game.Difficulty)} {Game.HumanPlayer.LeaderName}", 0, 5, 75, 99);
+				_canvas.DrawText($"{Game.HumanPlayer.TribeNamePlural}/{Game.GameYear}", 0, 5, 75, 107);
+				_canvas.DrawText("... save in progress.", 0, 5, 75, 115);
+				
+				_canvas.DrawText("Game has been saved.", 0, 5, 75, 132);
+				_canvas.DrawText("Press key to continue.", 0, 5, 75, 140);
+				return true;
+			}
+			else if (_menu != null)
 			{
 				if (_menu.HasUpdate(gameTick))
 				{
@@ -141,6 +165,12 @@ namespace CivOne.Screens
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
+			if (_saving)
+			{
+				Destroy();
+				return true;
+			}
+			
 			char c = Char.ToUpper(args.KeyChar);
 			if (args.Key == Key.Escape)
 			{
@@ -158,7 +188,8 @@ namespace CivOne.Screens
 				{
 					SaveGameFile file = GetSaveGames().ToArray()[_gameId];
 					Game.Save(file.SveFile, file.MapFile);
-					Destroy();
+					_saving = true;
+					_update = true;
 					return true;
 				}
 
@@ -184,6 +215,8 @@ namespace CivOne.Screens
 					_menu.Items.Add(menuItem = new Menu.Item(file.Name, i++));
 					menuItem.Selected += SaveFile;
 				}
+				
+				_menu.ActiveItem = SelectedGame;
 				Cursor = MouseCursor.Pointer;
 			}
 			else if (c >= 'A' && c <= 'Z')

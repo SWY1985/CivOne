@@ -179,6 +179,19 @@ namespace CivOne
 			return string.Format("{0} AD", year);
 		}
 
+		public static string DifficultyName(int difficuly)
+		{
+			switch (difficuly)
+			{
+				case 1: return "Lord";
+				case 2: return "Prince";
+				case 3: return "King";
+				case 4: return "Emperor";
+				case 5: return "Deity";
+				default: return "Chief";
+			}
+		}
+
 		internal static int CitizenGroup(Citizen citizen)
 		{
 			int output = (int)citizen;
