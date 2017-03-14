@@ -17,7 +17,7 @@ namespace CivOne.Tasks
 
 		public readonly int RelX, RelY;
 
-		private int _step = 0;
+		private int _step = 1;
 
 		public int X { get; private set; }
 		public int Y { get; private set; }
@@ -35,7 +35,7 @@ namespace CivOne.Tasks
 			_step += STEP_SIZE;
 			X = (RelX * _step);
 			Y = (RelY * _step);
-			if (_step < 16)
+			if (_step <= 16)
 				return true;
 			EndTask();
 			return true;
