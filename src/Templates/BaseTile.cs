@@ -190,32 +190,19 @@ namespace CivOne.Templates
 			}
 		}
 		
-		private bool _road = false;
+		private bool _road;
 		public virtual bool Road
 		{
 			get
 			{
-				if (Game.Started && !_road && City != null) _road = true;
-				return _road;
+				return _road && !RailRoad;
 			}
 			set
 			{
 				_road = value;
 			}
 		}
-		private bool _railRoad = false;
-		public virtual bool RailRoad
-		{
-			get
-			{
-				if (Game.Started && !_railRoad && City != null && Map[X, Y].GetBorderTiles().Any(t => (t as BaseTile)._railRoad || t.City != null)) _railRoad = true;
-				return _railRoad;
-			}
-			set
-			{
-				_railRoad = value;
-			}
-		}
+		public virtual bool RailRoad { get; set; }
 		public virtual bool Irrigation { get; set; }
 		public virtual bool Mine { get; set; }
 		public virtual bool Fortress { get; set; }
