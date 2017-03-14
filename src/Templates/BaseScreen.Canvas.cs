@@ -35,6 +35,24 @@ namespace CivOne.Templates
 			_canvas.AddLayer(picture, x, y);
 		}
 
+		protected void DrawPanel(int x, int y, int width, int height, bool border = true)
+		{
+			int xx = x, yy = y, ww = width, hh = height;
+			if (border)
+			{
+				xx++;
+				yy++;
+				ww -= 2;
+				hh -= 2;
+				_canvas.FillRectangle(5, x, y, width, height);
+			}
+			Picture background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
+			Picture panel = new Picture(ww, hh);
+			panel.FillLayerTile(background);
+			panel.AddBorder(15, 8, 0, 0, ww, hh);
+			_canvas.AddLayer(panel, xx, yy);
+		}
+
 		protected void DrawBorder(int border)
 		{
 			border = (border % 2);
