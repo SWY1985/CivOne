@@ -58,7 +58,7 @@ namespace CivOne.Tiles
 		{
 			get
 			{
-				return (sbyte)((Road ? 1 : 0) + (RepublicDemocratic ? 1 : 0));
+				return (sbyte)((Road || RailRoad ? 1 : 0) + (RepublicDemocratic ? 1 : 0));
 			}
 		}
 		
