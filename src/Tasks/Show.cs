@@ -129,9 +129,9 @@ namespace CivOne.Tasks
 			}
 		}
 
-		public static Show DestroyUnit(IUnit unit)
+		public static Show DestroyUnit(IUnit unit, bool stack)
 		{
-			return new Show(new DestroyUnit(unit));
+			return new Show(new DestroyUnit(unit, stack));
 		}
 
 		public static Show CaptureCity(City city)
