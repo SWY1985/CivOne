@@ -24,7 +24,7 @@ namespace CivOne.Templates
 		
 		public override bool HasUpdate(uint gameTick)
 		{
-			if (_update) return false;
+			if (!_update) return false;
 			_update = false;
 			return true;
 		}
