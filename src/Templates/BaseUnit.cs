@@ -293,7 +293,14 @@ namespace CivOne.Templates
 					}
 					else if (MovesLeft > 0)
 					{
-						MovesLeft--;
+						if (this is Bomber)
+						{
+							SkipTurn();
+						}
+						else
+						{
+							MovesLeft--;
+						}
 					}
 					Movement = null;
 				};
