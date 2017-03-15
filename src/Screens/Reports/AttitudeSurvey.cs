@@ -65,7 +65,7 @@ namespace CivOne.Screens.Reports
 		{
 			if (!_update) return false;
 
-			_canvas.FillRectangle(9, 0, 32, 320, 168);
+			_canvas.FillRectangle(9, 0, 28, 320, 172);
 
 			int y = 32;
 			for (int i = (_page++ * 16); i < _cities.Length && i < (_page * 16); i++)
