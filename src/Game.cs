@@ -350,8 +350,8 @@ namespace CivOne
 			{
 				if (tile[relX, relY] == null) continue;
 				City city = tile[relX, relY].City;
-				if (!ownerCities && CurrentPlayer == city.Owner) continue;
 				if (city == null) continue;
+				if (!ownerCities && CurrentPlayer == city.Owner) continue;
 				foreach (ITile cityTile in city.ResourceTiles.Where(t => city.InvalidTile(t)))
 				{
 					city.RelocateResourceTile(tile);
