@@ -171,7 +171,6 @@ namespace CivOne.Screens
 				if (new Rectangle(xx, yy, 16, 16).Contains(args.Location))
 				{
 					units[i].Busy = false;
-					Game.ActiveUnit = units[i];
 					_update = true;
 					break;
 				}

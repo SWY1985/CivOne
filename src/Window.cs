@@ -247,9 +247,9 @@ namespace CivOne
 
 		private void DrawMouseCursor(int x1, int y1)
 		{
-			if (CursorHidden) return;
-			
 			UpdateMouseTexture();
+			
+			if (CursorHidden) return;
 
 			GL.Enable(EnableCap.Blend);
 
