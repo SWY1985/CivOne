@@ -56,7 +56,7 @@ namespace CivOne
 		private void UpdateMouseTexture()
 		{
 			if (_mouseCursor != (_mouseCursor = TopScreen.Cursor)) return;
-			if (_cursorType == CursorType.Native || _mouseCursor == MouseCursor.None) return;
+			if (CursorHidden) return;
 
 			switch (_mouseCursor)
 			{
@@ -66,6 +66,14 @@ namespace CivOne
 				case MouseCursor.Goto:
 					PictureToTexture(TEXTURE_CURSOR, _cursorGoto);
 					break;
+			}
+		}
+
+		private bool CursorHidden
+		{
+			get
+			{
+				return (_cursorType == CursorType.Native || _mouseCursor == MouseCursor.None || !_showCursor);
 			}
 		}
 
