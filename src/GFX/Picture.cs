@@ -100,6 +100,21 @@ namespace CivOne.GFX
 			}
 		}
 
+		public int[] GetColorMap
+		{
+			get
+			{
+				int[] output = new int[Width * Height];
+				int i = 0;
+				for (int yy = _bitmap.GetUpperBound(1); yy >= 0; yy--)
+				for (int xx = 0; xx <= _bitmap.GetUpperBound(0); xx++)
+				{
+					output[i++] = _palette[_bitmap[xx, yy]].GetHashCode();
+				}
+				return output;
+			}
+		}
+
 		public byte[,] ScaleBitmap(int scaleX, int scaleY)
 		{
 			byte[,] output = new byte[Width * scaleX, Height * scaleY];
