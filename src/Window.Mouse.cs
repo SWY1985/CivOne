@@ -53,6 +53,29 @@ namespace CivOne
 			OnMouseEnter(this, EventArgs.Empty);
 		}
 
+		private void UpdateMousePosition()
+		{
+			float scaleX = (float)ClientSize.Width / CanvasWidth;
+			float scaleY = (float)ClientSize.Height / CanvasHeight;
+			
+			switch (Settings.Instance.AspectRatio)
+			{
+				case AspectRatio.Scaled:
+
+					break;
+				case AspectRatio.ScaledFixed:
+					if (scaleX > scaleY) scaleX = scaleY;
+					else if (scaleY > scaleX) scaleY = scaleX;
+					break;
+				default:
+					scaleX = ScaleX;
+					scaleY = ScaleY;
+					break;
+			}
+
+			OnMouseMove(scaleX, scaleY);
+		}
+
 		private void UpdateMouseTexture()
 		{
 			if (_mouseCursor != (_mouseCursor = TopScreen.Cursor)) return;
