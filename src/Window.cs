@@ -255,8 +255,8 @@ namespace CivOne
 
 			x1 += (_mouseX * ScaleX);
 			y1 += (_mouseY * ScaleY);
-			int x2 = x1 + (16 * ScaleX);
-			int y2 = y1 + (16 * ScaleY);
+			int x2 = x1 + (15 * ScaleX);
+			int y2 = y1 + (15 * ScaleY);
 
 			DrawQuad(TEXTURE_CURSOR, x1, y1, x2, y2);
 			
