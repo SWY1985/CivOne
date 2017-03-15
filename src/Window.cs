@@ -251,6 +251,11 @@ namespace CivOne
 			
 			if (CursorHidden) return;
 
+			if (WindowState != WindowState.Minimized)
+			{
+				UpdateMousePosition();
+			}
+
 			GL.Enable(EnableCap.Blend);
 
 			x1 += (_mouseX * ScaleX);
@@ -301,29 +306,6 @@ namespace CivOne
 			if (Common.ReloadSettings)
 			{
 				LoadCursorGraphics();
-			}
-
-			float scaleX = (float)ClientSize.Width / CanvasWidth;
-			float scaleY = (float)ClientSize.Height / CanvasHeight;
-
-			if (WindowState != WindowState.Minimized/* && this.Focused*/)
-			{
-				switch (Settings.Instance.AspectRatio)
-				{
-					case AspectRatio.Scaled:
-
-						break;
-					case AspectRatio.ScaledFixed:
-						if (scaleX > scaleY) scaleX = scaleY;
-						else if (scaleY > scaleX) scaleY = scaleX;
-						break;
-					default:
-						scaleX = ScaleX;
-						scaleY = ScaleY;
-						break;
-				}
-
-				OnMouseMove(scaleX, scaleY);
 			}
 
 			_gameTick++;
