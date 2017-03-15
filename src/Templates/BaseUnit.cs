@@ -123,7 +123,7 @@ namespace CivOne.Templates
 			// Step 6: If the attacking unit is a veteran unit, increase the attack strength by 50%.
 			if (Veteran)
 			{
-				attackStrength *= 1.5;
+				attackStrength += (attackStrength / 2);
 			}
 			
 			// Step 7: If the attacking unit has only 0.2 movement points left, multiply the attack strength by 2, then divide it by 3. If the attacking unit has only 0.1 movement points left, then just divide by 3 instead.
