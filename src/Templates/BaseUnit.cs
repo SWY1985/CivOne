@@ -220,6 +220,14 @@ namespace CivOne.Templates
 				randomDefense = Common.Random.Next(defenseStrength);
 				win = (randomAttack >= randomDefense);
 			}
+
+			// 50% chance to award veteran status to the winner
+			if (Common.Random.Next(100) < 50)
+			{
+				if (win && !attackUnit.Veteran) attackUnit.Veteran = true;
+				if (!win && !defendUnit.Veteran) attackUnit.Veteran = true;
+			}
+			
 			return win;
 		}
 
