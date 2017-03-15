@@ -384,6 +384,8 @@ namespace CivOne
 		
 		public void DisbandUnit(IUnit unit)
 		{
+			IUnit activeUnit = ActiveUnit;
+
 			if (unit == null) return;
 			if (!_units.Contains(unit)) return;
 			if (unit.Tile is Ocean && unit is IBoardable)
@@ -400,6 +402,11 @@ namespace CivOne
 			unit.X = 255;
 			unit.Y = 255;
 			_units.Remove(unit);
+
+			if (_units.Contains(activeUnit))
+			{
+				_activeUnit = _units.IndexOf(activeUnit);
+			}
 		}
 
 		public void UnitWait()
