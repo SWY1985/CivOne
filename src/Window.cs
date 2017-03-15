@@ -247,7 +247,7 @@ namespace CivOne
 
 		private void DrawMouseCursor(int x1, int y1)
 		{
-			if (_cursorType == CursorType.Native || !_showCursor) return;
+			if (CursorHidden) return;
 			
 			UpdateMouseTexture();
 
