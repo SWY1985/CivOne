@@ -35,7 +35,7 @@ namespace CivOne.Screens
 		private readonly bool _captured;
 		private readonly byte[,] _noiseMap;
 		
-		private int _noiseCounter = NOISE_COUNT;
+		private int _noiseCounter = NOISE_COUNT + 15;
 
 		private int _houseType = 0;
 
@@ -143,6 +143,9 @@ namespace CivOne.Screens
 
 		private bool SkipAction()
 		{
+			if (_fadeStep != 0.0F && _fadeStep != 1.0F) return false;
+			if (_noiseCounter > 0 && _noiseCounter < NOISE_COUNT) return false;
+
 			Destroy();
 			if (Skipped != null)
 				Skipped(this, null);
@@ -761,7 +764,7 @@ namespace CivOne.Screens
 				for (int x = 0; x < 320; x++)
 				for (int y = 0; y < 200; y++)
 				{
-					_noiseMap[x, y] = (byte)Common.Random.Next(1, _noiseCounter);
+					_noiseMap[x, y] = (byte)Common.Random.Next(1, NOISE_COUNT);
 				}
 
 				string[] lines =  new [] { $"{_city.Name} builds", $"{(production as ICivilopedia).Name}." };
