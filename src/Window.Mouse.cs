@@ -30,6 +30,7 @@ namespace CivOne
 		private int _mouseX, _mouseY;
 
 		private bool _showCursor = false;
+		private MouseCursor _mouseCursor = MouseCursor.None;
 
 		private void LoadCursorGraphics()
 		{
@@ -44,24 +45,27 @@ namespace CivOne
 
 			_cursorPointer = Icons.Cursor(MouseCursor.Pointer, (_cursorType == CursorType.Builtin));
 			_cursorGoto = Icons.Cursor(MouseCursor.Goto, (_cursorType == CursorType.Builtin));
+			_mouseCursor = MouseCursor.None;
+
+			_cursorPointer.Palette[0] = new Color(0, 0, 0, 0);
+			_cursorGoto.Palette[0] = new Color(0, 0, 0, 0);
 
 			OnMouseEnter(this, EventArgs.Empty);
 		}
 
-		private void DrawMouseCursor(Picture canvas)
+		private void UpdateMouseTexture()
 		{
-			// Draw the mouse cursor
-			if (_cursorType != CursorType.Native && _showCursor && _mouseX >= 0 && _mouseX < DrawWidth && _mouseY >= 0 && _mouseY < DrawHeight)
+			if (_mouseCursor != (_mouseCursor = TopScreen.Cursor)) return;
+			if (_cursorType == CursorType.Native || _mouseCursor == MouseCursor.None) return;
+
+			switch (_mouseCursor)
 			{
-				switch (TopScreen.Cursor)
-				{
-					case MouseCursor.Pointer:
-						canvas.AddLayer(_cursorPointer, _mouseX, _mouseY);
-						break;
-					case MouseCursor.Goto:
-						canvas.AddLayer(_cursorGoto, _mouseX, _mouseY);
-						break;
-				}
+				case MouseCursor.Pointer:
+					PictureToTexture(TEXTURE_CURSOR, _cursorPointer);
+					break;
+				case MouseCursor.Goto:
+					PictureToTexture(TEXTURE_CURSOR, _cursorGoto);
+					break;
 			}
 		}
 

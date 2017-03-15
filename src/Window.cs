@@ -8,7 +8,6 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using OpenTK;
@@ -24,6 +23,10 @@ namespace CivOne
 {
 	internal partial class Window : GameWindow
 	{
+		private const int TEXTURE_CANVAS = 0, TEXTURE_CURSOR = 1;
+		
+		private Picture _canvas = new Picture(320, 200);
+
 		private uint _gameTick = 0;
 
 		private bool _update = false;
@@ -114,87 +117,64 @@ namespace CivOne
 			}
 		}
 
-		private Picture _canvas = new Picture(320, 200);
-		internal Picture Canvas
+		internal void UpdateCanvas()
 		{
-			get
+			if (ScaleX < 1 || ScaleY < 1)
 			{
-				if (ScaleX < 1 || ScaleY < 1)
-				{
-					CanvasWidth = 320;
-					CanvasHeight = 200;
-				}
-				else if (Settings.Instance.AspectRatio == AspectRatio.Expand)
-				{
-					int scale = 1;
-					int scaleX = (ClientRectangle.Width - (ClientRectangle.Width % 320)) / 320;
-					int scaleY = (ClientRectangle.Height - (ClientRectangle.Height % 200)) / 200;
-					if (scaleX > scaleY) scale = scaleY;
-					else scale = scaleX;
-
-					CanvasWidth = (int)(ClientSize.Width / scale);
-					CanvasHeight = (int)(ClientSize.Height / scale);
-
-					// Make sure the canvas resolution is a multiple of 4
-					CanvasWidth -= (CanvasWidth % 4);
-					CanvasHeight -= (CanvasHeight % 4);
-
-					// Set maximum bounds to 512x384, the maximum logical boundaries 
-					// according this this table: https://github.com/SWY1985/CivOne/wiki/Settings#expand-experimental
-					if (CanvasWidth > 512) CanvasWidth = 512;
-					if (CanvasHeight > 384) CanvasHeight = 384;
-				}
-				else
-				{
-					CanvasWidth = 320;
-					CanvasHeight = 200;
-				}
-
-				if (_canvas.Width != CanvasWidth  || _canvas.Height != CanvasHeight)
-				{
-					_canvas = new Picture(CanvasWidth, CanvasHeight);
-				}
-
-				if (Common.Screens.Length == 0) return _canvas;
-
-				CivOne.GFX.Color[] palette = TopScreen.Canvas.Palette;
-				palette[0] = CivOne.GFX.Color.Black;
-				_canvas.FillRectangle(0, 0, 0, _canvas.Width, _canvas.Height);
-				_canvas.SetPalette(palette);
-
-				if (TopScreen is IModal)
-				{
-					_canvas.AddLayer(TopScreen.Canvas, 0, 0);
-				}
-				else
-				{
-					foreach (IScreen screen in Common.Screens)
-					{
-						if (screen is IExpand && (screen.Canvas.Width != CanvasWidth || screen.Canvas.Height != CanvasHeight))
-						{
-							(screen as IExpand).Resize(CanvasWidth, CanvasHeight);
-						}
-						_canvas.AddLayer(screen.Canvas, 0, 0);
-					}
-				}
-
-				DrawMouseCursor(_canvas);
-
-				return _canvas;
+				CanvasWidth = 320;
+				CanvasHeight = 200;
 			}
-		}
-
-		private IEnumerable<int> GetCanvas()
-		{
-			Picture canvas = Canvas;
-			CanvasWidth = canvas.Width;
-			CanvasHeight = canvas.Height;
-			int[] colors = canvas.Palette.Select(x => x.GetHashCode()).ToArray();
-			byte[,] bitmap = canvas.GetBitmap;
-			for (int yy = bitmap.GetLength(1) - 1; yy >= 0; yy--)
-			for (int xx = 0; xx < bitmap.GetLength(0); xx++)
+			else if (Settings.Instance.AspectRatio == AspectRatio.Expand)
 			{
-				yield return colors[bitmap[xx, yy]];
+				int scale = 1;
+				int scaleX = (ClientRectangle.Width - (ClientRectangle.Width % 320)) / 320;
+				int scaleY = (ClientRectangle.Height - (ClientRectangle.Height % 200)) / 200;
+				if (scaleX > scaleY) scale = scaleY;
+				else scale = scaleX;
+
+				CanvasWidth = (int)(ClientSize.Width / scale);
+				CanvasHeight = (int)(ClientSize.Height / scale);
+
+				// Make sure the canvas resolution is a multiple of 4
+				CanvasWidth -= (CanvasWidth % 4);
+				CanvasHeight -= (CanvasHeight % 4);
+
+				// Set maximum bounds to 512x384, the maximum logical boundaries 
+				// according this this table: https://github.com/SWY1985/CivOne/wiki/Settings#expand-experimental
+				if (CanvasWidth > 512) CanvasWidth = 512;
+				if (CanvasHeight > 384) CanvasHeight = 384;
+			}
+			else
+			{
+				CanvasWidth = 320;
+				CanvasHeight = 200;
+			}
+
+			if (_canvas.Width != CanvasWidth  || _canvas.Height != CanvasHeight)
+			{
+				_canvas = new Picture(CanvasWidth, CanvasHeight);
+			}
+
+			if (Common.Screens.Length == 0) return;
+
+			CivOne.GFX.Color[] palette = TopScreen.Canvas.Palette;
+			palette[0] = CivOne.GFX.Color.Black;
+			_canvas.FillRectangle(0, 0, 0, _canvas.Width, _canvas.Height);
+			_canvas.SetPalette(palette);
+
+			if (TopScreen is IModal)
+			{
+				_canvas.AddLayer(TopScreen.Canvas, 0, 0);
+				return;
+			}
+
+			foreach (IScreen screen in Common.Screens)
+			{
+				if (screen is IExpand && (screen.Canvas.Width != CanvasWidth || screen.Canvas.Height != CanvasHeight))
+				{
+					(screen as IExpand).Resize(CanvasWidth, CanvasHeight);
+				}
+				_canvas.AddLayer(screen.Canvas);
 			}
 		}
 
@@ -230,6 +210,59 @@ namespace CivOne
 			}
 		}
 
+		private void PictureToTexture(int textureId, Picture picture)
+		{
+			int[] canvas = picture.GetColorMap;
+
+			GL.BindTexture(TextureTarget.Texture2D, textureId);
+			GL.TexImage2D<int>(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, picture.Width, picture.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, canvas);
+
+			switch (Settings.Instance.AspectRatio)
+			{
+				case AspectRatio.Scaled:
+				case AspectRatio.ScaledFixed:
+					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+					break;
+				default:
+					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+					break;
+			}
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
+		}
+
+		private void DrawQuad(int textureId, int x1, int y1, int x2, int y2)
+		{
+			GL.BindTexture(TextureTarget.Texture2D, textureId);
+			
+			GL.Begin(PrimitiveType.Quads);
+			GL.TexCoord2(0, 1); GL.Vertex2(x1, y1);
+			GL.TexCoord2(1, 1); GL.Vertex2(x2, y1);
+			GL.TexCoord2(1, 0); GL.Vertex2(x2, y2);
+			GL.TexCoord2(0, 0); GL.Vertex2(x1, y2);
+			GL.End();
+		}
+
+		private void DrawMouseCursor(int x1, int y1)
+		{
+			if (_cursorType == CursorType.Native || !_showCursor) return;
+			
+			UpdateMouseTexture();
+
+			GL.Enable(EnableCap.Blend);
+
+			x1 += (_mouseX * ScaleX);
+			y1 += (_mouseY * ScaleY);
+			int x2 = x1 + (16 * ScaleX);
+			int y2 = y1 + (16 * ScaleY);
+
+			DrawQuad(TEXTURE_CURSOR, x1, y1, x2, y2);
+			
+			GL.Disable(EnableCap.Blend);
+		}
+
 		protected override void OnResize(EventArgs args)
 		{
 			if (WindowState == WindowState.Minimized) return;
@@ -245,6 +278,7 @@ namespace CivOne
 		{
 			GL.Enable(EnableCap.Texture2D);
 			GL.Disable(EnableCap.DepthTest);
+			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
 			// Set full screen
 			if (Settings.Instance.FullScreen)
@@ -272,7 +306,7 @@ namespace CivOne
 			float scaleX = (float)ClientSize.Width / CanvasWidth;
 			float scaleY = (float)ClientSize.Height / CanvasHeight;
 
-			if (WindowState != WindowState.Minimized && this.Focused)
+			if (WindowState != WindowState.Minimized/* && this.Focused*/)
 			{
 				switch (Settings.Instance.AspectRatio)
 				{
@@ -293,7 +327,7 @@ namespace CivOne
 			}
 
 			_gameTick++;
-			_update = HasUpdate;
+			if (HasUpdate) _update = true;
 		}
 
 		protected override void OnRenderFrame(FrameEventArgs args)
@@ -303,43 +337,20 @@ namespace CivOne
 			int x1, y1, x2, y2;
 			GetBorders(out x1, out y1, out x2, out y2);
 
+			if (_update)
+			{
+				UpdateCanvas();
+				PictureToTexture(TEXTURE_CANVAS, _canvas);
+				_update = false;
+			}
+
+			GL.Clear(ClearBufferMask.ColorBufferBit);
 			GL.MatrixMode(MatrixMode.Projection);
 			GL.LoadIdentity();
 			GL.Ortho(0, ClientSize.Width, ClientSize.Height, 0, -1, 1);
 			
-			int textureId = 0;
-			int[] canvas = GetCanvas().ToArray();
-
-			GL.BindTexture(TextureTarget.Texture2D, textureId);
-			GL.TexImage2D<int>(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, CanvasWidth, CanvasHeight, 0, PixelFormat.Rgba, PixelType.UnsignedByte, canvas);
-
-			switch (Settings.Instance.AspectRatio)
-			{
-				case AspectRatio.Scaled:
-				case AspectRatio.ScaledFixed:
-					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
-					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
-					break;
-				default:
-					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
-					GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
-					break;
-			}
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
-
-			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
-			GL.BindTexture(TextureTarget.Texture2D, textureId);
-
-			GL.Begin(PrimitiveType.Quads);
-			GL.TexCoord2(0, 1); GL.Vertex2(x1, y1);
-			GL.TexCoord2(1, 1); GL.Vertex2(x2, y1);
-			GL.TexCoord2(1, 0); GL.Vertex2(x2, y2);
-			GL.TexCoord2(0, 0); GL.Vertex2(x1, y2);
-			GL.End();
-
-			GL.Flush();
+			DrawQuad(TEXTURE_CANVAS, x1, y1, x2, y2);
+			DrawMouseCursor(x1, y1);
 
 			SwapBuffers();
 		}
