@@ -315,8 +315,7 @@ namespace CivOne.Templates
 					GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText($"ERROR/AMPHIB")));
 					return false;
 				}
-				Confront(relX, relY);
-				return true;
+				return Confront(relX, relY);
 			}
 			if (Class == UnitClass.Land && !(this is Diplomat || this is Caravan) && !new ITile[] { Map[X, Y], moveTarget }.Any(t => t.IsOcean || t.City != null) && moveTarget.GetBorderTiles().SelectMany(t => t.Units).Any(u => u.Owner != Owner))
 			{
@@ -335,8 +334,7 @@ namespace CivOne.Templates
 			}
 			if (moveTarget.City != null && Map[X, Y][relX, relY].City.Owner != Owner)
 			{
-				Confront(relX, relY);
-				return true;
+				return Confront(relX, relY);
 			}
 
 			if (!MoveTargets.Any(t => t.X == moveTarget.X && t.Y == moveTarget.Y))
