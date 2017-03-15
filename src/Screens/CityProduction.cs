@@ -19,11 +19,16 @@ namespace CivOne.Screens
 {
 	internal class CityProduction : BaseScreen
 	{
+		private const int SHIELD_HEIGHT = 8;
+
 		private readonly City _city;
 
 		private readonly Picture _background;
 		
 		private bool _update = true;
+
+		private int _shieldPrice, _totalShields, _shieldsPerLine;
+		private double _shieldWidth;
 
 		private void ForceUpdate(object sender, EventArgs args)
 		{
@@ -38,24 +43,11 @@ namespace CivOne.Screens
 
 		private void DrawShields()
 		{
-			double lineHeight = 1;
-			int totalShields = (int)_city.CurrentProduction.Price * 10;
-			int shieldWidth = 8;
-			int shieldHeight = 8;
-			int shieldsPerLine = 10;
-			for (int i = 100; i <= 400; i *= 2)
-			{
-				if (totalShields <= i) break;
-				shieldWidth /= 2;
-				shieldsPerLine *= 2;
-				lineHeight /= 2;
-			}
-
 			for (int i = 0; i < _city.Shields; i++)
 			{
-				int x = 1 + (shieldWidth * (i % shieldsPerLine));
-				int y = 17 + (((i - (i % shieldsPerLine)) / shieldsPerLine) * shieldHeight);
-				AddLayer(Icons.Shield, x, y);
+				double x = 1 + (_shieldWidth * (i % _shieldsPerLine));
+				int y = 17 + (((i - (i % _shieldsPerLine)) / _shieldsPerLine) * SHIELD_HEIGHT);
+				AddLayer(Icons.Shield, (int)Math.Floor(x), y);
 			}
 		}
 
@@ -79,13 +71,21 @@ namespace CivOne.Screens
 		{
 			if (_update || ProductionInvalid)
 			{
-				int totalShields = (int)_city.CurrentProduction.Price * 10;
-				int width = 83;
-				int shieldsPerLine = 10;
-				if (totalShields > 100) { width += 4; shieldsPerLine *= 2; }
-				if (totalShields > 200) { width += 1; shieldsPerLine *= 2; }
-				if (totalShields > 400) { shieldsPerLine *= 2; }
-				int height = 8 * ((totalShields - (totalShields % shieldsPerLine)) / shieldsPerLine);
+				_shieldsPerLine = 10;
+				_shieldPrice = (int)_city.CurrentProduction.Price * 10;
+				_totalShields = _shieldPrice;
+				if (_city.Shields > _totalShields) _totalShields = _city.Shields;
+				
+				_shieldWidth = 8;
+				if (_totalShields > 100)
+				{
+					_shieldsPerLine = (int)Math.Ceiling((double)_totalShields / 10);
+					_shieldWidth = ((double)80 / _shieldsPerLine);
+				}
+
+				int width = (int)(_shieldWidth * (_shieldsPerLine - 1)) + 11;
+				int height = SHIELD_HEIGHT * ((_shieldPrice - (_shieldPrice % _shieldsPerLine)) / _shieldsPerLine);
+				if (height < SHIELD_HEIGHT) height = SHIELD_HEIGHT;
 
 				_canvas.FillLayerTile(_background);
 				_canvas.AddBorder(1, 1, 0, 0, width, 19 + height);
