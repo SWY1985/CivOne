@@ -31,7 +31,7 @@ namespace CivOne.Screens
 		{
 			if (_update)
 			{
-				string population = _city.Population.ToString("n0", new CultureInfo("en-US"));
+				string population = Common.NumberSeperator(_city.Population);
 
 				_canvas.FillLayerTile(_background);
 				_canvas.AddBorder(1, 1, 0, 0, 207, 21);
