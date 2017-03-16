@@ -224,6 +224,12 @@ namespace CivOne.Screens
 					
 					IUnit drawUnit = units.FirstOrDefault(u => u == Game.ActiveUnit);
 					
+					if (Game.MovingUnit != null && Game.MovingUnit.Movement.TargetTile.X == t.Tile.X && Game.MovingUnit.Movement.TargetTile.Y== t.Tile.Y)
+					{
+						// set defending unit
+						drawUnit = units.OrderByDescending(x => x.Attack * (x.Veteran ? 1.5 : 1)).ThenBy(x => (int)x.Type).First();
+					}
+					
 					if (drawUnit == null)
 					{
 						continue;
@@ -246,6 +252,13 @@ namespace CivOne.Screens
 					if (t.Tile.City != null && units.Length == 1 && !GameTask.Any())
 					{
 						AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position.X - 1, t.Position.Y - 1);
+						continue;
+					}
+					
+					if (Game.MovingUnit != null && Game.MovingUnit.Movement.TargetTile.X == t.Tile.X && Game.MovingUnit.Movement.TargetTile.Y== t.Tile.Y)
+					{
+						// draw the defending unit
+						AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position);
 						continue;
 					}
 

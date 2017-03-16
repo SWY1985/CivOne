@@ -50,6 +50,14 @@ namespace CivOne.Tasks
 			}
 		}
 
+		internal ITile TargetTile
+		{
+			get
+			{
+				return ActiveUnit.Tile[RelX, RelY];
+			}
+		}
+
 		public MoveUnit(int relX, int relY)
 		{
 			RelX = relX;
