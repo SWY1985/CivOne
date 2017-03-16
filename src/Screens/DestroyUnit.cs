@@ -92,7 +92,7 @@ namespace CivOne.Screens
 				while (xx >= 80) xx -= 80;
 
 				_overlay.AddLayer(_unit.GetUnit(_unit.Owner), cx + (xx * 16), cy + (yy * 16));
-				if (_unit.Tile.Units.Length > 1)
+				if (_unit.Tile.Units.Length > 1 && !_unit.Tile.Fortress && _unit.Tile.City == null)
 					_overlay.AddLayer(_unit.GetUnit(_unit.Owner), cx + (xx * 16) - 1, cy + (yy * 16) - 1);
 				
 				if (Settings.DestroyAnimation == DestroyAnimation.Sprites)
