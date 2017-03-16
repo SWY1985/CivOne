@@ -6,4 +6,3 @@ lib/**
 saves/**
 settings/**
 obj/**
-*.lock.json

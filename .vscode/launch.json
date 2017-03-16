@@ -8,42 +8,36 @@
 			"type": "coreclr",
 			"request": "launch",
 			"preLaunchTask": "build",
-			"program": "${workspaceRoot}\\bin\\Debug\\netcoreapp1.1\\CivOne.dll",
+			"program": "${workspaceRoot}/bin/Debug/netcoreapp1.1/CivOne.dll",
 			"args": [],
 			"cwd": "${workspaceRoot}",
-			"externalConsole": false,
 			"stopAtEntry": false,
-			"internalConsoleOptions": "openOnSessionStart"
+			"console": "internalConsole",
+			"internalConsoleOptions": "openOnFirstSessionStart"
 		},
 		{
 			"name": "Launch Setup",
 			"type": "coreclr",
 			"request": "launch",
 			"preLaunchTask": "build",
-			"program": "${workspaceRoot}\\bin\\Debug\\netcoreapp1.1\\CivOne.dll",
+			"program": "${workspaceRoot}/bin/Debug/netcoreapp1.1/CivOne.dll",
 			"args": ["setup"],
 			"cwd": "${workspaceRoot}",
-			"externalConsole": false,
 			"stopAtEntry": false,
-			"internalConsoleOptions": "openOnSessionStart"
+			"console": "internalConsole",
+			"internalConsoleOptions": "openOnFirstSessionStart"
 		},
 		{
 			"name": "Launch Demo",
 			"type": "coreclr",
 			"request": "launch",
 			"preLaunchTask": "build",
-			"program": "${workspaceRoot}\\bin\\Debug\\netcoreapp1.1\\CivOne.dll",
+			"program": "${workspaceRoot}/bin/Debug/netcoreapp1.1/CivOne.dll",
 			"args": ["demo"],
 			"cwd": "${workspaceRoot}",
-			"externalConsole": false,
 			"stopAtEntry": false,
-			"internalConsoleOptions": "openOnSessionStart"
-		},
-		{
-			"name": "Attach Process",
-			"type": "coreclr",
-			"request": "attach",
-			"processId": "${command.pickProcess}"
+			"console": "internalConsole",
+			"internalConsoleOptions": "openOnFirstSessionStart"
 		}
 	]
 }

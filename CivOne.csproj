@@ -1,0 +1,19 @@
+<!--
+	These are the settings for editing CivOne in Visual Studio Code.
+	Please do not change them!
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>netcoreapp1.1</TargetFramework>
+		<DebugType>portable</DebugType>
+		<AssemblyName>CivOne</AssemblyName>
+		<OutputType>Exe</OutputType>
+		<PackageId>CivOne</PackageId>
+		<RuntimeIdentifiers>win7-x86;win7-x64;osx.10.10-x64;ubuntu.16.04-x64</RuntimeIdentifiers>
+		<PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+		<RuntimeFrameworkVersion>1.1.1</RuntimeFrameworkVersion>
+	</PropertyGroup>
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.1' ">
+		<PackageReference Include="OpenTK.NETCore" Version="1.1.2571.6431" />
+	</ItemGroup>
+</Project>
