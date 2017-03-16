@@ -105,7 +105,7 @@ namespace CivOne.Screens
 			_demographics.FillRectangle(2, 3, 13, 74, 1);
 			if (Human.Population > 0)
 			{
-				string population = Human.Population.ToString("n0", new CultureInfo("en-US"));
+				string population = Common.NumberSeperator(Human.Population);
 				_demographics.DrawText($"{population}#", 0, 5, 2, 15, TextAlign.Left);
 			}
 			_demographics.DrawText(Game.GameYear, 0, 5, 2, 23, TextAlign.Left);

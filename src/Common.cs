@@ -158,6 +158,19 @@ namespace CivOne
 			}
 		}
 
+		internal static string NumberSeperator(int number)
+		{
+			string input = number.ToString();
+			input = input.PadLeft(3 - (input.Length % 3) + input.Length, '0');
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < input.Length; i++)
+			{
+				if (sb.Length > 0 && i % 3 == 0) sb.Append(',');
+				sb.Append(input[i]);
+			}
+			return sb.ToString().TrimStart(new char[] { '0', ',' });
+		}
+
 		public static ushort YearToTurn(int year)
 		{
 			if (year < -4000) return 0;
