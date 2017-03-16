@@ -9,7 +9,7 @@
 		{
 			"taskName": "build",
 			"args": [
-				"${workspaceRoot}//project.json"
+				"${workspaceRoot}//CivOne.csproj"
 			],
 			"isBuildCommand": true,
 			"problemMatcher": "$msCompile"
