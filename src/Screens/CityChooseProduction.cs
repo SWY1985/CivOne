@@ -163,7 +163,7 @@ namespace CivOne.Screens
 			
 			Cursor = MouseCursor.Pointer;
 
-			_canvas = new Picture(320, 200, Common.GamePlay.Palette);
+			_canvas = new Picture(320, 200, Common.GamePlay.MainPalette);
 
 			_availableProduction = _city.AvailableProduction.ToArray();
 			_menuHeight = Resources.Instance.GetFontHeight(0) * _availableProduction.Length;

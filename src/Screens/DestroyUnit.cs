@@ -230,7 +230,7 @@ namespace CivOne.Screens
 			_x = Common.GamePlay.X;
 			_y = Common.GamePlay.Y;
 
-			_canvas = new Picture(320, 200, Common.GamePlay.Palette);
+			_canvas = new Picture(320, 200, Common.GamePlay.MainPalette);
 			_gameMap = GameMap;
 
 			switch (Settings.DestroyAnimation)

@@ -44,7 +44,7 @@ namespace CivOne.Screens
 		{
 			Cursor = MouseCursor.Pointer;
 			
-			_canvas = new Picture(320, 200, Common.GamePlay.Palette);
+			_canvas = new Picture(320, 200, Common.GamePlay.MainPalette);
 			
 			byte colourLight = (byte)(colour + 8);
 			int lineHeight = Resources.Instance.GetFontHeight(1);
