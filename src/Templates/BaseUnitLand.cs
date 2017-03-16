@@ -52,8 +52,11 @@ namespace CivOne.Templates
 			}
 			else if (Tile.Type == Terrain.Ocean)
 			{
-				MovesLeft = 0;
-				PartMoves = 0;
+				if (!previousTile.IsOcean)
+				{
+					MovesLeft = 0;
+					PartMoves = 0;
+				}
 				Sentry = true;
 				foreach (IUnit unit in Tile.Units.Where(u => u is IBoardable))
 				{
