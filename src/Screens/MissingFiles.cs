@@ -112,7 +112,7 @@ namespace CivOne.Screens
 				return true;
 			}
 
-			if (_update) return false;
+			if (!_update) return false;
 			_update = false;
 			return true;
 		}
@@ -140,12 +140,6 @@ namespace CivOne.Screens
 			}
 
 			_y = 75 + (9 * _text.Length);
-			
-			// _canvas.DrawText(Settings.DataDirectory, -1, 1, 160, 65 + (9 * _text.Length), TextAlign.Center);
-			
-			// _canvas.DrawText("Make a choice...", 1, 5, 44, 83 + (9 * _text.Length), TextAlign.Left);
-
-			// _y = 96 + (9 * _text.Length);
 		}
 	}
 }
