@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -60,6 +61,14 @@ namespace CivOne.Screens
 		internal void RefreshMap()
 		{
 			_gameMap.ForceRefresh();
+		}
+
+		internal Color[] MainPalette
+		{
+			get
+			{
+				return _canvas.OriginalColours.ToArray();
+			}
 		}
 		
 		private void MenuBarGame(object sender, EventArgs args)

@@ -53,7 +53,7 @@ namespace CivOne.Screens
 			Cursor = MouseCursor.None;
 
 			bool modernGovernment = Human.HasAdvance<Invention>();
-			Color[] palette = Common.GamePlay.Palette;
+			Color[] palette = Common.GamePlay.MainPalette;
 
 			Picture[] governmentPortraits = new Picture[4];
 			if (showGovernment)

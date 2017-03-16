@@ -77,6 +77,14 @@ namespace CivOne
 			}
 		}
 
+		public static Color[] GamePlayPalette
+		{
+			get
+			{
+				return GamePlay.Palette.ToArray();
+			}
+		}
+
 		internal static void SetRandomSeedFromName(string name)
 		{
 			short number = 0;

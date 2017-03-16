@@ -58,7 +58,7 @@ namespace CivOne.Screens.Dialogs
 			bool modernGovernment = Human.HasAdvance<Invention>();
 			Picture governmentPortrait = Icons.GovernmentPortrait(Human.Government, Advisor.Defense, modernGovernment);
 			
-			Color[] palette = Common.GamePlay.Palette;
+			Color[] palette = Common.GamePlay.MainPalette;
 			for (int i = 144; i < 256; i++)
 			{
 				palette[i] = governmentPortrait.Palette[i];
