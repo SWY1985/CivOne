@@ -5,4 +5,5 @@ plugins/**
 lib/**
 saves/**
 settings/**
+sounds/**
 obj/**

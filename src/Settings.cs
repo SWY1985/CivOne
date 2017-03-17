@@ -74,6 +74,14 @@ namespace CivOne
 				return Path.Combine(BinDirectory, "settings");
 			}
 		}
+		
+		internal string SoundsDirectory
+		{
+			get
+			{
+				return Path.Combine(BinDirectory, "sounds");
+			}
+		}
 
 		// Settings
 		
@@ -279,7 +287,7 @@ namespace CivOne
 		
 		private void CreateDirectories()
 		{
-			foreach (string dir in new[] { CaptureDirectory, DataDirectory, PluginsDirectory, SavesDirectory, SettingsDirectory })
+			foreach (string dir in new[] { CaptureDirectory, DataDirectory, PluginsDirectory, SavesDirectory, SettingsDirectory, SoundsDirectory })
 			if (!Directory.Exists(dir))
 			{
 				Directory.CreateDirectory(dir);
