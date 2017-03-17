@@ -153,8 +153,11 @@ namespace CivOne.Screens
 		{
 			get
 			{
-				int x = (_difficulty % 2) == 0 ? 21 : 80;
-				int y = 6 + (35 * _difficulty);
+				int pictureId = _difficulty;
+				if (pictureId > 4) pictureId = 4;
+
+				int x = (pictureId % 2) == 0 ? 21 : 80;
+				int y = 6 + (35 * pictureId);
 				return _background.GetPart(x, y, 53, 47);
 			}
 		}
@@ -302,7 +305,10 @@ namespace CivOne.Screens
 			_canvas = new Picture(320, 200, _background.Palette);
 			AddLayer(_background);
 			
-			_menuItemsDifficulty = new[] { "Chieftain (easiest)", "Warlord", "Prince", "King", "Emperor (toughest)" };
+			if (Settings.Instance.DeityEnabled)
+				_menuItemsDifficulty = new[] { "Chieftain (easiest)", "Warlord", "Prince", "King", "Emperor", "Deity (toughest)" };
+			else
+				_menuItemsDifficulty = new[] { "Chieftain (easiest)", "Warlord", "Prince", "King", "Emperor (toughest)" };
 			_menuItemsCompetition = Enumerable.Range(3, 5).Reverse().Select(i => string.Format("{0} Civilizations", i)).ToArray();
 		}
 	}

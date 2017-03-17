@@ -155,7 +155,7 @@ namespace CivOne.Screens
 		
 		private void PatchesMenu(int activeItem = 0)
 		{
-			string revealWorld, sideBar, debugMenu, cursorType, destroyAnimation;
+			string revealWorld, sideBar, debugMenu, cursorType, destroyAnimation, deityMenu;
 			switch (Settings.CursorType)
 			{
 				case CursorType.Builtin: cursorType = "Built-in"; break;
@@ -174,8 +174,9 @@ namespace CivOne.Screens
 			debugMenu = $"Show debug menu: {(Settings.DebugMenu ? "yes" : "no")}";
 			cursorType = $"Mouse cursor type: {cursorType}";
 			destroyAnimation = $"Destroy animation: {destroyAnimation}";
+			deityMenu = $"Enable Deity difficulty: {(Settings.DeityEnabled ? "yes" : "no")}";
 			
-			Menu menu = CreateMenu("PATCHES:", PatchesChoice, revealWorld, sideBar, debugMenu, cursorType, destroyAnimation, "Back");
+			Menu menu = CreateMenu("PATCHES:", PatchesChoice, revealWorld, sideBar, debugMenu, cursorType, destroyAnimation, deityMenu, "Back");
 			menu.ActiveItem = activeItem;
 			AddMenu(menu);
 		}
@@ -217,6 +218,13 @@ namespace CivOne.Screens
 		{
 			Menu menu = CreateMenu("DESTROY ANIMATION:", DestroyAnimationChoice, "Sprites (original)", "Noise", "Back");
 			menu.ActiveItem = (int)Settings.DestroyAnimation;
+			AddMenu(menu);
+		}
+		
+		private void DeityEnabledMenu()
+		{
+			Menu menu = CreateMenu("ENABLE DEITY DIFFICULTY:", DeityEnabledChoice, "No", "Yes", "Back");
+			menu.ActiveItem = Settings.DeityEnabled ? 1 : 0;
 			AddMenu(menu);
 		}
 		
@@ -345,7 +353,10 @@ namespace CivOne.Screens
 				case 4: // Destroy Animation
 					DestroyAnimationMenu();
 					break;
-				case 5: // Back
+				case 5: // Enable Deity difficulty
+					DeityEnabledMenu();
+					break;
+				case 6: // Back
 					MainMenu(1);
 					break;
 			}
@@ -388,10 +399,10 @@ namespace CivOne.Screens
 			int choice = (sender as Menu.Item).Value;
 			switch (choice)
 			{
-				case 0: // left
+				case 0: // no
 					Settings.DebugMenu = false;
 					break;
-				case 1: // right
+				case 1: // yes
 					Settings.DebugMenu = true;
 					break;
 			}
@@ -432,6 +443,22 @@ namespace CivOne.Screens
 			}
 			CloseMenus();
 			PatchesMenu(4);
+		}
+		
+		private void DeityEnabledChoice(object sender, EventArgs args)
+		{
+			int choice = (sender as Menu.Item).Value;
+			switch (choice)
+			{
+				case 0: // no
+					Settings.DeityEnabled = false;
+					break;
+				case 1: // yes
+					Settings.DeityEnabled = true;
+					break;
+			}
+			CloseMenus();
+			PatchesMenu(5);
 		}
 
 		public void Resize(int width, int height)
