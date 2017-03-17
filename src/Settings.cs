@@ -24,6 +24,7 @@ namespace CivOne
 		private int _expandWidth, _expandHeight;
 		private bool _revealWorld = false;
 		private bool _debugMenu = false;
+		private bool _deityEnabled = false;
 		private CursorType _cursorType = CursorType.Default;
 
 		private DestroyAnimation _destroyAnimation = DestroyAnimation.Sprites;
@@ -219,6 +220,20 @@ namespace CivOne
 			}
 		}
 		
+		internal bool DeityEnabled
+		{
+			get
+			{
+				return _deityEnabled;
+			}
+			set
+			{
+				_deityEnabled = value;
+				SetSetting("DeityEnabled", _deityEnabled ? "1" : "0");
+				Common.ReloadSettings = true;
+			}
+		}
+		
 		internal CursorType CursorType
 		{
 			get
@@ -347,6 +362,7 @@ namespace CivOne
 			int expandHeight = (int)_expandHeight;
 			bool revealWorld = false;
 			bool debugMenu = false;
+			bool deityEnabled = false;
 			int cursorType = (int)_cursorType;
 			int destroyAnimation = (int)_destroyAnimation;
 			
@@ -360,6 +376,7 @@ namespace CivOne
 			Int32.TryParse(GetSetting("ExpandHeight"), out expandHeight);
 			revealWorld = (GetSetting("RevealWorld") == "1");
 			debugMenu = (GetSetting("DebugMenu") == "1");
+			deityEnabled = (GetSetting("DeityEnabled") == "1");
 			Int32.TryParse(GetSetting("CursorType"), out cursorType);
 			Int32.TryParse(GetSetting("DestroyAnimation"), out destroyAnimation);
 			
@@ -382,6 +399,7 @@ namespace CivOne
 			}
 			_revealWorld = revealWorld;
 			_debugMenu = debugMenu;
+			_deityEnabled = deityEnabled;
 			_cursorType = (CursorType)cursorType;
 			_destroyAnimation = (DestroyAnimation)destroyAnimation;
 
