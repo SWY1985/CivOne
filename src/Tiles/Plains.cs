@@ -55,14 +55,6 @@ namespace CivOne.Tiles
 		{
 			get
 			{
-				return (sbyte)(BaseTrade + SpecialTrade);
-			}
-		}
-
-		public override sbyte BaseTrade
-		{
-			get
-			{
 				return (sbyte)((Road ? 1 : 0) + (RailRoad ? 2 : 0) + (RepublicDemocratic ? 1 : 0));
 			}
 		}
