@@ -138,7 +138,7 @@ namespace CivOne
 		{
 			get
 			{
-				return Game.Instance.GetCities().Where(c => this == c.Owner).ToArray();
+				return Game.Instance.GetCities().Where(c => this == c.Owner && c.Size > 0).ToArray();
 			}
 		}
 
