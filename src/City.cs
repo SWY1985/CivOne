@@ -168,14 +168,6 @@ namespace CivOne
 			}
 		}
 
-		internal int FoodTotal
-		{
-			get
-			{
-				return ResourceTiles.Sum(t => t.Food);
-			}
-		}
-
 		internal int FoodRequired
 		{
 			get
@@ -184,22 +176,47 @@ namespace CivOne
 			}
 		}
 
+		internal int FoodValue(ITile tile)
+		{
+			return tile.Food;
+		}
+
+		internal int FoodTotal
+		{
+			get
+			{
+				return ResourceTiles.Sum(t => FoodValue(t));
+			}
+		}
+
+		internal int ShieldValue(ITile tile)
+		{
+			return tile.Shield;
+		}
+
 		internal int ShieldTotal
 		{
 			get
 			{
-				int shields = ResourceTiles.Sum(t => t.Shield);
+				int shields = ResourceTiles.Sum(t => ShieldValue(t));
 				if (_buildings.Any(b => (b is Factory))) shields += (short)Math.Floor((double)shields * (_buildings.Any(b => (b is NuclearPlant)) ? 1.0 : 0.5));
 				if (_buildings.Any(b => (b is MfgPlant))) shields += (short)Math.Floor((double)shields * 1.0);
 				return shields;
 			}
 		}
 
+		internal int TradeValue(ITile tile)
+		{
+			int output = tile.Trade;
+			if (output > 0 && Player.HasWonder<Colossus>() && !Player.WonderObsolete<Colossus>()) output += 1;
+			return output;
+		}
+
 		internal int TradeTotal
 		{
 			get
 			{
-				return ResourceTiles.Sum(t => t.Trade);
+				return ResourceTiles.Sum(t => TradeValue(t));
 			}
 		}
 
@@ -322,11 +339,7 @@ namespace CivOne
 				if (tiles.Count() > 0)
 					_resourceTiles.Add(tiles.First());
 			}
-
-			if (HasWonder<Colossus>() && !this.Player.WonderObsolete<Colossus>())
-			{
-				ApplyColossusTradeModifier();
-			}
+			
 			UpdateSpecialists();
 		}
 
@@ -388,27 +401,11 @@ namespace CivOne
 			}
 			if (_resourceTiles.Contains(tile))
 			{
-				tile.SpecialTrade = 0;			// clear out Colossus effect.
 				_resourceTiles.Remove(tile);
 				return;
 			}
 			_resourceTiles.Add(tile);
-			if (HasWonder<Colossus>() && !this.Player.WonderObsolete<Colossus>())
-			{
-				ApplyColossusTradeModifier();
-			}
 			UpdateSpecialists();
-		}
-
-		private void ApplyColossusTradeModifier()
-		{
-			foreach(ITile x in _resourceTiles)
-			{
-				if (x.Trade >= 1)
-				{
-					x.SpecialTrade = 1;
-				}
-			}
 		}
 
 		private Player Player
