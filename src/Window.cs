@@ -134,10 +134,16 @@ namespace CivOne
 
 				CanvasWidth = (int)(ClientSize.Width / scale);
 				CanvasHeight = (int)(ClientSize.Height / scale);
+				
+				if (Settings.Instance.ExpandWidth != -1 && Settings.Instance.ExpandWidth != -1)
+				{
+					CanvasWidth = Settings.Instance.ExpandWidth;
+					CanvasHeight = Settings.Instance.ExpandHeight;
+				}
 
 				// Make sure the canvas resolution is a multiple of 4
-				CanvasWidth -= (CanvasWidth % 4);
-				CanvasHeight -= (CanvasHeight % 4);
+				CanvasWidth -= (CanvasWidth % 8);
+				CanvasHeight -= (CanvasHeight % 8);
 
 				// Set maximum bounds to 512x384, the maximum logical boundaries 
 				// according this this table: https://github.com/SWY1985/CivOne/wiki/Settings#expand-experimental
