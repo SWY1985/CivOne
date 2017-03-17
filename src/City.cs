@@ -178,7 +178,25 @@ namespace CivOne
 
 		internal int FoodValue(ITile tile)
 		{
-			return tile.Food;
+			int output = tile.Food;
+			switch (tile.Type)
+			{
+				case Terrain.Desert:
+				case Terrain.Forest:
+					if (!Player.AnarchyDespotism) output += 1;
+					break;
+				case Terrain.Grassland1:
+				case Terrain.Grassland2:
+				case Terrain.River:
+					if (!Player.AnarchyDespotism && tile.Irrigation) output += 1;
+					break;
+				case Terrain.Ocean:
+				case Terrain.Tundra:
+					if (!Player.AnarchyDespotism && tile.Special) output += 1;
+					break;
+			}
+			if (tile.RailRoad) output = (int)Math.Floor((double)output * 1.5);
+			return output;
 		}
 
 		internal int FoodTotal
@@ -191,7 +209,15 @@ namespace CivOne
 
 		internal int ShieldValue(ITile tile)
 		{
-			return tile.Shield;
+			int output = tile.Shield;
+			switch (tile.Type)
+			{
+				case Terrain.Hills:
+					if (!Player.AnarchyDespotism && tile.Mine) output += 1;
+					break;
+			}
+			if (tile.RailRoad) output = (int)Math.Floor((double)output * 1.5);
+			return output;
 		}
 
 		internal int ShieldTotal
@@ -208,6 +234,30 @@ namespace CivOne
 		internal int TradeValue(ITile tile)
 		{
 			int output = tile.Trade;
+			if (tile.RailRoad) output = (int)Math.Floor((double)output * 1.5);
+			switch (tile.Type)
+			{
+				case Terrain.Desert:
+				case Terrain.Grassland1:
+				case Terrain.Grassland2:
+				case Terrain.Plains:
+					if (!tile.Road) break;
+					if (Player.RepublicDemocratic) output += 1;
+					break;
+				case Terrain.Ocean:
+					if (Player.RepublicDemocratic) output += 1;
+					break;
+				case Terrain.Jungle:
+					if (!tile.Special) break;
+					if (Player.MonarchyCommunist) output += 1;
+					if (Player.RepublicDemocratic) output += 2;
+					break;
+				case Terrain.Mountains:
+					if (!tile.Special) break;
+					if (Player.MonarchyCommunist) output += 1;
+					if (Player.RepublicDemocratic) output += 2;
+					break;
+			}
 			if (output > 0 && Player.HasWonder<Colossus>() && !Player.WonderObsolete<Colossus>()) output += 1;
 			return output;
 		}
