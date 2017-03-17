@@ -65,20 +65,20 @@ namespace CivOne.Templates
 				index++;
 			}
 			
-			for (int x = 8; x < 312; x += 8)
+			for (int x = 8; x < _canvas.Width - 8; x += 8)
 			{
 				AddLayer(borders[4], x, 0);
-				AddLayer(borders[6], x, 192);
+				AddLayer(borders[6], x, _canvas.Height - 8);
 			}
-			for (int y = 8; y < 192; y += 8)
+			for (int y = 8; y < _canvas.Height - 8; y += 8)
 			{
 				AddLayer(borders[7], 0, y);
-				AddLayer(borders[5], 312, y);
+				AddLayer(borders[5], _canvas.Width - 8, y);
 			}
 			AddLayer(borders[0], 0, 0);
-			AddLayer(borders[1], 312, 0);
-			AddLayer(borders[2], 0, 192);
-			AddLayer(borders[3], 312, 192);
+			AddLayer(borders[1], _canvas.Width - 8, 0);
+			AddLayer(borders[2], 0, _canvas.Height - 8);
+			AddLayer(borders[3], _canvas.Width - 8, _canvas.Height - 8);
 		}
 
 		protected void DrawButton(string text, byte colour, byte colourDark, int x, int y, int width)

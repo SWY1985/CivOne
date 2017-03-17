@@ -21,6 +21,7 @@ namespace CivOne
 		private bool _rightSideBar = false;
 		private int _scale = 2;
 		private AspectRatio _aspectRatio = AspectRatio.Auto;
+		private int _expandWidth, _expandHeight;
 		private bool _revealWorld = false;
 		private bool _debugMenu = false;
 		private CursorType _cursorType = CursorType.Default;
@@ -140,6 +141,36 @@ namespace CivOne
 				_aspectRatio = value;
 				string saveValue = ((int)_aspectRatio).ToString();
 				SetSetting("AspectRatio", saveValue);
+				Common.ReloadSettings = true;
+			}
+		}
+
+		internal int ExpandWidth
+		{
+			get
+			{
+				return _expandWidth;
+			}
+			set
+			{
+				_expandWidth = value;
+				string saveValue = ((int)_expandWidth).ToString();
+				SetSetting("ExpandWidth", saveValue);
+				Common.ReloadSettings = true;
+			}
+		}
+
+		internal int ExpandHeight
+		{
+			get
+			{
+				return _expandHeight;
+			}
+			set
+			{
+				_expandHeight = value;
+				string saveValue = ((int)_expandHeight).ToString();
+				SetSetting("ExpandHeight", saveValue);
 				Common.ReloadSettings = true;
 			}
 		}
@@ -312,6 +343,8 @@ namespace CivOne
 			bool rightSideBar = _rightSideBar;
 			int scale = _scale;
 			int aspectRatio = (int)_aspectRatio;
+			int expandWidth = (int)_expandWidth;
+			int expandHeight = (int)_expandHeight;
 			bool revealWorld = false;
 			bool debugMenu = false;
 			int cursorType = (int)_cursorType;
@@ -323,6 +356,8 @@ namespace CivOne
 			rightSideBar = (GetSetting("SideBar") == "1");
 			Int32.TryParse(GetSetting("Scale"), out scale);
 			Int32.TryParse(GetSetting("AspectRatio"), out aspectRatio);
+			Int32.TryParse(GetSetting("ExpandWidth"), out expandWidth);
+			Int32.TryParse(GetSetting("ExpandHeight"), out expandHeight);
 			revealWorld = (GetSetting("RevealWorld") == "1");
 			debugMenu = (GetSetting("DebugMenu") == "1");
 			Int32.TryParse(GetSetting("CursorType"), out cursorType);
@@ -335,6 +370,16 @@ namespace CivOne
 			if (scale < 1 || scale > 4) scale = 2;
 			_scale = scale;
 			_aspectRatio = (AspectRatio)aspectRatio;
+			if (expandWidth < 320 || expandWidth > 512 || expandHeight < 200 || expandHeight > 384)
+			{
+				_expandWidth = -1;
+				_expandHeight = -1;
+			}
+			else
+			{
+				_expandWidth = expandWidth;
+				_expandHeight = expandHeight;
+			}
 			_revealWorld = revealWorld;
 			_debugMenu = debugMenu;
 			_cursorType = (CursorType)cursorType;
