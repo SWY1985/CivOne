@@ -10,43 +10,12 @@
 using System.Collections.Generic;
 using CivOne.Enums;
 using CivOne.GFX;
-using CivOne.Governments;
 using CivOne.Interfaces;
 
 namespace CivOne.Templates
 {
 	internal abstract class BaseTile : BaseInstance, ITile
 	{
-		protected bool AnarchyDespotism
-		{
-			get
-			{
-				if (!Game.Started)
-					return false;
-				return (Game.CurrentPlayer.Government is Anarchy || Game.CurrentPlayer.Government is Despotism);
-			}
-		}
-
-		protected bool MonarchyCommunist
-		{
-			get
-			{
-				if (!Game.Started)
-					return false;
-				return (Game.CurrentPlayer.Government is Monarchy || Game.CurrentPlayer.Government is Communism);
-			}
-		}
-
-		protected bool RepublicDemocratic
-		{
-			get
-			{
-				if (!Game.Started)
-					return false;
-				return (Game.CurrentPlayer.Government is Republic || Game.CurrentPlayer.Government is Democracy);
-			}
-		}
-
 		public virtual Picture Icon
 		{
 			get

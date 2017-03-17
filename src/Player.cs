@@ -34,6 +34,36 @@ namespace CivOne
 		private IAdvance _currentResearch = null;
 
 		private int _destroyTurn = -1;
+		
+		internal bool AnarchyDespotism
+		{
+			get
+			{
+				if (!Game.Started)
+					return false;
+				return (Government is Anarchy || Government is Despotism);
+			}
+		}
+
+		internal bool MonarchyCommunist
+		{
+			get
+			{
+				if (!Game.Started)
+					return false;
+				return (Government is Monarchy || Government is Communism);
+			}
+		}
+
+		internal bool RepublicDemocratic
+		{
+			get
+			{
+				if (!Game.Started)
+					return false;
+				return (Government is Republic || Government is Democracy);
+			}
+		}
 
 		public ICivilization Civilization
 		{

@@ -35,9 +35,7 @@ namespace CivOne.Tiles
 		{
 			get
 			{
-				sbyte output = (sbyte)(Special ? (AnarchyDespotism ? 2 : 3) : 1); 
-				if (RailRoad) output = (sbyte)Math.Floor((double)output * 1.5);
-				return output;
+				return (sbyte)(Special ? 2 : 1);
 			}
 		}
 		
@@ -53,7 +51,7 @@ namespace CivOne.Tiles
 		{
 			get
 			{
-				return (sbyte)(2 + (RepublicDemocratic ? 1 : 0) + (Road ? 1 : 0));
+				return (sbyte)(2 + (Road || RailRoad ? 1 : 0));
 			}
 		}
 		

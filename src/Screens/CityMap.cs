@@ -29,7 +29,10 @@ namespace CivOne.Screens
 
 		private void DrawResources(ITile tile, int x, int y)
 		{
-			int count = (tile.Food + tile.Shield + tile.Trade);
+			int food = _city.FoodValue(tile);
+			int shield = _city.ShieldValue(tile);
+			int trade = _city.TradeValue(tile);
+			int count = food + shield + trade;
 
 			if (count == 0)
 			{
@@ -46,8 +49,8 @@ namespace CivOne.Screens
 			for (int i = 0; i < count; i++)
 			{
 				Picture icon;
-				if (i >= tile.Food + tile.Shield) icon = Icons.Trade;
-				else if (i >= tile.Food) icon = Icons.Shield;
+				if (i >= food + shield) icon = Icons.Trade;
+				else if (i >= food) icon = Icons.Shield;
 				else icon = Icons.Food; 
 
 				int xx = (x + ((i % iconsPerLine) * iconWidth));
