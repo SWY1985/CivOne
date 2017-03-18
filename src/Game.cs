@@ -668,7 +668,8 @@ namespace CivOne
 			// TODO: Implement full save file configuration
 			// - http://forums.civfanatics.com/showthread.php?p=12422448
 			// - http://forums.civfanatics.com/showthread.php?t=493581
-			using (BinaryWriter bw = new BinaryWriter(File.Open(sveFile, FileMode.Create)))
+			using (FileStream fs = new FileStream(sveFile, FileMode.Create, FileAccess.Write))
+			using (BinaryWriter bw = new BinaryWriter(fs))
 			{
 				ushort randomSeed = Map.Instance.SaveMap(mapFile);
 				ushort activeCivilizations = 1;
