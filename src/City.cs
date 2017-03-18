@@ -245,6 +245,7 @@ namespace CivOne
 					if (Player.RepublicDemocratic) output += 1;
 					break;
 				case Terrain.Ocean:
+				case Terrain.River:
 					if (Player.RepublicDemocratic) output += 1;
 					break;
 				case Terrain.Jungle:
