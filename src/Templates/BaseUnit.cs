@@ -286,6 +286,7 @@ namespace CivOne.Templates
 			{
 				Movement.Done += (s, a) =>
 				{
+					Sound.Play("they_die");
 					GameTask.Insert(Show.DestroyUnit(Map[X, Y][relX, relY].Units.First(), true));
 					if (MovesLeft == 0)
 					{
@@ -309,6 +310,7 @@ namespace CivOne.Templates
 			{
 				Movement.Done += (s, a) =>
 				{
+					Sound.Play("we_die");
 					GameTask.Insert(Show.DestroyUnit(this, false));
 					Movement = null;
 				};

@@ -215,6 +215,8 @@ namespace CivOne.Screens
 					Console.WriteLine(line);
 					yy += 8;
 				}
+
+				Sound.Play(Human.Civilization.Tune);
 				
 				_showIntroText = true;
 				return true;
