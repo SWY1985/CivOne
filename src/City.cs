@@ -164,7 +164,7 @@ namespace CivOne
 		{
 			get
 			{
-				return ResourceTiles.Sum(t => t.Food) - FoodCosts;
+				return ResourceTiles.Sum(t => FoodValue(t)) - FoodCosts;
 			}
 		}
 
@@ -385,7 +385,7 @@ namespace CivOne
 			if (_resourceTiles.Count == Size) return;
 			if (_resourceTiles.Count < Size)
 			{
-				IEnumerable<ITile> tiles = CityTiles.Where(t => !OccupiedTile(t) && !ResourceTiles.Contains(t)).OrderByDescending(t => t.Food).ThenByDescending(t => t.Shield).ThenByDescending(t => t.Trade);
+				IEnumerable<ITile> tiles = CityTiles.Where(t => !OccupiedTile(t) && !ResourceTiles.Contains(t)).OrderByDescending(t => FoodValue(t)).ThenByDescending(t => ShieldValue(t)).ThenByDescending(t => TradeValue(t));
 				if (tiles.Count() > 0)
 					_resourceTiles.Add(tiles.First());
 			}
