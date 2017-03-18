@@ -14,7 +14,7 @@ namespace CivOne.Civilizations
 {
 	internal class Indian : BaseCivilization<Gandhi>
 	{
-		public Indian() : base(7, 7, "Indian", "Indians")
+		public Indian() : base(7, 7, "Indian", "Indians", "gand")
 		{
 			StartX = 57;
 			StartY = 24;

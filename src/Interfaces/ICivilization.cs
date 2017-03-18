@@ -19,5 +19,6 @@ namespace CivOne.Interfaces
 		byte StartX { get; }
 		byte StartY { get; }
 		string[] CityNames { get; }
+		string Tune { get; }
 	}
 }

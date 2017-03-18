@@ -315,6 +315,8 @@ namespace CivOne.Screens
 			_menuColours = new byte[] { 8, 15, 7 };
 			
 			_canvas = new Picture(320, 200, _pictures[2].Palette);
+
+			Sound.Play("opening");
 		}
 	}
 }

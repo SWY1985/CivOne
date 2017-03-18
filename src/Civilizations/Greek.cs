@@ -14,7 +14,7 @@ namespace CivOne.Civilizations
 {
 	internal class Greek : BaseCivilization<Alexander>
 	{
-		public Greek() : base(6, 6, "Greek", "Greeks")
+		public Greek() : base(6, 6, "Greek", "Greeks", "alex")
 		{
 			StartX = 39;
 			StartY = 18;

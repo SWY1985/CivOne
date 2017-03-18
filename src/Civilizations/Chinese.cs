@@ -14,7 +14,7 @@ namespace CivOne.Civilizations
 {
 	internal class Chinese : BaseCivilization<Mao>
 	{
-		public Chinese() : base(12, 5, "Chinese", "Chinese")
+		public Chinese() : base(12, 5, "Chinese", "Chinese", "mao")
 		{
 			StartX = 66;
 			StartY = 19;

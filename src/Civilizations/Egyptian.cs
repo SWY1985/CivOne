@@ -14,7 +14,7 @@ namespace CivOne.Civilizations
 {
 	internal class Egyptian : BaseCivilization<Ramesses>
 	{
-		public Egyptian() : base(4, 4, "Egyptian", "Egyptians")
+		public Egyptian() : base(4, 4, "Egyptian", "Egyptians", "rams")
 		{
 			StartX = 41;
 			StartY = 24;

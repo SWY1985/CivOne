@@ -14,7 +14,7 @@ namespace CivOne.Civilizations
 {
 	internal class Roman : BaseCivilization<Caesar>
 	{
-		public Roman() : base(1, 1, "Roman", "Romans")
+		public Roman() : base(1, 1, "Roman", "Romans", "ceas")
 		{
 			StartX = 36;
 			StartY = 19;

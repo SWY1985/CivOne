@@ -14,7 +14,7 @@ namespace CivOne.Civilizations
 {
 	internal class American : BaseCivilization<Lincoln>
 	{
-		public American() : base(5, 5, "American", "Americans")
+		public American() : base(5, 5, "American", "Americans", "linc")
 		{
 			StartX = 12;
 			StartY = 18;

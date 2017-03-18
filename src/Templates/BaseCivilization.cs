@@ -29,13 +29,16 @@ namespace CivOne.Templates
 
 		public string[] CityNames { get; protected set; }
 
-		public BaseCivilization(int id, byte preferredPlayerNumber, string name, string namePlural)
+		public string Tune { get; private set; }
+
+		public BaseCivilization(int id, byte preferredPlayerNumber, string name, string namePlural, string tune = null)
 		{
 			Id = id;
 			PreferredPlayerNumber = preferredPlayerNumber;
 			Name = name;
 			NamePlural = namePlural;
 			Leader = new T();
+			Tune = tune;
 		}
 	}
 }

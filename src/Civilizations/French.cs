@@ -14,7 +14,7 @@ namespace CivOne.Civilizations
 {
 	internal class French : BaseCivilization<Napoleon>
 	{
-		public French() : base(10, 3, "French", "French")
+		public French() : base(10, 3, "French", "French", "napo")
 		{
 			StartX = 33;
 			StartY = 16;

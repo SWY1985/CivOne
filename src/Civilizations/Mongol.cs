@@ -14,7 +14,7 @@ namespace CivOne.Civilizations
 {
 	internal class Mongol : BaseCivilization<Genghis>
 	{
-		public Mongol() : base(14, 7, "Mongol", "Mongols")
+		public Mongol() : base(14, 7, "Mongol", "Mongols", "geng")
 		{
 			StartX = 49;
 			StartY = 19;

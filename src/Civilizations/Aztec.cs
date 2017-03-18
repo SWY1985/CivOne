@@ -14,7 +14,7 @@ namespace CivOne.Civilizations
 {
 	internal class Aztec : BaseCivilization<Montezuma>
 	{
-		public Aztec() : base(11, 4, "Aztec", "Aztecs")
+		public Aztec() : base(11, 4, "Aztec", "Aztecs", "mont")
 		{
 			StartX = 5;
 			StartY = 23;
