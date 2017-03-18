@@ -78,7 +78,7 @@ namespace CivOne.Screens
 		
 		private IEnumerable<SaveGameFile> GetSaveGames()
 		{
-			string path = Path.Combine(Settings.SavesDirectory, _driveLetter.ToString());
+			string path = Path.Combine(Settings.SavesDirectory, char.ToLower(_driveLetter).ToString());
 			for (int i = 0; i < 10; i++)
 			{
 				string filename = Path.Combine(path, string.Format("CIVIL{0}", i));
