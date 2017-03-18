@@ -362,7 +362,11 @@ namespace CivOne.Templates
 			}
 
 			// TODO: This implementation was done by observation, may need a revision
-			if (MovesLeft == 0 && !moveTarget.Road && moveTarget.Movement > 1)
+			if ((moveTarget.Road || moveTarget.RailRoad) && (Tile.Road || Tile.RailRoad))
+			{
+				// Handle movement in MovementDone
+			}
+			else if (MovesLeft == 0 && !moveTarget.Road && moveTarget.Movement > 1)
 			{
 				bool success;
 				if (PartMoves >= 2)
