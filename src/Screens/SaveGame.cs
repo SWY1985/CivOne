@@ -89,13 +89,13 @@ namespace CivOne.Screens
 		private void SaveFile(object sender, EventArgs args)
 		{
 			int item = (sender as Menu.Item).Value;
-
-			SaveGameFile file = GetSaveGames().ToArray()[item];
-			Game.Save(file.SveFile, file.MapFile);
 			_gameId = item;
 			SelectedGame = item;
 			_saving = true;
 			_update = true;
+
+			SaveGameFile file = GetSaveGames().ToArray()[item];
+			Game.Save(file.SveFile, file.MapFile);
 		}
 		
 		private void DrawDriveQuestion()
