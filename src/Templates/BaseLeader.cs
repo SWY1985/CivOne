@@ -78,6 +78,7 @@ namespace CivOne.Templates
 					int col = (id % 7);
 					int row = (id - col) / 7;
 					_portraitSmall = Resources.Instance.GetPart("SLAM2", (28 * col) + 1, 34 * row, 27, 33);
+					_portraitSmall.ColourReplace(0, 191, 0, 0, 27, 33);
 					return;
 				}
 			}
