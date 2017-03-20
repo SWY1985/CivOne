@@ -32,6 +32,13 @@ namespace CivOne.Screens
 			Close();
 		}
 
+		private void MenuSound(object sender, EventArgs args)
+		{
+			Settings.Sound = !Settings.Sound;
+			CloseMenus();
+			Close();
+		}
+
 		private void MenuCivilopediaText(object sender, EventArgs args)
 		{
 			Settings.CivilopediaText = !Settings.CivilopediaText;
@@ -96,7 +103,7 @@ namespace CivOne.Screens
 				menu.Items.Add(new Menu.Item($"{(Settings.AutoSave ? '^' : ' ')}AutoSave"));
 				menu.Items.Add(new Menu.Item($"{(Settings.EndOfTurn ? '^' : ' ')}End of Turn"));
 				menu.Items.Add(new Menu.Item($"{(Settings.Animations ? '^' : ' ')}Animations"));
-				menu.Items.Add(new Menu.Item(" Sound") { Enabled = false });
+				menu.Items.Add(new Menu.Item($"{(Settings.Sound ? '^' : ' ')}Sound"));
 				menu.Items.Add(new Menu.Item(" Enemy Moves") { Enabled = false });
 				menu.Items.Add(new Menu.Item($"{(Settings.CivilopediaText ? '^' : ' ')}Civilopedia Text"));
 				menu.Items.Add(new Menu.Item(" Palace") { Enabled = false });
@@ -105,6 +112,7 @@ namespace CivOne.Screens
 				menu.Items[1].Selected += MenuAutoSave;
 				menu.Items[2].Selected += MenuEndOfTurn;
 				menu.Items[3].Selected += MenuAnimations;
+				menu.Items[4].Selected += MenuSound;
 				menu.Items[6].Selected += MenuCivilopediaText;
 
 				AddMenu(menu);

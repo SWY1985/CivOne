@@ -267,6 +267,7 @@ namespace CivOne
 		// In game settings
 
 		internal bool Animations { get; set; }
+		internal bool Sound { get; set; }
 		internal bool CivilopediaText { get; set; }
 		internal bool EndOfTurn { get; set; }
 		internal bool InstantAdvice { get; set; }
