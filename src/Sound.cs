@@ -124,6 +124,7 @@ namespace CivOne
 		public static void Play(string file)
 		{
 			if (!Init()) return;
+			if (Game.Started && !Settings.Instance.Sound) return;
 
 			Stop();
 
