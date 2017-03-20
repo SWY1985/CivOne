@@ -136,6 +136,9 @@ namespace CivOne
 
 		private void OnMouseLeave(object sender, EventArgs args)
 		{
+			int x1, y1, x2, y2;
+			GetBorders(out x1, out y1, out x2, out y2);
+			if (_mouseButtons != MouseButton.None) return;
 			if (_showCursor) Native.ShowCursor();
 			_showCursor = false;
 		}
