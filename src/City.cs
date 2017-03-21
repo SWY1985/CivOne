@@ -302,7 +302,7 @@ namespace CivOne
 				short luxuries = TradeLuxuries;
 				if (HasBuilding<MarketPlace>()) luxuries += (short)Math.Floor((double)luxuries * 0.5);
 				if (HasBuilding<Bank>()) luxuries += (short)Math.Floor((double)luxuries * 0.5);
-				luxuries += (short)(Citizens.Count(c => c == Citizen.Entertainer) * 2);
+				luxuries += (short)(_specialists.Count(c => c == Citizen.Entertainer) * 2);
 				return luxuries;
 			}
 		}
@@ -314,7 +314,7 @@ namespace CivOne
 				short taxes = TradeTaxes;
 				if (HasBuilding<MarketPlace>()) taxes += (short)Math.Floor((double)taxes * 0.5);
 				if (HasBuilding<Bank>()) taxes += (short)Math.Floor((double)taxes * 0.5);
-				taxes += (short)(Citizens.Count(c => c == Citizen.Taxman) * 2);
+				taxes += (short)(_specialists.Count(c => c == Citizen.Taxman) * 2);
 				return taxes;
 			}
 		}
@@ -328,7 +328,7 @@ namespace CivOne
 				if (HasBuilding<University>()) science += (short)Math.Floor((double)science * 0.5);
 				if (!Game.WonderObsolete<CopernicusObservatory>() && HasWonder<CopernicusObservatory>()) science += (short)Math.Floor((double)science * 1.0);
 				if (Player.HasWonder<SETIProgram>()) science += (short)Math.Floor((double)science * 0.5);
-				science += (short)(Citizens.Count(c => c == Citizen.Scientist) * 2);
+				science += (short)(_specialists.Count(c => c == Citizen.Scientist) * 2);
 				return science;
 			}
 		}
@@ -596,15 +596,25 @@ namespace CivOne
 		{
 			get
 			{
+				// Update specialist count
+				while (_specialists.Count < Size - (ResourceTiles.Count() - 1)) _specialists.Add(Citizen.Entertainer);
+				while (_specialists.Count > Size - (ResourceTiles.Count() - 1)) _specialists.Remove(_specialists.Last());
+
+				int happyCount = (int)Math.Floor((double)Luxuries / 2);
+				int content = 0;
 				int specialist = 0;
 				for (int i = 0; i < Size; i++)
 				{
 					if (i < ResourceTiles.Count() - 1)
 					{
-						yield return (i % 2 == 0) ? Citizen.ContentMale : Citizen.ContentFemale;
+						if (happyCount-- > 0)
+						{
+							yield return (i % 2 == 0) ? Citizen.HappyMale : Citizen.HappyFemale;
+							continue;
+						}
+						yield return ((content++) % 2 == 0) ? Citizen.ContentMale : Citizen.ContentFemale;
 						continue;
 					}
-					while (_specialists.Count < (specialist + 1)) _specialists.Add(Citizen.Entertainer);
 					yield return _specialists[specialist++];
 				}
 			}
