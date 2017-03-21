@@ -389,6 +389,13 @@ namespace CivOne.Units
 				unit.DrawText("F", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
 				return unit; 
 			}
+			else if (Human == Owner && GotoX != -1 && GotoY != -1)
+			{
+				Picture unit = new Picture(base.GetUnit(colour));
+				unit.DrawText("G", 0, 5, 8, 9, TextAlign.Center);
+				unit.DrawText("G", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
+				return unit; 
+			}
 			return base.GetUnit(colour);
 		}
 

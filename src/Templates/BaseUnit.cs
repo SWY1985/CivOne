@@ -663,6 +663,13 @@ namespace CivOne.Templates
 				unit.AddLayer(Icons.Fortify, 0, 0);
 				return unit; 
 			}
+			else if (Human == Owner && GotoX != -1 && GotoY != -1)
+			{
+				Picture unit = new Picture(_unitCache[unitId, colour]);
+				unit.DrawText("G", 0, 5, 8, 9, TextAlign.Center);
+				unit.DrawText("G", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
+				return unit; 
+			}
 			return _unitCache[unitId, colour];
 		}
 
