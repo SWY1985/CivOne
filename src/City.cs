@@ -259,7 +259,7 @@ namespace CivOne
 					if (Player.RepublicDemocratic) output += 2;
 					break;
 			}
-			if (output > 0 && Player.HasWonder<Colossus>() && !Player.WonderObsolete<Colossus>()) output += 1;
+			if (output > 0 && Player.HasWonder<Colossus>() && !Game.WonderObsolete<Colossus>()) output += 1;
 			return output;
 		}
 
@@ -326,7 +326,7 @@ namespace CivOne
 				short science = TradeScience;
 				if (HasBuilding<Library>()) science += (short)Math.Floor((double)science * 0.5);
 				if (HasBuilding<University>()) science += (short)Math.Floor((double)science * 0.5);
-				if (!Player.WonderObsolete<CopernicusObservatory>() && HasWonder<CopernicusObservatory>()) science += (short)Math.Floor((double)science * 1.0);
+				if (!Game.WonderObsolete<CopernicusObservatory>() && HasWonder<CopernicusObservatory>()) science += (short)Math.Floor((double)science * 1.0);
 				if (Player.HasWonder<SETIProgram>()) science += (short)Math.Floor((double)science * 0.5);
 				science += (short)(Citizens.Count(c => c == Citizen.Scientist) * 2);
 				return science;
@@ -646,12 +646,12 @@ namespace CivOne
 			_wonders.Add(wonder);
 			if (Game.Started)
 			{
-				if (wonder is Colossus && !Player.WonderObsolete<Colossus>())
+				if (wonder is Colossus && !Game.WonderObsolete<Colossus>())
 				{
 					ResetResourceTiles();
 				}
-				if ((wonder is Lighthouse && !Player.WonderObsolete<Lighthouse>()) ||
-					(wonder is MagellansExpedition && !Player.WonderObsolete<MagellansExpedition>()))
+				if ((wonder is Lighthouse && !Game.WonderObsolete<Lighthouse>()) ||
+					(wonder is MagellansExpedition && !Game.WonderObsolete<MagellansExpedition>()))
 				{
 					// Apply Lighthouse/Magellan's Expedition wonder effects in the first turn
 					foreach (IUnit unit in Game.GetUnits().Where(x => x.Owner == Owner && x.Class ==  UnitClass.Water && x.MovesLeft == x.Move))
