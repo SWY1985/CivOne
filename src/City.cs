@@ -345,6 +345,8 @@ namespace CivOne
 		{
 			get
 			{
+				if (Size == 0) return 0;
+				
 				byte output = 0;
 				if (Map[X, Y].GetBorderTiles().Any(t => t.IsOcean)) output |= (0x01 << 1); // Coastal city
 				if (BuildingSold) output |= (0x01 << 7); // Building sold this turn
