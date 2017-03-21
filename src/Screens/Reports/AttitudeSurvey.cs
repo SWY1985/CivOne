@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using System.Linq;
 using CivOne.Buildings;
 using CivOne.Enums;
@@ -81,11 +82,17 @@ namespace CivOne.Screens.Reports
 			y += 8;
 			if (y <= 190)
 			{
+				Citizen[] citizens = Human.Cities.SelectMany(x => x.Citizens).ToArray();
 				string population = Common.NumberSeperator(Human.Population);
 				if (Human.Population == 0) population = "00,000";
-				int happy = 0;
-				int content = 100;
-				int unhappy = 0;
+				int totalCitizens = citizens.Length;
+				int happyCitizens = citizens.Count(c => c == Citizen.HappyMale || c == Citizen.HappyFemale);
+				int unhappyCitizens = citizens.Count(c => c == Citizen.UnhappyMale || c == Citizen.UnhappyFemale);
+				int contentCitizens = totalCitizens - happyCitizens - unhappyCitizens;
+				
+				int happy = (int)Math.Floor((double)(100 / totalCitizens) * happyCitizens);
+				int content = (int)Math.Floor((double)(100 / totalCitizens) * contentCitizens);
+				int unhappy = (int)Math.Floor((double)(100 / totalCitizens) * unhappyCitizens);
 				_canvas.DrawText($"Population: {population} Happy:{happy}% Content:{content}% Unhappy:{unhappy}%", 0, 15, 16, y);
 			}
 
