@@ -605,6 +605,7 @@ namespace CivOne
 
 				int happyCount = (int)Math.Floor((double)Luxuries / 2);
 				if (Player.HasWonder<HangingGardens>() && !Game.WonderObsolete<HangingGardens>()) happyCount++;
+				if (Player.HasWonder<CureForCancer>()) happyCount++;
 
 				int unhappyCount = Size - (6 - Game.Difficulty) - happyCount;
 				if (HasBuilding<Temple>())
