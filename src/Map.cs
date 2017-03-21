@@ -568,6 +568,11 @@ namespace CivOne
 			return AllTiles().Where(t => t.ContinentId == continentId);
 		}
 		
+		public IEnumerable<City> ContentCities(int continentId)
+		{
+			return ContinentTiles(continentId).Where(x => x.City != null).Select(x => x.City).ToArray();
+		}
+		
 		private void CalculateLandValue()
 		{
 			Console.WriteLine("Map: Calculating land value");
