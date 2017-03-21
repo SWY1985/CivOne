@@ -608,20 +608,25 @@ namespace CivOne
 				if (Player.HasWonder<CureForCancer>()) happyCount++;
 
 				int unhappyCount = Size - (6 - Game.Difficulty) - happyCount;
-				if (HasBuilding<Temple>())
-				{
-					int templeEffect = 1;
-					if (Player.HasAdvance<Mysticism>()) templeEffect <<= 1;
-					if (Player.HasWonder<Oracle>() && !Game.WonderObsolete<Oracle>()) templeEffect <<= 1;
-					unhappyCount -= templeEffect;
-				}
-				if (Map.ContentCities(Tile.ContinentId).Any(x => x.Size > 0 && x.Owner == Owner && x.HasWonder<JSBachsCathedral>()))
-				{
-					unhappyCount -= 2;
-				}
 				if (HasWonder<ShakespearesTheatre>() && !Game.WonderObsolete<ShakespearesTheatre>())
 				{
 					unhappyCount = 0;
+				}
+				else
+				{
+					if (HasBuilding<Temple>())
+					{
+						int templeEffect = 1;
+						if (Player.HasAdvance<Mysticism>()) templeEffect <<= 1;
+						if (Player.HasWonder<Oracle>() && !Game.WonderObsolete<Oracle>()) templeEffect <<= 1;
+						unhappyCount -= templeEffect;
+					}
+					if (Map.ContentCities(Tile.ContinentId).Any(x => x.Size > 0 && x.Owner == Owner && x.HasWonder<JSBachsCathedral>()))
+					{
+						unhappyCount -= 2;
+					}
+					if (HasBuilding<Colosseum>()) unhappyCount -= 3;
+					if (HasBuilding<Cathedral>()) unhappyCount -= 4;
 				}
 
 				int content = 0;
