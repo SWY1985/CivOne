@@ -618,6 +618,10 @@ namespace CivOne
 				{
 					unhappyCount -= 2;
 				}
+				if (HasWonder<ShakespearesTheatre>() && !Game.WonderObsolete<ShakespearesTheatre>())
+				{
+					unhappyCount = 0;
+				}
 
 				int content = 0;
 				int unhappy = 0;
