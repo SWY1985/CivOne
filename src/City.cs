@@ -603,15 +603,26 @@ namespace CivOne
 				int happyCount = (int)Math.Floor((double)Luxuries / 2);
 				if (Player.HasWonder<HangingGardens>() && !Game.WonderObsolete<HangingGardens>()) happyCount++;
 
+				int unhappyCount = Size - (6 - Game.Difficulty) - happyCount;
+
 				int content = 0;
+				int unhappy = 0;
+				int working = (ResourceTiles.Count() - 1);
 				int specialist = 0;
+
 				for (int i = 0; i < Size; i++)
 				{
-					if (i < ResourceTiles.Count() - 1)
+					if (i < working)
 					{
 						if (happyCount-- > 0)
 						{
 							yield return (i % 2 == 0) ? Citizen.HappyMale : Citizen.HappyFemale;
+							continue;
+						}
+						if ((unhappyCount - (working - i)) >= 0)
+						{
+							unhappyCount--;
+							yield return ((unhappy++) % 2 == 0) ? Citizen.UnhappyMale : Citizen.UnhappyFemale;
 							continue;
 						}
 						yield return ((content++) % 2 == 0) ? Citizen.ContentMale : Citizen.ContentFemale;
