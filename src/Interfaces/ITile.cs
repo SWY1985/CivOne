@@ -16,6 +16,8 @@ namespace CivOne.Interfaces
 	{
 		int X { get; }
 		int Y { get; }
+		int DistanceTo(int x, int y);
+		int DistanceTo(ITile tile);
 		Terrain Type { get; }
 		bool Special { get; }
 		byte ContinentId { get; set; }

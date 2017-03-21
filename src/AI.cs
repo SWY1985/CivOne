@@ -61,6 +61,8 @@ namespace CivOne
 
 		internal static void Move(IUnit unit)
 		{
+			Player player = Game.GetPlayer(unit.Owner);
+
 			if (unit.Owner == 0)
 			{
 				BarbarianMove(unit);
@@ -147,13 +149,56 @@ namespace CivOne
 
 				for (int i = 0; i < 1000; i++)
 				{
-					int relX = Common.Random.Next(-1, 2);
-					int relY = Common.Random.Next(-1, 2);
-					if (relX == 0 && relY == 0) continue;
-					if (unit.Tile[relX, relY] is Ocean) continue;
-					unit.MoveTo(relX, relY);
-					return;
+					if (unit.GotoX == -1 || unit.GotoY == -1)
+					{
+						int gotoX = Common.Random.Next(-5, 6);
+						int gotoY = Common.Random.Next(-5, 6);
+						if (gotoX == 0 && gotoY == 0) continue;
+						if (!player.Visible(unit.X + gotoX, unit.Y + gotoY)) continue;
+
+						unit.GotoX = unit.X + gotoX;
+						unit.GotoY = unit.Y + gotoY;
+						continue;
+					}
+
+					if (unit.GotoX != -1 && unit.GotoY != -1)
+					{
+						int distance = unit.Tile.DistanceTo(unit.GotoX, unit.GotoY);
+						ITile[] tiles = (unit as BaseUnit).MoveTargets.OrderBy(x => x.DistanceTo(unit.GotoX, unit.GotoY)).ThenBy(x => x.Movement).ToArray();
+						if (tiles.Length == 0 || tiles[0].DistanceTo(unit.GotoX, unit.GotoY) > distance)
+						{
+							// No valid tile to move to, cancel goto
+							unit.GotoX = -1;
+							unit.GotoY = -1;
+							continue;
+						}
+						else if (tiles[0].DistanceTo(unit.GotoX, unit.GotoY) == distance)
+						{
+							// Distance is unchanged, 50% chance to cancel goto
+							if (Common.Random.Next(0, 100) < 50)
+							{
+								unit.GotoX = -1;
+								unit.GotoY = -1;
+								continue;
+							}
+						}
+
+						unit.MoveTo(tiles[0].X - unit.X, tiles[0].Y - unit.Y);
+						return;
+					}
 				}
+				// if (unit.GotoX == -1 || unit.GotoY == -1)
+				// {
+				// 	for (int i = 0; i < 1000; i++)
+				// 	{
+				// 		int relX = Common.Random.Next(-1, 2);
+				// 		int relY = Common.Random.Next(-1, 2);
+				// 		if (relX == 0 && relY == 0) continue;
+				// 		if (unit.Tile[relX, relY] is Ocean) continue;
+				// 		unit.MoveTo(relX, relY);
+				// 		return;
+				// 	}
+				// }
 				unit.SkipTurn();
 				return;
 			}

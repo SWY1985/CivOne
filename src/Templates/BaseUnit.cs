@@ -399,6 +399,11 @@ namespace CivOne.Templates
 			ITile previousTile = Map[_x, _y];
 			X += Movement.RelX;
 			Y += Movement.RelY;
+			if (X == GotoX && Y == GotoY)
+			{
+				GotoX = -1;
+				GotoY = -1;
+			}
 			Movement = null;
 			
 			Explore();
@@ -537,6 +542,8 @@ namespace CivOne.Templates
 				_y = value;
 			}
 		}
+		public int GotoX { get; set; }
+		public int GotoY { get; set; }
 		public ITile Tile
 		{
 			get
@@ -750,6 +757,8 @@ namespace CivOne.Templates
 			Move = move;
 			X = -1;
 			Y = -1;
+			GotoX = -1;
+			GotoY = -1;
 			Owner = 0;
 			Status = 0;
 			RequiredWonder = null;
