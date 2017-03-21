@@ -23,6 +23,7 @@ namespace CivOne.Interfaces
 		UnitClass Class { get; }
 		Unit Type { get; }
 		City Home { get; }
+		UnitRole Role { get; }
 		byte Attack { get; }
 		byte Defense { get; }
 		byte Move { get; }

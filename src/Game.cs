@@ -1045,16 +1045,6 @@ namespace CivOne
 					else if (unit is BaseUnitSea) range = (short)((unit as BaseUnitSea).Range == 1 ? 1 : 3);
 					short cargo = 0;
 					if (unit is IBoardable) cargo = (short)(unit as IBoardable).Cargo;
-					short role = 1;
-					if (unit is Settlers) role = 0;
-					else if (unit is Caravan || unit is Diplomat) role = 6;
-					else if (unit is BaseUnitSea)
-					{
-						if (unit is IBoardable) role = 5;
-						else role = 3;
-					}
-					else if (unit is Fighter) role = 4;
-					else if (unit.Defense > unit.Attack) role = 2;
 
 					bw.Write(unit.Name.PadRight(12, (char)0x00).Select(x => (byte)x).ToArray());
 					bw.Write(obsoleteTech);
@@ -1066,7 +1056,7 @@ namespace CivOne
 					bw.Write((short)unit.Price);
 					bw.Write(range);
 					bw.Write(cargo);
-					bw.Write(role);
+					bw.Write((short)unit.Role);
 					bw.Write(requiredTech);
 				}
 

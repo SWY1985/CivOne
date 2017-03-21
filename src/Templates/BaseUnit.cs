@@ -489,6 +489,23 @@ namespace CivOne.Templates
 			}
 		}
 		public byte Price { get; protected set; }
+		public virtual UnitRole Role
+		{
+			get
+			{
+				UnitRole output = UnitRole.LandAttack;
+				if (this is Settlers) output = UnitRole.Settler;
+				else if (this is Caravan || this is Diplomat) output = UnitRole.Civilian;
+				else if (this is BaseUnitSea)
+				{
+					if (this is IBoardable) output = UnitRole.Transport;
+					else output = UnitRole.SeaAttack;
+				}
+				else if (this is Fighter) output = UnitRole.AirAttack;
+				else if (this.Defense >= this.Attack) output = UnitRole.Defense;
+				return output;
+			}
+		}
 		public byte Attack { get; protected set; }
 		public byte Defense { get; protected set; }
 		public byte Move { get; protected set; }
