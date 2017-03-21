@@ -254,9 +254,9 @@ namespace CivOne
 		{
 			foreach (IUnit unit in _units.Where(u => u.Home == city).ToArray())
 				_units.Remove(unit);
-			// _cities.Remove(city);
 			city.X = 255;
 			city.Y = 255;
+			city.Owner = 0;
 		}
 		
 		internal City GetCity(int x, int y)
@@ -317,8 +317,8 @@ namespace CivOne
 			if (unit.Class == UnitClass.Water)
 			{
 				Player player = GetPlayer(owner);
-				if ((player.HasWonder<Lighthouse>() && !player.WonderObsolete<Lighthouse>()) ||
-					(player.HasWonder<MagellansExpedition>() && !player.WonderObsolete<MagellansExpedition>()))
+				if ((player.HasWonder<Lighthouse>() && !WonderObsolete<Lighthouse>()) ||
+					(player.HasWonder<MagellansExpedition>() && !WonderObsolete<MagellansExpedition>()))
 				{
 					unit.MovesLeft++;
 				}
@@ -380,6 +380,16 @@ namespace CivOne
 		public bool WonderBuilt(IWonder wonder)
 		{
 			return BuiltWonders.Any(w => w.Id == wonder.Id);
+		}
+
+		public bool WonderObsolete<T>() where T : IWonder, new()
+		{
+			return WonderObsolete(new T());
+		}
+
+		public bool WonderObsolete(IWonder wonder)
+		{
+			return (wonder.ObsoleteTech != null && _players.Any(x => x.HasAdvance(wonder.ObsoleteTech)));
 		}
 		
 		public void DisbandUnit(IUnit unit)

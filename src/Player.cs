@@ -152,7 +152,7 @@ namespace CivOne
 
 		public void Revolt()
 		{
-			_anarchy = (short)((HasWonder<Pyramids>() && !WonderObsolete<Pyramids>()) ? 0 : 4 - (Game.GameTurn % 4) - 1);
+			_anarchy = (short)((HasWonder<Pyramids>() && !Game.WonderObsolete<Pyramids>()) ? 0 : 4 - (Game.GameTurn % 4) - 1);
 			Government = new Anarchy();
 			if (!IsHuman) return;
 			GameTask.Enqueue(Message.Newspaper(null, $"The {Game.Instance.HumanPlayer.TribeNamePlural} are", "revolting! Citizens", "demand new govt."));
@@ -284,7 +284,7 @@ namespace CivOne
 		{
 			get
 			{
-				bool allGovernments = !WonderObsolete<Pyramids>() && HasWonder<Pyramids>();
+				bool allGovernments = !Game.WonderObsolete<Pyramids>() && HasWonder<Pyramids>();
 				foreach (IGovernment government in Reflect.GetGovernments().Where(g => g.Id > 0))
 				{
 					if (!allGovernments && !HasAdvance(government.RequiredTech)) continue;
@@ -351,18 +351,6 @@ namespace CivOne
 		public bool HasWonder<T>() where T : IWonder
 		{
 			return Cities.Any(c => c.HasWonder<T>());
-		}
-
-		public bool WonderObsolete<T>() where T : IWonder, new()
-		{
-			return WonderObsolete(new T());
-		}
-
-		public bool WonderObsolete(IWonder wonder)
-		{
-			if (wonder.ObsoleteTech == null) return false;
-			if (_advances.Any(a => wonder.ObsoleteTech.Id == a)) return true;
-			return false;
 		}
 
 		public bool ProductionAvailable(IProduction production)
