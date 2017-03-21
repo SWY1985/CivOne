@@ -1008,8 +1008,9 @@ namespace CivOne
 					bw.Write(city.Owner);
 					bw.Write((ushort)city.FoodTotal);
 					bw.Write((ushort)city.ShieldTotal);
-					// TODO: City squares / specialists
-					for (int b = 0; b < 6; b++)
+					bw.Write(city.GetResourceTiles());
+					// TODO: City specialists
+					for (int b = 0; b < 3; b++)
 					{
 						bw.Write((byte)0);
 					}

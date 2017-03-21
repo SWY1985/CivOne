@@ -394,6 +394,50 @@ namespace CivOne
 			UpdateSpecialists();
 		}
 
+		internal byte[] GetResourceTiles()
+		{
+			byte[] output = new byte[3];
+			foreach (ITile tile in _resourceTiles)
+			{
+				int x = tile.X - X;
+				int y = tile.Y - Y;
+				switch(x)
+				{
+					case -2:
+						if (y == -1) output[2] |= (byte)(0x01 << 3);
+						if (y == 0) output[1] |= (byte)(0x01 << 3);
+						if (y == 1) output[2] |= (byte)(0x01 << 2);
+						continue;
+					case -1:
+						if (y == -2) output[1] |= (byte)(0x01 << 4);
+						if (y == -1) output[0] |= (byte)(0x01 << 7);
+						if (y == 0) output[0] |= (byte)(0x01 << 3);
+						if (y == 1) output[0] |= (byte)(0x01 << 6);
+						if (y == 2) output[2] |= (byte)(0x01 << 1);
+						continue;
+					case 0:
+						if (y == -2) output[1] |= (byte)(0x01 << 0);
+						if (y == -1) output[0] |= (byte)(0x01 << 0);
+						if (y == 1) output[0] |= (byte)(0x01 << 2);
+						if (y == 2) output[1] |= (byte)(0x01 << 2);
+						continue;
+					case 1:
+						if (y == -2) output[1] |= (byte)(0x01 << 5);
+						if (y == -1) output[1] |= (byte)(0x01 << 6);
+						if (y == 0) output[0] |= (byte)(0x01 << 1);
+						if (y == 1) output[0] |= (byte)(0x01 << 5);
+						if (y == 2) output[2] |= (byte)(0x01 << 0);
+						continue;
+					case 2:
+						if (y == -1) output[1] |= (byte)(0x01 << 6);
+						if (y == 0) output[1] |= (byte)(0x01 << 1);
+						if (y == 1) output[1] |= (byte)(0x01 << 7);
+						continue;
+				}
+			}
+			return output;
+		}
+
 		internal void SetResourceTiles(byte[] gameData)
 		{
 			if (gameData.Length != 6)
