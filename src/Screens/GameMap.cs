@@ -243,7 +243,7 @@ namespace CivOne.Screens
 						continue;
 					}
 
-					if (Human == drawUnit.Owner && (gameTick % 4) >= 2 && !GameTask.Any())
+					if (Human == drawUnit.Owner && drawUnit.GotoX == -1 && drawUnit.GotoY == -1 && (gameTick % 4) >= 2 && !GameTask.Any())
 					{
 						// Unit is owned by human player, blink status is off and no tasks are running. Do not draw unit.
 						continue;

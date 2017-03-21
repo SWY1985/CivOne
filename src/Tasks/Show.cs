@@ -60,7 +60,15 @@ namespace CivOne.Tasks
 			get
 			{
 				GamePlay gamePlay = (GamePlay)Common.Screens.First(s => (s is GamePlay));
-				return new Show(new Goto(gamePlay.X, gamePlay.Y));
+				Goto gotoScreen = new Goto(gamePlay.X, gamePlay.Y);
+				gotoScreen.Closed += (s, a) =>
+				{
+					if (Human != Game.CurrentPlayer) return;
+					if (Game.ActiveUnit == null) return;
+					Game.ActiveUnit.GotoX = gotoScreen.X;
+					Game.ActiveUnit.GotoY = gotoScreen.Y;
+				};
+				return new Show(gotoScreen);
 			}
 		}
 

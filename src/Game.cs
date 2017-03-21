@@ -172,10 +172,39 @@ namespace CivOne
 		
 		public void Update()
 		{
-			if (CurrentPlayer == HumanPlayer) return;
-			if (ActiveUnit != null && (ActiveUnit.MovesLeft > 0 || ActiveUnit.PartMoves > 0))
+			IUnit unit = ActiveUnit;
+			if (CurrentPlayer == HumanPlayer)
 			{
-				GameTask.Enqueue(Turn.Move(ActiveUnit));
+				if (unit != null && unit.GotoX != -1 && unit.GotoY != -1)
+				{
+					int distance = unit.Tile.DistanceTo(unit.GotoX, unit.GotoY);
+					ITile[] tiles = (unit as BaseUnit).MoveTargets.OrderBy(x => x.DistanceTo(unit.GotoX, unit.GotoY)).ThenBy(x => x.Movement).ToArray();
+					if (tiles.Length == 0 || tiles[0].DistanceTo(unit.GotoX, unit.GotoY) > distance)
+					{
+						// No valid tile to move to, cancel goto
+						unit.GotoX = -1;
+						unit.GotoY = -1;
+						return;
+					}
+					else if (tiles[0].DistanceTo(unit.GotoX, unit.GotoY) == distance)
+					{
+						// Distance is unchanged, 50% chance to cancel goto
+						if (Common.Random.Next(0, 100) < 50)
+						{
+							unit.GotoX = -1;
+							unit.GotoY = -1;
+							return;
+						}
+					}
+
+					unit.MoveTo(tiles[0].X - unit.X, tiles[0].Y - unit.Y);
+					return;
+				}
+				return;
+			}
+			if (unit != null && (unit.MovesLeft > 0 || unit.PartMoves > 0))
+			{
+				GameTask.Enqueue(Turn.Move(unit));
 				return;
 			}
 			GameTask.Enqueue(Turn.End());
