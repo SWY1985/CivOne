@@ -34,6 +34,8 @@ namespace CivOne
 		private IAdvance _currentResearch = null;
 
 		private int _destroyTurn = -1;
+
+		internal short StartX { get; set; }
 		
 		internal bool AnarchyDespotism
 		{

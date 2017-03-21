@@ -894,10 +894,14 @@ namespace CivOne
 					bw.Write((short)0);
 				}
 
-				// TODO: Starting position X coordinate
+				// Starting position X coordinate
 				for (int i = 0; i < 8; i++)
 				{
-					bw.Write((short)0);
+					if (_players.GetUpperBound(0) < i)
+					{
+						bw.Write((short)0xFF);
+					}
+					bw.Write((short)_players[i].StartX);
 				}
 
 				// Leader graphics
@@ -929,9 +933,14 @@ namespace CivOne
 					bw.Write((byte)0);
 				}
 
-				// TODO: Continent sizes
-				for (int i = 0; i < 128; i++)
+				// Continent sizes
+				for (int i = 0; i < 16; i++)
 				{
+					bw.Write((short)Map.AllTiles().Count(x => !x.IsOcean && x.ContinentId == i));
+				}
+				for (int i = 0; i < 96; i++)
+				{
+					// Fill remaining bytes
 					bw.Write((byte)0);
 				}
 
@@ -1011,10 +1020,46 @@ namespace CivOne
 					}
 				}
 
-				// TODO: Unit types
-				for (int i = 0; i < 952; i++)
+				// Unit types
+				for (int i = 0; i < 28; i++)
 				{
-					bw.Write((byte)0);
+					IUnit unit = CreateUnit(((Unit)i), -1, -1);
+
+					short obsoleteTech = 0;
+					if (unit.ObsoleteTech != null) obsoleteTech = unit.ObsoleteTech.Id;
+					short requiredTech = 0;
+					if (unit.RequiredTech != null) requiredTech = unit.RequiredTech.Id;
+					short outdoors = 0;
+					if (unit is Fighter || unit is Nuclear) outdoors = 1;
+					else if (unit is Bomber) outdoors = 2;
+					short range = 1;
+					if (unit is BaseUnitAir) range = 2;
+					else if (unit is BaseUnitSea) range = (short)((unit as BaseUnitSea).Range == 1 ? 1 : 3);
+					short cargo = 0;
+					if (unit is IBoardable) cargo = (short)(unit as IBoardable).Cargo;
+					short role = 1;
+					if (unit is Settlers) role = 0;
+					else if (unit is Caravan || unit is Diplomat) role = 6;
+					else if (unit is BaseUnitSea)
+					{
+						if (unit is IBoardable) role = 5;
+						else role = 3;
+					}
+					else if (unit is Fighter) role = 4;
+					else if (unit.Defense > unit.Attack) role = 2;
+
+					bw.Write(unit.Name.PadRight(12, (char)0x00).Select(x => (byte)x).ToArray());
+					bw.Write(obsoleteTech);
+					bw.Write((short)unit.Class);
+					bw.Write((short)unit.Move);
+					bw.Write(outdoors);
+					bw.Write((short)unit.Attack);
+					bw.Write((short)unit.Defense);
+					bw.Write((short)unit.Price);
+					bw.Write(range);
+					bw.Write(cargo);
+					bw.Write(role);
+					bw.Write(requiredTech);
 				}
 
 				for (int i = 0; i < 8; i++)
@@ -1058,6 +1103,26 @@ namespace CivOne
 						if ((unit is Settlers) && (unit as Settlers).BuildingFortress > 0) unitStatus |= (byte)(0x01 << 6);
 						// TODO: Bit 8: Cleaning polution
 
+						byte visibility = 0;
+						for (int p = 0; p < 8; p++)
+						{
+							if (_players.GetUpperBound(0) < p) continue;
+							if (!_players[p].Visible(unit.X, unit.Y)) continue;
+							visibility |= (byte)(0x01 << p);
+						}
+						byte stack = (byte)i;
+						if (Game.GetUnits(unit.X, unit.Y).Count() > 0)
+						{
+							for (int u = stack + 1; u < stack + 128; u++)
+							{
+								byte id = (byte)(u % 128);
+								if (units.GetUpperBound(0) < id) continue;
+								if (units[id].X != unit.X || units[id].Y != unit.Y) continue;
+								stack = id;
+								break;
+							}
+						}
+
 						bw.Write(unitStatus);
 						bw.Write((byte)unit.X);
 						bw.Write((byte)unit.Y);
@@ -1067,8 +1132,8 @@ namespace CivOne
 						// TODO: Goto coordinates
 						bw.Write(new byte[] { 0xFF, 0xFF });
 						bw.Write((byte)0); // Unknown
-						bw.Write((byte)0); // TODO: Visibility per Civ
-						bw.Write((byte)0); // TODO: Next unit in stack
+						bw.Write(visibility); // Visibility per Civ
+						bw.Write(stack); // Next unit in stack
 						if (unit.Home == null)
 							bw.Write((byte)0xFF);
 						else
@@ -1353,6 +1418,8 @@ namespace CivOne
 				IUnit unit = CreateUnit(Unit.Settlers, x, y);
 				unit.Owner = player;
 				_units.Add(unit);
+
+				_players[player].StartX = (short)x;
 				return;
 			}
 		}

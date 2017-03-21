@@ -11,8 +11,8 @@ namespace CivOne.Enums
 {
 	public enum UnitClass
 	{
-		Land,
-		Water,
-		Air
+		Land = 0,
+		Air = 1,
+		Water = 2
 	}
 }
