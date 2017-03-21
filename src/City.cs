@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CivOne.Advances;
 using CivOne.Buildings;
 using CivOne.Enums;
 using CivOne.Governments;
@@ -18,6 +19,8 @@ using CivOne.Tasks;
 using CivOne.Templates;
 using CivOne.Units;
 using CivOne.Wonders;
+
+using UniversityBuilding = CivOne.Buildings.University;
 
 namespace CivOne
 {
@@ -325,7 +328,7 @@ namespace CivOne
 			{
 				short science = TradeScience;
 				if (HasBuilding<Library>()) science += (short)Math.Floor((double)science * 0.5);
-				if (HasBuilding<University>()) science += (short)Math.Floor((double)science * 0.5);
+				if (HasBuilding<UniversityBuilding>()) science += (short)Math.Floor((double)science * 0.5);
 				if (!Game.WonderObsolete<CopernicusObservatory>() && HasWonder<CopernicusObservatory>()) science += (short)Math.Floor((double)science * 1.0);
 				if (Player.HasWonder<SETIProgram>()) science += (short)Math.Floor((double)science * 0.5);
 				science += (short)(_specialists.Count(c => c == Citizen.Scientist) * 2);
@@ -604,6 +607,13 @@ namespace CivOne
 				if (Player.HasWonder<HangingGardens>() && !Game.WonderObsolete<HangingGardens>()) happyCount++;
 
 				int unhappyCount = Size - (6 - Game.Difficulty) - happyCount;
+				if (HasBuilding<Temple>())
+				{
+					int templeEffect = 1;
+					if (Player.HasAdvance<Mysticism>()) templeEffect <<= 1;
+					if (Player.HasWonder<Oracle>() && !Game.WonderObsolete<Oracle>()) templeEffect <<= 1;
+					unhappyCount -= templeEffect;
+				}
 
 				int content = 0;
 				int unhappy = 0;
