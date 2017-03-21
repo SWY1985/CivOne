@@ -601,7 +601,7 @@ namespace CivOne
 				while (_specialists.Count > Size - (ResourceTiles.Count() - 1)) _specialists.Remove(_specialists.Last());
 
 				int happyCount = (int)Math.Floor((double)Luxuries / 2);
-				if (Player.HasWonder<HangingGardens>()) happyCount++;
+				if (Player.HasWonder<HangingGardens>() && !Game.WonderObsolete<HangingGardens>()) happyCount++;
 
 				int content = 0;
 				int specialist = 0;
