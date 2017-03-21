@@ -38,14 +38,12 @@ namespace CivOne.Screens.Reports
 
 		private void DrawCitizens(City city, int x, int y)
 		{
+			int group = -1;
 			Citizen[] citizens = city.Citizens.ToArray();
 			for (int j = 0; j < city.Size; j++)
 			{
 				x += 8;
-				if (j > 0)
-				{
-					if (citizens[j] == Citizen.Entertainer && citizens[j - 1] != Citizen.Entertainer) x += 6;
-				}
+				if (group != (group = Common.CitizenGroup(citizens[j])) && group > 0 && j > 0) x += 6;
 				AddLayer(Icons.Citizen(citizens[j]), x, y - 4);
 			}
 		}
@@ -89,7 +87,7 @@ namespace CivOne.Screens.Reports
 				int happyCitizens = citizens.Count(c => c == Citizen.HappyMale || c == Citizen.HappyFemale);
 				int unhappyCitizens = citizens.Count(c => c == Citizen.UnhappyMale || c == Citizen.UnhappyFemale);
 				int contentCitizens = totalCitizens - happyCitizens - unhappyCitizens;
-				
+
 				int happy = (int)Math.Floor((double)(100 / totalCitizens) * happyCitizens);
 				int content = (int)Math.Floor((double)(100 / totalCitizens) * contentCitizens);
 				int unhappy = (int)Math.Floor((double)(100 / totalCitizens) * unhappyCitizens);

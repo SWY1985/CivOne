@@ -37,15 +37,13 @@ namespace CivOne.Screens
 				_canvas.FillRectangle(0, 207, 0, 1, 21);
 				_canvas.DrawText($"{_city.Name} (Pop:{population})", 1, 17, 104, 1, TextAlign.Center);
 
-				Citizen[] citizens = _city.Citizens.ToArray();
 				int xx = 0;
+				int group = -1;
+				Citizen[] citizens = _city.Citizens.ToArray();
 				for (int i = 0; i < _city.Size; i++)
 				{
 					xx += 8;
-					if (i > 0)
-					{
-						if ((int)citizens[i] >= 6 && (int)citizens[i - 1] < 6) xx += 6;
-					}
+					if (group != (group = Common.CitizenGroup(citizens[i])) && group > 0 && i > 0) xx += 6;
 					AddLayer(Icons.Citizen(citizens[i]), xx, 7);
 				}
 
