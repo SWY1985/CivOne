@@ -183,7 +183,26 @@ namespace CivOne
 							}
 						}
 
-						unit.MoveTo(tiles[0].X - unit.X, tiles[0].Y - unit.Y);
+						if (!unit.MoveTo(tiles[0].X - unit.X, tiles[0].Y - unit.Y))
+						{
+							// The code below is to prevent the game from becoming stuck...
+							if (Common.Random.Next(0, 100) < 67)
+							{
+								unit.GotoX = -1;
+								unit.GotoY = -1;
+								continue;
+							}
+							else if (Common.Random.Next(0, 100) < 67)
+							{
+								unit.SkipTurn();
+								return;
+							}
+							else
+							{
+								Game.DisbandUnit(unit);
+								return;
+							}
+						}
 						return;
 					}
 				}
