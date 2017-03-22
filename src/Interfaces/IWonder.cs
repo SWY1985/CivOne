@@ -17,5 +17,6 @@ namespace CivOne.Interfaces
 		IAdvance RequiredTech { get; }
 		IAdvance ObsoleteTech { get; }
 		Picture SmallIcon { get; }
+		string FormatWorldWonder(City city);
 	}
 }

@@ -154,6 +154,13 @@ namespace CivOne.Screens
 			_gameMenu.Items.Add(new GameMenu.Item("Demographics"));
 			_gameMenu.Items.Add(new GameMenu.Item("SpaceShips") { Enabled = false });
 			
+			_gameMenu.Items[0].Selected += (s, a) =>
+			{
+				if (Game.BuiltWonders.Length == 0)
+					GameTask.Enqueue(Show.Empty);
+				else
+					Common.AddScreen(new WorldWonders());
+			};
 			_gameMenu.Items[2].Selected += (s, a) => Common.AddScreen(new CivilizationScore());
 			_gameMenu.Items[3].Selected += (s, a) => Common.AddScreen(new WorldMap());
 			
@@ -286,6 +293,12 @@ namespace CivOne.Screens
 					return true;
 				case Key.F6:
 					Common.AddScreen(new ScienceReport());
+					return true;
+				case Key.F7:
+					if (Game.BuiltWonders.Length == 0)
+						GameTask.Enqueue(Show.Empty);
+					else
+						Common.AddScreen(new WorldWonders());
 					return true;
 				case Key.F9:
 					Common.AddScreen(new CivilizationScore());
