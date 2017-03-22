@@ -187,18 +187,6 @@ namespace CivOne
 						return;
 					}
 				}
-				// if (unit.GotoX == -1 || unit.GotoY == -1)
-				// {
-				// 	for (int i = 0; i < 1000; i++)
-				// 	{
-				// 		int relX = Common.Random.Next(-1, 2);
-				// 		int relY = Common.Random.Next(-1, 2);
-				// 		if (relX == 0 && relY == 0) continue;
-				// 		if (unit.Tile[relX, relY] is Ocean) continue;
-				// 		unit.MoveTo(relX, relY);
-				// 		return;
-				// 	}
-				// }
 				unit.SkipTurn();
 				return;
 			}
@@ -240,7 +228,7 @@ namespace CivOne
 			}
 			else if (player.HasAdvance<BronzeWorking>())
 			{
-				if (city.Tile.Units.Count(x => x is BronzeWorking) < 2) production = new Phalanx();
+				if (city.Tile.Units.Count(x => x is Phalanx) < 2) production = new Phalanx();
 			}
 			else
 			{
