@@ -266,7 +266,7 @@ namespace CivOne
 			// Create Settlers
 			if (production == null)
 			{
-				if (city.Size > 4 && !city.Units.Any(x => x is Settlers) && player.Cities.Length < 10) production = new Settlers();
+				if (city.Size > 3 && !city.Units.Any(x => x is Settlers) && player.Cities.Length < 10) production = new Settlers();
 			}
 
 			// Create some other unit
