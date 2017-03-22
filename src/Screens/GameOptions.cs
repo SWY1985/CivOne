@@ -21,50 +21,49 @@ namespace CivOne.Screens
 		
 		private void MenuCancel(object sender, EventArgs args)
 		{
-			CloseMenus();
-			Close();
+			Destroy();
 		}
 
 		private void MenuAnimations(object sender, EventArgs args)
 		{
 			Settings.Animations = !Settings.Animations;
-			CloseMenus();
-			Close();
+			Update();
 		}
 
 		private void MenuSound(object sender, EventArgs args)
 		{
 			Settings.Sound = !Settings.Sound;
-			CloseMenus();
-			Close();
+			Update();
 		}
 
 		private void MenuCivilopediaText(object sender, EventArgs args)
 		{
 			Settings.CivilopediaText = !Settings.CivilopediaText;
-			CloseMenus();
-			Close();
+			Update();
 		}
 
 		private void MenuInstantAdvice(object sender, EventArgs args)
 		{
 			Settings.InstantAdvice = !Settings.InstantAdvice;
-			CloseMenus();
-			Close();
+			Update();
 		}
 
 		private void MenuAutoSave(object sender, EventArgs args)
 		{
 			Settings.AutoSave = !Settings.AutoSave;
-			CloseMenus();
-			Close();
+			Update();
 		}
 
 		private void MenuEndOfTurn(object sender, EventArgs args)
 		{
 			Settings.EndOfTurn = !Settings.EndOfTurn;
+			Update();
+		}
+
+		private void Update()
+		{
 			CloseMenus();
-			Close();
+			_update = true;
 		}
 
 		public override bool HasUpdate(uint gameTick)
@@ -118,11 +117,6 @@ namespace CivOne.Screens
 				AddMenu(menu);
 			}
 			return true;
-		}
-
-		public void Close()
-		{
-			Destroy();
 		}
 
 		public GameOptions()
