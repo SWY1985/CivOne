@@ -528,6 +528,7 @@ namespace CivOne
 				}
 				foreach (IBuilding building in Reflect.GetBuildings().Where(b => Player.ProductionAvailable(b) && !_buildings.Any(x => x.Id == b.Id)))
 				{
+					if (HasBuilding<Palace>() && building is Courthouse) continue;
 					yield return building;
 				}
 				foreach (IWonder wonder in Reflect.GetWonders().Where(b => Player.ProductionAvailable(b)))
@@ -724,7 +725,7 @@ namespace CivOne
 			BuildingSold = true;
 		}
 
-		public void RemoveBuilding(IBuilding building)
+		private void RemoveBuilding(IBuilding building)
 		{
 			_buildings.RemoveAll(b => b.Id == building.Id);
 		}
@@ -850,7 +851,11 @@ namespace CivOne
 						foreach (City city in Game.Instance.GetCities().Where(c => c.Owner == Owner))
 						{
 							// Remove palace from all cites.
-							city.RemoveBuilding(CurrentProduction as Palace);
+							city.RemoveBuilding<Palace>();
+						}
+						if (HasBuilding<Courthouse>())
+						{
+							_buildings.RemoveAll(x => x is Courthouse);
 						}
 						_buildings.Add(CurrentProduction as IBuilding);
 						
