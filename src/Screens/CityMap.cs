@@ -120,6 +120,9 @@ namespace CivOne.Screens
 			if (args.X < 1 || args.X > 81 || args.Y < 1 || args.Y > 81) return false;
 			int tileX = (int)Math.Floor(((double)args.X - 1) / 16);
 			int tileY = (int)Math.Floor(((double)args.Y - 1) / 16);
+
+			if (tileX < 0 || tileY < 0 || tileX > 4 || tileY > 4) return false;
+
 			_city.SetResourceTile(_city.CityRadius[tileX, tileY]);
 			_update = true;
 			if (MapUpdate != null) MapUpdate(this, null);
