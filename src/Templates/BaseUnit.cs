@@ -282,6 +282,23 @@ namespace CivOne.Templates
 					MoveEnd(s, a);
 				};
 			}
+			else if (this is Nuclear)
+			{
+				int xx = (X - Common.GamePlay.X + relX) * 16;
+				int yy = (Y - Common.GamePlay.Y + relY) * 16;
+				Show nuke = Show.Nuke(xx, yy);
+				nuke.Done += (s, a) =>
+				{
+					foreach (ITile tile in Map.QueryMapPart(X + relX - 1, Y + relY - 1, 3, 3))
+					{
+						while (tile.Units.Length > 0)
+						{
+							Game.DisbandUnit(tile.Units[0]);
+						}
+					}
+				};
+				GameTask.Enqueue(nuke);
+			}
 			else if (AttackOutcome(this, Map[X, Y][relX, relY]))
 			{
 				Movement.Done += (s, a) =>

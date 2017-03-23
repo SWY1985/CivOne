@@ -137,6 +137,11 @@ namespace CivOne.Tasks
 			}
 		}
 
+		public static Show Nuke(int x, int y)
+		{
+			return new Show(new Nuke(x, y));
+		}
+
 		public static Show DestroyUnit(IUnit unit, bool stack)
 		{
 			return new Show(new DestroyUnit(unit, stack));
