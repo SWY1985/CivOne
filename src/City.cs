@@ -815,18 +815,25 @@ namespace CivOne
 
 			if (Shields >= (int)CurrentProduction.Price * 10)
 			{
-				if (CurrentProduction is IUnit)
+				if (CurrentProduction is Settlers && Size == 1 && Game.Difficulty == 0)
 				{
-					if (CurrentProduction is Settlers)
-					{
-						//TODO: This should do something to the food supply
-						if (Size == 1) Size++;
-						Size--;
-					}
+					// On Chieftain level, it's not possible to create a Settlers in a city of size 1
+				}
+				else if (CurrentProduction is IUnit)
+				{
 					Shields = 0;
 					IUnit unit = Game.Instance.CreateUnit((CurrentProduction as IUnit).Type, X, Y, Owner);
 					unit.SetHome();
 					unit.Veteran = (_buildings.Any(b => (b is Barracks)));
+					if (CurrentProduction is Settlers)
+					{
+						if (Size == 1 && Player.Cities.Length == 1) Size++;
+						if (Size == 1)
+						{
+							unit.SetHome(null);
+						}
+						Size--;
+					}
 					if (Human == Owner && (unit is Settlers || unit is Diplomat || unit is Caravan))
 					{
 						GameTask advisorMessage = Message.Advisor(Advisor.Defense, true, $"{this.Name} builds {unit.Name}.");
