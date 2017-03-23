@@ -161,6 +161,7 @@ namespace CivOne.Screens
 				else
 					Common.AddScreen(new WorldWonders());
 			};
+			_gameMenu.Items[1].Selected += (s, a) => Common.AddScreen(new TopCities());
 			_gameMenu.Items[2].Selected += (s, a) => Common.AddScreen(new CivilizationScore());
 			_gameMenu.Items[3].Selected += (s, a) => Common.AddScreen(new WorldMap());
 			
@@ -299,6 +300,9 @@ namespace CivOne.Screens
 						GameTask.Enqueue(Show.Empty);
 					else
 						Common.AddScreen(new WorldWonders());
+					return true;
+				case Key.F8:
+					Common.AddScreen(new TopCities());
 					return true;
 				case Key.F9:
 					Common.AddScreen(new CivilizationScore());
