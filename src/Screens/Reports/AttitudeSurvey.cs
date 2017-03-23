@@ -43,7 +43,11 @@ namespace CivOne.Screens.Reports
 			for (int j = 0; j < city.Size; j++)
 			{
 				x += 8;
-				if (group != (group = Common.CitizenGroup(citizens[j])) && group > 0 && j > 0) x += 6;
+				if (group != (group = Common.CitizenGroup(citizens[j])) && group > 0 && j > 0)
+				{
+					x += 2;
+					if (group == 3) x += 4;
+				}
 				AddLayer(Icons.Citizen(citizens[j]), x, y - 4);
 			}
 		}

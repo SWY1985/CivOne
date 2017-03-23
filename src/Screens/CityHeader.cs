@@ -43,7 +43,11 @@ namespace CivOne.Screens
 				for (int i = 0; i < _city.Size; i++)
 				{
 					xx += 8;
-					if (group != (group = Common.CitizenGroup(citizens[i])) && group > 0 && i > 0) xx += 6;
+					if (group != (group = Common.CitizenGroup(citizens[i])) && group > 0 && i > 0)
+					{
+						xx += 2;
+						if (group == 3) xx += 4;
+					}
 					AddLayer(Icons.Citizen(citizens[i]), xx, 7);
 				}
 
@@ -58,14 +62,16 @@ namespace CivOne.Screens
 			{
 				Citizen[] citizens = _city.Citizens.ToArray();
 				int xx = 0;
+				int group = -1;
 				int index = -1;
 				for (int i = 0; i < _city.Size; i++)
 				{
 					xx += 8;
 					if ((int)citizens[i] >= 6) index++;
-					if (i > 0)
+					if (group != (group = Common.CitizenGroup(citizens[i])) && group > 0 && i > 0)
 					{
-						if ((int)citizens[i] >= 6 && (int)citizens[i - 1] < 6) xx += 6;
+						xx += 2;
+						if (group == 3) xx += 4;
 					}
 					if (args.X < xx || args.X > (xx + 7) || index < 0) continue;
 
