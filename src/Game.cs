@@ -696,6 +696,12 @@ namespace CivOne
 				{
 					_instance._units.Add(unit);
 				}
+
+				for (int i = 0; i < _instance._cityNames.Length; i++)
+				{
+					if (!cities.Any(x => x.Name == _instance._cityNames[i])) continue;
+					_instance._cityNameUsed[i] = true;
+				}
 			}
 		}
 
