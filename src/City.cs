@@ -262,7 +262,7 @@ namespace CivOne
 					if (Player.RepublicDemocratic) output += 2;
 					break;
 			}
-			if (output > 0 && Player.HasWonder<Colossus>() && !Game.WonderObsolete<Colossus>()) output += 1;
+			if (output > 0 && HasWonder<Colossus>() && !Game.WonderObsolete<Colossus>()) output += 1;
 			return output;
 		}
 
