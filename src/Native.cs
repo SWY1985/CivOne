@@ -42,6 +42,8 @@ namespace CivOne
 			switch (Platform)
 			{
 				case Platform.Windows:
+					ShowCursor();
+
 					IntPtr bufferAddress = Marshal.AllocHGlobal(256);
 					IntPtr pidl;
 					BROWSEINFO browseInfo = new BROWSEINFO()
@@ -59,6 +61,9 @@ namespace CivOne
 						// User pressed cancel
 						return null;
 					}
+
+					HideCursor();
+					
 					return Marshal.PtrToStringUni(bufferAddress);
 				case Platform.Linux:
 					IntPtr title = StringToIntPtr(caption);
