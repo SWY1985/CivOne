@@ -257,6 +257,11 @@ namespace CivOne.Screens
 					
 					if (Game.MovingUnit != null && Game.MovingUnit.Movement.TargetTile.X == t.Tile.X && Game.MovingUnit.Movement.TargetTile.Y== t.Tile.Y)
 					{
+						if (t.Tile.City != null && (Game.MovingUnit.Owner == t.Tile.City.Owner))
+						{
+							// do not draw units if the city is owned by the active player
+							continue;
+						}
 						// draw the defending unit
 						AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position);
 						continue;
