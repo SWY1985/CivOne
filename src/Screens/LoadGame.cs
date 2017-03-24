@@ -47,21 +47,35 @@ namespace CivOne.Screens
 				MapFile = string.Format("{0}.MAP", filename);
 				if (!File.Exists(SveFile) || !File.Exists(MapFile)) return;
 				
-				using (BinaryReader br = new BinaryReader(File.Open(SveFile, FileMode.Open)))
+				try
 				{
-					string turn = Common.YearString(ReadUShort(br, 0));
-					ushort humanPlayer = ReadUShort(br, 2);
-					ushort difficultyLevel = ReadUShort(br, 10);
-					string leaderName = ReadStrings(br, 16, 112, 14)[humanPlayer];
-					string civName = ReadStrings(br, 128, 96, 12)[humanPlayer];
-					string tribeName = ReadStrings(br, 224, 88, 11)[humanPlayer];
-					string title = Common.DifficultyName(difficultyLevel);
-					
-					Name = string.Format("{0} {1}, {2}/{3}", title, leaderName, civName, turn);
-					Difficulty = (int)difficultyLevel;
+					using (FileStream fs = new FileStream(SveFile, FileMode.Open))
+					using (BinaryReader br = new BinaryReader(fs))
+					{
+						if (fs.Length != 37856)
+						{
+							Name = "(INCORRECT FILE SIZE)";
+							return;
+						}
+						
+						string turn = Common.YearString(ReadUShort(br, 0));
+						ushort humanPlayer = ReadUShort(br, 2);
+						ushort difficultyLevel = ReadUShort(br, 10);
+						string leaderName = ReadStrings(br, 16, 112, 14)[humanPlayer];
+						string civName = ReadStrings(br, 128, 96, 12)[humanPlayer];
+						string tribeName = ReadStrings(br, 224, 88, 11)[humanPlayer];
+						string title = Common.DifficultyName(difficultyLevel);
+						
+						Name = string.Format("{0} {1}, {2}/{3}", title, leaderName, civName, turn);
+						Difficulty = (int)difficultyLevel;
+					}
+					ValidFile = true;
 				}
-				ValidFile = true;
-				//TODO: Handle invalid save files
+				catch(Exception ex)
+				{
+					Console.WriteLine($"Could not open .SVE file: {ex.InnerException}");
+					Name = "(COULD NOT READ SAVE FILE HEADER)";
+				}
 			}
 		}
 		
