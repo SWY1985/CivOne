@@ -782,12 +782,12 @@ namespace CivOne
 			for (int y = 0; y < HEIGHT; y++)
 			{
 				byte b = 0;
-				// 0x01 = CITY ?
 				if (_tiles[x, y].Irrigation) b |= 0x02;
 				if (_tiles[x, y].Mine) b |= 0x04;
 				if (_tiles[x, y].Road) b |= 0x08;
 
 				bitmap[x, y + (HEIGHT * 2)] = b;
+				bitmap[x + (WIDTH * 2), y + (HEIGHT * 2)] = b; // Visibility layer
 			}
 
 			// Save improvement layer 2
@@ -798,6 +798,7 @@ namespace CivOne
 				if (_tiles[x, y].RailRoad) b |= 0x01;
 
 				bitmap[x, y + (HEIGHT * 3)] = b;
+				bitmap[x + (WIDTH * 2), y + (HEIGHT * 3)] = b; // Visibility layer
 			}
 
 			// Save explored layer
