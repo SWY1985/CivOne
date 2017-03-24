@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -37,19 +38,50 @@ namespace CivOne.Screens
 			Destroy();
 			return true;
 		}
+
+		private int VisibleTop
+		{
+			get
+			{
+				Player player = Game.Human;
+				for(int yy = 0; yy < Map.HEIGHT; yy++)
+				for(int xx = 0; xx < Map.WIDTH; xx++)
+				{
+					if (player.Visible(xx, yy)) return yy;
+				}
+				return 0;
+			}
+		}
+
+		private int VisibleBottom
+		{
+			get
+			{
+				Player player = Game.Human;
+				for(int yy = Map.HEIGHT - 1; yy >= 0; yy--)
+				for(int xx = 0; xx < Map.WIDTH; xx++)
+				{
+					if (player.Visible(xx, yy)) return yy;
+				}
+				return 0;
+			}
+		}
 		
 		public WorldMap()
 		{
 			_canvas = new Picture(320, 200, Resources.WorldMapTiles.Palette);
+			_canvas.FillRectangle(5, 0, 0, 320, 200);
+
+			int startX = Game.Human.StartX - 40;
+			// int startY = (VisibleTop - Map.HEIGHT) + VisibleBottom; //(int)Math.Floor((double)(Map.HEIGHT - (VisibleBottom - VisibleTop)) / 2);
+			int startY = ((Map.HEIGHT - (VisibleBottom - VisibleTop)) / 2) - VisibleTop;
+			if (Settings.RevealWorld) startX = 0;
+			if (Settings.RevealWorld || VisibleTop == 0 || VisibleBottom == Map.HEIGHT) startY = 0;
 			
 			for (int x = 0; x < Map.WIDTH; x++)
 			for (int y = 0; y < Map.HEIGHT; y++)
 			{
-				if (!Settings.RevealWorld && !Human.Visible(x, y))
-				{
-					_canvas.FillRectangle(5, (x * 4), (y * 4), 4, 4);
-					continue;
-				}
+				if (!Settings.RevealWorld && !Human.Visible(x, y)) continue;
 
 				City city = null;
 				IUnit[] units;
@@ -60,16 +92,23 @@ namespace CivOne.Screens
 				int xx = (((int)type) * 4);
 				int yy = altTile ? 4 : 0;
 				
-				AddLayer(Resources.WorldMapTiles.GetPart(xx, yy, 4, 4), x * 4, y * 4);
+				int dx = (x - startX) * 4;
+				int dy = (y + startY) * 4;
+				if (dy < 0 || dy >= 200) continue;
+
+				while (dx > 320) dx -= 320;
+				while (dx < 0) dx += 320;
+
+				AddLayer(Resources.WorldMapTiles.GetPart(xx, yy, 4, 4), dx, dy);
 				
 				if ((city = tile.City) != null && city.Size > 0)
 				{
-					_canvas.FillRectangle(Common.ColourLight[city.Owner], x * 4, y * 4, 4, 4);
+					_canvas.FillRectangle(Common.ColourLight[city.Owner], dx, dy, 4, 4);
 				}
 				else if ((units = tile.Units).Length > 0)
 				{
-					_canvas.FillRectangle(5, (x * 4) + 1, (y * 4) + 1, 3, 3);
-					_canvas.FillRectangle(Common.ColourLight[units[0].Owner], x * 4, y * 4, 3, 3);
+					_canvas.FillRectangle(5, dx + 1, dy + 1, 3, 3);
+					_canvas.FillRectangle(Common.ColourLight[units[0].Owner], dx, dy, 3, 3);
 				}
 			}
 		}
