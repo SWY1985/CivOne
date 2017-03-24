@@ -528,9 +528,6 @@ namespace CivOne
 			{
 				tile.ContinentId = 15;
 			}
-			
-			// Enable this line to visualize the result
-			//SaveContinentBitmap();
 		}
 		
 		private void CreatePoles()
@@ -729,6 +726,14 @@ namespace CivOne
 				_tiles[x, y].Road = (b & 0x08) > 0;
 			}
 			
+			// Load improvement layer 2
+			for (int x = 0; x < WIDTH; x++)
+			for (int y = 0; y < HEIGHT; y++)
+			{
+				byte b = bitmap[x, y + (HEIGHT * 3)];
+				_tiles[x, y].RailRoad = (b & 0x01) > 0;
+			}
+			
 			// Remove huts
 			for (int x = 0; x < WIDTH; x++)
 			for (int y = 0; y < HEIGHT; y++)
@@ -783,6 +788,16 @@ namespace CivOne
 				if (_tiles[x, y].Road) b |= 0x08;
 
 				bitmap[x, y + (HEIGHT * 2)] = b;
+			}
+
+			// Save improvement layer 2
+			for (int x = 0; x < WIDTH; x++)
+			for (int y = 0; y < HEIGHT; y++)
+			{
+				byte b = 0;
+				if (_tiles[x, y].RailRoad) b |= 0x01;
+
+				bitmap[x, y + (HEIGHT * 3)] = b;
 			}
 
 			// Save explored layer
