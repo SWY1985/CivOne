@@ -182,6 +182,13 @@ namespace CivOne.Templates
 		public virtual bool Mine { get; set; }
 		public virtual bool Fortress { get; set; }
 		public virtual bool Hut { get; set; }
+		public byte Visited { get; private set; }
+		public void Visit(byte owner)
+		{
+			if (((int)Visited & (0x01 << owner)) != 0) return;
+			Visited = (byte)(Visited + (0x01 << owner));
+		}
+
 		public virtual bool IsOcean
 		{
 			get

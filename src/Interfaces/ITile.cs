@@ -43,6 +43,8 @@ namespace CivOne.Interfaces
 		bool Fortress { get; set; }
 		bool Mine { get; set; }
 		bool Hut { get; set; }
+		byte Visited { get; }
+		void Visit(byte owner);
 		bool IsOcean { get; }
 		City City { get; }
 		IUnit[] Units { get; }
