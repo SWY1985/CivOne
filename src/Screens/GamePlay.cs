@@ -208,6 +208,15 @@ namespace CivOne.Screens
 				Game.Update();
 			}
 
+			if (Game.MovingUnit != null || Human != Game.CurrentPlayer || GameTask.Any())
+			{
+				Cursor = MouseCursor.None;
+			}
+			else
+			{
+				Cursor = MouseCursor.Pointer;
+			}
+
 			if (gameTick == _lastGameTick)
 			{
 				_gameMap.MustUpdate(gameTick);
@@ -325,6 +334,7 @@ namespace CivOne.Screens
 		
 		public override bool MouseDown(ScreenEventArgs args)
 		{
+			if (Cursor == MouseCursor.None) return true;
 			if (_gameMenu != null && _gameMenu.KeepOpen)
 			{
 				MouseArgsOffset(ref args, _menuX, _menuY);
@@ -366,6 +376,7 @@ namespace CivOne.Screens
 		
 		public override bool MouseUp(ScreenEventArgs args)
 		{
+			if (Cursor == MouseCursor.None) return true;
 			if (_gameMenu == null) return false;
 			if (args.Y < 8)
 			{
@@ -385,6 +396,7 @@ namespace CivOne.Screens
 		
 		public override bool MouseDrag(ScreenEventArgs args)
 		{
+			if (Cursor == MouseCursor.None) return true;
 			if (_gameMenu == null) return false;
 			
 			MouseArgsOffset(ref args, _menuX, _menuY);
