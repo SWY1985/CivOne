@@ -714,6 +714,14 @@ namespace CivOne
 					if (!cities.Any(x => x.Name == _instance._cityNames[i])) continue;
 					_instance._cityNameUsed[i] = true;
 				}
+
+				_instance._currentPlayer = humanPlayer;
+				for (int i = 0; i < _instance._units.Count(); i++)
+				{
+					if (_instance._units[i].Owner != humanPlayer) continue;
+					_instance._activeUnit = i;
+					if (_instance._units[i].MovesLeft > 0) break;
+				}
 			}
 		}
 
