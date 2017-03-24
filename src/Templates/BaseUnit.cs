@@ -304,7 +304,13 @@ namespace CivOne.Templates
 				Movement.Done += (s, a) =>
 				{
 					Sound.Play("they_die");
-					GameTask.Insert(Show.DestroyUnit(Map[X, Y][relX, relY].Units.First(), true));
+
+					IUnit unit = Map[X, Y][relX, relY].Units.FirstOrDefault();
+					if (unit != null)
+					{
+						GameTask.Insert(Show.DestroyUnit(unit, true));
+					}
+					
 					if (MovesLeft == 0)
 					{
 						PartMoves = 0;
