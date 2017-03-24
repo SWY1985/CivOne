@@ -69,6 +69,17 @@ namespace CivOne
 			}
 		}
 
+		public static Color[] DefaultPalette
+		{
+			get
+			{
+				GamePlay gamePlay = GamePlay;
+				if (gamePlay != null)
+					return gamePlay.MainPalette;
+				return Resources.Instance.LoadPIC("SP257", true).Palette;
+			}
+		}
+
 		public static GamePlay GamePlay
 		{
 			get

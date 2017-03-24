@@ -78,7 +78,7 @@ namespace CivOne.Screens.Reports
 		
 		public WorldWonders()
 		{
-			_canvas = new Picture(320, 200, Common.GamePlay.MainPalette);
+			_canvas = new Picture(320, 200, Common.DefaultPalette);
 
 			_wonders = Game.BuiltWonders.OrderBy(w => w.Id).Select(w => new CityWonders()
 			{
