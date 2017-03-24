@@ -438,6 +438,8 @@ namespace CivOne.Templates
 		{
 			if (MovesLeft > 0) MovesLeft--;
 
+			Tile.Visit(Owner);
+
 			if (Tile.Hut)
 			{
 				Tile.Hut = false;
@@ -574,7 +576,20 @@ namespace CivOne.Templates
 				return Map[_x, _y];
 			}
 		}
-		public byte Owner { get; set; }
+		private byte _owner;
+		public byte Owner
+		{
+			get
+			{
+				return _owner;
+			}
+			set
+			{
+				_owner = value;
+				if (Game.Started) Tile.Visit(_owner);
+			}
+		}
+
 		public Player Player
 		{
 			get

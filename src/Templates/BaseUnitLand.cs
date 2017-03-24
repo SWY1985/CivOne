@@ -27,6 +27,8 @@ namespace CivOne.Templates
 				PartMoves = 0;
 			}
 
+			Tile.Visit(Owner);
+
 			if (Tile.Hut)
 			{
 				Tile.Hut = false;

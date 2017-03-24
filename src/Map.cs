@@ -656,45 +656,6 @@ namespace CivOne
 			}
 		}
 		
-		public void SaveBitmap()
-		{
-			// string filename = Common.CaptureFilename;
-			// if (filename == null) return;
-			
-			// Picture bmp = new Picture(WIDTH * 16, HEIGHT * 16, Resources.Instance.LoadPIC("SP257").Palette);
-			
-			// for (int x = 0; x < WIDTH; x++)
-			// for (int y = 0; y < HEIGHT; y++)
-			// {
-			// 	bmp.AddLayer(Resources.Instance.GetTile(_tiles[x, y]), x * 16, y * 16);
-			// }
-			
-			// bmp.Image.Save(filename, ImageFormat.Png);
-			// Console.WriteLine("DEBUG: Map saved as bitmap");
-			throw new NotImplementedException();
-		}
-		
-		private void SaveContinentBitmap()
-		{
-			// Picture bmp = new Picture(WIDTH * 16, HEIGHT * 16, Resources.Instance.LoadPIC("SP257").Palette);
-			
-			// for (int x = 0; x < WIDTH; x++)
-			// for (int y = 0; y < HEIGHT; y++)
-			// {
-			// 	bmp.AddLayer(Resources.Instance.GetTile(_tiles[x, y]), x * 16, y * 16);
-			// 	//bmp.FillRectangle(_tiles[x, y].ContinentId, (x * 16) + 4, (y * 16) + 4, 8, 8);
-			// 	bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, 5, (x * 16 + 8), (y * 16 + 3), TextAlign.Center);
-			// 	bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, 5, (x * 16 + 7), (y * 16 + 4), TextAlign.Center);
-			// 	bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, 5, (x * 16 + 9), (y * 16 + 4), TextAlign.Center);
-			// 	bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, 5, (x * 16 + 8), (y * 16 + 5), TextAlign.Center);
-			// 	bmp.DrawText(_tiles[x, y].ContinentId.ToString(), 0, _tiles[x, y].ContinentId, (x * 16 + 8), (y * 16 + 4), TextAlign.Center);
-			// }
-			
-			// bmp.Image.Save("capture/map.png", ImageFormat.Png);
-			// Console.WriteLine("DEBUG: Map saved as bitmap");
-			throw new NotImplementedException();
-		}
-		
 		private void GenerateThread()
 		{
 			Console.WriteLine("Generating map (Land Mass: {0}, Temperature: {1}, Climate: {2}, Age: {3})", _landMass, _temperature, _climate, _age);
@@ -715,7 +676,6 @@ namespace CivOne
 			
 			Ready = true;
 			Console.WriteLine("Map: Ready");
-			//SaveBitmap();
 		}
 		
 		private void LoadMap(byte[,] bitmap)
@@ -825,15 +785,11 @@ namespace CivOne
 				bitmap[x, y + (HEIGHT * 2)] = b;
 			}
 
-			// Save explored layer (unfinished)
+			// Save explored layer
 			for (int x = 0; x < WIDTH; x++)
 			for (int y = 0; y < HEIGHT; y++)
 			{
-				// Right now, we don't record where units have moved so this step is not saved correctly
-				// At the moment, only save active unit location
-				IUnit unit = Game.Instance.GetUnits(x, y).FirstOrDefault();
-				if (unit == null) continue;
-				bitmap[x + (WIDTH * 2), y] = (byte)(unit.Owner + 8);
+				bitmap[x + (WIDTH * 2), y] = _tiles[x, y].Visited;
 			}
 
 			PicFile picFile = new PicFile(new Picture(bitmap, Resources.Instance.LoadPIC("SP299").Palette))
@@ -861,7 +817,6 @@ namespace CivOne
 			
 			Ready = true;
 			Console.WriteLine("Map: Ready");
-			//SaveBitmap();
 		}
 		
 		public void Generate(int landMass = 1, int temperature = 1, int climate = 1, int age = 1)
