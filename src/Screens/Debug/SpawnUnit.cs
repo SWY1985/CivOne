@@ -259,7 +259,7 @@ namespace CivOne.Screens.Debug
 
 				if (xx > 320 || yy > 200) return false;
 
-				_canvas = new Picture(320, 200, Common.GamePlay.MainPalette);
+				_canvas = new Picture(320, 200, Common.DefaultPalette);
 				SidebarHint();
 				Cursor = ValidTile ? MouseCursor.Goto : MouseCursor.Pointer;
 				if (!ValidTile) return _hasUpdate;
@@ -274,7 +274,7 @@ namespace CivOne.Screens.Debug
 		{
 			Cursor = MouseCursor.Pointer;
 
-			_canvas = new Picture(320, 200, Common.GamePlay.MainPalette);
+			_canvas = new Picture(320, 200, Common.DefaultPalette);
 
 			int fontHeight = Resources.Instance.GetFontHeight(0);
 			int hh = (fontHeight * (Game.Players.Count() + 1)) + 5;
