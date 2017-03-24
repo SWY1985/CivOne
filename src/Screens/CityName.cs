@@ -55,7 +55,7 @@ namespace CivOne.Screens
 		{
 			Cursor = MouseCursor.None;
 
-			_canvas = new Picture(320, 200, Common.Screens.Last().Canvas.OriginalColours);
+			_canvas = new Picture(320, 200, Common.DefaultPalette);
 
 			_canvas.FillRectangle(11, 80, 80, 161, 33);
 			_canvas.FillRectangle(15, 81, 81, 159, 31);
