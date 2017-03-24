@@ -35,6 +35,8 @@ namespace CivOne
 		private int _currentPlayer = 0;
 		private int _activeUnit;
 
+		private ushort _anthologyTurn = 0;
+
 		private Dictionary<byte, byte> _advanceOrigin;
 		public void SetAdvanceOrigin(IAdvance advance, Player player)
 		{
@@ -83,6 +85,11 @@ namespace CivOne
 			{
 				_gameTurn = value;
 				Console.WriteLine($"Turn {_gameTurn}: {GameYear}");
+				if (_anthologyTurn >= _gameTurn)
+				{
+					//TODO: Show anthology
+					_anthologyTurn = (ushort)(_gameTurn + 20 + Common.Random.Next(40));
+				}
 			}
 		}
 		
@@ -644,6 +651,8 @@ namespace CivOne
 				// Settings.EnemyMoves = (settings & (0x01 << 5)) > 0;
 				Settings.CivilopediaText = (settings & (0x01 << 6)) > 0;
 				// Settings.Palace = (settings & (0x01 << 7)) > 0;
+				
+				ushort anthologyTurn = Common.BinaryReadUShort(br, 35778);
 
 				ushort competition = (ushort)(Common.BinaryReadUShort(br, 37820) + 1);
 				ushort civIdentity = Common.BinaryReadUShort(br, 37854);
@@ -699,6 +708,8 @@ namespace CivOne
 				_instance.GameTurn = Common.BinaryReadUShort(br, 0);
 				_instance.HumanPlayer = _instance._players[humanPlayer];
 				_instance.HumanPlayer.CurrentResearch = Common.Advances.FirstOrDefault(a => a.Id == Common.BinaryReadUShort(br, 14));
+				
+				_instance._anthologyTurn = anthologyTurn;
 				
 				foreach (City city in cities)
 				{
@@ -1269,12 +1280,12 @@ namespace CivOne
 				// Wonders
 				for (int i = 0; i < 22; i++)
 				{
-					if (!cityList.Any(x => x.Value.Wonders.Any(w => (w.Id - 1) == i)))
+					if (!cityList.Any(x => x.Value.Wonders.Any(w => w.Id == i)))
 					{
 						bw.Write(new byte[] { 0xFF, 0xFF });
 						continue;
 					}
-					bw.Write((ushort)cityList.First(x => x.Value.Wonders.Any(w => (w.Id - 1) == i)).Key);
+					bw.Write((ushort)cityList.First(x => x.Value.Wonders.Any(w => w.Id == i)).Key);
 				}
 				
 				// TODO: Units lost
@@ -1308,19 +1319,16 @@ namespace CivOne
 				}
 
 				// Game Settings
-				for (int i = 0; i < 2; i++)
-				{
-					ushort settings = 0;
-					if (Settings.InstantAdvice) settings &= (0x01 << 0);
-					if (Settings.AutoSave) settings &= (0x01 << 1);
-					if (Settings.EndOfTurn) settings &= (0x01 << 2);
-					if (Settings.Animations) settings &= (0x01 << 3);
-					if (Settings.Sound) settings &= (0x01 << 4);
-					// if (Settings.EnemyMoves) settings &= (0x01 << 5);
-					if (Settings.CivilopediaText) settings &= (0x01 << 6);
-					// if (Settings.Palace) settings &= (0x01 << 7);
-					bw.Write(settings);
-				}
+				ushort settings = 0;
+				if (Settings.InstantAdvice) settings &= (0x01 << 0);
+				if (Settings.AutoSave) settings &= (0x01 << 1);
+				if (Settings.EndOfTurn) settings &= (0x01 << 2);
+				if (Settings.Animations) settings &= (0x01 << 3);
+				if (Settings.Sound) settings &= (0x01 << 4);
+				// if (Settings.EnemyMoves) settings &= (0x01 << 5);
+				if (Settings.CivilopediaText) settings &= (0x01 << 6);
+				// if (Settings.Palace) settings &= (0x01 << 7);
+				bw.Write(settings);
 
 				// TODO: Land pathfinding
 				for (int i = 0; i < 260; i++)
@@ -1357,11 +1365,8 @@ namespace CivOne
 					bw.Write((short)_players[i].ScienceRate);
 				}
 				
-				// TODO: Next anthology turn
-				for (int i = 0; i < 2; i++)
-				{
-					bw.Write((byte)0);
-				}
+				// Next anthology turn
+				bw.Write(_anthologyTurn);
 				
 				// TODO: Cumulative Epic Rankings
 				for (int i = 0; i < 16; i++)
@@ -1663,6 +1668,9 @@ namespace CivOne
 			}
 			
 			GameTurn = 0;
+
+			// Number of turns to next antholoy needs to be checked
+			_anthologyTurn = (ushort)Common.Random.Next(1, 128);
 		}
 	}
 }
