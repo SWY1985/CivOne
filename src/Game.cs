@@ -633,6 +633,18 @@ namespace CivOne
 					}
 					units.Add(unit);
 				}
+
+				// Game Settings
+				ushort settings = Common.BinaryReadUShort(br, 35492);
+				Settings.InstantAdvice = (settings & (0x01 << 0)) > 0;
+				Settings.AutoSave = (settings & (0x01 << 1)) > 0;
+				Settings.EndOfTurn = (settings & (0x01 << 2)) > 0;
+				Settings.Animations = (settings & (0x01 << 3)) > 0;
+				Settings.Sound = (settings & (0x01 << 4)) > 0;
+				// Settings.EnemyMoves = (settings & (0x01 << 5)) > 0;
+				Settings.CivilopediaText = (settings & (0x01 << 6)) > 0;
+				// Settings.Palace = (settings & (0x01 << 7)) > 0;
+
 				ushort competition = (ushort)(Common.BinaryReadUShort(br, 37820) + 1);
 				ushort civIdentity = Common.BinaryReadUShort(br, 37854);
 				
@@ -1287,10 +1299,19 @@ namespace CivOne
 					bw.Write((byte)0);
 				}
 
-				// TODO: Game Settings
+				// Game Settings
 				for (int i = 0; i < 2; i++)
 				{
-					bw.Write((byte)0);
+					ushort settings = 0;
+					if (Settings.InstantAdvice) settings &= (0x01 << 0);
+					if (Settings.AutoSave) settings &= (0x01 << 1);
+					if (Settings.EndOfTurn) settings &= (0x01 << 2);
+					if (Settings.Animations) settings &= (0x01 << 3);
+					if (Settings.Sound) settings &= (0x01 << 4);
+					// if (Settings.EnemyMoves) settings &= (0x01 << 5);
+					if (Settings.CivilopediaText) settings &= (0x01 << 6);
+					// if (Settings.Palace) settings &= (0x01 << 7);
+					bw.Write(settings);
 				}
 
 				// TODO: Land pathfinding
