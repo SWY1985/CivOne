@@ -89,6 +89,7 @@ namespace CivOne.Screens.Reports
 
 			// I'm not sure about the order of top 5 cities, but this is pretty close
 			_cities = Game.GetCities()
+							.Where(c => c.Size > 0)
 							.OrderByDescending(c => c.Wonders.Length)
 							.ThenByDescending(c => c.Size)
 							.ThenByDescending(c => c.Citizens.Count(x => x == Citizen.HappyMale || x == Citizen.HappyFemale))
