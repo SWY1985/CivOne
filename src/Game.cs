@@ -707,6 +707,12 @@ namespace CivOne
 				_instance.HumanPlayer.CurrentResearch = Common.Advances.FirstOrDefault(a => a.Id == Common.BinaryReadUShort(br, 14));
 				
 				_instance._anthologyTurn = anthologyTurn;
+
+				for (int i = 0; i < 8; i++)
+				{
+					if (_instance._players.GetUpperBound(0) <= i) break;
+					_instance._players[i].StartX = (short)Common.BinaryReadUShort(br, 1896 + (i * 2));
+				}
 				
 				foreach (City city in cities)
 				{
