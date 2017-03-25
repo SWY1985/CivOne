@@ -189,6 +189,8 @@ namespace CivOne.Screens
 			Picture.ReplaceColours(_background, new byte[] { 7, 22 }, new byte[] { 57, 9 });
 
 			Cursor = MouseCursor.Pointer;
+
+			_city.UpdateResources();
 			
 			_canvas = new Picture(320, 200, Common.DefaultPalette);
 			_canvas.FillRectangle(5, 0, 0, 320, 200);
