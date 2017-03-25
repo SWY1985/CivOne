@@ -756,8 +756,18 @@ namespace CivOne
 			}
 		}
 
+		public void UpdateResources()
+		{
+			foreach (ITile tile in ResourceTiles.Where(t => InvalidTile(t)))
+			{
+				RelocateResourceTile(tile);
+			}
+		}
+
 		public void NewTurn()
 		{
+			UpdateResources();
+
 			Food += FoodIncome;
 			if (Food < 0)
 			{
