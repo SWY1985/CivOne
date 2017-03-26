@@ -44,6 +44,7 @@ namespace CivOne.Tasks
 			if (_turnObject != null)
 			{
 				_turnObject.NewTurn();
+				return;
 			}
 			else if (_unit != null)
 			{
