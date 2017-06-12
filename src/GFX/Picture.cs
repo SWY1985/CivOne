@@ -144,7 +144,7 @@ namespace CivOne.GFX
 			switch (align)
 			{
 				case TextAlign.Center:
-					x -= (textImage.Width / 2);
+					x -= (textImage.Width + 1) / 2;
 					break;
 				case TextAlign.Right:
 					x -= textImage.Width;
