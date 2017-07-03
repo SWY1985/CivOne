@@ -7,12 +7,14 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using CivOne.Attributes;
 using CivOne.Interfaces;
 using CivOne.Screens;
 
 namespace CivOne.Tasks
 {
-	internal class Turn : GameTask, IFast
+	[Fast]
+	internal class Turn : GameTask
 	{
 		private const int TURN_TIME = 10;
 
