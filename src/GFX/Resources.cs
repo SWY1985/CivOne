@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using CivOne.Enums;
 using CivOne.GFX.ImageFormats;
@@ -221,7 +222,7 @@ namespace CivOne.GFX
 		
 		public static Color[] PaletteCombine(Color[] palette1, Color[] palette2, byte start = 0, byte end = 255)
 		{
-			Color invisible = new Color(252, 84, 252);
+			Color invisible = Color.FromArgb(252, 84, 252);
 			for (int i = start; i < end; i++)
 			{
 				if (palette2[i] == invisible) continue;

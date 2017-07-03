@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.Drawing;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -47,8 +48,8 @@ namespace CivOne
 			_cursorGoto = Icons.Cursor(MouseCursor.Goto, (_cursorType == CursorType.Builtin));
 			_mouseCursor = MouseCursor.None;
 
-			_cursorPointer.Palette[0] = new Color(0, 0, 0, 0);
-			_cursorGoto.Palette[0] = new Color(0, 0, 0, 0);
+			_cursorPointer.Palette[0] = Color.FromArgb(0, 0, 0, 0);
+			_cursorGoto.Palette[0] = Color.FromArgb(0, 0, 0, 0);
 
 			OnMouseEnter(this, EventArgs.Empty);
 		}

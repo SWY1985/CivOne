@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using OpenTK;
@@ -163,8 +164,8 @@ namespace CivOne
 
 			if (Common.Screens.Length == 0) return;
 
-			CivOne.GFX.Color[] palette = TopScreen.Canvas.Palette;
-			palette[0] = CivOne.GFX.Color.Black;
+			System.Drawing.Color[] palette = TopScreen.Canvas.Palette;
+			palette[0] = System.Drawing.Color.Black;
 			_canvas.FillRectangle(0, 0, 0, _canvas.Width, _canvas.Height);
 			_canvas.SetPalette(palette);
 

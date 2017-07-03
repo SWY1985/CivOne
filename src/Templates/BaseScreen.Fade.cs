@@ -7,8 +7,8 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System.Drawing;
 using CivOne.Enums;
-using CivOne.GFX;
 
 namespace CivOne.Templates
 {
@@ -39,7 +39,7 @@ namespace CivOne.Templates
 			int r = (int)(((float)colour1.R * (1.0F - _fadeStep)) + ((float)colour2.R * _fadeStep));
 			int g = (int)(((float)colour1.G * (1.0F - _fadeStep)) + ((float)colour2.G * _fadeStep));
 			int b = (int)(((float)colour1.B * (1.0F - _fadeStep)) + ((float)colour2.B * _fadeStep));
-			return new Color(r, g, b);
+			return Color.FromArgb(r, g, b);
 		}
 		
 		private void FadeColours()

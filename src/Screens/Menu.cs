@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;

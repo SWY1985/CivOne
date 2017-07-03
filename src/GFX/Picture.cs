@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.Drawing;
 using CivOne.Enums;
 
 namespace CivOne.GFX
@@ -71,6 +72,11 @@ namespace CivOne.GFX
 			}
 		}
 
+		private int GetColourInt(Color colour)
+		{
+			return ((int)colour.A << 24) + ((int)colour.B << 16) + ((int)colour.G << 8) + ((int)colour.R);
+		}
+
 		public int[] GetColorMap
 		{
 			get
@@ -80,7 +86,7 @@ namespace CivOne.GFX
 				for (int yy = _bitmap.GetUpperBound(1); yy >= 0; yy--)
 				for (int xx = 0; xx <= _bitmap.GetUpperBound(0); xx++)
 				{
-					output[i++] = _palette[_bitmap[xx, yy]].GetHashCode();
+					output[i++] = GetColourInt(_palette[_bitmap[xx, yy]]);
 				}
 				return output;
 			}
