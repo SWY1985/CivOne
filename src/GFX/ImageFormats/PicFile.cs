@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using CivOne.Interfaces;
@@ -126,7 +127,7 @@ namespace CivOne.GFX.ImageFormats
 					continue;
 				}
 				byte red = _bytes[index++], green = _bytes[index++], blue = _bytes[index++];
-				_palette256[i] = new Color(255, red * 4, green * 4, blue * 4);
+				_palette256[i] = Color.FromArgb(255, red * 4, green * 4, blue * 4);
 			}
 			
 			// always set colour 0 to transparent
