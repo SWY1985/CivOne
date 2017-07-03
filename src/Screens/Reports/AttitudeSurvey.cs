@@ -92,10 +92,13 @@ namespace CivOne.Screens.Reports
 				int unhappyCitizens = citizens.Count(c => c == Citizen.UnhappyMale || c == Citizen.UnhappyFemale);
 				int contentCitizens = totalCitizens - happyCitizens - unhappyCitizens;
 
-				int happy = (int)Math.Floor((double)(100 / totalCitizens) * happyCitizens);
-				int content = (int)Math.Floor((double)(100 / totalCitizens) * contentCitizens);
-				int unhappy = (int)Math.Floor((double)(100 / totalCitizens) * unhappyCitizens);
-				_canvas.DrawText($"Population: {population} Happy:{happy}% Content:{content}% Unhappy:{unhappy}%", 0, 15, 16, y);
+				if (totalCitizens > 0)
+				{
+					int happy = (int)Math.Floor((double)(100 / totalCitizens) * happyCitizens);
+					int content = (int)Math.Floor((double)(100 / totalCitizens) * contentCitizens);
+					int unhappy = (int)Math.Floor((double)(100 / totalCitizens) * unhappyCitizens);
+					_canvas.DrawText($"Population: {population} Happy:{happy}% Content:{content}% Unhappy:{unhappy}%", 0, 15, 16, y);
+				}
 			}
 
 			_update = false;
