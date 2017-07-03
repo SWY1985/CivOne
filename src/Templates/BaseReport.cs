@@ -10,6 +10,7 @@
 using System;
 using System.Drawing;
 using CivOne.Advances;
+using CivOne.Attributes;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -17,7 +18,8 @@ using CivOne.Interfaces;
 
 namespace CivOne.Templates
 {
-	internal abstract class BaseReport : BaseScreen, IModal
+	[Modal]
+	internal abstract class BaseReport : BaseScreen
 	{
 		private bool _update = true;
 

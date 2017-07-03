@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Linq;
+using CivOne.Attributes;
 using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
@@ -15,7 +16,8 @@ using CivOne.Templates;
 
 namespace CivOne.Screens.Reports
 {
-	internal class WorldWonders : BaseScreen, IModal
+	[Modal]
+	internal class WorldWonders : BaseScreen
 	{
 		private struct CityWonders
 		{

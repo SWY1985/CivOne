@@ -13,6 +13,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using CivOne.Attributes;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
@@ -60,12 +61,17 @@ namespace CivOne
 			}
 		}
 
+		internal static bool HasAttribute<T>(object checkObject) where T : Attribute
+		{
+			return Attribute.IsDefined(checkObject.GetType(), typeof(T));
+		}
+
 		public static IScreen TopScreen
 		{
 			get
 			{
-				if (_screens.Any(x => x is IModal))
-					return _screens.Last(x => x is IModal);
+				if (_screens.Any(x => HasAttribute<Modal>(x)))
+					return _screens.Last(x => HasAttribute<Modal>(x));
 				return _screens.LastOrDefault();
 			}
 		}

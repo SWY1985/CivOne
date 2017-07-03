@@ -20,10 +20,12 @@ using CivOne.Templates;
 using CivOne.Wonders;
 
 using UniversityBuilding = CivOne.Buildings.University;
+using CivOne.Attributes;
 
 namespace CivOne.Screens
 {
-	internal class CityView : BaseScreen, IModal
+	[Modal]
+	internal class CityView : BaseScreen
 	{
 		private const float FADE_STEP = 0.1f;
 		private const int NOISE_COUNT = 40;
