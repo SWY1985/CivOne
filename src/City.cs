@@ -186,8 +186,6 @@ namespace CivOne
 			{
 				case Terrain.Desert:
 				case Terrain.Forest:
-					if (!Player.AnarchyDespotism) output += 1;
-					break;
 				case Terrain.Grassland1:
 				case Terrain.Grassland2:
 				case Terrain.River:
@@ -237,6 +235,7 @@ namespace CivOne
 		internal int TradeValue(ITile tile)
 		{
 			int output = tile.Trade;
+
 			if (tile.RailRoad) output = (int)Math.Floor((double)output * 1.5);
 			switch (tile.Type)
 			{
