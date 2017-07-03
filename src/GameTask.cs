@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CivOne.Attributes;
 using CivOne.Interfaces;
 using CivOne.Templates;
 
@@ -39,7 +40,7 @@ namespace CivOne
 		{
 			get
 			{
-				return (_currentTask is IFast); 
+				return Common.HasAttribute<Fast>(_currentTask);
 			}
 		}
 

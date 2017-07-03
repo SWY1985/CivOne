@@ -18,7 +18,7 @@ using CivOne.Templates;
 
 namespace CivOne.Screens
 {
-	internal class Intro : BaseScreen, IExpand, IFast
+	internal class Intro : BaseScreen, IExpand
 	{
 		private const float FADE_STEP = 0.0625F;
 		
