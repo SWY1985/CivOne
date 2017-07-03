@@ -8,13 +8,14 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using CivOne.Advances;
+using CivOne.Attributes;
 using CivOne.Enums;
-using CivOne.Interfaces;
 using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Musketeers : BaseUnitLand, IDefault
+	[Default]
+	internal class Musketeers : BaseUnitLand
 	{
 		public Musketeers() : base(3, 2, 3, 1)
 		{

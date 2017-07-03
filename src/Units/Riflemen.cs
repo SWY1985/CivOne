@@ -8,13 +8,14 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using CivOne.Advances;
+using CivOne.Attributes;
 using CivOne.Enums;
-using CivOne.Interfaces;
 using CivOne.Templates;
 
 namespace CivOne.Units
 {
-	internal class Riflemen : BaseUnitLand, IDefault
+	[Default]
+	internal class Riflemen : BaseUnitLand
 	{
 		public Riflemen() : base(3, 3, 5, 1)
 		{

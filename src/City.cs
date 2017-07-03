@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CivOne.Advances;
+using CivOne.Attributes;
 using CivOne.Buildings;
 using CivOne.Enums;
 using CivOne.Governments;
@@ -913,7 +914,7 @@ namespace CivOne
 		{
 			Owner = owner;
 			if (!Game.Started) return;
-			CurrentProduction = Reflect.GetUnits().Where(u => Player.ProductionAvailable(u)).OrderBy(u => (u is IDefault) ? -1 : (int)u.Type).First();
+			CurrentProduction = Reflect.GetUnits().Where(u => Player.ProductionAvailable(u)).OrderBy(u => Common.HasAttribute<Default>(u) ? -1 : (int)u.Type).First();
 			SetResourceTiles();
 		}
 	}
