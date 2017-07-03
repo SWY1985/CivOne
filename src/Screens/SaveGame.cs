@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using CivOne.Attributes;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -20,7 +21,8 @@ using CivOne.Templates;
 
 namespace CivOne.Screens
 {
-	internal class SaveGame : BaseScreen, IModal
+	[Modal]
+	internal class SaveGame : BaseScreen
 	{
 		private class SaveGameFile
 		{

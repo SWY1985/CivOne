@@ -19,6 +19,7 @@ using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.IO;
 using CivOne.Screens;
+using CivOne.Attributes;
 
 namespace CivOne
 {
@@ -104,8 +105,8 @@ namespace CivOne
 			get
 			{
 				if (!GameTask.Update() && (!GameTask.Fast && (_gameTick % 4) > 0)) return false;
-				if (Common.Screens.Any(x => x is IModal))
-					return Common.Screens.Last(x => x is IModal).HasUpdate(_gameTick / 4);
+				if (Common.Screens.Any(x => Common.HasAttribute<Modal>(x)))
+					return Common.Screens.Last(x => Common.HasAttribute<Modal>(x)).HasUpdate(_gameTick / 4);
 				return (Common.Screens.Count(x => x.HasUpdate(_gameTick / 4)) > 0);
 			}
 		}
@@ -169,7 +170,7 @@ namespace CivOne
 			_canvas.FillRectangle(0, 0, 0, _canvas.Width, _canvas.Height);
 			_canvas.SetPalette(palette);
 
-			if (TopScreen is IModal)
+			if (Common.HasAttribute<Modal>(TopScreen))
 			{
 				_canvas.AddLayer(TopScreen.Canvas, 0, 0);
 				return;
