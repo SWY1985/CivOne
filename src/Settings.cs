@@ -25,6 +25,7 @@ namespace CivOne
 		private bool _revealWorld = false;
 		private bool _debugMenu = false;
 		private bool _deityEnabled = false;
+		private bool _arrowHelper = false;
 		private CursorType _cursorType = CursorType.Default;
 
 		private DestroyAnimation _destroyAnimation = DestroyAnimation.Sprites;
@@ -233,6 +234,20 @@ namespace CivOne
 				Common.ReloadSettings = true;
 			}
 		}
+
+		internal bool ArrowHelper
+		{
+			get
+			{
+				return _arrowHelper;
+			}
+			set
+			{
+				_arrowHelper = value;
+				SetSetting("ArrowHelper", _arrowHelper ? "1" : "0");
+				Common.ReloadSettings = true;
+			}
+		}
 		
 		internal CursorType CursorType
 		{
@@ -364,6 +379,7 @@ namespace CivOne
 			bool revealWorld = false;
 			bool debugMenu = false;
 			bool deityEnabled = false;
+			bool arrowHelper = false;
 			int cursorType = (int)_cursorType;
 			int destroyAnimation = (int)_destroyAnimation;
 			
@@ -378,6 +394,7 @@ namespace CivOne
 			revealWorld = (GetSetting("RevealWorld") == "1");
 			debugMenu = (GetSetting("DebugMenu") == "1");
 			deityEnabled = (GetSetting("DeityEnabled") == "1");
+			arrowHelper = (GetSetting("ArrowHelper") == "1");
 			Int32.TryParse(GetSetting("CursorType"), out cursorType);
 			Int32.TryParse(GetSetting("DestroyAnimation"), out destroyAnimation);
 			
@@ -401,6 +418,7 @@ namespace CivOne
 			_revealWorld = revealWorld;
 			_debugMenu = debugMenu;
 			_deityEnabled = deityEnabled;
+			_arrowHelper = arrowHelper;
 			_cursorType = (CursorType)cursorType;
 			_destroyAnimation = (DestroyAnimation)destroyAnimation;
 

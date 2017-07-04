@@ -155,7 +155,7 @@ namespace CivOne.Screens
 		
 		private void PatchesMenu(int activeItem = 0)
 		{
-			string revealWorld, sideBar, debugMenu, cursorType, destroyAnimation, deityMenu;
+			string revealWorld, sideBar, debugMenu, cursorType, destroyAnimation, deityMenu, arrowHelperMenu;
 			switch (Settings.CursorType)
 			{
 				case CursorType.Builtin: cursorType = "Built-in"; break;
@@ -175,8 +175,9 @@ namespace CivOne.Screens
 			cursorType = $"Mouse cursor type: {cursorType}";
 			destroyAnimation = $"Destroy animation: {destroyAnimation}";
 			deityMenu = $"Enable Deity difficulty: {(Settings.DeityEnabled ? "yes" : "no")}";
+			arrowHelperMenu = $"Enable (no keypad) arrow helper: {(Settings.ArrowHelper ? "yes" : "no")}";
 			
-			Menu menu = CreateMenu("PATCHES:", PatchesChoice, revealWorld, sideBar, debugMenu, cursorType, destroyAnimation, deityMenu, "Back");
+			Menu menu = CreateMenu("PATCHES:", PatchesChoice, revealWorld, sideBar, debugMenu, cursorType, destroyAnimation, deityMenu, arrowHelperMenu, "Back");
 			menu.ActiveItem = activeItem;
 			AddMenu(menu);
 		}
@@ -225,6 +226,13 @@ namespace CivOne.Screens
 		{
 			Menu menu = CreateMenu("ENABLE DEITY DIFFICULTY:", DeityEnabledChoice, "No", "Yes", "Back");
 			menu.ActiveItem = Settings.DeityEnabled ? 1 : 0;
+			AddMenu(menu);
+		}
+		
+		private void ArrowHelperMenu()
+		{
+			Menu menu = CreateMenu("ENABLE (NO KEYPAD) ARROW HELPER:", ArrowHelperChoice, "No", "Yes", "Back");
+			menu.ActiveItem = Settings.ArrowHelper ? 1 : 0;
 			AddMenu(menu);
 		}
 		
@@ -356,7 +364,10 @@ namespace CivOne.Screens
 				case 5: // Enable Deity difficulty
 					DeityEnabledMenu();
 					break;
-				case 6: // Back
+				case 6: // Enable (no keypad) arrow helper
+					ArrowHelperMenu();
+					break;
+				case 7: // Back
 					MainMenu(1);
 					break;
 			}
@@ -459,6 +470,22 @@ namespace CivOne.Screens
 			}
 			CloseMenus();
 			PatchesMenu(5);
+		}
+
+		private void ArrowHelperChoice(object sender, EventArgs args)
+		{
+			int choice = (sender as Menu.Item).Value;
+			switch (choice)
+			{
+				case 0: // no
+					Settings.ArrowHelper = false;
+					break;
+				case 1: // yes
+					Settings.ArrowHelper = true;
+					break;
+			}
+			CloseMenus();
+			PatchesMenu(6);
 		}
 
 		public void Resize(int width, int height)
