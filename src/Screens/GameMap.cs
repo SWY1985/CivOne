@@ -335,6 +335,8 @@ namespace CivOne.Screens
 
 		private bool MoveTo(int relX, int relY)
 		{
+			_helperDirection = new Point(0, 0);
+			
 			if (Game.ActiveUnit == null)
 				return false;
 			
@@ -361,6 +363,25 @@ namespace CivOne.Screens
 			{
 				switch (args.Key)
 				{
+					case Key.NumPad1:
+						return MoveTo(-1, 1);
+					case Key.NumPad2:
+						return MoveTo(0, 1);
+					case Key.NumPad3:
+						return MoveTo(1, 1);
+					case Key.NumPad4:
+						return MoveTo(-1, 0);
+					case Key.NumPad5:
+						GameTask.Enqueue(Show.Empty);
+						return true;
+					case Key.NumPad6:
+						return MoveTo(1, 0);
+					case Key.NumPad7:
+						return MoveTo(-1, -1);
+					case Key.NumPad8:
+						return MoveTo(0, -1);
+					case Key.NumPad9:
+						return MoveTo(1, -1);
 					case Key.Escape:
 						_helperDirection = new Point(0, 0);
 						return true;
