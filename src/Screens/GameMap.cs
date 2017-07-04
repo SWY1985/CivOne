@@ -226,7 +226,7 @@ namespace CivOne.Screens
 					
 					IUnit drawUnit = units.FirstOrDefault(u => u == Game.ActiveUnit);
 					
-					if (Game.MovingUnit != null && Game.MovingUnit.Movement.TargetTile.X == t.Tile.X && Game.MovingUnit.Movement.TargetTile.Y== t.Tile.Y)
+					if (Game.MovingUnit != null && Game.MovingUnit.Movement.TargetTile.X == t.Tile.X && Game.MovingUnit.Movement.TargetTile.Y == t.Tile.Y)
 					{
 						// set defending unit
 						drawUnit = units.OrderByDescending(x => x.Attack * (x.Veteran ? 1.5 : 1)).ThenBy(x => (int)x.Type).First();
@@ -238,6 +238,34 @@ namespace CivOne.Screens
 					}
 
 					// Active unit on this tile
+
+					if (_helperDirection.X != 0 || _helperDirection.Y != 0)
+					{
+						if (_helperDirection.X < 0)
+						{
+							AddLayer(Icons.HelperArrow(Direction.North), t.Position.X - 16, t.Position.Y - 16);
+							AddLayer(Icons.HelperArrow(Direction.West), t.Position.X - 16, t.Position.Y);
+							AddLayer(Icons.HelperArrow(Direction.South), t.Position.X - 16, t.Position.Y + 16);
+						}
+						if (_helperDirection.X > 0)
+						{
+							AddLayer(Icons.HelperArrow(Direction.North), t.Position.X + 16, t.Position.Y - 16);
+							AddLayer(Icons.HelperArrow(Direction.East), t.Position.X + 16, t.Position.Y);
+							AddLayer(Icons.HelperArrow(Direction.South), t.Position.X + 16, t.Position.Y + 16);
+						}
+						if (_helperDirection.Y < 0)
+						{
+							AddLayer(Icons.HelperArrow(Direction.West), t.Position.X - 16, t.Position.Y - 16);
+							AddLayer(Icons.HelperArrow(Direction.North), t.Position.X, t.Position.Y - 16);
+							AddLayer(Icons.HelperArrow(Direction.East), t.Position.X + 16, t.Position.Y - 16);
+						}
+						if (_helperDirection.Y > 0)
+						{
+							AddLayer(Icons.HelperArrow(Direction.West), t.Position.X - 16, t.Position.Y + 16);
+							AddLayer(Icons.HelperArrow(Direction.South), t.Position.X, t.Position.Y + 16);
+							AddLayer(Icons.HelperArrow(Direction.East), t.Position.X + 16, t.Position.Y + 16);
+						}
+					}
 					
 					if (drawUnit.Moving)
 					{
