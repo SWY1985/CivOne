@@ -22,7 +22,6 @@ namespace CivOne.Screens
 		private readonly City _city;
 
 		private readonly IProduction[] _availableProduction;
-		private readonly Picture _background;
 		private readonly int _fontId = 0;
 		private readonly List<IProduction[]> _pages = new List<IProduction[]>();
 
@@ -116,7 +115,7 @@ namespace CivOne.Screens
 				int width = itemWidth + 14;
 				int height = _menuHeight + 10 + Resources.Instance.GetFontHeight(_fontId);
 				Picture menuGfx = new Picture(width, height);
-				menuGfx.FillLayerTile(_background);
+				menuGfx.FillLayerTile(Patterns.PanelGrey);
 				menuGfx.AddBorder(15, 8, 0, 0, width, height);
 				menuGfx.DrawText(menuHeaderText, _fontId, 15, 4, 4);
 				menuGfx.DrawText($"(Help available)", 1, 10, width, height - Resources.Instance.GetFontHeight(1), TextAlign.Right);
@@ -159,7 +158,6 @@ namespace CivOne.Screens
 		public CityChooseProduction(City city)
 		{
 			_city = city;
-			_background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
 			
 			Cursor = MouseCursor.Pointer;
 

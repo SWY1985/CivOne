@@ -22,9 +22,6 @@ namespace CivOne.Screens
 	internal class CityManager : BaseScreen
 	{
 		private readonly City _city;
-
-		private readonly Picture _background;
-
 		private readonly CityHeader _cityHeader;
 		private readonly CityResources _cityResources;
 		private readonly CityUnits _cityUnits;
@@ -186,8 +183,6 @@ namespace CivOne.Screens
 		public CityManager(City city)
 		{
 			_city = city;
-			_background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
-			Picture.ReplaceColours(_background, new byte[] { 7, 22 }, new byte[] { 57, 9 });
 
 			Cursor = MouseCursor.Pointer;
 
@@ -196,14 +191,14 @@ namespace CivOne.Screens
 			_canvas = new Picture(320, 200, Common.DefaultPalette);
 			_canvas.FillRectangle(5, 0, 0, 320, 200);
 			
-			_subScreens.Add(_cityHeader = new CityHeader(_city, _background));
-			_subScreens.Add(_cityResources = new CityResources(_city, _background));
-			_subScreens.Add(_cityUnits = new CityUnits(_city, _background));
-			_subScreens.Add(_cityMap = new CityMap(_city, _background));
-			_subScreens.Add(_cityBuildings = new CityBuildings(_city, _background));
-			_subScreens.Add(_cityFoodStorage = new CityFoodStorage(_city, _background));
-			_subScreens.Add(_cityInfo = new CityInfo(_city, _background));
-			_subScreens.Add(_cityProduction = new CityProduction(_city, _background));
+			_subScreens.Add(_cityHeader = new CityHeader(_city, Patterns.PanelBlue));
+			_subScreens.Add(_cityResources = new CityResources(_city, Patterns.PanelBlue));
+			_subScreens.Add(_cityUnits = new CityUnits(_city, Patterns.PanelBlue));
+			_subScreens.Add(_cityMap = new CityMap(_city, Patterns.PanelBlue));
+			_subScreens.Add(_cityBuildings = new CityBuildings(_city, Patterns.PanelBlue));
+			_subScreens.Add(_cityFoodStorage = new CityFoodStorage(_city, Patterns.PanelBlue));
+			_subScreens.Add(_cityInfo = new CityInfo(_city, Patterns.PanelBlue));
+			_subScreens.Add(_cityProduction = new CityProduction(_city, Patterns.PanelBlue));
 
 			_cityBuildings.BuildingUpdate += BuildingUpdate;
 			_cityHeader.HeaderUpdate += HeaderUpdate;

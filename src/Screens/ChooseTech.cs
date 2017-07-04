@@ -20,7 +20,6 @@ namespace CivOne.Screens
 {
 	internal class ChooseTech : BaseScreen
 	{
-		private readonly Picture _background;
 		private readonly Picture _menuGfx;
 		private readonly IAdvance[] _availableAdvances;
 		private readonly int _menuHeight;
@@ -73,7 +72,6 @@ namespace CivOne.Screens
 
 		public ChooseTech()
 		{
-			_background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
 			_availableAdvances = Human.AvailableResearch.Take(8).ToArray();
 			_menuHeight = Resources.Instance.GetFontHeight(0) * _availableAdvances.Count();
 			
@@ -93,7 +91,7 @@ namespace CivOne.Screens
 			if (dialogHeight < 62) dialogHeight = 62;
 
 			_menuGfx = new Picture(204, dialogHeight);
-			_menuGfx.FillLayerTile(_background);
+			_menuGfx.FillLayerTile(Patterns.PanelGrey);
 			_menuGfx.FillRectangle(0, 202, 0, 2, dialogHeight);
 			_menuGfx.AddLayer(governmentPortrait, 1, dialogHeight - 61);
 
