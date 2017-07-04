@@ -45,6 +45,7 @@ namespace CivOne.Screens
 		}
 		
 		private readonly Color[] _palette;
+		private Point _helperDirection = new Point(0, 0);
 		private bool _update = true;
 		private bool _centerChanged = false;
 		private int _x, _y;
@@ -351,34 +352,77 @@ namespace CivOne.Screens
 			if (Game.ActiveUnit == null || Game.ActiveUnit.Moving)
 				return false;
 			
-			switch (args.Key)
+			if (args.Key == Key.Space)
 			{
-				case Key.Space:
-					Game.ActiveUnit.SkipTurn();
-					return true;
-				case Key.NumPad1:
-					return MoveTo(-1, 1);
-				case Key.NumPad2:
-				case Key.Down:
-					return MoveTo(0, 1);
-				case Key.NumPad3:
-					return MoveTo(1, 1);
-				case Key.NumPad4:
-				case Key.Left:
-					return MoveTo(-1, 0);
-				case Key.NumPad5:
-					GameTask.Enqueue(Show.Empty);
-					return true;
-				case Key.NumPad6:
-				case Key.Right:
-					return MoveTo(1, 0);
-				case Key.NumPad7:
-					return MoveTo(-1, -1);
-				case Key.NumPad8:
-				case Key.Up:
-					return MoveTo(0, -1);
-				case Key.NumPad9:
-					return MoveTo(1, -1);
+				Game.ActiveUnit.SkipTurn();
+				return true;
+			}
+			else if (Settings.ArrowHelper)
+			{
+				switch (args.Key)
+				{
+					case Key.Escape:
+						_helperDirection = new Point(0, 0);
+						return true;
+					case Key.Down:
+						_helperDirection.Y++;
+						break;
+					case Key.Up:
+						_helperDirection.Y--;
+						break;
+					case Key.Left:
+						_helperDirection.X--;
+						break;
+					case Key.Right:
+						_helperDirection.X++;
+						break;
+				}
+
+				if (Math.Abs(_helperDirection.X) + Math.Abs(_helperDirection.Y) >= 2)
+				{
+					int x = 0, y = 0;
+					if (_helperDirection.X < 0)
+						x = -1;
+					else if (_helperDirection.X > 0)
+						x = 1;
+					
+					if (_helperDirection.Y < 0)
+						y = -1;
+					else if (_helperDirection.Y > 0)
+						y = 1;
+					
+					_helperDirection = new Point(0, 0);
+					return MoveTo(x, y);
+				}
+			}
+			else
+			{
+				switch (args.Key)
+				{
+					case Key.NumPad1:
+						return MoveTo(-1, 1);
+					case Key.NumPad2:
+					case Key.Down:
+						return MoveTo(0, 1);
+					case Key.NumPad3:
+						return MoveTo(1, 1);
+					case Key.NumPad4:
+					case Key.Left:
+						return MoveTo(-1, 0);
+					case Key.NumPad5:
+						GameTask.Enqueue(Show.Empty);
+						return true;
+					case Key.NumPad6:
+					case Key.Right:
+						return MoveTo(1, 0);
+					case Key.NumPad7:
+						return MoveTo(-1, -1);
+					case Key.NumPad8:
+					case Key.Up:
+						return MoveTo(0, -1);
+					case Key.NumPad9:
+						return MoveTo(1, -1);
+				}
 			}
 			
 			switch (args.KeyChar)
