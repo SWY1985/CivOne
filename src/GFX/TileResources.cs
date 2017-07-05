@@ -309,6 +309,20 @@ namespace CivOne.GFX
 		internal static Picture GetTile256(ITile tile, bool improvements, bool roads)
 		{
 			Picture output = new Picture(16, 16);
+
+			if (!Resources.Exists("SP257"))
+			{
+				switch (tile.Type)
+				{
+					case Terrain.Ocean:
+						output.AddLayer(Free.Instance.SeaBase);
+						break;
+					default:
+						output.AddLayer(Free.Instance.LandBase);
+						break;
+				}
+				return output;
+			}
 			
 			// Set tile base
 			switch (tile.Type)

@@ -270,10 +270,21 @@ namespace CivOne.GFX
 		private Resources()
 		{
 			LoadFonts();
-			_fog.Add(Direction.West, this["SP257"].GetPart(128, 128, 16, 16));
-			_fog.Add(Direction.South, this["SP257"].GetPart(112, 128, 16, 16));
-			_fog.Add(Direction.East, this["SP257"].GetPart(96, 128, 16, 16));
-			_fog.Add(Direction.North, this["SP257"].GetPart(80, 128, 16, 16));
+
+			if (!Exists("SP257"))
+			{
+				foreach (Direction direction in new [] { Direction.West, Direction.South, Direction.East, Direction.North })
+				{
+					_fog.Add(direction, Free.Instance.Fog(direction));
+				}
+			}
+			else
+			{
+				_fog.Add(Direction.West, this["SP257"].GetPart(128, 128, 16, 16));
+				_fog.Add(Direction.South, this["SP257"].GetPart(112, 128, 16, 16));
+				_fog.Add(Direction.East, this["SP257"].GetPart(96, 128, 16, 16));
+				_fog.Add(Direction.North, this["SP257"].GetPart(80, 128, 16, 16));
+			}
 		}
 	}
 }
