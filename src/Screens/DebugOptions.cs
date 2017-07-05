@@ -86,9 +86,8 @@ namespace CivOne.Screens
 			{
 				_update = false;
 
-				Picture background = Resources["SP299"].GetPart(288, 120, 32, 16);
 				Picture menuGfx = new Picture(132, 87);
-				menuGfx.FillLayerTile(background);
+				menuGfx.FillLayerTile(Patterns.PanelGrey);
 				menuGfx.AddBorder(15, 8, 0, 0, 131, 87);
 				menuGfx.FillRectangle(0, 131, 0, 1, 87);
 				menuGfx.DrawText("Debug Options:", 0, 15, 4, 4);
