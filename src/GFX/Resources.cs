@@ -147,11 +147,6 @@ namespace CivOne.GFX
 			return _textCache[key];
 		}
 		
-		public Picture GetPart(string filename, int x, int y, int width, int height)
-		{
-			return LoadPIC(filename).GetPart(x, y, width, height);
-		}
-		
 		public Picture LoadPIC(string filename, bool noCache = false)
 		{
 			string key = filename.ToUpper();
@@ -245,6 +240,14 @@ namespace CivOne.GFX
 			if (!_fog.ContainsKey(direction)) return null;
 			return _fog[direction];
 		}
+
+		public Picture this[string filename]
+		{
+			get
+			{
+				return LoadPIC(filename);
+			}
+		}
 		
 		private static Resources _instance;
 		public static Resources Instance
@@ -262,10 +265,10 @@ namespace CivOne.GFX
 		private Resources()
 		{
 			LoadFonts();
-			_fog.Add(Direction.West, GetPart("SP257", 128, 128, 16, 16));
-			_fog.Add(Direction.South, GetPart("SP257", 112, 128, 16, 16));
-			_fog.Add(Direction.East, GetPart("SP257", 96, 128, 16, 16));
-			_fog.Add(Direction.North, GetPart("SP257", 80, 128, 16, 16));
+			_fog.Add(Direction.West, this["SP257"].GetPart(128, 128, 16, 16));
+			_fog.Add(Direction.South, this["SP257"].GetPart(112, 128, 16, 16));
+			_fog.Add(Direction.East, this["SP257"].GetPart(96, 128, 16, 16));
+			_fog.Add(Direction.North, this["SP257"].GetPart(80, 128, 16, 16));
 		}
 	}
 }

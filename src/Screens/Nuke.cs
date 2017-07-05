@@ -198,7 +198,7 @@ namespace CivOne.Screens
 			for (int yy = 0; yy < 4; yy++)
 			for (int xx = 0; xx < 7; xx++)
 			{
-				_sprites[(yy * 7) + xx] = Resources.Instance.GetPart("NUKE1", 1 + (45 * xx), 1 + (45 * yy), 44, 44);
+				_sprites[(yy * 7) + xx] = Resources["NUKE1"].GetPart(1 + (45 * xx), 1 + (45 * yy), 44, 44);
 			}
 		}
 	}

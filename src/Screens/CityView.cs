@@ -123,10 +123,10 @@ namespace CivOne.Screens
 				_canvas.DrawText($"{_city.Name} founded: {Game.GameYear}.", 5, 5, 161, 3, TextAlign.Center);
 
 				int frame = (_x % 4);
-				AddLayer(Resources.Instance.GetPart("SETTLERS", 1, 1 + (16 * frame), 48, 15), _x, 120);
-				AddLayer(Resources.Instance.GetPart("SETTLERS", 1, 1 + (16 * ((frame + 2) % 4)), 48, 15), _x + 27, 125);
-				AddLayer(Resources.Instance.GetPart("SETTLERS", 1, 1 + (16 * ((frame + 3) % 4)), 48, 15), _x + 14, 131);
-				AddLayer(Resources.Instance.GetPart("SETTLERS", 1, 1 + (16 * ((frame + 1) % 4)), 48, 15), _x + 40, 135);
+				AddLayer(Resources["SETTLERS"].GetPart(1, 1 + (16 * frame), 48, 15), _x, 120);
+				AddLayer(Resources["SETTLERS"].GetPart(1, 1 + (16 * ((frame + 2) % 4)), 48, 15), _x + 27, 125);
+				AddLayer(Resources["SETTLERS"].GetPart(1, 1 + (16 * ((frame + 3) % 4)), 48, 15), _x + 14, 131);
+				AddLayer(Resources["SETTLERS"].GetPart(1, 1 + (16 * ((frame + 1) % 4)), 48, 15), _x + 40, 135);
 
 				_x++;
 				return true;
@@ -172,36 +172,36 @@ namespace CivOne.Screens
 			if (picture == null) picture = _background;
 			if (typeof(T) == typeof(Pyramids))
 			{
-				picture.AddLayer(Resources.Instance.GetPart("WONDERS2", 131, 54, 187, 29), 133, 0);
-				picture.AddLayer(Resources.Instance.GetPart("WONDERS2", 318, 54, 1, 29), 0, 0);
+				picture.AddLayer(Resources["WONDERS2"].GetPart(131, 54, 187, 29), 133, 0);
+				picture.AddLayer(Resources["WONDERS2"].GetPart(318, 54, 1, 29), 0, 0);
 			}
 			if (typeof(T) == typeof(Colossus))
 			{
-				picture.AddLayer(Resources.Instance.GetPart("WONDERS2", 88, 97, 124, 39), 170, 0);
+				picture.AddLayer(Resources["WONDERS2"].GetPart(88, 97, 124, 39), 170, 0);
 			}
 			if (typeof(T) == typeof(GreatWall))
 			{
-				picture.AddLayer(Resources.Instance.GetPart("WONDERS2", 1, 38, 66, 81), 0, 0);
+				picture.AddLayer(Resources["WONDERS2"].GetPart(1, 38, 66, 81), 0, 0);
 			}
 			if (typeof(T) == typeof(HooverDam))
 			{
-				picture.AddLayer(Resources.Instance.GetPart("WONDERS2", 1, 14, 147, 20), 1, 9);
+				picture.AddLayer(Resources["WONDERS2"].GetPart(1, 14, 147, 20), 1, 9);
 			}
 			if (typeof(T) == typeof(Lighthouse))
 			{
-				picture.AddLayer(Resources.Instance.GetPart("WONDERS", 229, 116, 40, 83), x, y);
+				picture.AddLayer(Resources["WONDERS"].GetPart(229, 116, 40, 83), x, y);
 			}
 			if (typeof(T) == typeof(HangingGardens))
 			{
-				picture.AddLayer(Resources.Instance.GetPart("WONDERS", 159, 149, 69, 50), x, y);
+				picture.AddLayer(Resources["WONDERS"].GetPart(159, 149, 69, 50), x, y);
 			}
 			if (typeof(T) == typeof(Oracle))
 			{
-				picture.AddLayer(Resources.Instance.GetPart("WONDERS", 164, 97, 64, 51), x, y);
+				picture.AddLayer(Resources["WONDERS"].GetPart(164, 97, 64, 51), x, y);
 			}
 			if (typeof(T) == typeof(DarwinsVoyage))
 			{
-				picture.AddLayer(Resources.Instance.GetPart("WONDERS", 40, 69, 62, 47), x, y);
+				picture.AddLayer(Resources["WONDERS"].GetPart(40, 69, 62, 47), x, y);
 			}
 		}
 
@@ -222,13 +222,13 @@ namespace CivOne.Screens
 			if (picture == null) picture = _background;
 			if (typeof(T) == typeof(Aqueduct))
 			{
-				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 51, 151, 49, 49), 0, 72);
+				picture.AddLayer(Resources[_buildingFile].GetPart(51, 151, 49, 49), 0, 72);
 			}
 
 			if (typeof(T) == typeof(CityWalls))
 			{
-				Picture wall = Resources.Instance.GetPart(_buildingFile, 251, 101, 43, 49);
-				Picture door = Resources.Instance.GetPart(_buildingFile, 51, 101, 49, 49);
+				Picture wall = Resources[_buildingFile].GetPart(251, 101, 43, 49);
+				Picture door = Resources[_buildingFile].GetPart(51, 101, 49, 49);
 
 				for (int xx = 0; xx < 142; xx += 43)
 					picture.AddLayer(wall, xx, 108);
@@ -238,35 +238,35 @@ namespace CivOne.Screens
 			}
 
 			if (typeof(T) == typeof(Barracks))
-				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 1, 1, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile].GetPart(1, 1, 49, 49), x, y);
 			if (typeof(T) == typeof(Granary))
-				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 1, 51, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile].GetPart(1, 51, 49, 49), x, y);
 			if (typeof(T) == typeof(Temple))
-				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 1, 101, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile].GetPart(1, 101, 49, 49), x, y);
 			if (typeof(T) == typeof(MarketPlace))
-				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 1, 151, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile].GetPart(1, 151, 49, 49), x, y);
 			if (typeof(T) == typeof(Library))
-				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 51, 1, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile].GetPart(51, 1, 49, 49), x, y);
 			if (typeof(T) == typeof(Courthouse))
-				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 51, 51, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile].GetPart(51, 51, 49, 49), x, y);
 			if (typeof(T) == typeof(Bank))
-				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 101, 1, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile].GetPart(101, 1, 49, 49), x, y);
 			if (typeof(T) == typeof(Cathedral))
-				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 101, 51, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile].GetPart(101, 51, 49, 49), x, y);
 			if (typeof(T) == typeof(UniversityBuilding))
-				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 101, 101, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile].GetPart(101, 101, 49, 49), x, y);
 			if (typeof(T) == typeof(Colosseum))
-				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 151, 1, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile].GetPart(151, 1, 49, 49), x, y);
 			if (typeof(T) == typeof(Factory))
-				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 151, 51, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile].GetPart(151, 51, 49, 49), x, y);
 			if (typeof(T) == typeof(MfgPlant))
-				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 151, 101, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile].GetPart(151, 101, 49, 49), x, y);
 			if (typeof(T) == typeof(SdiDefense))
-				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 151, 151, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile].GetPart(151, 151, 49, 49), x, y);
 			if (typeof(T) == typeof(RecyclingCenter))
-				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 201, 1, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile].GetPart(201, 1, 49, 49), x, y);
 			if (typeof(T) == typeof(NuclearPlant))
-				picture.AddLayer(Resources.Instance.GetPart(_buildingFile, 201, 151, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile].GetPart(201, 151, 49, 49), x, y);
 		}
 
 		private void DrawBuildingOverlay<T>(int x, int y, int offset = -18) where T : IBuilding
@@ -485,22 +485,22 @@ namespace CivOne.Screens
 							{
 								if (Common.Random.Next(10) > 5)
 								{
-									building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 8), (Common.Random.Next(10) > 5) ? 1 : 33, 31, 31);
+									building = Resources["CITYPIX1"].GetPart(1 + (32 * 8), (Common.Random.Next(10) > 5) ? 1 : 33, 31, 31);
 								}
 								else
 								{
-									building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 9), (Common.Random.Next(10) > 5) ? 1 : 33, 31, 31);
+									building = Resources["CITYPIX1"].GetPart(1 + (32 * 9), (Common.Random.Next(10) > 5) ? 1 : 33, 31, 31);
 								}
 							}
 							else
 							{
 								if (Common.Random.Next(10) > 5)
 								{
-									building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 6), 33, 31, 31);
+									building = Resources["CITYPIX1"].GetPart(1 + (32 * 6), 33, 31, 31);
 								}
 								else
 								{
-									building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 7), 33, 31, 31);
+									building = Resources["CITYPIX1"].GetPart(1 + (32 * 7), 33, 31, 31);
 								}
 							}
 						}
@@ -510,22 +510,22 @@ namespace CivOne.Screens
 							{
 								if (Common.Random.Next(10) > 5)
 								{
-									building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 6), 1, 31, 31);
+									building = Resources["CITYPIX1"].GetPart(1 + (32 * 6), 1, 31, 31);
 								}
 								else
 								{
-									building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 7), 1, 31, 31);
+									building = Resources["CITYPIX1"].GetPart(1 + (32 * 7), 1, 31, 31);
 								}
 							}
 							else
 							{
 								if (Common.Random.Next(10) > 5)
 								{
-									building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 4), 33, 31, 31);
+									building = Resources["CITYPIX1"].GetPart(1 + (32 * 4), 33, 31, 31);
 								}
 								else
 								{
-									building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 5), 33, 31, 31);
+									building = Resources["CITYPIX1"].GetPart(1 + (32 * 5), 33, 31, 31);
 								}
 							}
 						}
@@ -535,22 +535,22 @@ namespace CivOne.Screens
 							{
 								if (Common.Random.Next(10) > 5)
 								{
-									building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 4), 1, 31, 31);
+									building = Resources["CITYPIX1"].GetPart(1 + (32 * 4), 1, 31, 31);
 								}
 								else
 								{
-									building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 5), 1, 31, 31);
+									building = Resources["CITYPIX1"].GetPart(1 + (32 * 5), 1, 31, 31);
 								}
 							}
 							else
 							{
 								if (Common.Random.Next(10) > 5)
 								{
-									building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 2), 33, 31, 31);
+									building = Resources["CITYPIX1"].GetPart(1 + (32 * 2), 33, 31, 31);
 								}
 								else
 								{
-									building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 3), 33, 31, 31);
+									building = Resources["CITYPIX1"].GetPart(1 + (32 * 3), 33, 31, 31);
 								}
 							}
 						}
@@ -562,44 +562,44 @@ namespace CivOne.Screens
 								{
 									if (Common.Random.Next((stage - 5) * 4) > centerDistance)
 									{
-										building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 2), 33, 31, 31);
+										building = Resources["CITYPIX1"].GetPart(1 + (32 * 2), 33, 31, 31);
 									}
 									else
 									{
-										building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 2), 1, 31, 31);
+										building = Resources["CITYPIX1"].GetPart(1 + (32 * 2), 1, 31, 31);
 									}
 								}
 								else
 								{
 									if (Common.Random.Next((stage - 5) * 4) > centerDistance)
 									{
-										building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 3), 33, 31, 31);
+										building = Resources["CITYPIX1"].GetPart(1 + (32 * 3), 33, 31, 31);
 									}
 									else
 									{
-										building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * 3), 1, 31, 31);
+										building = Resources["CITYPIX1"].GetPart(1 + (32 * 3), 1, 31, 31);
 									}
 								}
 							}
 							else
 							{
-								building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * _houseType), 33, 31, 31);
+								building = Resources["CITYPIX1"].GetPart(1 + (32 * _houseType), 33, 31, 31);
 							}
 						}
 						else
 						{
 							if (Common.Random.Next((-3 - stage)) > centerDistance)
 							{
-								building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * _houseType), 33, 31, 31);
+								building = Resources["CITYPIX1"].GetPart(1 + (32 * _houseType), 33, 31, 31);
 							}
 							else
 							{
-								building = Resources.Instance.GetPart("CITYPIX1", 1 + (32 * _houseType), 1, 31, 31);
+								building = Resources["CITYPIX1"].GetPart(1 + (32 * _houseType), 1, 31, 31);
 							}
 						}
 						break;
 					case CityViewMap.Tree:
-						building = Resources.Instance.GetPart("CITYPIX1", 0, 65, 24, 8);
+						building = Resources["CITYPIX1"].GetPart(0, 65, 24, 8);
 						dx -= 5;
 						dy += 24;
 						break;
@@ -616,7 +616,7 @@ namespace CivOne.Screens
 						if (sx > 7) sy += 8;
 						sx = (sx % 8) * 24;
 						if (Game.GetPlayer(_city.Owner).HasAdvance<Automobile>()) sy += 16;
-						building = Resources.Instance.GetPart("CITYPIX1", sx, sy, 24, 8);
+						building = Resources["CITYPIX1"].GetPart(sx, sy, 24, 8);
 						dx -= 5;
 						dy += 24;
 						break;
@@ -748,7 +748,7 @@ namespace CivOne.Screens
 				int width = lines.Max(l => Resources.Instance.GetTextSize(5, l).Width) + 10;
 				if (width % 4 > 0) width += (4 - (width % 4));
 				Picture dialog = new Picture(width, 52);
-				dialog.FillLayerTile(Resources.Instance.GetPart("SP299", 288, 120, 32, 16));
+				dialog.FillLayerTile(Resources["SP299"].GetPart(288, 120, 32, 16));
 				dialog.AddBorder(15, 8, 0, 0, width, 52);
 				dialog.DrawText(lines[0], 5, 5, 4, 5);
 				dialog.DrawText(lines[0], 5, 15, 4, 4);
@@ -773,7 +773,7 @@ namespace CivOne.Screens
 				string[] lines =  new [] { $"{_city.Name} builds", $"{(production as ICivilopedia).Name}." };
 				int width = lines.Max(l => Resources.Instance.GetTextSize(5, l).Width) + 10;
 				Picture dialog = new Picture(width, 37);
-				dialog.FillLayerTile(Resources.Instance.GetPart("SP299", 288, 120, 32, 16));
+				dialog.FillLayerTile(Resources["SP299"].GetPart(288, 120, 32, 16));
 				dialog.AddBorder(15, 8, 0, 0, width, 37);
 				dialog.DrawText(lines[0], 5, 5, 4, 5);
 				dialog.DrawText(lines[0], 5, 15, 4, 4);
@@ -813,7 +813,7 @@ namespace CivOne.Screens
 				int sx = ((int)(citizen) * 35) + 1, sy = (modern ? 1 : 52);
 				int sw = 34, sh = (modern ? 50 : 52);
 				int dx = (int)(citizen) + offsetX + (11 * i++), dy = 140;
-				AddLayer(Resources.Instance.GetPart("POP", sx, sy, sw, sh), dx, dy);
+				AddLayer(Resources["POP"].GetPart(sx, sy, sw, sh), dx, dy);
 			}
 		}
 	}

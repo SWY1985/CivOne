@@ -127,7 +127,7 @@ namespace CivOne.Templates
 			int ww = col < 2 ? 112 : 96;
 			int hh = row < 2 ? 68 : 60;
 			
-			Picture icon = Resources.Instance.GetPart(string.Format("ICONPG{0}", page), xx, yy, ww, hh);
+			Picture icon = Resources.Instance[$"ICONPG{page}"].GetPart(xx, yy, ww, hh);
 			
 			Icon = new Picture(112, 68, icon.Palette);
 			Icon.AddLayer(icon, col < 2 ? 0 : 7, row < 2 ? 0 : 4);
