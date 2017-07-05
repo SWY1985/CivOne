@@ -125,7 +125,7 @@ namespace CivOne.Screens
 				{
 					AddLayer(Icons.Newspaper, xx, 100);
 				}
-				Picture background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
+				Picture background = Resources["SP299"].GetPart(288, 120, 32, 16);
 				Picture dialog = new Picture(152, 15);
 				dialog.FillLayerTile(background);
 				dialog.FillRectangle(0, 151, 0, 1, 15);

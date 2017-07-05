@@ -72,7 +72,7 @@ namespace CivOne.Screens
 			{
 				_update = false;
 
-				Picture background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
+				Picture background = Resources["SP299"].GetPart(288, 120, 32, 16);
 				Picture menuGfx = new Picture(104, 79);
 				menuGfx.FillLayerTile(background);
 				menuGfx.AddBorder(15, 8, 0, 0, 103, 79);

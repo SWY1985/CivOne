@@ -47,7 +47,7 @@ namespace CivOne.Screens.Debug
 			int xx = (320 - ww) / 2;
 			int yy = (200 - hh) / 2;
 
-			Picture background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
+			Picture background = Resources["SP299"].GetPart(288, 120, 32, 16);
 			Picture menuGfx = new Picture(ww, hh);
 			menuGfx.FillLayerTile(background);
 			menuGfx.AddBorder(15, 8, 0, 0, ww, hh);

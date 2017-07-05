@@ -11,36 +11,9 @@ namespace CivOne.Templates
 {
 	public abstract class BaseInstance
 	{
-		protected static Game Game
-		{
-			get
-			{
-				return Game.Instance;
-			}
-		}
-
-		protected static Map Map
-		{
-			get
-			{
-				return Map.Instance;
-			}
-		}
-
-		protected static Player Human
-		{
-			get
-			{
-				return Game.Instance.HumanPlayer;
-			}
-		}
-
-		protected static Settings Settings
-		{
-			get
-			{
-				return Settings.Instance;
-			}
-		}
+		protected static Game Game => Game.Instance;
+		protected static Map Map => Map.Instance;
+		protected static Player Human => Game.Instance.HumanPlayer;
+		protected static Settings Settings => Settings.Instance;
 	}
 }

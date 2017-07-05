@@ -88,7 +88,7 @@ namespace CivOne.Templates
 		{
 			Cursor = MouseCursor.Pointer;
 
-			Picture background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
+			Picture background = Resources["SP299"].GetPart(288, 120, 32, 16);
 			
 			_canvas = new Picture(320, 200, Common.DefaultPalette);
 

@@ -251,7 +251,7 @@ namespace CivOne.Screens
 
 		public SideBar(Color[] palette)
 		{
-			_background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
+			_background = Resources["SP299"].GetPart(288, 120, 32, 16);
 			
 			_miniMap = new Picture(80, 50, palette);
 			_demographics = new Picture(80, 39, palette);

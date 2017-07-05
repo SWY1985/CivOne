@@ -16,6 +16,7 @@ namespace CivOne.GFX
 {
 	internal class Icons
 	{
+		private static Resources Resources => Resources.Instance;
 		private static Picture _food;
 		public static Picture Food
 		{
@@ -23,7 +24,7 @@ namespace CivOne.GFX
 			{
 				if (_food == null)
 				{
-					_food = Resources.Instance.GetPart("SP257", 128, 32, 8, 8);
+					_food = Resources["SP257"].GetPart(128, 32, 8, 8);
 					Picture.ReplaceColours(_food, 3, 0);
 
 					Picture temp = new Picture(_food);
@@ -41,7 +42,7 @@ namespace CivOne.GFX
 			{
 				if (_foodLoss == null)
 				{
-					_foodLoss = Resources.Instance.GetPart("SP257", 128, 32, 8, 8);
+					_foodLoss = Resources["SP257"].GetPart(128, 32, 8, 8);
 					Picture.ReplaceColours(_foodLoss, new byte[] { 3, 15 }, new byte[] { 0, 5 });
 
 					Picture temp = new Picture(_foodLoss);
@@ -59,7 +60,7 @@ namespace CivOne.GFX
 			{
 				if (_shield == null)
 				{
-					_shield = Resources.Instance.GetPart("SP257", 136, 32, 8, 8);
+					_shield = Resources["SP257"].GetPart(136, 32, 8, 8);
 					Picture.ReplaceColours(_shield, 3, 0);
 				}
 				return _shield;
@@ -73,7 +74,7 @@ namespace CivOne.GFX
 			{
 				if (_shieldLoss == null)
 				{
-					_shieldLoss = Resources.Instance.GetPart("SP257", 136, 32, 8, 8);
+					_shieldLoss = Resources["SP257"].GetPart(136, 32, 8, 8);
 					Picture.ReplaceColours(_shieldLoss, new byte[] { 3, 15 }, new byte[] { 0, 5 });
 				}
 				return _shieldLoss;
@@ -87,7 +88,7 @@ namespace CivOne.GFX
 			{
 				if (_trade == null)
 				{
-					_trade = Resources.Instance.GetPart("SP257", 144, 32, 8, 8);
+					_trade = Resources["SP257"].GetPart(144, 32, 8, 8);
 					Picture.ReplaceColours(_trade, 3, 0);
 				}
 				return _trade;
@@ -101,7 +102,7 @@ namespace CivOne.GFX
 			{
 				if (_unhappy == null)
 				{
-					_unhappy = Resources.Instance.GetPart("SP257", 136, 40, 8, 8);
+					_unhappy = Resources["SP257"].GetPart(136, 40, 8, 8);
 					Picture.ReplaceColours(_unhappy, 3, 0);
 				}
 				return _unhappy;
@@ -115,7 +116,7 @@ namespace CivOne.GFX
 			{
 				if (_luxuries == null)
 				{
-					_luxuries = Resources.Instance.GetPart("SP257", 144, 40, 8, 8);
+					_luxuries = Resources["SP257"].GetPart(144, 40, 8, 8);
 					Picture.ReplaceColours(_luxuries, 3, 0);
 				}
 				return _luxuries;
@@ -129,7 +130,7 @@ namespace CivOne.GFX
 			{
 				if (_taxes == null)
 				{
-					_taxes = Resources.Instance.GetPart("SP257", 152, 32, 8, 8);
+					_taxes = Resources["SP257"].GetPart(152, 32, 8, 8);
 					Picture.ReplaceColours(_taxes, 3, 0);
 				}
 				return _taxes;
@@ -143,7 +144,7 @@ namespace CivOne.GFX
 			{
 				if (_science == null)
 				{
-					_science = Resources.Instance.GetPart("SP257", 128, 40, 8, 8);
+					_science = Resources["SP257"].GetPart(128, 40, 8, 8);
 					Picture.ReplaceColours(_science, 3, 0);
 				}
 				return _science;
@@ -157,7 +158,7 @@ namespace CivOne.GFX
 			{
 				if (_newspaper == null)
 				{
-					_newspaper = Resources.Instance.GetPart("SP257", 176, 128, 32, 16);
+					_newspaper = Resources["SP257"].GetPart(176, 128, 32, 16);
 				}
 				return _newspaper;
 			}
@@ -280,7 +281,7 @@ namespace CivOne.GFX
 		{
 			if (_citizen[(int)citizen] == null)
 			{
-				_citizen[(int)citizen] = Resources.Instance.GetPart("SP257", (8 * (int)citizen), 128, 8, 16);
+				_citizen[(int)citizen] = Resources["SP257"].GetPart((8 * (int)citizen), 128, 8, 16);
 			}
 			return _citizen[(int)citizen];
 		}
@@ -293,7 +294,7 @@ namespace CivOne.GFX
 			
 			if (_lamp[stage] == null)
 			{
-				_lamp[stage] = Resources.Instance.GetPart("SP257", 128 + (8 * stage), 48, 8, 8);
+				_lamp[stage] = Resources["SP257"].GetPart(128 + (8 * stage), 48, 8, 8);
 			}
 			return _lamp[stage];
 		}
@@ -324,7 +325,7 @@ namespace CivOne.GFX
 				filename = "GOVT0" + (modern ? "M" : "A");
 			}
 			if (_governmentPortrait[governmentId, (int)advisor] == null)
-				_governmentPortrait[governmentId, (int)advisor] = Resources.Instance.GetPart(filename, (40 * (int)advisor), 0, 40, 60);
+				_governmentPortrait[governmentId, (int)advisor] = Resources[filename].GetPart((40 * (int)advisor), 0, 40, 60);
 			return _governmentPortrait[governmentId, (int)advisor];
 		}
 
@@ -338,7 +339,7 @@ namespace CivOne.GFX
 			output.FillRectangle(Common.ColourDark[city.Owner], 2, 1, 13, 13);
 			output.FillRectangle(Common.ColourLight[city.Owner], 2, 2, 12, 12);
 			
-			Picture resource = Resources.Instance.GetPart("SP257", 192, 112, 16, 16);
+			Picture resource = Resources["SP257"].GetPart(192, 112, 16, 16);
 			Picture.ReplaceColours(resource, 3, 0);
 			Picture.ReplaceColours(resource, 5, Common.ColourDark[city.Owner]);
 			output.AddLayer(resource, 0, 0);
@@ -359,7 +360,7 @@ namespace CivOne.GFX
 			{
 				if (_fortify == null)
 				{
-					_fortify = Resources.Instance.GetPart("SP257", 208, 112, 16, 16);
+					_fortify = Resources["SP257"].GetPart(208, 112, 16, 16);
 					Picture.ReplaceColours(_fortify, 3, 0);
 				}
 				return _fortify;
@@ -388,7 +389,7 @@ namespace CivOne.GFX
 							{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0,}
 						}, Common.GetPalette256);
 					}
-					return Resources.Instance.GetPart("SP257", 113, 33, 15, 15);
+					return Resources["SP257"].GetPart(113, 33, 15, 15);
 				case MouseCursor.Goto:
 					if (builtIn)
 					{
@@ -409,7 +410,7 @@ namespace CivOne.GFX
 							{ 0,15,15,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,}
 						}, Common.GetPalette256);
 					}
-					return Resources.Instance.GetPart("SP257", 33, 33, 15, 15);
+					return Resources["SP257"].GetPart(33, 33, 15, 15);
 			}
 			return new Picture(16, 16);
 		}
@@ -421,7 +422,7 @@ namespace CivOne.GFX
 			{
 				if (_fortress == null)
 				{
-					_fortress = Resources.Instance.GetPart("SP257", 224, 112, 16, 16);
+					_fortress = Resources["SP257"].GetPart(224, 112, 16, 16);
 					Picture.ReplaceColours(_fortress, 3, 0);
 				}
 				return _fortress;

@@ -17,6 +17,8 @@ namespace CivOne.Templates
 {
 	public abstract partial class BaseScreen
 	{
+		internal static Resources Resources => Resources.Instance;
+
 		protected Picture _canvas = new Picture(320, 200);
 		
 		protected void AddLayer(IScreen screen, Point point)
@@ -61,7 +63,7 @@ namespace CivOne.Templates
 			for (int yy = 0; yy < 2; yy++)
 			for (int xx = 0; xx < 4; xx++)
 			{
-				borders[index] = Resources.Instance.GetPart("SP299", ((border == 0) ? 192 : 224) + (8 * xx), 120 + (8 * yy), 8, 8);
+				borders[index] = Resources["SP299"].GetPart(((border == 0) ? 192 : 224) + (8 * xx), 120 + (8 * yy), 8, 8);
 				index++;
 			}
 			

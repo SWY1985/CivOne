@@ -105,7 +105,7 @@ namespace CivOne.Screens
 			{
 				if (_interfaceHelp)
 				{
-					Picture background = Resources.Instance.GetPart("SP299", 288, 120, 32, 16);
+					Picture background = Resources["SP299"].GetPart(288, 120, 32, 16);
 					foreach (HelpLabel helpLabel in HelpLabels)
 					{
 						Size textSize = Resources.Instance.GetTextSize(0, helpLabel.Text);
