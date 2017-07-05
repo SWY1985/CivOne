@@ -339,7 +339,15 @@ namespace CivOne.GFX
 			output.FillRectangle(Common.ColourDark[city.Owner], 2, 1, 13, 13);
 			output.FillRectangle(Common.ColourLight[city.Owner], 2, 2, 12, 12);
 			
-			Picture resource = Resources["SP257"].GetPart(192, 112, 16, 16);
+			Picture resource;
+			if (Resources.Exists("SP257"))
+			{
+				resource = Resources["SP257"].GetPart(192, 112, 16, 16);
+			}
+			else
+			{
+				resource = Free.Instance.City;
+			}
 			Picture.ReplaceColours(resource, 3, 0);
 			Picture.ReplaceColours(resource, 5, Common.ColourDark[city.Owner]);
 			output.AddLayer(resource, 0, 0);
@@ -360,7 +368,14 @@ namespace CivOne.GFX
 			{
 				if (_fortify == null)
 				{
-					_fortify = Resources["SP257"].GetPart(208, 112, 16, 16);
+					if (Resources.Exists("SP257"))
+					{
+						_fortify = Resources["SP257"].GetPart(208, 112, 16, 16);
+					}
+					else
+					{
+						_fortify = Free.Instance.Fortify;
+					}
 					Picture.ReplaceColours(_fortify, 3, 0);
 				}
 				return _fortify;
