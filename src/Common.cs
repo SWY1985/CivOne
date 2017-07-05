@@ -343,12 +343,33 @@ namespace CivOne
 							_palette256[i] = Color.FromArgb(254 - (ii * 16), 253 - (ii * 16), 252 - (ii * 16));
 							continue;
 						}
+						if (i >= 32 && i < 40)
+						{
+							// Greens
+							int ii = (i % 8);
+							_palette256[i] = Color.FromArgb(0, 197 - (ii * 8), 80 - (ii * 7));
+							continue;
+						}
+						if (i >= 40 && i < 48)
+						{
+							// Yellows
+							int ii = (i % 8);
+							_palette256[i] = Color.FromArgb(254 - (ii * 6), 245 - (ii * 6), 0);
+							continue;
+						}
 						if (i >= 48 && i < 64)
 						{
 							int r = Convert.ToInt32((float)_palette16[i % 16].R * 0.7F);
 							int g = Convert.ToInt32((float)_palette16[i % 16].G * 0.7F);
 							int b = Convert.ToInt32((float)_palette16[i % 16].B * 0.7F);
 							_palette256[i] = Color.FromArgb(r, g, b);
+							continue;
+						}
+						if (i >= 64 && i < 80)
+						{
+							// Blues
+							int ii = (i % 8);
+							_palette256[i] = Color.FromArgb(0, 67 - (ii * 5), 211 - (ii * 9));
 							continue;
 						}
 						_palette256[i] = GetPalette16[i % 16];
