@@ -337,6 +337,20 @@ namespace CivOne
 					_palette256 = new Color[256];
 					for (int i = 0; i < 256; i++)
 					{
+						if (i >= 16 && i < 32)
+						{
+							int ii = (i % 16);
+							_palette256[i] = Color.FromArgb(254 - (ii * 16), 253 - (ii * 16), 252 - (ii * 16));
+							continue;
+						}
+						if (i >= 48 && i < 64)
+						{
+							int r = Convert.ToInt32((float)_palette16[i % 16].R * 0.7F);
+							int g = Convert.ToInt32((float)_palette16[i % 16].G * 0.7F);
+							int b = Convert.ToInt32((float)_palette16[i % 16].B * 0.7F);
+							_palette256[i] = Color.FromArgb(r, g, b);
+							continue;
+						}
 						_palette256[i] = GetPalette16[i % 16];
 					}
 				}
