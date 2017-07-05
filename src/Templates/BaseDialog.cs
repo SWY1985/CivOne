@@ -87,8 +87,6 @@ namespace CivOne.Templates
 		private void Initialize(int left, int top, int width, int height)
 		{
 			Cursor = MouseCursor.Pointer;
-
-			Picture background = Resources["SP299"].GetPart(288, 120, 32, 16);
 			
 			_canvas = new Picture(320, 200, Common.DefaultPalette);
 
@@ -99,7 +97,7 @@ namespace CivOne.Templates
 			height += 2;
 			
 			DialogBox = new Picture(width, height);
-			DialogBox.FillLayerTile(background, 1, 1);
+			DialogBox.FillLayerTile(Patterns.PanelGrey, 1, 1);
 			DialogBox.AddBorder(15, 8, 1, 1, width - 2, height - 2);
 			DialogBox.AddBorder(5, 5, 0, 0, width, height);
 		}

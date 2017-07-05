@@ -74,9 +74,8 @@ namespace CivOne.Screens.Debug
 			int xx = (320 - ww) / 2;
 			int yy = (200 - hh) / 2;
 
-			Picture background = Resources["SP299"].GetPart(288, 120, 32, 16);
 			Picture menuGfx = new Picture(ww, hh);
-			menuGfx.FillLayerTile(background);
+			menuGfx.FillLayerTile(Patterns.PanelGrey);
 			menuGfx.AddBorder(15, 8, 0, 0, ww, hh);
 			Picture menuBackground = menuGfx.GetPart(2, 11, ww - 4, hh - 11);
 			Picture.ReplaceColours(menuBackground, new byte[] { 7, 22 }, new byte[] { 11, 3 });

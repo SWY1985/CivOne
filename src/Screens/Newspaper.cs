@@ -125,9 +125,8 @@ namespace CivOne.Screens
 				{
 					AddLayer(Icons.Newspaper, xx, 100);
 				}
-				Picture background = Resources["SP299"].GetPart(288, 120, 32, 16);
 				Picture dialog = new Picture(152, 15);
-				dialog.FillLayerTile(background);
+				dialog.FillLayerTile(Patterns.PanelGrey);
 				dialog.FillRectangle(0, 151, 0, 1, 15);
 				dialog.AddBorder(15, 8, 0, 0, 151, 15);
 				dialog.DrawText("Press any key to continue.", 0, 15, 4, 4);
