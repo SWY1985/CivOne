@@ -170,6 +170,11 @@ namespace CivOne.GFX
 			if (!noCache) _cache.Add(key, output);
 			return output;
 		}
+
+		public bool Exists(string filename)
+		{
+			return PicFile.Exists(filename);
+		}
 		
 		internal string[] GetCivilopediaText(string name)
 		{

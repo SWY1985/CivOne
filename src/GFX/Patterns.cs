@@ -12,6 +12,7 @@ namespace CivOne.GFX
 	internal class Patterns
 	{
 		private static Resources Resources => Resources.Instance;
+		private static Free Free => Free.Instance;
 
 		private static Picture _panelGrey;
 		public static Picture PanelGrey
@@ -20,7 +21,14 @@ namespace CivOne.GFX
 			{
 				if (_panelGrey == null)
 				{
-					_panelGrey = Resources["SP299"].GetPart(288, 120, 32, 16);
+					if (!Resources.Exists("SP299"))
+					{
+						_panelGrey = Free.PanelGrey;
+					}
+					else
+					{
+						_panelGrey = Resources["SP299"].GetPart(288, 120, 32, 16);
+					}
 				}
 				return _panelGrey;
 			}
@@ -33,8 +41,15 @@ namespace CivOne.GFX
 			{
 				if (_panelBlue == null)
 				{
-					_panelBlue = Resources["SP299"].GetPart(288, 120, 32, 16);
-					Picture.ReplaceColours(_panelBlue, new byte[] { 7, 22 }, new byte[] { 57, 9 });
+					if (!Resources.Exists("SP299"))
+					{
+						_panelBlue = Free.Instance.PanelBlue;
+					}
+					else
+					{
+						_panelBlue = Resources["SP299"].GetPart(288, 120, 32, 16);
+						Picture.ReplaceColours(_panelBlue, new byte[] { 7, 22 }, new byte[] { 57, 9 });
+					}
 				}
 				return _panelBlue;
 			}

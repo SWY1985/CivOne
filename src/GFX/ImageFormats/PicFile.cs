@@ -285,6 +285,25 @@ namespace CivOne.GFX.ImageFormats
 			}
 		}
 
+		private static string GetFilename(string filename)
+		{
+			if (!filename.ToLower().EndsWith(".map"))
+			{
+				// fix for case sensitive file systems
+				foreach (string fileEntry in Directory.GetFiles(Settings.Instance.DataDirectory))
+				{
+					if (Path.GetFileName(fileEntry).ToLower() != $"{filename.ToLower()}.pic") continue;
+					return fileEntry;
+				}
+			}
+			return filename;
+		}
+
+		internal static bool Exists(string filename)
+		{
+			return File.Exists(GetFilename(filename));
+		}
+
 		public PicFile(Picture picture)
 		{
 			_palette256 = picture.Palette;
@@ -299,15 +318,7 @@ namespace CivOne.GFX.ImageFormats
 		
 		public PicFile(string filename)
 		{
-			if (!filename.ToLower().EndsWith(".map"))
-			{
-				// fix for case sensitive file systems
-				foreach (string fileEntry in Directory.GetFiles(Settings.Instance.DataDirectory))
-				{
-					if (Path.GetFileName(fileEntry).ToLower() != $"{filename.ToLower()}.pic") continue;
-					filename = fileEntry;
-				}
-			}
+			filename = GetFilename(filename);
 
 			// generate an exception if the file is not found
 			if (!File.Exists(filename))
