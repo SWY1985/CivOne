@@ -16,7 +16,7 @@ namespace CivOne.GFX
 	internal class Free
 	{
 		private Picture _panelGrey, _panelBlue;
-		private Picture _landBase, _seaBase;
+		private Picture _landBase, _seaBase, _city, _fortify;
 
 		private IEnumerable<byte> GenerateNoise(params byte[] values)
 		{
@@ -96,6 +96,42 @@ namespace CivOne.GFX
 					_seaBase = new Picture(16, 16, GenerateNoise(77, 78, 79).Take(16 * 16).ToArray(), Common.GetPalette256);
 				}
 				return _seaBase;
+			}
+		}
+
+		public Picture City
+		{
+			get
+			{
+				if (_city == null)
+				{
+					Random r = new Random(0x4701);
+					_city = new Picture(16, 16);
+					_city.AddLine(5, 7, 3, 11, 3);
+					_city.AddLine(5, 4, 5, 9, 5);
+					_city.AddLine(5, 3, 7, 11, 7);
+					_city.AddLine(5, 5, 9, 9, 9);
+					_city.AddLine(5, 3, 11, 6, 11);
+
+					_city.AddLine(5, 3, 6, 3, 8);
+					_city.AddLine(5, 7, 3, 7, 11);
+					_city.AddLine(5, 11, 5, 11, 11);
+				}
+				return _city;
+			}
+		}
+
+		public Picture Fortify
+		{
+			get
+			{
+				if (_fortify == null)
+				{
+					_fortify = new Picture(16, 16, GenerateNoise(26, 27, 28).Take(16 * 16).ToArray(), Common.GetPalette256);
+					_fortify.AddLayer(new Picture(14, 14, GenerateNoise(24, 25, 26).Take(14 * 14).ToArray(), Common.GetPalette256));
+					_fortify.FillRectangle(0, 2, 2, 12, 12);
+				}
+				return _fortify;
 			}
 		}
 
