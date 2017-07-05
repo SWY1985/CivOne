@@ -312,13 +312,17 @@ namespace CivOne.GFX
 
 			if (!Resources.Exists("SP257"))
 			{
+				output.AddLayer(tile.IsOcean ? Free.Instance.SeaBase : Free.Instance.LandBase);
+
 				switch (tile.Type)
 				{
-					case Terrain.Ocean:
-						output.AddLayer(Free.Instance.SeaBase);
+					case Terrain.Plains:
+						output.AddLayer(Free.Instance.Plains);
+						break;
+					case Terrain.Forest:
+						output.AddLayer(Free.Instance.Forest);
 						break;
 					default:
-						output.AddLayer(Free.Instance.LandBase);
 						break;
 				}
 				return output;

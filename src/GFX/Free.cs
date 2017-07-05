@@ -17,6 +17,7 @@ namespace CivOne.GFX
 	{
 		private Picture _panelGrey, _panelBlue;
 		private Picture _landBase, _seaBase, _city, _fortify;
+		private Picture[] _terrain = new Picture[10];
 
 		private IEnumerable<byte> GenerateNoise(params byte[] values)
 		{
@@ -96,6 +97,47 @@ namespace CivOne.GFX
 					_seaBase = new Picture(16, 16, GenerateNoise(77, 78, 79).Take(16 * 16).ToArray(), Common.GetPalette256);
 				}
 				return _seaBase;
+			}
+		}
+
+		public Picture Plains
+		{
+			get
+			{
+				if (_terrain[(int)Terrain.Plains] == null)
+				{
+					_terrain[(int)Terrain.Plains] = new Picture(16, 16, GenerateNoise(0, 0, 0, 47, 48, 0, 0, 0, 0).Take(16 * 16).ToArray(), Common.GetPalette256);
+				}
+				return _terrain[(int)Terrain.Plains];
+			}
+		}
+
+		public Picture Forest
+		{
+			get
+			{
+				if (_terrain[(int)Terrain.Forest] == null)
+				{
+					_terrain[(int)Terrain.Forest] = new Picture(16, 16, new byte[] {
+						0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+						0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+						0,  0,  0,  0,  0,  0,  5,  5,  0,  0,  0,  5,  5,  0,  0,  0,
+						0,  0,  0,  0,  0,  5, 39, 38,  5,  0,  5, 38, 39,  5,  0,  0,
+						0,  0,  0,  0,  0,  5,  5, 39,  5,  0,  5, 39, 38,  5,  0,  0,
+						0,  0,  0,  0,  5, 39, 38,  5, 39,  5, 38, 38, 39, 38,  5,  0,
+						0,  0,  0,  0,  5, 38, 39,  5, 38,  5, 39, 39, 38, 38,  5,  0,
+						0,  0,  0,  5, 39, 39, 38, 39,  5, 38, 38, 38, 39, 38, 38,  5,
+						0,  0,  0,  5, 39, 38, 38, 38,  5,  5,  5, 47, 47,  5,  5,  5,
+						0,  0,  5, 38, 38, 38, 38, 39, 39,  5, 39,  5,  5,  0,  0,  0,
+						0,  0,  5, 39, 38, 39, 39, 38, 38,  5,  5,  5,  0,  0,  0,  0,
+						0,  5, 38, 38, 39, 38, 39, 39, 38, 39,  5,  0,  0,  0,  0,  0,
+						0,  5,  5,  5, 38, 39, 39, 38,  5,  5,  5,  0,  0,  0,  0,  0,
+						0,  0,  0,  0,  5, 47, 47,  5,  0,  0,  0,  0,  0,  0,  0,  0,
+						0,  0,  0,  0,  0,  5,  5,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+						0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+					}, Common.GetPalette256);
+				}
+				return _terrain[(int)Terrain.Forest];
 			}
 		}
 
