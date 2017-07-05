@@ -666,10 +666,19 @@ namespace CivOne.Templates
 			int unitId = (int)Type;
 			if (_unitCache[unitId, colour] == null)
 			{
+				string resFile = Settings.GraphicsMode == GraphicsMode.Graphics256 ? "SP257" : "SPRITES";
 				int xx = (unitId % 20) * 16;
 				int yy = unitId < 20 ? 160 : 176;
 				
-				Picture icon = Resources.Instance[Settings.GraphicsMode == GraphicsMode.Graphics256 ? "SP257" : "SPRITES"].GetPart(xx, yy, 16, 16);
+				Picture icon;
+				if (Resources.Instance.Exists(resFile))
+				{
+					icon = Resources.Instance[resFile].GetPart(xx, yy, 16, 16);
+				}
+				else
+				{
+					icon = Free.Instance.GetUnit(Type);
+				}
 				if (Common.ColourLight[colour] == 15) Picture.ReplaceColours(icon, new byte[] { 15, 10, 2 }, new byte[] { 11, Common.ColourLight[colour], Common.ColourDark[colour] });
 				else if (Common.ColourDark[colour] == 8) Picture.ReplaceColours(icon, new byte[] { 7, 10, 2 }, new byte[] { 3, Common.ColourLight[colour], Common.ColourDark[colour] });
 				else Picture.ReplaceColours(icon, new byte[] { 10, 2 }, new byte[] { Common.ColourLight[colour], Common.ColourDark[colour] });
