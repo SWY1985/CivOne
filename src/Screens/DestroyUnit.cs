@@ -41,6 +41,8 @@ namespace CivOne.Screens
 			}
 		}
 
+		private readonly DestroyAnimation _animation;
+
 		private const int NOISE_COUNT = 8;
 
 		private readonly IUnit _unit;
@@ -83,7 +85,7 @@ namespace CivOne.Screens
 			int cx = Settings.RightSideBar ? 0 : 80;
 			int cy = 8;
 
-			if (_overlay == null || Settings.DestroyAnimation == DestroyAnimation.Sprites)
+			if (_overlay == null || _animation == DestroyAnimation.Sprites)
 			{
 				_overlay = new Picture(_canvas);
 
@@ -96,7 +98,7 @@ namespace CivOne.Screens
 				if (_unit.Tile.Units.Length > 1 && !_unit.Tile.Fortress && _unit.Tile.City == null)
 					_overlay.AddLayer(_unit.GetUnit(_unit.Owner), cx + (xx * 16) - 1, cy + (yy * 16) - 1);
 				
-				if (Settings.DestroyAnimation == DestroyAnimation.Sprites)
+				if (_animation == DestroyAnimation.Sprites)
 				{
 					int step = 8 - _noiseCounter--;
 					if (step >= 0 && step < 8)
@@ -106,7 +108,7 @@ namespace CivOne.Screens
 				}
 			}
 
-			if (Settings.DestroyAnimation == DestroyAnimation.Noise)
+			if (_animation == DestroyAnimation.Noise)
 			{
 				_overlay.ApplyNoise(_noiseMap, --_noiseCounter);
 			}
@@ -233,8 +235,11 @@ namespace CivOne.Screens
 
 			_canvas = new Picture(320, 200, Common.DefaultPalette);
 			_gameMap = GameMap;
+			_animation = Settings.DestroyAnimation;
+			if (!Resources.Exists("SP257"))
+				_animation = DestroyAnimation.Noise;
 
-			switch (Settings.DestroyAnimation)
+			switch (_animation)
 			{
 				case DestroyAnimation.Sprites:
 					_destroySprites = new Picture[8];
