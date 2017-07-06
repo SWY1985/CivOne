@@ -80,19 +80,25 @@ namespace CivOne.Screens
 			Destroy();
 		}
 
+		private void MenuBuildPalace(object sender, EventArgs args)
+		{
+			GameTask.Enqueue(Show.BuildPalace());
+			Destroy();
+		}
+
 		public override bool HasUpdate(uint gameTick)
 		{
 			if (_update)
 			{
 				_update = false;
 
-				Picture menuGfx = new Picture(132, 87);
+				Picture menuGfx = new Picture(132, 95);
 				menuGfx.FillLayerTile(Patterns.PanelGrey);
-				menuGfx.AddBorder(15, 8, 0, 0, 131, 87);
-				menuGfx.FillRectangle(0, 131, 0, 1, 87);
+				menuGfx.AddBorder(15, 8, 0, 0, 131, 95);
+				menuGfx.FillRectangle(0, 131, 0, 1, 95);
 				menuGfx.DrawText("Debug Options:", 0, 15, 4, 4);
 
-				Picture menuBackground = menuGfx.GetPart(2, 11, 128, 72);
+				Picture menuBackground = menuGfx.GetPart(2, 11, 128, 80);
 				Picture.ReplaceColours(menuBackground, new byte[] { 7, 22 }, new byte[] { 11, 3 });
 
 				AddLayer(menuGfx, 25, 17);
@@ -120,6 +126,7 @@ namespace CivOne.Screens
 				menu.Items.Add(new Menu.Item("Spawn Unit"));
 				menu.Items.Add(new Menu.Item("Meet With King"));
 				menu.Items.Add(new Menu.Item("Toggle Reveal World"));
+				menu.Items.Add(new Menu.Item("Build Palace"));
 
 				menu.Items[0].Selected += MenuSetGameYear;
 				menu.Items[1].Selected += MenuSetPlayerGold;
@@ -130,6 +137,7 @@ namespace CivOne.Screens
 				menu.Items[6].Selected += MenuSpawnUnit;
 				menu.Items[7].Selected += MenuMeetWithKing;
 				menu.Items[8].Selected += MenuRevealWorld;
+				menu.Items[9].Selected += MenuBuildPalace;
 
 				_canvas.FillRectangle(5, 24, 16, 105, menu.RowHeight * (menu.Items.Count + 1));
 
@@ -144,7 +152,7 @@ namespace CivOne.Screens
 			
 			_canvas = new Picture(320, 200, Common.DefaultPalette);
 			_canvas.AddLayer(Common.Screens.Last().Canvas, 0, 0);
-			_canvas.FillRectangle(5, 24, 16, 133, 89);
+			_canvas.FillRectangle(5, 24, 16, 133, 97);
 		}
 	}
 }
