@@ -152,6 +152,11 @@ namespace CivOne.Tasks
 			return new Show(CityView.Capture(city));
 		}
 
+		public static Show BuildPalace()
+		{
+			return new Show(new PalaceView(true));
+		}
+
 		public static Show Screen<T>() where T : IScreen, new()
 		{
 			return new Show(new T());
