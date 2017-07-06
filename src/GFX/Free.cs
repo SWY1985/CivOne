@@ -204,8 +204,34 @@ namespace CivOne.GFX
 			char text = ' ';
 			switch (type)
 			{
-				case Unit.Settlers: text = 'S'; break;
-				case Unit.Militia: text = 'm'; break;
+				case Unit.Settlers:
+					output.AddLayer(new Picture(10, 10, new byte[] {
+						0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+						0,  5,  5,  5,  5,  5,  5,  5,  0,  0,
+						5, 15, 15,  8, 15, 15,  8,  7,  5,  0,
+						5, 15, 15,  8, 15, 15,  8,  7,  5,  0,
+						5, 15, 15, 15, 15, 15,  8,  7,  5,  0,
+						0,  5,  8,  8, 15, 15,  8,  8,  5,  0,
+						0,  8,  5,  0,  8,  8,  5,  0,  8,  0,
+						0,  8,  0,  0,  8,  8,  0,  0,  8,  0,
+						0,  0,  8,  8,  0,  0,  8,  8,  0,  0,
+						0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+					}, Common.GetPalette256), 3, 3);
+					break;
+				case Unit.Militia:
+					output.AddLayer(new Picture(10, 10, new byte[] {
+						0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+						0,  0,  0,  4,  4,  4,  0,  0,  0,  0,
+						0,  0,  4,  4,  4,  4,  4,  0,  0,  0,
+						0,  0,  4, 47, 47, 47,  4,  0, 21,  0,
+						0,  0, 47, 47, 47, 47, 47,  0, 21, 21,
+						0,  0, 47,  9, 47,  9, 47,  0, 21, 21,
+						0,  0, 47, 47, 47, 47, 47,  0,  0, 21,
+						0,  0, 47,  8,  8,  8, 47,  0, 41, 41,
+						0,  0,  5, 47, 47, 47,  5,  0,  5,  5,
+						0,  5,  5,  5,  5,  5,  5,  5,  5,  0,
+					}, Common.GetPalette256), 3, 3);
+					break;
 				case Unit.Phalanx: text = 'P'; break;
 				case Unit.Legion: text = 'L'; break;
 				case Unit.Musketeers: text = 'M'; break;
@@ -233,8 +259,11 @@ namespace CivOne.GFX
 				case Unit.Diplomat: text = 'D'; break;
 				case Unit.Caravan: text = 't'; break;
 			}
-			output.DrawText(text.ToString(), 0, 8, 8, 5, TextAlign.Center);
-			output.DrawText(text.ToString(), 0, 7, 8, 4, TextAlign.Center);
+			if (text != ' ')
+			{
+				output.DrawText(text.ToString(), 0, 8, 8, 5, TextAlign.Center);
+				output.DrawText(text.ToString(), 0, 7, 8, 4, TextAlign.Center);
+			}
 			return output;
 		}
 
