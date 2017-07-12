@@ -28,29 +28,56 @@ namespace CivOne
 			private byte[] PalaceLevel = new byte[7];
 			private byte[] GardenLevel = new byte[3];
 
-			public byte GetPalaceStyle(byte index)
+			public int PalaceLeft
 			{
-				if (index < 0 || index > 6) throw new Exception("Invalid palace index");
-				return PalaceStyle[index];
+				get
+				{
+					for (int i = 0; i < 3; i++)
+					{
+						if (PalaceLevel[i] > 0) return i;
+					}
+					return 2;
+				}
 			}
 
-			public byte GetPalaceLevel(byte index)
+			public int PalaceRight
+			{
+				get
+				{
+					for (int i = 6; i > 3; i--)
+					{
+						if (PalaceLevel[i] > 0) return i;
+					}
+					return 4;
+				}
+			}
+
+			public PalaceStyle GetPalaceStyle(int index)
+			{
+				if (index < 0 || index > 6) throw new Exception("Invalid palace index");
+				return (PalaceStyle)PalaceStyle[index];
+			}
+
+			public byte GetPalaceLevel(int index)
 			{
 				if (index < 0 || index > 6) throw new Exception("Invalid palace index");
 				return PalaceLevel[index];
 			}
 
-			public byte GetGardenLevel(byte index)
+			public byte GetGardenLevel(int index)
 			{
 				if (index < 0 || index > 2) throw new Exception("Invalid garden index");
 				return GardenLevel[index];
 			}
 
-			public void SetPalace(byte index, byte style, byte level)
+			public void SetPalace(int index, byte style, byte level)
 			{
-				if (index < 0 || index > 6) throw new Exception("Invalid palace index");
-				if (style < 0 || style > 3) throw new Exception("Invalid palace style");
-				if (level < 0 || level > 4) throw new Exception("Invalid palace level");
+				if (index < 0 || index > 6)
+					throw new Exception("Invalid palace index");
+				if (style < 0 || style > 3)
+					throw new Exception("Invalid palace style");
+				if (level < 0 || level > 4)
+					throw new Exception("Invalid palace level");
 				
 				if (level == 0 || style == 0)
 				{
@@ -62,7 +89,7 @@ namespace CivOne
 				PalaceLevel[index] = level;
 			}
 
-			public void SetGarden(byte index, byte level)
+			public void SetGarden(int index, byte level)
 			{
 				if (index < 0 || index > 2) throw new Exception("Invalid garden index");
 				if (level < 0 || level > 3) throw new Exception("Invalid garden level");
