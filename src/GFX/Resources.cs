@@ -253,6 +253,109 @@ namespace CivOne.GFX
 				return LoadPIC(filename);
 			}
 		}
+
+		private static Dictionary<int, Picture> _palacePart = new Dictionary<int, Picture>();
+		public Picture GetPalace(PalaceStyle style, PalacePart part, int level)
+		{
+			if (level == 0)
+			{
+				style = PalaceStyle.None;
+			}
+
+			int combine = (level * 100) + ((int)style * 10) + (int)part;
+			if (!_palacePart.ContainsKey(combine))
+			{
+				Picture picture = null;
+
+				
+				int offsetX = 0, offsetY = 0;
+				if (style == PalaceStyle.Classical) offsetX = 160;
+				if (style == PalaceStyle.Islamic) offsetY = 100;
+
+				switch (part)
+				{
+					case PalacePart.LeftTower:
+						picture = new Picture(35, 101);
+						if (style == PalaceStyle.Classical)
+						{
+							picture.AddLayer(Instance[$"CASTLE{level}"].GetPart(160, 1 + offsetY, 35, 99), 0, 2);
+							break;
+						}
+						picture.AddLayer(Instance[$"CASTLE{level}"].GetPart(104 + offsetX, 1 + offsetY, 27, 99), 8, 2);
+						break;
+					case PalacePart.RightTower:
+						picture = new Picture(35, 101);
+						if (style == PalaceStyle.Classical)
+						{
+							picture.AddLayer(Instance[$"CASTLE{level}"].GetPart(196, 1 + offsetY, 35, 99), 0, 2);
+							break;
+						}
+						picture.AddLayer(Instance[$"CASTLE{level}"].GetPart(132 + offsetX, 1 + offsetY, 27, 99), 0, 2);
+						break;
+					case PalacePart.Wall:
+					case PalacePart.WallShadow:
+					{
+						picture = new Picture(48, 101);
+						if (level == 0)
+						{
+							picture.AddLayer(Instance["CASTLE0"].GetPart(53 + offsetX, 1 + offsetY, 24, 99));
+							break;
+						}
+						for (int i = 0; i < 2; i++)
+						{
+							bool shadow = (part == PalacePart.WallShadow && i == 0);
+							picture.AddLayer(Instance[$"CASTLE{level}"].GetPart((shadow ? 53 : 78) + offsetX, 1 + offsetY, 24, 99), (24 * i));
+						}
+						break;
+					}
+					case PalacePart.LeftTowerWall:
+					{
+						picture = new Picture(57, 101);
+						if (level == 0)
+						{
+							picture.AddLayer(Instance["CASTLE0"].GetPart(78 + offsetX, 1 + offsetY, 24, 99), 33);
+							break;
+						}
+						picture.AddLayer(Instance[$"CASTLE{level}"].GetPart(53 + offsetX, 1 + offsetY, 24, 99), 33);
+						if (style == PalaceStyle.Classical)
+						{
+							picture.AddLayer(Instance[$"CASTLE{level}"].GetPart(160, 1 + offsetY, 35, 99), 0, 2);
+							break;
+						}
+						picture.AddLayer(Instance[$"CASTLE{level}"].GetPart(104 + offsetX, 1 + offsetY, 27, 99), 8, 2);
+						break;
+					}
+					case PalacePart.RightTowerWall:
+					case PalacePart.RightTowerWallShadow:
+					{
+						picture = new Picture(57, 101);
+						if (level == 0)
+						{
+							picture.AddLayer(Instance["CASTLE0"].GetPart(53 + offsetX, 1 + offsetY, 24, 99));
+							break;
+						}
+						
+						bool shadow = (part == PalacePart.RightTowerWallShadow);
+						picture.AddLayer(Instance[$"CASTLE{level}"].GetPart((shadow ? 53 : 78) + offsetX, 1 + offsetY, 24, 99), 0);
+						if (style == PalaceStyle.Classical)
+						{
+							picture.AddLayer(Instance[$"CASTLE{level}"].GetPart(196, 1 + offsetY, 35, 99), 21, 2);
+							break;
+						}
+						picture.AddLayer(Instance[$"CASTLE{level}"].GetPart(132 + offsetX, 1 + offsetY, 27, 99), 21, 2);
+						break;
+					}
+					case PalacePart.Center:
+					{
+						picture = Instance[$"CASTLE{level}"].GetPart(0 + offsetX, 1 + offsetY, 52, 99);
+						break;
+					}
+				}
+
+				_palacePart[combine] = picture;
+			}
+			return _palacePart[combine];
+		}
 		
 		private static Resources _instance;
 		public static Resources Instance
