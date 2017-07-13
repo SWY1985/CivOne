@@ -21,7 +21,7 @@ using CivOne.Screens;
 
 namespace CivOne
 {
-	internal class Common
+	public class Common
 	{
 		public static Random Random = new Random((int)DateTime.Now.Ticks);
 		

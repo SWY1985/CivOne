@@ -21,7 +21,7 @@ using CivOne.Templates;
 
 namespace CivOne.Screens
 {
-	internal class GamePlay : BaseScreen, IExpand
+	public class GamePlay : BaseScreen, IExpand
 	{
 		private readonly MenuBar _menuBar;
 		private readonly SideBar _sideBar;
