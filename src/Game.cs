@@ -20,7 +20,7 @@ using CivOne.Templates;
 using CivOne.Tiles;
 using CivOne.Units;
 using CivOne.Wonders;
-using CivOne.GameSaves;
+using CivOne.GameSate;
 
 namespace CivOne
 {
@@ -708,7 +708,7 @@ namespace CivOne
 			}
 		}
 
-        public GameSave GetGameSave() => new GameSave
+        public GameState GetGameState() => new GameState
         {
             Players = _players.ToList(),
             Units = _units,

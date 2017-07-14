@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace CivOne.GameSaves
+namespace CivOne.GameSate
 {
     public class OriginalGameSaveToFileWriter : IGameSaveWriter
     {
@@ -25,7 +25,7 @@ namespace CivOne.GameSaves
             MapFile = mapFile;
         }
 
-        public void WriteSaveGame(GameSave gameSave)
+        public void WriteSaveGame(GameState gameSave)
         {
             // TODO: Implement full save file configuration
             // - http://forums.civfanatics.com/showthread.php?p=12422448

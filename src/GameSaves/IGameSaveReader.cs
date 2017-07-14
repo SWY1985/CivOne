@@ -8,10 +8,10 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 
-namespace CivOne.GameSaves
+namespace CivOne.GameSate
 {
     public interface IGameSaveReader
     {
-        GameSave ReadSaveGame();
+        GameState ReadSaveGame();
     }
 }

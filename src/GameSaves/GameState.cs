@@ -10,9 +10,9 @@
 using CivOne.Interfaces;
 using System.Collections.Generic;
 
-namespace CivOne.GameSaves
+namespace CivOne.GameSate
 {
-    public class GameSave
+    public class GameState
     {
         // Original
 
