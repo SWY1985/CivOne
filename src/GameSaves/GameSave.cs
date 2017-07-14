@@ -18,7 +18,7 @@ namespace CivOne.GameSaves
 
         public List<Player> Players { get; set; }
         public List<IUnit> Units { get; set; }
-        public int GameTurn { get; set; }
+        public ushort GameTurn { get; set; }
         public int CurrentPlayerNumber { get; set; }
         public int Difficulty { get; set; }
         public List<City> Cities { get; set; }

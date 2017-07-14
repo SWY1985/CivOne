@@ -35,11 +35,11 @@ namespace CivOne.GameSaves
             {
                 ushort randomSeed = Map.Instance.SaveMap(MapFile);
                 ushort activeCivilizations = 1;
-                for (int i = 1; i < gameSave.Players.Count; i++)
+                for (int i = 1; i < gameSave.Players.Count; ++i)
                     if (gameSave.Players[i].Cities.Any() || gameSave.Units.Any(x => x.Owner == i))
                         activeCivilizations |= (ushort)(0x01 << i);
 
-                bw.Write((ushort)gameSave.GameTurn);
+                bw.Write(gameSave.GameTurn);
                 bw.Write((ushort)gameSave.CurrentPlayerNumber);
                 bw.Write((ushort)(0x01 << gameSave.CurrentPlayerNumber));
                 bw.Write(randomSeed);
@@ -57,10 +57,13 @@ namespace CivOne.GameSaves
                     foreach (var player in gameSave.Players)
                         bw.Write(player.LeaderName.PadRight(14, (char)0x00).Select(x => (byte)x).ToArray());
 
-                    var emptyName = "".PadRight(14, (char)0x00).Select(x => (byte)x).ToArray();
-
                     for (var i = gameSave.Players.Count; i < MaxPlayers; ++i)
-                        bw.Write(emptyName);
+					{
+                        for (int x = 0; x < 14; x++)
+						{
+							bw.Write((byte)0x00);
+						}
+					}
                 }
 
                 // Plural name
@@ -68,10 +71,13 @@ namespace CivOne.GameSaves
                     foreach (var player in gameSave.Players)
                         bw.Write(player.Civilization.NamePlural.PadRight(12, (char)0x00).Select(x => (byte)x).ToArray());
 
-                    var emptyName = "".PadRight(12, (char)0x00).Select(x => (byte)x).ToArray();
-
                     for (var i = gameSave.Players.Count; i < MaxPlayers; ++i)
-                        bw.Write(emptyName);
+                    {
+						for (int x = 0; x < 12; x++)
+						{
+							bw.Write((byte)0x00);
+						}
+					}
                 }
 
                 // Civilization name
@@ -79,10 +85,13 @@ namespace CivOne.GameSaves
                     foreach (var player in gameSave.Players)
                         bw.Write(player.Civilization.Name.PadRight(11, (char)0x00).Select(x => (byte)x).ToArray());
 
-                    var emptyName = "".PadRight(11, (char)0x00).Select(x => (byte)x).ToArray();
-
                     for (var i = gameSave.Players.Count; i < MaxPlayers; ++i)
-                        bw.Write(emptyName);
+					{
+						for (int x = 0; x < 11; x++)
+						{
+							bw.Write((byte)0x00);
+						}
+					}
                 }
 
                 // Player gold
@@ -150,7 +159,7 @@ namespace CivOne.GameSaves
                 // Discovered Advances Count
                 {
                     foreach (var player in gameSave.Players)
-                        bw.Write(player.Advances.Count);
+                        bw.Write((short)player.Advances.Count);
 
                     var emptyValue = (short)0;
 
@@ -184,7 +193,7 @@ namespace CivOne.GameSaves
                 // Civilization Governments
                 {
                     foreach (var player in gameSave.Players)
-                        bw.Write(player.Government.Id);
+                        bw.Write((short)player.Government.Id);
 
                     var emptyValue = (short)0;
 
@@ -249,7 +258,7 @@ namespace CivOne.GameSaves
                 // Tax rate
                 {
                     foreach (var player in gameSave.Players)
-                        bw.Write(player.TaxesRate);
+                        bw.Write((short)player.TaxesRate);
 
                     var emptyValue = (short)0;
 
@@ -272,7 +281,7 @@ namespace CivOne.GameSaves
                 // Starting position X coordinate
                 {
                     foreach (var player in gameSave.Players)
-                        bw.Write(player.StartX);
+                        bw.Write((short)player.StartX);
 
                     var emptyValue = (short)0xFF;
 
@@ -283,7 +292,7 @@ namespace CivOne.GameSaves
                 // Leader graphics
                 {
                     foreach (var player in gameSave.Players)
-                        bw.Write(player.Civilization.Id);
+                        bw.Write((short)player.Civilization.Id);
 
                     var emptyValue = (short)0;
 
@@ -350,7 +359,7 @@ namespace CivOne.GameSaves
 
                 for (int i = 0; i < 128; i++)
                 {
-                    if (!(i < gameSave.Cities.Count))
+                    if (gameSave.Cities.Count - 1 < i)
                     {
                         for (int b = 0; b < 28; b++)
                         {
@@ -455,7 +464,7 @@ namespace CivOne.GameSaves
 
                 for (int i = 0; i < 8; i++)
                 {
-                    if (!(i < gameSave.Players.Count))
+                    if (gameSave.Players.Count < i)
                     {
                         for (int x = 0; x < (12 * 128); x++)
                         {
@@ -502,7 +511,7 @@ namespace CivOne.GameSaves
 
                         for (int p = 0; p < 8; p++)
                         {
-                            if (!(p < gameSave.Players.Count))
+                            if (gameSave.Players.Count < p)
                                 continue;
 
                             if (!gameSave.Players[p].Visible(unit.X, unit.Y))
@@ -522,7 +531,6 @@ namespace CivOne.GameSaves
 
                             while (x >= Map.WIDTH)
                                 x -= Map.WIDTH;
-
 
                             var unitscountOnTile = gameSave.Units.Where(u => u.X == x && u.Y == y).Count();
 
@@ -565,10 +573,10 @@ namespace CivOne.GameSaves
                         byte visibility = 0;
                         for (int i = 0; i < 8; i++)
                         {
-                            if (gameSave.Players.Count - 1 < i)
+                            if (gameSave.Players.Count < i)
                                 continue;
 
-                            if (gameSave.Players[i].Visible(xx, yy))
+                            if (!gameSave.Players[i].Visible(xx, yy))
                                 continue;
 
                             visibility |= (byte)(0x01 << i);
@@ -714,7 +722,7 @@ namespace CivOne.GameSaves
                 // Science rates
                 {
                     foreach (var player in gameSave.Players)
-                        bw.Write(player.ScienceRate);
+                        bw.Write((short)player.ScienceRate);
 
                     var emptyValue = (short)0;
 
@@ -744,25 +752,25 @@ namespace CivOne.GameSaves
                 }
 
                 // City X coordinates
-                {
-                    foreach (var city in gameSave.Cities)
-                        bw.Write(city.X);
-
-                    var emptyValue = (byte)0xFF;
-
-                    for (var i = gameSave.Cities.Count; i < MaxCities; ++i)
-                        bw.Write(emptyValue);
+				for (int i = 0; i < 256; i++)
+				{
+					if (gameSave.Cities.Count - 1 < i)
+					{
+						bw.Write((byte)0xFF);
+						continue;
+					}
+					bw.Write((byte)gameSave.Cities[i].X);
                 }
 
                 // City Y coordinates
-                {
-                    foreach (var city in gameSave.Cities)
-                        bw.Write(city.Y);
-
-                    var emptyValue = (byte)0xFF;
-
-                    for (var i = gameSave.Cities.Count; i < MaxCities; ++i)
-                        bw.Write(emptyValue);
+				for (int i = 0; i < 256; i++)
+				{
+					if (gameSave.Cities.Count - 1 < i)
+					{
+						bw.Write((byte)0xFF);
+						continue;
+					}
+					bw.Write((byte)gameSave.Cities[i].Y);
                 }
 
                 // TODO: Palace level
@@ -777,7 +785,7 @@ namespace CivOne.GameSaves
                     bw.Write((byte)0);
                 }
 
-                // TODO: AI opponents
+                // TODO: AI opponents (shoulnd't be - 1?)
                 bw.Write((ushort)(gameSave.Players.Count - 2));
 
                 // TODO: Spaceship population
@@ -796,7 +804,7 @@ namespace CivOne.GameSaves
                 ushort identity = 0;
                 for (int i = 1; i < MaxPlayers; i++)
                 {
-                    if (!(i < gameSave.Players.Count))
+                    if (gameSave.Players.Count < i)
                         continue;
 
                     if (gameSave.Players[i].Civilization.Id > 7)
