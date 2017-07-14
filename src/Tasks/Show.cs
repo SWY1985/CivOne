@@ -12,6 +12,7 @@ using System.Linq;
 using CivOne.Interfaces;
 using CivOne.Screens;
 using CivOne.Screens.Dialogs;
+using CivOne.Units;
 
 namespace CivOne.Tasks
 {
@@ -155,6 +156,11 @@ namespace CivOne.Tasks
 		public static Show BuildPalace()
 		{
 			return new Show(new PalaceView(true));
+		}
+
+		public static Show CaravanChoice(Caravan unit, City city)
+		{
+			return new Show(new CaravanChoice(unit, city));
 		}
 
 		public static Show Screen<T>() where T : IScreen, new()
