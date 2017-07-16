@@ -57,7 +57,7 @@ namespace CivOne.GameSate
                     foreach (var player in gameSave.Players)
                         bw.Write(player.LeaderName.PadRight(14, (char)0x00).Select(x => (byte)x).ToArray());
 
-                    for (var i = gameSave.Players.Count; i < MaxPlayers; ++i)
+                    for (int i = gameSave.Players.Count; i < MaxPlayers; ++i)
 					{
                         for (int x = 0; x < 14; x++)
 						{
@@ -71,7 +71,7 @@ namespace CivOne.GameSate
                     foreach (var player in gameSave.Players)
                         bw.Write(player.Civilization.NamePlural.PadRight(12, (char)0x00).Select(x => (byte)x).ToArray());
 
-                    for (var i = gameSave.Players.Count; i < MaxPlayers; ++i)
+                    for (int i = gameSave.Players.Count; i < MaxPlayers; ++i)
                     {
 						for (int x = 0; x < 12; x++)
 						{
@@ -85,7 +85,7 @@ namespace CivOne.GameSate
                     foreach (var player in gameSave.Players)
                         bw.Write(player.Civilization.Name.PadRight(11, (char)0x00).Select(x => (byte)x).ToArray());
 
-                    for (var i = gameSave.Players.Count; i < MaxPlayers; ++i)
+                    for (int i = gameSave.Players.Count; i < MaxPlayers; ++i)
 					{
 						for (int x = 0; x < 11; x++)
 						{
@@ -99,9 +99,9 @@ namespace CivOne.GameSate
                     foreach (var player in gameSave.Players)
                         bw.Write(player.Gold);
 
-                    var emptyValue = (short)0;
+                    short emptyValue = 0;
 
-                    for (var i = gameSave.Players.Count; i < MaxPlayers; ++i)
+                    for (int i = gameSave.Players.Count; i < MaxPlayers; ++i)
                         bw.Write(emptyValue);
                 }
 
@@ -110,15 +110,15 @@ namespace CivOne.GameSate
                     foreach (var player in gameSave.Players)
                         bw.Write(player.Science);
 
-                    var emptyValue = (short)0;
+                    short emptyValue = 0;
 
-                    for (var i = gameSave.Players.Count; i < MaxPlayers; ++i)
+                    for (int i = gameSave.Players.Count; i < MaxPlayers; ++i)
                         bw.Write(emptyValue);
                 }
 
                 // Units active
                 {
-                    for (var i = 0; i < gameSave.Players.Count; ++i)
+                    for (int i = 0; i < gameSave.Players.Count; ++i)
                     {
                         for (byte unitId = 0; unitId < 28; ++unitId)
                         {
@@ -129,9 +129,9 @@ namespace CivOne.GameSate
                         }
                     }
 
-                    var emptyValue = (short)0;
+                    short emptyValue = 0;
 
-                    for (var i = gameSave.Players.Count; i < MaxPlayers; ++i)
+                    for (int i = gameSave.Players.Count; i < MaxPlayers; ++i)
                         for (byte unitId = 0; unitId < 28; ++unitId)
                             bw.Write(emptyValue);
                 }
@@ -149,9 +149,9 @@ namespace CivOne.GameSate
                         }
                     }
 
-                    var emptyValue = (short)0;
+                    short emptyValue = 0;
 
-                    for (var i = gameSave.Players.Count; i < MaxPlayers; ++i)
+                    for (int i = gameSave.Players.Count; i < MaxPlayers; ++i)
                         for (byte unitId = 0; unitId < 28; ++unitId)
                             bw.Write(emptyValue);
                 }
@@ -161,9 +161,9 @@ namespace CivOne.GameSate
                     foreach (var player in gameSave.Players)
                         bw.Write((short)player.Advances.Count);
 
-                    var emptyValue = (short)0;
+                    short emptyValue = 0;
 
-                    for (var i = gameSave.Players.Count; i < MaxPlayers; ++i)
+                    for (int i = gameSave.Players.Count; i < MaxPlayers; ++i)
                         bw.Write(emptyValue);
                 }
 
@@ -184,9 +184,9 @@ namespace CivOne.GameSate
                         }
                     }
 
-                    var emptyValue = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+                    byte[] emptyValue = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-                    for (var i = gameSave.Players.Count; i < MaxPlayers; ++i)
+                    for (int i = gameSave.Players.Count; i < MaxPlayers; ++i)
                         bw.Write(emptyValue);
                 }
 
@@ -195,9 +195,9 @@ namespace CivOne.GameSate
                     foreach (var player in gameSave.Players)
                         bw.Write((short)player.Government.Id);
 
-                    var emptyValue = (short)0;
+                    short emptyValue = 0;
 
-                    for (var i = gameSave.Players.Count; i < MaxPlayers; ++i)
+                    for (int i = gameSave.Players.Count; i < MaxPlayers; ++i)
                         bw.Write(emptyValue);
                 }
                 
@@ -260,9 +260,9 @@ namespace CivOne.GameSate
                     foreach (var player in gameSave.Players)
                         bw.Write((short)player.TaxesRate);
 
-                    var emptyValue = (short)0;
+                    short emptyValue = 0;
 
-                    for (var i = gameSave.Players.Count; i < MaxPlayers; ++i)
+                    for (int i = gameSave.Players.Count; i < MaxPlayers; ++i)
                         bw.Write(emptyValue);
                 }
 
@@ -285,7 +285,7 @@ namespace CivOne.GameSate
 
                     var emptyValue = (short)0xFF;
 
-                    for (var i = gameSave.Players.Count; i < MaxPlayers; ++i)
+                    for (int i = gameSave.Players.Count; i < MaxPlayers; ++i)
                         bw.Write(emptyValue);
                 }
 
@@ -296,7 +296,7 @@ namespace CivOne.GameSate
 
                     var emptyValue = (short)0;
 
-                    for (var i = gameSave.Players.Count; i < MaxPlayers; ++i)
+                    for (int i = gameSave.Players.Count; i < MaxPlayers; ++i)
                         bw.Write(emptyValue);
                 }
 
@@ -523,8 +523,8 @@ namespace CivOne.GameSate
                         byte stack = (byte)i;
 
                         {
-                            var x = unit.X;
-                            var y = unit.Y;
+                            int x = unit.X;
+                            int y = unit.Y;
 
                             while (x < 0)
                                 x += Map.WIDTH;
@@ -532,7 +532,7 @@ namespace CivOne.GameSate
                             while (x >= Map.WIDTH)
                                 x -= Map.WIDTH;
 
-                            var unitscountOnTile = gameSave.Units.Where(u => u.X == x && u.Y == y).Count();
+                            int unitscountOnTile = gameSave.Units.Where(u => u.X == x && u.Y == y).Count();
 
                             // TODO: check if always true for given unit x,y
                             if (unitscountOnTile > 0)
@@ -724,9 +724,9 @@ namespace CivOne.GameSate
                     foreach (var player in gameSave.Players)
                         bw.Write((short)player.ScienceRate);
 
-                    var emptyValue = (short)0;
+                    short emptyValue = 0;
 
-                    for (var i = gameSave.Players.Count; i < MaxPlayers; ++i)
+                    for (int i = gameSave.Players.Count; i < MaxPlayers; ++i)
                         bw.Write(emptyValue);
                 }
 

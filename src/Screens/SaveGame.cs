@@ -114,7 +114,7 @@ namespace CivOne.Screens
 
 			SaveGameFile file = GetSaveGames().ToArray()[item];
 
-            var saver = new OriginalGameSaveToFileWriter(file.SveFile, file.MapFile);
+            IGameSaveWriter saver = new OriginalGameSaveToFileWriter(file.SveFile, file.MapFile);
             saver.WriteSaveGame(Game.GetGameState());
 		}
 		
