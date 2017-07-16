@@ -84,7 +84,7 @@ namespace CivOne.Templates
 				return (Movement != null); 
 			}
 		}
-		public MoveUnit Movement { get; private set; }
+		public MoveUnit Movement { get; protected set; }
 
 		private int AttackStrength(IUnit defendUnit)
 		{
@@ -243,7 +243,7 @@ namespace CivOne.Templates
 			
 			ITile moveTarget = Map[X, Y][relX, relY];
 			if (moveTarget == null) return false;
-			if (!moveTarget.Units.Any(u => u.Owner != Owner) && moveTarget.City != null)
+			if (!moveTarget.Units.Any(u => u.Owner != Owner) && moveTarget.City != null && moveTarget.City.Owner != Owner)
 			{
 				if (Class != UnitClass.Land)
 				{
@@ -372,7 +372,7 @@ namespace CivOne.Templates
 					}
 				}
 			}
-			if (moveTarget.City != null && Map[X, Y][relX, relY].City.Owner != Owner)
+			if (moveTarget.City != null)
 			{
 				return Confront(relX, relY);
 			}
@@ -417,7 +417,7 @@ namespace CivOne.Templates
 			return true;
 		}
 
-		private void MoveEnd(object sender, EventArgs args)
+		protected void MoveEnd(object sender, EventArgs args)
 		{
 			ITile previousTile = Map[_x, _y];
 			X += Movement.RelX;
