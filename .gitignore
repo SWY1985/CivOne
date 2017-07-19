@@ -7,3 +7,12 @@ saves/**
 settings/**
 sounds/**
 obj/**
+xunit/bin/**
+xunit/capture/**
+xunit/data/**
+xunit/plugins/**
+xunit/lib/**
+xunit/saves/**
+xunit/settings/**
+xunit/sounds/**
+xunit/obj/**

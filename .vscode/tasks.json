@@ -13,6 +13,14 @@
 			],
 			"isBuildCommand": true,
 			"problemMatcher": "$msCompile"
+		},
+		{
+			"taskName": "test",
+			"args": [
+				"${workspaceRoot}//xunit//CivOne.UnitTests.csproj"
+			],
+			"isTestCommand": true,
+			"problemMatcher": "$msCompile"
 		}
 	]
 }
