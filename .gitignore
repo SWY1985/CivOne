@@ -1,3 +1,5 @@
+api/bin/**
+api/obj/**
 bin/**
 capture/**
 data/**
