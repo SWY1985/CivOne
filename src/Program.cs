@@ -29,6 +29,12 @@ namespace CivOne
 				}
 			}
 			
+			Console.WriteLine("Loaded plugins:");
+			foreach (CivOne.Interfaces.IPlugin plugin in Reflect.Plugins())
+			{
+				Console.WriteLine($@" - ""{plugin.Name}"" by {plugin.Author} [version {plugin.Version}]");
+			}
+			
 			Console.WriteLine("Game Start");
 			
 			using (Window window = new Window(screen))

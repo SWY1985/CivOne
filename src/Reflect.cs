@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using CivOne.Interfaces;
@@ -17,16 +18,38 @@ namespace CivOne
 {
 	internal static class Reflect
 	{
+		private static Dictionary<IPlugin, Assembly> _plugins;
+		private static void LoadPlugins()
+		{
+			_plugins = new Dictionary<IPlugin, Assembly>();
+			foreach(string filename in Directory.GetFiles(Settings.Instance.PluginsDirectory, "*.dll"))
+			{
+				try
+				{
+					Assembly assembly = Assembly.LoadFile(filename);
+					Type[] types = assembly.GetTypes().Where(x => x.Namespace == "CivOne" && x.Name == "Plugin" && x.GetInterfaces().Contains(typeof(IPlugin))).ToArray();
+					if (types.Count() != 1)
+					{
+						Console.WriteLine($" - Invalid plugin format: {filename}");
+						continue;
+					}
+					
+					IPlugin plugin = (IPlugin)Activator.CreateInstance(types[0]);
+					_plugins.Add(plugin, assembly);
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine($" - Loading plugin failed: {filename}");
+					Console.WriteLine($"   - {ex.Message}");
+				}
+			}
+		}
+
 		private static IEnumerable<Assembly> GetAssemblies
 		{
 			get
 			{
 				yield return typeof(Reflect).GetTypeInfo().Assembly;
-				//TODO: Load plugins
-				// foreach(string file in Directory.GetFiles(Settings.Instance.PluginsDirectory, "*.dll"))
-				// {
-				// 	yield return Assembly.LoadFile(file);
-				// }
 			}
 		}
 		
@@ -122,6 +145,15 @@ namespace CivOne
 		internal static IEnumerable<ICivilopedia> GetCivilopediaTerrainTypes()
 		{
 			return GetTypes<ITile>();
+		}
+
+		internal static IEnumerable<IPlugin> Plugins()
+		{
+			if (_plugins == null)
+			{
+				LoadPlugins();
+			}
+			return _plugins.Keys;
 		}
 		
 		internal static void PreloadCivilopedia()
