@@ -15,39 +15,16 @@ using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Templates;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens
 {
 	public class Menu : BaseScreen, IExpand
 	{
-		public class Item
+		public class Item : MenuItem<int>
 		{
-			public event EventHandler Selected;
-			public event EventHandler RightClick;
-			public bool Enabled = true;
-			public string Text;
-			public readonly int Value;
-			
-			internal void Select()
+			public Item(string text, int value = -1) : base(text, value)
 			{
-				if (Selected == null) return;
-				Selected(this, null);
-			}
-
-			internal void Context()
-			{
-				if (RightClick == null)
-				{
-					Select();
-					return;
-				}
-				RightClick(this, null);
-			}
-			
-			public Item(string text, int value = -1)
-			{
-				Text = text;
-				Value = value;
 			}
 		}
 		
@@ -56,7 +33,7 @@ namespace CivOne.Screens
 		public event EventHandler Cancel;
 		public event EventHandler MissClick;
 		
-		public readonly List<Item> Items = new List<Item>();
+		public readonly List<MenuItem<int>> Items = new List<MenuItem<int>>();
 		public string Title { get; set; }
 		public int FontId { get; set; }
 		public int X { get; set; }
