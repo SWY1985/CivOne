@@ -21,4 +21,8 @@
 	<ItemGroup>
 		<ProjectReference Include="..\CivOne.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+		<Compile Remove="**" />
+		<Compile Include="src/**" />
+	</ItemGroup>
 </Project>
