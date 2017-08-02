@@ -21,6 +21,15 @@
 			],
 			"isTestCommand": true,
 			"problemMatcher": "$msCompile"
+		},
+		{
+			"taskName": "build-api",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"${workspaceRoot}//api//CivOne.Api.csproj"
+			],
+			"problemMatcher": "$msCompile"
 		}
 	]
 }
