@@ -17,6 +17,6 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<Compile Remove="**" />
-		<Compile Include="../src/Interfaces/IPlugin.cs" />
+		<Compile Include="src/**" />
 	</ItemGroup>
 </Project>
