@@ -14,6 +14,7 @@ using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Templates;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens.Dialogs
 {
@@ -33,13 +34,7 @@ namespace CivOne.Screens.Dialogs
 				TextColour = 5,
 				FontId = 0
 			};
-			int i = 0;
-			foreach (string choice in new [] { "Unit Disbanded." })
-			{
-				menu.Items.Add(new Menu.Item(choice, i++));
-			}
-			menu.Items[0].Selected += Cancel;
-
+			menu.Items.Add("Unit Disbanded.").OnSelect(Cancel);
 			menu.MissClick += Cancel;
 			menu.Cancel += Cancel;
 			AddMenu(menu);

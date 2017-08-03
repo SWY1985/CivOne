@@ -12,6 +12,7 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Templates;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens.Debug
 {
@@ -94,8 +95,7 @@ namespace CivOne.Screens.Debug
 
 			foreach (Player player in Game.Players)
 			{
-				_civSelect.Items.Add(new Menu.Item(player.TribeNamePlural));
-				_civSelect.Items[_civSelect.Items.Count() - 1].Selected += ChangePlayer_Accept;
+				_civSelect.Items.Add(player.TribeNamePlural).OnSelect(ChangePlayer_Accept);
 			}
 
 			_civSelect.Cancel += ChangePlayer_Cancel;

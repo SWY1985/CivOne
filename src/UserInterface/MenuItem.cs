@@ -35,6 +35,11 @@ namespace CivOne.UserInterface
 			RightClick(this, null);
 		}
 
+		internal static MenuItem<T> Create(string text, T value = default(T))
+		{
+			return new MenuItem<T>(text, value);
+		}
+
 		protected MenuItem(string text, T value = default(T))
 		{
 			Enabled = true;

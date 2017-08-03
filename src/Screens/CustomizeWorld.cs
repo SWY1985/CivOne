@@ -13,6 +13,7 @@ using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Templates;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens
 {
@@ -48,11 +49,9 @@ namespace CivOne.Screens
 				FontId = 0
 			};
 			
-			Menu.Item menuItem;
 			for (int i = 0; i < menuTexts.Length; i++)
 			{
-				menu.Items.Add(menuItem = new Menu.Item(menuTexts[i], i));
-				menuItem.Selected += setChoice;
+				menu.Items.Add(menuTexts[i], i).OnSelect(setChoice);
 			}
 			menu.ActiveItem = 1;
 			return menu;
@@ -61,28 +60,28 @@ namespace CivOne.Screens
 		private void SetLandMass(object sender, EventArgs args)
 		{
 			Console.WriteLine("Customize World - Land Mass: {0}", _landMass);
-			_landMass = (sender as Menu.Item).Value;
+			_landMass = (sender as MenuItem<int>).Value;
 			_hasUpdate = true;
 		}
 		
 		private void SetTemperature(object sender, EventArgs args)
 		{
 			Console.WriteLine("Customize World - Temperature: {0}", _temperature);
-			_temperature = (sender as Menu.Item).Value;
+			_temperature = (sender as MenuItem<int>).Value;
 			_hasUpdate = true;
 		}
 		
 		private void SetClimate(object sender, EventArgs args)
 		{
 			Console.WriteLine("Customize World - Climate: {0}", _climate);
-			_climate = (sender as Menu.Item).Value;
+			_climate = (sender as MenuItem<int>).Value;
 			_hasUpdate = true;
 		}
 		
 		private void SetAge(object sender, EventArgs args)
 		{
 			Console.WriteLine("Customize World - Age: {0}", _age);
-			_age = (sender as Menu.Item).Value;
+			_age = (sender as MenuItem<int>).Value;
 			_hasUpdate = true;
 		}
 		

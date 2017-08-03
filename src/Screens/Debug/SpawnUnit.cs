@@ -14,6 +14,7 @@ using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Templates;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens.Debug
 {
@@ -95,16 +96,14 @@ namespace CivOne.Screens.Debug
 
 			foreach (IUnit unit in units)
 			{
-				_unitSelect.Items.Add(new Menu.Item(unit.Name));
-				_unitSelect.Items[_unitSelect.Items.Count() - 1].Selected += SpawnUnit_Accept;
+				_unitSelect.Items.Add(unit.Name).OnSelect(SpawnUnit_Accept);
 			}
 
-			_unitSelect.Items.Add(new Menu.Item($" ---MORE---"));
-			_unitSelect.Items[_unitSelect.Items.Count() - 1].Selected += SpawnUnit_More;
+			_unitSelect.Items.Add($" ---MORE---").OnSelect(SpawnUnit_More);
 
 			_unitSelect.Cancel += SpawnUnit_Cancel;
 			_unitSelect.MissClick += SpawnUnit_Cancel;
-			_unitSelect.ActiveItem = (_unitSelect.Items.Count() - 1);
+			_unitSelect.ActiveItem = (_unitSelect.Items.Count - 1);
 		}
 
 		private void CivSelect_Accept(object sender, EventArgs args)
@@ -306,8 +305,7 @@ namespace CivOne.Screens.Debug
 
 			foreach (Player player in Game.Players)
 			{
-				_civSelect.Items.Add(new Menu.Item(player.TribeNamePlural));
-				_civSelect.Items[_civSelect.Items.Count() - 1].Selected += CivSelect_Accept;
+				_civSelect.Items.Add(player.TribeNamePlural).OnSelect(CivSelect_Accept);
 			}
 
 			_civSelect.Cancel += SpawnUnit_Cancel;

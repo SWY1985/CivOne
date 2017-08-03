@@ -102,7 +102,7 @@ namespace CivOne.Screens
 				int i = 0;
 				foreach (string choice in new [] { "Continue without data files (not recommended)", "Browse for data files (requires manual restart)", "Quit" })
 				{
-					_menu.Items.Add(new Menu.Item(choice, i++));
+					_menu.Items.Add(choice, i++);
 				}
 				_menu.Items[0].Selected += Menu_Continue;
 				_menu.Items[1].Selected += Menu_Copy;

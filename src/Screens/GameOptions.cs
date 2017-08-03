@@ -12,6 +12,7 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Templates;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens
 {
@@ -97,21 +98,14 @@ namespace CivOne.Screens
 				menu.MissClick += MenuCancel;
 				menu.Cancel += MenuCancel;
 
-				menu.Items.Add(new Menu.Item($"{(Settings.InstantAdvice ? '^' : ' ')}Instant Advice"));
-				menu.Items.Add(new Menu.Item($"{(Settings.AutoSave ? '^' : ' ')}AutoSave"));
-				menu.Items.Add(new Menu.Item($"{(Settings.EndOfTurn ? '^' : ' ')}End of Turn"));
-				menu.Items.Add(new Menu.Item($"{(Settings.Animations ? '^' : ' ')}Animations"));
-				menu.Items.Add(new Menu.Item($"{(Settings.Sound ? '^' : ' ')}Sound"));
-				menu.Items.Add(new Menu.Item(" Enemy Moves") { Enabled = false });
-				menu.Items.Add(new Menu.Item($"{(Settings.CivilopediaText ? '^' : ' ')}Civilopedia Text"));
-				menu.Items.Add(new Menu.Item(" Palace") { Enabled = false });
-
-				menu.Items[0].Selected += MenuInstantAdvice;
-				menu.Items[1].Selected += MenuAutoSave;
-				menu.Items[2].Selected += MenuEndOfTurn;
-				menu.Items[3].Selected += MenuAnimations;
-				menu.Items[4].Selected += MenuSound;
-				menu.Items[6].Selected += MenuCivilopediaText;
+				menu.Items.Add($"{(Settings.InstantAdvice ? '^' : ' ')}Instant Advice").OnSelect(MenuInstantAdvice);
+				menu.Items.Add($"{(Settings.AutoSave ? '^' : ' ')}AutoSave").OnSelect(MenuAutoSave);
+				menu.Items.Add($"{(Settings.EndOfTurn ? '^' : ' ')}End of Turn").OnSelect(MenuEndOfTurn);
+				menu.Items.Add($"{(Settings.Animations ? '^' : ' ')}Animations").OnSelect(MenuAnimations);
+				menu.Items.Add($"{(Settings.Sound ? '^' : ' ')}Sound").OnSelect(MenuSound);
+				menu.Items.Add(" Enemy Moves").Disable();
+				menu.Items.Add($"{(Settings.CivilopediaText ? '^' : ' ')}Civilopedia Text").OnSelect(MenuCivilopediaText);
+				menu.Items.Add(" Palace").Disable();
 
 				AddMenu(menu);
 			}

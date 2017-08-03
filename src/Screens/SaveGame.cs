@@ -18,6 +18,7 @@ using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Templates;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens
 {
@@ -105,7 +106,7 @@ namespace CivOne.Screens
 		
 		private void SaveFile(object sender, EventArgs args)
 		{
-			int item = (sender as Menu.Item).Value;
+			int item = (sender as MenuItem<int>).Value;
 			_gameId = item;
 			SelectedGame = item;
 			_saving = true;
@@ -224,13 +225,10 @@ namespace CivOne.Screens
 					RowHeight = 8
 				};
 				
-				Menu.Item menuItem;
-				
 				int i = 0;
 				foreach (SaveGameFile file in GetSaveGames().Take(4))
 				{
-					_menu.Items.Add(menuItem = new Menu.Item(file.Name, i++));
-					menuItem.Selected += SaveFile;
+					_menu.Items.Add(file.Name, i++).OnSelect(SaveFile);
 				}
 				
 				_menu.ActiveItem = SelectedGame;

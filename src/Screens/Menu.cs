@@ -8,7 +8,6 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using CivOne.Enums;
 using CivOne.Events;
@@ -21,19 +20,12 @@ namespace CivOne.Screens
 {
 	public class Menu : BaseScreen, IExpand
 	{
-		public class Item : MenuItem<int>
-		{
-			public Item(string text, int value = -1) : base(text, value)
-			{
-			}
-		}
-		
 		private readonly Picture _background;
 		
 		public event EventHandler Cancel;
 		public event EventHandler MissClick;
 		
-		public readonly List<MenuItem<int>> Items = new List<MenuItem<int>>();
+		public readonly MenuItemCollection<int> Items = new MenuItemCollection<int>();
 		public string Title { get; set; }
 		public int FontId { get; set; }
 		public int X { get; set; }

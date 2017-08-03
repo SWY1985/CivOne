@@ -16,6 +16,7 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Templates;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens
 {
@@ -99,7 +100,7 @@ namespace CivOne.Screens
 		
 		private void LoadSaveFile(object sender, EventArgs args)
 		{
-			int item = (sender as Menu.Item).Value;
+			int item = (sender as MenuItem<int>).Value;
 			
 			SaveGameFile file = GetSaveGames().ToArray()[item];
 
@@ -118,6 +119,13 @@ namespace CivOne.Screens
 			Console.WriteLine("Empty save file, cancel");
 			Cancel = true;
 			_update = true;
+		}
+
+		private EventHandler LoadFileHandler(SaveGameFile file)
+		{
+			if (file.ValidFile)
+				return LoadSaveFile;
+			return LoadEmptyFile;
 		}
 		
 		private void DrawDriveQuestion()
@@ -188,20 +196,10 @@ namespace CivOne.Screens
 					RowHeight = 8
 				};
 				
-				Menu.Item menuItem;
-				
 				int i = 0;
 				foreach (SaveGameFile file in GetSaveGames())
 				{
-					_menu.Items.Add(menuItem = new Menu.Item(file.Name, i++));
-					if (file.ValidFile)
-					{
-						menuItem.Selected += LoadSaveFile;
-					}
-					else
-					{
-						menuItem.Selected += LoadEmptyFile;
-					}
+					_menu.Items.Add(file.Name, i++).OnSelect(LoadFileHandler(file));
 				}
 				Cursor = MouseCursor.Pointer;
 			}

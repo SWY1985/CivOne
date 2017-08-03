@@ -14,6 +14,7 @@ using CivOne.GFX;
 using CivOne.Screens.Debug;
 using CivOne.Tasks;
 using CivOne.Templates;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens
 {
@@ -117,27 +118,16 @@ namespace CivOne.Screens
 				menu.MissClick += MenuCancel;
 				menu.Cancel += MenuCancel;
 
-				menu.Items.Add(new Menu.Item("Set Game Year"));
-				menu.Items.Add(new Menu.Item("Set Player Gold"));
-				menu.Items.Add(new Menu.Item("Set Player Science"));
-				menu.Items.Add(new Menu.Item("Set Player Advances"));
-				menu.Items.Add(new Menu.Item("Set City Size"));
-				menu.Items.Add(new Menu.Item("Change Human Player"));
-				menu.Items.Add(new Menu.Item("Spawn Unit"));
-				menu.Items.Add(new Menu.Item("Meet With King"));
-				menu.Items.Add(new Menu.Item("Toggle Reveal World"));
-				menu.Items.Add(new Menu.Item("Build Palace"));
-
-				menu.Items[0].Selected += MenuSetGameYear;
-				menu.Items[1].Selected += MenuSetPlayerGold;
-				menu.Items[2].Selected += MenuSetPlayerScience;
-				menu.Items[3].Selected += MenuSetPlayerAdvances;
-				menu.Items[4].Selected += MenuSetCitySize;
-				menu.Items[5].Selected += MenuChangeHumanPlayer;
-				menu.Items[6].Selected += MenuSpawnUnit;
-				menu.Items[7].Selected += MenuMeetWithKing;
-				menu.Items[8].Selected += MenuRevealWorld;
-				menu.Items[9].Selected += MenuBuildPalace;
+				menu.Items.Add("Set Game Year").OnSelect(MenuSetGameYear);
+				menu.Items.Add("Set Player Gold").OnSelect(MenuSetPlayerGold);
+				menu.Items.Add("Set Player Science").OnSelect(MenuSetPlayerScience);
+				menu.Items.Add("Set Player Advances").OnSelect(MenuSetPlayerAdvances);
+				menu.Items.Add("Set City Size").OnSelect(MenuSetCitySize);
+				menu.Items.Add("Change Human Player").OnSelect(MenuChangeHumanPlayer);
+				menu.Items.Add("Spawn Unit").OnSelect(MenuSpawnUnit);
+				menu.Items.Add("Meet With King").OnSelect(MenuMeetWithKing);
+				menu.Items.Add("Toggle Reveal World").OnSelect(MenuRevealWorld);
+				menu.Items.Add("Build Palace").OnSelect(MenuBuildPalace);
 
 				_canvas.FillRectangle(5, 24, 16, 105, menu.RowHeight * (menu.Items.Count + 1));
 
