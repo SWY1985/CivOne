@@ -9,12 +9,13 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using CivOne.Interfaces;
 
 namespace CivOne.Templates
 {
 	public abstract partial class BaseScreen
 	{
-		protected readonly List<Screens.Menu> _menus = new List<Screens.Menu>();
+		protected readonly List<IMenu> _menus = new List<IMenu>();
 
 		protected bool HasMenu
 		{
@@ -24,7 +25,7 @@ namespace CivOne.Templates
 			}
 		}
 		
-		protected void AddMenu(Screens.Menu menu)
+		protected void AddMenu(IMenu menu)
 		{
 			_menus.Add(menu);
 			Common.AddScreen(menu);
@@ -32,7 +33,7 @@ namespace CivOne.Templates
 
 		protected void CloseMenus()
 		{
-			foreach (Screens.Menu menu in _menus)
+			foreach (IMenu menu in _menus)
 			{
 				menu.Close();
 			}
