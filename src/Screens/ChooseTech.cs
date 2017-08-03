@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Linq;
 using CivOne.Advances;
 using CivOne.Enums;
+using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Templates;
@@ -27,16 +28,15 @@ namespace CivOne.Screens
 		
 		private bool _update = true;
 
-		private void AdvanceChoice(object sender, EventArgs args)
+		private void AdvanceChoice(object sender, MenuItemEventArgs<IAdvance> args)
 		{
-			Human.CurrentResearch = _availableAdvances[(sender as MenuItem<int>).Value];
+			Human.CurrentResearch = args.Value;
 			Destroy();
 		}
 
-		private void AdvanceContext(object sender, EventArgs args)
+		private void AdvanceContext(object sender, MenuItemEventArgs<IAdvance> args)
 		{
-			ICivilopedia page = ( _availableAdvances[(sender as MenuItem<int>).Value] as ICivilopedia);
-			Common.AddScreen(new Civilopedia(page));
+			Common.AddScreen(new Civilopedia(args.Value));
 		}
 
 		public override bool HasUpdate(uint gameTick)
@@ -48,7 +48,7 @@ namespace CivOne.Screens
 				Picture background = _menuGfx.GetPart(44, 35, 156, _menuHeight);
 				Picture.ReplaceColours(background, new byte[] { 7, 22 }, new byte[] { 11, 3 });
 
-				Menu menu = new Menu(Canvas.Palette, background)
+				Menu<IAdvance> menu = new Menu<IAdvance>(Canvas.Palette, background)
 				{
 					X = 83,
 					Y = 92,
@@ -58,9 +58,9 @@ namespace CivOne.Screens
 					FontId = 0
 				};
 
-				for (int i = 0; i < _availableAdvances.Length; i++)
+				foreach (IAdvance advance in _availableAdvances)
 				{
-					menu.Items.Add(_availableAdvances[i].Name, i)
+					menu.Items.Add(advance.Name, advance)
 						.OnSelect(AdvanceChoice)
 						.OnContext(AdvanceContext);
 				}

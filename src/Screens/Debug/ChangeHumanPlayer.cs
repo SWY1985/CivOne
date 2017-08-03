@@ -10,6 +10,7 @@
 using System;
 using System.Linq;
 using CivOne.Enums;
+using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Templates;
 using CivOne.UserInterface;
@@ -18,7 +19,7 @@ namespace CivOne.Screens.Debug
 {
 	internal class ChangeHumanPlayer : BaseScreen
 	{
-		private readonly Menu _civSelect;
+		private readonly Menu<Player> _civSelect;
 
 		private Player _selectedPlayer = null;
 
@@ -26,9 +27,9 @@ namespace CivOne.Screens.Debug
 
 		public event EventHandler Accept, Cancel;
 
-		private void ChangePlayer_Accept(object sender, EventArgs args)
+		private void ChangePlayer_Accept(object sender, MenuItemEventArgs<Player> args)
 		{
-			_selectedPlayer = Game.GetPlayer((byte)_civSelect.ActiveItem);
+			_selectedPlayer = args.Value;
 
 			if (_selectedPlayer != Game.HumanPlayer)
 			{
@@ -81,7 +82,7 @@ namespace CivOne.Screens.Debug
 			_canvas.AddLayer(menuGfx, xx, yy);
 			_canvas.DrawText("Change Human Player...", 0, 15, xx + 8, yy + 3);
 
-			_civSelect = new Menu(Canvas.Palette, menuBackground)
+			_civSelect = new Menu<Player>(Canvas.Palette, menuBackground)
 			{
 				X = xx + 2,
 				Y = yy + 11,
@@ -95,7 +96,7 @@ namespace CivOne.Screens.Debug
 
 			foreach (Player player in Game.Players)
 			{
-				_civSelect.Items.Add(player.TribeNamePlural).OnSelect(ChangePlayer_Accept);
+				_civSelect.Items.Add(player.TribeNamePlural, player).OnSelect(ChangePlayer_Accept);
 			}
 
 			_civSelect.Cancel += ChangePlayer_Cancel;
