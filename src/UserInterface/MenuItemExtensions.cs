@@ -7,7 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using System;
+using CivOne.Events;
 
 namespace CivOne.UserInterface
 {
@@ -31,13 +31,13 @@ namespace CivOne.UserInterface
 			return menuItem;
 		}
 
-		public static MenuItem<T> OnSelect<T>(this MenuItem<T> menuItem, EventHandler eventMethod)
+		public static MenuItem<T> OnSelect<T>(this MenuItem<T> menuItem, MenuItemEventHandler<T> eventMethod)
 		{
 			menuItem.Selected += eventMethod;
 			return menuItem;
 		}
 
-		public static MenuItem<T> OnContext<T>(this MenuItem<T> menuItem, EventHandler eventMethod)
+		public static MenuItem<T> OnContext<T>(this MenuItem<T> menuItem, MenuItemEventHandler<T> eventMethod)
 		{
 			menuItem.RightClick += eventMethod;
 			return menuItem;

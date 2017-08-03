@@ -31,7 +31,7 @@ namespace CivOne.Screens
 		private string _leaderName = null, _tribeName = null, _tribeNamePlural = null;
 		private bool _done = false, _showIntroText = false;
 		
-		private Menu CreateMenu(string title, EventHandler setChoice, params string[] menuTexts)
+		private Menu CreateMenu(string title, MenuItemEventHandler<int> setChoice, params string[] menuTexts)
 		{
 			Menu menu = new Menu(Canvas.Palette)
 			{
@@ -88,16 +88,16 @@ namespace CivOne.Screens
 			Common.AddScreen(input);
 		}
 		
-		private void SetDifficulty(object sender, EventArgs args)
+		private void SetDifficulty(object sender, MenuItemEventArgs<int> args)
 		{
-			_difficulty = (sender as MenuItem<int>).Value;
+			_difficulty = args.Value;
 			CloseMenus();
 			Console.WriteLine("Difficulty: {0}", _menuItemsDifficulty[_difficulty]);
 		}
 		
-		private void SetCompetition(object sender, EventArgs args)
+		private void SetCompetition(object sender, MenuItemEventArgs<int> args)
 		{
-			_competition = (7 - (sender as MenuItem<int>).Value);
+			_competition = (7 - args.Value);
 			CloseMenus();
 			Console.WriteLine("Competition: {0} Civilizations", _competition);
 			
@@ -105,9 +105,9 @@ namespace CivOne.Screens
 			_menuItemsTribes = _tribesAvailable.Select(c => c.Name).ToArray();
 		}
 		
-		private void SetTribe(object sender, EventArgs args)
+		private void SetTribe(object sender, MenuItemEventArgs<int> args)
 		{
-			_tribe = (sender as MenuItem<int>).Value;
+			_tribe = args.Value;
 			
 			ICivilization civ = _tribesAvailable[_tribe];
 			_tribeName = civ.Name;

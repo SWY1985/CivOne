@@ -10,6 +10,7 @@
 using System;
 using System.Linq;
 using CivOne.Enums;
+using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.IO;
@@ -54,7 +55,7 @@ namespace CivOne.Screens
 			return menuItems * Resources.Instance.GetFontHeight(MenuFont);
 		}
 		
-		private Menu CreateMenu(string title, EventHandler setChoice, params string[] menuTexts)
+		private Menu CreateMenu(string title, MenuItemEventHandler<int> setChoice, params string[] menuTexts)
 		{
 			int width = GetMenuWidth(title, menuTexts);
 			int height = GetMenuHeight(title, menuTexts);
@@ -235,10 +236,9 @@ namespace CivOne.Screens
 			AddMenu(menu);
 		}
 		
-		private void MainChoice(object sender, EventArgs args)
+		private void MainChoice(object sender, MenuItemEventArgs<int> args)
 		{
-			int choice = (sender as MenuItem<int>).Value;
-			switch (choice)
+			switch (args.Value)
 			{
 				case 0: // Settings
 					CloseMenus();
@@ -261,11 +261,10 @@ namespace CivOne.Screens
 			}
 		}
 		
-		private void SettingsChoice(object sender, EventArgs args)
+		private void SettingsChoice(object sender, MenuItemEventArgs<int> args)
 		{
 			CloseMenus();
-			int choice = (sender as MenuItem<int>).Value;
-			switch (choice)
+			switch (args.Value)
 			{
 				case 0: // Graphics Mode
 					GraphicsModeMenu();
@@ -285,11 +284,10 @@ namespace CivOne.Screens
 			}
 		}
 		
-		private void GraphicsModeChoice(object sender, EventArgs args)
+		private void GraphicsModeChoice(object sender, MenuItemEventArgs<int> args)
 		{
 			CloseMenus();
-			int choice = (sender as MenuItem<int>).Value;
-			switch (choice)
+			switch (args.Value)
 			{
 				case 0: // 256 colours
 					Settings.GraphicsMode = GraphicsMode.Graphics256;
@@ -301,10 +299,9 @@ namespace CivOne.Screens
 			SettingsMenu(0);
 		}
 		
-		private void FullScreenChoice(object sender, EventArgs args)
+		private void FullScreenChoice(object sender, MenuItemEventArgs<int> args)
 		{
-			int choice = (sender as MenuItem<int>).Value;
-			switch (choice)
+			switch (args.Value)
 			{
 				case 0: // no
 					Settings.FullScreen = false;
@@ -317,9 +314,9 @@ namespace CivOne.Screens
 			SettingsMenu(1);
 		}
 		
-		private void WindowScaleChoice(object sender, EventArgs args)
+		private void WindowScaleChoice(object sender, MenuItemEventArgs<int> args)
 		{
-			int choice = (sender as MenuItem<int>).Value;
+			int choice = args.Value;
 			if (choice < 4)
 			{
 				Settings.Scale = (choice + 1);
@@ -328,9 +325,9 @@ namespace CivOne.Screens
 			SettingsMenu(2);
 		}
 
-		private void AspectRatioChoice(object sender, EventArgs args)
+		private void AspectRatioChoice(object sender, MenuItemEventArgs<int> args)
 		{
-			int choice = (sender as MenuItem<int>).Value;
+			int choice = args.Value;
 			if (choice < 5)
 			{
 				Settings.AspectRatio = (AspectRatio)(choice);
@@ -339,11 +336,10 @@ namespace CivOne.Screens
 			SettingsMenu(3);
 		}
 
-		private void PatchesChoice(object sender, EventArgs args)
+		private void PatchesChoice(object sender, MenuItemEventArgs<int> args)
 		{
 			CloseMenus();
-			int choice = (sender as MenuItem<int>).Value;
-			switch (choice)
+			switch (args.Value)
 			{
 				case 0: // Reveal World
 					RevealWorldMenu();
@@ -372,10 +368,9 @@ namespace CivOne.Screens
 			}
 		}
 		
-		private void RevealWorldChoice(object sender, EventArgs args)
+		private void RevealWorldChoice(object sender, MenuItemEventArgs<int> args)
 		{
-			int choice = (sender as MenuItem<int>).Value;
-			switch (choice)
+			switch (args.Value)
 			{
 				case 0: // no
 					Settings.RevealWorld = false;
@@ -388,10 +383,9 @@ namespace CivOne.Screens
 			PatchesMenu(0);
 		}
 		
-		private void SideBarChoice(object sender, EventArgs args)
+		private void SideBarChoice(object sender, MenuItemEventArgs<int> args)
 		{
-			int choice = (sender as MenuItem<int>).Value;
-			switch (choice)
+			switch (args.Value)
 			{
 				case 0: // left
 					Settings.RightSideBar = false;
@@ -404,10 +398,9 @@ namespace CivOne.Screens
 			PatchesMenu(1);
 		}
 		
-		private void DebugMenuChoice(object sender, EventArgs args)
+		private void DebugMenuChoice(object sender, MenuItemEventArgs<int> args)
 		{
-			int choice = (sender as MenuItem<int>).Value;
-			switch (choice)
+			switch (args.Value)
 			{
 				case 0: // no
 					Settings.DebugMenu = false;
@@ -420,10 +413,9 @@ namespace CivOne.Screens
 			PatchesMenu(2);
 		}
 		
-		private void CursorTypeChoice(object sender, EventArgs args)
+		private void CursorTypeChoice(object sender, MenuItemEventArgs<int> args)
 		{
-			int choice = (sender as MenuItem<int>).Value;
-			switch (choice)
+			switch (args.Value)
 			{
 				case 0:
 					Settings.CursorType = CursorType.Default;
@@ -439,10 +431,9 @@ namespace CivOne.Screens
 			PatchesMenu(3);
 		}
 
-		private void DestroyAnimationChoice(object sender, EventArgs args)
+		private void DestroyAnimationChoice(object sender, MenuItemEventArgs<int> args)
 		{
-			int choice = (sender as MenuItem<int>).Value;
-			switch (choice)
+			switch (args.Value)
 			{
 				case 0:
 					Settings.DestroyAnimation = DestroyAnimation.Sprites;
@@ -455,10 +446,9 @@ namespace CivOne.Screens
 			PatchesMenu(4);
 		}
 		
-		private void DeityEnabledChoice(object sender, EventArgs args)
+		private void DeityEnabledChoice(object sender, MenuItemEventArgs<int> args)
 		{
-			int choice = (sender as MenuItem<int>).Value;
-			switch (choice)
+			switch (args.Value)
 			{
 				case 0: // no
 					Settings.DeityEnabled = false;
@@ -471,10 +461,9 @@ namespace CivOne.Screens
 			PatchesMenu(5);
 		}
 
-		private void ArrowHelperChoice(object sender, EventArgs args)
+		private void ArrowHelperChoice(object sender, MenuItemEventArgs<int> args)
 		{
-			int choice = (sender as MenuItem<int>).Value;
-			switch (choice)
+			switch (args.Value)
 			{
 				case 0: // no
 					Settings.ArrowHelper = false;

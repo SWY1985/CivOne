@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Templates;
 using CivOne.UserInterface;
@@ -23,15 +24,15 @@ namespace CivOne.Screens.Dialogs
 		private readonly bool _luxuries;
 		private readonly string[] _menuItems;
 
-		private void TaxesChoice(object sender, EventArgs args)
+		private void TaxesChoice(object sender, MenuItemEventArgs<int> args)
 		{
-			Human.TaxesRate = (sender as MenuItem<int>).Value;
+			Human.TaxesRate = args.Value;
 			Cancel();
 		}
 
-		private void LuxuriesChoice(object sender, EventArgs args)
+		private void LuxuriesChoice(object sender, MenuItemEventArgs<int> args)
 		{
-			Human.LuxuriesRate = (sender as MenuItem<int>).Value;
+			Human.LuxuriesRate = args.Value;
 			Cancel();
 		}
 
@@ -53,7 +54,7 @@ namespace CivOne.Screens.Dialogs
 			}
 		}
 
-		private EventHandler ChoiceMethod
+		private MenuItemEventHandler<int> ChoiceMethod
 		{
 			get
 			{
