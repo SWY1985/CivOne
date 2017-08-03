@@ -425,6 +425,9 @@ namespace CivOne.Screens
 					case Key.Right:
 						_helperDirection.X++;
 						break;
+					default:
+						_helperDirection = new Point(0, 0);
+						break;
 				}
 
 				if (Math.Abs(_helperDirection.X) + Math.Abs(_helperDirection.Y) >= 2)
