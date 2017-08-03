@@ -18,14 +18,14 @@ using CivOne.UserInterface;
 
 namespace CivOne.Screens
 {
-	public class Menu : BaseScreen, IExpand
+	public class Menu<T> : BaseScreen, IMenu, IExpand
 	{
 		private readonly Picture _background;
 		
 		public event EventHandler Cancel;
 		public event EventHandler MissClick;
 		
-		public readonly MenuItemCollection<int> Items = new MenuItemCollection<int>();
+		public readonly MenuItemCollection<T> Items = new MenuItemCollection<T>();
 		public string Title { get; set; }
 		public int FontId { get; set; }
 		public int X { get; set; }
@@ -211,6 +211,13 @@ namespace CivOne.Screens
 			Indent = 8;
 			
 			_canvas = new Picture(320, 200, colours);
+		}
+	}
+
+	public class Menu : Menu<int>
+	{
+		public Menu(Color[] colours, Picture background = null) : base(colours, background)
+		{
 		}
 	}
 }
