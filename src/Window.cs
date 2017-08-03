@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,6 +30,18 @@ namespace CivOne
 		
 		private Picture _canvas = new Picture(320, 200);
 
+		private Stopwatch _tickWatch = new Stopwatch();
+		private uint ActualGameTick
+		{
+			get
+			{
+				if (!_tickWatch.IsRunning)
+				{
+					_tickWatch.Start();
+				}
+				return Convert.ToUInt32(((double)_tickWatch.ElapsedMilliseconds / 1000) * 60);
+			}
+		}
 		private uint _gameTick = 0;
 
 		private bool _update = false;
@@ -316,8 +329,11 @@ namespace CivOne
 				LoadCursorGraphics();
 			}
 
-			_gameTick++;
-			if (HasUpdate) _update = true;
+			while (_gameTick < ActualGameTick)
+			{
+				_gameTick++;
+				if (HasUpdate) _update = true;
+			}
 		}
 
 		protected override void OnRenderFrame(FrameEventArgs args)
