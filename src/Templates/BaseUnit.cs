@@ -372,7 +372,7 @@ namespace CivOne.Templates
 					}
 				}
 			}
-			if (moveTarget.City != null)
+			if (moveTarget.City != null && moveTarget.City.Owner != Owner)
 			{
 				return Confront(relX, relY);
 			}
