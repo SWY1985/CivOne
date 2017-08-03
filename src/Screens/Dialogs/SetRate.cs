@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CivOne.GFX;
 using CivOne.Templates;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens.Dialogs
 {
@@ -24,13 +25,13 @@ namespace CivOne.Screens.Dialogs
 
 		private void TaxesChoice(object sender, EventArgs args)
 		{
-			Human.TaxesRate = (sender as Menu.Item).Value;
+			Human.TaxesRate = (sender as MenuItem<int>).Value;
 			Cancel();
 		}
 
 		private void LuxuriesChoice(object sender, EventArgs args)
 		{
-			Human.LuxuriesRate = (sender as Menu.Item).Value;
+			Human.LuxuriesRate = (sender as MenuItem<int>).Value;
 			Cancel();
 		}
 
@@ -52,6 +53,16 @@ namespace CivOne.Screens.Dialogs
 			}
 		}
 
+		private EventHandler ChoiceMethod
+		{
+			get
+			{
+				if (_luxuries)
+					return LuxuriesChoice;
+				return TaxesChoice;
+			}
+		}
+
 		protected override void FirstUpdate()
 		{
 			Menu menu = new Menu(Canvas.Palette, Selection(3, 12, ItemWidth, (_menuItems.Length * Resources.Instance.GetFontHeight(FONT_ID)) + 4))
@@ -65,11 +76,7 @@ namespace CivOne.Screens.Dialogs
 			};
 			for (int i = 0; i < _menuItems.Length; i++)
 			{
-				menu.Items.Add(new Menu.Item(_menuItems[i], i));
-				if (_luxuries)
-					menu.Items[i].Selected += LuxuriesChoice;
-				else
-					menu.Items[i].Selected += TaxesChoice;
+				menu.Items.Add(_menuItems[i], i).OnSelect(ChoiceMethod);
 			}
 
 			menu.MissClick += Cancel;

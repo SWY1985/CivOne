@@ -12,6 +12,7 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Templates;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens.Debug
 {
@@ -98,8 +99,7 @@ namespace CivOne.Screens.Debug
 
 			foreach (Player player in _players)
 			{
-				_civSelect.Items.Add(new Menu.Item($"{player.LeaderName} ({player.TribeName})"));
-				_civSelect.Items[_civSelect.Items.Count() - 1].Selected += MeetKing_Accept;
+				_civSelect.Items.Add($"{player.LeaderName} ({player.TribeName})").OnSelect(MeetKing_Accept);
 			}
 
 			_civSelect.Cancel += MeetKing_Cancel;

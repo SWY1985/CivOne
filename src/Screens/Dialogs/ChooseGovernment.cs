@@ -12,6 +12,7 @@ using System.Linq;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Templates;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens.Dialogs
 {
@@ -23,7 +24,7 @@ namespace CivOne.Screens.Dialogs
 
 		private void GovernmentChoice(object sender, EventArgs args)
 		{
-			Result = _availableGovernments[(sender as Menu.Item).Value];
+			Result = _availableGovernments[(sender as MenuItem<int>).Value];
 			CloseMenus();
 			Cancel();
 		}
@@ -39,11 +40,9 @@ namespace CivOne.Screens.Dialogs
 				TextColour = 5,
 				FontId = 0
 			};
-			Menu.Item menuItem;
 			for (int i = 0; i < _availableGovernments.Length; i++)
 			{
-				menu.Items.Add(menuItem = new Menu.Item($"{_availableGovernments[i].NameAdjective}", i));
-				menuItem.Selected += GovernmentChoice;
+				menu.Items.Add($"{_availableGovernments[i].NameAdjective}", i).OnSelect(GovernmentChoice);
 			}
 			AddMenu(menu);
 		}

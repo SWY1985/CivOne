@@ -14,6 +14,7 @@ using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Templates;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens
 {
@@ -37,7 +38,7 @@ namespace CivOne.Screens
 
 		private void ProductionChoice(object sender, EventArgs args)
 		{
-			if (_pages.Count > 1 && ((sender as Menu.Item).Value == _pages[_page].Length))
+			if (_pages.Count > 1 && ((sender as MenuItem<int>).Value == _pages[_page].Length))
 			{
 				CloseMenus();
 				_page++;
@@ -46,18 +47,18 @@ namespace CivOne.Screens
 				_update = true;
 				return;
 			}
-			_city.SetProduction(_pages[_page].ToArray()[(sender as Menu.Item).Value]);
+			_city.SetProduction(_pages[_page].ToArray()[(sender as MenuItem<int>).Value]);
 			MenuCancel(sender, args);
 		}
 
 		private void ProductionContext(object sender, EventArgs args)
 		{
-			if (_pages.Count > 1 && ((sender as Menu.Item).Value == _pages[_page].Length))
+			if (_pages.Count > 1 && ((sender as MenuItem<int>).Value == _pages[_page].Length))
 			{
 				ProductionChoice(sender, args);
 				return;
 			}
-			ICivilopedia page = (_pages[_page][(sender as Menu.Item).Value] as ICivilopedia);
+			ICivilopedia page = (_pages[_page][(sender as MenuItem<int>).Value] as ICivilopedia);
 			Common.AddScreen(new Civilopedia(page, icon: false));
 		}
 
@@ -135,14 +136,13 @@ namespace CivOne.Screens
 					TextColour = 5,
 					FontId = _fontId
 				};
-				Menu.Item menuItem;
+
 				int i = 0;
-				
 				foreach (string item in menuItems)
 				{
-					menu.Items.Add(menuItem = new Menu.Item(item, i++));
-					menuItem.Selected += ProductionChoice;
-					menuItem.RightClick += ProductionContext;
+					menu.Items.Add(item, i++)
+						.OnSelect(ProductionChoice)
+						.OnContext(ProductionContext);
 				}
 				menu.Width += 10;
 				menu.MissClick += MenuCancel;

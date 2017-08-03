@@ -37,7 +37,7 @@ namespace CivOne.Screens.Dialogs
 			int i = 0;
 			foreach (string choice in new [] { "Yes", "No" })
 			{
-				menu.Items.Add(new Menu.Item(choice, i++));
+				menu.Items.Add(choice, i++);
 			}
 			menu.Items[0].Selected += MenuYes;
 			menu.Items[1].Selected += Cancel;

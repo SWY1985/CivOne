@@ -15,6 +15,7 @@ using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Templates;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens
 {
@@ -28,13 +29,13 @@ namespace CivOne.Screens
 
 		private void AdvanceChoice(object sender, EventArgs args)
 		{
-			Human.CurrentResearch = _availableAdvances[(sender as Menu.Item).Value];
+			Human.CurrentResearch = _availableAdvances[(sender as MenuItem<int>).Value];
 			Destroy();
 		}
 
 		private void AdvanceContext(object sender, EventArgs args)
 		{
-			ICivilopedia page = ( _availableAdvances[(sender as Menu.Item).Value] as ICivilopedia);
+			ICivilopedia page = ( _availableAdvances[(sender as MenuItem<int>).Value] as ICivilopedia);
 			Common.AddScreen(new Civilopedia(page));
 		}
 
@@ -57,12 +58,11 @@ namespace CivOne.Screens
 					FontId = 0
 				};
 
-				Menu.Item menuItem;
 				for (int i = 0; i < _availableAdvances.Length; i++)
 				{
-					menu.Items.Add(menuItem = new Menu.Item(_availableAdvances[i].Name, i));
-					menuItem.Selected += AdvanceChoice;
-					menuItem.RightClick += AdvanceContext;
+					menu.Items.Add(_availableAdvances[i].Name, i)
+						.OnSelect(AdvanceChoice)
+						.OnContext(AdvanceContext);
 				}
 				AddMenu(menu);
 				return true;

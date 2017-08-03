@@ -13,6 +13,7 @@ using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Tasks;
 using CivOne.Templates;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens.Debug
 {
@@ -71,19 +72,17 @@ namespace CivOne.Screens.Debug
 
 			foreach (City city in cities)
 			{
-				_citySelect.Items.Add(new Menu.Item($"{city.Name} ({Game.GetPlayer(city.Owner).TribeName})"));
-				_citySelect.Items[_citySelect.Items.Count() - 1].Selected += CitySize_Accept;
+				_citySelect.Items.Add($"{city.Name} ({Game.GetPlayer(city.Owner).TribeName})").OnSelect(CitySize_Accept);
 			}
 
 			if (more)
 			{
-				_citySelect.Items.Add(new Menu.Item($" ---MORE---"));
-				_citySelect.Items[_citySelect.Items.Count() - 1].Selected += CitySize_More;
+				_citySelect.Items.Add($" ---MORE---").OnSelect(CitySize_More);
 			}
 
 			_citySelect.Cancel += CitySize_Cancel;
 			_citySelect.MissClick += CitySize_Cancel;
-			_citySelect.ActiveItem = (_citySelect.Items.Count() - 1);
+			_citySelect.ActiveItem = (_citySelect.Items.Count - 1);
 		}
 
 		private void CitySizeSet_Accept(object sender, EventArgs args)

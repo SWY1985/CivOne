@@ -12,6 +12,7 @@ using CivOne.Interfaces;
 using CivOne.GFX;
 using CivOne.Templates;
 using CivOne.Units;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens.Dialogs
 {
@@ -40,6 +41,8 @@ namespace CivOne.Screens.Dialogs
 			Cancel();
 		}
 
+		private bool AllowEstablishTradeRoute => (_unit.Home == null) || (_unit.Home.Tile.DistanceTo(_city.Tile) >= 10);
+
 		protected override void FirstUpdate()
 		{
 			int choices = 2;
@@ -55,23 +58,13 @@ namespace CivOne.Screens.Dialogs
 				FontId = FONT_ID
 			};
 
-			Menu.Item keepMoving, tradeRoute, helpWonder = null;
-
-			menu.Items.Add(keepMoving = new Menu.Item("Keep moving"));
-			menu.Items.Add(tradeRoute = new Menu.Item("Establish trade route")
-			{
-				Enabled = (_unit.Home == null) || (_unit.Home.Tile.DistanceTo(_city.Tile) >= 10)
-			});
+			menu.Items.Add("Keep moving").OnSelect(KeepMoving);
+			menu.Items.Add("Establish trade route").OnSelect(EstablishTradeRoute).SetEnabled(AllowEstablishTradeRoute);
 
 			if (_city.CurrentProduction is IWonder)
 			{
-				menu.Items.Add(helpWonder = new Menu.Item("Help build WONDER."));
+				menu.Items.Add("Help build WONDER.").OnSelect(HelpBuildWonder);
 			}
-			
-			keepMoving.Selected += KeepMoving;
-			tradeRoute.Selected += EstablishTradeRoute;
-			if (helpWonder != null)
-				helpWonder.Selected += HelpBuildWonder;
 			
 			AddMenu(menu);
 		}

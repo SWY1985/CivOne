@@ -14,6 +14,7 @@ using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.IO;
 using CivOne.Templates;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens
 {
@@ -71,11 +72,9 @@ namespace CivOne.Screens
 				IndentTitle = 2
 			};
 			
-			Menu.Item menuItem;
 			for (int i = 0; i < menuTexts.Length; i++)
 			{
-				menu.Items.Add(menuItem = new Menu.Item(menuTexts[i], i));
-				menuItem.Selected += setChoice;
+				menu.Items.Add(menuTexts[i], i).OnSelect(setChoice);
 			}
 			return menu;
 		}
@@ -238,7 +237,7 @@ namespace CivOne.Screens
 		
 		private void MainChoice(object sender, EventArgs args)
 		{
-			int choice = (sender as Menu.Item).Value;
+			int choice = (sender as MenuItem<int>).Value;
 			switch (choice)
 			{
 				case 0: // Settings
@@ -265,7 +264,7 @@ namespace CivOne.Screens
 		private void SettingsChoice(object sender, EventArgs args)
 		{
 			CloseMenus();
-			int choice = (sender as Menu.Item).Value;
+			int choice = (sender as MenuItem<int>).Value;
 			switch (choice)
 			{
 				case 0: // Graphics Mode
@@ -289,7 +288,7 @@ namespace CivOne.Screens
 		private void GraphicsModeChoice(object sender, EventArgs args)
 		{
 			CloseMenus();
-			int choice = (sender as Menu.Item).Value;
+			int choice = (sender as MenuItem<int>).Value;
 			switch (choice)
 			{
 				case 0: // 256 colours
@@ -304,7 +303,7 @@ namespace CivOne.Screens
 		
 		private void FullScreenChoice(object sender, EventArgs args)
 		{
-			int choice = (sender as Menu.Item).Value;
+			int choice = (sender as MenuItem<int>).Value;
 			switch (choice)
 			{
 				case 0: // no
@@ -320,7 +319,7 @@ namespace CivOne.Screens
 		
 		private void WindowScaleChoice(object sender, EventArgs args)
 		{
-			int choice = (sender as Menu.Item).Value;
+			int choice = (sender as MenuItem<int>).Value;
 			if (choice < 4)
 			{
 				Settings.Scale = (choice + 1);
@@ -331,7 +330,7 @@ namespace CivOne.Screens
 
 		private void AspectRatioChoice(object sender, EventArgs args)
 		{
-			int choice = (sender as Menu.Item).Value;
+			int choice = (sender as MenuItem<int>).Value;
 			if (choice < 5)
 			{
 				Settings.AspectRatio = (AspectRatio)(choice);
@@ -343,7 +342,7 @@ namespace CivOne.Screens
 		private void PatchesChoice(object sender, EventArgs args)
 		{
 			CloseMenus();
-			int choice = (sender as Menu.Item).Value;
+			int choice = (sender as MenuItem<int>).Value;
 			switch (choice)
 			{
 				case 0: // Reveal World
@@ -375,7 +374,7 @@ namespace CivOne.Screens
 		
 		private void RevealWorldChoice(object sender, EventArgs args)
 		{
-			int choice = (sender as Menu.Item).Value;
+			int choice = (sender as MenuItem<int>).Value;
 			switch (choice)
 			{
 				case 0: // no
@@ -391,7 +390,7 @@ namespace CivOne.Screens
 		
 		private void SideBarChoice(object sender, EventArgs args)
 		{
-			int choice = (sender as Menu.Item).Value;
+			int choice = (sender as MenuItem<int>).Value;
 			switch (choice)
 			{
 				case 0: // left
@@ -407,7 +406,7 @@ namespace CivOne.Screens
 		
 		private void DebugMenuChoice(object sender, EventArgs args)
 		{
-			int choice = (sender as Menu.Item).Value;
+			int choice = (sender as MenuItem<int>).Value;
 			switch (choice)
 			{
 				case 0: // no
@@ -423,7 +422,7 @@ namespace CivOne.Screens
 		
 		private void CursorTypeChoice(object sender, EventArgs args)
 		{
-			int choice = (sender as Menu.Item).Value;
+			int choice = (sender as MenuItem<int>).Value;
 			switch (choice)
 			{
 				case 0:
@@ -442,7 +441,7 @@ namespace CivOne.Screens
 
 		private void DestroyAnimationChoice(object sender, EventArgs args)
 		{
-			int choice = (sender as Menu.Item).Value;
+			int choice = (sender as MenuItem<int>).Value;
 			switch (choice)
 			{
 				case 0:
@@ -458,7 +457,7 @@ namespace CivOne.Screens
 		
 		private void DeityEnabledChoice(object sender, EventArgs args)
 		{
-			int choice = (sender as Menu.Item).Value;
+			int choice = (sender as MenuItem<int>).Value;
 			switch (choice)
 			{
 				case 0: // no
@@ -474,7 +473,7 @@ namespace CivOne.Screens
 
 		private void ArrowHelperChoice(object sender, EventArgs args)
 		{
-			int choice = (sender as Menu.Item).Value;
+			int choice = (sender as MenuItem<int>).Value;
 			switch (choice)
 			{
 				case 0: // no

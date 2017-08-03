@@ -31,10 +31,9 @@ namespace CivOne.Screens.Dialogs
 				TextColour = 5,
 				FontId = 0
 			};
-			int i = 0;
 			foreach (string choice in new [] { "Keep Playing", "Yes, Quit" })
 			{
-				menu.Items.Add(new Menu.Item(choice, i++));
+				menu.Items.Add(choice);
 			}
 			menu.Items[0].Selected += Cancel;
 			menu.Items[1].Selected += MenuQuit;

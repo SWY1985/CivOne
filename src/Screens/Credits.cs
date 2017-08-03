@@ -15,6 +15,7 @@ using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.IO;
 using CivOne.Templates;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens
 {
@@ -196,17 +197,11 @@ namespace CivOne.Screens
 				DisabledColour = 8,
 				FontId = 0
 			};
-			Menu.Item[] menuItems = new Menu.Item[5];
-			menu.Items.Add(menuItems[0] = new Menu.Item("Start a New Game"));
-			menu.Items.Add(menuItems[1] = new Menu.Item("Load a Saved Game"));
-			menu.Items.Add(menuItems[2] = new Menu.Item("EARTH"));
-			menu.Items.Add(menuItems[3] = new Menu.Item("Customize World"));
-			menu.Items.Add(menuItems[4] = new Menu.Item("View Hall of Fame") { Enabled = false });
-			
-			menuItems[0].Selected += StartNewGame;
-			menuItems[1].Selected += LoadSavedGame;
-			menuItems[2].Selected += Earth;
-			menuItems[3].Selected += CustomizeWorld;
+			menu.Items.Add("Start a New Game").OnSelect(StartNewGame);
+			menu.Items.Add("Load a Saved Game").OnSelect(LoadSavedGame);
+			menu.Items.Add("EARTH").OnSelect(Earth);
+			menu.Items.Add("Customize World").OnSelect(CustomizeWorld);
+			menu.Items.Add("View Hall of Fame").Disable();
 			
 			AddMenu(menu);
 		}

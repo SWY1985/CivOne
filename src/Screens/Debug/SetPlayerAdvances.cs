@@ -13,6 +13,7 @@ using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Templates;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens.Debug
 {
@@ -72,17 +73,15 @@ namespace CivOne.Screens.Debug
 			foreach (IAdvance advance in advances)
 			{
 				bool hasAdvance = _selectedPlayer.HasAdvance(advance);
-				_advanceSelect.Items.Add(new Menu.Item($"{(hasAdvance ? '^' : ' ')}{advance.Name}"));
-				_advanceSelect.Items[_advanceSelect.Items.Count() - 1].Selected += PlayerAdvances_Accept;
+				_advanceSelect.Items.Add($"{(hasAdvance ? '^' : ' ')}{advance.Name}").OnSelect(PlayerAdvances_Accept);
 			}
 
-			_advanceSelect.Items.Add(new Menu.Item($" ---MORE---"));
-			_advanceSelect.Items[_advanceSelect.Items.Count() - 1].Selected += PlayerAdvances_More;
+			_advanceSelect.Items.Add($" ---MORE---").OnSelect(PlayerAdvances_More);
 
 			_advanceSelect.Cancel += PlayerAdvances_Cancel;
 			_advanceSelect.MissClick += PlayerAdvances_Cancel;
 			if (_selected == -1)
-				_advanceSelect.ActiveItem = (_advanceSelect.Items.Count() - 1);
+				_advanceSelect.ActiveItem = (_advanceSelect.Items.Count - 1);
 			else
 				_advanceSelect.ActiveItem = (_selected + 1);
 		}
@@ -171,8 +170,7 @@ namespace CivOne.Screens.Debug
 
 			foreach (Player player in Game.Players)
 			{
-				_civSelect.Items.Add(new Menu.Item(player.TribeNamePlural));
-				_civSelect.Items[_civSelect.Items.Count() - 1].Selected += CivSelect_Accept;
+				_civSelect.Items.Add(player.TribeNamePlural).OnSelect(CivSelect_Accept);
 			}
 
 			_civSelect.Cancel += PlayerAdvances_Cancel;

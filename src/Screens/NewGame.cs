@@ -17,6 +17,7 @@ using CivOne.GFX;
 using CivOne.IO;
 using CivOne.Tasks;
 using CivOne.Templates;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens
 {
@@ -47,11 +48,9 @@ namespace CivOne.Screens
 				RowHeight = 8
 			};
 			
-			Menu.Item menuItem;
 			for (int i = 0; i < menuTexts.Length; i++)
 			{
-				menu.Items.Add(menuItem = new Menu.Item(menuTexts[i], i));
-				menuItem.Selected += setChoice;
+				menu.Items.Add(menuTexts[i], i).OnSelect(setChoice);
 			}
 			return menu;
 		}
@@ -91,14 +90,14 @@ namespace CivOne.Screens
 		
 		private void SetDifficulty(object sender, EventArgs args)
 		{
-			_difficulty = (sender as Menu.Item).Value;
+			_difficulty = (sender as MenuItem<int>).Value;
 			CloseMenus();
 			Console.WriteLine("Difficulty: {0}", _menuItemsDifficulty[_difficulty]);
 		}
 		
 		private void SetCompetition(object sender, EventArgs args)
 		{
-			_competition = (7 - (sender as Menu.Item).Value);
+			_competition = (7 - (sender as MenuItem<int>).Value);
 			CloseMenus();
 			Console.WriteLine("Competition: {0} Civilizations", _competition);
 			
@@ -108,7 +107,7 @@ namespace CivOne.Screens
 		
 		private void SetTribe(object sender, EventArgs args)
 		{
-			_tribe = (sender as Menu.Item).Value;
+			_tribe = (sender as MenuItem<int>).Value;
 			
 			ICivilization civ = _tribesAvailable[_tribe];
 			_tribeName = civ.Name;
