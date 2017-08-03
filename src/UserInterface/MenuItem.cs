@@ -7,14 +7,16 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using System;
+using CivOne.Events;
 
 namespace CivOne.UserInterface
 {
 	public class MenuItem<T>
 	{
-		public event EventHandler Selected;
-		public event EventHandler RightClick;
+		private MenuItemEventArgs<T> _args => new MenuItemEventArgs<T>(Value);
+
+		public event MenuItemEventHandler<T> Selected;
+		public event MenuItemEventHandler<T> RightClick;
 		public T Value { get; private set; }
 		public bool Enabled { get; set; }
 		public string Text { get; set; }
@@ -22,7 +24,7 @@ namespace CivOne.UserInterface
 		internal void Select()
 		{
 			if (Selected == null) return;
-			Selected(this, null);
+			Selected(this, _args);
 		}
 
 		internal void Context()
@@ -32,7 +34,7 @@ namespace CivOne.UserInterface
 				Select();
 				return;
 			}
-			RightClick(this, null);
+			RightClick(this, _args);
 		}
 
 		internal static MenuItem<T> Create(string text, T value = default(T))

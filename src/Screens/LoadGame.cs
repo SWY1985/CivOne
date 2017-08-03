@@ -98,9 +98,9 @@ namespace CivOne.Screens
 			}
 		}
 		
-		private void LoadSaveFile(object sender, EventArgs args)
+		private void LoadSaveFile(object sender, MenuItemEventArgs<int> args)
 		{
-			int item = (sender as MenuItem<int>).Value;
+			int item = args.Value;
 			
 			SaveGameFile file = GetSaveGames().ToArray()[item];
 
@@ -114,14 +114,14 @@ namespace CivOne.Screens
 			Common.AddScreen(new GamePlay());
 		}
 		
-		private void LoadEmptyFile(object sender, EventArgs args)
+		private void LoadEmptyFile(object sender, MenuItemEventArgs<int> args)
 		{
 			Console.WriteLine("Empty save file, cancel");
 			Cancel = true;
 			_update = true;
 		}
 
-		private EventHandler LoadFileHandler(SaveGameFile file)
+		private MenuItemEventHandler<int> LoadFileHandler(SaveGameFile file)
 		{
 			if (file.ValidFile)
 				return LoadSaveFile;
