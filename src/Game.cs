@@ -976,6 +976,7 @@ namespace CivOne
 					if (_players.GetUpperBound(0) < i)
 					{
 						bw.Write((short)0xFF);
+						continue;
 					}
 					bw.Write((short)_players[i].StartX);
 				}
