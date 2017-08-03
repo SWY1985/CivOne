@@ -15,7 +15,7 @@ namespace CivOne
 	/// <remarks>
 	/// This code is based on JCivED[r23] source code by darkpanda. <http://sourceforge.net/p/jcived/code/HEAD/tree/branches/dev/src/dd/civ/logic/CivRandom.java>
 	/// </remarks>
-	internal class Random
+	public class Random
 	{
 		private short _initialSeed;
 		private long _counter;

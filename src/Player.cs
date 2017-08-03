@@ -316,11 +316,11 @@ namespace CivOne
 			}
 		}
 
-		public IAdvance[] Advances
+		public List<IAdvance> Advances
 		{
 			get
 			{
-				return _advances.Select(a => Common.Advances.First(x => x.Id == a)).ToArray();
+				return _advances.Select(a => Common.Advances.First(x => x.Id == a)).ToList();
 			}
 		}
 		
