@@ -18,6 +18,20 @@ namespace CivOne.UserInterface
 	{
 		private readonly List<MenuItem<T>> _menuItems = new List<MenuItem<T>>();
 
+		private void HandlePluginActions(object sender, EventArgs args)
+		{
+			if (Id == null) return;
+			foreach (MenuModification mod in Reflect.GetModifications<MenuModification>().Where(x => x.MenuId == Id))
+			foreach(MenuItem<T> item in _menuItems.Where(x => x != null))
+			{
+				(string Text, string Shortcut) change = mod.ChangeMenuItemText(item.Text, item.Shortcut);
+				item.Text = change.Text;
+				item.Shortcut = change.Shortcut;
+			}
+		}
+
+		internal string Id { get; private set; }
+
 		public event EventHandler ItemsChanged;
 
 		public int Count => _menuItems.Count();
@@ -87,6 +101,13 @@ namespace CivOne.UserInterface
 					throw new IndexOutOfRangeException();
 				return _menuItems[index];
 			}
+		}
+
+		public MenuItemCollection(string id = null)
+		{
+			Id = id;
+
+			ItemsChanged += HandlePluginActions;
 		}
 	}
 }

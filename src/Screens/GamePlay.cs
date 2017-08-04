@@ -73,7 +73,7 @@ namespace CivOne.Screens
 		
 		private void MenuBarGame(object sender, EventArgs args)
 		{
-			_gameMenu = new GameMenu(_canvas.Palette);
+			_gameMenu = new GameMenu("MenuBarGame", _canvas.Palette);
 			_gameMenu.Items.Add("Tax Rate").OnSelect((s, a) => GameTask.Enqueue(Show.TaxRate));
 			_gameMenu.Items.Add("Luxuries Rate").OnSelect((s, a) => GameTask.Enqueue(Show.LuxuryRate));
 			_gameMenu.Items.Add("FindCity").OnSelect((s, a) => GameTask.Enqueue(Show.Search));
@@ -99,7 +99,7 @@ namespace CivOne.Screens
 		{
 			if (Game.ActiveUnit == null) return;
 
-			_gameMenu = new GameMenu(_canvas.Palette);
+			_gameMenu = new GameMenu("MenuBarOrders", _canvas.Palette);
 			_gameMenu.Items.AddRange(Game.ActiveUnit.MenuItems);
 			
 			_menuX = 72;
@@ -110,7 +110,7 @@ namespace CivOne.Screens
 		
 		private void MenuBarAdvisors(object sender, EventArgs args)
 		{
-			_gameMenu = new GameMenu(_canvas.Palette);
+			_gameMenu = new GameMenu("MenuBarAdvisors", _canvas.Palette);
 			_gameMenu.Items.Add("City Status (F1)").OnSelect((s, a) => Common.AddScreen(new CityStatus()));
 			_gameMenu.Items.Add("Military Advisor (F2)").OnSelect((s, a) => { Common.AddScreen(new MilitaryLosses()); Common.AddScreen(new MilitaryStatus()); });
 			_gameMenu.Items.Add("Intelligence Advisor (F3)").OnSelect((s, a) => Common.AddScreen(new IntelligenceReport()));
@@ -126,7 +126,7 @@ namespace CivOne.Screens
 		
 		private void MenuBarWorld(object sender, EventArgs args)
 		{
-			_gameMenu = new GameMenu(_canvas.Palette);
+			_gameMenu = new GameMenu("MenuBarWorld", _canvas.Palette);
 			_gameMenu.Items.Add("Wonders of the World (F7)").OnSelect((s, a) => {
 				if (Game.BuiltWonders.Length == 0)
 					GameTask.Enqueue(Show.Empty);
@@ -147,7 +147,7 @@ namespace CivOne.Screens
 		
 		private void MenuBarCivilopedia(object sender, EventArgs args)
 		{
-			_gameMenu = new GameMenu(_canvas.Palette);
+			_gameMenu = new GameMenu("MenuBarCivilopedia", _canvas.Palette);
 			_gameMenu.Items.Add("Complete").OnSelect((s, a) => Common.AddScreen(new Civilopedia(Civilopedia.Complete)));
 			_gameMenu.Items.Add("Civilization Advances").OnSelect((s, a) => Common.AddScreen(new Civilopedia(Civilopedia.Advances)));
 			_gameMenu.Items.Add("City Improvements").OnSelect((s, a) => Common.AddScreen(new Civilopedia(Civilopedia.Improvements)));

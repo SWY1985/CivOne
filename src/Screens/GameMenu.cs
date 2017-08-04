@@ -22,7 +22,7 @@ namespace CivOne.Screens
 	public class GameMenu : BaseScreen
 	{
 		private readonly Color[] _palette;
-		public readonly MenuItemCollection<int> Items = new MenuItemCollection<int>();
+		public readonly MenuItemCollection<int> Items;
 		
 		private int _activeItem = -1;
 		private bool _update = true;
@@ -183,8 +183,10 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public GameMenu(Color[] palette)
+		public GameMenu(string menuId, Color[] palette)
 		{
+			Items = new MenuItemCollection<int>(menuId);
+			
 			_palette = palette;
 			
 			_canvas = new Picture(8, 8, _palette);
