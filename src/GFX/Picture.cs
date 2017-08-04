@@ -137,7 +137,7 @@ namespace CivOne.GFX
 		
 		public void DrawText(string text, int font, byte colour, int x, int y, TextAlign align = TextAlign.Left)
 		{
-			if (colour == 0) return;
+			if (colour == 0 || string.IsNullOrWhiteSpace(text)) return;
 			DrawText(text, font, colour, colour, x, y, align);
 		}
 		public void DrawText(string text, int font, byte firstLetterColour, byte colour, int x, int y, TextAlign align = TextAlign.Left)
