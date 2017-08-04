@@ -12,6 +12,7 @@ using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Screens;
 using CivOne.Tasks;
+using CivOne.UserInterface;
 
 namespace CivOne.Interfaces
 {
@@ -49,6 +50,6 @@ namespace CivOne.Interfaces
 		void SetHome();
 		void SetHome(City city);
 		Picture GetUnit(byte colour, bool showState = true);
-		IEnumerable<GameMenu.Item> MenuItems { get; }
+		IEnumerable<MenuItem<int>> MenuItems { get; }
 	}
 }

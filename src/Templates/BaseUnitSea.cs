@@ -12,6 +12,7 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.Interfaces;
 using CivOne.Screens;
+using CivOne.UserInterface;
 using CivOne.Wonders;
 
 namespace CivOne.Templates
@@ -77,14 +78,9 @@ namespace CivOne.Templates
 			return true;
 		}
 
-		private GameMenu.Item MenuUnload()
-		{
-			GameMenu.Item item = new GameMenu.Item("Unload", "u");
-			item.Selected += (s, a) => Unload();
-			return item;
-		}
+		private MenuItem<int> MenuUnload() => MenuItem<int>.Create("Unload").SetShortcut("u").OnSelect((s, a) => Unload());
 		
-		public override IEnumerable<GameMenu.Item> MenuItems
+		public override IEnumerable<MenuItem<int>> MenuItems
 		{
 			get
 			{
@@ -100,7 +96,7 @@ namespace CivOne.Templates
 				{
 					yield return MenuUnload();
 				}
-				yield return new GameMenu.Item(null);
+				yield return null;
 				yield return MenuDisbandUnit();
 			}
 		}

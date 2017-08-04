@@ -31,6 +31,12 @@ namespace CivOne.UserInterface
 			return menuItem;
 		}
 
+		public static MenuItem<T> SetShortcut<T>(this MenuItem<T> menuItem, string shortcut)
+		{
+			menuItem.Shortcut = shortcut;
+			return menuItem;
+		}
+
 		public static MenuItem<T> OnSelect<T>(this MenuItem<T> menuItem, MenuItemEventHandler<T> eventMethod)
 		{
 			menuItem.Selected += eventMethod;

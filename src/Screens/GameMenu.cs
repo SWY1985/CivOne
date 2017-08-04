@@ -10,69 +10,72 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Templates;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens
 {
 	public class GameMenu : BaseScreen
 	{
-		public class Item
-		{
-			public event EventHandler Selected;
-			public bool Enabled = true;
-			public string Text;
-			public string Shortcut;
+		// public class Item
+		// {
+		// 	public event EventHandler Selected;
+		// 	public bool Enabled = true;
+		// 	public string Text;
+		// 	public string Shortcut;
 			
-			internal void Select()
-			{
-				if (Selected == null) return;
-				Selected(this, null);
-			}
+		// 	internal void Select()
+		// 	{
+		// 		if (Selected == null) return;
+		// 		Selected(this, null);
+		// 	}
 			
-			internal int ItemWidth
-			{
-				get
-				{
-					if (Shortcut == null)
-						return TextWidth;
-					return Resources.Instance.GetTextSize(0, Shortcut).Width + TextWidth + 8;
-				}
-			}
+		// 	internal int ItemWidth
+		// 	{
+		// 		get
+		// 		{
+		// 			if (Shortcut == null)
+		// 				return TextWidth;
+		// 			return Resources.Instance.GetTextSize(0, Shortcut).Width + TextWidth + 8;
+		// 		}
+		// 	}
 			
-			internal int TextWidth
-			{
-				get
-				{
-					if (Text == null)
-						return 0;
-					return Resources.Instance.GetTextSize(0, Text).Width;
-				}
-			}
+		// 	internal int TextWidth
+		// 	{
+		// 		get
+		// 		{
+		// 			if (Text == null)
+		// 				return 0;
+		// 			return Resources.Instance.GetTextSize(0, Text).Width;
+		// 		}
+		// 	}
 			
-			internal void Draw(Picture picture, int x, int y)
-			{
-				if (Text == null) return;
-				picture.DrawText(Text, 0, (byte)(Enabled ? 5 : 3), x, y, TextAlign.Left);
-				if (Shortcut == null) return;
-				picture.DrawText(Shortcut, 0, 15, x + TextWidth + 8, y, TextAlign.Left);
-			}
+		// 	internal void Draw(Picture picture, int x, int y)
+		// 	{
+		// 		if (Text == null) return;
+		// 		picture.DrawText(Text, 0, (byte)(Enabled ? 5 : 3), x, y, TextAlign.Left);
+		// 		if (Shortcut == null) return;
+		// 		picture.DrawText(Shortcut, 0, 15, x + TextWidth + 8, y, TextAlign.Left);
+		// 	}
 			
-			public Item(string text, string shortcut = null, Action<EventHandler> selected = null)
-			{
-				Text = text;
-				Shortcut = shortcut;
-				if (selected != null)
-				{
-					selected += selected;
-				}
-			}
-		}
+		// 	public Item(string text, string shortcut = null, Action<EventHandler> selected = null)
+		// 	{
+		// 		Text = text;
+		// 		Shortcut = shortcut;
+		// 		if (selected != null)
+		// 		{
+		// 			selected += selected;
+		// 		}
+		// 	}
+		// }
 		
 		private readonly Color[] _palette;
-		public readonly List<Item> Items = new List<Item>();
+		// public readonly List<Item> Items = new List<Item>();
+		public readonly MenuItemCollection<int> Items = new MenuItemCollection<int>();
 		
 		private int _activeItem = -1;
 		private bool _update = true;
@@ -90,19 +93,27 @@ namespace CivOne.Screens
 				_activeItem = 0;
 			}
 		}
-		
-		private int MaxItemWidth
+
+		private int ItemWidth(MenuItem<int> menuItem)
 		{
-			get
+			int width = 0;
+			if (menuItem != null)
 			{
-				int ww = 0;
-				foreach (Item item in Items)
-				{
-					if (item.ItemWidth <= ww) continue;
-					ww = item.ItemWidth;
-				}
-				return ww;
+				if (menuItem.Text != null) width += Resources.GetTextSize(0, menuItem.Text).Width;
+				if (menuItem.Shortcut != null) width += Resources.GetTextSize(0, menuItem.Shortcut).Width + 8;
 			}
+			return width;
+		}
+
+		private int MaxItemWidth => Items.Select(x => ItemWidth(x)).Max();
+
+		private void MenuItemDraw(MenuItem<int> menuItem, Picture picture, int x, int y)
+		{
+			if (menuItem == null || menuItem.Text == null) return;
+			picture.DrawText(menuItem.Text, 0, (byte)(menuItem.Enabled ? 5 : 3), x, y, TextAlign.Left);
+			if (menuItem.Shortcut == null) return;
+			int textWidth = Resources.GetTextSize(0, menuItem.Text).Width;
+			picture.DrawText(menuItem.Shortcut, 0, 15, x + textWidth + 8, y, TextAlign.Left);
 		}
 		
 		public override bool HasUpdate(uint gameTick)
@@ -127,14 +138,14 @@ namespace CivOne.Screens
 			
 			int i = 0;
 			int yy = 5;
-			foreach (Item item in Items)
+			foreach (MenuItem<int> menuItem in Items)
 			{
 				if (i == _activeItem)
 				{
 					_canvas.ColourReplace(7, 11, 3, yy - 1, MaxItemWidth + 11, Resources.Instance.GetFontHeight(0));
 					_canvas.ColourReplace(22, 3, 3, yy - 1, MaxItemWidth + 11, Resources.Instance.GetFontHeight(0));
 				}
-				item.Draw(_canvas, 11, yy);
+				MenuItemDraw(menuItem, _canvas, 11, yy);
 				yy += Resources.Instance.GetFontHeight(0);
 				i++;
 			}
