@@ -155,6 +155,48 @@ namespace CivOne
 			}
 			return _plugins.Keys;
 		}
+
+		private static IEnumerable<Type> PluginModifications
+		{
+			get
+			{
+				if (_plugins == null) yield break;
+				foreach (Assembly assembly in _plugins.Values)
+				foreach (Type type in assembly.GetTypes().Where(x => x.IsClass && !x.IsAbstract && x.GetInterfaces().Contains(typeof(IModification))))
+				{
+					yield return type;
+				}
+			}
+		}
+
+		private static object[] ParseParameters(params object[] parameters)
+		{
+			List<object> output = new List<object>();
+			foreach (object parameter in parameters)
+			{
+				switch (parameter)
+				{
+					case string stringParameter:
+						output.Add(stringParameter);
+						break;
+					case int intParameter:
+						output.Add(intParameter);
+						break;
+					default:
+						output.Add(parameter);
+						break;
+				}
+			}
+			return output.ToArray();
+		}
+
+		internal static IEnumerable<T> GetModifications<T>()
+		{
+			foreach (Type type in PluginModifications.Where(x => x.IsSubclassOf(typeof(T))))
+			{
+				yield return (T)Activator.CreateInstance(type);
+			}
+		}
 		
 		internal static void PreloadCivilopedia()
 		{
