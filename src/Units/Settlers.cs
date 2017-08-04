@@ -18,6 +18,7 @@ using CivOne.Screens;
 using CivOne.Tasks;
 using CivOne.Templates;
 using CivOne.Tiles;
+using CivOne.UserInterface;
 
 namespace CivOne.Units
 {
@@ -238,81 +239,36 @@ namespace CivOne.Units
 			}
 		}
 
-		private GameMenu.Item MenuFoundCity()
-		{
-			GameMenu.Item item;
-			if (Map[X, Y].City == null)
-			{
-				item = new GameMenu.Item("Found New City", "b");
-			}
-			else
-			{
-				item = new GameMenu.Item("Add to City", "b");
-			}
-			item.Selected += (s, a) => GameTask.Enqueue(Orders.FoundCity(this));
-			return item;
-		}
+		private MenuItem<int> MenuFoundCity() => MenuItem<int>
+			.Create((Map[X, Y].City == null) ? "Found New City" : "Add to City")
+			.SetShortcut("b")
+			.OnSelect((s, a) => GameTask.Enqueue(Orders.FoundCity(this)));
 
-		private GameMenu.Item MenuBuildRoad()
-		{
-			GameMenu.Item item;
-			if (Map[X, Y].Road)
-			{
-				item = new GameMenu.Item("Build RailRoad", "r");
-			}
-			else
-			{
-				item = new GameMenu.Item("Build Road", "r");
-			}
-			item.Selected += (s, a) => BuildRoad();
-			return item;
-		}
+		private MenuItem<int> MenuBuildRoad() => MenuItem<int>
+			.Create((Map[X, Y].Road) ? "Build RailRoad" : "Build Road")
+			.SetShortcut("r")
+			.OnSelect((s, a) => BuildRoad());
 
-		private GameMenu.Item MenuBuildIrrigation()
-		{
-			GameMenu.Item item;
-			if (Map[X, Y] is Forest)
-			{
-				item = new GameMenu.Item("Change to Plains", "i");
-			}
-			else if ((Map[X, Y] is Jungle) || (Map[X, Y] is Swamp))
-			{
-				item = new GameMenu.Item("Change to Grassland", "i");
-			}
-			else
-			{
-				item = new GameMenu.Item("Build Irrigation", "i");
-			}
-			item.Selected += (s, a) => GameTask.Enqueue(Orders.BuildIrrigation(this));
-			return item;
-		}
+		private MenuItem<int> MenuBuildIrrigation() => MenuItem<int>
+			.Create((Map[X, Y] is Forest) ? "Change to Plains" :
+					((Map[X, Y] is Jungle) || (Map[X, Y] is Swamp)) ? "Change to Grassland" :
+					"Build Irrigation")
+			.SetShortcut("i")
+			.OnSelect((s, a) => GameTask.Enqueue(Orders.BuildIrrigation(this)));
 
-		private GameMenu.Item MenuBuildMines()
-		{
-			GameMenu.Item item;
-			if ((Map[X, Y] is Jungle) || (Map[X, Y] is Grassland) || (Map[X, Y] is Plains) || (Map[X, Y] is Swamp))
-			{
-				item = new GameMenu.Item("Change to Forest", "m");
-			}
-			else
-			{
-				item = new GameMenu.Item("Build Mines", "m");
-			}
-			item.Selected += (s, a) => GameTask.Enqueue(Orders.BuildMines(this));
-			return item;
-		}
+		private MenuItem<int> MenuBuildMines() => MenuItem<int>
+			.Create(((Map[X, Y] is Jungle) || (Map[X, Y] is Grassland) || (Map[X, Y] is Plains) || (Map[X, Y] is Swamp)) ?
+					"Change to Forest" : "Build Mines")
+			.SetShortcut("m")
+			.OnSelect((s, a) => GameTask.Enqueue(Orders.BuildMines(this)));
 
-		private GameMenu.Item MenuBuildFortress()
-		{
-			GameMenu.Item item = new GameMenu.Item("Build fortress", "f");
-			if (!Game.CurrentPlayer.HasAdvance<Construction>())
-				item.Enabled = false;
-			else
-				item.Selected += (s, a) => GameTask.Enqueue(Orders.BuildFortress(this));
-			return item;
-		}
+		private MenuItem<int> MenuBuildFortress() => MenuItem<int>
+			.Create("Build fortress")
+			.SetShortcut("f")
+			.SetEnabled(!Game.CurrentPlayer.HasAdvance<Construction>())
+			.OnSelect((s, a) => GameTask.Enqueue(Orders.BuildFortress(this)));
 		
-		public override IEnumerable<GameMenu.Item> MenuItems
+		public override IEnumerable<MenuItem<int>> MenuItems
 		{
 			get
 			{
@@ -351,7 +307,7 @@ namespace CivOne.Units
 				{
 					yield return MenuHomeCity();
 				}
-				yield return new GameMenu.Item(null);
+				yield return null;
 				yield return MenuDisbandUnit();
 			}
 		}

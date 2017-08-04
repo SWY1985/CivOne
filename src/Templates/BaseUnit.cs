@@ -18,6 +18,7 @@ using CivOne.IO;
 using CivOne.Screens;
 using CivOne.Tasks;
 using CivOne.Units;
+using CivOne.UserInterface;
 
 namespace CivOne.Templates
 {
@@ -719,64 +720,23 @@ namespace CivOne.Templates
 			return _unitCache[unitId, colour];
 		}
 
-		protected GameMenu.Item MenuNoOrders()
-		{
-			GameMenu.Item item = new GameMenu.Item("No Orders", "space");
-			item.Selected += (s, a) => SkipTurn();
-			return item;
-		}
+		protected MenuItem<int> MenuNoOrders() => MenuItem<int>.Create("No Orders").SetShortcut("space").OnSelect((s, a) => SkipTurn());
 		
-		protected GameMenu.Item MenuFortify()
-		{
-			GameMenu.Item item = new GameMenu.Item("Fortify", "f");
-			item.Selected += (s, a) => Fortify = true;
-			return item;
-		}
+		protected MenuItem<int> MenuFortify() => MenuItem<int>.Create("Fortify").SetShortcut("f").OnSelect((s, a) => Fortify = true);
 		
-		protected GameMenu.Item MenuWait()
-		{
-			GameMenu.Item item = new GameMenu.Item("Wait", "w");
-			item.Selected += (s, a) => Game.UnitWait();
-			return item;
-		}
+		protected MenuItem<int> MenuWait() => MenuItem<int>.Create("Wait").SetShortcut("w").OnSelect((s, a) => Game.UnitWait());
 		
-		protected GameMenu.Item MenuSentry()
-		{
-			GameMenu.Item item = new GameMenu.Item("Sentry", "s");
-			item.Selected += (s, a) => Sentry = true;
-			return item;
-		}
+		protected MenuItem<int> MenuSentry() => MenuItem<int>.Create("Sentry").SetShortcut("s").OnSelect((s, a) => Sentry = true);
 		
-		protected GameMenu.Item MenuGoTo()
-		{
-			GameMenu.Item item = new GameMenu.Item("GoTo");
-			item.Selected += (s, a) => GameTask.Enqueue(Show.Goto);
-			return item;
-		}
+		protected MenuItem<int> MenuGoTo() => MenuItem<int>.Create("GoTo").OnSelect((s, a) => GameTask.Enqueue(Show.Goto));
 		
-		protected GameMenu.Item MenuPillage()
-		{
-			GameMenu.Item item = new GameMenu.Item("Pillage", "P");
-			item.Enabled = false;
-			// TODO: Add action
-			return item;
-		}
+		protected MenuItem<int> MenuPillage() => MenuItem<int>.Create("Pillage").SetShortcut("P").Disable();
 		
-		protected GameMenu.Item MenuHomeCity()
-		{
-			GameMenu.Item item = new GameMenu.Item("Home City", "h");
-			item.Selected += (s, a) => SetHome();
-			return item;
-		}
+		protected MenuItem<int> MenuHomeCity() => MenuItem<int>.Create("Home City").SetShortcut("h").OnSelect((s, a) => SetHome());
 		
-		protected GameMenu.Item MenuDisbandUnit()
-		{
-			GameMenu.Item item = new GameMenu.Item("Disband Unit", "D");
-			item.Selected += (s, a) => Game.DisbandUnit(this);
-			return item;
-		}
+		protected MenuItem<int> MenuDisbandUnit() => MenuItem<int>.Create("Disband Unit").SetShortcut("D").OnSelect((s, a) => Game.DisbandUnit(this));
 
-		public abstract IEnumerable<GameMenu.Item> MenuItems { get; }
+		public abstract IEnumerable<MenuItem<int>> MenuItems { get; }
 
 		protected abstract bool ValidMoveTarget(ITile tile);
 

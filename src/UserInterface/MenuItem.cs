@@ -20,6 +20,7 @@ namespace CivOne.UserInterface
 		public T Value { get; private set; }
 		public bool Enabled { get; set; }
 		public string Text { get; set; }
+		public string Shortcut { get; set; }
 
 		internal void Select()
 		{

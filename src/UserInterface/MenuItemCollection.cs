@@ -22,12 +22,24 @@ namespace CivOne.UserInterface
 
 		public int Count => _menuItems.Count();
 
+		public void Add(MenuItem<T> menuItem)
+		{
+			_menuItems.Add(menuItem);
+			ItemsChanged?.Invoke(this, EventArgs.Empty);
+		}
+
 		public MenuItem<T> Add(string text, T value = default(T))
 		{
 			MenuItem<T> menuItem = MenuItem<T>.Create(text, value);
 			_menuItems.Add(menuItem);
 			ItemsChanged?.Invoke(this, EventArgs.Empty);
 			return menuItem;
+		}
+
+		public void AddRange(IEnumerable<MenuItem<T>> menuItems)
+		{
+			_menuItems.AddRange(menuItems);
+			ItemsChanged?.Invoke(this, EventArgs.Empty);
 		}
 
 		public MenuItem<T> InsertAt(int index, string text, T value)

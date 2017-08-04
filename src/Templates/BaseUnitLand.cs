@@ -14,6 +14,7 @@ using CivOne.Enums;
 using CivOne.Interfaces;
 using CivOne.Screens;
 using CivOne.Tasks;
+using CivOne.UserInterface;
 
 namespace CivOne.Templates
 {
@@ -200,7 +201,7 @@ namespace CivOne.Templates
 			}
 		}
 		
-		public override IEnumerable<GameMenu.Item> MenuItems
+		public override IEnumerable<MenuItem<int>> MenuItems
 		{
 			get
 			{
@@ -217,7 +218,7 @@ namespace CivOne.Templates
 				{
 					yield return MenuHomeCity();
 				}
-				yield return new GameMenu.Item(null);
+				yield return null;
 				yield return MenuDisbandUnit();
 			}
 		}
