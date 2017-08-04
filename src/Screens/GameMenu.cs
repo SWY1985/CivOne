@@ -21,60 +21,7 @@ namespace CivOne.Screens
 {
 	public class GameMenu : BaseScreen
 	{
-		// public class Item
-		// {
-		// 	public event EventHandler Selected;
-		// 	public bool Enabled = true;
-		// 	public string Text;
-		// 	public string Shortcut;
-			
-		// 	internal void Select()
-		// 	{
-		// 		if (Selected == null) return;
-		// 		Selected(this, null);
-		// 	}
-			
-		// 	internal int ItemWidth
-		// 	{
-		// 		get
-		// 		{
-		// 			if (Shortcut == null)
-		// 				return TextWidth;
-		// 			return Resources.Instance.GetTextSize(0, Shortcut).Width + TextWidth + 8;
-		// 		}
-		// 	}
-			
-		// 	internal int TextWidth
-		// 	{
-		// 		get
-		// 		{
-		// 			if (Text == null)
-		// 				return 0;
-		// 			return Resources.Instance.GetTextSize(0, Text).Width;
-		// 		}
-		// 	}
-			
-		// 	internal void Draw(Picture picture, int x, int y)
-		// 	{
-		// 		if (Text == null) return;
-		// 		picture.DrawText(Text, 0, (byte)(Enabled ? 5 : 3), x, y, TextAlign.Left);
-		// 		if (Shortcut == null) return;
-		// 		picture.DrawText(Shortcut, 0, 15, x + TextWidth + 8, y, TextAlign.Left);
-		// 	}
-			
-		// 	public Item(string text, string shortcut = null, Action<EventHandler> selected = null)
-		// 	{
-		// 		Text = text;
-		// 		Shortcut = shortcut;
-		// 		if (selected != null)
-		// 		{
-		// 			selected += selected;
-		// 		}
-		// 	}
-		// }
-		
 		private readonly Color[] _palette;
-		// public readonly List<Item> Items = new List<Item>();
 		public readonly MenuItemCollection<int> Items = new MenuItemCollection<int>();
 		
 		private int _activeItem = -1;
