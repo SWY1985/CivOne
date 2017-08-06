@@ -52,31 +52,24 @@ namespace CivOne.Screens
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
-			if (!args.Alt)
-				return false;
-			Console.WriteLine("alt!");
+			if (!args.Alt) return false;
 			
 			switch (args.KeyChar)
 			{
 				case 'G':
-					if (GameSelected != null)
-						GameSelected(this, null);
+					GameSelected?.Invoke(this, null);
 					break;
 				case 'O':
-					if (OrdersSelected != null)
-						OrdersSelected(this, null);
+					OrdersSelected?.Invoke(this, null);
 					break;
 				case 'A':
-					if (AdvisorsSelected != null)
-						AdvisorsSelected(this, null);
+					AdvisorsSelected?.Invoke(this, null);
 					break;
 				case 'W':
-					if (WorldSelected != null) 
-						WorldSelected(this, null);
+					WorldSelected?.Invoke(this, null);
 					break;
 				case 'C':
-					if (CivilopediaSelected != null) 
-						CivilopediaSelected(this, null);
+					CivilopediaSelected?.Invoke(this, null);
 					break;
 				default:
 					return false;

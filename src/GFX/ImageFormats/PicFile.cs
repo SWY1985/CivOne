@@ -19,6 +19,8 @@ namespace CivOne.GFX.ImageFormats
 {
 	internal class PicFile : IImageFormat
 	{
+		private static void Log(string text, params object[] parameters) => RuntimeHandler.Runtime.Log(text, parameters);
+
 		private static Dictionary<string, PicFile> _cache = new Dictionary<string, PicFile>();
 		private readonly byte[] _bytes;
 		private readonly byte[,] _colourTable = null;
@@ -307,8 +309,8 @@ namespace CivOne.GFX.ImageFormats
 		public PicFile(Picture picture)
 		{
 			_palette256 = picture.Palette;
-			_picture16 = picture.GetBitmap;
-			_picture256 = picture.GetBitmap;
+			_picture16 = picture.Bitmap;
+			_picture256 = picture.Bitmap;
 
 			HasPalette16 = false;
 			HasPicture16 = false;
@@ -323,7 +325,7 @@ namespace CivOne.GFX.ImageFormats
 			// generate an exception if the file is not found
 			if (!File.Exists(filename))
 			{
-				Console.WriteLine($"File not found: {filename.ToUpper()}.PIC");
+				Log($"File not found: {filename.ToUpper()}.PIC");
 				HasPalette16 = true;
 				HasPalette256 = true;
 				_palette256 = Common.GetPalette256;
@@ -373,7 +375,7 @@ namespace CivOne.GFX.ImageFormats
 
 			// _cache.Add(file, this);
 
-			Console.WriteLine($"Loaded {filename}");
+			Log($"Loaded {filename}");
 		}
 	}
 }

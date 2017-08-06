@@ -217,7 +217,7 @@ namespace CivOne.Screens
 			}
 			if (args.Y > 50 && args.Y < 62)
 			{
-				System.Console.WriteLine("Sidebar: Palace View");
+				Log("Sidebar: Palace View");
 				Common.AddScreen(new PalaceView());
 			}
 			else if (args.Y >= 62)

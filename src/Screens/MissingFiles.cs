@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using CivOne.Attributes;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -16,6 +17,7 @@ using CivOne.Templates;
 
 namespace CivOne.Screens
 {
+	[Break]
 	public class MissingFiles : BaseScreen
 	{
 		private readonly string[] _text = new string[]
@@ -39,7 +41,7 @@ namespace CivOne.Screens
 
 		private void Menu_Copy(object sender, EventArgs args)
 		{
-			string path = Native.FolderBrowser("Location of Civilization data files");
+			string path = Runtime.BrowseFolder("Location of Civilization data files");
 			if (path == null)
 			{
 				// User pressed cancel
@@ -82,7 +84,7 @@ namespace CivOne.Screens
 
 		private void Menu_Quit(object sender, EventArgs args)
 		{
-			Common.Quit();
+			Runtime.Quit();
 		}
 		
 		public override bool HasUpdate(uint gameTick)
@@ -119,7 +121,7 @@ namespace CivOne.Screens
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
-			Common.Quit();
+			Runtime.Quit();
 			Destroy();
 			return true;
 		}

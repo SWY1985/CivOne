@@ -447,7 +447,7 @@ namespace CivOne
 		{
 			if (gameData.Length != 6)
 			{
-				Console.WriteLine($"Invalid Resource game data for {Name}");
+				Log($"Invalid Resource game data for {Name}");
 				return;
 			}
 
@@ -548,7 +548,7 @@ namespace CivOne
 			IProduction production = Reflect.GetProduction().FirstOrDefault(p => p.ProductionId == productionId);
 			if (production == null)
 			{
-				Console.WriteLine($"Invalid production ID for {Name}: {productionId}");
+				Log($"Invalid production ID for {Name}: {productionId}");
 				return;
 			}
 			CurrentProduction = production;

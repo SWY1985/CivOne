@@ -7,7 +7,6 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using System;
 using System.Drawing;
 using CivOne.Enums;
 using CivOne.Events;
@@ -110,7 +109,7 @@ namespace CivOne.Screens
 		
 		private void LogIntroText()
 		{
-			Console.WriteLine(@"Intro: ""{0}""", _introText[_introLine]);
+			Log(@"Intro: ""{0}""", _introText[_introLine]);
 		}
 		
 		private byte TextColour
@@ -166,9 +165,9 @@ namespace CivOne.Screens
 			int y = (_canvas.Height - 200) / 2;
 			if (x != 0 || y != 0)
 			{
-				_canvas.FillRectangle(_pictures[_introPicture].GetBitmap[0, 0], 0, 0, _canvas.Width, _canvas.Height);
+				_canvas.FillRectangle(_pictures[_introPicture].Bitmap[0, 0], 0, 0, _canvas.Width, _canvas.Height);
 				_canvas.FillRectangle(0, x, y, 320, 200);
-				_canvas.FillRectangle(_pictures[_introPicture].GetBitmap[10, 100], x, y, 320, 200);
+				_canvas.FillRectangle(_pictures[_introPicture].Bitmap[10, 100], x, y, 320, 200);
 				AddLayer(_pictures[_introPicture], x, y);
 			}
 			else
@@ -197,7 +196,7 @@ namespace CivOne.Screens
 				{
 					if (_introLine <= 1) return false;
 					
-					Console.WriteLine("Intro: <<");
+					Log("Intro: <<");
 					
 					_introLine--;
 					if (_introText[_introLine] == "_")
@@ -216,7 +215,7 @@ namespace CivOne.Screens
 				{
 					if (_introLine >= _introText.Length - 1) return false;
 					
-					Console.WriteLine("Intro: >>");
+					Log("Intro: >>");
 					
 					_introLine++;
 					if (_introText[_introLine] == "_")

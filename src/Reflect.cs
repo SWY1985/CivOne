@@ -18,6 +18,8 @@ namespace CivOne
 {
 	internal static class Reflect
 	{
+		private static void Log(string text, params object[] parameters) => RuntimeHandler.Runtime.Log(text, parameters);
+
 		private static Dictionary<IPlugin, Assembly> _plugins;
 		private static void LoadPlugins()
 		{
@@ -30,7 +32,7 @@ namespace CivOne
 					Type[] types = assembly.GetTypes().Where(x => x.Namespace == "CivOne" && x.Name == "Plugin" && x.GetInterfaces().Contains(typeof(IPlugin))).ToArray();
 					if (types.Count() != 1)
 					{
-						Console.WriteLine($" - Invalid plugin format: {filename}");
+						Log($" - Invalid plugin format: {filename}");
 						continue;
 					}
 					
@@ -39,8 +41,8 @@ namespace CivOne
 				}
 				catch (Exception ex)
 				{
-					Console.WriteLine($" - Loading plugin failed: {filename}");
-					Console.WriteLine($"   - {ex.Message}");
+					Log($" - Loading plugin failed: {filename}");
+					Log($"   - {ex.Message}");
 				}
 			}
 		}
@@ -200,9 +202,9 @@ namespace CivOne
 		
 		internal static void PreloadCivilopedia()
 		{
-			Console.WriteLine("Civilopedia: Preloading articles...");
+			Log("Civilopedia: Preloading articles...");
 			foreach (ICivilopedia article in GetCivilopediaAll());
-			Console.WriteLine("Civilopedia: Preloading done!");
+			Log("Civilopedia: Preloading done!");
 		}
 	}
 }

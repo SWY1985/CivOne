@@ -75,7 +75,7 @@ namespace CivOne.Screens
 				}
 				catch(Exception ex)
 				{
-					Console.WriteLine($"Could not open .SVE file: {ex.InnerException}");
+					Log($"Could not open .SVE file: {ex.InnerException}");
 					Name = "(COULD NOT READ SAVE FILE HEADER)";
 				}
 			}
@@ -106,7 +106,7 @@ namespace CivOne.Screens
 
 			SaveGame.SelectedGame = (item > 3 ? 3 : item);
 			
-			Console.WriteLine("Load game: {0}", file.Name);
+			Log("Load game: {0}", file.Name);
 			
 			Destroy();
 			
@@ -116,7 +116,7 @@ namespace CivOne.Screens
 		
 		private void LoadEmptyFile(object sender, MenuItemEventArgs<int> args)
 		{
-			Console.WriteLine("Empty save file, cancel");
+			Log("Empty save file, cancel");
 			Cancel = true;
 			_update = true;
 		}
@@ -171,7 +171,7 @@ namespace CivOne.Screens
 			char c = Char.ToUpper(args.KeyChar);
 			if (args.Key == Key.Escape)
 			{
-				Console.WriteLine("Cancel");
+				Log("Cancel");
 				Cancel = true;
 				_update = true;
 				return true;

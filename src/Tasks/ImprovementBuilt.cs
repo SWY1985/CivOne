@@ -31,7 +31,7 @@ namespace CivOne.Tasks
 		{
 			if (Human != _city.Owner)
 			{
-				Console.WriteLine($"{_city.Name} builds {(_improvement as ICivilopedia).Name}.");
+				Log($"{_city.Name} builds {(_improvement as ICivilopedia).Name}.");
 				EndTask();
 				return;
 			}

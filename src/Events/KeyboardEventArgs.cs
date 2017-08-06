@@ -12,35 +12,21 @@ using CivOne.Enums;
 
 namespace CivOne.Events
 {
+	public delegate void KeyboardEventHandler(object sender, KeyboardEventArgs args);
+
 	public class KeyboardEventArgs : EventArgs
 	{
 		public Key Key { get; private set; }
 		public char KeyChar { get; private set; }
 		public KeyModifier Modifier { get; private set; }
 		
-		public bool Control
-		{
-			get
-			{
-				return (Modifier & KeyModifier.Control) > 0;
-			}
-		}
-		
-		public bool Alt
-		{
-			get
-			{
-				return (Modifier & KeyModifier.Alt) > 0;
-			}
-		}
-		
-		public bool Shift
-		{
-			get
-			{
-				return (Modifier & KeyModifier.Shift) > 0;
-			}
-		}
+		public bool Control => (Modifier & KeyModifier.Control) > 0;
+		public bool Alt => (Modifier & KeyModifier.Alt) > 0;
+		public bool Shift => (Modifier & KeyModifier.Shift) > 0;
+		public bool None => (Key == Key.None);
+
+		public bool this[Key key] => (Key == key);
+		public bool this[KeyModifier modifier, Key key] => (Modifier == modifier) && (Key == key);
 		
 		public KeyboardEventArgs(Key key, KeyModifier modifier = KeyModifier.None)
 		{

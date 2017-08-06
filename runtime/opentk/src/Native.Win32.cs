@@ -38,5 +38,31 @@ namespace CivOne
 
 		[DllImport("user32.dll")]
 		public static extern int ShowCursor(bool bShow);
+
+		private static string Win32FolderBrowser(string caption)
+		{
+			ShowCursor();
+			IntPtr bufferAddress = Marshal.AllocHGlobal(256);
+			IntPtr pidl;
+			BROWSEINFO browseInfo = new BROWSEINFO()
+			{
+				hwndOwner = IntPtr.Zero,
+				pidlRoot = IntPtr.Zero,
+				lpszTitle = caption,
+				ulFlags = 0x310,
+				lParam = IntPtr.Zero,
+				iImage = 0
+			};
+			pidl = SHBrowseForFolder(ref browseInfo);
+			if (!SHGetPathFromIDList(pidl, bufferAddress))
+			{
+				// User pressed cancel
+				return null;
+			}
+
+			HideCursor();
+			
+			return Marshal.PtrToStringUni(bufferAddress);
+		}
 	}
 }

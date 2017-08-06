@@ -7,7 +7,6 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -52,7 +51,7 @@ namespace CivOne.Templates
 					yy = 76;
 					foreach (string line in text)
 					{
-						Console.WriteLine(line);
+						Log(line);
 						output.DrawText(line, 6, 1, 12, yy);
 						yy += 9;
 					}
@@ -103,7 +102,7 @@ namespace CivOne.Templates
 					}
 					break;
 				default:
-					Console.WriteLine("Invalid page number: {0}", pageNumber);
+					Log("Invalid page number: {0}", pageNumber);
 					break;
 			}
 			

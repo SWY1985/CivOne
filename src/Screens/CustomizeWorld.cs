@@ -7,7 +7,6 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using System;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
@@ -60,28 +59,28 @@ namespace CivOne.Screens
 		
 		private void SetLandMass(object sender, MenuItemEventArgs<int> args)
 		{
-			Console.WriteLine("Customize World - Land Mass: {0}", _landMass);
+			Log("Customize World - Land Mass: {0}", _landMass);
 			_landMass = args.Value;
 			_hasUpdate = true;
 		}
 		
 		private void SetTemperature(object sender, MenuItemEventArgs<int> args)
 		{
-			Console.WriteLine("Customize World - Temperature: {0}", _temperature);
+			Log("Customize World - Temperature: {0}", _temperature);
 			_temperature = args.Value;
 			_hasUpdate = true;
 		}
 		
 		private void SetClimate(object sender, MenuItemEventArgs<int> args)
 		{
-			Console.WriteLine("Customize World - Climate: {0}", _climate);
+			Log("Customize World - Climate: {0}", _climate);
 			_climate = args.Value;
 			_hasUpdate = true;
 		}
 		
 		private void SetAge(object sender, MenuItemEventArgs<int> args)
 		{
-			Console.WriteLine("Customize World - Age: {0}", _age);
+			Log("Customize World - Age: {0}", _age);
 			_age = args.Value;
 			_hasUpdate = true;
 		}

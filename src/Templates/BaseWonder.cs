@@ -16,6 +16,8 @@ namespace CivOne.Templates
 {
 	internal abstract class BaseWonder : IWonder
 	{
+		private static void Log(string text, params object[] parameters) => RuntimeHandler.Runtime.Log(text, parameters);
+
 		public string Name { get; protected set; }
 		public virtual Picture Icon
 		{
@@ -44,7 +46,7 @@ namespace CivOne.Templates
 					text = Resources.Instance.GetCivilopediaText("BLURB1/" + Name.ToUpper() + "2");
 					break;
 				default:
-					Console.WriteLine("Invalid page number: {0}", pageNumber);
+					Log("Invalid page number: {0}", pageNumber);
 					break;
 			}
 			
@@ -53,7 +55,7 @@ namespace CivOne.Templates
 			int yy = 76;
 			foreach (string line in text)
 			{
-				Console.WriteLine(line);
+				Log(line);
 				output.DrawText(line, 6, 1, 12, yy);
 				yy += 9;
 			}

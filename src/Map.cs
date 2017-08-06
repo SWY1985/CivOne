@@ -22,6 +22,8 @@ namespace CivOne
 {
 	public class Map
 	{
+		private static void Log(string text, params object[] parameters) => RuntimeHandler.Runtime.Log(text, parameters);
+
 		public const int WIDTH = 80;
 		public const int HEIGHT = 50;
 		
@@ -138,7 +140,7 @@ namespace CivOne
 		
 		private int[,] GenerateLandMass()
 		{
-			Console.WriteLine("Map: Stage 1 - Generate land mass");
+			Log("Map: Stage 1 - Generate land mass");
 			
 			int[,] elevation = new int[WIDTH, HEIGHT];
 			int landMassSize = (int)((WIDTH * HEIGHT) / 12.5) * (_landMass + 2);
@@ -174,7 +176,7 @@ namespace CivOne
 		
 		private int[,] TemperatureAdjustments()
 		{
-			Console.WriteLine("Map: Stage 2 - Temperature adjustments");
+			Log("Map: Stage 2 - Temperature adjustments");
 			
 			int[,] latitude = new int[WIDTH, HEIGHT];
 			
@@ -206,7 +208,7 @@ namespace CivOne
 		
 		private void MergeElevationAndLatitude(int[,] elevation, int[,] latitude)
 		{
-			Console.WriteLine("Map: Stage 3 - Merge elevation and latitude into the map");
+			Log("Map: Stage 3 - Merge elevation and latitude into the map");
 			
 			// merge elevation and latitude into the map
 			for (int y = 0; y < HEIGHT; y++)
@@ -235,7 +237,7 @@ namespace CivOne
 		
 		private void ClimateAdjustments()
 		{
-			Console.WriteLine("Map: Stage 4 - Climate adjustments");
+			Log("Map: Stage 4 - Climate adjustments");
 			
 			int wetness, latitude;
 			
@@ -309,7 +311,7 @@ namespace CivOne
 		
 		private void AgeAdjustments()
 		{
-			Console.WriteLine("Map: Stage 5 - Age adjustments");
+			Log("Map: Stage 5 - Age adjustments");
 			
 			int x = 0;
 			int y = 0;
@@ -367,7 +369,7 @@ namespace CivOne
 		
 		private void CreateRivers()
 		{
-			Console.WriteLine("Map: Stage 6 - Create rivers");
+			Log("Map: Stage 6 - Create rivers");
 			
 			int rivers = 0;
 			for (int i = 0; i < 256 && rivers < ((_climate + _landMass) * 2) + 6; i++)
@@ -433,7 +435,7 @@ namespace CivOne
 		private void CalculateContinentSize()
 		{
 			// TODO: This function needs to be been checked against the original function. It does not yet work as intended.
-			Console.WriteLine("Map: Calculate continent and ocean sizes");
+			Log("Map: Calculate continent and ocean sizes");
 			
 			// Initial continents
 			byte continentId = 0;
@@ -532,7 +534,7 @@ namespace CivOne
 		
 		private void CreatePoles()
 		{
-			Console.WriteLine("Map: Creating poles");
+			Log("Map: Creating poles");
 			
 			for (int x = 0; x < WIDTH; x++)
 			foreach (int y in new int[] { 0, (HEIGHT - 1) })
@@ -550,7 +552,7 @@ namespace CivOne
 		
 		private void PlaceHuts()
 		{
-			Console.WriteLine("Map: Placing goody huts");
+			Log("Map: Placing goody huts");
 			
 			for (int y = 0; y < HEIGHT; y++)
 			for (int x = 0; x < WIDTH; x++)
@@ -572,7 +574,7 @@ namespace CivOne
 		
 		private void CalculateLandValue()
 		{
-			Console.WriteLine("Map: Calculating land value");
+			Log("Map: Calculating land value");
 			
 			// This code is a translation of Darkpanda's forum post here: http://forums.civfanatics.com/showthread.php?t=498532
 			// Comments are pasted from the original forum thread to make the code more readable.
@@ -655,7 +657,7 @@ namespace CivOne
 		
 		private void GenerateThread()
 		{
-			Console.WriteLine("Generating map (Land Mass: {0}, Temperature: {1}, Climate: {2}, Age: {3})", _landMass, _temperature, _climate, _age);
+			Log("Generating map (Land Mass: {0}, Temperature: {1}, Climate: {2}, Age: {3})", _landMass, _temperature, _climate, _age);
 			
 			_tiles = new ITile[WIDTH, HEIGHT];
 			
@@ -672,7 +674,7 @@ namespace CivOne
 			CalculateLandValue();
 			
 			Ready = true;
-			Console.WriteLine("Map: Ready");
+			Log("Map: Ready");
 		}
 		
 		private void LoadMap(byte[,] bitmap)
@@ -705,10 +707,10 @@ namespace CivOne
 		
 		public void LoadMap(string filename, int randomSeed)
 		{
-			Console.WriteLine("Map: Loading {0} - Random seed: {1}", filename, randomSeed);
+			Log("Map: Loading {0} - Random seed: {1}", filename, randomSeed);
 			_terrainMasterWord = randomSeed;
 			
-			byte[,] bitmap = Resources.Instance.LoadPIC(filename, true).GetBitmap;
+			byte[,] bitmap = Resources.Instance.LoadPIC(filename, true).Bitmap;
 			_tiles = new ITile[WIDTH, HEIGHT];
 			
 			LoadMap(bitmap);
@@ -744,14 +746,14 @@ namespace CivOne
 			}
 			
 			Ready = true;
-			Console.WriteLine("Map: Ready");
+			Log("Map: Ready");
 		}
 
 		public ushort SaveMap(string filename)
 		{
-			Console.WriteLine($"Map: Saving {filename} - Random seed: {_terrainMasterWord}");
+			Log($"Map: Saving {filename} - Random seed: {_terrainMasterWord}");
 
-			byte[,] bitmap = Resources.Instance.LoadPIC("SP299").GetBitmap;
+			byte[,] bitmap = Resources.Instance.LoadPIC("SP299").Bitmap;
 
 			// Save terrainlayer
 			for (int x = 0; x < WIDTH; x++)
@@ -821,9 +823,9 @@ namespace CivOne
 		
 		private void LoadMapThread()
 		{
-			Console.WriteLine("Map: Loading MAP.PIC");
+			Log("Map: Loading MAP.PIC");
 			
-			byte[,] bitmap = Resources.Instance.LoadPIC("MAP", true).GetBitmap;
+			byte[,] bitmap = Resources.Instance.LoadPIC("MAP", true).Bitmap;
 			
 			LoadMap(bitmap);
 			
@@ -832,14 +834,14 @@ namespace CivOne
 			CalculateLandValue();
 			
 			Ready = true;
-			Console.WriteLine("Map: Ready");
+			Log("Map: Ready");
 		}
 		
 		public void Generate(int landMass = 1, int temperature = 1, int climate = 1, int age = 1)
 		{
 			if (Ready || _tiles != null)
 			{
-				Console.WriteLine("ERROR: Map is already load{0}/generat{0}", (Ready ? "ed" : "ing"));
+				Log("ERROR: Map is already load{0}/generat{0}", (Ready ? "ed" : "ing"));
 				return;
 			}
 			
@@ -855,7 +857,7 @@ namespace CivOne
 		{
 			if (Ready || _tiles != null)
 			{
-				Console.WriteLine("ERROR: Map is already load{0}/generat{0}", (Ready ? "ed" : "ing"));
+				Log("ERROR: Map is already load{0}/generat{0}", (Ready ? "ed" : "ing"));
 				return;
 			}
 			
@@ -933,7 +935,7 @@ namespace CivOne
 			_terrainMasterWord = Common.Random.Next(16);
 			Ready = false;
 			
-			Console.WriteLine("Map instance created");
+			Log("Map instance created");
 		}
 	}
 }

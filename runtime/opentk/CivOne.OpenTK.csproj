@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>netcoreapp2.0</TargetFramework>
+		<AssemblyName>CivOne.OpenTK</AssemblyName>
+		<OutputType>Exe</OutputType>
+		<DebugType>portable</DebugType>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="OpenTK.NETCore" Version="1.1.2749.6433" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="../../CivOne.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Remove="**" />
+		<Compile Include="src/**" />
+	</ItemGroup>
+</Project>

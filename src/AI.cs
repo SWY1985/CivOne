@@ -7,7 +7,6 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using System;
 using System.Linq;
 using CivOne.Advances;
 using CivOne.Buildings;
@@ -222,7 +221,7 @@ namespace CivOne
 
 			player.CurrentResearch = advances[Common.Random.Next(0, advances.Length)];
 
-			Console.WriteLine($"AI: {player.LeaderName} of the {player.TribeNamePlural} starts researching {player.CurrentResearch.Name}.");
+			Log($"AI: {player.LeaderName} of the {player.TribeNamePlural} starts researching {player.CurrentResearch.Name}.");
 		}
 
 		internal static void CityProduction(City city)

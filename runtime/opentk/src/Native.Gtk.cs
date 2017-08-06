@@ -90,5 +90,28 @@ namespace CivOne
 			g_free(native_button_text);
 			return raw_ret;
 		}
+
+		private static string GtkFolderBrowser(string caption)
+		{
+			IntPtr title = StringToIntPtr(caption);
+			IntPtr test = gtk_file_chooser_dialog_new(title, IntPtr.Zero, 2, IntPtr.Zero);
+			g_free(title);
+
+			AddButton(test, "Cancel", -6);
+			AddButton(test, "OK", -5);
+
+			string output = null;
+			if (gtk_dialog_run(test) == -5)
+			{
+				IntPtr response = gtk_file_chooser_get_filename(test);
+				string test2 = GetFileName(response);
+				g_free(response);
+				output = test2;
+			}
+			gtk_widget_destroy(test);
+			while (gtk_events_pending())
+				gtk_main_iteration();
+			return output;
+		}
 	}
 }

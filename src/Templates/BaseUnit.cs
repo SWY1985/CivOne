@@ -304,7 +304,7 @@ namespace CivOne.Templates
 			{
 				Movement.Done += (s, a) =>
 				{
-					Sound.Play("they_die");
+					Runtime.PlaySound("they_die");
 
 					IUnit unit = Map[X, Y][relX, relY].Units.FirstOrDefault();
 					if (unit != null)
@@ -334,7 +334,7 @@ namespace CivOne.Templates
 			{
 				Movement.Done += (s, a) =>
 				{
-					Sound.Play("we_die");
+					Runtime.PlaySound("we_die");
 					GameTask.Insert(Show.DestroyUnit(this, false));
 					Movement = null;
 				};
@@ -473,7 +473,7 @@ namespace CivOne.Templates
 					text = Resources.Instance.GetCivilopediaText("BLURB2/" + Name.ToUpper() + "2");
 					break;
 				default:
-					Console.WriteLine("Invalid page number: {0}", pageNumber);
+					Log("Invalid page number: {0}", pageNumber);
 					break;
 			}
 			
@@ -484,7 +484,7 @@ namespace CivOne.Templates
 			int yy = 76;
 			foreach (string line in text)
 			{
-				Console.WriteLine(line);
+				Log(line);
 				output.DrawText(line, 6, 1, 12, yy);
 				yy += 9;
 			}
