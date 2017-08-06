@@ -9,7 +9,7 @@
 		{
 			"taskName": "build",
 			"args": [
-				"${workspaceRoot}//CivOne.csproj"
+				"${workspaceRoot}//runtime/opentk/CivOne.OpenTK.csproj"
 			],
 			"isBuildCommand": true,
 			"problemMatcher": "$msCompile"

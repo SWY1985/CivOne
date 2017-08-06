@@ -9,6 +9,7 @@
 
 using System;
 using System.Linq;
+using CivOne.Attributes;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
@@ -19,6 +20,7 @@ using CivOne.UserInterface;
 
 namespace CivOne.Screens
 {
+	[Break]
 	internal class Setup : BaseScreen, IExpand
 	{
 		private const int MenuFont = 6;
@@ -252,11 +254,10 @@ namespace CivOne.Screens
 					return;
 				case 3:
 					Destroy();
-					Common.AddScreen(new Credits());
 					return;
 				case 4:
 					Destroy();
-					Common.Quit();
+					Runtime.Quit();
 					return;
 			}
 		}

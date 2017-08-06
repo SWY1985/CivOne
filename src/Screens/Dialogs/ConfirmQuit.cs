@@ -16,7 +16,7 @@ namespace CivOne.Screens.Dialogs
 	{
 		private void MenuQuit(object sender, EventArgs args)
 		{
-			Common.Quit();
+			Runtime.Quit();
 			Cancel();
 		}
 

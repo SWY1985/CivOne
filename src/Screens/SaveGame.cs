@@ -78,7 +78,7 @@ namespace CivOne.Screens
 				}
 				catch(Exception ex)
 				{
-					Console.WriteLine($"Could not open .SVE file: {ex.InnerException}");
+					Log($"Could not open .SVE file: {ex.InnerException}");
 					Name = "(COULD NOT READ SAVE FILE HEADER)";
 				}
 			}
@@ -192,7 +192,7 @@ namespace CivOne.Screens
 			char c = Char.ToUpper(args.KeyChar);
 			if (args.Key == Key.Escape)
 			{
-				Console.WriteLine("Cancel");
+				Log("Cancel");
 				Destroy();
 				return true;
 			}

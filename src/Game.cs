@@ -84,7 +84,7 @@ namespace CivOne
 			set
 			{
 				_gameTurn = value;
-				Console.WriteLine($"Turn {_gameTurn}: {GameYear}");
+				Log($"Turn {_gameTurn}: {GameYear}");
 				if (_anthologyTurn >= _gameTurn)
 				{
 					//TODO: Show anthology
@@ -161,7 +161,7 @@ namespace CivOne
 				GameTask conquest;
 				GameTask.Enqueue(Message.Newspaper(null, "Your civilization", "has conquered", "the entire planet!"));
 				GameTask.Enqueue(conquest = Show.Screen<Conquest>());
-				conquest.Done += (s, a) => Common.Quit();
+				conquest.Done += (s, a) => Runtime.Quit();
 			}
 
 			foreach (IUnit unit in _units.Where(u => u.Owner == _currentPlayer))
@@ -517,7 +517,7 @@ namespace CivOne
 		{
 			if (_instance != null)
 			{
-				Console.WriteLine("ERROR: Game instance already exists");
+				Log("ERROR: Game instance already exists");
 				return;
 			}
 			_instance = new Game(difficulty, competition, tribe, leaderName, tribeName, tribeNamePlural);
@@ -532,7 +532,7 @@ namespace CivOne
 		{
 			if (_instance != null)
 			{
-				Console.WriteLine("ERROR: Game instance already exists");
+				Log("ERROR: Game instance already exists");
 				return;
 			}
 			
@@ -655,7 +655,7 @@ namespace CivOne
 				ushort civIdentity = Common.BinaryReadUShort(br, 37854);
 				
 				_instance = new Game(difficulty, competition);
-				Console.WriteLine("Game instance loaded (difficulty: {0}, competition: {1})", difficulty, competition);
+				Log("Game instance loaded (difficulty: {0}, competition: {1})", difficulty, competition);
 				
 				// Load map visibility
 				byte[] visibility = Common.BinaryReadBytes(br, 22208, 4000);
@@ -700,7 +700,7 @@ namespace CivOne
 						}
 					}
 					
-					Console.WriteLine("- Player {0} is {1} of the {2}{3}", i, player.LeaderName, _instance._players[i].TribeNamePlural, (i == humanPlayer) ? " (human)" : "");
+					Log("- Player {0} is {1} of the {2}{3}", i, player.LeaderName, _instance._players[i].TribeNamePlural, (i == humanPlayer) ? " (human)" : "");
 				}
 				_instance.GameTurn = Common.BinaryReadUShort(br, 0);
 				_instance.HumanPlayer = _instance._players[humanPlayer];
@@ -1482,7 +1482,7 @@ namespace CivOne
 					// After 0 AD, don't spawn a Civilization on a continent that already contains cities.
 					if (Common.TurnToYear(GameTurn) >= 0 && Map.ContinentTiles(tile.ContinentId).Any(t => t.City != null)) continue;
 					
-					Console.WriteLine(loopCounter.ToString());
+					Log(loopCounter.ToString());
 				}
 				
 				// Starting position found, add Settlers
@@ -1601,7 +1601,7 @@ namespace CivOne
 			{
 				if (_instance == null)
 				{
-					Console.WriteLine("ERROR: Game instance does not exist");
+					Log("ERROR: Game instance does not exist");
 				}
 				return _instance;
 			}
@@ -1620,7 +1620,7 @@ namespace CivOne
 		{
 			_difficulty = difficulty;
 			_competition = competition;
-			Console.WriteLine("Game instance created (difficulty: {0}, competition: {1})", _difficulty, _competition);
+			Log("Game instance created (difficulty: {0}, competition: {1})", _difficulty, _competition);
 
 			Settings.Animations = true;
 			Settings.CivilopediaText = true;
@@ -1641,7 +1641,7 @@ namespace CivOne
 						HumanPlayer.Gold = 50;
 						Settings.InstantAdvice = true;
 					}
-					Console.WriteLine("- Player {0} is {1} of the {2} (human)", i, _players[i].LeaderName, _players[i].TribeNamePlural);
+					Log("- Player {0} is {1} of the {2} (human)", i, _players[i].LeaderName, _players[i].TribeNamePlural);
 					continue;
 				}
 				
@@ -1650,22 +1650,22 @@ namespace CivOne
 				
 				_players[i] = new Player(civs[r]);
 				
-				Console.WriteLine("- Player {0} is {1} of the {2}", i, _players[i].LeaderName, _players[i].TribeNamePlural);
+				Log("- Player {0} is {1} of the {2}", i, _players[i].LeaderName, _players[i].TribeNamePlural);
 			}
 			
-			Console.WriteLine("Adding starting units...");
+			Log("Adding starting units...");
 			for (byte i = 1; i <= competition; i++)
 			{
 				AddStartingUnits(i);
 			}
 
-			Console.WriteLine("Calculate players handicap...");
+			Log("Calculate players handicap...");
 			for (byte i = 1; i <= competition; i++)
 			{
 				CalculateHandicap(i);
 			}
 
-			Console.WriteLine("Apply players bonus...");
+			Log("Apply players bonus...");
 			for (byte i = 1; i <= competition; i++)
 			{
 				ApplyBonus(i);

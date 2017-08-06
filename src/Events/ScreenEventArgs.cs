@@ -13,6 +13,8 @@ using CivOne.Enums;
 
 namespace CivOne.Events
 {
+	public delegate void ScreenEventHandler(object sender, ScreenEventArgs args);
+
 	public class ScreenEventArgs : EventArgs
 	{
 		public int X { get; private set; }

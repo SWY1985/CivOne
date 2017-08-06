@@ -7,7 +7,6 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using CivOne.Interfaces;
@@ -16,6 +15,8 @@ namespace CivOne.GFX
 {
 	internal class Fontset : IFont
 	{
+		private static void Log(string text, params object[] parameters) => RuntimeHandler.Runtime.Log(text, parameters);
+
 		private readonly byte _fontAsciiFirst;
 		private readonly byte _fontAsciiLast;
 		private readonly byte _charByteLength;
@@ -123,7 +124,7 @@ namespace CivOne.GFX
 				byte charWidth = bytes[offset - 9 - charCount + i];
 				if (charWidth > (_charByteLength * 8))
 				{
-					Console.WriteLine($"Warning: Character width larger than bytes per character. (ID: {(int)character}, Width: {charWidth})");
+					Log($"Warning: Character width larger than bytes per character. (ID: {(int)character}, Width: {charWidth})");
 					charWidth = (byte)(_charByteLength * 8);
 				}
 				_charWidths.Add(character, charWidth);

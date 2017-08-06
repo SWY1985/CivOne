@@ -30,7 +30,7 @@ namespace CivOne.Screens
 			
 			if (_textLines.Length <= _currentLine)
 			{
-				Common.Quit();
+				Runtime.Quit();
 				return true;
 			}
 			

@@ -20,6 +20,8 @@ namespace CivOne.GFX
 {
 	internal class Resources
 	{
+		private static void Log(string text, params object[] parameters) => RuntimeHandler.Runtime.Log(text, parameters);
+
 		private readonly Dictionary<string, Picture> _cache = new Dictionary<string, Picture>();
 		private readonly Dictionary<string, Picture> _textCache = new Dictionary<string, Picture>();
 		private readonly IFont _defaultFont = new DefaultFont();
@@ -37,7 +39,7 @@ namespace CivOne.GFX
 			string filename = Path.Combine(Settings.Instance.DataDirectory, "FONTS.CV");
 			if (!File.Exists(filename))
 			{
-				Console.WriteLine("Font file not found, fallback to default font");
+				Log("Font file not found, fallback to default font");
 				return;
 			}
 

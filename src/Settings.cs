@@ -10,11 +10,15 @@
 using System;
 using System.IO;
 using CivOne.Enums;
+using CivOne.Interfaces;
 
 namespace CivOne
 {
 	public class Settings
 	{
+		private static IRuntime Runtime => RuntimeHandler.Runtime;
+		private static void Log(string text, params object[] parameters) => RuntimeHandler.Runtime.Log(text, parameters);
+
 		// Set default settings
 		private GraphicsMode _graphicsMode = GraphicsMode.Graphics256;
 		private bool _fullScreen = false;
@@ -30,61 +34,13 @@ namespace CivOne
 
 		private DestroyAnimation _destroyAnimation = DestroyAnimation.Sprites;
 		
-		internal string BinDirectory
-		{
-			get
-			{
-				return Native.StorageFolder;
-			}
-		}
-		
-		internal string CaptureDirectory
-		{
-			get
-			{
-				return Path.Combine(BinDirectory, "capture");
-			}
-		}
-		
-		internal string DataDirectory
-		{
-			get
-			{
-				return Path.Combine(BinDirectory, "data");
-			}
-		}
-		
-		internal string PluginsDirectory
-		{
-			get
-			{
-				return Path.Combine(BinDirectory, "plugins");
-			}
-		}
-		
-		internal string SavesDirectory
-		{
-			get
-			{
-				return Path.Combine(BinDirectory, "saves");
-			}
-		}
-		
-		private string SettingsDirectory
-		{
-			get
-			{
-				return Path.Combine(BinDirectory, "settings");
-			}
-		}
-		
-		internal string SoundsDirectory
-		{
-			get
-			{
-				return Path.Combine(BinDirectory, "sounds");
-			}
-		}
+		internal string StorageDirectory => Directory.GetCurrentDirectory();
+		internal string CaptureDirectory => Path.Combine(StorageDirectory, "capture");
+		internal string DataDirectory => Path.Combine(StorageDirectory, "data");
+		internal string PluginsDirectory => Path.Combine(StorageDirectory, "plugins");
+		internal string SavesDirectory => Path.Combine(StorageDirectory, "saves");
+		private string SettingsDirectory => Path.Combine(StorageDirectory, "settings");
+		internal string SoundsDirectory => Path.Combine(StorageDirectory, "sounds");
 
 		// Settings
 		
@@ -103,7 +59,7 @@ namespace CivOne
 			}
 		}
 		
-		internal bool FullScreen
+		public bool FullScreen
 		{
 			get
 			{
@@ -117,7 +73,7 @@ namespace CivOne
 			}
 		}
 		
-		internal int Scale
+		public int Scale
 		{
 			get
 			{
@@ -132,7 +88,7 @@ namespace CivOne
 			}
 		}
 
-		internal AspectRatio AspectRatio
+		public AspectRatio AspectRatio
 		{
 			get
 			{
@@ -147,7 +103,7 @@ namespace CivOne
 			}
 		}
 
-		internal int ExpandWidth
+		public int ExpandWidth
 		{
 			get
 			{
@@ -162,7 +118,7 @@ namespace CivOne
 			}
 		}
 
-		internal int ExpandHeight
+		public int ExpandHeight
 		{
 			get
 			{
@@ -310,7 +266,7 @@ namespace CivOne
 		}
 		
 		private static Settings _instance;
-		internal static Settings Instance
+		public static Settings Instance
 		{
 			get
 			{
@@ -329,7 +285,7 @@ namespace CivOne
 			{
 				string value = sr.ReadToEnd();
 				
-				Console.WriteLine("Setting Loaded - {0}: {1}", settingName, value);
+				Log("Setting Loaded - {0}: {1}", settingName, value);
 				
 				return value.Trim();
 			}
@@ -343,7 +299,7 @@ namespace CivOne
 			{
 				sw.Write(value);
 				
-				Console.WriteLine("Setting Saved - {0}: {1}", settingName, value);
+				Log("Setting Saved - {0}: {1}", settingName, value);
 			}
 		}
 		

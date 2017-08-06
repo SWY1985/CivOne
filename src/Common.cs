@@ -23,6 +23,8 @@ namespace CivOne
 {
 	internal class Common
 	{
+		private static void Log(string text, params object[] parameters) => RuntimeHandler.Runtime.Log(text, parameters);
+
 		public static Random Random = new Random((int)DateTime.Now.Ticks);
 		
 		public static IAdvance[] Advances = Reflect.GetAdvances().ToArray();
@@ -75,6 +77,31 @@ namespace CivOne
 				if (_screens.Any(x => HasAttribute<Modal>(x)))
 					return _screens.Last(x => HasAttribute<Modal>(x));
 				return _screens.LastOrDefault();
+			}
+		}
+
+		public static MouseCursor Cursor
+		{
+			get
+			{
+				if (TopScreen == null)
+					return MouseCursor.None;
+				return TopScreen.Cursor;
+			}
+		}
+
+		public static Picture CursorGraphics
+		{
+			get
+			{
+				switch (Settings.Instance.CursorType)
+				{
+					case CursorType.Default:
+					case CursorType.Builtin:
+						return Icons.Cursor(Cursor, (Settings.Instance.CursorType == CursorType.Builtin));
+					default:
+						return null;
+				}
 			}
 		}
 
@@ -146,18 +173,9 @@ namespace CivOne
 					return filename;
 				}
 				
-				Console.WriteLine("Error: Capture folder is full.");
+				Log("Error: Capture folder is full.");
 				return null;
 			}
-		}
-		
-		internal static bool EndGame
-		{
-			get; private set;
-		}
-		internal static void Quit()
-		{
-			EndGame = true;
 		}
 		
 		private static bool _reloadSettings;

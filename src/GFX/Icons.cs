@@ -427,7 +427,7 @@ namespace CivOne.GFX
 					}
 					return Resources["SP257"].GetPart(33, 33, 15, 15);
 			}
-			return new Picture(16, 16);
+			return null;
 		}
 
 		private static Picture _fortress;

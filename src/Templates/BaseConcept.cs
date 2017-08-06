@@ -7,7 +7,6 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using System;
 using CivOne.GFX;
 using CivOne.Interfaces;
 
@@ -15,6 +14,8 @@ namespace CivOne.Templates
 {
 	internal abstract class BaseConcept : IConcept
 	{
+		private static void Log(string text, params object[] parameters) => RuntimeHandler.Runtime.Log(text, parameters);
+
 		public string Name { get; protected set; }
 		public Picture Icon { get { return null; } }
 		public byte PageCount { get { return 2; } }
@@ -30,7 +31,7 @@ namespace CivOne.Templates
 					text = Resources.Instance.GetCivilopediaText("BLURB4/" + Name.ToUpper() + "2");
 					break;
 				default:
-					Console.WriteLine("Invalid page number: {0}", pageNumber);
+					Log("Invalid page number: {0}", pageNumber);
 					break;
 			}
 			
@@ -39,7 +40,7 @@ namespace CivOne.Templates
 			int yy = 76;
 			foreach (string line in text)
 			{
-				Console.WriteLine(line);
+				Log(line);
 				output.DrawText(line, 6, 1, 12, yy);
 				yy += 9;
 			}

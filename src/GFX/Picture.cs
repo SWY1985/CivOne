@@ -10,10 +10,11 @@
 using System;
 using System.Drawing;
 using CivOne.Enums;
+using CivOne.Interfaces;
 
 namespace CivOne.GFX
 {
-	public class Picture
+	public class Picture : IBitmap
 	{
 		private readonly Color[] _originalColours;
 		private readonly Color[] _palette = new Color[256];
@@ -64,31 +65,11 @@ namespace CivOne.GFX
 			}
 		}
 		
-		public byte[,] GetBitmap
+		public byte[,] Bitmap
 		{
 			get
 			{
 				return _bitmap;
-			}
-		}
-
-		private int GetColourInt(Color colour)
-		{
-			return ((int)colour.A << 24) + ((int)colour.B << 16) + ((int)colour.G << 8) + ((int)colour.R);
-		}
-
-		public int[] GetColorMap
-		{
-			get
-			{
-				int[] output = new int[Width * Height];
-				int i = 0;
-				for (int yy = _bitmap.GetUpperBound(1); yy >= 0; yy--)
-				for (int xx = 0; xx <= _bitmap.GetUpperBound(0); xx++)
-				{
-					output[i++] = GetColourInt(_palette[_bitmap[xx, yy]]);
-				}
-				return output;
 			}
 		}
 
