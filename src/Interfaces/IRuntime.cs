@@ -24,7 +24,8 @@ namespace CivOne.Interfaces
 		RuntimeSettings Settings { get; }
 		IBitmap Bitmap { set; }
 		IBitmap Cursor { set; }
-		Size CanvasSize { get; }
+		int CanvasWidth { get; }
+		int CanvasHeight { get; }
 		void Log(string text, params object[] parameters);
 		string BrowseFolder(string caption = "");
 		void PlaySound(string file);
