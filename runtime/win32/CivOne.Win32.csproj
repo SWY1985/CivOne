@@ -1,0 +1,47 @@
+﻿<!-- CivOne
+	- To the extent possible under law, the person who associated CC0 with
+	- CivOne has waived all copyright and related or neighboring rights
+	- to CivOne.
+	-
+	- You should have received a copy of the CC0 legalcode along with this
+	- work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<AssemblyName>CivOne</AssemblyName>
+		<ErrorReport>prompt</ErrorReport>
+		<FileAlignment>512</FileAlignment>
+		<OutputPath>bin/</OutputPath>
+		<RootNamespace>CivOne</RootNamespace>
+		<TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+		<ApplicationIcon>../../resources/win32/CivOne.ico</ApplicationIcon> 
+	</PropertyGroup>
+	<PropertyGroup Condition="$(Configuration.StartsWith('Debug'))">
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>full</DebugType>
+		<DefineConstants>DEBUG</DefineConstants>
+		<Optimize>false</Optimize>
+		<OutputType>Exe</OutputType>
+	</PropertyGroup>
+	<PropertyGroup Condition="$(Configuration.StartsWith('Release'))">
+		<DebugType>none</DebugType>
+		<DefineConstants>RELEASE</DefineConstants>
+		<Optimize>true</Optimize>
+		<OutputType>WinExe</OutputType>
+	</PropertyGroup>
+	<ItemGroup>
+		<Reference Include="System" />
+		<Reference Include="System.Drawing" />
+		<Reference Include="System.Windows.Forms" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Include="src\*.cs" />
+		<Compile Include="..\..\src\**\*.cs" Exclude="..\..\src\Properties\*.cs" />
+		<Compile Include="..\..\api\src\**\*.cs" Exclude="..\..\api\src\Properties\*.cs" />
+	</ItemGroup>
+	<Target Name="Build">
+		<MakeDir Directories="$(OutputPath)" Condition="!Exists('$(OutputPath)')" />
+		<Csc Sources="@(Compile)" OutputAssembly="$(OutputPath)$(AssemblyName).exe" />
+	</Target>
+	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
