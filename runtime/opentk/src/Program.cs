@@ -20,13 +20,15 @@ arguments:
   -h|--help             Show this documentation.
 
 runtime-options:
-
   --demo                Show the Demo screen before launching the game.
   --setup               Show the Setup screen before launching the game.
+  --no-data-check       Disables checking for game data files
+  --no-sound            Disable ingame sounds
 ";
 
 		private static string ErrorText => @"civone-opentk: Invalid options: '{0}'
-Try 'civone-opentk --help' for more information.";
+Try 'civone-opentk --help' for more information.
+";
 
 		private static void Main(string[] args)
 		{
@@ -49,10 +51,11 @@ Try 'civone-opentk --help' for more information.";
 				{
 					case "demo": settings.Demo = true; continue;
 					case "setup": settings.Setup = true; continue;
+					case "no-sound": settings["no-sound"] = true; continue;
+					case "no-data-check": settings.DataCheck = false; continue;
 					default: Console.WriteLine(ErrorText); return;
 				}
 			}
-			// todo: statup arguments
 
 			using (Runtime runtime = new Runtime(settings))
 			using (Window window = new Window(runtime))

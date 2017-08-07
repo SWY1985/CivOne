@@ -18,6 +18,7 @@ namespace CivOne
 	internal class Sounds : IDisposable
 	{
 		private void Log(string value, params object[] formatArgs) => _runtime.Log(value, formatArgs);
+		private bool NoSound => _runtime.Settings.Get<bool>("no-sound");
 
 		private readonly Runtime _runtime;
 
@@ -27,7 +28,7 @@ namespace CivOne
 
 		internal void PlaySound(string filename)
 		{
-			if (_initError) return;
+			if (NoSound || _initError) return;
 
 			StopSound();
 
@@ -50,7 +51,7 @@ namespace CivOne
 		
 		internal void StopSound()
 		{
-			if (_initError || _waveFile == null) return;
+			if (NoSound || _initError || _waveFile == null) return;
 			
 			AL.SourceStop(_waveFile.ALSource);
 			_waveFile.Dispose();
@@ -60,6 +61,11 @@ namespace CivOne
 		public Sounds(Runtime runtime)
 		{
 			_runtime = runtime;
+			if (NoSound)
+			{
+				Log($"Sound is disabled by runtime setting.");
+				return;
+			}
 
 			if (Native.Platform != Platform.Windows)
 			{
