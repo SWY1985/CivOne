@@ -44,7 +44,8 @@ namespace CivOne
 
 		Platform IRuntime.CurrentPlatform => Native.Platform;
 		string IRuntime.StorageFolder => Directory.GetCurrentDirectory();
-		Size IRuntime.CanvasSize => CanvasSize;
+		int IRuntime.CanvasWidth => CanvasSize.Width;
+		int IRuntime.CanvasHeight => CanvasSize.Height;
 		string IRuntime.BrowseFolder(string caption) => Native.FolderBrowser(caption);
 		void IRuntime.PlaySound(string filename) => _sounds.PlaySound(filename);
 		void IRuntime.StopSound() => _sounds.StopSound();
