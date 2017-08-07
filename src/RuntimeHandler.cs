@@ -66,7 +66,7 @@ namespace CivOne
 			Common.AddScreen(new Credits());
 			if (Runtime.Settings.Setup) Common.AddScreen(new Setup());
 			if (Runtime.Settings.Demo) Common.AddScreen(new Demo());
-			if (!FileSystem.DataFilesExist()) Common.AddScreen(new MissingFiles());
+			if (Runtime.Settings.DataCheck && !FileSystem.DataFilesExist()) Common.AddScreen(new MissingFiles());
 		}
 
 		private void OnUpdate(object sender, EventArgs args)
