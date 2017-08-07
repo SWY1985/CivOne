@@ -41,6 +41,14 @@ namespace CivOne
 
 		private void OnUpdate(object sender, EventArgs args)
 		{
+			if (_runtime.SignalQuit)
+			{
+				_timer.Stop();
+				_timer.Dispose();
+				Close();
+				return;
+			}
+
 			if (!_updateBusy.WaitOne(0)) return;
 			
 			_runtime.InvokeUpdate();
