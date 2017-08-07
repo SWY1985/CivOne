@@ -24,6 +24,8 @@ runtime-options:
   --setup               Show the Setup screen before launching the game.
   --no-data-check       Disables checking for game data files
   --no-sound            Disable ingame sounds
+  --skip-credits        Skips the game credits sequence
+  --skip-intro          Skips the game intro sequence
 ";
 
 		private static string ErrorText => @"civone-opentk: Invalid options: '{0}'
@@ -53,6 +55,8 @@ Try 'civone-opentk --help' for more information.
 					case "setup": settings.Setup = true; continue;
 					case "no-sound": settings["no-sound"] = true; continue;
 					case "no-data-check": settings.DataCheck = false; continue;
+					case "skip-credits": settings.ShowCredits = false; continue;
+					case "skip-intro": settings.ShowIntro = false; continue;
 					default: Console.WriteLine(ErrorText); return;
 				}
 			}
