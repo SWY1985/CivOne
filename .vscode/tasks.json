@@ -30,6 +30,15 @@
 				"${workspaceRoot}//api/CivOne.Api.csproj"
 			],
 			"problemMatcher": "$msCompile"
+		},
+		{
+			"taskName": "build-win32",
+			"command": "msbuild",
+			"args": [
+				"${workspaceRoot}//runtime/win32/CivOne.Win32.csproj",
+				"/t:Rebuild"
+			],
+			"problemMatcher": "$msCompile"
 		}
 	]
 }

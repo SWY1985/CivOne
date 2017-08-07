@@ -38,6 +38,17 @@
 			"stopAtEntry": false,
 			"console": "internalConsole",
 			"internalConsoleOptions": "openOnFirstSessionStart"
+		},
+		{
+			"name": "Launch Win32",
+			"type": "mono",
+			"request": "launch",
+			"preLaunchTask": "build-win32",
+			"program": "${workspaceRoot}/runtime/win32/bin/CivOne.exe",
+			"args": [],
+			"cwd": "${workspaceRoot}",
+			"console": "internalConsole",
+			"internalConsoleOptions": "openOnFirstSessionStart"
 		}
 	]
 }
