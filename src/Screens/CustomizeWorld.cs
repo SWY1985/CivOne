@@ -93,7 +93,14 @@ namespace CivOne.Screens
 				{
 					Destroy();
 					Map.Generate(_landMass, _temperature, _climate, _age);
-					Common.AddScreen(new Intro());
+					if (!Runtime.Settings.ShowIntro)
+					{
+						Common.AddScreen(new NewGame());
+					}
+					else
+					{
+						Common.AddScreen(new Intro());
+					}
 				}
 				return true;
 			}

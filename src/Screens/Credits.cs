@@ -212,12 +212,18 @@ namespace CivOne.Screens
 			foreach (IScreen menu in _menus)
 				AddLayer(menu.Canvas);
 			CloseMenus();
-			_nextScreen = new Intro();
+			if (!Runtime.Settings.ShowIntro)
+			{
+				_nextScreen = new NewGame();
+			}
+			else
+			{
+				_nextScreen = new Intro();
+			}
 		}
 		
 		private void StartNewGame(object sender, EventArgs args)
 		{
-			
 			Log("Main Menu: Start a New Game");
 			Map.Generate();
 			StartIntro();
@@ -312,6 +318,8 @@ namespace CivOne.Screens
 			_canvas = new Picture(320, 200, _pictures[2].Palette);
 
 			Runtime.PlaySound("opening");
+
+			if (!Runtime.Settings.ShowCredits) SkipIntro();
 		}
 	}
 }

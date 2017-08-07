@@ -18,6 +18,8 @@ namespace CivOne
 		public bool Demo { get; set; }
 		public bool Setup { get; set; }
 		public bool DataCheck { get; set; }
+		public bool ShowCredits { get; set; }
+		public bool ShowIntro { get; set; }
 
 		public object this[string customSetting]
 		{
@@ -50,6 +52,8 @@ namespace CivOne
 		public RuntimeSettings()
 		{
 			DataCheck = true;
+			ShowCredits = true;
+			ShowIntro = true;
 		}
 	}
 }
