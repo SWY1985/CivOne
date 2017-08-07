@@ -31,13 +31,13 @@ namespace CivOne
 
 			StopSound();
 
-			if (!File.Exists(filename))
+			if (!File.Exists(filename.GetSoundFile()))
 			{
-				Log($"File not found: {filename}");
+				Log($"File not found: {filename}.wav");
 				return;
 			}
 			
-			_waveFile = new WaveFile(filename);
+			_waveFile = new WaveFile(filename.GetSoundFile());
 			if (!_waveFile.Valid)
 			{
 				Log($"Invalid wave file: {filename}");
