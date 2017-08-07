@@ -27,7 +27,7 @@
 			"command": "dotnet",
 			"args": [
 				"build",
-				"${workspaceRoot}//api//CivOne.Api.csproj"
+				"${workspaceRoot}//api/CivOne.Api.csproj"
 			],
 			"problemMatcher": "$msCompile"
 		}
