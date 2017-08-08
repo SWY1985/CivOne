@@ -180,6 +180,30 @@ namespace CivOne
 							}
 						}
 
+						if (tiles[0].Units.Any(x => x.Owner != unit.Owner))
+						{
+							if (unit.Role == UnitRole.Civilian || unit.Role == UnitRole.Settler)
+							{
+								// do not attack with civilian or settler units
+								unit.Goto = Point.Empty;
+								continue;
+							}
+
+							if (unit.Role == UnitRole.Transport && Common.Random.Next(0, 100) < 67)
+							{
+								// 67% chance of cancelling attack with transport unit
+								unit.Goto = Point.Empty;
+								continue;
+							}
+
+							if (unit.Attack < tiles[0].Units.Select(x => x.Defense).Max() && Common.Random.Next(0, 100) < 50)
+							{
+								// 50% of attacking cancelling attack of stronger unit
+								unit.Goto = Point.Empty;
+								continue;
+							}
+						}
+
 						if (!unit.MoveTo(tiles[0].X - unit.X, tiles[0].Y - unit.Y))
 						{
 							// The code below is to prevent the game from becoming stuck...
