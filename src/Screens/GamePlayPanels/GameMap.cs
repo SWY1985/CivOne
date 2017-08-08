@@ -19,7 +19,7 @@ using CivOne.Tasks;
 using CivOne.Templates;
 using CivOne.Units;
 
-namespace CivOne.Screens
+namespace CivOne.Screens.GamePlayPanels
 {
 	internal class GameMap : BaseScreen
 	{

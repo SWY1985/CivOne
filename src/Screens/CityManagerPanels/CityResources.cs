@@ -12,7 +12,7 @@ using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Templates;
 
-namespace CivOne.Screens
+namespace CivOne.Screens.CityManagerPanels
 {
 	internal class CityResources : BaseScreen
 	{

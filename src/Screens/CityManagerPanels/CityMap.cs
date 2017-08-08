@@ -15,7 +15,7 @@ using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Templates;
 
-namespace CivOne.Screens
+namespace CivOne.Screens.CityManagerPanels
 {
 	internal class CityMap : BaseScreen
 	{

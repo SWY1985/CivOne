@@ -14,7 +14,7 @@ using CivOne.Interfaces;
 using CivOne.Units;
 using CivOne.Templates;
 
-namespace CivOne.Screens
+namespace CivOne.Screens.CityManagerPanels
 {
 	internal class CityUnits : BaseScreen
 	{
