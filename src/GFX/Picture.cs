@@ -241,16 +241,16 @@ namespace CivOne.GFX
 			}
 		}
 		
-		public void AddLayer(Picture layer, int x = 0, int y = 0)
+		public void AddLayer(IBitmap layer, int x = 0, int y = 0)
 		{
 			AddLayer(layer, new Point(x, y));
 		}
-		public void AddLayer(Picture layer, Point offset)
+		public void AddLayer(IBitmap layer, Point offset)
 		{
 			if (layer == null) return;
 			
-			int layerWidth = layer.Width;
-			int layerHeight = layer.Height;
+			int layerWidth = layer.Bitmap.GetLength(0);
+			int layerHeight = layer.Bitmap.GetLength(1);
 			int imageWidth = Width;
 			int imageHeight = Height;
 
@@ -260,9 +260,9 @@ namespace CivOne.GFX
 				for (int xx = 0; xx < layerWidth; xx++)
 				{
 					if (xx + offset.X >= imageWidth) continue;
-					if (layer[xx, yy] == 0) continue;
+					if (layer.Bitmap[xx, yy] == 0) continue;
 					if (xx + offset.X < 0 || yy + offset.Y < 0) continue;
-					_bitmap[xx + offset.X, yy + offset.Y] = layer[xx, yy];
+					_bitmap[xx + offset.X, yy + offset.Y] = layer.Bitmap[xx, yy];
 				}
 			}
 		}
@@ -322,9 +322,8 @@ namespace CivOne.GFX
 			_bitmap = bytes;
 		}
 		
-		public Picture(Picture picture) : this(picture.Width, picture.Height, picture.Palette)
+		public Picture(IBitmap picture) : this(picture.Bitmap, picture.Palette)
 		{
-			AddLayer(picture);
 		}
 		
 		public Picture(int width, int height) : this(width, height, EmptyPalette)
