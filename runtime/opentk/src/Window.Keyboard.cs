@@ -44,15 +44,8 @@ namespace CivOne
 
 			if (kbArgs[CMod.Alt, CKey.Enter])
 			{
-				if (WindowState == WindowState.Fullscreen)
-				{
-					Log("Windowed mode");
-					WindowState = _previousState;
-					return;
-				}
-				Log("Fullscreen mode");
-				_previousState = WindowState;
-				WindowState = WindowState.Fullscreen;
+				if (!args.IsRepeat)
+					ToggleFullscreen();
 				return;
 			}
 
