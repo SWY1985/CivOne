@@ -68,30 +68,13 @@ namespace CivOne.Screens
 				_canvas.FillRectangle(0, 82, 0, 2, 82);
 				
 				ITile[,] tiles = _city.CityRadius;
+				AddLayer(tiles.ToPicture(TileSettings.CityManager, Settings.RevealWorld ? null : Game.GetPlayer(_city.Owner)), 1, 1);
+
 				for (int xx = 0; xx < 5; xx++)
 				for (int yy = 0; yy < 5; yy++)
 				{
 					ITile tile = tiles[xx, yy];
 					if (tile == null) continue;
-					AddLayer(Resources.Instance.GetTile(tile), (xx * 16) + 1, (yy * 16) + 1);
-					if (tile.City != null)
-					{
-						AddLayer(Icons.City(tile.City, smallFont: true), (xx * 16) + 1, (yy * 16) + 1);
-					}
-					else if (tile.Units.Any(u => u.Owner != _city.Owner))
-					{
-						IUnit[] units = tile.Units.Where(u => u.Owner != _city.Owner).ToArray();
-						AddLayer(units[0].GetUnit(units[0].Owner), (xx * 16) + 1, (yy * 16) + 1);
-						if (units.Length > 1)
-							AddLayer(units[0].GetUnit(units[0].Owner), (xx * 16), (yy * 16));
-					}
-					if (!Settings.RevealWorld)
-					{
-						if (!Human.Visible(tile, Direction.West)) AddLayer(Resources.Instance.GetFog(Direction.West), (xx * 16) + 1, (yy * 16) + 1);
-						if (!Human.Visible(tile, Direction.North)) AddLayer(Resources.Instance.GetFog(Direction.North), (xx * 16) + 1, (yy * 16) + 1);
-						if (!Human.Visible(tile, Direction.East)) AddLayer(Resources.Instance.GetFog(Direction.East), (xx * 16) + 1, (yy * 16) + 1);
-						if (!Human.Visible(tile, Direction.South)) AddLayer(Resources.Instance.GetFog(Direction.South), (xx * 16) + 1, (yy * 16) + 1);
-					}
 
 					if (_city.OccupiedTile(tile))
 					{

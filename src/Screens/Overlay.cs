@@ -125,22 +125,7 @@ namespace CivOne.Screens
 					int cx = Settings.RightSideBar ? 0 : 80;
 					int cy = 8;
 
-					for (int yy = 0; yy < 12; yy++)
-					for (int xx = 0; xx < 15; xx++)
-					{
-						ITile tile = Map[_x + xx, _y + yy];
-						if (tile == null || !Human.Visible(tile))
-						{
-							_canvas.FillRectangle(5, cx + (xx * 16), cy + (yy * 16), 16, 16);
-							continue;
-						}
-						AddLayer(Resources.Instance.GetTile(tile, improvements: false), cx + (xx * 16), cy + (yy * 16));
-						
-						if (!Human.Visible(tile, Direction.West)) AddLayer(Resources.Instance.GetFog(Direction.West), cx + (xx * 16), cy + (yy * 16));
-						if (!Human.Visible(tile, Direction.North)) AddLayer(Resources.Instance.GetFog(Direction.North), cx + (xx * 16), cy + (yy * 16));
-						if (!Human.Visible(tile, Direction.East)) AddLayer(Resources.Instance.GetFog(Direction.East), cx + (xx * 16), cy + (yy * 16));
-						if (!Human.Visible(tile, Direction.South)) AddLayer(Resources.Instance.GetFog(Direction.South), cx + (xx * 16), cy + (yy * 16));
-					}
+					AddLayer(Map[_x, _y, 15, 12].ToPicture(TileSettings.Terrain, Human), cx, cy);
 				}
 
 				_update = false;
