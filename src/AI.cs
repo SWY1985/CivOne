@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System.Drawing;
 using System.Linq;
 using CivOne.Advances;
 using CivOne.Buildings;
@@ -148,36 +149,33 @@ namespace CivOne
 
 				for (int i = 0; i < 1000; i++)
 				{
-					if (unit.GotoX == -1 || unit.GotoY == -1)
+					if (unit.Goto.IsEmpty)
 					{
 						int gotoX = Common.Random.Next(-5, 6);
 						int gotoY = Common.Random.Next(-5, 6);
 						if (gotoX == 0 && gotoY == 0) continue;
 						if (!player.Visible(unit.X + gotoX, unit.Y + gotoY)) continue;
 
-						unit.GotoX = unit.X + gotoX;
-						unit.GotoY = unit.Y + gotoY;
+						unit.Goto = new Point(unit.X + gotoX, unit.Y + gotoY);
 						continue;
 					}
 
-					if (unit.GotoX != -1 && unit.GotoY != -1)
+					if (!unit.Goto.IsEmpty)
 					{
-						int distance = unit.Tile.DistanceTo(unit.GotoX, unit.GotoY);
-						ITile[] tiles = (unit as BaseUnit).MoveTargets.OrderBy(x => x.DistanceTo(unit.GotoX, unit.GotoY)).ThenBy(x => x.Movement).ToArray();
-						if (tiles.Length == 0 || tiles[0].DistanceTo(unit.GotoX, unit.GotoY) > distance)
+						int distance = unit.Tile.DistanceTo(unit.Goto);
+						ITile[] tiles = (unit as BaseUnit).MoveTargets.OrderBy(x => x.DistanceTo(unit.Goto)).ThenBy(x => x.Movement).ToArray();
+						if (tiles.Length == 0 || tiles[0].DistanceTo(unit.Goto) > distance)
 						{
 							// No valid tile to move to, cancel goto
-							unit.GotoX = -1;
-							unit.GotoY = -1;
+							unit.Goto = Point.Empty;
 							continue;
 						}
-						else if (tiles[0].DistanceTo(unit.GotoX, unit.GotoY) == distance)
+						else if (tiles[0].DistanceTo(unit.Goto) == distance)
 						{
 							// Distance is unchanged, 50% chance to cancel goto
 							if (Common.Random.Next(0, 100) < 50)
 							{
-								unit.GotoX = -1;
-								unit.GotoY = -1;
+								unit.Goto = Point.Empty;
 								continue;
 							}
 						}
@@ -187,8 +185,7 @@ namespace CivOne
 							// The code below is to prevent the game from becoming stuck...
 							if (Common.Random.Next(0, 100) < 67)
 							{
-								unit.GotoX = -1;
-								unit.GotoY = -1;
+								unit.Goto = Point.Empty;
 								continue;
 							}
 							else if (Common.Random.Next(0, 100) < 67)

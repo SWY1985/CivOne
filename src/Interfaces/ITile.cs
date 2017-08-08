@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Collections.Generic;
+using System.Drawing;
 using CivOne.Enums;
 
 namespace CivOne.Interfaces
@@ -17,6 +18,7 @@ namespace CivOne.Interfaces
 		int X { get; }
 		int Y { get; }
 		int DistanceTo(int x, int y);
+		int DistanceTo(Point point);
 		int DistanceTo(ITile tile);
 		Terrain Type { get; }
 		bool Special { get; }

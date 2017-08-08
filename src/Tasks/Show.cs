@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.Drawing;
 using System.Linq;
 using CivOne.Interfaces;
 using CivOne.Screens;
@@ -66,8 +67,7 @@ namespace CivOne.Tasks
 				{
 					if (Human != Game.CurrentPlayer) return;
 					if (Game.ActiveUnit == null) return;
-					Game.ActiveUnit.GotoX = gotoScreen.X;
-					Game.ActiveUnit.GotoY = gotoScreen.Y;
+					Game.ActiveUnit.Goto = new Point(gotoScreen.X, gotoScreen.Y);
 				};
 				return new Show(gotoScreen);
 			}
