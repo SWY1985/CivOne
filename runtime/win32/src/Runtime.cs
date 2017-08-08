@@ -36,7 +36,7 @@ namespace CivOne
 		public event ScreenEventHandler MouseUp, MouseDown, MouseMove;
 		
 		public RuntimeSettings Settings => new RuntimeSettings() { Demo = true, Setup = true };
-		public IBitmap Bitmap { internal get; set; }
+		public IBitmap Bitmap { get; set; }
 		public IBitmap Cursor { internal get; set; }
 		public void Log(string value, params object[] formatArgs) => Console.WriteLine(value, formatArgs);
 

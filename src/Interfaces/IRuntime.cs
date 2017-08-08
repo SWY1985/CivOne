@@ -22,7 +22,7 @@ namespace CivOne.Interfaces
 		Platform CurrentPlatform { get; }
 		string StorageFolder { get; }
 		RuntimeSettings Settings { get; }
-		IBitmap Bitmap { set; }
+		IBitmap Bitmap { get; set; }
 		IBitmap Cursor { set; }
 		int CanvasWidth { get; }
 		int CanvasHeight { get; }

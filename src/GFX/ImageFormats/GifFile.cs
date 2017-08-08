@@ -113,10 +113,10 @@ namespace CivOne.GFX.ImageFormats
 			}
 		}
 
-		public GifFile(Picture picture)
+		public GifFile(IBitmap bitmap)
 		{
-			_palette = picture.Palette;
-			_pixels = picture.Bitmap;
+			_palette = bitmap.Palette;
+			_pixels = bitmap.Bitmap;
 		}
 
 		public void Dispose()
