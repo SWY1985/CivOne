@@ -8,8 +8,5 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
-[assembly: AssemblyProduct("CivOne")]
-
-[assembly:InternalsVisibleTo("CivOne.UnitTests")]
+[assembly: AssemblyProduct("CivOne (opentk)")]

@@ -36,6 +36,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="src\*.cs" />
+		<Compile Include="shared\**\*.cs" />
 		<Compile Include="..\..\src\**\*.cs" Exclude="..\..\src\Properties\*.cs" />
 		<Compile Include="..\..\api\src\**\*.cs" Exclude="..\..\api\src\Properties\*.cs" />
 	</ItemGroup>
