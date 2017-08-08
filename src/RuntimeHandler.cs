@@ -10,6 +10,7 @@
 using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CivOne.Attributes;
@@ -111,6 +112,19 @@ namespace CivOne
 
 		private void OnKeyboardDown(object sender, KeyboardEventArgs args)
 		{
+			if (args[KeyModifier.Control, Key.F5])
+			{
+				string filename = Common.CaptureFilename;
+				using (CivOne.GFX.ImageFormats.GifFile file = new CivOne.GFX.ImageFormats.GifFile(Runtime.Bitmap))
+				using (FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write))
+				{
+					byte[] output = file.GetBytes();
+					fs.Write(output, 0, output.Length);
+					Runtime.Log($"Screenshot saved: {filename}");
+				}
+				return;
+			}
+
 			TopScreen?.KeyDown(args);
 		}
 
