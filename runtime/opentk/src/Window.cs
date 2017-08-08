@@ -26,6 +26,19 @@ namespace CivOne
 		
 		private WindowState _previousState = WindowState.Normal;
 
+		private void ToggleFullscreen()
+		{
+			if (WindowState == WindowState.Fullscreen)
+			{
+				Log("Windowed mode");
+				WindowState = _previousState;
+				return;
+			}
+			Log("Fullscreen mode");
+			_previousState = WindowState;
+			WindowState = WindowState.Fullscreen;
+		}
+
 		private void WindowResize(object sender, EventArgs args)
 		{
 			if (WindowState == WindowState.Minimized) return;
