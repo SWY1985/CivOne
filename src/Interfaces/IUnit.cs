@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Collections.Generic;
+using System.Drawing;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Screens;
@@ -30,8 +31,7 @@ namespace CivOne.Interfaces
 		byte Move { get; }
 		int X { get; set; }
 		int Y { get; set; }
-		int GotoX { get; set; }
-		int GotoY { get; set; }
+		Point Goto { get; set; }
 		ITile Tile { get; }
 		bool Busy { get; set; }
 		bool Veteran { get; set; }

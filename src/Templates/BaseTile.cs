@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Collections.Generic;
+using System.Drawing;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
@@ -39,14 +40,9 @@ namespace CivOne.Templates
 		
 		public int X { get; private set; }
 		public int Y { get; private set; }
-		public int DistanceTo(int x, int y)
-		{
-			return Common.DistanceToTile(X, Y, x, y);
-		}
-		public int DistanceTo(ITile tile)
-		{
-			return Common.DistanceToTile(X, Y, tile.X, tile.Y);
-		}
+		public int DistanceTo(int x, int y) => Common.DistanceToTile(X, Y, x, y);
+		public int DistanceTo(Point point) => Common.DistanceToTile(X, Y, point.X, point.Y);
+		public int DistanceTo(ITile tile) => Common.DistanceToTile(X, Y, tile.X, tile.Y);
 		public bool Special { get; protected set; }
 		public byte ContinentId { get; set; }
 		public byte LandValue { get; set; }

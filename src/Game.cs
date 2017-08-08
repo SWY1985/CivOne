@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using CivOne.Buildings;
@@ -182,24 +183,22 @@ namespace CivOne
 			IUnit unit = ActiveUnit;
 			if (CurrentPlayer == HumanPlayer)
 			{
-				if (unit != null && unit.GotoX != -1 && unit.GotoY != -1)
+				if (unit != null && !unit.Goto.IsEmpty)
 				{
-					int distance = unit.Tile.DistanceTo(unit.GotoX, unit.GotoY);
-					ITile[] tiles = (unit as BaseUnit).MoveTargets.OrderBy(x => x.DistanceTo(unit.GotoX, unit.GotoY)).ThenBy(x => x.Movement).ToArray();
-					if (tiles.Length == 0 || tiles[0].DistanceTo(unit.GotoX, unit.GotoY) > distance)
+					int distance = unit.Tile.DistanceTo(unit.Goto);
+					ITile[] tiles = (unit as BaseUnit).MoveTargets.OrderBy(x => x.DistanceTo(unit.Goto)).ThenBy(x => x.Movement).ToArray();
+					if (tiles.Length == 0 || tiles[0].DistanceTo(unit.Goto) > distance)
 					{
 						// No valid tile to move to, cancel goto
-						unit.GotoX = -1;
-						unit.GotoY = -1;
+						unit.Goto = Point.Empty;
 						return;
 					}
-					else if (tiles[0].DistanceTo(unit.GotoX, unit.GotoY) == distance)
+					else if (tiles[0].DistanceTo(unit.Goto) == distance)
 					{
 						// Distance is unchanged, 50% chance to cancel goto
 						if (Common.Random.Next(0, 100) < 50)
 						{
-							unit.GotoX = -1;
-							unit.GotoY = -1;
+							unit.Goto = Point.Empty;
 							return;
 						}
 					}

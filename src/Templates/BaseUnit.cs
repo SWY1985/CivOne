@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using CivOne.Buildings;
 using CivOne.Enums;
@@ -423,10 +424,9 @@ namespace CivOne.Templates
 			ITile previousTile = Map[_x, _y];
 			X += Movement.RelX;
 			Y += Movement.RelY;
-			if (X == GotoX && Y == GotoY)
+			if (X == Goto.X && Y == Goto.Y)
 			{
-				GotoX = -1;
-				GotoY = -1;
+				Goto = Point.Empty;
 			}
 			Movement = null;
 			
@@ -567,8 +567,7 @@ namespace CivOne.Templates
 				_y = value;
 			}
 		}
-		public int GotoX { get; set; }
-		public int GotoY { get; set; }
+		public Point Goto { get; set; }
 		public ITile Tile
 		{
 			get
@@ -688,7 +687,7 @@ namespace CivOne.Templates
 				icon.FillRectangle(0, 0, 1, 1, 15);
 				_unitCache[unitId, colour] = icon;
 			}
-			if (!showState || (!Sentry && !Fortify))
+			if (!showState || (!Sentry && !Fortify && Goto.IsEmpty))
 				return _unitCache[unitId, colour];
 			
 			if (Sentry)
@@ -710,7 +709,7 @@ namespace CivOne.Templates
 				unit.AddLayer(Icons.Fortify, 0, 0);
 				return unit; 
 			}
-			else if (Human == Owner && GotoX != -1 && GotoY != -1)
+			else if (Human == Owner && Goto != Point.Empty)
 			{
 				Picture unit = new Picture(_unitCache[unitId, colour]);
 				unit.DrawText("G", 0, 5, 8, 9, TextAlign.Center);
@@ -770,8 +769,7 @@ namespace CivOne.Templates
 			Move = move;
 			X = -1;
 			Y = -1;
-			GotoX = -1;
-			GotoY = -1;
+			Goto = Point.Empty;
 			Owner = 0;
 			Status = 0;
 			RequiredWonder = null;
