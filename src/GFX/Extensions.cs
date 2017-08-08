@@ -43,13 +43,6 @@ namespace CivOne.GFX
 						output.AddLayer(Resources.GetFog(direction), x, y);
 					}
 				}
-
-				if (settings.EnemyUnits || settings.Units)
-				{
-					int unitCount = tile.Units.Count(u => settings.Units || player == null || u.Owner != Game.PlayerNumber(player));
-					if (unitCount == 0) continue;
-					output.AddLayer(tile.UnitsToPicture(), x, y);
-				}
 			}
 
 			if (settings.CityLabels)
@@ -70,7 +63,7 @@ namespace CivOne.GFX
 			return output;
 		}
 
-		public static Picture ToPicture(this ITile tile, TileSettings settings = null)
+		public static Picture ToPicture(this ITile tile, TileSettings settings = null, Player player = null)
 		{
 			if (settings == null) settings = TileSettings.Default;
 
@@ -81,6 +74,14 @@ namespace CivOne.GFX
 			if (settings.Cities && tile.City != null)
 			{
 				output.AddLayer(Icons.City(tile.City, smallFont: settings.CitySmallFonts));
+			}
+			else if (settings.EnemyUnits || settings.Units)
+			{
+				int unitCount = tile.Units.Count(u => settings.Units || player == null || u.Owner != Game.PlayerNumber(player));
+				if (unitCount > 0)
+				{
+					output.AddLayer(tile.UnitsToPicture());
+				}
 			}
 
 			return output;
@@ -94,9 +95,9 @@ namespace CivOne.GFX
 			Picture unitGfx = tile.Units[0].GetUnit(tile.Units[0].Owner);
 			
 			Picture output = new Picture(16, 16, Palette);
-			output.AddLayer(unitGfx, 1, 1);
+			output.AddLayer(unitGfx);
 			if (stack)
-				output.AddLayer(unitGfx);
+				output.AddLayer(unitGfx, -1, -1);
 			return output;
 		}
 	}
