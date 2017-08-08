@@ -17,7 +17,7 @@ using CivOne.GFX;
 using CivOne.Tasks;
 using CivOne.Templates;
 
-namespace CivOne.Screens
+namespace CivOne.Screens.GamePlayPanels
 {
 	internal class SideBar : BaseScreen
 	{

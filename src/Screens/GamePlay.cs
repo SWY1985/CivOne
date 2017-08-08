@@ -15,6 +15,7 @@ using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Screens.Dialogs;
+using CivOne.Screens.GamePlayPanels;
 using CivOne.Screens.Reports;
 using CivOne.Tasks;
 using CivOne.Templates;

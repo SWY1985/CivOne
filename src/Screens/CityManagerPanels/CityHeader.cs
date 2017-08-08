@@ -14,7 +14,7 @@ using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Templates;
 
-namespace CivOne.Screens
+namespace CivOne.Screens.CityManagerPanels
 {
 	internal class CityHeader : BaseScreen
 	{
