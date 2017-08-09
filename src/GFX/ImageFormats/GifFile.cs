@@ -80,10 +80,6 @@ namespace CivOne.GFX.ImageFormats
 					writer.Write(new byte[] { r, g, b });
 				}
 
-				// Graphic Control Extension
-				writer.Write(new byte[] { 0x21, 0xF9 });
-				writer.Write(new byte[] { 0x03, 0x00, 0x00, 0x00, 0x00 });
-
 				// Image Descriptor
 				writer.Write((byte)0x2C);
 				// NW Corner
