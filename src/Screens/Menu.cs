@@ -202,21 +202,6 @@ namespace CivOne.Screens
 			Destroy();
 		}
 		
-		public Menu(Color[] colours, Picture background = null)
-		{
-			Items = new MenuItemCollection<T>();
-			if (background != null)
-			{
-				_background = new Picture(background);
-			}
-
-			Cursor = MouseCursor.Pointer;
-			IndentTitle = 8;
-			Indent = 8;
-			
-			_canvas = new Picture(320, 200, colours);
-		}
-		
 		public Menu(string menuId, Color[] colours, Picture background = null)
 		{
 			Items = new MenuItemCollection<T>(menuId);
