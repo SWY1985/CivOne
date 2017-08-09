@@ -82,7 +82,7 @@ namespace CivOne.Screens.Debug
 			_canvas.AddLayer(menuGfx, xx, yy);
 			_canvas.DrawText("Change Human Player...", 0, 15, xx + 8, yy + 3);
 
-			_civSelect = new Menu<Player>(Canvas.Palette, menuBackground)
+			_civSelect = new Menu<Player>("ChangeHumanPlayer", Canvas.Palette, menuBackground)
 			{
 				X = xx + 2,
 				Y = yy + 11,
