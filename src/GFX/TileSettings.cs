@@ -26,7 +26,16 @@ namespace CivOne.GFX
 			Roads = true,
 			Cities = true,
 			CityLabels = true,
-			EnemyUnits = true
+			EnemyUnits = true,
+			Units = true,
+			ActiveUnit = true
+		};
+
+		public static TileSettings Blink => new TileSettings()
+		{
+			Improvements = true,
+			Roads = true,
+			Cities = true
 		};
 
 		public static TileSettings Terrain => new TileSettings()

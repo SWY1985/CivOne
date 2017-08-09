@@ -74,6 +74,10 @@ namespace CivOne.GFX
 			if (settings.Cities && tile.City != null)
 			{
 				output.AddLayer(Icons.City(tile.City, smallFont: settings.CitySmallFonts));
+				if (settings.ActiveUnit && tile.Units.Any(u => u == Game.ActiveUnit && u.Owner != Game.PlayerNumber(player)))
+				{
+					output.AddLayer(tile.UnitsToPicture(), -1, -1);
+				}
 			}
 			else if (settings.EnemyUnits || settings.Units)
 			{
@@ -89,15 +93,18 @@ namespace CivOne.GFX
 
 		public static Picture UnitsToPicture(this ITile tile)
 		{
-			if (tile == null || tile.Units.Length == 0) return null;
+			if (tile == null || tile.Units.Length == 0 || (tile.Units.Length == 1 && tile.Units[0] == Game.MovingUnit)) return null;
 			
-			bool stack = (tile.Units.Length > 1);
-			Picture unitGfx = tile.Units[0].GetUnit(tile.Units[0].Owner);
+			IUnit[] units = tile.Units.Where(x => x != Game.MovingUnit).ToArray();
+			if (units.Length == 0) return null;
+
+			bool stack = (units.Length > 1);
+			IUnit unit = units.First();
 			
 			Picture output = new Picture(16, 16, Palette);
-			output.AddLayer(unitGfx);
+			output.AddLayer(unit.GetUnit(unit.Owner));
 			if (stack)
-				output.AddLayer(unitGfx, -1, -1);
+				output.AddLayer(unit.GetUnit(unit.Owner), -1, -1);
 			return output;
 		}
 	}
