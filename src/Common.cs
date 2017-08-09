@@ -23,6 +23,8 @@ namespace CivOne
 {
 	internal class Common
 	{
+		private static IRuntime Runtime => RuntimeHandler.Runtime;
+		private static Settings Settings => Settings.Instance;
 		private static void Log(string text, params object[] parameters) => RuntimeHandler.Runtime.Log(text, parameters);
 
 		public static Random Random = new Random((int)DateTime.Now.Ticks);
@@ -149,6 +151,10 @@ namespace CivOne
 		
 		internal static void AddScreen(IScreen screen)
 		{
+			if (screen is IExpand && Settings.AspectRatio == AspectRatio.Expand)
+			{
+				(screen as IExpand).Resize(Runtime.CanvasWidth, Runtime.CanvasHeight);
+			}
 			_screens.Add(screen);
 		}
 		
