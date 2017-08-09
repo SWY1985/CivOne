@@ -29,6 +29,7 @@ namespace CivOne
 		internal static RuntimeHandler Instance => _instance;
 		internal static IRuntime Runtime { get; private set; }
 		
+		private Settings Settings => Settings.Instance;
 		private IScreen TopScreen => Common.TopScreen;
 		private MouseCursor _currentCursor = MouseCursor.None;
 		private CursorType _cursorType = CursorType.Native;
@@ -79,21 +80,32 @@ namespace CivOne
 			}
 		}
 
+		private void AddScreenLayer(Picture bitmap, IScreen screen)
+		{
+			if (screen is IExpand && Settings.AspectRatio == AspectRatio.Expand && (screen.Canvas.Width != Runtime.CanvasWidth || screen.Canvas.Height != Runtime.CanvasHeight))
+			{
+				(screen as IExpand).Resize(Runtime.CanvasWidth, Runtime.CanvasHeight);
+			}
+
+			bitmap.AddLayer(screen.Canvas);
+		}
+
 		private void OnDraw(object sender, EventArgs args)
 		{
 			if (TopScreen == null) return;
 
-			Picture bitmap = new Picture(320, 200, Common.TopScreen.Palette);
+			Picture bitmap = new Picture(Runtime.CanvasWidth, Runtime.CanvasHeight, Common.TopScreen.Palette);
 			bitmap.Palette[0] = Color.Black;
+			
 			if (Common.HasAttribute<Modal>(TopScreen))
 			{
-				bitmap.AddLayer(TopScreen.Canvas);
+				AddScreenLayer(bitmap, TopScreen);
 			}
 			else
 			{
 				foreach (IScreen screen in Common.Screens)
 				{
-					bitmap.AddLayer(screen.Canvas);
+					AddScreenLayer(bitmap, screen);
 				}
 			}
 			Runtime.Bitmap = bitmap;
