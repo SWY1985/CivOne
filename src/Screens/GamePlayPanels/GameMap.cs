@@ -23,26 +23,30 @@ namespace CivOne.Screens.GamePlayPanels
 {
 	internal class GameMap : BaseScreen
 	{
-		private struct RenderTile
-		{
-			public bool Visible;
-			public int X, Y;
-			public ITile Tile;
-			public Picture Image
-			{
-				get
-				{
-					return Resources.Instance.GetTile(Tile);
-				}
-			}
-			public Point Position
-			{
-				get
-				{
-					return new Point(X * 16, Y * 16);
-				}
-			}
-		}
+		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// private struct RenderTile
+		// {
+		// 	public bool Visible;
+		// 	public int X, Y;
+		// 	public ITile Tile;
+		// 	public Picture Image
+		// 	{
+		// 		get
+		// 		{
+		// 			return Resources.Instance.GetTile(Tile);
+		// 		}
+		// 	}
+		// 	public Point Position
+		// 	{
+		// 		get
+		// 		{
+		// 			return new Point(X * 16, Y * 16);
+		// 		}
+		// 	}
+		// }
+		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+		private IUnit ActiveUnit => Game.ActiveUnit;
 		
 		private readonly Color[] _palette;
 		private Point _helperDirection = new Point(0, 0);
@@ -53,74 +57,98 @@ namespace CivOne.Screens.GamePlayPanels
 
 		private int _tilesX = 15, _tilesY = 12;
 
-		internal int X
-		{
-			get
-			{
-				return _x;
-			}
-		}
-
-		internal int Y
-		{
-			get
-			{
-				return _y;
-			}
-		}
+		internal int X => _x;
+		internal int Y => _y;
 		
-		private IEnumerable<RenderTile> RenderTiles
+		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// private IEnumerable<RenderTile> RenderTiles
+		// {
+		// 	get
+		// 	{
+		// 		for (int x = 0; x < _tilesX; x++)
+		// 		for (int y = 0; y < _tilesY; y++)
+		// 		{
+		// 			int tx = _x + x;
+		// 			int ty = _y + y;
+		// 			while (tx >= Map.WIDTH) tx -= Map.WIDTH;
+					
+		// 			if (ty < 0 || ty >= Map.HEIGHT) continue;
+
+		// 			yield return new RenderTile
+		// 			{
+		// 				Visible = Human.Visible(tx, ty),
+		// 				X = x,
+		// 				Y = y,
+		// 				Tile = Map[tx, ty]
+		// 			};
+		// 		}
+		// 	}
+		// }
+		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+		private ITile[,] Tiles => Map[_x, _y, _tilesX, _tilesY];
+
+		private int GetX(ITile tile)
+		{
+			ITile[,] tiles = Tiles;
+			for (int xx = 0; xx < Tiles.GetLength(0); xx++)
+			{
+				if (tiles[xx, 0].X == tile.X) return xx;
+			}
+			return -1;
+		}
+
+		private int GetY(ITile tile)
+		{
+			ITile[,] tiles = Tiles;
+			for (int yy = 0; yy < Tiles.GetLength(1); yy++)
+			{
+				if (tiles[0, yy].Y == tile.Y) return yy;
+			}
+			return -1;
+		}
+
+		private IEnumerable<ITile> TileList
 		{
 			get
 			{
-				for (int x = 0; x < _tilesX; x++)
-				for (int y = 0; y < _tilesY; y++)
+				ITile[,] tiles = Tiles;
+				for (int yy = 0; yy < tiles.GetLength(1); yy++)
+				for (int xx = 0; xx < tiles.GetLength(0); xx++)
 				{
-					int tx = _x + x;
-					int ty = _y + y;
-					while (tx >= Map.WIDTH) tx -= Map.WIDTH;
-					
-					if (ty < 0 || ty >= Map.HEIGHT) continue;
-
-					yield return new RenderTile
-					{
-						Visible = Human.Visible(tx, ty),
-						X = x,
-						Y = y,
-						Tile = Map[tx, ty]
-					};
+					ITile tile = tiles[xx, yy];
+					if (!Settings.RevealWorld && !Human.Visible(tile)) continue;
+					yield return tile;
 				}
 			}
 		}
 		
 		public bool MustUpdate(uint gameTick)
 		{
+			IUnit unit = ActiveUnit;
+
 			// Check if the active unit is on the screen and the blink status has changed.
-			IUnit activeUnit = Game.ActiveUnit;
-			if (activeUnit == null)
+			if (unit == null)
 			{
 				_update = true;
 				return false;
 			}
 
-			if (RenderTiles.Any(t => t.Tile.X == activeUnit.X && t.Tile.Y == activeUnit.Y) && (gameTick % 2) == 0)
+			if (TileList.Any(t => t != null && t.X == unit.X && t.Y == unit.Y) && (gameTick % 2) == 0)
 			{
-				_lastUnit = activeUnit;
+				_lastUnit = unit;
 				_update = true;
 			}
-			else if (activeUnit.Moving)
+			else if (unit.Moving)
 			{
 				_update = true;
 			}
-			else if (activeUnit != _lastUnit && ShouldCenter())
+			else if (unit != _lastUnit && ShouldCenter())
 			{
-				if (Human != activeUnit.Owner)
+				if (!Settings.RevealWorld && Human != unit.Owner && !Human.Visible(unit.Tile))
 				{
-					if (!Settings.RevealWorld && !Human.Visible(activeUnit.X, activeUnit.Y))
-					{
-						return (_update = false);
-					}
-				} 
+					return (_update = false);
+				}
 				CenterOnUnit();
 				_update = true;
 			}
@@ -129,200 +157,86 @@ namespace CivOne.Screens.GamePlayPanels
 		
 		public override bool HasUpdate(uint gameTick)
 		{
-			if (_update || _centerChanged)
+			if (!(_update || _centerChanged)) return false;
+
+			Player renderPlayer = Settings.RevealWorld ? null : Human;
+
+			if (Game.MovingUnit != null && !_centerChanged)
 			{
-				RenderTile[] renderTiles = RenderTiles.ToArray();
-				if (Game.MovingUnit != null && !_centerChanged)
+				IUnit movingUnit = Game.MovingUnit;
+				ITile tile = movingUnit.Tile;
+				int dx = GetX(tile);
+				int dy = GetY(tile);
+				if (dx < _tilesX && dy < _tilesY)
 				{
-					IUnit unit = Game.MovingUnit;
-					ITile[] tiles = Map.QueryMapPart(unit.X - 1, unit.Y - 1, 3, 3).ToArray();
-					renderTiles = renderTiles.Where(t => tiles.Any(x => x != null && x.X == t.Tile.X && x.Y == t.Tile.Y)).ToArray();
+					dx *= 16; dy *= 16;
+
+					MoveUnit movement = movingUnit.Movement;
+					AddLayer(Map[movingUnit.X - 1, movingUnit.Y - 1, 3, 3].ToPicture(player: renderPlayer), dx - 16, dy - 16);
+					AddLayer(movingUnit.GetUnit(movingUnit.Owner), dx + movement.X, dy + movement.Y);
+					if (movingUnit is IBoardable && tile.Units.Any(u => u.Class == UnitClass.Land && (tile.City == null || (tile.City != null && u.Sentry))))
+					{
+						AddLayer(movingUnit.GetUnit(movingUnit.Owner), dx + movement.X - 1, dy + movement.Y - 1);
+					}
+					return true;
 				}
-				else
+			}
+			else
+			{
+				_centerChanged = false;
+				_canvas.FillRectangle(5, 0, 0, _canvas.Width, _canvas.Height);
+				AddLayer(Tiles.ToPicture(player: renderPlayer));
+			}
+
+			IUnit activeUnit = ActiveUnit;
+			if (activeUnit != null && Game.CurrentPlayer == Human && !GameTask.Any())
+			{
+				ITile tile = activeUnit.Tile;
+				int dx = GetX(tile);
+				int dy = GetY(tile);
+				if (dx < _tilesX && dy < _tilesY)
 				{
-					_centerChanged = false;
-					_canvas = new Picture(_canvas.Width, _canvas.Height, _palette);
-				}
-
-				foreach (RenderTile t in renderTiles)
-				{
-					if (!Settings.RevealWorld && !t.Visible)
-					{
-						_canvas.FillRectangle(5, t.X * 16, t.Y * 16, 16, 16);
-						continue;
-					}
-					AddLayer(t.Image, t.Position);
-					if (Settings.RevealWorld) continue;
+					dx *= 16; dy *= 16;
 					
-					if (!Human.Visible(t.Tile, Direction.West)) AddLayer(Resources.Instance.GetFog(Direction.West), t.Position);
-					if (!Human.Visible(t.Tile, Direction.North)) AddLayer(Resources.Instance.GetFog(Direction.North), t.Position);
-					if (!Human.Visible(t.Tile, Direction.East)) AddLayer(Resources.Instance.GetFog(Direction.East), t.Position);
-					if (!Human.Visible(t.Tile, Direction.South)) AddLayer(Resources.Instance.GetFog(Direction.South), t.Position);
-				}
-				
-				foreach (RenderTile t in renderTiles)
-				{
-					if (!Settings.RevealWorld && !t.Visible) continue;
-
-					if (t.Tile.City != null) continue;
-					
-					IUnit[] units = t.Tile.Units.Where(u => !u.Moving).ToArray();
-					if (t.Tile.Type == Terrain.Ocean)
+					// blink status
+					if ((gameTick % 4) >= 2)
 					{
-						// Always show naval units first at sea
-						units = units.OrderBy(u => (u.Class == UnitClass.Water) ? 1 : 0).ToArray();
-					}
-					if (units.Length == 0) continue;
-					
-					IUnit drawUnit = units.FirstOrDefault(u => u == Game.ActiveUnit);
-					
-					if (drawUnit == null)
-					{
-						// No active unit on this tile, show top unit
-						if (t.Tile.IsOcean)
-							drawUnit = units.OrderBy(x => x.Class == UnitClass.Land ? 1 : 0).FirstOrDefault();
-						else
-							drawUnit = units[0];
-					}
-					else if (!Common.HasScreenType<Input>() && ((gameTick % 4) >= 2 || drawUnit.Moving))
-					{
-						// Active unit on this tile or unit is currently moving. Drawing happens later.
-						continue;
+						AddLayer(tile.ToPicture(TileSettings.Blink), dx, dy);
 					}
 
-					if (t.Tile.IsOcean && drawUnit.Class != UnitClass.Water && drawUnit.Sentry)
-					{
-						// Do not draw sentried land units at sea
-						continue;
-					}
-
-					AddLayer(drawUnit.GetUnit(drawUnit.Owner), t.Position);
-					if (units.Length == 1) continue;
-					AddLayer(drawUnit.GetUnit(drawUnit.Owner), t.Position.X - 1, t.Position.Y - 1);
-				}
-				
-				foreach (RenderTile t in renderTiles.Reverse())
-				{
-					if (!Settings.RevealWorld && !t.Visible) continue;
-
-					City city = t.Tile.City;
-					if (city == null) continue;
-					
-					AddLayer(Icons.City(city), t.Position);
-					
-					if (t.Y == 11) continue;
-					int labelX = (t.X == 0) ? t.Position.X : t.Position.X - 8;
-					int labelY = t.Position.Y + 16;
-					_canvas.DrawText(city.Name, 0, 5, labelX, labelY + 1, TextAlign.Left);
-					_canvas.DrawText(city.Name, 0, 11, labelX, labelY, TextAlign.Left);
-				}
-				
-				foreach (RenderTile t in renderTiles)
-				{
-					if (!Settings.RevealWorld && !t.Visible) continue;
-
-					IUnit[] units = t.Tile.Units.Where(u => !u.Moving).ToArray();
-					if (units.Length == 0) continue;
-					
-					IUnit drawUnit = units.FirstOrDefault(u => u == Game.ActiveUnit);
-					
-					if (Game.MovingUnit != null && Game.MovingUnit.Movement.TargetTile.X == t.Tile.X && Game.MovingUnit.Movement.TargetTile.Y == t.Tile.Y)
-					{
-						// set defending unit
-						drawUnit = units.OrderByDescending(x => x.Attack * (x.Veteran ? 1.5 : 1)).ThenBy(x => (int)x.Type).First();
-					}
-					
-					if (drawUnit == null)
-					{
-						continue;
-					}
-
-					// Active unit on this tile
-
+					// helper arrows
 					if (_helperDirection.X != 0 || _helperDirection.Y != 0)
 					{
 						if (_helperDirection.X < 0)
 						{
-							AddLayer(Icons.HelperArrow(Direction.North), t.Position.X - 16, t.Position.Y - 16);
-							AddLayer(Icons.HelperArrow(Direction.West), t.Position.X - 16, t.Position.Y);
-							AddLayer(Icons.HelperArrow(Direction.South), t.Position.X - 16, t.Position.Y + 16);
+							AddLayer(Icons.HelperArrow(Direction.North), dx - 16, dy - 16);
+							AddLayer(Icons.HelperArrow(Direction.West), dx - 16, dy);
+							AddLayer(Icons.HelperArrow(Direction.South), dx - 16, dy + 16);
 						}
 						if (_helperDirection.X > 0)
 						{
-							AddLayer(Icons.HelperArrow(Direction.North), t.Position.X + 16, t.Position.Y - 16);
-							AddLayer(Icons.HelperArrow(Direction.East), t.Position.X + 16, t.Position.Y);
-							AddLayer(Icons.HelperArrow(Direction.South), t.Position.X + 16, t.Position.Y + 16);
+							AddLayer(Icons.HelperArrow(Direction.North), dx + 16, dy - 16);
+							AddLayer(Icons.HelperArrow(Direction.East), dx + 16, dy);
+							AddLayer(Icons.HelperArrow(Direction.South), dx + 16, dy + 16);
 						}
 						if (_helperDirection.Y < 0)
 						{
-							AddLayer(Icons.HelperArrow(Direction.West), t.Position.X - 16, t.Position.Y - 16);
-							AddLayer(Icons.HelperArrow(Direction.North), t.Position.X, t.Position.Y - 16);
-							AddLayer(Icons.HelperArrow(Direction.East), t.Position.X + 16, t.Position.Y - 16);
+							AddLayer(Icons.HelperArrow(Direction.West), dx - 16, dy - 16);
+							AddLayer(Icons.HelperArrow(Direction.North), dx, dy - 16);
+							AddLayer(Icons.HelperArrow(Direction.East), dx + 16, dy - 16);
 						}
 						if (_helperDirection.Y > 0)
 						{
-							AddLayer(Icons.HelperArrow(Direction.West), t.Position.X - 16, t.Position.Y + 16);
-							AddLayer(Icons.HelperArrow(Direction.South), t.Position.X, t.Position.Y + 16);
-							AddLayer(Icons.HelperArrow(Direction.East), t.Position.X + 16, t.Position.Y + 16);
+							AddLayer(Icons.HelperArrow(Direction.West), dx - 16, dy + 16);
+							AddLayer(Icons.HelperArrow(Direction.South), dx, dy + 16);
+							AddLayer(Icons.HelperArrow(Direction.East), dx + 16, dy + 16);
 						}
 					}
-					
-					if (drawUnit.Moving)
-					{
-						// Unit is currently moving, do not draw the unit here.
-						continue;
-					}
-
-					if (Human == drawUnit.Owner && drawUnit.Goto.IsEmpty && (gameTick % 4) >= 2 && !GameTask.Any())
-					{
-						// Unit is owned by human player, blink status is off and no tasks are running. Do not draw unit.
-						continue;
-					}
-
-					if (t.Tile.City != null && units.Length == 1 && !GameTask.Any())
-					{
-						AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position.X - 1, t.Position.Y - 1);
-						continue;
-					}
-					
-					if (Game.MovingUnit != null && Game.MovingUnit.Movement.TargetTile.X == t.Tile.X && Game.MovingUnit.Movement.TargetTile.Y== t.Tile.Y)
-					{
-						if (t.Tile.City != null && (Game.MovingUnit.Owner == t.Tile.City.Owner))
-						{
-							// do not draw units if the city is owned by the active player
-							continue;
-						}
-						// draw the defending unit
-						AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position);
-						continue;
-					}
-
-					AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position);
-					if (units.Length == 1) continue;
-					AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position.X - 1, t.Position.Y - 1);
 				}
-				
-				if (Game.MovingUnit != null && (Settings.RevealWorld || Game.Human == Game.MovingUnit.Owner ||Game.Human.Visible(Game.MovingUnit.Tile)))
-				{
-					IUnit unit = Game.MovingUnit;
-					if (renderTiles.Any(t => (t.Tile.X == unit.X && t.Tile.Y == unit.Y)))
-					{
-						RenderTile tile = renderTiles.First(t => (t.Tile.X == unit.X && t.Tile.Y == unit.Y));
-						AddLayer(unit.GetUnit(unit.Owner), tile.Position.X + unit.Movement.X, tile.Position.Y + unit.Movement.Y);
-						if (unit is IBoardable && tile.Tile.Units.Any(u => u.Class == UnitClass.Land && (tile.Tile.City == null || (tile.Tile.City != null && unit.Sentry))))
-						{
-							// If there are units on the ship, draw a stack
-							AddLayer(unit.GetUnit(unit.Owner), tile.Position.X + unit.Movement.X - 1, tile.Position.Y + unit.Movement.Y - 1);
-						}
-					}
-					return true;
-				}
-				
-				_update = false;
-				return true;
 			}
 			
-			return false;
+			_update = false;
+			return true;
 		}
 
 		internal void ForceRefresh()
