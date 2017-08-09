@@ -64,8 +64,8 @@ namespace CivOne.Screens
 			Menu menu = new Menu(Canvas.Palette)
 			{
 				Title = title,
-				X = (320 - width) / 2,
-				Y = (200 - height) / 2,
+				X = (_canvas.Width - width) / 2,
+				Y = (_canvas.Height - height) / 2,
 				Width = width,
 				TitleColour = 15,
 				ActiveColour = 11,
