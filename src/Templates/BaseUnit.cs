@@ -446,7 +446,6 @@ namespace CivOne.Templates
 			}
 		}
 		
-		private static Picture[,] _unitCache = new Picture[28,8];
 		private static Picture[] _iconCache = new Picture[28];
 		public virtual Picture Icon
 		{
@@ -664,59 +663,50 @@ namespace CivOne.Templates
 		public virtual Picture GetUnit(byte colour, bool showState = true)
 		{
 			int unitId = (int)Type;
-			if (_unitCache[unitId, colour] == null)
-			{
-				string resFile = Settings.GraphicsMode == GraphicsMode.Graphics256 ? "SP257" : "SPRITES";
-				int xx = (unitId % 20) * 16;
-				int yy = unitId < 20 ? 160 : 176;
-				
-				Picture icon;
-				if (Resources.Instance.Exists(resFile))
-				{
-					icon = Resources.Instance[resFile].GetPart(xx, yy, 16, 16);
-				}
-				else
-				{
-					icon = Free.Instance.GetUnit(Type);
-				}
-				if (Common.ColourLight[colour] == 15) Picture.ReplaceColours(icon, new byte[] { 15, 10, 2 }, new byte[] { 11, Common.ColourLight[colour], Common.ColourDark[colour] });
-				else if (Common.ColourDark[colour] == 8) Picture.ReplaceColours(icon, new byte[] { 7, 10, 2 }, new byte[] { 3, Common.ColourLight[colour], Common.ColourDark[colour] });
-				else Picture.ReplaceColours(icon, new byte[] { 10, 2 }, new byte[] { Common.ColourLight[colour], Common.ColourDark[colour] });
-				
-				icon.FillRectangle(0, 0, 0, 16, 1);
-				icon.FillRectangle(0, 0, 1, 1, 15);
-				_unitCache[unitId, colour] = icon;
-			}
-			if (!showState || (!Sentry && !Fortify && Goto.IsEmpty))
-				return _unitCache[unitId, colour];
+			string resFile = Settings.GraphicsMode == GraphicsMode.Graphics256 ? "SP257" : "SPRITES";
+			int xx = (unitId % 20) * 16;
+			int yy = unitId < 20 ? 160 : 176;
 			
+			Picture icon;
+			if (Resources.Instance.Exists(resFile))
+			{
+				icon = Resources.Instance[resFile].GetPart(xx, yy, 16, 16);
+			}
+			else
+			{
+				icon = Free.Instance.GetUnit(Type);
+			}
+			if (Common.ColourLight[colour] == 15) Picture.ReplaceColours(icon, new byte[] { 15, 10, 2 }, new byte[] { 11, Common.ColourLight[colour], Common.ColourDark[colour] });
+			else if (Common.ColourDark[colour] == 8) Picture.ReplaceColours(icon, new byte[] { 7, 10, 2 }, new byte[] { 3, Common.ColourLight[colour], Common.ColourDark[colour] });
+			else Picture.ReplaceColours(icon, new byte[] { 10, 2 }, new byte[] { Common.ColourLight[colour], Common.ColourDark[colour] });
+			
+			icon.FillRectangle(0, 0, 0, 16, 1);
+			icon.FillRectangle(0, 0, 1, 1, 15);
+			
+			if (!showState)
+			{
+				return icon;
+			}
+
 			if (Sentry)
 			{
-				Picture output = new Picture(_unitCache[unitId, colour]);
-				Picture.ReplaceColours(output, new byte[] { 5, 8, }, new byte[] { 7, 7 });
-				return new Picture(output);
+				Picture.ReplaceColours(icon, new byte[] { 5, 8, }, new byte[] { 7, 7 });
 			}
-			if (FortifyActive)
+			else if (FortifyActive)
 			{
-				Picture unit = new Picture(_unitCache[unitId, colour]);
-				unit.DrawText("F", 0, 5, 8, 9, TextAlign.Center);
-				unit.DrawText("F", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
-				return unit; 
+				icon.DrawText("F", 0, 5, 8, 9, TextAlign.Center);
+				icon.DrawText("F", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
 			}
 			else if (_fortify)
 			{
-				Picture unit = new Picture(_unitCache[unitId, colour]);
-				unit.AddLayer(Icons.Fortify, 0, 0);
-				return unit; 
+				icon.AddLayer(Icons.Fortify, 0, 0);
 			}
 			else if (Human == Owner && Goto != Point.Empty)
 			{
-				Picture unit = new Picture(_unitCache[unitId, colour]);
-				unit.DrawText("G", 0, 5, 8, 9, TextAlign.Center);
-				unit.DrawText("G", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
-				return unit; 
+				icon.DrawText("G", 0, 5, 8, 9, TextAlign.Center);
+				icon.DrawText("G", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
 			}
-			return _unitCache[unitId, colour];
+			return icon;
 		}
 
 		protected MenuItem<int> MenuNoOrders() => MenuItem<int>.Create("No Orders").SetShortcut("space").OnSelect((s, a) => SkipTurn());
