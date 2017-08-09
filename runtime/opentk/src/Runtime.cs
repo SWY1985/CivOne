@@ -20,7 +20,7 @@ namespace CivOne
 	{
 		private readonly Sounds _sounds;
 
-		internal static Size CanvasSize => new Size(320, 200);
+		internal static Size CanvasSize { get; set; }
 
 		internal bool SignalQuit { get; private set; }
 
