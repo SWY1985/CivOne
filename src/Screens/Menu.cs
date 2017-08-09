@@ -25,7 +25,10 @@ namespace CivOne.Screens
 		public event EventHandler Cancel;
 		public event EventHandler MissClick;
 		
-		public readonly MenuItemCollection<T> Items = new MenuItemCollection<T>();
+		public readonly MenuItemCollection<T> Items;
+
+		public string Id => Items.Id;
+
 		public string Title { get; set; }
 		public int FontId { get; set; }
 		public int X { get; set; }
@@ -201,6 +204,23 @@ namespace CivOne.Screens
 		
 		public Menu(Color[] colours, Picture background = null)
 		{
+			Items = new MenuItemCollection<T>();
+			if (background != null)
+			{
+				_background = new Picture(background);
+			}
+
+			Cursor = MouseCursor.Pointer;
+			IndentTitle = 8;
+			Indent = 8;
+			
+			_canvas = new Picture(320, 200, colours);
+		}
+		
+		public Menu(string menuId, Color[] colours, Picture background = null)
+		{
+			Items = new MenuItemCollection<T>(menuId);
+
 			if (background != null)
 			{
 				_background = new Picture(background);
@@ -216,7 +236,11 @@ namespace CivOne.Screens
 
 	public class Menu : Menu<int>
 	{
-		public Menu(Color[] colours, Picture background = null) : base(colours, background)
+		public Menu(Color[] colours, Picture background = null) : base(null, colours, background)
+		{
+		}
+
+		public Menu(string menuId, Color[] colours, Picture background = null) : base(menuId, colours, background)
 		{
 		}
 	}

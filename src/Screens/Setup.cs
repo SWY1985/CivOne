@@ -61,7 +61,7 @@ namespace CivOne.Screens
 		{
 			int width = GetMenuWidth(title, menuTexts);
 			int height = GetMenuHeight(title, menuTexts);
-			Menu menu = new Menu(Canvas.Palette)
+			Menu menu = new Menu("Setup", Canvas.Palette)
 			{
 				Title = title,
 				X = (_canvas.Width - width) / 2,
@@ -482,7 +482,7 @@ namespace CivOne.Screens
 			_canvas = new Picture(width, height, _canvas.Palette);
 			_canvas.FillRectangle(3, 0, 0, width, height);
 
-			foreach (Menu menu in Common.Screens.Where(x => x is Menu))
+			foreach (Menu menu in Common.Screens.Where(x => x is Menu && (x as Menu).Id == "Setup"))
 			{
 				int menuHeight = GetMenuHeight(menu.Title, menu.Items.Select(x => x.Text).ToArray());
 

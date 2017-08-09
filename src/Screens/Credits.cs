@@ -19,7 +19,7 @@ using CivOne.UserInterface;
 
 namespace CivOne.Screens
 {
-	internal class Credits : BaseScreen
+	internal class Credits : BaseScreen, IExpand
 	{
 		private const int NOISE_COUNT = 20;
 		
@@ -102,6 +102,7 @@ namespace CivOne.Screens
 			}
 			else if (_noiseCounter > 0)
 			{
+				_pictures[0].ApplyNoise(_noiseMap, --_noiseCounter);
 				_pictures[1].ApplyNoise(_noiseMap, --_noiseCounter);
 			}
 			
@@ -111,42 +112,46 @@ namespace CivOne.Screens
 			}
 			
 			// Drawing
-			_canvas.FillRectangle(0, 0, 0, 320, 200);
-			if (_introLeft < 320 && _introLeft > 0)
+			int ox = (_canvas.Width - 320), cx = (ox / 2), cy = (_canvas.Height - 200) / 2;
+			_canvas.FillRectangle(0, 0, 0, _canvas.Width, _canvas.Height);
+			if (_introLeft > -320)
 			{
-				AddLayer(_pictures[0].GetPart(0, 0, 320 - _introLeft, 200), _introLeft);
-			}
-			if (_introLeft > -320 && _introLeft <= 0)
-			{
-				AddLayer(_pictures[0].GetPart(-_introLeft, 0, 320 + _introLeft, 200), 0);
-				if (_introLeft < 0)
-					AddLayer(_pictures[1].GetPart(0, 0, -_introLeft, 200), _introLeft + 320);
+				AddLayer(_pictures[0], _introLeft + ox, cy);
+				AddLayer(_pictures[1], _introLeft + ox + 320, cy);
 			}
 			if (_introLeft > -320 && _showIntroLine)
 			{
-				_canvas.DrawText(_introText[_introLine], 4, _textColours[0], 160, 82, TextAlign.Center);
-				_canvas.DrawText(_introText[_introLine], 4, _textColours[1], 160, 84, TextAlign.Center);
-				_canvas.DrawText(_introText[_introLine], 4, _textColours[2], 160, 83, TextAlign.Center);
+				_canvas.DrawText(_introText[_introLine], 4, _textColours[0], (_canvas.Width / 2), (_canvas.Height / 2) - 18, TextAlign.Center);
+				_canvas.DrawText(_introText[_introLine], 4, _textColours[1], (_canvas.Width / 2), (_canvas.Height / 2) - 16, TextAlign.Center);
+				_canvas.DrawText(_introText[_introLine], 4, _textColours[2], (_canvas.Width / 2), (_canvas.Height / 2) - 17, TextAlign.Center);
 			}
 			if (_introLeft == -320 && _noiseCounter > 0)
 			{
-				if (!_introSkipped) AddLayer(_pictures[1]);
+				if (!_introSkipped)
+				{
+					AddLayer(_pictures[0], ox - 320, cy);
+					AddLayer(_pictures[1], ox, cy);
+				}
 				if (_logoSwipe < 320)
 				{
 					if (_logoSwipe > 0)
 					{
-						AddLayer(_pictures[2].GetPart(0, 0, _logoSwipe, 200));
+						AddLayer(_pictures[2].GetPart(0, 0, _logoSwipe, 200), cx, cy);
 					}
 				}
 				else
 				{
-					AddLayer(_pictures[2]);	
+					AddLayer(_pictures[2], cx, cy);	
 				}
-				if (_introSkipped) AddLayer(_pictures[1]);
+				if (_introSkipped)
+				{
+					AddLayer(_pictures[0], ox - 320, cy);
+					AddLayer(_pictures[1], ox, cy);
+				}
 			}
 			else if (_noiseCounter == 0)
 			{
-				AddLayer(_pictures[2]);
+				AddLayer(_pictures[2], cx, cy);
 				_canvas.ResetPalette();
 				_done = true;
 				
@@ -161,10 +166,11 @@ namespace CivOne.Screens
 				}
 				
 				// Draw menu background
-				_canvas.FillRectangle(5, 100, 140, 122, 49);
-				_canvas.FillRectangle(_menuColours[0], 101, 141, 120, 47);
-				_canvas.FillRectangle(_menuColours[1], 101, 142, 119, 46);
-				_canvas.FillRectangle(_menuColours[2], 102, 142, 118, 45);
+				int mx = ((_canvas.Width - 120) / 2), my = _canvas.Height - 59;
+				_canvas.FillRectangle(5, mx, my, 122, 49);
+				_canvas.FillRectangle(_menuColours[0], mx + 1, my + 1, 120, 47);
+				_canvas.FillRectangle(_menuColours[1], mx + 1, my + 2, 119, 46);
+				_canvas.FillRectangle(_menuColours[2], mx + 2, my + 2, 118, 45);
 				
 				CreateMenu();
 			}
@@ -179,6 +185,7 @@ namespace CivOne.Screens
 			_introLeft = -320;
 			_logoSwipe = 320;
 			_cycleCounter = 98;
+			_pictures[0].FillRectangle(5, 0, 0, 320, 200);
 			_pictures[1].FillRectangle(5, 0, 0, 320, 200);
 			_introSkipped = true;
 			return true;
@@ -187,10 +194,10 @@ namespace CivOne.Screens
 		private void CreateMenu()
 		{
 			if (HasMenu) return;
-			Menu menu = new Menu(Canvas.Palette)
+			Menu menu = new Menu("MainMenu", Canvas.Palette)
 			{
-				X = 103,
-				Y = 144,
+				X = ((_canvas.Width - 120) / 2) + 3,
+				Y = _canvas.Height - 55,
 				Width = 116,
 				ActiveColour = 11,
 				TextColour = 5,
@@ -287,6 +294,17 @@ namespace CivOne.Screens
 				if (_overlay != null && !LoadGameCancel)
 					return _overlay.Cursor;
 				return base.Cursor;
+			}
+		}
+
+		public void Resize(int width, int height)
+		{
+			_canvas = new Picture(width, height, _canvas.Palette);
+			_done = false;
+			foreach (Menu menu in Common.Screens.Where(x => x is Menu && (x as Menu).Id == "MainMenu"))
+			{
+				menu.X = ((_canvas.Width - 120) / 2) + 3;
+				menu.Y = _canvas.Height - 55;
 			}
 		}
 		
