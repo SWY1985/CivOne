@@ -7,10 +7,13 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System.Linq;
 using CivOne.Enums;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
+
+using DSize = System.Drawing.Size;
 
 namespace CivOne
 {
@@ -22,18 +25,22 @@ namespace CivOne
 		{
 			get
 			{
-				switch (Settings.Instance.AspectRatio)
+				int cw = CanvasWidth, ch = CanvasHeight;
+				if (cw == 0) cw = DefaultCanvasSize.Width;
+				if (ch == 0) ch = DefaultCanvasSize.Height;
+				
+				switch (Settings.AspectRatio)
 				{
 					case AspectRatio.Fixed:
 					case AspectRatio.ScaledFixed:
 					case AspectRatio.Expand:
-						int scaleX = (ClientRectangle.Width - (ClientRectangle.Width % CanvasWidth)) / CanvasWidth;
-						int scaleY = (ClientRectangle.Height - (ClientRectangle.Height % CanvasHeight)) / CanvasHeight;
+						int scaleX = (ClientRectangle.Width - (ClientRectangle.Width % cw)) / cw;
+						int scaleY = (ClientRectangle.Height - (ClientRectangle.Height % ch)) / ch;
 						if (scaleX > scaleY)
 							return scaleY;
 						return scaleX;
 					default:
-						return (ClientRectangle.Width - (ClientRectangle.Width % CanvasWidth)) / CanvasWidth;
+						return (ClientRectangle.Width - (ClientRectangle.Width % cw)) / cw;
 				}
 			}
 		}
@@ -42,18 +49,22 @@ namespace CivOne
 		{
 			get
 			{
+				int cw = CanvasWidth, ch = CanvasHeight;
+				if (cw == 0) cw = DefaultCanvasSize.Width;
+				if (ch == 0) ch = DefaultCanvasSize.Height;
+
 				switch (Settings.Instance.AspectRatio)
 				{
 					case AspectRatio.Fixed:
 					case AspectRatio.ScaledFixed:
 					case AspectRatio.Expand:
-						int scaleX = (ClientRectangle.Width - (ClientRectangle.Width % CanvasWidth)) / CanvasWidth;
-						int scaleY = (ClientRectangle.Height - (ClientRectangle.Height % CanvasHeight)) / CanvasHeight;
+						int scaleX = (ClientRectangle.Width - (ClientRectangle.Width % cw)) / cw;
+						int scaleY = (ClientRectangle.Height - (ClientRectangle.Height % ch)) / ch;
 						if (scaleY > scaleX)
 							return scaleX;
 						return scaleY;
 					default:
-						return (ClientRectangle.Height - (ClientRectangle.Height % CanvasHeight)) / CanvasHeight;
+						return (ClientRectangle.Height - (ClientRectangle.Height % ch)) / ch;
 				}
 			}
 		}
@@ -71,7 +82,7 @@ namespace CivOne
 			x2 = x1 + DrawWidth;
 			y2 = y1 + DrawHeight;
 
-			switch (Settings.Instance.AspectRatio)
+			switch (Settings.AspectRatio)
 			{
 				case AspectRatio.Scaled:
 					x1 = 0;
@@ -94,6 +105,49 @@ namespace CivOne
 					y2 = y1 + drawHeight;
 					break;
 			}
+		}
+
+		private static DSize DefaultCanvasSize
+		{
+			get
+			{
+				if (Settings.AspectRatio != AspectRatio.Expand || Settings.ExpandWidth == -1 || Settings.ExpandHeight == -1)
+					return new DSize(320, 200);
+				return new DSize(Settings.ExpandWidth, Settings.ExpandHeight);
+			}
+		}
+
+		private DSize SetCanvasSize()
+		{
+			if (Settings.AspectRatio != AspectRatio.Expand || (ScaleX < 1 || ScaleY < 1))
+			{
+				return DefaultCanvasSize;
+			}
+
+			int cw = ClientRectangle.Width, ch = ClientRectangle.Height;
+			int scale = new int[] { (cw - (cw % 320)) / 320, (ch - (ch % 200)) / 200 }.Min();
+
+			if (Settings.ExpandWidth != -1 && Settings.ExpandHeight != -1)
+			{
+				cw = Settings.ExpandWidth;
+				ch = Settings.ExpandHeight;
+			}
+			else
+			{
+				cw /= scale;
+				ch /= scale;
+			}
+
+			// Make sure the canvas resolution is a multiple of 8
+			cw -= (cw % 8);
+			ch -= (ch % 8);
+
+			// Set maximum bounds to 512x384, the maximum logical boundaries 
+			// according this this table: https://github.com/SWY1985/CivOne/wiki/Settings#expand-experimental
+			if (cw > 512) cw = 512;
+			if (ch > 384) ch = 384;
+
+			return new DSize(cw, ch);
 		}
 
 		private void BitmapToTexture(int textureId, Canvas bitmap)
@@ -134,6 +188,8 @@ namespace CivOne
 
 		private void InitializeGraphics()
 		{
+			SetCanvasSize();
+
 			GL.Enable(EnableCap.Texture2D);
 			GL.Disable(EnableCap.DepthTest);
 			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
@@ -159,6 +215,7 @@ namespace CivOne
 			int x1, y1, x2, y2;
 			GetBorders(out x1, out y1, out x2, out y2);
 
+			Runtime.CanvasSize = SetCanvasSize();
 			BitmapToTexture(TEXTURE_CANVAS, canvas);
 
 			GL.Clear(ClearBufferMask.ColorBufferBit);

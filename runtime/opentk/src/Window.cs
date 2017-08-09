@@ -78,8 +78,8 @@ namespace CivOne
 			Render(canvas, cursor);
 		}
 
-		private static int InitialCanvasWidth => (Settings.AspectRatio == AspectRatio.Expand) ? Settings.ExpandWidth : 320;
-		private static int InitialCanvasHeight => (Settings.AspectRatio == AspectRatio.Expand) ? Settings.ExpandHeight : 200;
+		private static int InitialCanvasWidth => DefaultCanvasSize.Width;
+		private static int InitialCanvasHeight => DefaultCanvasSize.Height;
 
 		private static int InitialWidth => InitialCanvasWidth * Settings.Scale;
 		private static int InitialHeight => InitialCanvasHeight * Settings.Scale;
