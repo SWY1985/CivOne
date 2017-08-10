@@ -71,7 +71,7 @@ namespace CivOne.Tiles
 
 			Picture output = new Picture(16, 16, Palette);
 
-			output.AddLayer(Resources.GetTile(tile, settings.Improvements, settings.Roads));
+			output.AddLayer(Resources[tile, settings.Improvements, settings.Roads]);
 
 			if (settings.Cities && tile.City != null)
 			{
