@@ -10,13 +10,15 @@
 using System;
 using System.Linq;
 using System.Text;
+using CivOne.Advances;
+using CivOne.Civilizations;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Interfaces;
 using CivOne.GFX;
 using CivOne.IO;
 using CivOne.Tasks;
-using CivOne.Templates;
+using CivOne.Units;
 using CivOne.UserInterface;
 
 namespace CivOne.Screens

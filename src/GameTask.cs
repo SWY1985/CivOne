@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Linq;
 using CivOne.Attributes;
 using CivOne.Interfaces;
-using CivOne.Templates;
 
 namespace CivOne
 {

@@ -10,7 +10,6 @@
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.IO;
-using CivOne.Templates;
 
 namespace CivOne.Screens
 {

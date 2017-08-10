@@ -13,7 +13,6 @@ using CivOne.Enums;
 using CivOne.Interfaces;
 using CivOne.IO;
 using CivOne.Tasks;
-using CivOne.Templates;
 using CivOne.Tiles;
 
 namespace CivOne.Units

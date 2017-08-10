@@ -10,13 +10,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CivOne.Advances;
+using CivOne.Buildings;
+using CivOne.Civilizations;
 using CivOne.Enums;
 using CivOne.Governments;
 using CivOne.Interfaces;
 using CivOne.Tasks;
-using CivOne.Templates;
+using CivOne.Tiles;
 using CivOne.Units;
 using CivOne.Wonders;
+
+using Gov = CivOne.Governments;
 
 namespace CivOne
 {
@@ -129,7 +134,7 @@ namespace CivOne
 			{
 				if (!Game.Started)
 					return false;
-				return (Government is Monarchy || Government is Communism);
+				return (Government is Gov.Monarchy || Government is Gov.Communism);
 			}
 		}
 
@@ -139,7 +144,7 @@ namespace CivOne
 			{
 				if (!Game.Started)
 					return false;
-				return (Government is Republic || Government is Democracy);
+				return (Government is Republic || Government is Gov.Democracy);
 			}
 		}
 

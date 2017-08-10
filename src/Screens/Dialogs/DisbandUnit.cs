@@ -13,7 +13,7 @@ using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
-using CivOne.Templates;
+using CivOne.Units;
 using CivOne.UserInterface;
 
 namespace CivOne.Screens.Dialogs

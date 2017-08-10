@@ -15,6 +15,7 @@ using CivOne.Enums;
 using CivOne.GFX.ImageFormats;
 using CivOne.Interfaces;
 using CivOne.IO;
+using CivOne.Tiles;
 
 namespace CivOne.GFX
 {

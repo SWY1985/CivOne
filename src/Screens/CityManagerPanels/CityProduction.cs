@@ -8,12 +8,14 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using CivOne.Buildings;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Screens.Dialogs;
-using CivOne.Templates;
+using CivOne.Units;
+using CivOne.Wonders;
 
 namespace CivOne.Screens.CityManagerPanels
 {

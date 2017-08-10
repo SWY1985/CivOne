@@ -11,7 +11,6 @@ using System.Linq;
 using CivOne.Events;
 using CivOne.Interfaces;
 using CivOne.GFX;
-using CivOne.Templates;
 
 namespace CivOne.Screens.Reports
 {

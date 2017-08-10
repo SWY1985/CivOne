@@ -11,11 +11,16 @@ using System;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
+using CivOne.Advances;
+using CivOne.Buildings;
+using CivOne.Concepts;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
-using CivOne.Templates;
+using CivOne.Tiles;
+using CivOne.Units;
+using CivOne.Wonders;
 
 namespace CivOne.Screens
 {

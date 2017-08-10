@@ -11,7 +11,6 @@ using CivOne.Advances;
 using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Governments;
-using CivOne.Templates;
 
 using Gov = CivOne.Governments;
 

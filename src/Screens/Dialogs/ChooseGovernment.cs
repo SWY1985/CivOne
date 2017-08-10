@@ -11,8 +11,8 @@ using System;
 using System.Linq;
 using CivOne.Events;
 using CivOne.GFX;
+using CivOne.Governments;
 using CivOne.Interfaces;
-using CivOne.Templates;
 using CivOne.UserInterface;
 
 namespace CivOne.Screens.Dialogs

@@ -8,8 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using CivOne.Interfaces;
-using CivOne.Templates;
+using CivOne.Buildings;
 
 namespace CivOne.Screens.Dialogs
 {

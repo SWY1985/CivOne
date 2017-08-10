@@ -12,7 +12,6 @@ using CivOne.Governments;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Units;
-using CivOne.Templates;
 
 namespace CivOne.Screens.CityManagerPanels
 {

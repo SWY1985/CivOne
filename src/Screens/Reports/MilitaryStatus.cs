@@ -11,7 +11,7 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
-using CivOne.Templates;
+using CivOne.Units;
 
 namespace CivOne.Screens.Reports
 {

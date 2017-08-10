@@ -12,8 +12,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using CivOne.Interfaces;
 using CivOne.IO;
+using CivOne.Interfaces;
 
 namespace CivOne.GFX.ImageFormats
 {

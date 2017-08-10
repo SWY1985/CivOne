@@ -13,7 +13,7 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
-using CivOne.Templates;
+using CivOne.Tiles;
 
 namespace CivOne.Screens.CityManagerPanels
 {
