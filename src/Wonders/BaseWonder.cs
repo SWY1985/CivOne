@@ -10,7 +10,7 @@
 using System;
 using CivOne.Advances;
 using CivOne.Enums;
-using CivOne.GFX;
+using CivOne.Graphics;
 using CivOne.Interfaces;
 
 namespace CivOne.Wonders

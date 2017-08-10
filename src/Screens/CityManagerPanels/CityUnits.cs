@@ -9,7 +9,7 @@
 
 using System.Linq;
 using CivOne.Governments;
-using CivOne.GFX;
+using CivOne.Graphics;
 using CivOne.Interfaces;
 using CivOne.Units;
 

@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using CivOne.Buildings;
 using CivOne.Enums;
-using CivOne.GFX;
+using CivOne.Graphics;
 using CivOne.Units;
 using CivOne.Wonders;
 

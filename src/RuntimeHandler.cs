@@ -17,7 +17,8 @@ using CivOne.Attributes;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.IO;
-using CivOne.GFX;
+using CivOne.Graphics;
+using CivOne.Graphics.ImageFormats;
 using CivOne.Interfaces;
 using CivOne.Screens;
 using CivOne.Tiles;
@@ -128,7 +129,7 @@ namespace CivOne
 			if (args[KeyModifier.Control, Key.F5])
 			{
 				string filename = Common.CaptureFilename;
-				using (CivOne.GFX.ImageFormats.GifFile file = new CivOne.GFX.ImageFormats.GifFile(Runtime.Bitmap))
+				using (GifFile file = new GifFile(Runtime.Bitmap))
 				using (FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write))
 				{
 					byte[] output = file.GetBytes();
@@ -141,7 +142,7 @@ namespace CivOne
 			if (args[KeyModifier.Control, Key.F6] && Game.Started)
 			{
 				string filename = Common.CaptureFilename;
-				using (CivOne.GFX.ImageFormats.GifFile file = new CivOne.GFX.ImageFormats.GifFile(Map.Instance[0, 0, Map.WIDTH, Map.HEIGHT].ToPicture()))
+				using (GifFile file = new GifFile(Map.Instance[0, 0, Map.WIDTH, Map.HEIGHT].ToPicture()))
 				using (FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write))
 				{
 					byte[] output = file.GetBytes();

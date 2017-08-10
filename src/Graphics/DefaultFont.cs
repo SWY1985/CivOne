@@ -10,7 +10,7 @@
 using System.Collections.Generic;
 using CivOne.Interfaces;
 
-namespace CivOne.GFX
+namespace CivOne.Graphics
 {
 	internal class DefaultFont : IFont
 	{

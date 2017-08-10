@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CivOne.Buildings;
 using CivOne.Events;
-using CivOne.GFX;
+using CivOne.Graphics;
 using CivOne.Interfaces;
 using CivOne.Screens.Dialogs;
 using CivOne.Wonders;

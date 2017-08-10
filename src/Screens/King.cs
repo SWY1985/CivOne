@@ -9,7 +9,7 @@
 
 using CivOne.Advances;
 using CivOne.Events;
-using CivOne.GFX;
+using CivOne.Graphics;
 using CivOne.Governments;
 
 using Gov = CivOne.Governments;

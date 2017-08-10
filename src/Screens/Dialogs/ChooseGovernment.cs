@@ -10,7 +10,7 @@
 using System;
 using System.Linq;
 using CivOne.Events;
-using CivOne.GFX;
+using CivOne.Graphics;
 using CivOne.Governments;
 using CivOne.Interfaces;
 using CivOne.UserInterface;

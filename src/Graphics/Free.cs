@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CivOne.Enums;
 
-namespace CivOne.GFX
+namespace CivOne.Graphics
 {
 	internal class Free
 	{

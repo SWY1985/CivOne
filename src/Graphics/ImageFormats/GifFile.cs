@@ -15,7 +15,7 @@ using System.Linq;
 using CivOne.IO;
 using CivOne.Interfaces;
 
-namespace CivOne.GFX.ImageFormats
+namespace CivOne.Graphics.ImageFormats
 {
 	internal class GifFile : IImageFormat, IDisposable
 	{
