@@ -11,6 +11,7 @@ using System;
 using System.Drawing;
 using CivOne.Enums;
 using CivOne.Events;
+using CivOne.Graphics;
 
 namespace CivOne.Interfaces
 {
