@@ -61,7 +61,7 @@ namespace CivOne.Screens.Debug
 
 		private void UnitsMenu()
 		{
-			_canvas = new Picture(320, 200, Common.Screens.Last().Canvas.OriginalColours);
+			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
 
 			IUnit[] units = _units.Skip(_index).Take(15).ToArray();
 
@@ -82,7 +82,7 @@ namespace CivOne.Screens.Debug
 			_canvas.AddLayer(menuGfx, xx, yy);
 			_canvas.DrawText("Spawn Unit...", 0, 15, xx + 8, yy + 3);
 
-			_unitSelect = new Menu(Canvas.Palette, menuBackground)
+			_unitSelect = new Menu(Palette, menuBackground)
 			{
 				X = xx + 2,
 				Y = yy + 11,
@@ -109,7 +109,7 @@ namespace CivOne.Screens.Debug
 		private void CivSelect_Accept(object sender, EventArgs args)
 		{
 			_selectedPlayer = Game.GetPlayer((byte)_civSelect.ActiveItem);
-			_canvas = new Picture(320, 200, Common.Screens.Last().Canvas.OriginalColours);
+			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
 			CloseMenus();
 		}
 
@@ -291,7 +291,7 @@ namespace CivOne.Screens.Debug
 			_canvas.AddLayer(menuGfx, xx, yy);
 			_canvas.DrawText("Spawn Unit...", 0, 15, xx + 8, yy + 3);
 
-			_civSelect = new Menu(Canvas.Palette, menuBackground)
+			_civSelect = new Menu(Palette, menuBackground)
 			{
 				X = xx + 2,
 				Y = yy + 11,

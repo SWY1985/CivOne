@@ -37,7 +37,7 @@ namespace CivOne.Screens
 		
 		private Menu CreateMenu(string title, MenuItemEventHandler<int> setChoice, params string[] menuTexts)
 		{
-			Menu menu = new Menu("NewGameMenu", Canvas.Palette)
+			Menu menu = new Menu("NewGameMenu", Palette)
 			{
 				Title = title,
 				X = OffsetX + 163,

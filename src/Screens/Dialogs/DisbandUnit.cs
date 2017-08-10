@@ -25,7 +25,7 @@ namespace CivOne.Screens.Dialogs
 		protected override void FirstUpdate()
 		{
 			int menuWidth = _textLines.Max(b => b.Width) + 5;
-			Menu menu = new Menu(Canvas.Palette, Selection(45, 28, menuWidth, 10))
+			Menu menu = new Menu(Palette, Selection(45, 28, menuWidth, 10))
 			{
 				X = 103,
 				Y = 100,

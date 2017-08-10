@@ -48,7 +48,7 @@ namespace CivOne.Screens.Dialogs
 			int choices = 2;
 			if (_city.CurrentProduction is IWonder) choices++;
 
-			Menu menu = new Menu(Canvas.Palette, Selection(3, 12, 130, (choices * Resources.Instance.GetFontHeight(FONT_ID)) + 4))
+			Menu menu = new Menu(Palette, Selection(3, 12, 130, (choices * Resources.Instance.GetFontHeight(FONT_ID)) + 4))
 			{
 				X = 103,
 				Y = 92,

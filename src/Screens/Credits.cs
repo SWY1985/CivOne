@@ -194,7 +194,7 @@ namespace CivOne.Screens
 		private void CreateMenu()
 		{
 			if (HasMenu) return;
-			Menu menu = new Menu("MainMenu", Canvas.Palette)
+			Menu menu = new Menu("MainMenu", Palette)
 			{
 				X = ((_canvas.Width - 120) / 2) + 3,
 				Y = _canvas.Height - 55,
@@ -217,7 +217,7 @@ namespace CivOne.Screens
 		{
 			Cursor = MouseCursor.None;
 			foreach (IScreen menu in _menus)
-				AddLayer(menu.Canvas);
+				AddLayer(menu);
 			CloseMenus();
 			if (!Runtime.Settings.ShowIntro)
 			{

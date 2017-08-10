@@ -15,11 +15,9 @@ using CivOne.GFX;
 
 namespace CivOne.Interfaces
 {
-	public interface IScreen
+	public interface IScreen : IBitmap
 	{
 		event EventHandler Closed;
-		Picture Canvas { get; }
-		Color[] Palette { get; }
 		MouseCursor Cursor { get; }
 		bool HasUpdate(uint gameTick);
 		bool KeyDown(KeyboardEventArgs args);
@@ -27,5 +25,6 @@ namespace CivOne.Interfaces
 		bool MouseUp(ScreenEventArgs args);
 		bool MouseDrag(ScreenEventArgs args);
 		bool MouseMove(ScreenEventArgs args);
+		Color[] OriginalColours { get; }
 	}
 }

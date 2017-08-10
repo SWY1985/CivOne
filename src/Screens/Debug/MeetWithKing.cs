@@ -65,7 +65,7 @@ namespace CivOne.Screens.Debug
 		{
 			Cursor = MouseCursor.Pointer;
 
-			_canvas = new Picture(320, 200, Common.Screens.Last().Canvas.OriginalColours);
+			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
 			_players = Game.Players.Where(p => p != 0 && p != Human).ToArray();
 
 			int fontHeight = Resources.Instance.GetFontHeight(0);
@@ -85,7 +85,7 @@ namespace CivOne.Screens.Debug
 			_canvas.AddLayer(menuGfx, xx, yy);
 			_canvas.DrawText("Meet With King", 0, 15, xx + 8, yy + 3);
 
-			_civSelect = new Menu(Canvas.Palette, menuBackground)
+			_civSelect = new Menu(Palette, menuBackground)
 			{
 				X = xx + 2,
 				Y = yy + 11,

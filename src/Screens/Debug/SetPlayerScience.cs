@@ -33,7 +33,7 @@ namespace CivOne.Screens.Debug
 		{
 			Cursor = MouseCursor.None;
 
-			_canvas = new Picture(320, 200, Common.Screens.Last().Canvas.OriginalColours);
+			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
 
 			_canvas.FillRectangle(11, 80, 80, 161, 33);
 			_canvas.FillRectangle(15, 81, 81, 159, 31);
@@ -100,7 +100,7 @@ namespace CivOne.Screens.Debug
 		{
 			Cursor = MouseCursor.Pointer;
 
-			_canvas = new Picture(320, 200, Common.Screens.Last().Canvas.OriginalColours);
+			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
 
 			int fontHeight = Resources.Instance.GetFontHeight(0);
 			int hh = (fontHeight * (Game.Players.Count() + 1)) + 5;
@@ -119,7 +119,7 @@ namespace CivOne.Screens.Debug
 			_canvas.AddLayer(menuGfx, xx, yy);
 			_canvas.DrawText("Set Player Science...", 0, 15, xx + 8, yy + 3);
 
-			_civSelect = new Menu(Canvas.Palette, menuBackground)
+			_civSelect = new Menu(Palette, menuBackground)
 			{
 				X = xx + 2,
 				Y = yy + 11,

@@ -211,7 +211,7 @@ namespace CivOne.Screens
 					return true;
 				}
 
-				_menu = new Menu(Canvas.Palette)
+				_menu = new Menu(Palette)
 				{
 					Title = "Select Save File...",
 					X = 51,
