@@ -9,6 +9,7 @@
 
 using System.Linq;
 using CivOne.Enums;
+using CivOne.Graphics;
 
 namespace CivOne.Screens.Reports
 {

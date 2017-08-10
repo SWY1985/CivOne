@@ -21,8 +21,8 @@ namespace CivOne.Screens
 
 		protected Picture _canvas = new Picture(320, 200);
 		
-		protected void AddLayer(IBitmap bitmap, Point point) => _canvas.AddLayer(bitmap, point.X, point.Y);
-		protected void AddLayer(IBitmap bitmap, int x = 0, int y = 0) => _canvas.AddLayer(bitmap, x, y);
+		protected IBitmap AddLayer(IBitmap bitmap, Point point) => _canvas.AddLayer(bitmap, point.X, point.Y);
+		protected IBitmap AddLayer(IBitmap bitmap, int x = 0, int y = 0) => _canvas.AddLayer(bitmap, x, y);
 
 		protected void DrawPanel(int x, int y, int width, int height, bool border = true)
 		{
