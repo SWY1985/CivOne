@@ -14,7 +14,6 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
-using CivOne.Templates;
 
 namespace CivOne.Screens.Reports
 {

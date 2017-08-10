@@ -20,6 +20,7 @@ using CivOne.IO;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Screens;
+using CivOne.Tiles;
 
 namespace CivOne
 {

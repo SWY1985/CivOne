@@ -10,7 +10,6 @@
 using CivOne.Advances;
 using CivOne.Attributes;
 using CivOne.Enums;
-using CivOne.Templates;
 
 namespace CivOne.Units
 {

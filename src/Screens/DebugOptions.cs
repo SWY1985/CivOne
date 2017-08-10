@@ -13,7 +13,6 @@ using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Screens.Debug;
 using CivOne.Tasks;
-using CivOne.Templates;
 using CivOne.UserInterface;
 
 namespace CivOne.Screens

@@ -8,8 +8,10 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using CivOne.Buildings;
 using CivOne.Interfaces;
 using CivOne.Screens;
+using CivOne.Wonders;
 
 namespace CivOne.Tasks
 {

@@ -13,11 +13,15 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using CivOne.Advances;
 using CivOne.Attributes;
+using CivOne.Buildings;
+using CivOne.Civilizations;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Screens;
+using CivOne.Wonders;
 
 namespace CivOne
 {

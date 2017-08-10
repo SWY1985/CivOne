@@ -9,11 +9,11 @@
 
 using System.Drawing;
 using System.Linq;
+using CivOne.Civilizations;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
-using CivOne.Interfaces;
-using CivOne.Templates;
+using CivOne.Leaders;
 
 namespace CivOne.Screens
 {

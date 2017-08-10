@@ -12,7 +12,6 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Tasks;
-using CivOne.Templates;
 
 namespace CivOne.Screens.Debug
 {

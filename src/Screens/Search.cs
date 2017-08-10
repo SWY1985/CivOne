@@ -12,7 +12,6 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
-using CivOne.Templates;
 
 namespace CivOne.Screens
 {

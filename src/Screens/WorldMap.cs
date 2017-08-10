@@ -11,7 +11,8 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
-using CivOne.Templates;
+using CivOne.Tiles;
+using CivOne.Units;
 
 namespace CivOne.Screens
 {

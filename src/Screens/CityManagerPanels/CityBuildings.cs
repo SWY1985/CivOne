@@ -10,11 +10,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CivOne.Buildings;
 using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Screens.Dialogs;
-using CivOne.Templates;
+using CivOne.Wonders;
 
 namespace CivOne.Screens.CityManagerPanels
 {

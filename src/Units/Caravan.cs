@@ -10,8 +10,8 @@
 using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Interfaces;
-using CivOne.Templates;
 using CivOne.Tasks;
+using CivOne.Tiles;
 
 namespace CivOne.Units
 {

@@ -16,7 +16,6 @@ using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Screens.CityManagerPanels;
-using CivOne.Templates;
 
 namespace CivOne.Screens
 {

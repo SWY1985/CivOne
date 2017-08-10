@@ -16,36 +16,13 @@ using CivOne.Events;
 using CivOne.GFX;
 using CivOne.Interfaces;
 using CivOne.Tasks;
-using CivOne.Templates;
+using CivOne.Tiles;
 using CivOne.Units;
 
 namespace CivOne.Screens.GamePlayPanels
 {
 	internal class GameMap : BaseScreen
 	{
-		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		// private struct RenderTile
-		// {
-		// 	public bool Visible;
-		// 	public int X, Y;
-		// 	public ITile Tile;
-		// 	public Picture Image
-		// 	{
-		// 		get
-		// 		{
-		// 			return Resources.Instance.GetTile(Tile);
-		// 		}
-		// 	}
-		// 	public Point Position
-		// 	{
-		// 		get
-		// 		{
-		// 			return new Point(X * 16, Y * 16);
-		// 		}
-		// 	}
-		// }
-		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 		private IUnit ActiveUnit => Game.ActiveUnit;
 		
 		private readonly Color[] _palette;
@@ -59,32 +36,6 @@ namespace CivOne.Screens.GamePlayPanels
 
 		internal int X => _x;
 		internal int Y => _y;
-		
-		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		// private IEnumerable<RenderTile> RenderTiles
-		// {
-		// 	get
-		// 	{
-		// 		for (int x = 0; x < _tilesX; x++)
-		// 		for (int y = 0; y < _tilesY; y++)
-		// 		{
-		// 			int tx = _x + x;
-		// 			int ty = _y + y;
-		// 			while (tx >= Map.WIDTH) tx -= Map.WIDTH;
-					
-		// 			if (ty < 0 || ty >= Map.HEIGHT) continue;
-
-		// 			yield return new RenderTile
-		// 			{
-		// 				Visible = Human.Visible(tx, ty),
-		// 				X = x,
-		// 				Y = y,
-		// 				Tile = Map[tx, ty]
-		// 			};
-		// 		}
-		// 	}
-		// }
-		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 		private ITile[,] Tiles => Map[_x, _y, _tilesX, _tilesY];
 

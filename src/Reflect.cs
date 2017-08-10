@@ -12,7 +12,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using CivOne.Advances;
+using CivOne.Buildings;
+using CivOne.Civilizations;
+using CivOne.Concepts;
+using CivOne.Governments;
 using CivOne.Interfaces;
+using CivOne.Tiles;
+using CivOne.Units;
+using CivOne.Wonders;
 
 namespace CivOne
 {

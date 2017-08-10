@@ -10,9 +10,9 @@
 using System;
 using CivOne.Interfaces;
 using CivOne.GFX;
-using CivOne.Templates;
 using CivOne.Units;
 using CivOne.UserInterface;
+using CivOne.Wonders;
 
 namespace CivOne.Screens.Dialogs
 {

@@ -10,11 +10,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CivOne.Buildings;
 using CivOne.Enums;
 using CivOne.GFX;
 using CivOne.Interfaces;
-using CivOne.Templates;
+using CivOne.Units;
 using CivOne.UserInterface;
+using CivOne.Wonders;
 
 namespace CivOne.Screens
 {

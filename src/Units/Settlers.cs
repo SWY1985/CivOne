@@ -16,7 +16,6 @@ using CivOne.Interfaces;
 using CivOne.IO;
 using CivOne.Screens;
 using CivOne.Tasks;
-using CivOne.Templates;
 using CivOne.Tiles;
 using CivOne.UserInterface;
 

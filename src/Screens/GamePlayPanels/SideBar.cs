@@ -15,7 +15,8 @@ using CivOne.Events;
 using CivOne.Interfaces;
 using CivOne.GFX;
 using CivOne.Tasks;
-using CivOne.Templates;
+using CivOne.Tiles;
+using CivOne.Units;
 
 namespace CivOne.Screens.GamePlayPanels
 {
