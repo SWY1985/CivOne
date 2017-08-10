@@ -73,6 +73,36 @@ namespace CivOne.Screens.GamePlayPanels
 				}
 			}
 		}
+
+		private void DrawHelperArrows(int x, int y)
+		{
+			if (_helperDirection.X == 0 && _helperDirection.Y == 0) return;
+			
+			if (_helperDirection.X < 0)
+			{
+				AddLayer(Icons.HelperArrow(Direction.North), x - 16, y - 16);
+				AddLayer(Icons.HelperArrow(Direction.West), x - 16, y);
+				AddLayer(Icons.HelperArrow(Direction.South), x - 16, y + 16);
+			}
+			if (_helperDirection.X > 0)
+			{
+				AddLayer(Icons.HelperArrow(Direction.North), x + 16, y - 16);
+				AddLayer(Icons.HelperArrow(Direction.East), x + 16, y);
+				AddLayer(Icons.HelperArrow(Direction.South), x + 16, y + 16);
+			}
+			if (_helperDirection.Y < 0)
+			{
+				AddLayer(Icons.HelperArrow(Direction.West), x - 16, y - 16);
+				AddLayer(Icons.HelperArrow(Direction.North), x, y - 16);
+				AddLayer(Icons.HelperArrow(Direction.East), x + 16, y - 16);
+			}
+			if (_helperDirection.Y > 0)
+			{
+				AddLayer(Icons.HelperArrow(Direction.West), x - 16, y + 16);
+				AddLayer(Icons.HelperArrow(Direction.South), x, y + 16);
+				AddLayer(Icons.HelperArrow(Direction.East), x + 16, y + 16);
+			}
+		}
 		
 		public bool MustUpdate(uint gameTick)
 		{
@@ -155,34 +185,7 @@ namespace CivOne.Screens.GamePlayPanels
 						AddLayer(tile.ToPicture(TileSettings.Blink), dx, dy);
 					}
 
-					// helper arrows
-					if (_helperDirection.X != 0 || _helperDirection.Y != 0)
-					{
-						if (_helperDirection.X < 0)
-						{
-							AddLayer(Icons.HelperArrow(Direction.North), dx - 16, dy - 16);
-							AddLayer(Icons.HelperArrow(Direction.West), dx - 16, dy);
-							AddLayer(Icons.HelperArrow(Direction.South), dx - 16, dy + 16);
-						}
-						if (_helperDirection.X > 0)
-						{
-							AddLayer(Icons.HelperArrow(Direction.North), dx + 16, dy - 16);
-							AddLayer(Icons.HelperArrow(Direction.East), dx + 16, dy);
-							AddLayer(Icons.HelperArrow(Direction.South), dx + 16, dy + 16);
-						}
-						if (_helperDirection.Y < 0)
-						{
-							AddLayer(Icons.HelperArrow(Direction.West), dx - 16, dy - 16);
-							AddLayer(Icons.HelperArrow(Direction.North), dx, dy - 16);
-							AddLayer(Icons.HelperArrow(Direction.East), dx + 16, dy - 16);
-						}
-						if (_helperDirection.Y > 0)
-						{
-							AddLayer(Icons.HelperArrow(Direction.West), dx - 16, dy + 16);
-							AddLayer(Icons.HelperArrow(Direction.South), dx, dy + 16);
-							AddLayer(Icons.HelperArrow(Direction.East), dx + 16, dy + 16);
-						}
-					}
+					DrawHelperArrows(dx, dy);
 				}
 			}
 			
