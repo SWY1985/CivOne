@@ -19,7 +19,6 @@ namespace CivOne
 			using (Runtime runtime = new Runtime())
 			using (Window window = new Window(runtime))
 			{
-				RuntimeHandler.Register(runtime);
 				Application.Run(window);
 			}
 		}

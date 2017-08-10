@@ -51,6 +51,11 @@ namespace CivOne
 		void IRuntime.StopSound() => Console.WriteLine("STOP SOUND NOT IMPLEMENTED");
 		void IRuntime.Quit() => SignalQuit = true;
 
+		public Runtime()
+		{
+			RuntimeHandler.Register(this);
+		}
+
 		public void Dispose()
 		{
 
