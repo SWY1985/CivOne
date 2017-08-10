@@ -25,9 +25,12 @@ namespace CivOne.Screens
 		private string _text;
 		private int _fontId;
 		private byte _textColour, _cursorColour;
-		private int _x, _y, _width, _height;
+		private int _width, _height;
 		private int _maxLength;
 		private int _cursorPosition = -1;
+
+		public int X { get; set; }
+		public int Y { get; set; }
 		
 		public string Text
 		{
@@ -69,8 +72,8 @@ namespace CivOne.Screens
 			int cursorPosition = _cursorPosition;
 			if (cursorPosition < 0) cursorPosition = 0;
 			
-			int xx = _x;
-			int yy = _y + (int)Math.Ceiling((float)(_height - fontHeight) / 2);
+			int xx = X;
+			int yy = Y + (int)Math.Ceiling((float)(_height - fontHeight) / 2);
 			
 			if (gameTick % 4 < 2)
 			{
@@ -80,7 +83,7 @@ namespace CivOne.Screens
 					
 					if (i == cursorPosition)
 					{
-						_canvas.FillRectangle(_cursorColour, xx, _y, letterWidth + 1, _height);
+						_canvas.FillRectangle(_cursorColour, xx, Y, letterWidth + 1, _height);
 						break;
 					}
 					
@@ -88,7 +91,7 @@ namespace CivOne.Screens
 				}
 			}
 			if (_text.Length > 0)
-				_canvas.DrawText(_text, _fontId, _textColour, _x, yy);
+				_canvas.DrawText(_text, _fontId, _textColour, X, yy);
 			
 			return true;
 		}
@@ -186,11 +189,17 @@ namespace CivOne.Screens
 			_fontId = fontId;
 			_textColour = textColour;
 			_cursorColour = cursorColour;
-			_x = x;
-			_y = y;
+			X = x;
+			Y = y;
 			_width = width;
 			_height = height;
 			_maxLength = maxLength;
+		}
+
+		public void Resize(int width, int height)
+		{
+			_canvas = new Picture(width, height, _canvas.Palette);
+			HasUpdate(0);
 		}
 		
 		public Input(Color[] colours, int fontId, byte textColour, byte cursorColour, int x, int y, int width, int height, int maxLength)
@@ -200,8 +209,8 @@ namespace CivOne.Screens
 			_fontId = fontId;
 			_textColour = textColour;
 			_cursorColour = cursorColour;
-			_x = x;
-			_y = y;
+			X = x;
+			Y = y;
 			_width = width;
 			_height = height;
 			_maxLength = maxLength;
