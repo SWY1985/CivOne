@@ -26,20 +26,8 @@ namespace CivOne.Screens
 			public bool Visible;
 			public int X, Y;
 			public ITile Tile;
-			public Picture Image
-			{
-				get
-				{
-					return Resources.Instance.GetTile(Tile);
-				}
-			}
-			public Point Position
-			{
-				get
-				{
-					return new Point(X * 16, Y * 16);
-				}
-			}
+			public IBitmap Image => Resources[Tile];
+			public Point Position => new Point(X * 16, Y * 16);
 		}
 
 		private readonly DestroyAnimation _animation;

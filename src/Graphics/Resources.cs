@@ -233,15 +233,6 @@ namespace CivOne.Graphics
 			}
 			return palette1;
 		}
-		
-		public Picture GetTile(ITile tile, bool improvements = true, bool roads = true)
-		{
-			if (Settings.Instance.GraphicsMode == GraphicsMode.Graphics16)
-			{
-				return TileResources.GetTile16(tile, improvements, roads);
-			}
-			return TileResources.GetTile256(tile, improvements, roads);
-		}
 
 		public Picture GetFog(Direction direction)
 		{
@@ -249,11 +240,17 @@ namespace CivOne.Graphics
 			return _fog[direction];
 		}
 
-		public Picture this[string filename]
+		public Picture this[string filename] => LoadPIC(filename);
+
+		public IBitmap this[ITile tile, bool improvements = true, bool roads = true]
 		{
 			get
 			{
-				return LoadPIC(filename);
+				if (Settings.Instance.GraphicsMode == GraphicsMode.Graphics16)
+				{
+					return TileResources.GetTile16(tile, improvements, roads);
+				}
+				return TileResources.GetTile256(tile, improvements, roads);
 			}
 		}
 
