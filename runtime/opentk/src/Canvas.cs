@@ -8,7 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Drawing;
-using CivOne.Interfaces;
+using CivOne.Graphics;
 
 namespace CivOne
 {

@@ -9,7 +9,7 @@
 
 using System.Drawing;
 
-namespace CivOne.Interfaces
+namespace CivOne.Graphics
 {
 	public interface IBitmap
 	{
