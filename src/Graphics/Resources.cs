@@ -12,12 +12,12 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using CivOne.Enums;
-using CivOne.GFX.ImageFormats;
+using CivOne.Graphics.ImageFormats;
 using CivOne.Interfaces;
 using CivOne.IO;
 using CivOne.Tiles;
 
-namespace CivOne.GFX
+namespace CivOne.Graphics
 {
 	internal class Resources
 	{

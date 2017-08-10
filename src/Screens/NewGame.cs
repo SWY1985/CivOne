@@ -15,7 +15,7 @@ using CivOne.Civilizations;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Interfaces;
-using CivOne.GFX;
+using CivOne.Graphics;
 using CivOne.IO;
 using CivOne.Tasks;
 using CivOne.Units;

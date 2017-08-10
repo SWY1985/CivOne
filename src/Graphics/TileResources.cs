@@ -10,7 +10,7 @@
 using CivOne.Enums;
 using CivOne.Tiles;
 
-namespace CivOne.GFX
+namespace CivOne.Graphics
 {
 	internal static class TileResources
 	{

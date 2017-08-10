@@ -14,8 +14,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using CivOne.Interfaces;
 using CivOne.Enums;
-using CivOne.GFX;
-using CivOne.GFX.ImageFormats;
+using CivOne.Graphics;
+using CivOne.Graphics.ImageFormats;
 using CivOne.Tiles;
 
 namespace CivOne

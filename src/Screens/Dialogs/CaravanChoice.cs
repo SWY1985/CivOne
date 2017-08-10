@@ -9,7 +9,7 @@
 
 using System;
 using CivOne.Interfaces;
-using CivOne.GFX;
+using CivOne.Graphics;
 using CivOne.Units;
 using CivOne.UserInterface;
 using CivOne.Wonders;

@@ -12,7 +12,7 @@ using CivOne.Enums;
 using CivOne.Governments;
 using CivOne.Interfaces;
 
-namespace CivOne.GFX
+namespace CivOne.Graphics
 {
 	internal class Icons
 	{

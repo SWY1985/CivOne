@@ -12,7 +12,7 @@ using System.Drawing;
 using CivOne.Enums;
 using CivOne.Interfaces;
 
-namespace CivOne.GFX
+namespace CivOne.Graphics
 {
 	public class Picture : IBitmap
 	{

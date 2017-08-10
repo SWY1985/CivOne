@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using CivOne.Advances;
 using CivOne.Enums;
-using CivOne.GFX;
+using CivOne.Graphics;
 using CivOne.Interfaces;
 using CivOne.Screens;
 using CivOne.Tasks;

@@ -10,7 +10,7 @@
 using System;
 using System.Linq;
 using CivOne.Enums;
-using CivOne.GFX;
+using CivOne.Graphics;
 using CivOne.Tasks;
 
 namespace CivOne.Screens.Debug

@@ -8,7 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using CivOne.Enums;
-using CivOne.GFX;
+using CivOne.Graphics;
 
 namespace CivOne.Leaders
 {

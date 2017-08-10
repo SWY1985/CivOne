@@ -16,7 +16,7 @@ using CivOne.Buildings;
 using CivOne.Concepts;
 using CivOne.Enums;
 using CivOne.Events;
-using CivOne.GFX;
+using CivOne.Graphics;
 using CivOne.Interfaces;
 using CivOne.Tiles;
 using CivOne.Units;

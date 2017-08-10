@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using CivOne.Interfaces;
 
-namespace CivOne.GFX
+namespace CivOne.Graphics
 {
 	internal class Fontset : IFont
 	{

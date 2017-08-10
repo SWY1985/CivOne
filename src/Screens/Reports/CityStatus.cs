@@ -10,7 +10,7 @@
 using System.Linq;
 using CivOne.Events;
 using CivOne.Interfaces;
-using CivOne.GFX;
+using CivOne.Graphics;
 
 namespace CivOne.Screens.Reports
 {

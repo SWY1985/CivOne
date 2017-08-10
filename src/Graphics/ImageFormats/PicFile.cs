@@ -14,7 +14,7 @@ using System.IO;
 using System.Linq;
 using CivOne.IO;
 
-namespace CivOne.GFX.ImageFormats
+namespace CivOne.Graphics.ImageFormats
 {
 	internal class PicFile : IImageFormat
 	{
