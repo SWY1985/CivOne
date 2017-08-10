@@ -127,7 +127,7 @@ namespace CivOne.Screens
 				Picture background = menuGfx.GetPart(2, 3 + Resources.Instance.GetFontHeight(_fontId), itemWidth, Resources.Instance.GetFontHeight(_fontId) * menuItems.Count + 4);
 				Picture.ReplaceColours(background, new byte[] { 7, 22 }, new byte[] { 11, 3 });
 
-				Menu menu = new Menu(Canvas.Palette, background)
+				Menu menu = new Menu(Palette, background)
 				{
 					X = 83,
 					Y = 12 + Resources.Instance.GetFontHeight(_fontId),

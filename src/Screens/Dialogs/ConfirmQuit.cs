@@ -22,7 +22,7 @@ namespace CivOne.Screens.Dialogs
 
 		protected override void FirstUpdate()
 		{
-			Menu menu = new Menu(Canvas.Palette, Selection(3, 20, 100, 16))
+			Menu menu = new Menu(Palette, Selection(3, 20, 100, 16))
 			{
 				X = 103,
 				Y = 100,

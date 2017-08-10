@@ -37,7 +37,7 @@ namespace CivOne.Screens.Debug
 
 		private void AdvancesMenu()
 		{
-			_canvas = new Picture(320, 200, Common.Screens.Last().Canvas.OriginalColours);
+			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
 
 			IAdvance[] advances = _advances.Skip(_index).Take(15).ToArray();
 
@@ -58,7 +58,7 @@ namespace CivOne.Screens.Debug
 			_canvas.AddLayer(menuGfx, xx, yy);
 			_canvas.DrawText("Set Player Advances...", 0, 15, xx + 8, yy + 3);
 
-			_advanceSelect = new Menu(Canvas.Palette, menuBackground)
+			_advanceSelect = new Menu(Palette, menuBackground)
 			{
 				X = xx + 2,
 				Y = yy + 11,
@@ -137,7 +137,7 @@ namespace CivOne.Screens.Debug
 		{
 			Cursor = MouseCursor.Pointer;
 
-			_canvas = new Picture(320, 200, Common.Screens.Last().Canvas.OriginalColours);
+			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
 
 			int fontHeight = Resources.Instance.GetFontHeight(0);
 			int hh = (fontHeight * (Game.Players.Count() + 1)) + 5;
@@ -156,7 +156,7 @@ namespace CivOne.Screens.Debug
 			_canvas.AddLayer(menuGfx, xx, yy);
 			_canvas.DrawText("Set Player Advances...", 0, 15, xx + 8, yy + 3);
 
-			_civSelect = new Menu(Canvas.Palette, menuBackground)
+			_civSelect = new Menu(Palette, menuBackground)
 			{
 				X = xx + 2,
 				Y = yy + 11,

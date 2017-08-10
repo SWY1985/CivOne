@@ -32,7 +32,7 @@ namespace CivOne.Screens.Dialogs
 
 		protected override void FirstUpdate()
 		{
-			Menu<IGovernment> menu = new Menu<IGovernment>("ChooseGovernment", Canvas.Palette, Selection(3, 20, 84, (_availableGovernments.Length * Resources.Instance.GetFontHeight(0))))
+			Menu<IGovernment> menu = new Menu<IGovernment>("ChooseGovernment", Palette, Selection(3, 20, 84, (_availableGovernments.Length * Resources.Instance.GetFontHeight(0))))
 			{
 				X = 103,
 				Y = 84,

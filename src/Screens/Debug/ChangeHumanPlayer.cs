@@ -63,7 +63,7 @@ namespace CivOne.Screens.Debug
 		{
 			Cursor = MouseCursor.Pointer;
 
-			_canvas = new Picture(320, 200, Common.Screens.Last().Canvas.OriginalColours);
+			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
 
 			int fontHeight = Resources.Instance.GetFontHeight(0);
 			int hh = (fontHeight * (Game.Players.Count() + 1)) + 5;
@@ -82,7 +82,7 @@ namespace CivOne.Screens.Debug
 			_canvas.AddLayer(menuGfx, xx, yy);
 			_canvas.DrawText("Change Human Player...", 0, 15, xx + 8, yy + 3);
 
-			_civSelect = new Menu<Player>("ChangeHumanPlayer", Canvas.Palette, menuBackground)
+			_civSelect = new Menu<Player>("ChangeHumanPlayer", Palette, menuBackground)
 			{
 				X = xx + 2,
 				Y = yy + 11,

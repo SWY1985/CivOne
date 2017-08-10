@@ -91,7 +91,7 @@ namespace CivOne.Screens
 		{
 			if (_menu == null)
 			{
-				_menu = new Menu(Canvas.Palette)
+				_menu = new Menu(Palette)
 				{
 					X = 44,
 					Y = _y,

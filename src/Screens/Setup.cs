@@ -61,7 +61,7 @@ namespace CivOne.Screens
 		{
 			int width = GetMenuWidth(title, menuTexts);
 			int height = GetMenuHeight(title, menuTexts);
-			Menu menu = new Menu("Setup", Canvas.Palette)
+			Menu menu = new Menu("Setup", Palette)
 			{
 				Title = title,
 				X = (_canvas.Width - width) / 2,

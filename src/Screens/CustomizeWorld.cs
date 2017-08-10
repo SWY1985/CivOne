@@ -36,7 +36,7 @@ namespace CivOne.Screens
 		
 		private Menu CreateMenu(int y, string title, MenuItemEventHandler<int> setChoice, params string[] menuTexts)
 		{
-			Menu menu = new Menu(Canvas.Palette)
+			Menu menu = new Menu(Palette)
 			{
 				Title = title,
 				X = 203,
@@ -116,7 +116,7 @@ namespace CivOne.Screens
 				_closing = true;
 				Cursor = MouseCursor.None;
 				foreach (IScreen menu in _menus)
-					AddLayer(menu.Canvas);
+					AddLayer(menu);
 				CloseMenus();
 				return true;
 			}

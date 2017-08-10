@@ -182,7 +182,7 @@ namespace CivOne.Screens
 			}
 			else if (args.Key == Key.Enter)
 			{
-				_menu = new Menu(Canvas.Palette)
+				_menu = new Menu(Palette)
 				{
 					Title = "Select Load File...",
 					X = 51,

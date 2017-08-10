@@ -21,22 +21,8 @@ namespace CivOne.Templates
 
 		protected Picture _canvas = new Picture(320, 200);
 		
-		protected void AddLayer(IScreen screen, Point point)
-		{
-			AddLayer(screen, point.X, point.Y);
-		}
-		protected void AddLayer(IScreen screen, int x = 0, int y = 0)
-		{
-			_canvas.AddLayer(screen.Canvas, x, y);
-		}
-		protected void AddLayer(Picture picture, Point point)
-		{
-			AddLayer(picture, point.X, point.Y);
-		}
-		protected void AddLayer(Picture picture, int x = 0, int y = 0)
-		{
-			_canvas.AddLayer(picture, x, y);
-		}
+		protected void AddLayer(IBitmap bitmap, Point point) => _canvas.AddLayer(bitmap, point.X, point.Y);
+		protected void AddLayer(IBitmap bitmap, int x = 0, int y = 0) => _canvas.AddLayer(bitmap, x, y);
 
 		protected void DrawPanel(int x, int y, int width, int height, bool border = true)
 		{
@@ -93,20 +79,8 @@ namespace CivOne.Templates
 			_canvas.DrawText(text, 1, colourDark, x + (int)Math.Ceiling((double)width / 2), y + 2, TextAlign.Center);
 		}
 		
-		public virtual Picture Canvas
-		{
-			get
-			{
-				return _canvas;
-			}
-		}
-
-		public Color[] Palette
-		{
-			get
-			{
-				return Canvas.Palette;
-			}
-		}
+		public byte[,] Bitmap => _canvas.Bitmap;
+		public Color[] Palette => _canvas.Palette;
+		public Color[] OriginalColours => _canvas.OriginalColours;
 	}
 }
