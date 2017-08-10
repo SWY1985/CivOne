@@ -9,6 +9,7 @@
 
 using System;
 using CivOne.Buildings;
+using CivOne.Graphics;
 
 namespace CivOne.Screens.Dialogs
 {

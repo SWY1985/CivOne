@@ -20,37 +20,10 @@ namespace CivOne.Graphics
 		private readonly Color[] _palette = new Color[256];
 		private readonly byte[,] _bitmap;
 
-		public int Width
-		{
-			get
-			{
-				return _bitmap.GetLength(0);
-			}
-		}
-
-		public int Height
-		{
-			get
-			{
-				return _bitmap.GetLength(1);
-			}
-		}
-
-		public Size Size
-		{
-			get
-			{
-				return new Size(_bitmap.GetLength(0), _bitmap.GetLength(1));
-			}
-		}
-		
-		public Color[] OriginalColours
-		{
-			get
-			{
-				return _originalColours;
-			}
-		}
+		public int Width => _bitmap.GetLength(0);
+		public int Height => _bitmap.GetLength(1);
+		public Size Size => new Size(_bitmap.GetLength(0), _bitmap.GetLength(1));
+		public Color[] OriginalColours => _originalColours;
 
 		public Color[] Palette
 		{
@@ -65,13 +38,7 @@ namespace CivOne.Graphics
 			}
 		}
 		
-		public byte[,] Bitmap
-		{
-			get
-			{
-				return _bitmap;
-			}
-		}
+		public byte[,] Bitmap => _bitmap;
 
 		public byte[,] ScaleBitmap(int scaleX, int scaleY)
 		{
@@ -103,19 +70,6 @@ namespace CivOne.Graphics
 			}
 		}
 		
-		public void FillRectangle(byte colour, int left, int top, int width, int height)
-		{
-			for (int yy = top; yy < top + height; yy++)
-			{
-				if(yy < 0 || yy >= Height) continue;
-				for (int xx = left; xx < left + width; xx++)
-				{
-					if(xx < 0 || xx >= Width) continue;
-					_bitmap[xx, yy] = colour;
-				}
-			}
-		}
-		
 		public void DrawText(string text, int font, byte colour, int x, int y, TextAlign align = TextAlign.Left)
 		{
 			if (colour == 0 || string.IsNullOrWhiteSpace(text)) return;
@@ -137,7 +91,7 @@ namespace CivOne.Graphics
 					x -= textImage.Width;
 					break;
 			}
-			AddLayer(textImage, x, y);
+			this.AddLayer(textImage, x, y);
 		}
 		
 		public void ResetPalette()
@@ -199,7 +153,7 @@ namespace CivOne.Graphics
 			for (int xx = x; xx < Width; xx += layer.Width)
 			for (int yy = y; yy < Height; yy += layer.Height)
 			{
-				AddLayer(layer, new Point(xx, yy));
+				this.AddLayer(layer, new Point(xx, yy));
 			}
 		}
 		
@@ -208,10 +162,10 @@ namespace CivOne.Graphics
 			int w = x + (width - 1);
 			int h = y + (height - 1);
 			
-			FillRectangle(colourLight, x + depth, y + depth, 1, h - (depth * 2));
-			FillRectangle(colourLight, x + depth, h - depth, w - (depth * 2), 1);
-			FillRectangle(colourDark, x + depth, y + depth, w - (depth * 2), 1);
-			FillRectangle(colourDark, w - depth, y + depth, 1, h - (depth * 2) + 1);
+			this.FillRectangle(colourLight, x + depth, y + depth, 1, h - (depth * 2));
+			this.FillRectangle(colourLight, x + depth, h - depth, w - (depth * 2), 1);
+			this.FillRectangle(colourDark, x + depth, y + depth, w - (depth * 2), 1);
+			this.FillRectangle(colourDark, w - depth, y + depth, 1, h - (depth * 2) + 1);
 		}
 
 		public void AddLine(byte colour, int x1, int y1, int x2, int y2)
@@ -238,32 +192,6 @@ namespace CivOne.Graphics
 				_bitmap[(int)Math.Round(xx), (int)Math.Round(yy)] = colour;
 				xx += incX;
 				yy += incY;
-			}
-		}
-		
-		public void AddLayer(IBitmap layer, int x = 0, int y = 0)
-		{
-			AddLayer(layer, new Point(x, y));
-		}
-		public void AddLayer(IBitmap layer, Point offset)
-		{
-			if (layer == null) return;
-			
-			int layerWidth = layer.Bitmap.GetLength(0);
-			int layerHeight = layer.Bitmap.GetLength(1);
-			int imageWidth = Width;
-			int imageHeight = Height;
-
-			for (int yy = 0; yy < layerHeight; yy++)
-			{
-				if (yy + offset.Y >= imageHeight) continue;
-				for (int xx = 0; xx < layerWidth; xx++)
-				{
-					if (xx + offset.X >= imageWidth) continue;
-					if (layer.Bitmap[xx, yy] == 0) continue;
-					if (xx + offset.X < 0 || yy + offset.Y < 0) continue;
-					_bitmap[xx + offset.X, yy + offset.Y] = layer.Bitmap[xx, yy];
-				}
 			}
 		}
 		
@@ -310,7 +238,7 @@ namespace CivOne.Graphics
 			{
 				if (x < 0 || x >= Width || y < 0 || y >= Height) return;
 
-				FillRectangle(value, x, y, 1, 1);
+				this.FillRectangle(value, x, y, 1, 1);
 			}
 		}
 		
