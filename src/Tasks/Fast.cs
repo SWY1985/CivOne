@@ -9,7 +9,7 @@
 
 using System;
 
-namespace CivOne.Screens
+namespace CivOne.Tasks
 {
 	public class Fast : Attribute
 	{
