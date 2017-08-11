@@ -43,7 +43,7 @@ namespace CivOne.Screens
 			_canvas.SetPalette(palette);
 		}
 		
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (_fadeStep < 1.0F)
 			{

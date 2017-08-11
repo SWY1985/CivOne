@@ -24,7 +24,7 @@ namespace CivOne.Screens.Reports
 
 		protected readonly Picture[] Portrait = new Picture[4];
 		
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (!_update) return false;
 			_update = false;

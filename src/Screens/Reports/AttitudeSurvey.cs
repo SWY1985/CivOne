@@ -62,7 +62,7 @@ namespace CivOne.Screens.Reports
 			DrawBuilding<Colosseum>(city, ref x, y);
 		}
 		
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (!_update) return false;
 

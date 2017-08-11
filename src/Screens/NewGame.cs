@@ -23,7 +23,8 @@ using CivOne.UserInterface;
 
 namespace CivOne.Screens
 {
-	internal class NewGame : BaseScreen, IExpand
+	[Expand]
+	internal class NewGame : BaseScreen
 	{
 		private ICivilization[] _tribesAvailable;
 		private string[] _menuItemsDifficulty, _menuItemsCompetition, _menuItemsTribes;
@@ -176,7 +177,7 @@ namespace CivOne.Screens
 			_canvas.FillRectangle(15, OffsetX + 167, OffsetY + 104, 111, 12);
 		}
 		
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (HasMenu) return false;
 
@@ -303,10 +304,9 @@ namespace CivOne.Screens
 			return _done;
 		}
 
-		public void Resize(int width, int height)
+		private void Resize(object sender, ResizeEventArgs args)
 		{
-			_canvas = new Picture(width, height, _background.Palette);
-			_canvas.FillRectangle(5, 0, 0, width, height);
+			_canvas.FillRectangle(5, 0, 0, args.Width, args.Height);
 			if (_leaderName == null)
 			{
 				CloseMenus();
@@ -321,6 +321,8 @@ namespace CivOne.Screens
 		
 		public NewGame()
 		{
+			OnResize += Resize;
+
 			Cursor = MouseCursor.Pointer;
 			
 			_background = Resources.Instance.LoadPIC("DIFFS");

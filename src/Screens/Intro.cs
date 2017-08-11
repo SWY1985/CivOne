@@ -16,7 +16,8 @@ using CivOne.IO;
 
 namespace CivOne.Screens
 {
-	internal class Intro : BaseScreen, IExpand
+	[Expand]
+	internal class Intro : BaseScreen
 	{
 		private const float FADE_STEP = 0.0625F;
 		
@@ -121,7 +122,7 @@ namespace CivOne.Screens
 			}
 		}
 		
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			bool update = HandleScreenFade();
 			if (!update && gameTick % 2 == 0)
@@ -239,15 +240,16 @@ namespace CivOne.Screens
 			return false;
 		}
 
-		public void Resize(int width, int height)
+		public void Resize(object sender, ResizeEventArgs args)
 		{
-			_canvas = new Picture(width, height, _canvas.Palette);
-			_canvas.FillRectangle(0, 0, 0, width, height);
+			_canvas.FillRectangle(0, 0, 0, args.Width, args.Height);
 			HasUpdate(0);
 		}
 		
 		public Intro()
 		{
+			OnResize += Resize;
+
 			Cursor = MouseCursor.None;
 			
 			_introText = TextFile.Instance.LoadArray("STORY");

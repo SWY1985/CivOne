@@ -20,7 +20,7 @@ namespace CivOne.Screens
 	{
 		event EventHandler Closed;
 		MouseCursor Cursor { get; }
-		bool HasUpdate(uint gameTick);
+		bool Update(uint gameTick);
 		bool KeyDown(KeyboardEventArgs args);
 		bool MouseDown(ScreenEventArgs args);
 		bool MouseUp(ScreenEventArgs args);

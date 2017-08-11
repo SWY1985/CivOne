@@ -18,7 +18,8 @@ using CivOne.UserInterface;
 
 namespace CivOne.Screens
 {
-	internal class Credits : BaseScreen, IExpand
+	[Expand]
+	internal class Credits : BaseScreen
 	{
 		private const int NOISE_COUNT = 20;
 		
@@ -69,7 +70,7 @@ namespace CivOne.Screens
 			}
 		}
 		
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (_nextScreen != null)
 			{
@@ -82,7 +83,7 @@ namespace CivOne.Screens
 				return true;
 			}
 
-			if (_done && (_overlay == null || !_overlay.HasUpdate(gameTick))) return false;	
+			if (_done && (_overlay == null || !_overlay.Update(gameTick))) return false;	
 			
 			// Updates
 			if (_introLeft > -320)
@@ -296,9 +297,8 @@ namespace CivOne.Screens
 			}
 		}
 
-		public void Resize(int width, int height)
+		private void Resize(object sender, ResizeEventArgs args)
 		{
-			_canvas = new Picture(width, height, _canvas.Palette);
 			_done = false;
 			foreach (Menu menu in Common.Screens.Where(x => x is Menu && (x as Menu).Id == "MainMenu"))
 			{
@@ -309,6 +309,8 @@ namespace CivOne.Screens
 		
 		public Credits()
 		{
+			OnResize += Resize;
+
 			_introText = TextFile.Instance.LoadArray("CREDITS");
 			if (_introText.Length == 0) _introText = new string[25];
 			_pictures = new Picture[3];

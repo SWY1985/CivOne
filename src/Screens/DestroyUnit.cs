@@ -69,7 +69,7 @@ namespace CivOne.Screens
 			}
 		}
 		
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			int cx = Settings.RightSideBar ? 0 : 80;
 			int cy = 8;
@@ -119,7 +119,7 @@ namespace CivOne.Screens
 				foreach (IUnit unit in units)
 					Game.DisbandUnit(unit);
 				Common.GamePlay.RefreshMap();
-				Common.GamePlay.HasUpdate(gameTick);
+				Common.GamePlay.Update(gameTick);
 				Destroy();
 			}
 

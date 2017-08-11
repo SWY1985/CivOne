@@ -25,7 +25,7 @@ namespace CivOne.Screens.CityManagerPanels
 		
 		public event EventHandler HeaderUpdate;
 
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (_update)
 			{

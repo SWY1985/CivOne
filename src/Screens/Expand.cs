@@ -7,10 +7,11 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
+
 namespace CivOne.Screens
 {
-	public interface IExpand
+	public class Expand : Attribute
 	{
-		void Resize(int width, int height);
 	}
 }

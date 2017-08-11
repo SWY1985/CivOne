@@ -30,7 +30,7 @@ namespace CivOne.Screens.Reports
 
 		private readonly CityWonders[] _wonders;
 		
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (!_update) return false;
 

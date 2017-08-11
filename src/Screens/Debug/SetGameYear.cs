@@ -54,7 +54,7 @@ namespace CivOne.Screens.Debug
 			Destroy();
 		}
 
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (!Common.HasScreenType<Input>())
 			{

@@ -184,7 +184,7 @@ namespace CivOne.Screens.GamePlayPanels
 			}
 		}
 		
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (_update || (gameTick % 2 == 0))
 			{

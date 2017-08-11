@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CivOne.Interfaces;
+using CivOne.Tasks;
 
 namespace CivOne
 {
@@ -19,29 +20,11 @@ namespace CivOne
 		private static GameTask _currentTask = null;
 		private static List<GameTask> _tasks = new List<GameTask>();
 
-		public static bool Any()
-		{
-			return (_tasks.Count > 0);
-		}
-
-		public static int Count<T>() where T : GameTask
-		{
-			return _tasks.Count(t => t is T);
-		}
-
-		public static bool Is<T>() where T : GameTask
-		{
-			return (_currentTask != null && _currentTask is T);
-		}
-
-		public static bool Fast
-		{
-			get
-			{
-				return Common.HasAttribute<Fast>(_currentTask);
-			}
-		}
-
+		public static bool Any() => (_tasks.Count > 0);
+		public static bool Is<T>() where T : GameTask => (_currentTask != null && _currentTask is T);
+		public static bool Fast => Common.HasAttribute<Fast>(_currentTask);
+		public static int Count<T>() where T : GameTask => _tasks.Count(t => t is T);
+		
 		public static bool Update()
 		{
 			if (_currentTask != null)

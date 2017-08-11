@@ -141,11 +141,11 @@ namespace CivOne.Screens
 			_canvas.DrawText("Press Escape to cancel", 0, 5, 104, 128, TextAlign.Left);
 		}
 		
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (_menu != null)
 			{
-				if (_menu.HasUpdate(gameTick))
+				if (_menu.Update(gameTick))
 				{
 					_canvas = new Picture(320, 200, _palette);
 					_canvas.FillRectangle(15, 0, 0, 320, 200);

@@ -17,7 +17,8 @@ using CivOne.UserInterface;
 
 namespace CivOne.Screens
 {
-	public class Menu<T> : BaseScreen, IMenu, IExpand
+	[Expand]
+	public class Menu<T> : BaseScreen, IMenu
 	{
 		private readonly Picture _background;
 		
@@ -59,7 +60,7 @@ namespace CivOne.Screens
 			}
 		}
 		
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			int fontHeight = Resources.Instance.GetFontHeight(FontId);
 			if (RowHeight != 0) fontHeight = RowHeight;
@@ -189,9 +190,8 @@ namespace CivOne.Screens
 			return true;
 		}
 
-		public void Resize(int width, int height)
+		private void Resize(object sender, ResizeEventArgs args)
 		{
-			_canvas = new Picture(width, height, _canvas.Palette);
 			_change = true;
 			HasUpdate(0);
 		}
@@ -203,6 +203,8 @@ namespace CivOne.Screens
 		
 		public Menu(string menuId, Color[] colours, Picture background = null)
 		{
+			OnResize += Resize;
+
 			Items = new MenuItemCollection<T>(menuId);
 
 			if (background != null)

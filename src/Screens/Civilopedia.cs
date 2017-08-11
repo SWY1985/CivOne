@@ -86,7 +86,7 @@ namespace CivOne.Screens
 			return false;
 		}
 		
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (_closing)
 			{

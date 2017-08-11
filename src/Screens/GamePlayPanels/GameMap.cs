@@ -136,7 +136,7 @@ namespace CivOne.Screens.GamePlayPanels
 			return _update;
 		}
 		
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (!(_update || _centerChanged)) return false;
 

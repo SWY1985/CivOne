@@ -11,6 +11,7 @@ namespace CivOne.Screens
 {
 	public interface IMenu : IScreen
 	{
+		string Id { get; }
 		void Close();
 	}
 }

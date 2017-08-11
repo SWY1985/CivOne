@@ -46,11 +46,11 @@ namespace CivOne.Screens
 		private void DrawLayer(IScreen layer, uint gameTick, int x, int y)
 		{
 			if (layer == null) return;
-			if (!layer.HasUpdate(gameTick) && !_redraw) return;
+			if (!layer.Update(gameTick) && !_redraw) return;
 			AddLayer(layer, x, y);
 		}
 		
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (Common.Screens.Count(x => x is CityManager) > 1)
 			{
@@ -58,14 +58,14 @@ namespace CivOne.Screens
 				return false;
 			}
 
-			if (_cityHeader.HasUpdate(gameTick)) _update = true;
-			if (_cityResources.HasUpdate(gameTick)) _update = true;
-			if (_cityUnits.HasUpdate(gameTick)) _update = true;
-			if (_cityMap.HasUpdate(gameTick)) _update = true;
-			if (_cityBuildings.HasUpdate(gameTick)) _update = true;
-			if (_cityFoodStorage.HasUpdate(gameTick)) _update = true;
-			if (_cityInfo.HasUpdate(gameTick)) _update = true;
-			if (_cityProduction.HasUpdate(gameTick)) _update = true;
+			if (_cityHeader.Update(gameTick)) _update = true;
+			if (_cityResources.Update(gameTick)) _update = true;
+			if (_cityUnits.Update(gameTick)) _update = true;
+			if (_cityMap.Update(gameTick)) _update = true;
+			if (_cityBuildings.Update(gameTick)) _update = true;
+			if (_cityFoodStorage.Update(gameTick)) _update = true;
+			if (_cityInfo.Update(gameTick)) _update = true;
+			if (_cityProduction.Update(gameTick)) _update = true;
 			
 			if (_update)
 			{
