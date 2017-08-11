@@ -747,7 +747,7 @@ namespace CivOne.Screens
 				int width = lines.Max(l => Resources.Instance.GetTextSize(5, l).Width) + 10;
 				if (width % 4 > 0) width += (4 - (width % 4));
 				Picture dialog = new Picture(width, 52);
-				dialog.FillLayerTile(Patterns.PanelGrey);
+				dialog.Tile(Patterns.PanelGrey);
 				dialog.AddBorder(15, 8, 0, 0, width, 52);
 				dialog.DrawText(lines[0], 5, 5, 4, 5);
 				dialog.DrawText(lines[0], 5, 15, 4, 4);
@@ -772,7 +772,7 @@ namespace CivOne.Screens
 				string[] lines =  new [] { $"{_city.Name} builds", $"{(production as ICivilopedia).Name}." };
 				int width = lines.Max(l => Resources.Instance.GetTextSize(5, l).Width) + 10;
 				Picture dialog = new Picture(width, 37);
-				dialog.FillLayerTile(Patterns.PanelGrey);
+				dialog.Tile(Patterns.PanelGrey);
 				dialog.AddBorder(15, 8, 0, 0, width, 37);
 				dialog.DrawText(lines[0], 5, 5, 4, 5);
 				dialog.DrawText(lines[0], 5, 15, 4, 4);

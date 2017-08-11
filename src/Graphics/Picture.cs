@@ -148,15 +148,6 @@ namespace CivOne.Graphics
 			return new Picture(bytes, Palette);
 		}
 		
-		public void FillLayerTile(Picture layer, int x = 0, int y = 0)
-		{
-			for (int xx = x; xx < Width; xx += layer.Width)
-			for (int yy = y; yy < Height; yy += layer.Height)
-			{
-				this.AddLayer(layer, new Point(xx, yy));
-			}
-		}
-		
 		public void AddBorder(byte colourLight, byte colourDark, int x, int y, int width, int height, int depth = 0)
 		{
 			int w = x + (width - 1);

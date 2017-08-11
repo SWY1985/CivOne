@@ -36,7 +36,7 @@ namespace CivOne.Screens
 				_canvas.FillRectangle(5, x, y, width, height);
 			}
 			Picture panel = new Picture(ww, hh);
-			panel.FillLayerTile(Patterns.PanelGrey);
+			panel.Tile(Patterns.PanelGrey);
 			panel.AddBorder(15, 8, 0, 0, ww, hh);
 			_canvas.AddLayer(panel, xx, yy);
 		}

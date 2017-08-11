@@ -75,7 +75,7 @@ namespace CivOne.Screens
 				ww += (4 - (ww % 4));
 			
 			_canvas = new Picture(ww, hh, _palette);
-			_canvas.FillLayerTile(Patterns.PanelGrey, 1, 1);
+			_canvas.Tile(Patterns.PanelGrey, 1, 1);
 			if (ow != ww)
 				_canvas.FillRectangle(0, ow, 0, 4 - (ow % 4), hh);
 			

@@ -82,7 +82,7 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			if (_update)
 			{
-				_canvas.FillLayerTile(_background);
+				_canvas.Tile(_background);
 				_canvas.FillRectangle(0, 107, 0, 1, 97);
 
 				for (int i = (_page * 14); i < _improvements.Length && i < ((_page + 1) * 14); i++)

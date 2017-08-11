@@ -118,7 +118,7 @@ namespace CivOne.Screens
 				int width = itemWidth + 14;
 				int height = _menuHeight + 10 + Resources.Instance.GetFontHeight(_fontId);
 				Picture menuGfx = new Picture(width, height);
-				menuGfx.FillLayerTile(Patterns.PanelGrey);
+				menuGfx.Tile(Patterns.PanelGrey);
 				menuGfx.AddBorder(15, 8, 0, 0, width, height);
 				menuGfx.DrawText(menuHeaderText, _fontId, 15, 4, 4);
 				menuGfx.DrawText($"(Help available)", 1, 10, width, height - Resources.Instance.GetFontHeight(1), TextAlign.Right);

@@ -73,7 +73,7 @@ namespace CivOne.Screens
 				_update = false;
 
 				Picture menuGfx = new Picture(104, 79);
-				menuGfx.FillLayerTile(Patterns.PanelGrey);
+				menuGfx.Tile(Patterns.PanelGrey);
 				menuGfx.AddBorder(15, 8, 0, 0, 103, 79);
 				menuGfx.FillRectangle(0, 103, 0, 1, 79);
 				menuGfx.DrawText("Options:", 0, 15, 4, 4);

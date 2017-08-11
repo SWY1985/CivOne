@@ -55,5 +55,26 @@ namespace CivOne.Graphics
 			}
 			return bitmap;
 		}
+
+		public static IBitmap Tile(this IBitmap bitmap, IBitmap layer, Rectangle rectangle) => Tile(bitmap, layer, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
+		public static IBitmap Tile(this IBitmap bitmap, IBitmap layer, Point point, Size size) => Tile(bitmap, layer, point.X, point.Y, size.Width, size.Height);
+		public static IBitmap Tile(this IBitmap bitmap, IBitmap layer, int left = 0, int top = 0, int width = -1, int height = -1)
+		{
+			if (layer == null) return bitmap;
+			if (width == -1) width = bitmap.GetWidth() - left;
+			if (height == -1) height = bitmap.GetHeight() - top;
+			for (int yy = 0; yy < height; yy++)
+			{
+				if (top + yy >= bitmap.GetHeight()) break;
+				if (bitmap.OutBoundY(top + yy)) continue;
+				for (int xx = 0; xx < width; xx++)
+				{
+					if (left + xx >= bitmap.GetWidth()) break;
+					if (layer.Bitmap[xx % layer.GetWidth(), yy % layer.GetHeight()] == 0 || bitmap.OutBoundX(left + xx)) continue;
+					bitmap.Bitmap[left + xx, top + yy] = layer.Bitmap[xx % layer.GetWidth(), yy % layer.GetHeight()];
+				}
+			}
+			return bitmap;
+		}
 	}
 }
