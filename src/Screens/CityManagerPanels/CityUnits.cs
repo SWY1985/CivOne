@@ -27,7 +27,7 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			if (_update)
 			{
-				_canvas.FillLayerTile(_background);
+				_canvas.Tile(_background);
 				_canvas.AddBorder(1, 1, 0, 0, 123, 38);
 				_canvas.FillRectangle(0, 123, 0, 1, 38);
 

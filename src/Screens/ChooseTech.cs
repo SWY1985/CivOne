@@ -90,7 +90,7 @@ namespace CivOne.Screens
 			if (dialogHeight < 62) dialogHeight = 62;
 
 			_menuGfx = new Picture(204, dialogHeight);
-			_menuGfx.FillLayerTile(Patterns.PanelGrey);
+			_menuGfx.Tile(Patterns.PanelGrey);
 			_menuGfx.FillRectangle(0, 202, 0, 2, dialogHeight);
 			_menuGfx.AddLayer(governmentPortrait, 1, dialogHeight - 61);
 

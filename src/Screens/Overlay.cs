@@ -111,7 +111,7 @@ namespace CivOne.Screens
 						Size textSize = Resources.Instance.GetTextSize(0, helpLabel.Text);
 
 						Picture label = new Picture(textSize.Width + 11, textSize.Height + 9);
-						label.FillLayerTile(Patterns.PanelGrey);
+						label.Tile(Patterns.PanelGrey);
 						label.AddBorder(15, 8, 1, 1, label.Width - 2, label.Height - 2);
 						label.AddBorder(5, 5, 0, 0, label.Width, label.Height);
 						label.DrawText(helpLabel.Text, 0, 15, 5, 5);

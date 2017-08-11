@@ -97,7 +97,7 @@ namespace CivOne.Screens.Dialogs
 			height += 2;
 			
 			DialogBox = new Picture(width, height);
-			DialogBox.FillLayerTile(Patterns.PanelGrey, 1, 1);
+			DialogBox.Tile(Patterns.PanelGrey, 1, 1);
 			DialogBox.AddBorder(15, 8, 1, 1, width - 2, height - 2);
 			DialogBox.AddBorder(5, 5, 0, 0, width, height);
 		}
