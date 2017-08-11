@@ -81,16 +81,6 @@ namespace CivOne
 			}
 		}
 
-		// private void AddScreenLayer(Picture bitmap, IScreen screen)
-		// {
-		// 	if (screen is IExpand && Settings.AspectRatio == AspectRatio.Expand && (screen.Bitmap.GetLength(0) != Runtime.CanvasWidth || screen.Bitmap.GetLength(1) != Runtime.CanvasHeight))
-		// 	{
-		// 		(screen as IExpand).Resize(Runtime.CanvasWidth, Runtime.CanvasHeight);
-		// 	}
-
-		// 	bitmap.AddLayer(screen);
-		// }
-
 		private void OnDraw(object sender, EventArgs args)
 		{
 			if (TopScreen == null) return;
