@@ -8,13 +8,14 @@
 -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<PropertyGroup>
-		<AssemblyName>CivOne</AssemblyName>
+		<AssemblyName>CivOne.Win32</AssemblyName>
 		<ErrorReport>prompt</ErrorReport>
 		<FileAlignment>512</FileAlignment>
 		<OutputPath>bin/</OutputPath>
 		<RootNamespace>CivOne</RootNamespace>
 		<TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
 		<ApplicationIcon>../../resources/win32/CivOne.ico</ApplicationIcon> 
+		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
 	</PropertyGroup>
 	<PropertyGroup Condition="$(Configuration.StartsWith('Debug'))">
 		<DebugSymbols>true</DebugSymbols>
@@ -35,10 +36,11 @@
 		<Reference Include="System.Windows.Forms" />
 	</ItemGroup>
 	<ItemGroup>
+		<ProjectReference Include="../../CivOne.csproj" />
+	</ItemGroup>
+	<ItemGroup>
 		<Compile Include="src\*.cs" />
 		<Compile Include="shared\**\*.cs" />
-		<Compile Include="..\..\src\**\*.cs" Exclude="..\..\src\Properties\*.cs" />
-		<Compile Include="..\..\api\src\**\*.cs" Exclude="..\..\api\src\Properties\*.cs" />
 	</ItemGroup>
 	<Target Name="Build">
 		<MakeDir Directories="$(OutputPath)" Condition="!Exists('$(OutputPath)')" />
