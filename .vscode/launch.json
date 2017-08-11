@@ -44,7 +44,7 @@
 			"type": "mono",
 			"request": "launch",
 			"preLaunchTask": "build-win32",
-			"program": "${workspaceRoot}/runtime/win32/bin/CivOne.exe",
+			"program": "${workspaceRoot}/runtime/win32/bin/CivOne.Win32.exe",
 			"args": [],
 			"cwd": "${workspaceRoot}",
 			"console": "internalConsole",
