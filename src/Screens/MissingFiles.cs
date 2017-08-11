@@ -8,7 +8,6 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using CivOne.Attributes;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;

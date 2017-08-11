@@ -9,9 +9,9 @@
 
 using System;
 
-namespace CivOne.Attributes
+namespace CivOne.Units
 {
-	public class Break : Attribute
+	public class Default : Attribute
 	{
 	}
 }

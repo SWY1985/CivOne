@@ -13,7 +13,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using CivOne.Attributes;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.IO;

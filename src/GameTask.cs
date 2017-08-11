@@ -10,7 +10,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CivOne.Attributes;
 using CivOne.Interfaces;
 
 namespace CivOne
