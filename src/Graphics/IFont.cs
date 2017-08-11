@@ -9,7 +9,7 @@
 
 using CivOne.Graphics;
 
-namespace CivOne.Interfaces
+namespace CivOne.Graphics
 {
 	public interface IFont
 	{

@@ -9,7 +9,6 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-using CivOne.Interfaces;
 
 namespace CivOne.Graphics
 {
