@@ -113,7 +113,6 @@ namespace CivOne.Screens
 			else
 			{
 				_closing = true;
-				Cursor = MouseCursor.None;
 				foreach (IScreen menu in _menus)
 					AddLayer(menu);
 				CloseMenus();
@@ -126,8 +125,6 @@ namespace CivOne.Screens
 		
 		public CustomizeWorld()
 		{
-			Cursor = MouseCursor.Pointer;
-			
 			Picture background = Resources.Instance.LoadPIC("CUSTOM");
 			
 			_canvas = new Picture(320, 200, background.Palette);

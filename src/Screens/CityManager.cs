@@ -180,11 +180,9 @@ namespace CivOne.Screens
 			_cityResources.Update();
 		}
 
-		public CityManager(City city)
+		public CityManager(City city) : base(MouseCursor.Pointer)
 		{
 			_city = city;
-
-			Cursor = MouseCursor.Pointer;
 
 			_city.UpdateResources();
 			

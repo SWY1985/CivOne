@@ -36,8 +36,6 @@ namespace CivOne.Screens.Dialogs
 
 		public AdvisorMessage(Advisor advisor, string[] message, bool leftAlign) : base((leftAlign ? 38 : 58), 72, DialogWidth(message) + 52, 62)
 		{
-			Cursor = MouseCursor.None;
-
 			string[] advisorNames = new string[] { "Defense Minister", "Domestic Advisor", "Foreign Minister", "Science Advisor" };
 			bool modernGovernment = Human.HasAdvance<Invention>();
 			Picture governmentPortrait = Icons.GovernmentPortrait(Human.Government, advisor, modernGovernment);

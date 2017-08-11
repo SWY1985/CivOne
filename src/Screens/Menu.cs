@@ -201,7 +201,7 @@ namespace CivOne.Screens
 			Destroy();
 		}
 		
-		public Menu(string menuId, Color[] colours, Picture background = null)
+		public Menu(string menuId, Color[] colours, Picture background = null) : base(MouseCursor.Pointer)
 		{
 			OnResize += Resize;
 
@@ -212,7 +212,6 @@ namespace CivOne.Screens
 				_background = new Picture(background);
 			}
 
-			Cursor = MouseCursor.Pointer;
 			IndentTitle = 8;
 			Indent = 8;
 			

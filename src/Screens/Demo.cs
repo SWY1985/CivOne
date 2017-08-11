@@ -36,9 +36,8 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public Demo()
+		public Demo() : base(MouseCursor.Pointer)
 		{
-			Cursor = MouseCursor.Pointer;
 			Picture background = Resources.Instance.LoadPIC("BIRTH1");
 			Picture logo = Resources.Instance.LoadPIC("LOGO");
 			switch (Settings.GraphicsMode)

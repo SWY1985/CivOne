@@ -157,11 +157,9 @@ namespace CivOne.Screens
 			return true;
 		}
 
-		public CityChooseProduction(City city)
+		public CityChooseProduction(City city) : base(MouseCursor.Pointer)
 		{
 			_city = city;
-			
-			Cursor = MouseCursor.Pointer;
 
 			_canvas = new Picture(320, 200, Common.DefaultPalette);
 

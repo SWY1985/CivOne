@@ -166,8 +166,6 @@ namespace CivOne.Screens
 
 		internal Nuke(int x, int y)
 		{
-			Cursor = MouseCursor.None;
-			
 			_x = Common.GamePlay.X;
 			_y = Common.GamePlay.Y;
 

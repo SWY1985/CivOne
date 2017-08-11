@@ -320,10 +320,8 @@ namespace CivOne.Screens
 			Destroy();
 		}
 		
-		public Civilopedia(ICivilopedia[] pages)
+		public Civilopedia(ICivilopedia[] pages) : base(MouseCursor.Pointer)
 		{
-			Cursor = MouseCursor.Pointer;
-			
 			_pages = pages;
 		}
 		

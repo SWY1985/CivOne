@@ -83,8 +83,6 @@ namespace CivOne.Screens
 
 		public Search()
 		{
-			Cursor = MouseCursor.None;
-
 			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
 
 			_canvas.FillRectangle(5, 64, 78, 225, 25);

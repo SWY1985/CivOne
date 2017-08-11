@@ -488,11 +488,9 @@ namespace CivOne.Screens
 			}
 		}
 		
-		public Setup()
+		public Setup() : base(MouseCursor.Pointer)
 		{
 			OnResize += Resize;
-
-			Cursor = MouseCursor.Pointer;
 			
 			_canvas = new Picture(320, 200, Common.GetPalette256);
 			_canvas.FillRectangle(3, 0, 0, 320, 200);

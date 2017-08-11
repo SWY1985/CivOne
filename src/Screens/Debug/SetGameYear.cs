@@ -65,8 +65,6 @@ namespace CivOne.Screens.Debug
 
 		public SetGameYear()
 		{
-			Cursor = MouseCursor.None;
-
 			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
 
 			_canvas.FillRectangle(11, 80, 80, 161, 33);

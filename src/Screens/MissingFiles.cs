@@ -126,8 +126,6 @@ namespace CivOne.Screens
 		
 		public MissingFiles()
 		{
-			Cursor = MouseCursor.None;
-
 			_canvas = new Picture(320, 200, Common.GetPalette256);
 			_canvas.FillRectangle(8, 0, 0, 320, 200);
 			_canvas.FillRectangle(15, 40, 50, 240, 100);

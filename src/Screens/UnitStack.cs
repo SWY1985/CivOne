@@ -89,14 +89,12 @@ namespace CivOne.Screens
 			return true;
 		}
 
-		internal UnitStack(int x, int y)
+		internal UnitStack(int x, int y) : base(MouseCursor.Pointer)
 		{
 			_x = x;
 			_y = y;
 			_units = Map[_x, _y].Units.Take(12).ToArray();
 
-			Cursor = MouseCursor.Pointer;
-			
 			_canvas = new Picture(320, 200, Common.TopScreen.Palette);
 		}
 	}

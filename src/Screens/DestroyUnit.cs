@@ -215,7 +215,6 @@ namespace CivOne.Screens
 
 		internal DestroyUnit(IUnit unit, bool stack)
 		{
-			Cursor = MouseCursor.None;
 			_unit = unit;
 			_stack = stack;
 

@@ -35,6 +35,9 @@ namespace CivOne.Screens.Debug
 
 		public string Value { get; private set; }
 
+		private MouseCursor _cursor = MouseCursor.Pointer;
+		public override MouseCursor Cursor => _cursor;
+
 		public event EventHandler Cancel;
 
 		private bool _hasUpdate = false;
@@ -260,7 +263,7 @@ namespace CivOne.Screens.Debug
 
 				_canvas = new Picture(320, 200, Common.DefaultPalette);
 				SidebarHint();
-				Cursor = ValidTile ? MouseCursor.Goto : MouseCursor.Pointer;
+				_cursor = ValidTile ? MouseCursor.Goto : MouseCursor.Pointer;
 				if (!ValidTile) return _hasUpdate;
 				_canvas.AddLayer(_selectedUnit.GetUnit(Game.PlayerNumber(_selectedPlayer), false), xx, yy);
 				
@@ -271,8 +274,6 @@ namespace CivOne.Screens.Debug
 
 		public SpawnUnit()
 		{
-			Cursor = MouseCursor.Pointer;
-
 			_canvas = new Picture(320, 200, Common.DefaultPalette);
 
 			int fontHeight = Resources.Instance.GetFontHeight(0);

@@ -319,11 +319,9 @@ namespace CivOne.Screens
 			_showIntroText = false;
 		}
 		
-		public NewGame()
+		public NewGame() : base(MouseCursor.Pointer)
 		{
 			OnResize += Resize;
-
-			Cursor = MouseCursor.Pointer;
 			
 			_background = Resources.Instance.LoadPIC("DIFFS");
 			

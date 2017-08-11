@@ -69,13 +69,11 @@ namespace CivOne.Screens
 			return true;
 		}
 
-		public ChooseTech()
+		public ChooseTech() : base(MouseCursor.Pointer)
 		{
 			_availableAdvances = Human.AvailableResearch.Take(8).ToArray();
 			_menuHeight = Resources.Instance.GetFontHeight(0) * _availableAdvances.Count();
 			
-			Cursor = MouseCursor.Pointer;
-
 			bool modernGovernment = Human.HasAdvance<Invention>();
 			Picture governmentPortrait = Icons.GovernmentPortrait(Human.Government, Advisor.Science, modernGovernment);
 			Color[] palette = Common.DefaultPalette;

@@ -60,14 +60,12 @@ namespace CivOne.Screens
 			return true;
 		}
 
-		internal Goto(int x, int y)
+		internal Goto(int x, int y) : base(MouseCursor.Goto)
 		{
 			_x = x;
 			_y = y;
 			X = -1;
 			Y = -1;
-
-			Cursor = MouseCursor.Goto;
 			
 			_canvas = new Picture(320, 200, Common.TopScreen.Palette);
 		}
