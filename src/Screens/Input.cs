@@ -32,13 +32,7 @@ namespace CivOne.Screens
 		public int X { get; set; }
 		public int Y { get; set; }
 		
-		public string Text
-		{
-			get
-			{
-				return _text;
-			}
-		}
+		public string Text => _text;
 
 		private bool AppendCharacter(char character)
 		{
