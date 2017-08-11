@@ -9,9 +9,9 @@
 
 using System;
 
-namespace CivOne.Attributes
+namespace CivOne.Screens
 {
-	public class Default : Attribute
+	public class Break : Attribute
 	{
 	}
 }

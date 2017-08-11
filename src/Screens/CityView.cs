@@ -19,7 +19,6 @@ using CivOne.Graphics;
 using CivOne.Wonders;
 
 using UniversityBuilding = CivOne.Buildings.University;
-using CivOne.Attributes;
 
 namespace CivOne.Screens
 {

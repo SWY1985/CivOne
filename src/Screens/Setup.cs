@@ -9,7 +9,6 @@
 
 using System;
 using System.Linq;
-using CivOne.Attributes;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;

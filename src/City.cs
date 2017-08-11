@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CivOne.Advances;
-using CivOne.Attributes;
 using CivOne.Buildings;
 using CivOne.Enums;
 using CivOne.Governments;

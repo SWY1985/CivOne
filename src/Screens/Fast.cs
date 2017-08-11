@@ -9,9 +9,9 @@
 
 using System;
 
-namespace CivOne.Attributes
+namespace CivOne.Screens
 {
-	public class Modal : Attribute
+	public class Fast : Attribute
 	{
 	}
 }
