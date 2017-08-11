@@ -16,6 +16,7 @@ using CivOne.Graphics;
 
 namespace CivOne.Screens
 {
+	[Expand]
 	internal class Input : BaseScreen
 	{
 		public event EventHandler Accept;
@@ -64,7 +65,7 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			_canvas.FillRectangle(0, 0, 0, 320, 200);
 			int fontHeight = Resources.Instance.GetFontHeight(_fontId);
@@ -195,14 +196,15 @@ namespace CivOne.Screens
 			_maxLength = maxLength;
 		}
 
-		public void Resize(int width, int height)
+		private void Resize(object sender, ResizeEventArgs args)
 		{
-			_canvas = new Picture(width, height, _canvas.Palette);
 			HasUpdate(0);
 		}
 		
 		public Input(Color[] colours, int fontId, byte textColour, byte cursorColour, int x, int y, int width, int height, int maxLength)
 		{
+			OnResize += Resize;
+
 			_canvas = new Picture(320, 200, colours);
 			_text = "";
 			_fontId = fontId;

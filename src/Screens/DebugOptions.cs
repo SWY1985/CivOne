@@ -86,7 +86,7 @@ namespace CivOne.Screens
 			Destroy();
 		}
 
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (_update)
 			{

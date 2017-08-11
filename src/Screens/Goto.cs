@@ -23,7 +23,7 @@ namespace CivOne.Screens
 		public int X { get; private set; }
 		public int Y { get; private set; }
 		
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (_update)
 			{

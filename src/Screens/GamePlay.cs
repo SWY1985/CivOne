@@ -22,7 +22,8 @@ using CivOne.UserInterface;
 
 namespace CivOne.Screens
 {
-	internal class GamePlay : BaseScreen, IExpand
+	[Expand]
+	internal class GamePlay : BaseScreen
 	{
 		private readonly MenuBar _menuBar;
 		private readonly SideBar _sideBar;
@@ -164,11 +165,11 @@ namespace CivOne.Screens
 		private void DrawLayer(IScreen layer, uint gameTick, int x, int y)
 		{
 			if (layer == null) return;
-			if (!layer.HasUpdate(gameTick) && !_redraw) return;
+			if (!layer.Update(gameTick) && !_redraw) return;
 			AddLayer(layer, x, y);
 		}
 		
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (Common.TopScreen is GamePlay && !GameTask.Any())
 			{
@@ -192,7 +193,7 @@ namespace CivOne.Screens
 			}
 
 			if (_gameMap.MustUpdate(gameTick)) _update = true;
-			if (_sideBar.HasUpdate(gameTick)) _update = true;
+			if (_sideBar.Update(gameTick)) _update = true;
 			if (gameTick % 3 == 0) _canvas.Cycle(96, 103).Cycle(104, 111);
 			if (!_update && !_redraw) return (gameTick % 3 == 0);
 			
@@ -371,14 +372,13 @@ namespace CivOne.Screens
 			return _update;
 		}
 		
-		public void Resize(int width, int height)
+		private void Resize(object sender, ResizeEventArgs args)
 		{
-			_canvas = new Picture(width, height, _canvas.Palette);
-			_canvas.FillRectangle(5, 0, 0, width, height);
+			_canvas.FillRectangle(5, 0, 0, args.Width, args.Height);
 
 			_menuBar.Resize();
-			_sideBar.Resize(height - 8);
-			_gameMap.Resize(width - 80, height - 8);
+			_sideBar.Resize(args.Height - 8);
+			_gameMap.Resize(args.Width - 80, args.Height - 8);
 
 			_update = true;
 			HasUpdate(0);
@@ -386,6 +386,8 @@ namespace CivOne.Screens
 		
 		public GamePlay()
 		{
+			OnResize += Resize;
+
 			Cursor = MouseCursor.Pointer;
 			
 			Color[] palette = Resources.Instance.LoadPIC("SP257").Palette;

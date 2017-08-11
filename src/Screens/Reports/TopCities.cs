@@ -23,7 +23,7 @@ namespace CivOne.Screens.Reports
 
 		private readonly City[] _cities;
 		
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (!_update) return false;
 

@@ -23,7 +23,7 @@ namespace CivOne.Screens.CityManagerPanels
 		
 		private bool _update = true;
 		
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (_update)
 			{

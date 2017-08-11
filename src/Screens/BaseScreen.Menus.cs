@@ -16,13 +16,7 @@ namespace CivOne.Screens
 	{
 		protected readonly List<IMenu> _menus = new List<IMenu>();
 
-		protected bool HasMenu
-		{
-			get
-			{
-				return _menus.Any();
-			}
-		}
+		protected bool HasMenu => _menus.Any();
 		
 		protected void AddMenu(IMenu menu)
 		{
@@ -30,13 +24,14 @@ namespace CivOne.Screens
 			Common.AddScreen(menu);
 		}
 
-		protected void CloseMenus()
+		protected void CloseMenus(string menuId = null)
 		{
 			foreach (IMenu menu in _menus)
 			{
+				if (menuId != null && menu.Id != menuId) continue;
 				menu.Close();
 			}
-			_menus.Clear();
+			_menus.RemoveAll(x => menuId == null || x.Id == menuId);
 		}
 	}
 }

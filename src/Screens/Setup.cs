@@ -18,14 +18,14 @@ using CivOne.UserInterface;
 
 namespace CivOne.Screens
 {
-	[Break]
-	internal class Setup : BaseScreen, IExpand
+	[Break, Expand]
+	internal class Setup : BaseScreen
 	{
 		private const int MenuFont = 6;
 		
 		private bool _update = true;
 		
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (!_update) return false;
 			_update = false;
@@ -475,22 +475,23 @@ namespace CivOne.Screens
 			PatchesMenu(6);
 		}
 
-		public void Resize(int width, int height)
+		private void Resize(object sender, ResizeEventArgs args)
 		{
-			_canvas = new Picture(width, height, _canvas.Palette);
-			_canvas.FillRectangle(3, 0, 0, width, height);
+			_canvas.FillRectangle(3, 0, 0, args.Width, args.Height);
 
 			foreach (Menu menu in Common.Screens.Where(x => x is Menu && (x as Menu).Id == "Setup"))
 			{
 				int menuHeight = GetMenuHeight(menu.Title, menu.Items.Select(x => x.Text).ToArray());
 
-				menu.X = (width - menu.Width) / 2;
-				menu.Y = (height - menuHeight) / 2;
+				menu.X = (args.Width - menu.Width) / 2;
+				menu.Y = (args.Height - menuHeight) / 2;
 			}
 		}
 		
 		public Setup()
 		{
+			OnResize += Resize;
+
 			Cursor = MouseCursor.Pointer;
 			
 			_canvas = new Picture(320, 200, Common.GetPalette256);

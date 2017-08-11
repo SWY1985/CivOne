@@ -85,7 +85,7 @@ namespace CivOne.Screens
 			Runtime.Quit();
 		}
 		
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (_menu == null)
 			{

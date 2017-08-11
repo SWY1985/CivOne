@@ -26,7 +26,7 @@ namespace CivOne.Screens.Reports
 		private bool _update = true;
 		private int _page = 0;
 
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (!_update) return false;
 

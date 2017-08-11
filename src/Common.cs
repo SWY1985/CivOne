@@ -152,19 +152,9 @@ namespace CivOne
 			Random = new Random(seed);
 		}
 		
-		internal static void AddScreen(IScreen screen)
-		{
-			if (screen is IExpand && Settings.AspectRatio == AspectRatio.Expand)
-			{
-				(screen as IExpand).Resize(Runtime.CanvasWidth, Runtime.CanvasHeight);
-			}
-			_screens.Add(screen);
-		}
+		internal static void AddScreen(IScreen screen) => _screens.Add(screen);
 		
-		internal static void DestroyScreen(IScreen screen)
-		{
-			_screens.Remove(screen);
-		}
+		internal static void DestroyScreen(IScreen screen) => _screens.Remove(screen);
 		
 		internal static bool HasScreenType<T>() where T : IScreen
 		{

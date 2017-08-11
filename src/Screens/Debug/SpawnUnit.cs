@@ -239,7 +239,7 @@ namespace CivOne.Screens.Debug
 			return true;
 		}
 
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (_selectedPlayer == null && Common.TopScreen.GetType() != typeof(Menu))
 			{

@@ -65,7 +65,7 @@ namespace CivOne.Screens
 			return new Point(8, 49);
 		}
 
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (++_timer > NOISE_COUNT)
 			{

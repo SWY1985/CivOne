@@ -38,7 +38,7 @@ namespace CivOne.Screens
 			Common.AddScreen(new Civilopedia(args.Value));
 		}
 
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (_update)
 			{

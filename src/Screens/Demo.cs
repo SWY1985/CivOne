@@ -18,7 +18,7 @@ namespace CivOne.Screens
 	{
 		private readonly byte[] _textColours;
 		
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			_canvas.Cycle(224, 254);
 			return true;

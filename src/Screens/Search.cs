@@ -72,7 +72,7 @@ namespace CivOne.Screens
 			Close();
 		}
 
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (!_done && !Common.HasScreenType<Input>())
 			{

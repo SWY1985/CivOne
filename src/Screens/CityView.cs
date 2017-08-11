@@ -71,7 +71,7 @@ namespace CivOne.Screens
 			_canvas.SetPalette(palette);
 		}
 		
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (gameTick % 4 == 0)
 			{

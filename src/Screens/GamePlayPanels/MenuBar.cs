@@ -32,7 +32,7 @@ namespace CivOne.Screens.GamePlayPanels
 		private bool _update = true;
 		private int _mouseX, _mouseY;
 		
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (_update)
 			{

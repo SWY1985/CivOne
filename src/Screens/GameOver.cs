@@ -20,7 +20,7 @@ namespace CivOne.Screens
 		private int _currentLine = 0;
 		private int _lineTick = 0;
 		
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (gameTick % 10 != 0) return false;
 			_lineTick++;

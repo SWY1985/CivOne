@@ -85,7 +85,7 @@ namespace CivOne.Screens.Reports
 			_canvas.DrawText($"Total Cost: {totalCost}$", 0, 14, 160, yy);
 		}
 		
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (!_update) return false;
 

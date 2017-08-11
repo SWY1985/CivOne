@@ -58,7 +58,7 @@ namespace CivOne.Screens.Dialogs
 			// Override this function to add menus and/or expand the dialog
 		} 
 
-		public override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick)
 		{
 			if (_update)
 			{

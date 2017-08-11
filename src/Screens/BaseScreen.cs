@@ -10,12 +10,17 @@
 using System;
 using CivOne.Enums;
 using CivOne.Events;
+using CivOne.Graphics;
 
 namespace CivOne.Screens
 {
 	public abstract partial class BaseScreen : BaseInstance, IScreen
 	{
-		
+		private bool CanExpand => Common.HasAttribute<Expand>(this);
+		private bool SizeChanged => (this.GetWidth() != Runtime.CanvasWidth || this.GetHeight() != Runtime.CanvasHeight);
+
+		protected event ResizeEventHandler OnResize;
+
 		protected void MouseArgsOffset(ref ScreenEventArgs args, int offsetX, int offsetY)
 		{
 			args = new ScreenEventArgs(args.X - offsetX, args.Y - offsetY, args.Buttons);
@@ -29,28 +34,32 @@ namespace CivOne.Screens
 				return;
 			Closed(this, null);
 		}
+
+		protected abstract bool HasUpdate(uint gameTick);
+
+		private void Resize(int width, int height)
+		{
+			_canvas = new Picture(width, height, _canvas.Palette);
+			OnResize?.Invoke(this, new ResizeEventArgs(width, height));
+		}
+
 		public virtual MouseCursor Cursor { get; protected set; }
-		public abstract bool HasUpdate(uint gameTick);
-		public virtual bool KeyDown(KeyboardEventArgs args)
+
+		public bool Update(uint gameTick)
 		{
-			return false;
+			if (CanExpand && SizeChanged)
+			{
+				Resize(Runtime.CanvasWidth, Runtime.CanvasHeight);
+				HasUpdate(gameTick);
+				return true;
+			}
+			return HasUpdate(gameTick);
 		}
-		public virtual bool MouseDown(ScreenEventArgs args)
-		{
-			return false;
-		}
-		public virtual bool MouseUp(ScreenEventArgs args)
-		{
-			return false;
-		}
-		public virtual bool MouseDrag(ScreenEventArgs args)
-		{
-			return false;
-		}
-		public virtual bool MouseMove(ScreenEventArgs args)
-		{
-			return false;
-		}
+		public virtual bool KeyDown(KeyboardEventArgs args) => false;
+		public virtual bool MouseDown(ScreenEventArgs args) => false;
+		public virtual bool MouseUp(ScreenEventArgs args) => false;
+		public virtual bool MouseDrag(ScreenEventArgs args) => false;
+		public virtual bool MouseMove(ScreenEventArgs args) => false;
 
 		protected void Destroy()
 		{

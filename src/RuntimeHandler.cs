@@ -53,12 +53,12 @@ namespace CivOne
 		{
 			if (!GameTask.Update() && (!GameTask.Fast && (_gameTick % 4) > 0)) return false;
 			if (Common.Screens.Any(x => Common.HasAttribute<Modal>(x)))
-				return Common.Screens.Last(x => Common.HasAttribute<Modal>(x)).HasUpdate(_gameTick / 4);
+				return Common.Screens.Last(x => Common.HasAttribute<Modal>(x)).Update(_gameTick / 4);
 			
 			bool update = false;
 			foreach (IScreen screen in Common.Screens.Reverse())
 			{
-				if (screen.HasUpdate(_gameTick / 4)) update = true;
+				if (screen.Update(_gameTick / 4)) update = true;
 				if (Common.HasAttribute<Break>(screen)) return update;
 			}
 			return update;
@@ -81,15 +81,15 @@ namespace CivOne
 			}
 		}
 
-		private void AddScreenLayer(Picture bitmap, IScreen screen)
-		{
-			if (screen is IExpand && Settings.AspectRatio == AspectRatio.Expand && (screen.Bitmap.GetLength(0) != Runtime.CanvasWidth || screen.Bitmap.GetLength(1) != Runtime.CanvasHeight))
-			{
-				(screen as IExpand).Resize(Runtime.CanvasWidth, Runtime.CanvasHeight);
-			}
+		// private void AddScreenLayer(Picture bitmap, IScreen screen)
+		// {
+		// 	if (screen is IExpand && Settings.AspectRatio == AspectRatio.Expand && (screen.Bitmap.GetLength(0) != Runtime.CanvasWidth || screen.Bitmap.GetLength(1) != Runtime.CanvasHeight))
+		// 	{
+		// 		(screen as IExpand).Resize(Runtime.CanvasWidth, Runtime.CanvasHeight);
+		// 	}
 
-			bitmap.AddLayer(screen);
-		}
+		// 	bitmap.AddLayer(screen);
+		// }
 
 		private void OnDraw(object sender, EventArgs args)
 		{
@@ -100,13 +100,13 @@ namespace CivOne
 			
 			if (Common.HasAttribute<Modal>(TopScreen))
 			{
-				AddScreenLayer(bitmap, TopScreen);
+				bitmap.AddLayer(TopScreen);
 			}
 			else
 			{
 				foreach (IScreen screen in Common.Screens)
 				{
-					AddScreenLayer(bitmap, screen);
+					bitmap.AddLayer(screen);
 				}
 			}
 			Runtime.Bitmap = bitmap;
