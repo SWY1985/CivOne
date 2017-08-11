@@ -51,8 +51,6 @@ namespace CivOne.Screens
 
 		public CityName(string cityName)
 		{
-			Cursor = MouseCursor.None;
-
 			_canvas = new Picture(320, 200, Common.DefaultPalette);
 
 			_canvas.FillRectangle(11, 80, 80, 161, 33);

@@ -50,8 +50,6 @@ namespace CivOne.Screens
 		//public Newspaper(bool showGovernment, City city = null, params string[] message)
 		public Newspaper(City city, string[] message, bool showGovernment = false)
 		{
-			Cursor = MouseCursor.None;
-
 			bool modernGovernment = Human.HasAdvance<Invention>();
 			Color[] palette = Common.DefaultPalette;
 

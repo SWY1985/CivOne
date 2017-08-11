@@ -16,6 +16,8 @@ namespace CivOne.Screens
 {
 	public abstract partial class BaseScreen : BaseInstance, IScreen
 	{
+		private readonly MouseCursor _cursor;
+		
 		private bool CanExpand => Common.HasAttribute<Expand>(this);
 		private bool SizeChanged => (this.GetWidth() != Runtime.CanvasWidth || this.GetHeight() != Runtime.CanvasHeight);
 
@@ -43,7 +45,7 @@ namespace CivOne.Screens
 			OnResize?.Invoke(this, new ResizeEventArgs(width, height));
 		}
 
-		public virtual MouseCursor Cursor { get; protected set; }
+		public virtual MouseCursor Cursor => _cursor;
 
 		public bool Update(uint gameTick)
 		{
@@ -66,6 +68,11 @@ namespace CivOne.Screens
 			CloseMenus();
 			HandleClose();
 			Common.DestroyScreen(this);
+		}
+
+		protected BaseScreen(MouseCursor cursor = MouseCursor.None)
+		{
+			_cursor = cursor;
 		}
 	}
 }

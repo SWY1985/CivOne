@@ -39,10 +39,8 @@ namespace CivOne.Screens
 			return true;
 		}
 
-		public PopupMessage(byte colour, string title, string[] message)
+		public PopupMessage(byte colour, string title, string[] message) : base(MouseCursor.Pointer)
 		{
-			Cursor = MouseCursor.Pointer;
-			
 			_canvas = new Picture(320, 200, Common.DefaultPalette);
 			
 			byte colourLight = (byte)(colour + 8);

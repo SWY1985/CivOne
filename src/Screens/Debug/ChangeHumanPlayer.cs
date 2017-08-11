@@ -58,10 +58,8 @@ namespace CivOne.Screens.Debug
 			return false;
 		}
 
-		public ChangeHumanPlayer()
+		public ChangeHumanPlayer() : base(MouseCursor.Pointer)
 		{
-			Cursor = MouseCursor.Pointer;
-
 			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
 
 			int fontHeight = Resources.Instance.GetFontHeight(0);

@@ -60,10 +60,8 @@ namespace CivOne.Screens.Debug
 			return false;
 		}
 
-		public MeetWithKing()
+		public MeetWithKing() : base(MouseCursor.Pointer)
 		{
-			Cursor = MouseCursor.Pointer;
-
 			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
 			_players = Game.Players.Where(p => p != 0 && p != Human).ToArray();
 

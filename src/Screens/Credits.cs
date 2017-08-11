@@ -215,7 +215,6 @@ namespace CivOne.Screens
 
 		private void StartIntro()
 		{
-			Cursor = MouseCursor.None;
 			foreach (IScreen menu in _menus)
 				AddLayer(menu);
 			CloseMenus();

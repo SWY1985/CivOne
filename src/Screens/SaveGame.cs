@@ -91,6 +91,8 @@ namespace CivOne.Screens
 		private bool _update = true;
 		private bool _saving = false;
 		private Menu _menu;
+
+		public override MouseCursor Cursor => (_menu == null ? MouseCursor.Pointer : MouseCursor.None);
 		
 		private IEnumerable<SaveGameFile> GetSaveGames()
 		{
@@ -135,7 +137,6 @@ namespace CivOne.Screens
 			if (_saving)
 			{
 				if (!_update) return false;
-				Cursor = MouseCursor.None;
 				_update = false;
 				_canvas = new Picture(320, 200, _palette);
 				_canvas.FillRectangle(15, 0, 0, 320, 200);
@@ -230,7 +231,6 @@ namespace CivOne.Screens
 				}
 				
 				_menu.ActiveItem = SelectedGame;
-				Cursor = MouseCursor.Pointer;
 			}
 			else if (c >= 'A' && c <= 'Z')
 			{

@@ -30,8 +30,6 @@ namespace CivOne.Screens.Debug
 
 		private void CivSelect_Accept(object sender, EventArgs args)
 		{
-			Cursor = MouseCursor.None;
-
 			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
 
 			_canvas.FillRectangle(11, 80, 80, 161, 33);
@@ -95,10 +93,8 @@ namespace CivOne.Screens.Debug
 			return false;
 		}
 
-		public SetPlayerScience()
+		public SetPlayerScience() : base(MouseCursor.Pointer)
 		{
-			Cursor = MouseCursor.Pointer;
-
 			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
 
 			int fontHeight = Resources.Instance.GetFontHeight(0);

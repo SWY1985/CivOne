@@ -249,8 +249,6 @@ namespace CivOne.Screens
 		public Intro()
 		{
 			OnResize += Resize;
-
-			Cursor = MouseCursor.None;
 			
 			_introText = TextFile.Instance.LoadArray("STORY");
 			if (_introText.Length == 0)

@@ -186,10 +186,8 @@ namespace CivOne.Screens
 			};
 		}
 
-		private Overlay()
-		{
-			Cursor = MouseCursor.Pointer;
-			
+		private Overlay() : base(MouseCursor.Pointer)
+		{	
 			_canvas = new Picture(320, 200, Common.TopScreen.Palette);
 		}
 	}

@@ -79,6 +79,9 @@ namespace CivOne.Screens
 				}
 			}
 		}
+
+		private MouseCursor _cursor = MouseCursor.None;
+		public override MouseCursor Cursor => _cursor;
 		
 		private readonly Color[] _palette;
 		private char _driveLetter = 'C';
@@ -200,7 +203,7 @@ namespace CivOne.Screens
 				{
 					_menu.Items.Add(file.Name, i++).OnSelect(LoadFileHandler(file));
 				}
-				Cursor = MouseCursor.Pointer;
+				_cursor = MouseCursor.Pointer;
 			}
 			else if (c >= 'A' && c <= 'Z')
 			{

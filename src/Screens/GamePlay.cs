@@ -28,6 +28,8 @@ namespace CivOne.Screens
 		private readonly MenuBar _menuBar;
 		private readonly SideBar _sideBar;
 		private readonly GameMap _gameMap;
+
+		private bool Busy => (Game.MovingUnit != null || Human != Game.CurrentPlayer || GameTask.Any());
 		
 		private GameMenu _gameMenu = null;
 		private int _menuX, _menuY;
@@ -38,39 +40,16 @@ namespace CivOne.Screens
 
 		private bool _shift5 = false;
 
-		internal int X
-		{
-			get
-			{
-				return _gameMap.X;
-			}
-		}
+		public override MouseCursor Cursor => Busy ? MouseCursor.None : MouseCursor.Pointer;
 
-		internal int Y
-		{
-			get
-			{
-				return _gameMap.Y;
-			}
-		}
+		internal int X => _gameMap.X;
+		internal int Y => _gameMap.Y;
 
-		internal void CenterOnPoint(int x, int y)
-		{
-			_gameMap.CenterOnPoint(x, y);
-		}
+		internal void CenterOnPoint(int x, int y) => _gameMap.CenterOnPoint(x, y);
 
-		internal void RefreshMap()
-		{
-			_gameMap.ForceRefresh();
-		}
+		internal void RefreshMap() => _gameMap.ForceRefresh();
 
-		internal Color[] MainPalette
-		{
-			get
-			{
-				return _canvas.OriginalColours.ToArray();
-			}
-		}
+		internal Color[] MainPalette => _canvas.OriginalColours.ToArray();
 		
 		private void MenuBarGame(object sender, EventArgs args)
 		{
@@ -174,15 +153,6 @@ namespace CivOne.Screens
 			if (Common.TopScreen is GamePlay && !GameTask.Any())
 			{
 				Game.Update();
-			}
-
-			if (Game.MovingUnit != null || Human != Game.CurrentPlayer || GameTask.Any())
-			{
-				Cursor = MouseCursor.None;
-			}
-			else
-			{
-				Cursor = MouseCursor.Pointer;
 			}
 
 			if (gameTick == _lastGameTick)
@@ -387,8 +357,6 @@ namespace CivOne.Screens
 		public GamePlay()
 		{
 			OnResize += Resize;
-
-			Cursor = MouseCursor.Pointer;
 			
 			Color[] palette = Resources.Instance.LoadPIC("SP257").Palette;
 			

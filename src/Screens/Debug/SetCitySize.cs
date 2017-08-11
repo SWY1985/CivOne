@@ -161,10 +161,8 @@ namespace CivOne.Screens.Debug
 			return false;
 		}
 
-		public SetCitySize()
+		public SetCitySize() : base(MouseCursor.Pointer)
 		{
-			Cursor = MouseCursor.Pointer;
-
 			if (_cities.Length == 0)
 			{
 				GameTask.Enqueue(Message.General($"There are no cities yet."));

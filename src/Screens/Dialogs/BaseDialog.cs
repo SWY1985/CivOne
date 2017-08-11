@@ -86,8 +86,6 @@ namespace CivOne.Screens.Dialogs
 
 		private void Initialize(int left, int top, int width, int height)
 		{
-			Cursor = MouseCursor.Pointer;
-			
 			_canvas = new Picture(320, 200, Common.DefaultPalette);
 
 			// We expand the size to add space for the black border
@@ -102,7 +100,7 @@ namespace CivOne.Screens.Dialogs
 			DialogBox.AddBorder(5, 5, 0, 0, width, height);
 		}
 
-		public BaseDialog(int left, int top, int marginWidth, int marginHeight, string[] message)
+		public BaseDialog(int left, int top, int marginWidth, int marginHeight, string[] message) : base(MouseCursor.Pointer)
 		{
 			_left = left;
 			_top = top;
@@ -113,7 +111,7 @@ namespace CivOne.Screens.Dialogs
 			Initialize(left, top, TextWidth + marginWidth, TextHeight + marginHeight);
 		}
 		
-		public BaseDialog(int left, int top, int width, int height)
+		public BaseDialog(int left, int top, int width, int height) : base(MouseCursor.Pointer)
 		{
 			_left = left;
 			_top = top;
