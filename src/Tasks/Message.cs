@@ -9,7 +9,6 @@
 
 using System;
 using CivOne.Enums;
-using CivOne.Interfaces;
 using CivOne.Screens;
 using CivOne.Screens.Dialogs;
 using CivOne.Units;

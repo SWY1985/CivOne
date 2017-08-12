@@ -13,11 +13,12 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
 
-namespace CivOne.Interfaces
+namespace CivOne
 {
 	public interface IRuntime
 	{
-		event EventHandler Initialize, Draw, Update;
+		event EventHandler Initialize, Draw;
+		event UpdateEventHandler Update;
 		event KeyboardEventHandler KeyboardUp, KeyboardDown;
 		event ScreenEventHandler MouseUp, MouseDown, MouseMove;
 		Platform CurrentPlatform { get; }

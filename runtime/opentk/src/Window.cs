@@ -12,7 +12,7 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using CivOne.Enums;
-using CivOne.Interfaces;
+using CivOne.Events;
 
 namespace CivOne
 {
@@ -20,11 +20,30 @@ namespace CivOne
 	{
 		private static Settings Settings => Settings.Instance;
 
-		private void Log(string value, params object[] formatArgs) => _runtime.Log(value, formatArgs);
-
 		private readonly Runtime _runtime;
 		
+		private void Log(string value, params object[] formatArgs) => _runtime.Log(value, formatArgs);
+
 		private WindowState _previousState = WindowState.Normal;
+
+		private bool _hasUpdate = false;
+		private bool HasUpdate
+		{
+			get
+			{
+				if (_hasUpdate)
+				{
+					_hasUpdate = false;
+					return true;
+				}
+				return false;
+			}
+			set
+			{
+				if (!value) return;
+				_hasUpdate = true;
+			}
+		}
 
 		private void ToggleFullscreen()
 		{
@@ -63,7 +82,9 @@ namespace CivOne
 				Close();
 				return;
 			}
-			_runtime.InvokeUpdate();
+			UpdateEventArgs updateArgs = UpdateEventArgs.Empty;
+			_runtime.InvokeUpdate(ref updateArgs);
+			HasUpdate = updateArgs.HasUpdate;
 		}
 
 		private void WindowRender(object sender, FrameEventArgs args)

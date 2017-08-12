@@ -11,7 +11,6 @@ using System.Drawing;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
-using CivOne.Interfaces;
 using CivOne.IO;
 
 namespace CivOne.Screens

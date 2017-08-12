@@ -18,7 +18,6 @@ using CivOne.Events;
 using CivOne.IO;
 using CivOne.Graphics;
 using CivOne.Graphics.ImageFormats;
-using CivOne.Interfaces;
 using CivOne.Screens;
 using CivOne.Tiles;
 
@@ -72,12 +71,13 @@ namespace CivOne
 			if (Runtime.Settings.DataCheck && !FileSystem.DataFilesExist()) Common.AddScreen(new MissingFiles());
 		}
 
-		private void OnUpdate(object sender, EventArgs args)
+		private void OnUpdate(object sender, UpdateEventArgs args)
 		{
 			while (_gameTick < TickWatch)
 			{
 				_gameTick++;
-				Update();
+				if (!Update()) continue;
+				args.HasUpdate = true;
 			}
 		}
 

@@ -13,7 +13,6 @@ using System.Drawing;
 using System.IO;
 using CivOne.Enums;
 using CivOne.Graphics.ImageFormats;
-using CivOne.Interfaces;
 using CivOne.IO;
 using CivOne.Tiles;
 

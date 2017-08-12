@@ -9,7 +9,6 @@
 
 using System;
 using CivOne.Buildings;
-using CivOne.Interfaces;
 using CivOne.Screens;
 using CivOne.Wonders;
 

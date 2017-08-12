@@ -12,7 +12,6 @@ using System.Drawing;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
-using CivOne.Interfaces;
 using CivOne.Graphics;
 using CivOne.Tiles;
 using CivOne.Units;

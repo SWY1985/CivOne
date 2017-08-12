@@ -7,18 +7,22 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using CivOne.Advances;
+using System;
+using System.Drawing;
 using CivOne.Enums;
 
-namespace CivOne.Buildings
+namespace CivOne.Events
 {
-	internal class SSModule : BaseBuilding, ISpaceShip
+	public delegate void UpdateEventHandler(object sender, UpdateEventArgs args);
+
+	public class UpdateEventArgs : EventArgs
 	{
-		public SSModule() : base(32)
+		public bool HasUpdate { get; internal set; }
+
+		public static new UpdateEventArgs Empty => new UpdateEventArgs();
+		
+		private UpdateEventArgs()
 		{
-			Name = "SS Module";
-			RequiredTech = new Robotics();
-			Type = Building.SSModule;
 		}
 	}
 }

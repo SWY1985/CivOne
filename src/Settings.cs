@@ -10,7 +10,6 @@
 using System;
 using System.IO;
 using CivOne.Enums;
-using CivOne.Interfaces;
 
 namespace CivOne
 {

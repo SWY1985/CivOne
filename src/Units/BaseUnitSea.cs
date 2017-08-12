@@ -10,7 +10,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using CivOne.Enums;
-using CivOne.Interfaces;
 using CivOne.Screens;
 using CivOne.Tiles;
 using CivOne.UserInterface;

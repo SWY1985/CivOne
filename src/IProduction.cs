@@ -7,14 +7,12 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using System.Collections.Generic;
-
-namespace CivOne.Interfaces
+namespace CivOne
 {
-	public interface IPlugin
+	public interface IProduction
 	{
-		string Name { get; }
-		string Author { get; }
-		string Version { get; }
+		byte Price { get; }
+		short BuyPrice { get; }
+		byte ProductionId { get; }
 	}
 }

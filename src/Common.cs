@@ -18,7 +18,6 @@ using CivOne.Buildings;
 using CivOne.Civilizations;
 using CivOne.Enums;
 using CivOne.Graphics;
-using CivOne.Interfaces;
 using CivOne.Screens;
 using CivOne.Wonders;
 

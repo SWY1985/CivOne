@@ -15,7 +15,6 @@ using CivOne.Buildings;
 using CivOne.Civilizations;
 using CivOne.Enums;
 using CivOne.Governments;
-using CivOne.Interfaces;
 using CivOne.Tasks;
 using CivOne.Tiles;
 using CivOne.Units;

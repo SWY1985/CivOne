@@ -10,7 +10,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using CivOne.Enums;
-using CivOne.Interfaces;
 using CivOne.Units;
 
 namespace CivOne.Tiles
