@@ -266,7 +266,6 @@ namespace CivOne.Graphics
 			{
 				Picture picture = null;
 
-				
 				int offsetX = 0, offsetY = 0;
 				if (style == PalaceStyle.Classical) offsetX = 160;
 				if (style == PalaceStyle.Islamic) offsetY = 100;

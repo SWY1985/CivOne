@@ -10,6 +10,7 @@
 using System;
 using System.Drawing;
 using CivOne.Enums;
+using CivOne.IO;
 
 namespace CivOne.Graphics
 {
@@ -17,11 +18,11 @@ namespace CivOne.Graphics
 	{
 		private readonly Color[] _originalColours;
 		private readonly Color[] _palette = new Color[256];
-		private readonly byte[,] _bitmap;
+		private readonly Bytemap _bitmap;
 
-		public int Width => _bitmap.GetLength(0);
-		public int Height => _bitmap.GetLength(1);
-		public Size Size => new Size(_bitmap.GetLength(0), _bitmap.GetLength(1));
+		public int Width => _bitmap.Width;
+		public int Height => _bitmap.Height;
+		public Size Size => new Size(_bitmap.Width, _bitmap.Height);
 		public Color[] OriginalColours => _originalColours;
 
 		public Color[] Palette
@@ -37,7 +38,7 @@ namespace CivOne.Graphics
 			}
 		}
 		
-		public byte[,] Bitmap => _bitmap;
+		public Bytemap Bitmap => _bitmap;
 
 		public byte[,] ScaleBitmap(int scaleX, int scaleY)
 		{
@@ -76,8 +77,10 @@ namespace CivOne.Graphics
 		}
 		public void DrawText(string text, int font, byte firstLetterColour, byte colour, int x, int y, TextAlign align = TextAlign.Left)
 		{
-			Picture textImage = Resources.Instance.GetText(text, font, firstLetterColour, colour);
-			DrawText(textImage, align, x, y);
+			using (Picture textImage = Resources.Instance.GetText(text, font, firstLetterColour, colour))
+			{
+				DrawText(textImage, align, x, y);
+			}
 		}
 		private void DrawText(Picture textImage, TextAlign align, int x, int y)
 		{
@@ -237,7 +240,15 @@ namespace CivOne.Graphics
 			_originalColours = colours;
 			for (int i = 0; i < colours.Length; i++)
 				_palette[i] = colours[i];
-			_bitmap = bytes;
+			_bitmap = new Bytemap(bytes);
+		}
+		
+		public Picture(Bytemap bytemap, Color[] colours)
+		{
+			_originalColours = colours;
+			for (int i = 0; i < colours.Length; i++)
+				_palette[i] = colours[i];
+			_bitmap = Bytemap.Copy(bytemap);
 		}
 		
 		public Picture(IBitmap picture) : this(picture.Bitmap, picture.Palette)
@@ -264,7 +275,12 @@ namespace CivOne.Graphics
 			_originalColours = colours;
 			for (int i = 0; i < colours.Length; i++)
 				_palette[i] = colours[i];
-			_bitmap = new byte[width, height];
+			_bitmap = new Bytemap(width, height);
+		}
+
+		public void Dispose()
+		{
+			_bitmap.Dispose();
 		}
 	}
 }

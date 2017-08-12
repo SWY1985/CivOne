@@ -34,29 +34,11 @@ namespace CivOne
 		public static IAdvance[] Advances = Reflect.GetAdvances().ToArray();
 		public static IBuilding[] Buildings = Reflect.GetBuildings().ToArray();
 		public static IWonder[] Wonders = Reflect.GetWonders().ToArray();
-		public static ICivilization[] Civilizations
-		{
-			get
-			{
-				return Reflect.GetCivilizations().ToArray();
-			}
-		}
+		public static ICivilization[] Civilizations => Reflect.GetCivilizations().ToArray();
 		public static byte[] ColourLight = new byte[] { 12, 15, 10, 9, 14, 11, 13, 7 };
 		public static byte[] ColourDark = new byte[] { 4, 7, 2, 1, 10, 3, 4, 8 };
 		
-		internal static IEnumerable<string> AllCityNames
-		{
-			get
-			{
-				foreach (ICivilization civilization in Civilizations)
-				{
-					foreach (string cityName in civilization.CityNames)
-					{
-						yield return cityName;
-					}
-				}
-			}
-		}
+		internal static IEnumerable<string> AllCityNames => Civilizations.Select(x => x.CityNames).SelectMany(x => x);
 
 		private static List<IScreen> _screens = new List<IScreen>();
 		internal static IScreen[] Screens
@@ -120,21 +102,9 @@ namespace CivOne
 			}
 		}
 
-		public static GamePlay GamePlay
-		{
-			get
-			{
-				return (GamePlay)_screens.FirstOrDefault(x => x is GamePlay);
-			}
-		}
+		public static GamePlay GamePlay => (GamePlay)_screens.FirstOrDefault(x => x is GamePlay);
 
-		public static Color[] GamePlayPalette
-		{
-			get
-			{
-				return GamePlay.Palette.ToArray();
-			}
-		}
+		public static Color[] GamePlayPalette => GamePlay.Palette.ToArray();
 
 		internal static void SetRandomSeedFromName(string name)
 		{
@@ -146,14 +116,15 @@ namespace CivOne
 			SetRandomSeed(number);
 		}
 		
-		internal static void SetRandomSeed(short seed)
-		{
-			Random = new Random(seed);
-		}
+		internal static void SetRandomSeed(short seed) => Random = new Random(seed);
 		
 		internal static void AddScreen(IScreen screen) => _screens.Add(screen);
 		
-		internal static void DestroyScreen(IScreen screen) => _screens.Remove(screen);
+		internal static void DestroyScreen(IScreen screen)
+		{
+			screen.Dispose();
+			_screens.Remove(screen);
+		}
 		
 		internal static bool HasScreenType<T>() where T : IScreen
 		{

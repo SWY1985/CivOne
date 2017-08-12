@@ -70,7 +70,10 @@ namespace CivOne.Screens
 			if (_singlePage == null) return;
 			
 			DrawTerrainText();
-			AddLayer(_singlePage.DrawPage(pageNumber));
+			using (IBitmap page = _singlePage.DrawPage(pageNumber))
+			{
+				AddLayer(page);
+			}
 		}
 		
 		private bool NextPage()

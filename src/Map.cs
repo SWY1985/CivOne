@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using CivOne.Enums;
 using CivOne.Graphics;
 using CivOne.Graphics.ImageFormats;
+using CivOne.IO;
 using CivOne.Tiles;
 
 namespace CivOne
@@ -676,7 +677,7 @@ namespace CivOne
 			Log("Map: Ready");
 		}
 		
-		private void LoadMap(byte[,] bitmap)
+		private void LoadMap(Bytemap bitmap)
 		{
 			_tiles = new ITile[WIDTH, HEIGHT];
 			
@@ -709,39 +710,41 @@ namespace CivOne
 			Log("Map: Loading {0} - Random seed: {1}", filename, randomSeed);
 			_terrainMasterWord = randomSeed;
 			
-			byte[,] bitmap = Resources.Instance.LoadPIC(filename, true).Bitmap;
-			_tiles = new ITile[WIDTH, HEIGHT];
-			
-			LoadMap(bitmap);
-			PlaceHuts();
-			CalculateLandValue();
-			
-			// Load improvement layer
-			for (int x = 0; x < WIDTH; x++)
-			for (int y = 0; y < HEIGHT; y++)
+			using (Bytemap bitmap = Resources.Instance.LoadPIC(filename, true).Bitmap)
 			{
-				byte b = bitmap[x, y + (HEIGHT * 2)];
-				// 0x01 = CITY ?
-				_tiles[x, y].Irrigation = (b & 0x02) > 0;
-				_tiles[x, y].Mine = (b & 0x04) > 0;
-				_tiles[x, y].Road = (b & 0x08) > 0;
-			}
-			
-			// Load improvement layer 2
-			for (int x = 0; x < WIDTH; x++)
-			for (int y = 0; y < HEIGHT; y++)
-			{
-				byte b = bitmap[x, y + (HEIGHT * 3)];
-				_tiles[x, y].RailRoad = (b & 0x01) > 0;
-			}
-			
-			// Remove huts
-			for (int x = 0; x < WIDTH; x++)
-			for (int y = 0; y < HEIGHT; y++)
-			{
-				if (!_tiles[x, y].Hut) continue;
-				byte b = bitmap[x + (WIDTH * 2), y];
-				_tiles[x, y].Hut = (b == 0);
+				_tiles = new ITile[WIDTH, HEIGHT];
+				
+				LoadMap(bitmap);
+				PlaceHuts();
+				CalculateLandValue();
+				
+				// Load improvement layer
+				for (int x = 0; x < WIDTH; x++)
+				for (int y = 0; y < HEIGHT; y++)
+				{
+					byte b = bitmap[x, y + (HEIGHT * 2)];
+					// 0x01 = CITY ?
+					_tiles[x, y].Irrigation = (b & 0x02) > 0;
+					_tiles[x, y].Mine = (b & 0x04) > 0;
+					_tiles[x, y].Road = (b & 0x08) > 0;
+				}
+				
+				// Load improvement layer 2
+				for (int x = 0; x < WIDTH; x++)
+				for (int y = 0; y < HEIGHT; y++)
+				{
+					byte b = bitmap[x, y + (HEIGHT * 3)];
+					_tiles[x, y].RailRoad = (b & 0x01) > 0;
+				}
+				
+				// Remove huts
+				for (int x = 0; x < WIDTH; x++)
+				for (int y = 0; y < HEIGHT; y++)
+				{
+					if (!_tiles[x, y].Hut) continue;
+					byte b = bitmap[x + (WIDTH * 2), y];
+					_tiles[x, y].Hut = (b == 0);
+				}
 			}
 			
 			Ready = true;
@@ -752,81 +755,86 @@ namespace CivOne
 		{
 			Log($"Map: Saving {filename} - Random seed: {_terrainMasterWord}");
 
-			byte[,] bitmap = Resources.Instance.LoadPIC("SP299").Bitmap;
-
-			// Save terrainlayer
-			for (int x = 0; x < WIDTH; x++)
-			for (int y = 0; y < HEIGHT; y++)
+			using (Bytemap bitmap = Resources.Instance.LoadPIC("SP299").Bitmap)
 			{
-				byte b;
-				switch (_tiles[x, y].Type)
+				// Save terrainlayer
+				for (int x = 0; x < WIDTH; x++)
+				for (int y = 0; y < HEIGHT; y++)
 				{
-					case Terrain.Forest: b = 2; break;
-					case Terrain.Swamp: b = 3; break;
-					case Terrain.Plains: b = 6; break;
-					case Terrain.Tundra: b = 7; break;
-					case Terrain.River: b = 9; break;
-					case Terrain.Grassland1:
-					case Terrain.Grassland2: b = 10; break;
-					case Terrain.Jungle: b = 11; break;
-					case Terrain.Hills: b = 12; break;
-					case Terrain.Mountains: b = 13; break;
-					case Terrain.Desert: b = 14; break;
-					case Terrain.Arctic: b = 15; break;
-					default: b = 1; break; // Ocean
+					byte b;
+					switch (_tiles[x, y].Type)
+					{
+						case Terrain.Forest: b = 2; break;
+						case Terrain.Swamp: b = 3; break;
+						case Terrain.Plains: b = 6; break;
+						case Terrain.Tundra: b = 7; break;
+						case Terrain.River: b = 9; break;
+						case Terrain.Grassland1:
+						case Terrain.Grassland2: b = 10; break;
+						case Terrain.Jungle: b = 11; break;
+						case Terrain.Hills: b = 12; break;
+						case Terrain.Mountains: b = 13; break;
+						case Terrain.Desert: b = 14; break;
+						case Terrain.Arctic: b = 15; break;
+						default: b = 1; break; // Ocean
+					}
+					bitmap[x, y] = b;
 				}
-				bitmap[x, y] = b;
+
+				// Save improvement layer
+				for (int x = 0; x < WIDTH; x++)
+				for (int y = 0; y < HEIGHT; y++)
+				{
+					byte b = 0;
+					if (_tiles[x, y].Irrigation) b |= 0x02;
+					if (_tiles[x, y].Mine) b |= 0x04;
+					if (_tiles[x, y].Road) b |= 0x08;
+
+					bitmap[x, y + (HEIGHT * 2)] = b;
+					bitmap[x + (WIDTH * 2), y + (HEIGHT * 2)] = b; // Visibility layer
+				}
+
+				// Save improvement layer 2
+				for (int x = 0; x < WIDTH; x++)
+				for (int y = 0; y < HEIGHT; y++)
+				{
+					byte b = 0;
+					if (_tiles[x, y].RailRoad) b |= 0x01;
+
+					bitmap[x, y + (HEIGHT * 3)] = b;
+					bitmap[x + (WIDTH * 2), y + (HEIGHT * 3)] = b; // Visibility layer
+				}
+
+				// Save explored layer
+				for (int x = 0; x < WIDTH; x++)
+				for (int y = 0; y < HEIGHT; y++)
+				{
+					bitmap[x + (WIDTH * 2), y] = _tiles[x, y].Visited;
+				}
+
+				using (Picture picture = new Picture(bitmap, Resources.Instance.LoadPIC("SP299").Palette))
+				{
+					PicFile picFile = new PicFile(picture)
+					{
+						HasPalette256 = false
+					};
+					using (BinaryWriter bw = new BinaryWriter(File.Open(filename, FileMode.Create)))
+					{
+						bw.Write(picFile.GetBytes());
+					}
+					return (ushort)_terrainMasterWord;
+				}
 			}
-
-			// Save improvement layer
-			for (int x = 0; x < WIDTH; x++)
-			for (int y = 0; y < HEIGHT; y++)
-			{
-				byte b = 0;
-				if (_tiles[x, y].Irrigation) b |= 0x02;
-				if (_tiles[x, y].Mine) b |= 0x04;
-				if (_tiles[x, y].Road) b |= 0x08;
-
-				bitmap[x, y + (HEIGHT * 2)] = b;
-				bitmap[x + (WIDTH * 2), y + (HEIGHT * 2)] = b; // Visibility layer
-			}
-
-			// Save improvement layer 2
-			for (int x = 0; x < WIDTH; x++)
-			for (int y = 0; y < HEIGHT; y++)
-			{
-				byte b = 0;
-				if (_tiles[x, y].RailRoad) b |= 0x01;
-
-				bitmap[x, y + (HEIGHT * 3)] = b;
-				bitmap[x + (WIDTH * 2), y + (HEIGHT * 3)] = b; // Visibility layer
-			}
-
-			// Save explored layer
-			for (int x = 0; x < WIDTH; x++)
-			for (int y = 0; y < HEIGHT; y++)
-			{
-				bitmap[x + (WIDTH * 2), y] = _tiles[x, y].Visited;
-			}
-
-			PicFile picFile = new PicFile(new Picture(bitmap, Resources.Instance.LoadPIC("SP299").Palette))
-			{
-				HasPalette256 = false
-			};
-			using (BinaryWriter bw = new BinaryWriter(File.Open(filename, FileMode.Create)))
-			{
-				bw.Write(picFile.GetBytes());
-			}
-			return (ushort)_terrainMasterWord;
 		}
 		
 		private void LoadMapThread()
 		{
 			Log("Map: Loading MAP.PIC");
 			
-			byte[,] bitmap = Resources.Instance.LoadPIC("MAP", true).Bitmap;
-			
-			LoadMap(bitmap);
+			using (Bytemap bitmap = Resources.Instance.LoadPIC("MAP", true).Bitmap)
+			{
+				LoadMap(bitmap);
+			}
 			
 			CreatePoles();
 			PlaceHuts();

@@ -11,6 +11,7 @@ using System;
 using System.Drawing;
 using CivOne.Enums;
 using CivOne.Graphics;
+using CivOne.IO;
 
 namespace CivOne.Screens
 {
@@ -78,8 +79,10 @@ namespace CivOne.Screens
 			_canvas.DrawText(text, 1, colourDark, x + (int)Math.Ceiling((double)width / 2), y + 2, TextAlign.Center);
 		}
 		
-		public byte[,] Bitmap => _canvas.Bitmap;
+		public Bytemap Bitmap => _canvas.Bitmap;
 		public Color[] Palette => _canvas.Palette;
 		public Color[] OriginalColours => _canvas.OriginalColours;
+
+		public void Dispose() => _canvas.Dispose();
 	}
 }

@@ -19,14 +19,14 @@ namespace CivOne.Graphics.ImageFormats
 	internal class GifFile : IImageFormat, IDisposable
 	{
 		private Color[] _palette;
-		private byte[,] _pixels;
+		private Bytemap _pixels;
 
 		private IEnumerable<byte> GetPixels
 		{
 			get
 			{
-				for (int yy = 0; yy < _pixels.GetLength(1); yy++)
-				for (int xx = 0; xx < _pixels.GetLength(0); xx++)
+				for (int yy = 0; yy < _pixels.Width; yy++)
+				for (int xx = 0; xx < _pixels.Height; xx++)
 				{
 					yield return _pixels[xx, yy];
 				}
@@ -54,8 +54,8 @@ namespace CivOne.Graphics.ImageFormats
 				writer.Write("GIF89a".ToCharArray());
 
 				// Width x Height
-				writer.Write((ushort)_pixels.GetLength(0));
-				writer.Write((ushort)_pixels.GetLength(1));
+				writer.Write((ushort)_pixels.Width);
+				writer.Write((ushort)_pixels.Height);
 
 				// GCT Descriptor
 				writer.Write((byte)0xF7);
@@ -85,8 +85,8 @@ namespace CivOne.Graphics.ImageFormats
 				writer.Write((ushort)0);
 				writer.Write((ushort)0);
 				// Width x Height
-				writer.Write((ushort)_pixels.GetLength(0));
-				writer.Write((ushort)_pixels.GetLength(1));
+				writer.Write((ushort)_pixels.Width);
+				writer.Write((ushort)_pixels.Height);
 				// No local colour table
 				writer.Write((byte)0x00);
 

@@ -9,6 +9,7 @@
 
 using System.Drawing;
 using CivOne.Graphics;
+using CivOne.IO;
 
 namespace CivOne
 {
@@ -16,10 +17,10 @@ namespace CivOne
 	{
 		public Color[] Palette { get; private set; }
 
-		public byte[,] Bitmap { get; private set; }
+		public Bytemap Bitmap { get; private set; }
 
-		internal int Width => Bitmap.GetLength(0);
-		internal int Height => Bitmap.GetLength(1);
+		internal int Width => Bitmap.Width;
+		internal int Height => Bitmap.Height;
 
 		private int GetColourInt(Color colour)
 		{
@@ -32,8 +33,8 @@ namespace CivOne
 			{
 				int[] output = new int[Width * Height];
 				int i = 0;
-				for (int yy = Bitmap.GetUpperBound(1); yy >= 0; yy--)
-				for (int xx = 0; xx <= Bitmap.GetUpperBound(0); xx++)
+				for (int yy = Bitmap.Height - 1; yy >= 0; yy--)
+				for (int xx = 0; xx < Bitmap.Width; xx++)
 				{
 					output[i++] = GetColourInt(Palette[Bitmap[xx, yy]]);
 				}
@@ -47,5 +48,7 @@ namespace CivOne
 			Palette = bitmap.Palette;
 			Bitmap = bitmap.Bitmap;
 		}
+
+		public void Dispose() => Bitmap?.Dispose();
 	}
 }
