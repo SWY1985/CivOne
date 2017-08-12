@@ -12,16 +12,17 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using CivOne.Graphics;
+using CivOne.IO;
 
 namespace CivOne
 {
 	internal class Canvas : IBitmap
 	{
 		public Color[] Palette { get; private set; }
-		public byte[,] Bitmap { get; private set; }
+		public Bytemap Bitmap { get; private set; }
 
-		internal int Width => Bitmap.GetLength(0);
-		internal int Height => Bitmap.GetLength(1);
+		internal int Width => Bitmap.Width;
+		internal int Height => Bitmap.Height;
 
 		internal Bitmap Image
 		{
@@ -59,5 +60,7 @@ namespace CivOne
 			Palette = bitmap.Palette;
 			Bitmap = bitmap.Bitmap;
 		}
+
+		public void Dispose() => Bitmap?.Dispose();
 	}
 }
