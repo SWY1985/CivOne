@@ -51,21 +51,21 @@ namespace CivOne
 
 			if (!_updateBusy.WaitOne(0)) return;
 			
-			_runtime.InvokeUpdate();
-			Invalidate();
+			UpdateEventArgs updateArgs = UpdateEventArgs.Empty;
+			_runtime.InvokeUpdate(ref updateArgs);
+			if (updateArgs.HasUpdate) Invalidate();
 			_updateBusy.Set();
 		}
 
 		private void OnPaint(object sender, PaintEventArgs args)
 		{
-			if (_drawBusy.WaitOne(0))
-			{
-				_runtime.InvokeDraw();
-				_drawBusy.Set();
-			}
+			if (!_drawBusy.WaitOne(0)) return;
+
+			_runtime.InvokeDraw();
 			args.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			args.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
 			args.Graphics.DrawImage(Canvas.Image, 0, 0, InitialWidth, InitialHeight);
+			_drawBusy.Set();
 		}
 
 		private void OnKeyUp(object sender, KeyEventArgs args)
