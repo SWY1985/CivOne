@@ -195,15 +195,12 @@ namespace CivOne
 			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 		}
 
-		private void DrawCursor(Canvas cursor, int ox, int oy)
+		private void DrawCursor(int left, int top, int width, int height)
 		{
-			if (cursor == null) return;
-			BitmapToTexture(TEXTURE_CURSOR, cursor);
-
-			int x1 = ox + (_mouseX * ScaleX);
-			int y1 = oy + (_mouseY * ScaleY);
-			int x2 = x1 + (cursor.Width * ScaleX);
-			int y2 = y1 + (cursor.Height * ScaleY);
+			int x1 = left + (_mouseX * ScaleX);
+			int y1 = top + (_mouseY * ScaleY);
+			int x2 = x1 + (width * ScaleX);
+			int y2 = y1 + (height * ScaleY);
 
 			GL.Enable(EnableCap.Blend);
 			DrawQuad(TEXTURE_CURSOR, x1, y1, x2, y2);
@@ -212,11 +209,16 @@ namespace CivOne
 
 		private void Render(Canvas canvas, Canvas cursor)
 		{
+			bool update = HasUpdate;
+
 			int x1, y1, x2, y2;
 			GetBorders(out x1, out y1, out x2, out y2);
 
-			Runtime.CanvasSize = SetCanvasSize();
-			BitmapToTexture(TEXTURE_CANVAS, canvas);
+			if (update)
+			{
+				Runtime.CanvasSize = SetCanvasSize();
+				BitmapToTexture(TEXTURE_CANVAS, canvas);
+			}
 
 			GL.Clear(ClearBufferMask.ColorBufferBit);
 			GL.MatrixMode(MatrixMode.Projection);
@@ -224,7 +226,12 @@ namespace CivOne
 			GL.Ortho(0, ClientSize.Width, ClientSize.Height, 0, -1, 1);
 
 			DrawQuad(TEXTURE_CANVAS, x1, y1, x2, y2);
-			DrawCursor(cursor, x1, y1);
+
+			if (cursor != null)
+			{
+				if (update) BitmapToTexture(TEXTURE_CURSOR, cursor);
+				DrawCursor(x1, y1, cursor.Width, cursor.Height);
+			}
 
 			SwapBuffers();
 		}
