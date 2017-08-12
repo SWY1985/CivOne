@@ -11,7 +11,6 @@ using System;
 using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Graphics;
-using CivOne.Interfaces;
 
 namespace CivOne.Wonders
 {

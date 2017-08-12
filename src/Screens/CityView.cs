@@ -14,7 +14,6 @@ using CivOne.Advances;
 using CivOne.Buildings;
 using CivOne.Enums;
 using CivOne.Events;
-using CivOne.Interfaces;
 using CivOne.Graphics;
 using CivOne.Wonders;
 

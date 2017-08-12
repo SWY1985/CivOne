@@ -9,7 +9,6 @@
 
 using CivOne.Enums;
 using CivOne.Graphics;
-using CivOne.Interfaces;
 
 namespace CivOne.Leaders
 {

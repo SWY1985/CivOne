@@ -9,7 +9,6 @@
 
 using CivOne.Advances;
 using CivOne.Enums;
-using CivOne.Interfaces;
 
 namespace CivOne.Units
 {

@@ -13,7 +13,6 @@ using System.Linq;
 using CivOne.Buildings;
 using CivOne.Enums;
 using CivOne.Graphics;
-using CivOne.Interfaces;
 using CivOne.Units;
 using CivOne.UserInterface;
 using CivOne.Wonders;

@@ -9,7 +9,6 @@
 
 using CivOne.Advances;
 using CivOne.Graphics;
-using CivOne.Interfaces;
 
 namespace CivOne.Wonders
 {

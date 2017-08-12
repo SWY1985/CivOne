@@ -10,7 +10,6 @@
 using System;
 using System.Drawing;
 using System.Linq;
-using CivOne.Interfaces;
 using CivOne.Screens;
 using CivOne.Screens.Dialogs;
 using CivOne.Units;

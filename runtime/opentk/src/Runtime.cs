@@ -13,7 +13,6 @@ using System.IO;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
-using CivOne.Interfaces;
 
 namespace CivOne
 {
@@ -27,14 +26,15 @@ namespace CivOne
 
 		internal void InvokeInitialize() => Initialize?.Invoke(this, EventArgs.Empty);
 		internal void InvokeDraw() => Draw?.Invoke(this, EventArgs.Empty);
-		internal void InvokeUpdate() => Update?.Invoke(this, EventArgs.Empty);
+		internal void InvokeUpdate(ref UpdateEventArgs args) => Update?.Invoke(this, args);
 		internal void InvokeKeyboardUp(KeyboardEventArgs args) => KeyboardUp?.Invoke(this, args);
 		internal void InvokeKeyboardDown(KeyboardEventArgs args) => KeyboardDown?.Invoke(this, args);
 		internal void InvokeMouseUp(ScreenEventArgs args) => MouseUp?.Invoke(this, args);
 		internal void InvokeMouseDown(ScreenEventArgs args) => MouseDown?.Invoke(this, args);
 		internal void InvokeMouseMove(ScreenEventArgs args) => MouseMove?.Invoke(this, args);
 
-		public event EventHandler Initialize, Draw, Update;
+		public event EventHandler Initialize, Draw;
+		public event UpdateEventHandler Update;
 		public event KeyboardEventHandler KeyboardUp, KeyboardDown;
 		public event ScreenEventHandler MouseUp, MouseDown, MouseMove;
 

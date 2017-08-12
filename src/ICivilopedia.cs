@@ -7,10 +7,15 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-namespace CivOne.Interfaces
+using CivOne.Graphics;
+
+namespace CivOne
 {
-	public interface ITurn
+	public interface ICivilopedia
 	{
-		void NewTurn();
+		string Name { get; }
+		Picture Icon { get; }
+		byte PageCount { get; }
+		Picture DrawPage(byte pageNumber);
 	}
 }

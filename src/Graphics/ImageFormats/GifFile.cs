@@ -13,7 +13,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using CivOne.IO;
-using CivOne.Interfaces;
 
 namespace CivOne.Graphics.ImageFormats
 {

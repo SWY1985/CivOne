@@ -10,7 +10,6 @@
 using CivOne.Buildings;
 using CivOne.Enums;
 using CivOne.Governments;
-using CivOne.Interfaces;
 
 namespace CivOne.Graphics
 {
