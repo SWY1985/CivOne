@@ -177,7 +177,7 @@ namespace CivOne.Screens
 				KeepOpen = false;
 				return false;
 			}
-			Items[_activeItem].Select();
+			Items[_activeItem]?.Select();
 			
 			return true;
 		}
