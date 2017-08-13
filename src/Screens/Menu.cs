@@ -82,7 +82,7 @@ namespace CivOne.Screens
 					}
 					else
 					{
-						_canvas.AddLayer(_background.GetPart(0, (_activeItem * fontHeight) + offsetY, Width, fontHeight), X, yy + offsetY);
+						_canvas.AddLayer(_background.GetPart(0, (_activeItem * fontHeight) + offsetY, Width, fontHeight), X, yy + offsetY, dispose: true);
 					}
 				}
 				for (int i = 0; i < Items.Count; i++)
@@ -215,6 +215,12 @@ namespace CivOne.Screens
 			Indent = 8;
 			
 			_canvas = new Picture(320, 200, colours);
+		}
+
+		public override void Dispose()
+		{
+			_background.Dispose();
+			base.Dispose();
 		}
 	}
 

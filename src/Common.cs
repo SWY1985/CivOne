@@ -98,7 +98,10 @@ namespace CivOne
 				GamePlay gamePlay = GamePlay;
 				if (gamePlay != null)
 					return gamePlay.MainPalette;
-				return Resources.Instance.LoadPIC("SP257", true).Palette;
+				using (Picture picture = Resources.Instance.LoadPIC("SP257", true))
+				{
+					return picture.Palette;
+				}
 			}
 		}
 

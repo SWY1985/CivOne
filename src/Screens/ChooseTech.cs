@@ -102,5 +102,11 @@ namespace CivOne.Screens
 			_canvas.FillRectangle(5, 38, 56, 204, dialogHeight + 2);
 			AddLayer(_menuGfx, 39, 57);
 		}
+
+		public override void Dispose()
+		{
+			_menuGfx.Dispose();
+			base.Dispose();
+		}
 	}
 }

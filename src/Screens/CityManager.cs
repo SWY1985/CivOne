@@ -201,5 +201,12 @@ namespace CivOne.Screens
 			_cityHeader.HeaderUpdate += HeaderUpdate;
 			_cityMap.MapUpdate += MapUpdate;
 		}
+
+		public override void Dispose()
+		{
+			_subScreens.ForEach(x => x.Dispose());
+			_subScreens.Clear();
+			base.Dispose();
+		}
 	}
 }

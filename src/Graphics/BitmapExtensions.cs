@@ -37,8 +37,8 @@ namespace CivOne.Graphics
 			return bitmap;
 		}
 		
-		public static IBitmap AddLayer(this IBitmap bitmap, IBitmap layer, Point point) => AddLayer(bitmap, layer, point.X, point.Y);
-		public static IBitmap AddLayer(this IBitmap bitmap, IBitmap layer, int left = 0, int top = 0)
+		public static IBitmap AddLayer(this IBitmap bitmap, IBitmap layer, Point point, bool dispose = false) => AddLayer(bitmap, layer, point.X, point.Y, dispose);
+		public static IBitmap AddLayer(this IBitmap bitmap, IBitmap layer, int left = 0, int top = 0, bool dispose = false)
 		{
 			if (layer == null) return bitmap;
 			for (int yy = 0; yy < layer.GetHeight(); yy++)
@@ -52,6 +52,7 @@ namespace CivOne.Graphics
 					bitmap.Bitmap[left + xx, top + yy] = layer.Bitmap[xx, yy];
 				}
 			}
+			if (dispose) layer.Dispose();
 			return bitmap;
 		}
 

@@ -21,8 +21,8 @@ namespace CivOne.Screens
 
 		protected Picture _canvas = new Picture(320, 200);
 		
-		protected IBitmap AddLayer(IBitmap bitmap, Point point) => _canvas.AddLayer(bitmap, point.X, point.Y);
-		protected IBitmap AddLayer(IBitmap bitmap, int x = 0, int y = 0) => _canvas.AddLayer(bitmap, x, y);
+		protected IBitmap AddLayer(IBitmap bitmap, Point point, bool dispose = false) => _canvas.AddLayer(bitmap, point.X, point.Y, dispose);
+		protected IBitmap AddLayer(IBitmap bitmap, int x = 0, int y = 0, bool dispose = false) => _canvas.AddLayer(bitmap, x, y, dispose);
 
 		protected void DrawPanel(int x, int y, int width, int height, bool border = true)
 		{
@@ -83,6 +83,6 @@ namespace CivOne.Screens
 		public Color[] Palette => _canvas.Palette;
 		public Color[] OriginalColours => _canvas.OriginalColours;
 
-		public void Dispose() => _canvas.Dispose();
+		public virtual void Dispose() => _canvas.Dispose();
 	}
 }

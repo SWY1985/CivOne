@@ -243,7 +243,9 @@ namespace CivOne.Screens.GamePlayPanels
 		
 		public void Resize(int height)
 		{
+			_canvas?.Dispose();
 			_canvas = new Picture(80, height, _canvas.Palette);
+			_gameInfo?.Dispose();
 			_gameInfo = new Picture(80, (height - 89), _canvas.Palette);
 			_update = true;
 		}
@@ -262,6 +264,14 @@ namespace CivOne.Screens.GamePlayPanels
 			AddLayer(_miniMap, 0, 0);
 			AddLayer(_demographics, 0, 50);
 			AddLayer(_gameInfo, 0, 89);
+		}
+
+		public override void Dispose()
+		{
+			_miniMap.Dispose();
+			_demographics.Dispose();
+			_gameInfo.Dispose();
+			base.Dispose();
 		}
 	}
 }
