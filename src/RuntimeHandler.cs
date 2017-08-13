@@ -131,7 +131,8 @@ namespace CivOne
 			if (args[KeyModifier.Control, Key.F6] && Game.Started)
 			{
 				string filename = Common.CaptureFilename;
-				using (GifFile file = new GifFile(Map.Instance[0, 0, Map.WIDTH, Map.HEIGHT].ToPicture()))
+				using (IBitmap tilesPicture = Map.Instance[0, 0, Map.WIDTH, Map.HEIGHT].ToPicture())
+				using (GifFile file = new GifFile(tilesPicture))
 				using (FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write))
 				{
 					byte[] output = file.GetBytes();
