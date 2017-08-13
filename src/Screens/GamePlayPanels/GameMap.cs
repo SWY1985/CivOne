@@ -152,7 +152,7 @@ namespace CivOne.Screens.GamePlayPanels
 					dx *= 16; dy *= 16;
 
 					MoveUnit movement = movingUnit.Movement;
-					AddLayer(Map[movingUnit.X - 1, movingUnit.Y - 1, 3, 3].ToPicture(player: renderPlayer), dx - 16, dy - 16);
+					AddLayer(Map[movingUnit.X - 1, movingUnit.Y - 1, 3, 3].ToPicture(player: renderPlayer), dx - 16, dy - 16, dispose: true);
 					using (Picture unitPicture = movingUnit.GetUnit(movingUnit.Owner))
 					{
 						AddLayer(unitPicture, dx + movement.X, dy + movement.Y);
