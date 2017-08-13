@@ -219,7 +219,7 @@ namespace CivOne.Screens
 
 		public override void Dispose()
 		{
-			_background.Dispose();
+			_background?.Dispose();
 			base.Dispose();
 		}
 	}
