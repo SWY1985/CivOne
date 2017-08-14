@@ -24,8 +24,8 @@ namespace CivOne.Graphics.ImageFormats
 		{
 			get
 			{
-				for (int yy = 0; yy < _pixels.Width; yy++)
-				for (int xx = 0; xx < _pixels.Height; xx++)
+				for (int yy = 0; yy < _pixels.Height; yy++)
+				for (int xx = 0; xx < _pixels.Width; xx++)
 				{
 					yield return _pixels[xx, yy];
 				}
