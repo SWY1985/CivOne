@@ -15,7 +15,7 @@ namespace CivOne.IO
 {
 	public class Bytemap : IDisposable
 	{
-		private readonly IntPtr _handle;
+		private IntPtr _handle;
 
 		public readonly int Width, Height, Length;
 
@@ -99,9 +99,19 @@ namespace CivOne.IO
 			}
 		}
 
+		~Bytemap()
+		{
+			if (_handle == IntPtr.Zero) return;
+			Marshal.FreeHGlobal(_handle);
+			_handle = IntPtr.Zero;
+		}
+
 		public void Dispose()
 		{
+			if (_handle == IntPtr.Zero) return;
 			Marshal.FreeHGlobal(_handle);
+			_handle = IntPtr.Zero;
+			GC.SuppressFinalize(this);
 		}
 	}
 }
