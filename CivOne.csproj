@@ -14,6 +14,7 @@
 		<AssemblyName>CivOne</AssemblyName>
 		<PackageId>CivOne</PackageId>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="api/CivOne.API.csproj" />
