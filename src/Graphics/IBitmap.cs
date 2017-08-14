@@ -8,14 +8,13 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.Drawing;
 using CivOne.IO;
 
 namespace CivOne.Graphics
 {
 	public interface IBitmap : IDisposable
 	{
-		Color[] Palette { get; }
+		Palette Palette { get; }
 		Bytemap Bitmap { get; }
 	}
 }

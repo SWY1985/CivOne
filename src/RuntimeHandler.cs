@@ -9,7 +9,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -86,7 +85,7 @@ namespace CivOne
 			if (TopScreen == null) return;
 
 			Picture bitmap = new Picture(Runtime.CanvasWidth, Runtime.CanvasHeight, Common.TopScreen.Palette);
-			bitmap.Palette[0] = Color.Black;
+			bitmap.Palette[0] = Colour.Black;
 			
 			if (Common.HasAttribute<Modal>(TopScreen))
 			{

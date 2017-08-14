@@ -18,7 +18,7 @@ namespace CivOne
 {
 	internal class Canvas : IBitmap
 	{
-		public Color[] Palette { get; private set; }
+		public Palette Palette { get; private set; }
 		public Bytemap Bitmap { get; private set; }
 
 		internal int Width => Bitmap.Width;
@@ -48,7 +48,7 @@ namespace CivOne
 				
 				ColorPalette palette = output.Palette;
 				for (int i = 0; i < Palette.Length; i++)
-					palette.Entries[i] = Palette[i];
+					palette.Entries[i] = Color.FromArgb(Palette[i].R, Palette[i].G, Palette[i].B);
 				output.Palette = palette;
 				return output;
 			}

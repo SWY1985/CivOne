@@ -18,7 +18,7 @@ namespace CivOne
 {
 	internal class Canvas : IBitmap
 	{
-		public Color[] Palette { get; private set; }
+		public Palette Palette { get; private set; }
 
 		public Bytemap Bitmap { get; private set; }
 
@@ -33,7 +33,7 @@ namespace CivOne
 				IntPtr ptr = Marshal.AllocHGlobal(Palette.Length * 4);
 				for (int i = 0; i < output.Length; i++)
 				{
-					Color colour = Palette[i];
+					Colour colour = Palette[i];
 					Marshal.WriteInt32(ptr, (i * 4), ((int)colour.A << 24) + ((int)colour.B << 16) + ((int)colour.G << 8) + ((int)colour.R));
 				}
 				Marshal.Copy(ptr, output, 0, output.Length);

@@ -8,7 +8,6 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.Drawing;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
@@ -48,11 +47,11 @@ namespace CivOne.Screens
 
 		internal void RefreshMap() => _gameMap.ForceRefresh();
 
-		internal Color[] MainPalette => _canvas.OriginalColours.ToArray();
+		internal Palette MainPalette => _canvas.OriginalColours.Copy();
 		
 		private void MenuBarGame(object sender, EventArgs args)
 		{
-			_gameMenu = new GameMenu("MenuBarGame", _canvas.Palette);
+			_gameMenu = new GameMenu("MenuBarGame", _canvas.Palette.Copy());
 			_gameMenu.Items.Add("Tax Rate").OnSelect((s, a) => GameTask.Enqueue(Show.TaxRate));
 			_gameMenu.Items.Add("Luxuries Rate").OnSelect((s, a) => GameTask.Enqueue(Show.LuxuryRate));
 			_gameMenu.Items.Add("FindCity").OnSelect((s, a) => GameTask.Enqueue(Show.Search));
@@ -357,7 +356,7 @@ namespace CivOne.Screens
 		{
 			OnResize += Resize;
 			
-			Color[] palette = Resources.Instance.LoadPIC("SP257").Palette;
+			Palette palette = Resources.Instance.LoadPIC("SP257").OriginalColours;
 			
 			_canvas = new Picture(320, 200, palette);
 			_canvas.FillRectangle(5, 0, 0, 320, 200);

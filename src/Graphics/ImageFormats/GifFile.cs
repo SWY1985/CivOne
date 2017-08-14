@@ -9,7 +9,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using CivOne.IO;
@@ -18,7 +17,7 @@ namespace CivOne.Graphics.ImageFormats
 {
 	internal class GifFile : IImageFormat, IDisposable
 	{
-		private Color[] _palette;
+		private Palette _palette;
 		private Bytemap _pixels;
 
 		private IEnumerable<byte> GetPixels
@@ -70,7 +69,7 @@ namespace CivOne.Graphics.ImageFormats
 				for (int i = 0; i < 256; i++)
 				{
 					byte r = 0, g = 0, b = 0;
-					if (_palette.GetUpperBound(0) >= i)
+					if (_palette.Length > i)
 					{
 						r = _palette[i].R;
 						g = _palette[i].G;

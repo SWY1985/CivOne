@@ -9,7 +9,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using CivOne.Enums;
@@ -83,7 +82,7 @@ namespace CivOne.Screens
 		
 		internal static int SelectedGame = 0;
 		
-		private readonly Color[] _palette;
+		private readonly Palette _palette;
 		private char _driveLetter = 'C';
 		private readonly int _border = Common.Random.Next(2);
 		private int _gameId;

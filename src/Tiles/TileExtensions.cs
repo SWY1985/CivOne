@@ -7,7 +7,6 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using System.Drawing;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.Graphics;
@@ -19,7 +18,7 @@ namespace CivOne.Tiles
 	{
 		private static Game Game => Game.Instance;
 		private static Resources Resources => Resources.Instance;
-		private static Color[] Palette => Resources["SP257"].Palette;
+		private static Palette Palette => Resources["SP257"].Palette;
 
 		public static Picture ToPicture(this ITile[,] tiles, TileSettings settings = null, Player player = null)
 		{

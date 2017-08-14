@@ -200,7 +200,7 @@ namespace CivOne.Screens
 			Destroy();
 		}
 		
-		public Menu(string menuId, Color[] colours, Picture background = null) : base(MouseCursor.Pointer)
+		public Menu(string menuId, Palette palette, Picture background = null) : base(MouseCursor.Pointer)
 		{
 			OnResize += Resize;
 
@@ -214,7 +214,7 @@ namespace CivOne.Screens
 			IndentTitle = 8;
 			Indent = 8;
 			
-			_canvas = new Picture(320, 200, colours);
+			_canvas = new Picture(320, 200, palette.Copy());
 		}
 
 		public override void Dispose()
@@ -226,11 +226,11 @@ namespace CivOne.Screens
 
 	public class Menu : Menu<int>
 	{
-		public Menu(Color[] colours, Picture background = null) : base(null, colours, background)
+		public Menu(Palette palette, Picture background = null) : base(null, palette, background)
 		{
 		}
 
-		public Menu(string menuId, Color[] colours, Picture background = null) : base(menuId, colours, background)
+		public Menu(string menuId, Palette palette, Picture background = null) : base(menuId, palette, background)
 		{
 		}
 	}

@@ -80,8 +80,8 @@ namespace CivOne.Screens
 		}
 		
 		public Bytemap Bitmap => _canvas.Bitmap;
-		public Color[] Palette => _canvas.Palette;
-		public Color[] OriginalColours => _canvas.OriginalColours;
+		public Palette Palette => _canvas.Palette;
+		public Palette OriginalColours => _canvas.OriginalColours;
 
 		public virtual void Dispose() => _canvas.Dispose();
 	}

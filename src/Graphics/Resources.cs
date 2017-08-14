@@ -222,9 +222,10 @@ namespace CivOne.Graphics
 			}
 		}
 		
-		public static Color[] PaletteCombine(Color[] palette1, Color[] palette2, byte start = 0, byte end = 255)
+		public static Palette PaletteCombine(Palette palette1, Palette palette2, byte start = 0, byte end = 255)
 		{
-			Color invisible = Color.FromArgb(252, 84, 252);
+			Palette output = palette1.Copy();
+			Colour invisible = new Colour() { R = 252, G = 84, B = 252 };
 			for (int i = start; i < end; i++)
 			{
 				if (palette2[i] == invisible) continue;

@@ -8,7 +8,6 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using CivOne.Advances;
@@ -334,7 +333,7 @@ namespace CivOne.Screens
 
 			_update = false;
 			_singlePage = page;
-			Color[] palette = Common.DefaultPalette;
+			Palette palette = Common.DefaultPalette;
 			if (page.Icon != null) palette = Resources.PaletteCombine(palette, page.Icon.Palette, 16);
 			_canvas = new Picture(320, 200, palette);
 			

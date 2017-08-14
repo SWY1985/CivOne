@@ -250,7 +250,7 @@ namespace CivOne.Screens.GamePlayPanels
 			_update = true;
 		}
 
-		public SideBar(Color[] palette)
+		public SideBar(Palette palette)
 		{
 			_miniMap = new Picture(80, 50, palette);
 			_demographics = new Picture(80, 39, palette);

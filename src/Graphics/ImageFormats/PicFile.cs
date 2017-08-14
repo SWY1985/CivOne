@@ -9,10 +9,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using CivOne.IO;
+using CivOne.Graphics;
 
 namespace CivOne.Graphics.ImageFormats
 {
@@ -23,8 +23,8 @@ namespace CivOne.Graphics.ImageFormats
 		private static Dictionary<string, PicFile> _cache = new Dictionary<string, PicFile>();
 		private readonly byte[] _bytes;
 		private readonly byte[,] _colourTable = null;
-		private readonly Color[] _palette16 = Common.GetPalette16;
-		private readonly Color[] _palette256 = new Color[256];
+		private readonly Palette _palette16 = Common.GetPalette16;
+		private readonly Palette _palette256 = new Palette(256);
 		private Bytemap _picture16;
 		private Bytemap _picture256;
 
@@ -33,24 +33,10 @@ namespace CivOne.Graphics.ImageFormats
 		public bool HasPicture16 { get; internal set; }
 		public bool HasPicture256 { get; internal set; }
 
-		public Color[] GetPalette16
-		{
-			get
-			{
-				return _palette16;
-			}
-		}
-
-		public Color[] GetPalette256
-		{
-			get
-			{
-				return _palette256;
-			}
-		}
+		public Palette GetPalette16 => _palette16.Copy();
+		public Palette GetPalette256 => _palette256.Copy();
 
 		public Bytemap GetPicture16 => _picture16;
-
 		public Bytemap GetPicture256 => _picture256;
 
 		/// <summary>
@@ -112,15 +98,15 @@ namespace CivOne.Graphics.ImageFormats
 				// this never happens for any of the original Civilization resources
 				if (i < firstIndex || i > lastIndex)
 				{
-					_palette256[i] = Color.Transparent;
+					_palette256[i] = Colour.Transparent;
 					continue;
 				}
 				byte red = _bytes[index++], green = _bytes[index++], blue = _bytes[index++];
-				_palette256[i] = Color.FromArgb(255, red * 4, green * 4, blue * 4);
+				_palette256[i] = new Colour(red * 4, green * 4, blue * 4);
 			}
 			
 			// always set colour 0 to transparent
-			_palette256[0] = Color.Transparent;
+			_palette256[0] = Colour.Transparent;
 		}
 
 		/// <summary>
@@ -221,11 +207,11 @@ namespace CivOne.Graphics.ImageFormats
 			yield return (byte)0x00;
 			yield return (byte)0xFF;
 
-			foreach (Color color in _palette256)
+			for (int i = 0; i < _palette256.Length; i++)
 			{
-				yield return (byte)(color.R / 4);
-				yield return (byte)(color.G / 4);
-				yield return (byte)(color.B / 4);
+				yield return (byte)(_palette256[i].R / 4);
+				yield return (byte)(_palette256[i].G / 4);
+				yield return (byte)(_palette256[i].B / 4);
 			}
 		}
 

@@ -8,7 +8,6 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.Drawing;
 using System.Text;
 using CivOne.Enums;
 using CivOne.Events;
@@ -176,9 +175,9 @@ namespace CivOne.Screens
 			Destroy();
 		}
 		
-		public Input(Color[] colours, string text, int fontId, byte textColour, byte cursorColour, int x, int y, int width, int height, int maxLength)
+		public Input(Palette palette, string text, int fontId, byte textColour, byte cursorColour, int x, int y, int width, int height, int maxLength)
 		{
-			_canvas = new Picture(320, 200, colours);
+			_canvas = new Picture(320, 200, palette);
 			_text = text;
 			_fontId = fontId;
 			_textColour = textColour;
@@ -195,11 +194,11 @@ namespace CivOne.Screens
 			HasUpdate(0);
 		}
 		
-		public Input(Color[] colours, int fontId, byte textColour, byte cursorColour, int x, int y, int width, int height, int maxLength)
+		public Input(Palette palette, int fontId, byte textColour, byte cursorColour, int x, int y, int width, int height, int maxLength)
 		{
 			OnResize += Resize;
 
-			_canvas = new Picture(320, 200, colours);
+			_canvas = new Picture(320, 200, palette);
 			_text = "";
 			_fontId = fontId;
 			_textColour = textColour;

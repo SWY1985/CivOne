@@ -24,7 +24,7 @@ namespace CivOne.Screens.GamePlayPanels
 	{
 		private IUnit ActiveUnit => Game.ActiveUnit;
 		
-		private readonly Color[] _palette;
+		private readonly Palette _palette;
 		private Point _helperDirection = new Point(0, 0);
 		private bool _update = true;
 		private bool _centerChanged = false;
@@ -500,7 +500,7 @@ namespace CivOne.Screens.GamePlayPanels
 			_x = 0;
 			_y = 0;
 			
-			_palette = Resources.Instance.LoadPIC("SP257").Palette;
+			_palette = Resources.Instance.LoadPIC("SP257").Palette.Copy();
 		}
 	}
 }

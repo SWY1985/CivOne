@@ -8,7 +8,6 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace CivOne.Graphics
 {
@@ -23,7 +22,7 @@ namespace CivOne.Graphics
 		private readonly byte _charBottomRow;
 		private readonly byte _fontSpaceX;
 		private readonly byte _fontSpaceY;
-		private readonly Color[] _colours;
+		private readonly Palette _palette;
 		private Dictionary<char, byte> _charWidths = new Dictionary<char, byte>();
 		private Dictionary<char, byte[]> _characters = new Dictionary<char, byte[]>();
 		
@@ -87,12 +86,12 @@ namespace CivOne.Graphics
 				}
 			}
 
-			return new Picture(ww, FontHeight, pixels, _colours);
+			return new Picture(ww, FontHeight, pixels, _palette);
 		}
 
-		public Fontset(byte[] bytes, ushort offset, Color[] palette)
+		public Fontset(byte[] bytes, ushort offset, Palette palette)
 		{
-			_colours = palette;
+			_palette = palette;
 
 			_fontAsciiFirst = bytes[offset - 8];
 			_fontAsciiLast = bytes[offset - 7];

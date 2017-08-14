@@ -7,8 +7,6 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using System;
-// using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace CivOne.IO
@@ -34,8 +32,7 @@ namespace CivOne.IO
 				for (int xx = 0; xx < Width; xx++)
 				{
 					int x = (rightToLeft ? (Width - xx - 1) : xx);
-					output[i] = palette[this[x, y]];
-					i += 4;
+					output[i++] = palette[this[x, y]];
 				}
 			}
 			return output;
