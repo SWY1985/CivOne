@@ -25,10 +25,7 @@ namespace CivOne.Graphics
 				{
 					_food = Resources["SP257"].GetPart(128, 32, 8, 8);
 					Picture.ReplaceColours(_food, 3, 0);
-
-					Picture temp = new Picture(_food);
-					temp.FillRectangle(0, 0, 0, 1, 8);
-					_food = temp;
+					_food.FillRectangle(0, 0, 0, 1, 8);
 				}
 				return _food;
 			}
@@ -43,10 +40,7 @@ namespace CivOne.Graphics
 				{
 					_foodLoss = Resources["SP257"].GetPart(128, 32, 8, 8);
 					Picture.ReplaceColours(_foodLoss, new byte[] { 3, 15 }, new byte[] { 0, 5 });
-
-					Picture temp = new Picture(_foodLoss);
-					temp.FillRectangle(0, 0, 0, 1, 8);
-					_foodLoss = temp;
+					_foodLoss.FillRectangle(0, 0, 0, 1, 8);
 				}
 				return _foodLoss;
 			}
@@ -351,6 +345,7 @@ namespace CivOne.Graphics
 			Picture.ReplaceColours(resource, 5, Common.ColourDark[city.Owner]);
 			output.AddLayer(resource, 0, 0);
 			output.DrawText($"{city.Size}", (smallFont ? 1 : 0), 5, 5, 9, 5, TextAlign.Center);
+			resource?.Dispose();
 
 			if (city.HasBuilding<CityWalls>())
 			{

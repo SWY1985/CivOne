@@ -13,12 +13,11 @@ namespace CivOne.Graphics
 {
 	public static class BitmapExtensions
 	{
-		private static bool OutBound(this IBitmap bitmap, int dimension, int value) => (value < bitmap.Bitmap.GetLowerBound(dimension) || value > bitmap.Bitmap.GetUpperBound(dimension));
-		private static bool OutBoundX(this IBitmap bitmap, int x) => OutBound(bitmap, 0, x);
-		private static bool OutBoundY(this IBitmap bitmap, int y) => OutBound(bitmap, 1, y);
+		private static bool OutBoundX(this IBitmap bitmap, int x) => (x < 0 || x >= bitmap.Bitmap.Width);
+		private static bool OutBoundY(this IBitmap bitmap, int y) => (y < 0 || y >= bitmap.Bitmap.Height);
 
-		public static int GetHeight(this IBitmap bitmap) => bitmap.Bitmap.GetLength(1);
-		public static int GetWidth(this IBitmap bitmap) => bitmap.Bitmap.GetLength(0);
+		public static int GetHeight(this IBitmap bitmap) => bitmap.Bitmap.Height;
+		public static int GetWidth(this IBitmap bitmap) => bitmap.Bitmap.Width;
 
 		public static IBitmap FillRectangle(this IBitmap bitmap, byte colour, Rectangle rectangle) => FillRectangle(bitmap, colour, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
 		public static IBitmap FillRectangle(this IBitmap bitmap, byte colour, Point point, Size size) => FillRectangle(bitmap, colour, point.X, point.Y, size.Width, size.Height);
@@ -38,8 +37,8 @@ namespace CivOne.Graphics
 			return bitmap;
 		}
 		
-		public static IBitmap AddLayer(this IBitmap bitmap, IBitmap layer, Point point) => AddLayer(bitmap, layer, point.X, point.Y);
-		public static IBitmap AddLayer(this IBitmap bitmap, IBitmap layer, int left = 0, int top = 0)
+		public static IBitmap AddLayer(this IBitmap bitmap, IBitmap layer, Point point, bool dispose = false) => AddLayer(bitmap, layer, point.X, point.Y, dispose);
+		public static IBitmap AddLayer(this IBitmap bitmap, IBitmap layer, int left = 0, int top = 0, bool dispose = false)
 		{
 			if (layer == null) return bitmap;
 			for (int yy = 0; yy < layer.GetHeight(); yy++)
@@ -53,6 +52,7 @@ namespace CivOne.Graphics
 					bitmap.Bitmap[left + xx, top + yy] = layer.Bitmap[xx, yy];
 				}
 			}
+			if (dispose) layer.Dispose();
 			return bitmap;
 		}
 

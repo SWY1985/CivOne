@@ -103,7 +103,7 @@ namespace CivOne.Screens.GamePlayPanels
 			_update = true;
 		}
 		
-		public MenuBar(Color[] palette)
+		public MenuBar(Palette palette)
 		{
 			_canvas = new Picture(320, 8, palette);
 			_canvas.FillRectangle(5, 0, 0, 320, 8);

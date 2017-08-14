@@ -7,8 +7,8 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using System.Drawing;
 using CivOne.Enums;
+using CivOne.Graphics;
 
 namespace CivOne.Screens
 {
@@ -34,22 +34,24 @@ namespace CivOne.Screens
 			}
 		}
 		
-		private Color FadeColour(Color colour1, Color colour2)
+		private Colour FadeColour(Colour colour1, Colour colour2)
 		{
 			int r = (int)(((float)colour1.R * (1.0F - _fadeStep)) + ((float)colour2.R * _fadeStep));
 			int g = (int)(((float)colour1.G * (1.0F - _fadeStep)) + ((float)colour2.G * _fadeStep));
 			int b = (int)(((float)colour1.B * (1.0F - _fadeStep)) + ((float)colour2.B * _fadeStep));
-			return Color.FromArgb(r, g, b);
+			return new Colour(r, g, b);
 		}
 		
 		private void FadeColours()
 		{
 			if (Settings.GraphicsMode != GraphicsMode.Graphics256) return;
 			
-			Color[] palette = _canvas.Palette;
-			for (int i = 1; i < 256; i++)
-				palette[i] = FadeColour(Color.Black, _canvas.OriginalColours[i]);
-			_canvas.SetPalette(palette);
+			using (Palette palette = _canvas.Palette.Copy())
+			{
+				for (int i = 1; i < 256; i++)
+					palette[i] = FadeColour(new Colour(0, 0, 0), _canvas.OriginalColours[i]);
+				_canvas.SetPalette(palette);
+			}
 		}
 		
 		protected bool HandleScreenFadeIn(Speed speed = Speed.Normal)

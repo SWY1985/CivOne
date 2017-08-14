@@ -14,18 +14,7 @@ namespace CivOne.Leaders
 {
 	public abstract class BaseLeader : ILeader
 	{
-		private string _name;
-		public string Name
-		{
-			get
-			{
-				return _name;
-			}
-			set
-			{
-				_name = value;
-			}
-		}
+		public string Name { get; set; }
 
 		private readonly string _picFile = null;
 		private readonly int _overlayX;
@@ -55,13 +44,7 @@ namespace CivOne.Leaders
 			return output;
 		}
 
-		public Picture PortraitSmall
-		{
-			get
-			{
-				return _portraitSmall;
-			}
-		}
+		public Picture PortraitSmall => _portraitSmall;
 
 		public BaseLeader(string name, string picFile, int overlayX, int overlayY)
 		{

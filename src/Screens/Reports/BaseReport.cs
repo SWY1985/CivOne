@@ -8,7 +8,6 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.Drawing;
 using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Events;
@@ -49,7 +48,7 @@ namespace CivOne.Screens.Reports
 			{
 				Portrait[i] = Icons.GovernmentPortrait(Human.Government, (Advisor)Enum.Parse(typeof(Advisor), $"{i}"), modernGovernment); 
 			}
-			Color[] palette = Common.DefaultPalette;
+			Palette palette = Common.DefaultPalette;
 			for (int i = 144; i < 256; i++)
 			{
 				palette[i] = Portrait[0].Palette[i];

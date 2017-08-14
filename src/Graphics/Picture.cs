@@ -9,22 +9,24 @@
 
 using System;
 using System.Drawing;
+using System.Linq;
 using CivOne.Enums;
+using CivOne.IO;
 
 namespace CivOne.Graphics
 {
 	public class Picture : IBitmap
 	{
-		private readonly Color[] _originalColours;
-		private readonly Color[] _palette = new Color[256];
-		private readonly byte[,] _bitmap;
+		private readonly Palette _originalColours;
+		private readonly Palette _palette = new Palette();
+		private readonly Bytemap _bitmap;
 
-		public int Width => _bitmap.GetLength(0);
-		public int Height => _bitmap.GetLength(1);
-		public Size Size => new Size(_bitmap.GetLength(0), _bitmap.GetLength(1));
-		public Color[] OriginalColours => _originalColours;
+		public int Width => _bitmap.Width;
+		public int Height => _bitmap.Height;
+		public Size Size => new Size(_bitmap.Width, _bitmap.Height);
+		public Palette OriginalColours => _originalColours;
 
-		public Color[] Palette
+		public Palette Palette
 		{
 			get
 			{
@@ -37,7 +39,7 @@ namespace CivOne.Graphics
 			}
 		}
 		
-		public byte[,] Bitmap => _bitmap;
+		public Bytemap Bitmap => _bitmap;
 
 		public byte[,] ScaleBitmap(int scaleX, int scaleY)
 		{
@@ -76,8 +78,10 @@ namespace CivOne.Graphics
 		}
 		public void DrawText(string text, int font, byte firstLetterColour, byte colour, int x, int y, TextAlign align = TextAlign.Left)
 		{
-			Picture textImage = Resources.Instance.GetText(text, font, firstLetterColour, colour);
-			DrawText(textImage, align, x, y);
+			using (Picture textImage = Resources.Instance.GetText(text, font, firstLetterColour, colour))
+			{
+				DrawText(textImage, align, x, y);
+			}
 		}
 		private void DrawText(Picture textImage, TextAlign align, int x, int y)
 		{
@@ -99,15 +103,15 @@ namespace CivOne.Graphics
 				_palette[i] = _originalColours[i];
 		}
 
-		public void SetPalette(Color[] colours)
+		public void SetPalette(Palette palette)
 		{
-			for (int i = 1; i < colours.Length && i < 256; i++)
-				_palette[i] = colours[i];
+			for (int i = 1; i < palette.Length && i < 256; i++)
+				_palette[i] = palette[i];
 		}
 		
-		public Picture Cycle(int colour, ref Color[] colours)
+		public Picture Cycle(int colour, ref Colour[] colours)
 		{
-			Color reserve = Palette[colour];
+			Colour reserve = Palette[colour];
 			Palette[colour] = colours[0];
 			for (int i = 0; i < colours.Length - 1; i++)
 				colours[i] = colours[i + 1];
@@ -120,7 +124,7 @@ namespace CivOne.Graphics
 		{
 			if (start > end) return CycleReverse(end, start);
 			
-			Color reserve = _palette[end];
+			Colour reserve = _palette[end];
 			for (int i = end; i > start; i--)
 				_palette[i] = _palette[i - 1];
 			_palette[start] = reserve;
@@ -129,7 +133,7 @@ namespace CivOne.Graphics
 		
 		private Picture CycleReverse(int start, int end)
 		{
-			Color reserve = _palette[start];
+			Colour reserve = _palette[start];
 			for (int i = start; i < end; i++)
 				_palette[i] = _palette[i + 1];
 			_palette[end] = reserve;
@@ -205,16 +209,7 @@ namespace CivOne.Graphics
 			}
 		}
 		
-		private static Color[] EmptyPalette
-		{
-			get
-			{
-				Color[] colours = new Color[256];
-				for (int i = 0; i < colours.Length; i++)
-					colours[i] = Color.Black;
-				return colours;
-			}
-		}
+		private static Colour[] EmptyPalette = Enumerable.Range(0, 256).Select(_ => new Colour()).ToArray();
 		
 		public byte this[int x, int y]
 		{
@@ -232,12 +227,18 @@ namespace CivOne.Graphics
 			}
 		}
 		
-		public Picture(byte[,] bytes, Color[] colours)
+		public Picture(byte[,] bytes, Palette palette)
 		{
-			_originalColours = colours;
-			for (int i = 0; i < colours.Length; i++)
-				_palette[i] = colours[i];
-			_bitmap = bytes;
+			_originalColours = palette.Copy();
+			_palette = palette.Copy();
+			_bitmap = new Bytemap(bytes);
+		}
+		
+		public Picture(Bytemap bytemap, Palette palette)
+		{
+			_originalColours = palette.Copy();
+			_palette = palette.Copy();
+			_bitmap = Bytemap.Copy(bytemap);
 		}
 		
 		public Picture(IBitmap picture) : this(picture.Bitmap, picture.Palette)
@@ -248,7 +249,7 @@ namespace CivOne.Graphics
 		{
 		}
 		
-		public Picture(int width, int height, byte[] bytes, Color[] colours) : this(width, height, colours)
+		public Picture(int width, int height, byte[] bytes, Palette palette) : this(width, height, palette)
 		{
 			for (int yy = 0; yy < height; yy++)
 			for (int xx = 0; xx < width; xx++)
@@ -259,12 +260,16 @@ namespace CivOne.Graphics
 			}
 		}
 		
-		public Picture(int width, int height, Color[] colours)
+		public Picture(int width, int height, Palette palette)
 		{
-			_originalColours = colours;
-			for (int i = 0; i < colours.Length; i++)
-				_palette[i] = colours[i];
-			_bitmap = new byte[width, height];
+			_originalColours = palette.Copy();
+			_palette = palette.Copy();
+			_bitmap = new Bytemap(width, height);
+		}
+
+		public void Dispose()
+		{
+			_bitmap.Dispose();
 		}
 	}
 }

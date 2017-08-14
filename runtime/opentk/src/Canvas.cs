@@ -7,39 +7,42 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using System.Drawing;
+using System.Linq;
+using System.Runtime.InteropServices;
 using CivOne.Graphics;
+using CivOne.IO;
 
 namespace CivOne
 {
 	internal class Canvas : IBitmap
 	{
-		public Color[] Palette { get; private set; }
+		public Palette Palette { get; private set; }
 
-		public byte[,] Bitmap { get; private set; }
+		public Bytemap Bitmap { get; private set; }
 
-		internal int Width => Bitmap.GetLength(0);
-		internal int Height => Bitmap.GetLength(1);
+		internal int Width => Bitmap.Width;
+		internal int Height => Bitmap.Height;
 
-		private int GetColourInt(Color colour)
-		{
-			return ((int)colour.A << 24) + ((int)colour.B << 16) + ((int)colour.G << 8) + ((int)colour.R);
-		}
-
-		public int[] ColourMap
+		private int[] PaletteArray
 		{
 			get
 			{
-				int[] output = new int[Width * Height];
-				int i = 0;
-				for (int yy = Bitmap.GetUpperBound(1); yy >= 0; yy--)
-				for (int xx = 0; xx <= Bitmap.GetUpperBound(0); xx++)
+				int[] output = new int[Palette.Length];
+				IntPtr ptr = Marshal.AllocHGlobal(Palette.Length * 4);
+				for (int i = 0; i < output.Length; i++)
 				{
-					output[i++] = GetColourInt(Palette[Bitmap[xx, yy]]);
+					Colour colour = Palette[i];
+					Marshal.WriteInt32(ptr, (i * 4), ((int)colour.A << 24) + ((int)colour.B << 16) + ((int)colour.G << 8) + ((int)colour.R));
 				}
+				Marshal.Copy(ptr, output, 0, output.Length);
+				Marshal.FreeHGlobal(ptr);
 				return output;
 			}
 		}
+
+		public int[] ColourMap => Bitmap.ToColourMap(PaletteArray, bottomToTop: true);
 
 		internal Canvas(IBitmap bitmap)
 		{
@@ -47,5 +50,7 @@ namespace CivOne
 			Palette = bitmap.Palette;
 			Bitmap = bitmap.Bitmap;
 		}
+
+		public void Dispose() => Bitmap?.Dispose();
 	}
 }

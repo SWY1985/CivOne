@@ -9,7 +9,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -86,7 +85,7 @@ namespace CivOne
 			if (TopScreen == null) return;
 
 			Picture bitmap = new Picture(Runtime.CanvasWidth, Runtime.CanvasHeight, Common.TopScreen.Palette);
-			bitmap.Palette[0] = Color.Black;
+			bitmap.Palette[0] = Colour.Black;
 			
 			if (Common.HasAttribute<Modal>(TopScreen))
 			{
@@ -131,7 +130,8 @@ namespace CivOne
 			if (args[KeyModifier.Control, Key.F6] && Game.Started)
 			{
 				string filename = Common.CaptureFilename;
-				using (GifFile file = new GifFile(Map.Instance[0, 0, Map.WIDTH, Map.HEIGHT].ToPicture()))
+				using (IBitmap tilesPicture = Map.Instance[0, 0, Map.WIDTH, Map.HEIGHT].ToPicture())
+				using (GifFile file = new GifFile(tilesPicture))
 				using (FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write))
 				{
 					byte[] output = file.GetBytes();

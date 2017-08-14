@@ -8,7 +8,6 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.Drawing;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
@@ -25,6 +24,6 @@ namespace CivOne.Screens
 		bool MouseUp(ScreenEventArgs args);
 		bool MouseDrag(ScreenEventArgs args);
 		bool MouseMove(ScreenEventArgs args);
-		Color[] OriginalColours { get; }
+		Palette OriginalColours { get; }
 	}
 }
