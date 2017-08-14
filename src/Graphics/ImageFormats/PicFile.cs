@@ -9,10 +9,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using CivOne.IO;
+using CivOne.Graphics;
 
 namespace CivOne.Graphics.ImageFormats
 {
@@ -23,47 +23,21 @@ namespace CivOne.Graphics.ImageFormats
 		private static Dictionary<string, PicFile> _cache = new Dictionary<string, PicFile>();
 		private readonly byte[] _bytes;
 		private readonly byte[,] _colourTable = null;
-		private readonly Color[] _palette16 = Common.GetPalette16;
-		private readonly Color[] _palette256 = new Color[256];
-		private byte[,] _picture16;
-		private byte[,] _picture256;
+		private readonly Palette _palette16 = Common.GetPalette16;
+		private readonly Palette _palette256 = new Palette(256);
+		private Bytemap _picture16;
+		private Bytemap _picture256;
 
 		public bool HasPalette16 { get; internal set; }
 		public bool HasPalette256 { get; internal set; }
 		public bool HasPicture16 { get; internal set; }
 		public bool HasPicture256 { get; internal set; }
 
-		public Color[] GetPalette16
-		{
-			get
-			{
-				return _palette16;
-			}
-		}
+		public Palette GetPalette16 => _palette16.Copy();
+		public Palette GetPalette256 => _palette256.Copy();
 
-		public Color[] GetPalette256
-		{
-			get
-			{
-				return _palette256;
-			}
-		}
-
-		public byte[,] GetPicture16
-		{
-			get
-			{
-				return _picture16;
-			}
-		}
-
-		public byte[,] GetPicture256
-		{
-			get
-			{
-				return _picture256;
-			}
-		}
+		public Bytemap GetPicture16 => _picture16;
+		public Bytemap GetPicture256 => _picture256;
 
 		/// <summary>
 		/// Read the E0 colour replacement table from the PIC file.
@@ -124,15 +98,15 @@ namespace CivOne.Graphics.ImageFormats
 				// this never happens for any of the original Civilization resources
 				if (i < firstIndex || i > lastIndex)
 				{
-					_palette256[i] = Color.Transparent;
+					_palette256[i] = Colour.Transparent;
 					continue;
 				}
 				byte red = _bytes[index++], green = _bytes[index++], blue = _bytes[index++];
-				_palette256[i] = Color.FromArgb(255, red * 4, green * 4, blue * 4);
+				_palette256[i] = new Colour(red * 4, green * 4, blue * 4);
 			}
 			
 			// always set colour 0 to transparent
-			_palette256[0] = Color.Transparent;
+			_palette256[0] = Colour.Transparent;
 		}
 
 		/// <summary>
@@ -157,10 +131,11 @@ namespace CivOne.Graphics.ImageFormats
 		private void ReadPictureX0(ref int index)
 		{
 			uint length = BitConverter.ToUInt16(_bytes, index); index += 2;
-			uint width = BitConverter.ToUInt16(_bytes, index); index += 2;
-			uint height = BitConverter.ToUInt16(_bytes, index); index += 2;
+			int width = BitConverter.ToUInt16(_bytes, index); index += 2;
+			int height = BitConverter.ToUInt16(_bytes, index); index += 2;
 			
-			_picture256 = new byte[width, height];
+			_picture256?.Dispose();
+			_picture256 = new Bytemap(width, height);
 			
 			byte[] image = DecodePicture(ref index, length);
 			int c = 0;
@@ -185,10 +160,11 @@ namespace CivOne.Graphics.ImageFormats
 		private void ReadPictureX1(ref int index)
 		{
 			uint length = BitConverter.ToUInt16(_bytes, index); index += 2;
-			uint width = BitConverter.ToUInt16(_bytes, index); index += 2;
-			uint height = BitConverter.ToUInt16(_bytes, index); index += 2;
+			int width = BitConverter.ToUInt16(_bytes, index); index += 2;
+			int height = BitConverter.ToUInt16(_bytes, index); index += 2;
 			
-			_picture16 = new byte[width, height];
+			_picture16?.Dispose();
+			_picture16 = new Bytemap(width, height);
 
 			byte[] image = DecodePicture(ref index, length);
 			int c = 0;
@@ -210,18 +186,17 @@ namespace CivOne.Graphics.ImageFormats
 		{
 			if (colourTable == null) return;
 			
-			int width = _picture256.GetLength(0);
-			int height = _picture256.GetLength(1);
+			int width = _picture256.Width;
+			int height = _picture256.Height;
 			
-			_picture16 = new byte[width, height];
+			_picture16?.Dispose();
+			_picture16 = new Bytemap(width, height);
 			
 			for (int y = 0; y < height; y++)
+			for (int x = 0; x < width; x++)
 			{
-				for (int x = 0; x < width; x++)
-				{
-					byte col256 = _picture256[x, y];
-					_picture16[x, y] = colourTable[col256, (y + x) % 2];
-				}
+				byte col256 = _picture256[x, y];
+				_picture16[x, y] = colourTable[col256, (y + x) % 2];
 			}
 		}
 		
@@ -232,20 +207,11 @@ namespace CivOne.Graphics.ImageFormats
 			yield return (byte)0x00;
 			yield return (byte)0xFF;
 
-			foreach (Color color in _palette256)
+			for (int i = 0; i < _palette256.Length; i++)
 			{
-				yield return (byte)(color.R / 4);
-				yield return (byte)(color.G / 4);
-				yield return (byte)(color.B / 4);
-			}
-		}
-
-		private IEnumerable<byte> GetPictureData(byte[,] input)
-		{
-			for (int yy = 0; yy < _picture256.GetLength(1); yy++)
-			for (int xx = 0; xx < input.GetLength(0); xx++)
-			{
-				yield return input[xx, yy];
+				yield return (byte)(_palette256[i].R / 4);
+				yield return (byte)(_palette256[i].G / 4);
+				yield return (byte)(_palette256[i].B / 4);
 			}
 		}
 
@@ -268,12 +234,12 @@ namespace CivOne.Graphics.ImageFormats
 				{
 					br.Write((ushort)0x3058);
 
-					byte[] encoded = RLE.Encode(GetPictureData(_picture256).ToArray());
+					byte[] encoded = RLE.Encode(_picture256.ToByteArray());
 					encoded = LZW.Encode(encoded);
 					
 					br.Write((ushort)(encoded.Length + 5));
-					br.Write((ushort)_picture256.GetLength(0));
-					br.Write((ushort)_picture256.GetLength(1));
+					br.Write((ushort)_picture256.Width);
+					br.Write((ushort)_picture256.Height);
 					br.Write((byte)11);
 					br.Write(encoded);
 				}
@@ -328,8 +294,8 @@ namespace CivOne.Graphics.ImageFormats
 				HasPalette16 = true;
 				HasPalette256 = true;
 				_palette256 = Common.GetPalette256;
-				_picture16 = new byte[320, 200];
-				_picture256 = new byte[320, 200];
+				_picture16 = new Bytemap(320, 200);
+				_picture256 = new Bytemap(320, 200);
 				for (int yy = 0; yy < 200; yy++)
 				for (int xx = 0; xx < 320; xx++)
 				{
@@ -371,8 +337,6 @@ namespace CivOne.Graphics.ImageFormats
 						break;
 				}
 			}
-
-			// _cache.Add(file, this);
 
 			Log($"Loaded {filename}");
 		}

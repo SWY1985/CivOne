@@ -9,7 +9,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using CivOne.Enums;
@@ -83,7 +82,7 @@ namespace CivOne.Screens
 		private MouseCursor _cursor = MouseCursor.None;
 		public override MouseCursor Cursor => _cursor;
 		
-		private readonly Color[] _palette;
+		private readonly Palette _palette;
 		private char _driveLetter = 'C';
 		private bool _update = true;
 		private Menu _menu;
@@ -235,7 +234,7 @@ namespace CivOne.Screens
 			return false;
 		}
 		
-		public LoadGame(Color[] palette)
+		public LoadGame(Palette palette)
 		{
 			_palette = palette;
 		}

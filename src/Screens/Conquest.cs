@@ -43,7 +43,7 @@ namespace CivOne.Screens
 
 		private void SetPalette()
 		{
-			Color[] palette = _enemies[_enemy].Leader.GetPortrait().Palette;
+			Palette palette = _enemies[_enemy].Leader.GetPortrait().Palette;
 			for (int i = 64; i < 144; i++)
 			{
 				_canvas.Palette[i] = palette[i];

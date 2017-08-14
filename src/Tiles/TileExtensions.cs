@@ -7,7 +7,6 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using System.Drawing;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.Graphics;
@@ -19,7 +18,7 @@ namespace CivOne.Tiles
 	{
 		private static Game Game => Game.Instance;
 		private static Resources Resources => Resources.Instance;
-		private static Color[] Palette => Resources["SP257"].Palette;
+		private static Palette Palette => Resources["SP257"].Palette;
 
 		public static Picture ToPicture(this ITile[,] tiles, TileSettings settings = null, Player player = null)
 		{
@@ -34,7 +33,7 @@ namespace CivOne.Tiles
 				if (tile == null || player != null && !player.Visible(tile)) continue;
 
 				int x = (xx * 16), y = (yy * 16);
-				output.AddLayer(tile.ToPicture(settings), x, y);
+				output.AddLayer(tile.ToPicture(settings), x, y, dispose: true);
 
 				if (player != null)
 				{
@@ -70,14 +69,14 @@ namespace CivOne.Tiles
 
 			Picture output = new Picture(16, 16, Palette);
 
-			output.AddLayer(Resources[tile, settings.Improvements, settings.Roads]);
+			output.AddLayer(Resources[tile, settings.Improvements, settings.Roads], dispose: true);
 
 			if (settings.Cities && tile.City != null)
 			{
 				output.AddLayer(Icons.City(tile.City, smallFont: settings.CitySmallFonts));
 				if (settings.ActiveUnit && tile.Units.Any(u => u == Game.ActiveUnit && u.Owner != Game.PlayerNumber(player)))
 				{
-					output.AddLayer(tile.UnitsToPicture(), -1, -1);
+					output.AddLayer(tile.UnitsToPicture(), -1, -1, dispose: true);
 				}
 			}
 			else if (settings.EnemyUnits || settings.Units)
@@ -85,7 +84,7 @@ namespace CivOne.Tiles
 				int unitCount = tile.Units.Count(u => settings.Units || player == null || u.Owner != Game.PlayerNumber(player));
 				if (unitCount > 0)
 				{
-					output.AddLayer(tile.UnitsToPicture());
+					output.AddLayer(tile.UnitsToPicture(), dispose: true);
 				}
 			}
 
@@ -103,9 +102,12 @@ namespace CivOne.Tiles
 			IUnit unit = units.First();
 			
 			Picture output = new Picture(16, 16, Palette);
-			output.AddLayer(unit.GetUnit(unit.Owner));
-			if (stack)
-				output.AddLayer(unit.GetUnit(unit.Owner), -1, -1);
+			using (Picture unitPicture = unit.GetUnit(unit.Owner))
+			{
+				output.AddLayer(unitPicture);
+				if (stack)
+					output.AddLayer(unitPicture, -1, -1);
+			}
 			return output;
 		}
 	}

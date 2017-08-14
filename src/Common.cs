@@ -34,29 +34,11 @@ namespace CivOne
 		public static IAdvance[] Advances = Reflect.GetAdvances().ToArray();
 		public static IBuilding[] Buildings = Reflect.GetBuildings().ToArray();
 		public static IWonder[] Wonders = Reflect.GetWonders().ToArray();
-		public static ICivilization[] Civilizations
-		{
-			get
-			{
-				return Reflect.GetCivilizations().ToArray();
-			}
-		}
+		public static ICivilization[] Civilizations => Reflect.GetCivilizations().ToArray();
 		public static byte[] ColourLight = new byte[] { 12, 15, 10, 9, 14, 11, 13, 7 };
 		public static byte[] ColourDark = new byte[] { 4, 7, 2, 1, 10, 3, 4, 8 };
 		
-		internal static IEnumerable<string> AllCityNames
-		{
-			get
-			{
-				foreach (ICivilization civilization in Civilizations)
-				{
-					foreach (string cityName in civilization.CityNames)
-					{
-						yield return cityName;
-					}
-				}
-			}
-		}
+		internal static IEnumerable<string> AllCityNames => Civilizations.Select(x => x.CityNames).SelectMany(x => x);
 
 		private static List<IScreen> _screens = new List<IScreen>();
 		internal static IScreen[] Screens
@@ -109,32 +91,20 @@ namespace CivOne
 			}
 		}
 
-		public static Color[] DefaultPalette
+		public static Palette DefaultPalette
 		{
 			get
 			{
 				GamePlay gamePlay = GamePlay;
 				if (gamePlay != null)
 					return gamePlay.MainPalette;
-				return Resources.Instance.LoadPIC("SP257", true).Palette;
+				return Resources.Instance.LoadPIC("SP257").OriginalColours.Copy();
 			}
 		}
 
-		public static GamePlay GamePlay
-		{
-			get
-			{
-				return (GamePlay)_screens.FirstOrDefault(x => x is GamePlay);
-			}
-		}
+		public static GamePlay GamePlay => (GamePlay)_screens.FirstOrDefault(x => x is GamePlay);
 
-		public static Color[] GamePlayPalette
-		{
-			get
-			{
-				return GamePlay.Palette.ToArray();
-			}
-		}
+		public static Palette GamePlayPalette => GamePlay.Palette.Copy();
 
 		internal static void SetRandomSeedFromName(string name)
 		{
@@ -146,14 +116,15 @@ namespace CivOne
 			SetRandomSeed(number);
 		}
 		
-		internal static void SetRandomSeed(short seed)
-		{
-			Random = new Random(seed);
-		}
+		internal static void SetRandomSeed(short seed) => Random = new Random(seed);
 		
 		internal static void AddScreen(IScreen screen) => _screens.Add(screen);
 		
-		internal static void DestroyScreen(IScreen screen) => _screens.Remove(screen);
+		internal static void DestroyScreen(IScreen screen)
+		{
+			screen.Dispose();
+			_screens.Remove(screen);
+		}
 		
 		internal static bool HasScreenType<T>() where T : IScreen
 		{
@@ -311,66 +282,66 @@ namespace CivOne
 			return BytesToArray(reader.ReadBytes(length), itemLength);
 		}
 		
-		private static Color[] _palette16;
-		public static Color[] GetPalette16
+		private static Palette _palette16;
+		public static Palette GetPalette16
 		{
 			get
 			{
 				if (_palette16 == null)
 				{
 					byte[] shades = new byte[] { 0, 104, 183, 255 };
-					_palette16 = new Color[]
+					_palette16 = new Colour[]
 					{
-						Color.Transparent,
-						Color.FromArgb(shades[0], shades[0], shades[2]),
-						Color.FromArgb(shades[0], shades[2], shades[0]),
-						Color.FromArgb(shades[0], shades[2], shades[2]),
-						Color.FromArgb(shades[2], shades[0], shades[0]),
-						Color.FromArgb(shades[0], shades[0], shades[0]),
-						Color.FromArgb(shades[2], shades[1], shades[0]),
-						Color.FromArgb(shades[2], shades[2], shades[2]),
-						Color.FromArgb(shades[1], shades[1], shades[1]),
-						Color.FromArgb(shades[1], shades[1], shades[3]),
-						Color.FromArgb(shades[1], shades[3], shades[1]),
-						Color.FromArgb(shades[1], shades[3], shades[3]),
-						Color.FromArgb(shades[3], shades[1], shades[1]),
-						Color.FromArgb(shades[3], shades[1], shades[3]),
-						Color.FromArgb(shades[3], shades[3], shades[1]),
-						Color.FromArgb(shades[3], shades[3], shades[3]),
+						Colour.Transparent,
+						new Colour(shades[0], shades[0], shades[2]),
+						new Colour(shades[0], shades[2], shades[0]),
+						new Colour(shades[0], shades[2], shades[2]),
+						new Colour(shades[2], shades[0], shades[0]),
+						new Colour(shades[0], shades[0], shades[0]),
+						new Colour(shades[2], shades[1], shades[0]),
+						new Colour(shades[2], shades[2], shades[2]),
+						new Colour(shades[1], shades[1], shades[1]),
+						new Colour(shades[1], shades[1], shades[3]),
+						new Colour(shades[1], shades[3], shades[1]),
+						new Colour(shades[1], shades[3], shades[3]),
+						new Colour(shades[3], shades[1], shades[1]),
+						new Colour(shades[3], shades[1], shades[3]),
+						new Colour(shades[3], shades[3], shades[1]),
+						new Colour(shades[3], shades[3], shades[3]),
 					};
 				}
 				return _palette16;
 			}
 		}
 
-		private static Color[] _palette256;
-		public static Color[] GetPalette256
+		private static Palette _palette256;
+		public static Palette GetPalette256
 		{
 			get
 			{
 				if (_palette256 == null)
 				{
-					_palette256 = new Color[256];
+					_palette256 = new Palette(256);
 					for (int i = 0; i < 256; i++)
 					{
 						if (i >= 16 && i < 32)
 						{
 							int ii = (i % 16);
-							_palette256[i] = Color.FromArgb(254 - (ii * 16), 253 - (ii * 16), 252 - (ii * 16));
+							_palette256[i] = new Colour(254 - (ii * 16), 253 - (ii * 16), 252 - (ii * 16));
 							continue;
 						}
 						if (i >= 32 && i < 40)
 						{
 							// Greens
 							int ii = (i % 8);
-							_palette256[i] = Color.FromArgb(0, 197 - (ii * 8), 80 - (ii * 7));
+							_palette256[i] = new Colour(0, 197 - (ii * 8), 80 - (ii * 7));
 							continue;
 						}
 						if (i >= 40 && i < 48)
 						{
 							// Yellows
 							int ii = (i % 8);
-							_palette256[i] = Color.FromArgb(254 - (ii * 6), 245 - (ii * 6), 0);
+							_palette256[i] = new Colour(254 - (ii * 6), 245 - (ii * 6), 0);
 							continue;
 						}
 						if (i >= 48 && i < 64)
@@ -378,14 +349,14 @@ namespace CivOne
 							int r = Convert.ToInt32((float)_palette16[i % 16].R * 0.7F);
 							int g = Convert.ToInt32((float)_palette16[i % 16].G * 0.7F);
 							int b = Convert.ToInt32((float)_palette16[i % 16].B * 0.7F);
-							_palette256[i] = Color.FromArgb(r, g, b);
+							_palette256[i] = new Colour(r, g, b);
 							continue;
 						}
 						if (i >= 64 && i < 80)
 						{
 							// Blues
 							int ii = (i % 8);
-							_palette256[i] = Color.FromArgb(0, 67 - (ii * 5), 211 - (ii * 9));
+							_palette256[i] = new Colour(0, 67 - (ii * 5), 211 - (ii * 9));
 							continue;
 						}
 						_palette256[i] = GetPalette16[i % 16];

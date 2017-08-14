@@ -24,7 +24,7 @@ namespace CivOne.Screens.GamePlayPanels
 	{
 		private IUnit ActiveUnit => Game.ActiveUnit;
 		
-		private readonly Color[] _palette;
+		private readonly Palette _palette;
 		private Point _helperDirection = new Point(0, 0);
 		private bool _update = true;
 		private bool _centerChanged = false;
@@ -152,11 +152,14 @@ namespace CivOne.Screens.GamePlayPanels
 					dx *= 16; dy *= 16;
 
 					MoveUnit movement = movingUnit.Movement;
-					AddLayer(Map[movingUnit.X - 1, movingUnit.Y - 1, 3, 3].ToPicture(player: renderPlayer), dx - 16, dy - 16);
-					AddLayer(movingUnit.GetUnit(movingUnit.Owner), dx + movement.X, dy + movement.Y);
-					if (movingUnit is IBoardable && tile.Units.Any(u => u.Class == UnitClass.Land && (tile.City == null || (tile.City != null && u.Sentry))))
+					AddLayer(Map[movingUnit.X - 1, movingUnit.Y - 1, 3, 3].ToPicture(player: renderPlayer), dx - 16, dy - 16, dispose: true);
+					using (Picture unitPicture = movingUnit.GetUnit(movingUnit.Owner))
 					{
-						AddLayer(movingUnit.GetUnit(movingUnit.Owner), dx + movement.X - 1, dy + movement.Y - 1);
+						AddLayer(unitPicture, dx + movement.X, dy + movement.Y);
+						if (movingUnit is IBoardable && tile.Units.Any(u => u.Class == UnitClass.Land && (tile.City == null || (tile.City != null && u.Sentry))))
+						{
+							AddLayer(unitPicture, dx + movement.X - 1, dy + movement.Y - 1);
+						}
 					}
 					return true;
 				}
@@ -165,7 +168,7 @@ namespace CivOne.Screens.GamePlayPanels
 			{
 				_centerChanged = false;
 				_canvas.FillRectangle(5, 0, 0, _canvas.Width, _canvas.Height);
-				AddLayer(Tiles.ToPicture(player: renderPlayer));
+				AddLayer(Tiles.ToPicture(player: renderPlayer), dispose: true);
 			}
 
 			IUnit activeUnit = ActiveUnit;
@@ -181,7 +184,7 @@ namespace CivOne.Screens.GamePlayPanels
 					// blink status
 					if ((gameTick % 4) >= 2)
 					{
-						AddLayer(tile.ToPicture(TileSettings.Blink), dx, dy);
+						AddLayer(tile.ToPicture(TileSettings.Blink), dx, dy, dispose: true);
 					}
 
 					DrawHelperArrows(dx, dy);
@@ -485,6 +488,7 @@ namespace CivOne.Screens.GamePlayPanels
 			_tilesX = (int)Math.Ceiling((double)width / 16);
 			_tilesY = (int)Math.Ceiling((double)height / 16);
 
+			_canvas?.Dispose();
 			_canvas = new Picture(width, height, _canvas.Palette);
 			
 			while (_y + _tilesY > Map.HEIGHT) _y--;
@@ -496,7 +500,7 @@ namespace CivOne.Screens.GamePlayPanels
 			_x = 0;
 			_y = 0;
 			
-			_palette = Resources.Instance.LoadPIC("SP257").Palette;
+			_palette = Resources.Instance.LoadPIC("SP257").Palette.Copy();
 		}
 	}
 }

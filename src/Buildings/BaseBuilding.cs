@@ -22,13 +22,7 @@ namespace CivOne.Buildings
 		public virtual Picture Icon { get; protected set; }
 		public virtual Picture SmallIcon { get; protected set; }
 		public string Name { get; protected set; }
-		public byte PageCount
-		{
-			get
-			{
-				return 2;
-			}
-		}
+		public byte PageCount => 2;
 		public Picture DrawPage(byte pageNumber)
 		{
 			string[] text = new string[0];
@@ -73,13 +67,7 @@ namespace CivOne.Buildings
 		public IAdvance RequiredTech { get; protected set; }
 		public short SellPrice { get; private set; }
 		public short BuyPrice { get; private set; }
-		public byte ProductionId
-		{
-			get
-			{
-				return (byte)(255 - Type);
-			}
-		}
+		public byte ProductionId => (byte)(255 - Type);
 		public byte Price { get; protected set; }
 		public byte Maintenance { get; protected set; }
 		
@@ -109,22 +97,18 @@ namespace CivOne.Buildings
 		
 		protected void SetSmallIcon(int col, int row)
 		{
-			Picture icon = Resources.Instance.LoadPIC((Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? "SP299" : "SPRITES")).GetPart(160 + (19 * col), 50 + (10 * row), 20, 10);
-			Picture.ReplaceColours(icon, 0, 5);
-			SmallIcon = new Picture(20, 10);
-			SmallIcon.FillRectangle(5, 0, 0, 20, 10);
-			SmallIcon.AddLayer(icon);
-			SmallIcon.FillRectangle(0, 0, 0, 1, 10);
-			SmallIcon.FillRectangle(0, 19, 0, 1, 10);
-		}
-		
-		public byte Id
-		{
-			get
+			using (Picture icon = Resources.Instance.LoadPIC((Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? "SP299" : "SPRITES")).GetPart(160 + (19 * col), 50 + (10 * row), 20, 10))
 			{
-				return (byte)Type;
+				Picture.ReplaceColours(icon, 0, 5);
+				SmallIcon = new Picture(20, 10);
+				SmallIcon.FillRectangle(5, 0, 0, 20, 10);
+				SmallIcon.AddLayer(icon);
+				SmallIcon.FillRectangle(0, 0, 0, 1, 10);
+				SmallIcon.FillRectangle(0, 19, 0, 1, 10);
 			}
 		}
+		
+		public byte Id => (byte)Type;
 		
 		protected BaseBuilding(byte price = 1, byte maintenance = 0)
 		{

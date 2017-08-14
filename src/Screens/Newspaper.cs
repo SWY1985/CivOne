@@ -8,7 +8,6 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.Drawing;
 using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Events;
@@ -51,7 +50,7 @@ namespace CivOne.Screens
 		public Newspaper(City city, string[] message, bool showGovernment = false)
 		{
 			bool modernGovernment = Human.HasAdvance<Invention>();
-			Color[] palette = Common.DefaultPalette;
+			Palette palette = Common.DefaultPalette;
 
 			Picture[] governmentPortraits = new Picture[4];
 			if (showGovernment)

@@ -116,41 +116,45 @@ namespace CivOne.Screens
 
 				int width = itemWidth + 14;
 				int height = _menuHeight + 10 + Resources.Instance.GetFontHeight(_fontId);
-				Picture menuGfx = new Picture(width, height);
-				menuGfx.Tile(Patterns.PanelGrey);
-				menuGfx.AddBorder(15, 8, 0, 0, width, height);
-				menuGfx.DrawText(menuHeaderText, _fontId, 15, 4, 4);
-				menuGfx.DrawText($"(Help available)", 1, 10, width, height - Resources.Instance.GetFontHeight(1), TextAlign.Right);
 
-				_canvas.FillRectangle(5, 80, 8, width + 2, height + 2);
-				AddLayer(menuGfx, 81, 9);
-				
-				Picture background = menuGfx.GetPart(2, 3 + Resources.Instance.GetFontHeight(_fontId), itemWidth, Resources.Instance.GetFontHeight(_fontId) * menuItems.Count + 4);
-				Picture.ReplaceColours(background, new byte[] { 7, 22 }, new byte[] { 11, 3 });
-
-				Menu menu = new Menu(Palette, background)
+				using (Picture menuGfx = new Picture(width, height))
 				{
-					X = 83,
-					Y = 12 + Resources.Instance.GetFontHeight(_fontId),
-					Width = itemWidth,
-					ActiveColour = 11,
-					TextColour = 5,
-					FontId = _fontId
-				};
+					menuGfx.Tile(Patterns.PanelGrey);
+					menuGfx.AddBorder(15, 8, 0, 0, width, height);
+					menuGfx.DrawText(menuHeaderText, _fontId, 15, 4, 4);
+					menuGfx.DrawText($"(Help available)", 1, 10, width, height - Resources.Instance.GetFontHeight(1), TextAlign.Right);
 
-				int i = 0;
-				foreach (string item in menuItems)
-				{
-					menu.Items.Add(item, i++)
-						.OnSelect(ProductionChoice)
-						.OnContext(ProductionContext);
+					_canvas.FillRectangle(5, 80, 8, width + 2, height + 2);
+					AddLayer(menuGfx, 81, 9);
+					
+					using (Picture background = menuGfx.GetPart(2, 3 + Resources.Instance.GetFontHeight(_fontId), itemWidth, Resources.Instance.GetFontHeight(_fontId) * menuItems.Count + 4))
+					{
+						Picture.ReplaceColours(background, new byte[] { 7, 22 }, new byte[] { 11, 3 });
+
+						Menu menu = new Menu(Palette, background)
+						{
+							X = 83,
+							Y = 12 + Resources.Instance.GetFontHeight(_fontId),
+							Width = itemWidth,
+							ActiveColour = 11,
+							TextColour = 5,
+							FontId = _fontId
+						};
+
+						int i = 0;
+						foreach (string item in menuItems)
+						{
+							menu.Items.Add(item, i++)
+								.OnSelect(ProductionChoice)
+								.OnContext(ProductionContext);
+						}
+						menu.Width += 10;
+						menu.MissClick += MenuCancel;
+						menu.Cancel += MenuCancel;
+
+						AddMenu(menu);
+					}
 				}
-				menu.Width += 10;
-				menu.MissClick += MenuCancel;
-				menu.Cancel += MenuCancel;
-
-				AddMenu(menu);
-				
 				_update = false;
 			}
 			return true;

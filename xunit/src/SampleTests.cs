@@ -28,7 +28,7 @@ namespace CivOne.UnitTests
 		public void PaletteColourCount()
 		{
 			int expectedCount = 256;
-			int count = Common.DefaultPalette.Count();
+			int count = Common.DefaultPalette.Length;
 			bool result = (count == expectedCount);
 			
 			Assert.True(result, $"Common.DefaultPalette should have {expectedCount} entries, returns {count}.");

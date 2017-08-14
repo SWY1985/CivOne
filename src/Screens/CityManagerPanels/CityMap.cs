@@ -67,7 +67,7 @@ namespace CivOne.Screens.CityManagerPanels
 				_canvas.FillRectangle(0, 82, 0, 2, 82);
 				
 				ITile[,] tiles = _city.CityRadius;
-				AddLayer(tiles.ToPicture(TileSettings.CityManager, Settings.RevealWorld ? null : Game.GetPlayer(_city.Owner)), 1, 1);
+				AddLayer(tiles.ToPicture(TileSettings.CityManager, Settings.RevealWorld ? null : Game.GetPlayer(_city.Owner)), 1, 1, dispose: true);
 
 				for (int xx = 0; xx < 5; xx++)
 				for (int yy = 0; yy < 5; yy++)
