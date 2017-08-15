@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Drawing;
+using CivOne.Enums;
 using CivOne.IO;
 
 namespace CivOne.Graphics
@@ -84,6 +85,19 @@ namespace CivOne.Graphics
 				}
 			}
 			return bitmap;
+		}
+
+		public static void DrawText(this IBitmap bitmap, string text, int font, byte colour, int x, int y, TextAlign align = TextAlign.Left) => DrawText(bitmap, text, font, colour, colour, x, y, align);
+		public static void DrawText(this IBitmap bitmap, string text, int font, byte firstLetterColour, byte colour, int x, int y, TextAlign align = TextAlign.Left)
+		{
+			if (string.IsNullOrWhiteSpace(text)) return;
+			Bytemap textLayer = Resources.Instance.GetText(text, font, firstLetterColour, colour).Bitmap;
+			switch(align)
+			{
+				case TextAlign.Center: x -= (textLayer.Width + 1) / 2; break;
+				case TextAlign.Right: x -= textLayer.Width; break;
+			}
+			AddLayer(bitmap, textLayer, x, y, dispose: true);
 		}
 
 		public static Bytemap Crop(this IBitmap bitmap, int left, int top, int width, int height) => bitmap.Bitmap[left, top, width, height];

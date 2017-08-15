@@ -71,32 +71,6 @@ namespace CivOne.Graphics
 			}
 		}
 		
-		public void DrawText(string text, int font, byte colour, int x, int y, TextAlign align = TextAlign.Left)
-		{
-			if (colour == 0 || string.IsNullOrWhiteSpace(text)) return;
-			DrawText(text, font, colour, colour, x, y, align);
-		}
-		public void DrawText(string text, int font, byte firstLetterColour, byte colour, int x, int y, TextAlign align = TextAlign.Left)
-		{
-			using (Picture textImage = Resources.Instance.GetText(text, font, firstLetterColour, colour))
-			{
-				DrawText(textImage, align, x, y);
-			}
-		}
-		private void DrawText(Picture textImage, TextAlign align, int x, int y)
-		{
-			switch (align)
-			{
-				case TextAlign.Center:
-					x -= (textImage.Width + 1) / 2;
-					break;
-				case TextAlign.Right:
-					x -= textImage.Width;
-					break;
-			}
-			this.AddLayer(textImage, x, y);
-		}
-		
 		public void ResetPalette()
 		{
 			for (int i = 0; i < 256; i++)
