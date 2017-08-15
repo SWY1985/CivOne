@@ -27,6 +27,11 @@ namespace CivOne.IO
 		protected void WriteInt(int offset, int value) => Marshal.WriteInt32(_handle, offset, value);
 		protected void WriteLong(int offset, long value) => Marshal.WriteInt64(_handle, offset, value);
 
+		protected void Clear()
+		{
+			Marshal.Copy(new byte[Size], 0, _handle, Size);
+		}
+
 		protected byte[] ToByteArray()
 		{
 			byte[] output = new byte[Size];
@@ -46,8 +51,7 @@ namespace CivOne.IO
 			Size = size;
 			_handle = Marshal.AllocHGlobal(Size);
 
-			if (!initializeZero) return;
-			Marshal.Copy(new byte[size], 0, _handle, size);
+			if (initializeZero) Clear();
 		}
 
 		~BaseUnmanaged()

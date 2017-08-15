@@ -17,6 +17,8 @@ namespace CivOne.Graphics
 	{
 		public int Length => base.Size / 4;
 
+		private int ToInt(int index) => ReadInt(index * 4);
+
 		public Colour this[int index]
 		{
 			get
@@ -40,6 +42,16 @@ namespace CivOne.Graphics
 		public IEnumerable<Colour> Entries => Enumerable.Range(0, Length).Select(x => this[x]);
 
 		public Palette Copy() => Palette.Copy(this);
+
+		public void MergePalette(Palette source, int startIndex = -1, int count = -1)
+		{
+			if (startIndex == -1) startIndex = 0;
+			if (count == -1) count = Length - startIndex;
+			for (int i = startIndex; i < startIndex + count; i++)
+			{
+				WriteInt(i * 4, source.ToInt(i));
+			}
+		}
 
 		public static Palette Copy(Palette source) => new Palette(source);
 

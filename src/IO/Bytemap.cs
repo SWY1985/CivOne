@@ -22,6 +22,8 @@ namespace CivOne.IO
 			set => WriteByte((Width * y) + x, value);
 		}
 
+		public new void Clear() => base.Clear();
+
 		public int[] ToColourMap(int[] palette, bool rightToLeft = false, bool bottomToTop = false)
 		{
 			int[] output = new int[Length];
