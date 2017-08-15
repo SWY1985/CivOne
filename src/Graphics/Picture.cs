@@ -140,16 +140,7 @@ namespace CivOne.Graphics
 			return this;
 		}
 
-		public Picture GetPart(int x, int y, int width, int height)
-		{
-			byte[,] bytes = new byte[width, height];
-			for (int yy = y; yy < (y + height) && yy < Height; yy++)
-			for (int xx = x; xx < (x + width) && xx < Width; xx++)
-			{
-				bytes[xx - x, yy - y] = _bitmap[xx, yy];
-			}
-			return new Picture(bytes, Palette);
-		}
+		public Picture GetPart(int left, int top, int width, int height) => new Picture(_bitmap[left, top, width, height], Palette);
 		
 		public void AddBorder(byte colourLight, byte colourDark, int x, int y, int width, int height, int depth = 0)
 		{

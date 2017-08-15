@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Drawing;
+using CivOne.IO;
 
 namespace CivOne.Graphics
 {
@@ -41,15 +42,23 @@ namespace CivOne.Graphics
 		public static IBitmap AddLayer(this IBitmap bitmap, IBitmap layer, int left = 0, int top = 0, bool dispose = false)
 		{
 			if (layer == null) return bitmap;
-			for (int yy = 0; yy < layer.GetHeight(); yy++)
+			AddLayer(bitmap, layer.Bitmap, left, top, false);
+			if (dispose) layer.Dispose();
+			return bitmap;
+		}
+		public static IBitmap AddLayer(this IBitmap bitmap, Bytemap layer, Point point, bool dispose = false) => AddLayer(bitmap, layer, point.X, point.Y, dispose);
+		public static IBitmap AddLayer(this IBitmap bitmap, Bytemap layer, int left = 0, int top = 0, bool dispose = false)
+		{
+			if (layer == null) return bitmap;
+			for (int yy = 0; yy < layer.Height; yy++)
 			{
 				if (top + yy >= bitmap.GetHeight()) break;
 				if (bitmap.OutBoundY(top + yy)) continue;
-				for (int xx = 0; xx < layer.GetWidth(); xx++)
+				for (int xx = 0; xx < layer.Width; xx++)
 				{
 					if (left + xx >= bitmap.GetWidth()) break;
-					if (layer.Bitmap[xx, yy] == 0 || bitmap.OutBoundX(left + xx)) continue;
-					bitmap.Bitmap[left + xx, top + yy] = layer.Bitmap[xx, yy];
+					if (layer[xx, yy] == 0 || bitmap.OutBoundX(left + xx)) continue;
+					bitmap.Bitmap[left + xx, top + yy] = layer[xx, yy];
 				}
 			}
 			if (dispose) layer.Dispose();
@@ -76,5 +85,7 @@ namespace CivOne.Graphics
 			}
 			return bitmap;
 		}
+
+		public static Bytemap Crop(this IBitmap bitmap, int left, int top, int width, int height) => bitmap.Bitmap[left, top, width, height];
 	}
 }

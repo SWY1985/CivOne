@@ -21,6 +21,8 @@ namespace CivOne.Screens
 
 		protected Picture _canvas = new Picture(320, 200);
 		
+		protected IBitmap AddLayer(Bytemap layer, Point point, bool dispose = false) => _canvas.AddLayer(layer, point.X, point.Y, dispose);
+		protected IBitmap AddLayer(Bytemap layer, int x = 0, int y = 0, bool dispose = false) => _canvas.AddLayer(layer, x, y, dispose);
 		protected IBitmap AddLayer(IBitmap bitmap, Point point, bool dispose = false) => _canvas.AddLayer(bitmap, point.X, point.Y, dispose);
 		protected IBitmap AddLayer(IBitmap bitmap, int x = 0, int y = 0, bool dispose = false) => _canvas.AddLayer(bitmap, x, y, dispose);
 
