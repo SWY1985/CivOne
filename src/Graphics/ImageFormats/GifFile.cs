@@ -20,18 +20,6 @@ namespace CivOne.Graphics.ImageFormats
 		private Palette _palette;
 		private Bytemap _pixels;
 
-		private IEnumerable<byte> GetPixels
-		{
-			get
-			{
-				for (int yy = 0; yy < _pixels.Height; yy++)
-				for (int xx = 0; xx < _pixels.Width; xx++)
-				{
-					yield return _pixels[xx, yy];
-				}
-			}
-		}
-
 		private IEnumerable<byte[]> ByteBlock(byte[] input)
 		{
 			for (int offset = 0; offset < input.Length; offset += 255)
@@ -89,7 +77,7 @@ namespace CivOne.Graphics.ImageFormats
 				// No local colour table
 				writer.Write((byte)0x00);
 
-				byte[] encoded = LZW.Encode(GetPixels.ToArray(), true, false, 12);
+				byte[] encoded = LZW.Encode(_pixels.ToByteArray(), true, false, 12);
 				
 				// Code length
 				writer.Write((byte)0x08);
