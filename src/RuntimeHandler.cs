@@ -84,21 +84,29 @@ namespace CivOne
 		{
 			if (TopScreen == null) return;
 
-			Picture bitmap = new Picture(Runtime.CanvasWidth, Runtime.CanvasHeight, Common.TopScreen.Palette);
-			bitmap.Palette[0] = Colour.Black;
+			if (Runtime.Bitmap == null || Runtime.Bitmap.GetWidth() != Runtime.CanvasWidth || Runtime.Bitmap.GetWidth() != Runtime.CanvasWidth)
+			{
+				Runtime.Bitmap?.Dispose();
+				Runtime.Bitmap = new Picture(Runtime.CanvasWidth, Runtime.CanvasHeight, Common.TopScreen.Palette);
+				Runtime.Bitmap.Palette[0] = Colour.Black;
+			}
+			else
+			{
+				Runtime.Bitmap.Palette.MergePalette(Common.TopScreen.Palette, 1);
+				Runtime.Bitmap.Bitmap.Clear();
+			}
 			
 			if (Common.HasAttribute<Modal>(TopScreen))
 			{
-				bitmap.AddLayer(TopScreen);
+				Runtime.Bitmap.AddLayer(TopScreen);
 			}
 			else
 			{
 				foreach (IScreen screen in Common.Screens)
 				{
-					bitmap.AddLayer(screen);
+					Runtime.Bitmap.AddLayer(screen);
 				}
 			}
-			Runtime.Bitmap = bitmap;
 
 			if (_currentCursor != Common.Cursor || _cursorType != Settings.Instance.CursorType)
 			{
