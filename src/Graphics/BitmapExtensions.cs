@@ -88,7 +88,7 @@ namespace CivOne.Graphics
 		}
 
 		public static IBitmap DrawText(this IBitmap bitmap, string text, int font, byte colour, int x, int y, TextAlign align = TextAlign.Left) => DrawText(bitmap, text, font, colour, colour, x, y, align);
-		public static IBitmap DrawText(this IBitmap bitmap, string text, int font, byte firstLetterColour, byte colour, int x, int y, TextAlign align = TextAlign.Left)
+		private static IBitmap DrawText(this IBitmap bitmap, string text, int font, byte firstLetterColour, byte colour, int x, int y, TextAlign align = TextAlign.Left)
 		{
 			if (string.IsNullOrWhiteSpace(text)) return bitmap;
 			Bytemap textLayer = Resources.Instance.GetText(text, font, firstLetterColour, colour).Bitmap;
@@ -97,6 +97,52 @@ namespace CivOne.Graphics
 				case TextAlign.Center: x -= (textLayer.Width + 1) / 2; break;
 				case TextAlign.Right: x -= textLayer.Width; break;
 			}
+			AddLayer(bitmap, textLayer, x, y, dispose: true);
+			return bitmap;
+		}
+		public static IBitmap DrawText(this IBitmap bitmap, string text, int x = 0, int y = 0, TextSettings settings = null)
+		{
+			if (string.IsNullOrWhiteSpace(text)) return bitmap;
+			if (settings == null)
+			{
+				if (bitmap is IDefaultTextSettings)
+					settings = (bitmap as IDefaultTextSettings).DefaultTextSettings;
+				else
+					settings = new TextSettings();
+			}
+			
+			Size textSize = Resources.Instance.GetTextSize(settings.FontId, text);
+			Bytemap textLayer;
+			if (settings.FirstLetterColour != 0)
+			{
+				textLayer = Resources.Instance.GetText(text, settings.FontId, settings.FirstLetterColour, settings.Colour).Bitmap;
+			}
+			else if (settings.TopColour != 0 && settings.BottomColour != 0)
+			{
+				textLayer = new Picture(textSize.Width, textSize.Height + 2)
+					.AddLayer(Resources.Instance.GetText(text, settings.FontId, settings.TopColour))
+					.AddLayer(Resources.Instance.GetText(text, settings.FontId, settings.BottomColour), top: 2)
+					.AddLayer(Resources.Instance.GetText(text, settings.FontId, settings.Colour), top: 1)
+					.Bitmap;
+			}
+			else if (settings.BottomColour != 0)
+			{
+				textLayer = new Picture(textSize.Width, textSize.Height + 1)
+					.AddLayer(Resources.Instance.GetText(text, settings.FontId, settings.BottomColour), top: 1)
+					.AddLayer(Resources.Instance.GetText(text, settings.FontId, settings.Colour))
+					.Bitmap;
+			}
+			else
+			{
+				textLayer = Resources.Instance.GetText(text, settings.FontId, settings.Colour).Bitmap;
+			}
+
+			switch(settings.Alignment)
+			{
+				case TextAlign.Center: x -= (textLayer.Width + 1) / 2; break;
+				case TextAlign.Right: x -= textLayer.Width; break;
+			}
+
 			AddLayer(bitmap, textLayer, x, y, dispose: true);
 			return bitmap;
 		}

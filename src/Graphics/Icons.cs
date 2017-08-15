@@ -325,6 +325,11 @@ namespace CivOne.Graphics
 		public static Picture City(City city, bool smallFont = false)
 		{
 			Picture output = new Picture(16, 16);
+			TextSettings settings = new TextSettings()
+			{
+				FontId = smallFont ? 1 : 0,
+				Alignment = TextAlign.Center
+			};
 			
 			if (city.Tile.Units.Length > 0)
 				output.FillRectangle(5, 0, 0, 16, 16);
@@ -344,7 +349,8 @@ namespace CivOne.Graphics
 			Picture.ReplaceColours(resource, 3, 0);
 			Picture.ReplaceColours(resource, 5, Common.ColourDark[city.Owner]);
 			output.AddLayer(resource, 0, 0);
-			output.DrawText($"{city.Size}", (smallFont ? 1 : 0), 5, 5, 9, 5, TextAlign.Center);
+			output.DrawText($"{city.Size}", (smallFont ? 1 : 0), 5, 9, 5, TextAlign.Center);
+			// output.DrawText($"{city.Size}", 9, 5);
 			resource?.Dispose();
 
 			if (city.HasBuilding<CityWalls>())

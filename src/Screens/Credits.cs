@@ -25,7 +25,6 @@ namespace CivOne.Screens
 		private readonly int[] SHOW_INTRO_LINE = new[] { 312, 279, 254, 221, 196, 171, 146, 121, 96, 71, 46, 21, -4, -37, -62, -95, -120, -145, -170, -195, -220, -245, -270, -295 };
 		private readonly int[] HIDE_INTRO_LINE = new[] { 287, 229, -29, -87, -315 };
 		
-		private readonly byte[] _textColours;
 		private readonly byte[] _menuColours;
 		private readonly string[] _introText;
 		private readonly Picture[] _pictures;
@@ -120,9 +119,7 @@ namespace CivOne.Screens
 			}
 			if (_introLeft > -320 && _showIntroLine)
 			{
-				this.DrawText(_introText[_introLine], 4, _textColours[0], (Width / 2), (Height / 2) - 18, TextAlign.Center)
-					.DrawText(_introText[_introLine], 4, _textColours[1], (Width / 2), (Height / 2) - 16, TextAlign.Center)
-					.DrawText(_introText[_introLine], 4, _textColours[2], (Width / 2), (Height / 2) - 17, TextAlign.Center);
+				this.DrawText(_introText[_introLine], (Width / 2), (Height / 2) - 16);
 			}
 			if (_introLeft == -320 && _noiseCounter > 0)
 			{
@@ -324,12 +321,15 @@ namespace CivOne.Screens
 			switch (Settings.GraphicsMode)
 			{
 				case GraphicsMode.Graphics256:
-					_textColours = new byte[] { 248, 242, 244 };
+					DefaultTextSettings = TextSettings.ThreeLayers(244, 248, 242);
 					break;
 				case GraphicsMode.Graphics16:
-					_textColours = new byte[] { 15, 7, 15 };
+					DefaultTextSettings = TextSettings.ThreeLayers(15, 15, 7);
 					break;
 			}
+			DefaultTextSettings.Alignment = TextAlign.Center;
+			DefaultTextSettings.FontId = 4;
+			
 			_menuColours = new byte[] { 8, 15, 7 };
 			
 			_canvas = new Picture(320, 200, _pictures[2].Palette);

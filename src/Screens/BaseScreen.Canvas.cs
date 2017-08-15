@@ -15,8 +15,10 @@ using CivOne.IO;
 
 namespace CivOne.Screens
 {
-	public abstract partial class BaseScreen : IBitmap
+	public abstract partial class BaseScreen : IDefaultTextSettings
 	{
+		public TextSettings DefaultTextSettings { get; set; }
+
 		internal static Resources Resources => Resources.Instance;
 
 		protected Picture _canvas = new Picture(320, 200);

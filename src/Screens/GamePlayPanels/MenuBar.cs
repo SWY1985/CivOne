@@ -37,11 +37,11 @@ namespace CivOne.Screens.GamePlayPanels
 			if (_update)
 			{
 				this.FillRectangle(5, 0, 0, 320, 8)
-					.DrawText("GAME", FONT_ID, 15, 7, 8, 1, TextAlign.Left)
-					.DrawText("ORDERS", FONT_ID, 15, 7, 64, 1, TextAlign.Left)
-					.DrawText("ADVISORS", FONT_ID, 15, 7, 128, 1, TextAlign.Left)
-					.DrawText("WORLD", FONT_ID, 15, 7, 192, 1, TextAlign.Left)
-					.DrawText("CIVILOPEDIA", FONT_ID, 15, 7, 240, 1, TextAlign.Left);
+					.DrawText("GAME", 8, 1)
+					.DrawText("ORDERS", 64, 1)
+					.DrawText("ADVISORS", 128, 1)
+					.DrawText("WORLD", 192, 1)
+					.DrawText("CIVILOPEDIA", 240, 1);
 
 				_update = false;
 				return true;
@@ -108,6 +108,8 @@ namespace CivOne.Screens.GamePlayPanels
 			_canvas = new Picture(320, 8, palette);
 			this.FillRectangle(5, 0, 0, 320, 8);
 			_update = true;
+
+			DefaultTextSettings = TextSettings.DifferentFirstLetter(15, 7);
 			
 			_rectMenus = new Rectangle[5];
 			_rectMenus[0] = new Rectangle(0, 0, 56, 8);
