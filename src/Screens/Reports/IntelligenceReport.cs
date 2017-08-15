@@ -21,7 +21,7 @@ namespace CivOne.Screens.Reports
 			foreach (Player player in Game.Players.Where(p => p != 0))
 			{
 				if (player.DestroyTurn >= 0) continue;
-				_canvas.FillRectangle(9, 4, yy, 314, 1);
+				this.FillRectangle(9, 4, yy, 314, 1);
 
 				byte id = Game.PlayerNumber(player);
 				byte colour = Common.ColourLight[id];
@@ -29,13 +29,13 @@ namespace CivOne.Screens.Reports
 				{
 					int unitCount = Game.GetUnits().Count(u => u.Owner == id && u.Home != null);
 
-					_canvas.DrawText($"{player.TribeNamePlural}: {player.LeaderName}", 0, 5, 8, yy + 3);
-					_canvas.DrawText($"{player.TribeNamePlural}: {player.LeaderName}", 0, colour, 8, yy + 2);
-					_canvas.DrawText($"{player.Government.Name}, {player.Gold}$, {unitCount} Units.", 0, colour, 160, yy + 2);
+					this.DrawText($"{player.TribeNamePlural}: {player.LeaderName}", 0, 5, 8, yy + 3)
+						.DrawText($"{player.TribeNamePlural}: {player.LeaderName}", 0, colour, 8, yy + 2)
+						.DrawText($"{player.Government.Name}, {player.Gold}$, {unitCount} Units.", 0, colour, 160, yy + 2);
 				}
 				else
 				{
-					_canvas.DrawText("No embassy established.", 0, colour, 160, yy + 2, TextAlign.Center);
+					this.DrawText("No embassy established.", 0, colour, 160, yy + 2, TextAlign.Center);
 				}
 
 				yy += 24;

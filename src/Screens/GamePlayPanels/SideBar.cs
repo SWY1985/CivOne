@@ -194,9 +194,9 @@ namespace CivOne.Screens.GamePlayPanels
 				DrawDemographics();
 				DrawGameInfo(gameTick);
 				
-				AddLayer(_miniMap, 0, 0);
-				AddLayer(_demographics, 0, 50);
-				AddLayer(_gameInfo, 0, 89);
+				this.AddLayer(_miniMap, 0, 0)
+					.AddLayer(_demographics, 0, 50)
+					.AddLayer(_gameInfo, 0, 89);
 				
 				_update = false;
 				return true;
@@ -244,9 +244,9 @@ namespace CivOne.Screens.GamePlayPanels
 		public void Resize(int height)
 		{
 			_canvas?.Dispose();
-			_canvas = new Picture(80, height, _canvas.Palette);
+			_canvas = new Picture(80, height, Palette);
 			_gameInfo?.Dispose();
-			_gameInfo = new Picture(80, (height - 89), _canvas.Palette);
+			_gameInfo = new Picture(80, (height - 89), Palette);
 			_update = true;
 		}
 
@@ -261,9 +261,9 @@ namespace CivOne.Screens.GamePlayPanels
 			DrawGameInfo();
 			
 			_canvas = new Picture(80, 192, palette);
-			AddLayer(_miniMap, 0, 0);
-			AddLayer(_demographics, 0, 50);
-			AddLayer(_gameInfo, 0, 89);
+			this.AddLayer(_miniMap, 0, 0)
+				.AddLayer(_demographics, 0, 50)
+				.AddLayer(_gameInfo, 0, 89);
 		}
 
 		public override void Dispose()

@@ -87,10 +87,10 @@ namespace CivOne.Graphics
 			return bitmap;
 		}
 
-		public static void DrawText(this IBitmap bitmap, string text, int font, byte colour, int x, int y, TextAlign align = TextAlign.Left) => DrawText(bitmap, text, font, colour, colour, x, y, align);
-		public static void DrawText(this IBitmap bitmap, string text, int font, byte firstLetterColour, byte colour, int x, int y, TextAlign align = TextAlign.Left)
+		public static IBitmap DrawText(this IBitmap bitmap, string text, int font, byte colour, int x, int y, TextAlign align = TextAlign.Left) => DrawText(bitmap, text, font, colour, colour, x, y, align);
+		public static IBitmap DrawText(this IBitmap bitmap, string text, int font, byte firstLetterColour, byte colour, int x, int y, TextAlign align = TextAlign.Left)
 		{
-			if (string.IsNullOrWhiteSpace(text)) return;
+			if (string.IsNullOrWhiteSpace(text)) return bitmap;
 			Bytemap textLayer = Resources.Instance.GetText(text, font, firstLetterColour, colour).Bitmap;
 			switch(align)
 			{
@@ -98,6 +98,7 @@ namespace CivOne.Graphics
 				case TextAlign.Right: x -= textLayer.Width; break;
 			}
 			AddLayer(bitmap, textLayer, x, y, dispose: true);
+			return bitmap;
 		}
 
 		public static Bytemap Crop(this IBitmap bitmap, int left, int top, int width, int height) => bitmap.Bitmap[left, top, width, height];

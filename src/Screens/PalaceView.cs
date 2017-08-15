@@ -184,7 +184,7 @@ namespace CivOne.Screens
 		{
 			if (_update)
 			{
-				AddLayer(DrawPalace());
+				this.AddLayer(DrawPalace());
 
 				switch (_currentStage)
 				{
@@ -199,8 +199,8 @@ namespace CivOne.Screens
 								message.DrawText(line.Trim('^'), 0, 15, 4, yy);
 								yy += 8;
 							}
-							_canvas.FillRectangle(5, 20, 16, 271, 41);
-							AddLayer(message, 21, 17);
+							this.FillRectangle(5, 20, 16, 271, 41)
+								.AddLayer(message, 21, 17);
 						}
 						break;
 					case Stage.SelectPart:
@@ -209,24 +209,24 @@ namespace CivOne.Screens
 							message.Tile(Patterns.PanelGrey);
 							message.AddBorder(15, 8, 0, 0, 180, 15);
 							message.DrawText("Which section shall we improve?", 0, 15, 4, 4);
-							_canvas.FillRectangle(5, 40, 16, 182, 17);
-							AddLayer(message, 41, 17);
+							this.FillRectangle(5, 40, 16, 182, 17)
+								.AddLayer(message, 41, 17);
 
 							for (int i = 0; i < 7; i++)
 							{
 								if (Human.Palace.GetPalaceLevel(i) >= 4) continue;
 
 								int xx = 12 + (48 * i);
-								_canvas.DrawText($"{i + 1}", 0, 5, xx, 145);
-								_canvas.DrawText($"{i + 1}", 0, 14, xx, 144);
+								this.DrawText($"{i + 1}", 0, 5, xx, 145)
+									.DrawText($"{i + 1}", 0, 14, xx, 144);
 							}
 							for (int i = 0; i < 3; i++)
 							{
 								if (Human.Palace.GetGardenLevel(i) >= 3) continue;
 
 								int xx = 40 + (120 * i);
-								_canvas.DrawText($"{(char)('A' + i)}", 0, 5, xx, 161);
-								_canvas.DrawText($"{(char)('A' + i)}", 0, 14, xx, 160);
+								this.DrawText($"{(char)('A' + i)}", 0, 5, xx, 161)
+									.DrawText($"{(char)('A' + i)}", 0, 14, xx, 160);
 							}
 						}
 						break;
@@ -234,8 +234,8 @@ namespace CivOne.Screens
 						if (_noiseCounter > 0)
 						{
 							_palaceMorph.ApplyNoise(_noiseMap, _noiseCounter--);
-							AddLayer(DrawPalace());
-							AddLayer(_palaceMorph);
+							this.AddLayer(DrawPalace())
+								.AddLayer(_palaceMorph);
 							return true;
 						}
 						_currentStage = Stage.View;

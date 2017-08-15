@@ -53,13 +53,13 @@ namespace CivOne.Screens
 		{
 			_canvas = new Picture(320, 200, Common.DefaultPalette);
 
-			_canvas.FillRectangle(11, 80, 80, 161, 33);
-			_canvas.FillRectangle(15, 81, 81, 159, 31);
-			_canvas.DrawText("City Name...", 0, 5, 88, 82);
-			_canvas.FillRectangle(5, 88, 95, 105, 14);
-			_canvas.FillRectangle(15, 89, 96, 103, 12);
+			this.FillRectangle(11, 80, 80, 161, 33)
+				.FillRectangle(15, 81, 81, 159, 31)
+				.DrawText("City Name...", 0, 5, 88, 82)
+				.FillRectangle(5, 88, 95, 105, 14)
+				.FillRectangle(15, 89, 96, 103, 12);
 
-			_input = new Input(_canvas.Palette, cityName, 0, 5, 11, 90, 97, 101, 10, 12);
+			_input = new Input(Palette, cityName, 0, 5, 11, 90, 97, 101, 10, 12);
 			_input.Accept += CityName_Accept;
 			_input.Cancel += CityName_Cancel;
 		}

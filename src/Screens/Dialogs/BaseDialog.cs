@@ -63,7 +63,7 @@ namespace CivOne.Screens.Dialogs
 			if (_update)
 			{
 				_update = false;
-				_canvas.AddLayer(DialogBox, _left, _top);
+				this.AddLayer(DialogBox, _left, _top);
 
 				FirstUpdate();
 

@@ -41,7 +41,7 @@ namespace CivOne.Screens
 
 		private void Resize(int width, int height)
 		{
-			_canvas = new Picture(width, height, _canvas.Palette);
+			_canvas = new Picture(width, height, Palette);
 			OnResize?.Invoke(this, new ResizeEventArgs(width, height));
 		}
 

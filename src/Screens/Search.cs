@@ -50,10 +50,10 @@ namespace CivOne.Screens
 			_done = true;
 			if (City == null)
 			{
-				_canvas.FillRectangle(15, 64, 78, 224, 10);
-				_canvas.DrawText("Unknown city.", 0, 5, 82, 80);
-				_canvas.FillRectangle(15, 67, 89, 135, 12);
-				_canvas.DrawText(_input.Text, 0, 5, 68, 91);
+				this.FillRectangle(15, 64, 78, 224, 10)
+					.DrawText("Unknown city.", 0, 5, 82, 80)
+					.FillRectangle(15, 67, 89, 135, 12)
+					.DrawText(_input.Text, 0, 5, 68, 91);
 				((Input)sender).Close();
 				return;
 			}
@@ -85,13 +85,13 @@ namespace CivOne.Screens
 		{
 			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
 
-			_canvas.FillRectangle(5, 64, 78, 225, 25);
-			_canvas.FillRectangle(15, 65, 79, 223, 23);
-			_canvas.DrawText("Where in the heck is ... (city name)", 0, 5, 66, 80);
-			_canvas.FillRectangle(5, 66, 88, 137, 14);
-			_canvas.FillRectangle(15, 67, 89, 135, 12);
+			this.FillRectangle(5, 64, 78, 225, 25)
+				.FillRectangle(15, 65, 79, 223, 23)
+				.DrawText("Where in the heck is ... (city name)", 0, 5, 66, 80)
+				.FillRectangle(5, 66, 88, 137, 14)
+				.FillRectangle(15, 67, 89, 135, 12);
 
-			_input = new Input(_canvas.Palette, string.Empty, 0, 5, 11, 68, 90, 133, 10, 16);
+			_input = new Input(Palette, string.Empty, 0, 5, 11, 68, 90, 133, 10, 16);
 			_input.Accept += Search_Accept;
 			_input.Cancel += Search_Cancel;
 		}

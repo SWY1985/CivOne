@@ -56,10 +56,10 @@ namespace CivOne.Screens.Reports
 
 			_canvas = new Picture(320, 200, palette);
 			
-			_canvas.FillRectangle(backgroundColour, 0, 0, 320, 200);
-			_canvas.DrawText(title, 0, 15, 160, 2, TextAlign.Center);
-			_canvas.DrawText(string.Format("{0} of the {1}", "Empire", Human.TribeNamePlural), 0, 15, 160, 10, TextAlign.Center);
-			_canvas.DrawText(string.Format("{0} {1}: {2}", "Emperor", Human.LeaderName, Game.GameYear), 0, 15, 160, 18, TextAlign.Center);
+			this.FillRectangle(backgroundColour, 0, 0, 320, 200)
+				.DrawText(title, 0, 15, 160, 2, TextAlign.Center)
+				.DrawText(string.Format("{0} of the {1}", "Empire", Human.TribeNamePlural), 0, 15, 160, 10, TextAlign.Center)
+				.DrawText(string.Format("{0} {1}: {2}", "Emperor", Human.LeaderName, Game.GameYear), 0, 15, 160, 18, TextAlign.Center);
 		}
 	}
 }

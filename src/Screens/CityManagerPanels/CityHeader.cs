@@ -31,10 +31,10 @@ namespace CivOne.Screens.CityManagerPanels
 			{
 				string population = Common.NumberSeperator(_city.Population);
 
-				_canvas.Tile(_background);
+				this.Tile(_background);
 				_canvas.AddBorder(1, 1, 0, 0, 207, 21);
-				_canvas.FillRectangle(0, 207, 0, 1, 21);
-				_canvas.DrawText($"{_city.Name} (Pop:{population})", 1, 17, 104, 1, TextAlign.Center);
+				this.FillRectangle(0, 207, 0, 1, 21)
+					.DrawText($"{_city.Name} (Pop:{population})", 1, 17, 104, 1, TextAlign.Center);
 
 				int xx = 0;
 				int group = -1;
@@ -47,7 +47,7 @@ namespace CivOne.Screens.CityManagerPanels
 						xx += 2;
 						if (group == 3) xx += 4;
 					}
-					AddLayer(Icons.Citizen(citizens[i]), xx, 7);
+					this.AddLayer(Icons.Citizen(citizens[i]), xx, 7);
 				}
 
 				_update = false;

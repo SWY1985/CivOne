@@ -88,9 +88,9 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			if (_update)
 			{
-				_canvas.Tile(_background);
+				this.Tile(_background);
 				_canvas.AddBorder(1, 1, 0, 0, 133, 92);
-				_canvas.FillRectangle(0, 133, 0, 3, 92);
+				this.FillRectangle(0, 133, 0, 3, 92);
 				
 				DrawButton("Info", (byte)((_choice == CityInfoChoice.Info) ? 15 : 9), 1, 0, 0, 34);
 				DrawButton("Happy", (byte)((_choice == CityInfoChoice.Happy) ? 15 : 9), 1, 34, 0, 32);
@@ -100,13 +100,13 @@ namespace CivOne.Screens.CityManagerPanels
 				switch (_choice)
 				{
 					case CityInfoChoice.Info:
-						AddLayer(InfoFrame, 0, 9);
+						this.AddLayer(InfoFrame, 0, 9);
 						break;
 					case CityInfoChoice.Happy:
-						AddLayer(HappyFrame, 0, 9);
+						this.AddLayer(HappyFrame, 0, 9);
 						break;
 					case CityInfoChoice.Map:
-						AddLayer(MapFrame, 0, 9);
+						this.AddLayer(MapFrame, 0, 9);
 						break;
 				}
 

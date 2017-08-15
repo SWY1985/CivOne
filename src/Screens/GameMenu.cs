@@ -75,9 +75,9 @@ namespace CivOne.Screens
 				ww += (4 - (ww % 4));
 			
 			_canvas = new Picture(ww, hh, _palette);
-			_canvas.Tile(Patterns.PanelGrey, 1, 1);
+			this.Tile(Patterns.PanelGrey, 1, 1);
 			if (ow != ww)
-				_canvas.FillRectangle(0, ow, 0, 4 - (ow % 4), hh);
+				this.FillRectangle(0, ow, 0, 4 - (ow % 4), hh);
 			
 			_canvas.AddBorder(5, 5, 0, 0, ow, hh);
 			_canvas.AddBorder(15, 8, 0, 0, ow, hh, 1);
@@ -189,7 +189,7 @@ namespace CivOne.Screens
 			_palette = palette;
 			
 			_canvas = new Picture(8, 8, _palette);
-			_canvas.FillRectangle(2, 0, 0, 8, 8);
+			this.FillRectangle(2, 0, 0, 8, 8);
 		}
 	}
 }

@@ -33,7 +33,7 @@ namespace CivOne.Screens.Reports
 		{
 			if (!_update) return false;
 
-			_canvas.FillRectangle(3, 8, 32, 304, 160);
+			this.FillRectangle(3, 8, 32, 304, 160);
 
 			for (int i = (_page * 7); i < _wonders.Length && i < ((_page + 1) * 7); i++)
 			{
@@ -48,10 +48,10 @@ namespace CivOne.Screens.Reports
 				byte colour = 12;
 				if (city != null && city.Size > 0)
 					colour = Common.ColourLight[city.Owner];
-				_canvas.FillRectangle(colour, xx, yy, ww, hh);
-				_canvas.FillRectangle(3, xx + 1, yy + 1, ww - 2, hh - 2);
-				_canvas.AddLayer(wonder.SmallIcon, xx + 8, yy + 3);
-				_canvas.DrawText(wonder.FormatWorldWonder(city), 0, 15, xx + 32, yy + 5);
+				this.FillRectangle(colour, xx, yy, ww, hh)
+					.FillRectangle(3, xx + 1, yy + 1, ww - 2, hh - 2)
+					.AddLayer(wonder.SmallIcon, xx + 8, yy + 3)
+					.DrawText(wonder.FormatWorldWonder(city), 0, 15, xx + 32, yy + 5);
 			}
 
 			_update = false;
@@ -86,9 +86,9 @@ namespace CivOne.Screens.Reports
 				City = Game.GetCities().First(c => c.HasWonder(w))
 			}).ToArray();
 			
-			_canvas.FillRectangle(3, 0, 0, 320, 200);
-			_canvas.DrawText("The Wonders of the World", 0, 5, 100, 13);
-			_canvas.DrawText("The Wonders of the World", 0, 15, 100, 12);
+			this.FillRectangle(3, 0, 0, 320, 200)
+				.DrawText("The Wonders of the World", 0, 5, 100, 13)
+				.DrawText("The Wonders of the World", 0, 15, 100, 12);
 		}
 	}
 }

@@ -67,7 +67,7 @@ namespace CivOne.Screens
 		{
 			if (_update)
 			{
-				_canvas.FillRectangle(0, 0, 0, 320, 200);
+				this.FillRectangle(0, 0, 0, 320, 200);
 
 				List<string> menuItems = new List<string>();
 				string menuHeaderText = $"What shall we build in {_city.Name}?";
@@ -124,8 +124,8 @@ namespace CivOne.Screens
 					menuGfx.DrawText(menuHeaderText, _fontId, 15, 4, 4);
 					menuGfx.DrawText($"(Help available)", 1, 10, width, height - Resources.Instance.GetFontHeight(1), TextAlign.Right);
 
-					_canvas.FillRectangle(5, 80, 8, width + 2, height + 2);
-					AddLayer(menuGfx, 81, 9);
+					this.FillRectangle(5, 80, 8, width + 2, height + 2)
+						.AddLayer(menuGfx, 81, 9);
 					
 					using (Picture background = menuGfx.GetPart(2, 3 + Resources.Instance.GetFontHeight(_fontId), itemWidth, Resources.Instance.GetFontHeight(_fontId) * menuItems.Count + 4))
 					{
@@ -135,7 +135,7 @@ namespace CivOne.Screens
 						{
 							X = 83,
 							Y = 12 + Resources.Instance.GetFontHeight(_fontId),
-							Width = itemWidth,
+							MenuWidth = itemWidth,
 							ActiveColour = 11,
 							TextColour = 5,
 							FontId = _fontId
@@ -148,7 +148,7 @@ namespace CivOne.Screens
 								.OnSelect(ProductionChoice)
 								.OnContext(ProductionContext);
 						}
-						menu.Width += 10;
+						menu.MenuWidth += 10;
 						menu.MissClick += MenuCancel;
 						menu.Cancel += MenuCancel;
 

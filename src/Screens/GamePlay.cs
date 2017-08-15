@@ -47,11 +47,11 @@ namespace CivOne.Screens
 
 		internal void RefreshMap() => _gameMap.ForceRefresh();
 
-		internal Palette MainPalette => _canvas.OriginalColours.Copy();
+		internal Palette MainPalette => OriginalColours.Copy();
 		
 		private void MenuBarGame(object sender, EventArgs args)
 		{
-			_gameMenu = new GameMenu("MenuBarGame", _canvas.Palette.Copy());
+			_gameMenu = new GameMenu("MenuBarGame", Palette.Copy());
 			_gameMenu.Items.Add("Tax Rate").OnSelect((s, a) => GameTask.Enqueue(Show.TaxRate));
 			_gameMenu.Items.Add("Luxuries Rate").OnSelect((s, a) => GameTask.Enqueue(Show.LuxuryRate));
 			_gameMenu.Items.Add("FindCity").OnSelect((s, a) => GameTask.Enqueue(Show.Search));
@@ -77,7 +77,7 @@ namespace CivOne.Screens
 		{
 			if (Game.ActiveUnit == null) return;
 
-			_gameMenu = new GameMenu("MenuBarOrders", _canvas.Palette);
+			_gameMenu = new GameMenu("MenuBarOrders", Palette);
 			_gameMenu.Items.AddRange(Game.ActiveUnit.MenuItems);
 			
 			_menuX = 72;
@@ -88,7 +88,7 @@ namespace CivOne.Screens
 		
 		private void MenuBarAdvisors(object sender, EventArgs args)
 		{
-			_gameMenu = new GameMenu("MenuBarAdvisors", _canvas.Palette);
+			_gameMenu = new GameMenu("MenuBarAdvisors", Palette);
 			_gameMenu.Items.Add("City Status (F1)").OnSelect((s, a) => Common.AddScreen(new CityStatus()));
 			_gameMenu.Items.Add("Military Advisor (F2)").OnSelect((s, a) => { Common.AddScreen(new MilitaryLosses()); Common.AddScreen(new MilitaryStatus()); });
 			_gameMenu.Items.Add("Intelligence Advisor (F3)").OnSelect((s, a) => Common.AddScreen(new IntelligenceReport()));
@@ -104,7 +104,7 @@ namespace CivOne.Screens
 		
 		private void MenuBarWorld(object sender, EventArgs args)
 		{
-			_gameMenu = new GameMenu("MenuBarWorld", _canvas.Palette);
+			_gameMenu = new GameMenu("MenuBarWorld", Palette);
 			_gameMenu.Items.Add("Wonders of the World (F7)").OnSelect((s, a) => {
 				if (Game.BuiltWonders.Length == 0)
 					GameTask.Enqueue(Show.Empty);
@@ -125,7 +125,7 @@ namespace CivOne.Screens
 		
 		private void MenuBarCivilopedia(object sender, EventArgs args)
 		{
-			_gameMenu = new GameMenu("MenuBarCivilopedia", _canvas.Palette);
+			_gameMenu = new GameMenu("MenuBarCivilopedia", Palette);
 			_gameMenu.Items.Add("Complete").OnSelect((s, a) => Common.AddScreen(new Civilopedia(Civilopedia.Complete)));
 			_gameMenu.Items.Add("Civilization Advances").OnSelect((s, a) => Common.AddScreen(new Civilopedia(Civilopedia.Advances)));
 			_gameMenu.Items.Add("City Improvements").OnSelect((s, a) => Common.AddScreen(new Civilopedia(Civilopedia.Improvements)));
@@ -143,7 +143,7 @@ namespace CivOne.Screens
 		{
 			if (layer == null) return;
 			if (!layer.Update(gameTick) && !_redraw) return;
-			AddLayer(layer, x, y);
+			this.AddLayer(layer, x, y);
 		}
 		
 		protected override bool HasUpdate(uint gameTick)
@@ -166,7 +166,7 @@ namespace CivOne.Screens
 			if (!_update && !_redraw) return (gameTick % 3 == 0);
 			
 			DrawLayer(_menuBar, gameTick, 0, 0);
-			DrawLayer(_sideBar, gameTick, _rightSideBar ? (_canvas.Width - 80) : 0, 8);
+			DrawLayer(_sideBar, gameTick, _rightSideBar ? (Width - 80) : 0, 8);
 			DrawLayer(_gameMap, gameTick, _rightSideBar ? 0 : 80, 8);
 			DrawLayer(_gameMenu, gameTick, _menuX, _menuY);
 			
@@ -284,9 +284,9 @@ namespace CivOne.Screens
 			}
 			if (_rightSideBar)
 			{
-				if (args.X > (_canvas.Width - 80))
+				if (args.X > (Width - 80))
 				{
-					MouseArgsOffset(ref args, (_canvas.Width - 80), 8);
+					MouseArgsOffset(ref args, (Width - 80), 8);
 					return _sideBar.MouseDown(args);
 				}
 				else
@@ -342,7 +342,7 @@ namespace CivOne.Screens
 		
 		private void Resize(object sender, ResizeEventArgs args)
 		{
-			_canvas.FillRectangle(5, 0, 0, args.Width, args.Height);
+			this.FillRectangle(5, 0, 0, args.Width, args.Height);
 
 			_menuBar.Resize();
 			_sideBar.Resize(args.Height - 8);
@@ -359,7 +359,7 @@ namespace CivOne.Screens
 			Palette palette = Resources.Instance.LoadPIC("SP257").OriginalColours;
 			
 			_canvas = new Picture(320, 200, palette);
-			_canvas.FillRectangle(5, 0, 0, 320, 200);
+			this.FillRectangle(5, 0, 0, 320, 200);
 			
 			_rightSideBar = Settings.RightSideBar;
 

@@ -49,7 +49,7 @@ namespace CivOne.Screens
 				{
 					X = 83,
 					Y = 92,
-					Width = 156,
+					MenuWidth = 156,
 					ActiveColour = 11,
 					TextColour = 5,
 					FontId = 0
@@ -86,20 +86,19 @@ namespace CivOne.Screens
 			if (dialogHeight < 62) dialogHeight = 62;
 
 			_menuGfx = new Picture(204, dialogHeight);
-			_menuGfx.Tile(Patterns.PanelGrey);
-			_menuGfx.FillRectangle(0, 202, 0, 2, dialogHeight);
-			_menuGfx.AddLayer(governmentPortrait, 1, dialogHeight - 61);
-
+			_menuGfx.Tile(Patterns.PanelGrey)
+					.FillRectangle(0, 202, 0, 2, dialogHeight)
+					.AddLayer(governmentPortrait, 1, dialogHeight - 61);
 			_menuGfx.AddBorder(15, 8, 0, 0, 202, dialogHeight);
-			_menuGfx.DrawText("Science Advisor:", 0, 15, 46, 3);
-			_menuGfx.FillRectangle(11, 46, 10, 89, 1);
-			_menuGfx.DrawText("Which discovery should our", 0, 15, 46, 12);
-			_menuGfx.DrawText("wise men be pursuing, sire?", 0, 15, 46, 20);
-			_menuGfx.DrawText("Pick one...", 0, 15, 46, 28);
-			_menuGfx.DrawText($"(Help available)", 1, 10, 202, dialogHeight - Resources.Instance.GetFontHeight(1), TextAlign.Right);
+			_menuGfx.DrawText("Science Advisor:", 0, 15, 46, 3)
+					.FillRectangle(11, 46, 10, 89, 1)
+					.DrawText("Which discovery should our", 0, 15, 46, 12)
+					.DrawText("wise men be pursuing, sire?", 0, 15, 46, 20)
+					.DrawText("Pick one...", 0, 15, 46, 28)
+					.DrawText($"(Help available)", 1, 10, 202, dialogHeight - Resources.Instance.GetFontHeight(1), TextAlign.Right);
 
-			_canvas.FillRectangle(5, 38, 56, 204, dialogHeight + 2);
-			AddLayer(_menuGfx, 39, 57);
+			this.FillRectangle(5, 38, 56, 204, dialogHeight + 2)
+				.AddLayer(_menuGfx, 39, 57);
 		}
 
 		public override void Dispose()

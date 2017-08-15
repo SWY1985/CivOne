@@ -51,12 +51,11 @@ namespace CivOne.Screens
 			}
 			
 			_canvas = new Picture(320, 200, logo.Palette);
-			AddLayer(background, 0, 0);
-			AddLayer(logo, 0, 0);
-			
-			_canvas.DrawText("One more turn...", 3, _textColours[0], 160, 160, TextAlign.Center);
-			_canvas.DrawText("One more turn...", 3, _textColours[2], 160, 162, TextAlign.Center);
-			_canvas.DrawText("One more turn...", 3, _textColours[1], 160, 161, TextAlign.Center);
+			this.AddLayer(background, 0, 0)
+				.AddLayer(logo, 0, 0)
+				.DrawText("One more turn...", 3, _textColours[0], 160, 160, TextAlign.Center)
+				.DrawText("One more turn...", 3, _textColours[2], 160, 162, TextAlign.Center)
+				.DrawText("One more turn...", 3, _textColours[1], 160, 161, TextAlign.Center);
 		}
 	}
 }

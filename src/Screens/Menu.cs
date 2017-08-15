@@ -32,7 +32,7 @@ namespace CivOne.Screens
 		public int FontId { get; set; }
 		public int X { get; set; }
 		public int Y { get; set; }
-		public int Width { get; set; }
+		public int MenuWidth { get; set; }
 		public int Indent { get; set; }
 		public byte TitleColour { get; set; }
 		public byte ActiveColour { get; set; }
@@ -68,27 +68,27 @@ namespace CivOne.Screens
 				int yy = Y + (_activeItem * fontHeight);
 				int offsetY = 0;
 				
-				_canvas.FillRectangle(0, 0, 0, 320, 200);
+				this.FillRectangle(0, 0, 0, 320, 200);
 				if (Title != null)
 				{
-					_canvas.DrawText(Title, FontId, TitleColour, X + IndentTitle, Y + 1);
+					this.DrawText(Title, FontId, TitleColour, X + IndentTitle, Y + 1);
 					offsetY = fontHeight;
 				}
 				if (_activeItem >= 0)
 				{
 					if (_background == null)
 					{
-						_canvas.FillRectangle(ActiveColour, X, yy + offsetY, Width, fontHeight);
+						this.FillRectangle(ActiveColour, X, yy + offsetY, MenuWidth, fontHeight);
 					}
 					else
 					{
-						_canvas.AddLayer(_background.GetPart(0, (_activeItem * fontHeight) + offsetY, Width, fontHeight), X, yy + offsetY, dispose: true);
+						this.AddLayer(_background.GetPart(0, (_activeItem * fontHeight) + offsetY, MenuWidth, fontHeight), X, yy + offsetY, dispose: true);
 					}
 				}
 				for (int i = 0; i < Items.Count; i++)
 				{
 					yy = Y + (i * fontHeight) + offsetY;
-					_canvas.DrawText(Items[i].Text, FontId, (byte)(Items[i].Enabled ? TextColour : DisabledColour), X + Indent, yy + 1);
+					this.DrawText(Items[i].Text, FontId, (byte)(Items[i].Enabled ? TextColour : DisabledColour), X + Indent, yy + 1);
 				}
 				_change = false;
 				return true;
@@ -134,7 +134,7 @@ namespace CivOne.Screens
 			if (Title != null) yy += fontHeight;
 			for (int i = 0; i < Items.Count; i++)
 			{
-				if (new Rectangle(X, yy, Width, fontHeight).Contains(args.Location)) return i;
+				if (new Rectangle(X, yy, MenuWidth, fontHeight).Contains(args.Location)) return i;
 				yy += fontHeight;
 			}
 			

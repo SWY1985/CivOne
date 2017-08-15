@@ -53,15 +53,15 @@ namespace CivOne.Screens.Debug
 			Picture menuBackground = menuGfx.GetPart(2, 11, ww - 4, hh - 11);
 			Picture.ReplaceColours(menuBackground, new byte[] { 7, 22 }, new byte[] { 11, 3 });
 
-			_canvas.FillRectangle(5, xx - 1, yy - 1, ww + 2, hh + 2);
-			_canvas.AddLayer(menuGfx, xx, yy);
-			_canvas.DrawText("Set City Size...", 0, 15, xx + 8, yy + 3);
+			this.FillRectangle(5, xx - 1, yy - 1, ww + 2, hh + 2)
+				.AddLayer(menuGfx, xx, yy)
+				.DrawText("Set City Size...", 0, 15, xx + 8, yy + 3);
 
 			_citySelect = new Menu(Palette, menuBackground)
 			{
 				X = xx + 2,
 				Y = yy + 11,
-				Width = ww - 4,
+				MenuWidth = ww - 4,
 				ActiveColour = 11,
 				TextColour = 5,
 				DisabledColour = 3,
@@ -117,15 +117,15 @@ namespace CivOne.Screens.Debug
 		{
 			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
 
-			_canvas.FillRectangle(11, 80, 80, 161, 33);
-			_canvas.FillRectangle(15, 81, 81, 159, 31);
-			_canvas.DrawText("Set City Size...", 0, 5, 88, 82);
-			_canvas.FillRectangle(5, 88, 95, 105, 14);
-			_canvas.FillRectangle(15, 89, 96, 103, 12);
+			this.FillRectangle(11, 80, 80, 161, 33)
+				.FillRectangle(15, 81, 81, 159, 31)
+				.DrawText("Set City Size...", 0, 5, 88, 82)
+				.FillRectangle(5, 88, 95, 105, 14)
+				.FillRectangle(15, 89, 96, 103, 12);
 
 			_selectedCity = _cities[_citySelect.ActiveItem + _index];
 
-			_input = new Input(_canvas.Palette, _selectedCity.Size.ToString(), 0, 5, 11, 90, 97, 101, 10, 3);
+			_input = new Input(Palette, _selectedCity.Size.ToString(), 0, 5, 11, 90, 97, 101, 10, 3);
 			_input.Accept += CitySizeSet_Accept;
 			_input.Cancel += CitySize_Cancel;
 

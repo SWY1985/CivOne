@@ -46,7 +46,7 @@ namespace CivOne.Screens
 		{
 			if (layer == null) return;
 			if (!layer.Update(gameTick) && !_redraw) return;
-			AddLayer(layer, x, y);
+			this.AddLayer(layer, x, y);
 		}
 		
 		protected override bool HasUpdate(uint gameTick)
@@ -186,7 +186,7 @@ namespace CivOne.Screens
 			_city.UpdateResources();
 			
 			_canvas = new Picture(320, 200, Common.DefaultPalette);
-			_canvas.FillRectangle(5, 0, 0, 320, 200);
+			this.FillRectangle(5, 0, 0, 320, 200);
 			
 			_subScreens.Add(_cityHeader = new CityHeader(_city, Patterns.PanelBlue));
 			_subScreens.Add(_cityResources = new CityResources(_city, Patterns.PanelBlue));

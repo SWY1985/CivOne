@@ -31,19 +31,19 @@ namespace CivOne.Screens.Reports
 				int inProduction = production.Count(u => u.Type == unit.Type);
 
 				Picture icon = unit.GetUnit(player, false);
-				AddLayer(icon, ((i % 2 == 0) ? 1 : 18), 27 + (9 * i));
-				_canvas.FillRectangle(9, 36, 30 + (i * 9), 284, 1);
-				_canvas.DrawText(unit.Name, 0, 15, 36, 32 + (i * 9));
-				_canvas.DrawText($"({unit.Attack}/{unit.Defense}/{unit.Move})", 0, 11, 112, 32 + (i * 9));
+				this.AddLayer(icon, ((i % 2 == 0) ? 1 : 18), 27 + (9 * i))
+					.FillRectangle(9, 36, 30 + (i * 9), 284, 1)
+					.DrawText(unit.Name, 0, 15, 36, 32 + (i * 9))
+					.DrawText($"({unit.Attack}/{unit.Defense}/{unit.Move})", 0, 11, 112, 32 + (i * 9));
 				if (active > 0)
-					_canvas.DrawText($"{active} active", 0, 15, 168, 32 + (i * 9));
+					this.DrawText($"{active} active", 0, 15, 168, 32 + (i * 9));
 				if (inProduction > 0)
-					_canvas.DrawText($"{inProduction} in production", 0, 11, 232, 32 + (i * 9));
+					this.DrawText($"{inProduction} in production", 0, 11, 232, 32 + (i * 9));
 				
 				i++;
 			}
 			
-			AddLayer(Portrait[(int)Advisor.Defense], 278, 2);
+			this.AddLayer(Portrait[(int)Advisor.Defense], 278, 2);
 		}
 	}
 }

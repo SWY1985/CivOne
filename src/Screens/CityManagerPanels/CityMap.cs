@@ -35,7 +35,7 @@ namespace CivOne.Screens.CityManagerPanels
 
 			if (count == 0)
 			{
-				AddLayer(Icons.Unhappy, x + 4, y + 4);
+				this.AddLayer(Icons.Unhappy, x + 4, y + 4);
 				return;
 			}
 
@@ -54,7 +54,7 @@ namespace CivOne.Screens.CityManagerPanels
 
 				int xx = (x + ((i % iconsPerLine) * iconWidth));
 				int yy = (y + (((i - (i % iconsPerLine)) / iconsPerLine) * 8));
-				AddLayer(icon, xx, yy);
+				this.AddLayer(icon, xx, yy);
 			}
 		}
 		
@@ -62,12 +62,12 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			if (_update)
 			{
-				_canvas.Tile(_background);
+				this.Tile(_background);
 				_canvas.AddBorder(1, 1, 0, 0, 82, 82);
-				_canvas.FillRectangle(0, 82, 0, 2, 82);
+				this.FillRectangle(0, 82, 0, 2, 82);
 				
 				ITile[,] tiles = _city.CityRadius;
-				AddLayer(tiles.ToPicture(TileSettings.CityManager, Settings.RevealWorld ? null : Game.GetPlayer(_city.Owner)), 1, 1, dispose: true);
+				this.AddLayer(tiles.ToPicture(TileSettings.CityManager, Settings.RevealWorld ? null : Game.GetPlayer(_city.Owner)), 1, 1, dispose: true);
 
 				for (int xx = 0; xx < 5; xx++)
 				for (int yy = 0; yy < 5; yy++)
@@ -77,10 +77,10 @@ namespace CivOne.Screens.CityManagerPanels
 
 					if (_city.OccupiedTile(tile))
 					{
-						_canvas.FillRectangle(12, (xx * 16) + 1, (yy * 16) + 1, 16, 1);
-						_canvas.FillRectangle(12, (xx * 16) + 1, (yy * 16) + 2, 1, 14);
-						_canvas.FillRectangle(12, (xx * 16) + 1, (yy * 16) + 16, 16, 1);
-						_canvas.FillRectangle(12, (xx * 16) + 16, (yy * 16) + 2, 1, 14);
+						this.FillRectangle(12, (xx * 16) + 1, (yy * 16) + 1, 16, 1)
+							.FillRectangle(12, (xx * 16) + 1, (yy * 16) + 2, 1, 14)
+							.FillRectangle(12, (xx * 16) + 1, (yy * 16) + 16, 16, 1)
+							.FillRectangle(12, (xx * 16) + 16, (yy * 16) + 2, 1, 14);
 					}
 
 					if (_city.ResourceTiles.Contains(tile))

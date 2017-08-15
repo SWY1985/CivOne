@@ -79,13 +79,13 @@ namespace CivOne.Screens
 
 			if (_captured)
 			{
-				AddLayer(_background);
+				this.AddLayer(_background);
 				int frame = (_x % 30) / 3;
 				for (int i = 7; i >= 0; i--)
 				{
 					int xx = (_x - 65) - (48 * i);
 					if (xx + 78 <= 0) continue;
-					AddLayer(_invaders[frame], xx, _y);
+					this.AddLayer(_invaders[frame], xx, _y);
 				}
 				_x++;
 				return true;
@@ -96,8 +96,8 @@ namespace CivOne.Screens
 				if (_noiseCounter > 0)
 				{
 					_overlay.ApplyNoise(_noiseMap, _noiseCounter--);
-					AddLayer(_background);
-					AddLayer(_overlay);
+					this.AddLayer(_background)
+						.AddLayer(_overlay);
 					return true;
 				}
 				return false;
@@ -115,14 +115,14 @@ namespace CivOne.Screens
 			}
 			if (_founded && (gameTick % 3 == 0))
 			{
-				AddLayer(_background);
-				_canvas.DrawText($"{_city.Name} founded: {Game.GameYear}.", 5, 5, 161, 3, TextAlign.Center);
+				this.AddLayer(_background)
+					.DrawText($"{_city.Name} founded: {Game.GameYear}.", 5, 5, 161, 3, TextAlign.Center);
 
 				int frame = (_x % 4);
-				AddLayer(Resources["SETTLERS"].GetPart(1, 1 + (16 * frame), 48, 15), _x, 120);
-				AddLayer(Resources["SETTLERS"].GetPart(1, 1 + (16 * ((frame + 2) % 4)), 48, 15), _x + 27, 125);
-				AddLayer(Resources["SETTLERS"].GetPart(1, 1 + (16 * ((frame + 3) % 4)), 48, 15), _x + 14, 131);
-				AddLayer(Resources["SETTLERS"].GetPart(1, 1 + (16 * ((frame + 1) % 4)), 48, 15), _x + 40, 135);
+				this.AddLayer(Resources["SETTLERS"].GetPart(1, 1 + (16 * frame), 48, 15), _x, 120)
+					.AddLayer(Resources["SETTLERS"].GetPart(1, 1 + (16 * ((frame + 2) % 4)), 48, 15), _x + 27, 125)
+					.AddLayer(Resources["SETTLERS"].GetPart(1, 1 + (16 * ((frame + 3) % 4)), 48, 15), _x + 14, 131)
+					.AddLayer(Resources["SETTLERS"].GetPart(1, 1 + (16 * ((frame + 1) % 4)), 48, 15), _x + 40, 135);
 
 				_x++;
 				return true;
@@ -707,7 +707,7 @@ namespace CivOne.Screens
 			if (founded) return;
 
 			DrawBuildings();
-			AddLayer(_background);
+			this.AddLayer(_background);
 			
 			if (_captured = captured)
 			{
@@ -786,10 +786,10 @@ namespace CivOne.Screens
 
 			if (captured) return;
 			
-			_canvas.DrawText(_city.Name, 5, 5, 161, 3, TextAlign.Center);
-			_canvas.DrawText(_city.Name, 5, 15, 160, 2, TextAlign.Center);
-			_canvas.DrawText(Game.GameYear, 5, 5, 161, 16, TextAlign.Center);
-			_canvas.DrawText(Game.GameYear, 5, 15, 160, 15, TextAlign.Center);
+			this.DrawText(_city.Name, 5, 5, 161, 3, TextAlign.Center)
+				.DrawText(_city.Name, 5, 15, 160, 2, TextAlign.Center)
+				.DrawText(Game.GameYear, 5, 5, 161, 16, TextAlign.Center)
+				.DrawText(Game.GameYear, 5, 15, 160, 15, TextAlign.Center);
 			
 			if (firstView)
 			{
@@ -809,7 +809,7 @@ namespace CivOne.Screens
 				int sx = ((int)(citizen) * 35) + 1, sy = (modern ? 1 : 52);
 				int sw = 34, sh = (modern ? 50 : 52);
 				int dx = (int)(citizen) + offsetX + (11 * i++), dy = 140;
-				AddLayer(Resources["POP"].GetPart(sx, sy, sw, sh), dx, dy);
+				this.AddLayer(Resources["POP"].GetPart(sx, sy, sw, sh), dx, dy);
 			}
 		}
 	}

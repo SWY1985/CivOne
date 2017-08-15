@@ -67,11 +67,11 @@ namespace CivOne.Screens
 			_canvas = new Picture(320, 200, _background.Palette);
 			for (int i = 64; i < 144; i++)
 			{
-				_canvas.Palette[i] = portrait.Palette[i];
+				Palette[i] = portrait.Palette[i];
 			}
 			
-			AddLayer(_background);
-			AddLayer(portrait, 90, 0);
+			this.AddLayer(_background)
+				.AddLayer(portrait, 90, 0);
 		}
 	}
 }

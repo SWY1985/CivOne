@@ -39,7 +39,7 @@ namespace CivOne.Screens
 				Title = title,
 				X = 203,
 				Y = y,
-				Width = GetMenuWidth(title, menuTexts),
+				MenuWidth = GetMenuWidth(title, menuTexts),
 				TitleColour = 15,
 				ActiveColour = 11,
 				TextColour = 79,
@@ -113,7 +113,7 @@ namespace CivOne.Screens
 			{
 				_closing = true;
 				foreach (IScreen menu in _menus)
-					AddLayer(menu);
+					this.AddLayer(menu);
 				CloseMenus();
 				return true;
 			}
@@ -127,7 +127,7 @@ namespace CivOne.Screens
 			Picture background = Resources.Instance.LoadPIC("CUSTOM");
 			
 			_canvas = new Picture(320, 200, background.Palette);
-			AddLayer(background, 0, 0);
+			this.AddLayer(background, 0, 0);
 		}
 	}
 }

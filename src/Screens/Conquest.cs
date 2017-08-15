@@ -46,7 +46,7 @@ namespace CivOne.Screens
 			Palette palette = _enemies[_enemy].Leader.GetPortrait().Palette;
 			for (int i = 64; i < 144; i++)
 			{
-				_canvas.Palette[i] = palette[i];
+				Palette[i] = palette[i];
 			}
 		}
 
@@ -94,26 +94,26 @@ namespace CivOne.Screens
 			switch (_step)
 			{
 				case 0:
-					AddLayer(_background);
-					AddLayer(_enemies[_enemy].Leader.GetPortrait(FaceState.Smiling), 90, 0);
+					this.AddLayer(_background)
+						.AddLayer(_enemies[_enemy].Leader.GetPortrait(FaceState.Smiling), 90, 0);
 					break;
 				case 1:
-					AddLayer(_background);
-					AddLayer(_enemies[_enemy].Leader.GetPortrait(FaceState.Angry), 90, 0);
-					_canvas.DrawText($"{_enemies[_enemy].DestroyYear}: {Human.Civilization.NamePlural} destroy", 5, 20, 159, 152, TextAlign.Center);
-					_canvas.DrawText($"{_enemies[_enemy].DestroyYear}: {Human.Civilization.NamePlural} destroy", 5, 23, 159, 151, TextAlign.Center);
-					_canvas.DrawText($"{_enemies[_enemy].Civilization.Name} civilization!", 5, 20, 159, 168, TextAlign.Center);
-					_canvas.DrawText($"{_enemies[_enemy].Civilization.Name} civilization!", 5, 23, 159, 167, TextAlign.Center);
+					this.AddLayer(_background)
+						.AddLayer(_enemies[_enemy].Leader.GetPortrait(FaceState.Angry), 90, 0)
+						.DrawText($"{_enemies[_enemy].DestroyYear}: {Human.Civilization.NamePlural} destroy", 5, 20, 159, 152, TextAlign.Center)
+						.DrawText($"{_enemies[_enemy].DestroyYear}: {Human.Civilization.NamePlural} destroy", 5, 23, 159, 151, TextAlign.Center)
+						.DrawText($"{_enemies[_enemy].Civilization.Name} civilization!", 5, 20, 159, 168, TextAlign.Center)
+						.DrawText($"{_enemies[_enemy].Civilization.Name} civilization!", 5, 23, 159, 167, TextAlign.Center);
 					break;
 				case 2:
 					_overlay.ApplyNoise(_noiseMap, --_noiseCounter);
 					if (_noiseCounter < -2) _timer = 90;
-					AddLayer(_background);
-					AddLayer(_overlay);
-					_canvas.DrawText($"{_enemies[_enemy].DestroyYear}: {Human.Civilization.NamePlural} destroy", 5, 20, 159, 152, TextAlign.Center);
-					_canvas.DrawText($"{_enemies[_enemy].DestroyYear}: {Human.Civilization.NamePlural} destroy", 5, 23, 159, 151, TextAlign.Center);
-					_canvas.DrawText($"{_enemies[_enemy].Civilization.Name} civilization!", 5, 20, 159, 168, TextAlign.Center);
-					_canvas.DrawText($"{_enemies[_enemy].Civilization.Name} civilization!", 5, 23, 159, 167, TextAlign.Center);
+					this.AddLayer(_background)
+						.AddLayer(_overlay)
+						.DrawText($"{_enemies[_enemy].DestroyYear}: {Human.Civilization.NamePlural} destroy", 5, 20, 159, 152, TextAlign.Center)
+						.DrawText($"{_enemies[_enemy].DestroyYear}: {Human.Civilization.NamePlural} destroy", 5, 23, 159, 151, TextAlign.Center)
+						.DrawText($"{_enemies[_enemy].Civilization.Name} civilization!", 5, 20, 159, 168, TextAlign.Center)
+						.DrawText($"{_enemies[_enemy].Civilization.Name} civilization!", 5, 23, 159, 167, TextAlign.Center);
 					break;
 			}
 
@@ -138,7 +138,7 @@ namespace CivOne.Screens
 			
 			_canvas = new Picture(320, 200, _background.Palette);
 			
-			AddLayer(_background);
+			this.AddLayer(_background);
 			
 			_noiseMap = new byte[320, 200];
 			for (int x = 0; x < 320; x++)

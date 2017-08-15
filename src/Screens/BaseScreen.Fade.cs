@@ -46,10 +46,10 @@ namespace CivOne.Screens
 		{
 			if (Settings.GraphicsMode != GraphicsMode.Graphics256) return;
 			
-			using (Palette palette = _canvas.Palette.Copy())
+			using (Palette palette = Palette.Copy())
 			{
 				for (int i = 1; i < 256; i++)
-					palette[i] = FadeColour(new Colour(0, 0, 0), _canvas.OriginalColours[i]);
+					palette[i] = FadeColour(new Colour(0, 0, 0), OriginalColours[i]);
 				_canvas.SetPalette(palette);
 			}
 		}

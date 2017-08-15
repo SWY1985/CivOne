@@ -51,8 +51,8 @@ namespace CivOne.Screens
 					dialog.DrawText(unit.Home == null ? "NONE" : unit.Home.Name, 0, 14, 27, (i * 16) + 12);
 				}
 
-				_canvas.FillRectangle(5, XX - 1, yy - 1, WIDTH + 2, height + 2);
-				AddLayer(dialog, XX, yy);
+				this.FillRectangle(5, XX - 1, yy - 1, WIDTH + 2, height + 2)
+					.AddLayer(dialog, XX, yy);
 				
 				return true;
 			}

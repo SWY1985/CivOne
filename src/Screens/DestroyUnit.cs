@@ -101,8 +101,8 @@ namespace CivOne.Screens
 				_overlay.ApplyNoise(_noiseMap, --_noiseCounter);
 			}
 
-			AddLayer(_gameMap, cx, cy);
-			AddLayer(_overlay, 0, 0);
+			this.AddLayer(_gameMap, cx, cy)
+				.AddLayer(_overlay, 0, 0);
 
 			if (_noiseCounter == 0)
 			{

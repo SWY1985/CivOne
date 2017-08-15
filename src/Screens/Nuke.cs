@@ -79,10 +79,10 @@ namespace CivOne.Screens
 			
 			int step = 28 - _frameCounter--;
 
-			AddLayer(_gameMap, cx, cy);
+			this.AddLayer(_gameMap, cx, cy);
 			if (step >= 0 && step < 28)
 			{
-				AddLayer(_sprites[step], xx, yy);
+				this.AddLayer(_sprites[step], xx, yy);
 			}
 
 			return true;

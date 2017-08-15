@@ -35,9 +35,9 @@ namespace CivOne.Screens
 		{
 			if (Settings.GraphicsMode != GraphicsMode.Graphics256) return;
 			
-			Palette palette = _canvas.Palette;
+			Palette palette = Palette;
 			for (int i = 86; i < 256; i++)
-				palette[i] = FadeColour(_canvas.OriginalColours[i], _advance.Icon.OriginalColours[i]);
+				palette[i] = FadeColour(OriginalColours[i], _advance.Icon.OriginalColours[i]);
 			_canvas.SetPalette(palette);
 		}
 		
@@ -78,9 +78,8 @@ namespace CivOne.Screens
 			Picture background = Resources.Instance.LoadPIC(_modern ? "DISCOVR2" : "DISCOVR1");
 			
 			_canvas = new Picture(320, 200, background.Palette);
-			_canvas.FillRectangle(32, 0, 0, 320, 200);
-
-			AddLayer(background);
+			this.FillRectangle(32, 0, 0, 320, 200)
+				.AddLayer(background);
 
 			string[] text = new string[]
 			{
@@ -94,16 +93,16 @@ namespace CivOne.Screens
 			{
 				if (_modern)
 				{
-					_canvas.DrawText(text[i], 0, 3, 101, 30 + (8 * i));
+					this.DrawText(text[i], 0, 3, 101, 30 + (8 * i));
 				}
 				else
 				{
-					_canvas.DrawText(text[i], 5, 32, 101, 7 + (15 * i));
-					_canvas.DrawText(text[i], 5, 15, 101, 6 + (15 * i));
+					this.DrawText(text[i], 5, 32, 101, 7 + (15 * i))
+						.DrawText(text[i], 5, 15, 101, 6 + (15 * i));
 				}
 			}
 
-			AddLayer(advance.Icon, 119, _modern ? 53 : 61);
+			this.AddLayer(advance.Icon, 119, _modern ? 53 : 61);
 
 			Runtime.PlaySound(Human.Civilization.Tune);
 		}

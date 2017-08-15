@@ -53,15 +53,15 @@ namespace CivOne.Screens.Debug
 			Picture menuBackground = menuGfx.GetPart(2, 11, ww - 4, hh - 11);
 			Picture.ReplaceColours(menuBackground, new byte[] { 7, 22 }, new byte[] { 11, 3 });
 
-			_canvas.FillRectangle(5, xx - 1, yy - 1, ww + 2, hh + 2);
-			_canvas.AddLayer(menuGfx, xx, yy);
-			_canvas.DrawText("Set Player Advances...", 0, 15, xx + 8, yy + 3);
+			this.FillRectangle(5, xx - 1, yy - 1, ww + 2, hh + 2)
+				.AddLayer(menuGfx, xx, yy)
+				.DrawText("Set Player Advances...", 0, 15, xx + 8, yy + 3);
 
 			_advanceSelect = new Menu(Palette, menuBackground)
 			{
 				X = xx + 2,
 				Y = yy + 11,
-				Width = ww - 4,
+				MenuWidth = ww - 4,
 				ActiveColour = 11,
 				TextColour = 5,
 				DisabledColour = 3,
@@ -149,15 +149,15 @@ namespace CivOne.Screens.Debug
 			Picture menuBackground = menuGfx.GetPart(2, 11, ww - 4, hh - 11);
 			Picture.ReplaceColours(menuBackground, new byte[] { 7, 22 }, new byte[] { 11, 3 });
 
-			_canvas.FillRectangle(5, xx - 1, yy - 1, ww + 2, hh + 2);
-			_canvas.AddLayer(menuGfx, xx, yy);
-			_canvas.DrawText("Set Player Advances...", 0, 15, xx + 8, yy + 3);
+			this.FillRectangle(5, xx - 1, yy - 1, ww + 2, hh + 2)
+				.AddLayer(menuGfx, xx, yy)
+				.DrawText("Set Player Advances...", 0, 15, xx + 8, yy + 3);
 
 			_civSelect = new Menu(Palette, menuBackground)
 			{
 				X = xx + 2,
 				Y = yy + 11,
-				Width = ww - 4,
+				MenuWidth = ww - 4,
 				ActiveColour = 11,
 				TextColour = 5,
 				DisabledColour = 3,
