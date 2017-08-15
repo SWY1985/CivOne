@@ -11,10 +11,18 @@ namespace CivOne.IO
 {
 	public static class BytemapExtensions
 	{
-		public static Bytemap Crop(this Bytemap bytemap, int left, int top, int width, int height)
+		public static Bytemap Crop(this Bytemap bytemap, int left, int top, int width, int height) => bytemap[left, top, width, height];
+
+		public static Bytemap FromByteArray(this Bytemap bytemap, byte[] bytes)
 		{
-			if (bytemap == null) return null;
-			return bytemap[left, top, width, height];
+			int i = 0;
+			for (int yy = 0; yy < bytemap.Height; yy++)
+			for (int xx = 0; xx < bytemap.Width; xx++)
+			{
+				bytemap[xx, yy] = bytes[i++];
+				if (i >= bytemap.Length) return bytemap;
+			}
+			return bytemap;
 		}
 	}
 }

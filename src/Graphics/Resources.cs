@@ -23,7 +23,7 @@ namespace CivOne.Graphics
 		private static void Log(string text, params object[] parameters) => RuntimeHandler.Runtime.Log(text, parameters);
 
 		private readonly Dictionary<string, Picture> _cache = new Dictionary<string, Picture>();
-		private readonly Dictionary<string, Picture> _textCache = new Dictionary<string, Picture>();
+		private readonly Dictionary<string, Bytemap> _textCache = new Dictionary<string, Bytemap>();
 		private readonly IFont _defaultFont = new DefaultFont();
 		private readonly List<Fontset> _fonts = new List<Fontset>();
 		private readonly Dictionary<Direction, Picture> _fog = new Dictionary<Direction, Picture>();
@@ -62,7 +62,7 @@ namespace CivOne.Graphics
 			
 			foreach (ushort offset in fontOffsets)
 			{
-				_fonts.Add(new Fontset(file, offset, LoadPIC("SP257").Palette));
+				_fonts.Add(new Fontset(file, offset));
 			}
 		}
 		
@@ -93,7 +93,7 @@ namespace CivOne.Graphics
 		{
 			if (text == null) text = "[MISSING STRING]";
 
-			List<Picture> letters = new List<Picture>();
+			List<Bytemap> letters = new List<Bytemap>();
 			bool isFirstLetter = true;
 			foreach (char c in text)
 			{
@@ -102,7 +102,7 @@ namespace CivOne.Graphics
 			}
 			
 			int width = 0, height = 0;
-			foreach (Picture letter in letters)
+			foreach (Bytemap letter in letters)
 			{
 				width += letter.Width + 1;
 				if (height < letter.Height) height = letter.Height;
@@ -111,21 +111,16 @@ namespace CivOne.Graphics
 			Picture output = new Picture(width, height);
 			
 			int xx = 0;
-			foreach (Picture letter in letters)
+			foreach (Bytemap letter in letters)
 			{
 				output.AddLayer(letter, xx, 0);
 				xx += letter.Width + 1;
 			}
 			
-			output.Palette = letters[0].Palette;
-			
 			return output;
 		}
 		
-		internal Size GetLetterSize(int font, char letter)
-		{
-			return GetLetter(5, font, letter).Size;
-		}
+		internal Size GetLetterSize(int font, char letter) => GetLetter(5, font, letter).Size;
 
 		private IFont Font(int font)
 		{
@@ -139,7 +134,7 @@ namespace CivOne.Graphics
 			return Font(font).FontHeight;
 		}
 		
-		private Picture GetLetter(byte colour, int font, char letter)
+		private Bytemap GetLetter(byte colour, int font, char letter)
 		{
 			string key = string.Format("letter{0}|{1}|{2}", colour, font, letter);
 			if (!_textCache.ContainsKey(key))

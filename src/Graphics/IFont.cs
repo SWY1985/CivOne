@@ -7,7 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using CivOne.Graphics;
+using CivOne.IO;
 
 namespace CivOne.Graphics
 {
@@ -16,6 +16,6 @@ namespace CivOne.Graphics
 		int FontHeight { get; }
 		byte FirstChar { get; }
 		byte LastChar { get; }
-		Picture GetLetter(char character, byte colour);
+		Bytemap GetLetter(char character, byte colour);
 	}
 }

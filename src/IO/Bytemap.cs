@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using CivOne.Graphics;
 using CivOne.Screens;
@@ -17,6 +18,7 @@ namespace CivOne.IO
 	public class Bytemap : BaseUnmanaged
 	{
 		public readonly int Width, Height;
+		public new Size Size => new Size(Width, Height);
 		public int Length => base.Size;
 
 		public byte this[int x, int y]
