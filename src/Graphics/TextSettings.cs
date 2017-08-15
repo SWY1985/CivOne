@@ -14,6 +14,7 @@ namespace CivOne.Graphics
 	public class TextSettings
 	{
 		public TextAlign Alignment { get; set; }
+		public VerticalAlign VerticalAlignment { get; set; }
 		public int FontId { get; set; }
 		public byte Colour { get; set; }
 		public byte FirstLetterColour { get; private set; }

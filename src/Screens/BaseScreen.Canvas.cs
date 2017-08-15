@@ -38,11 +38,12 @@ namespace CivOne.Screens
 				yy++;
 				ww -= 2;
 				hh -= 2;
-				this.FillRectangle(5, x, y, width, height);
+				this.DrawRectangle(x, y, width, height);
 			}
-			Picture panel = new Picture(ww, hh);
-			panel.Tile(Patterns.PanelGrey);
-			panel.AddBorder(15, 8, 0, 0, ww, hh);
+			Picture panel = new Picture(ww, hh)
+				.Tile(Patterns.PanelGrey)
+				.DrawRectangle3D()
+				.As<Picture>();
 			this.AddLayer(panel, xx, yy);
 		}
 

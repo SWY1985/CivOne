@@ -21,6 +21,8 @@ namespace CivOne.Graphics
 		public static int GetHeight(this IBitmap bitmap) => bitmap.Bitmap.Height;
 		public static int GetWidth(this IBitmap bitmap) => bitmap.Bitmap.Width;
 
+		public static T As<T>(this IBitmap bitmap) where T : class, IBitmap => (bitmap as T);
+
 		public static IBitmap FillRectangle(this IBitmap bitmap, byte colour, Rectangle rectangle) => FillRectangle(bitmap, colour, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
 		public static IBitmap FillRectangle(this IBitmap bitmap, byte colour, Point point, Size size) => FillRectangle(bitmap, colour, point.X, point.Y, size.Width, size.Height);
 		public static IBitmap FillRectangle(this IBitmap bitmap, byte colour, int left, int top, int width, int height)
@@ -34,6 +36,29 @@ namespace CivOne.Graphics
 					if (xx >= bitmap.GetWidth()) break;
 					if (bitmap.OutBoundX(xx)) continue;
 					bitmap.Bitmap[xx, yy] = colour;
+				}
+			}
+			return bitmap;
+		}
+
+		public static IBitmap DrawRectangle(this IBitmap bitmap, int left = 0, int top = 0, int width = -1, int height = -1, byte colour = 5) => DrawRectangle3D(bitmap, left, top, width, height, colour, colour);
+		public static IBitmap DrawRectangle3D(this IBitmap bitmap, int left = 0, int top = 0, int width = -1, int height = -1, byte colourLight = 15, byte colourDark = 8)
+		{
+			if (width < 0) width = bitmap.GetWidth() - left;
+			if (height < 0) height = bitmap.GetHeight() - top;
+			int ww = (left + width - 1), hh = (top + height - 1);
+			for (int yy = top; yy <= hh; yy++)
+			{
+				if (yy >= bitmap.GetHeight()) break;
+				if (bitmap.OutBoundY(yy)) continue;
+				for (int xx = left; xx <= ww; xx++)
+				{
+					if (xx >= bitmap.GetWidth()) break;
+					if (bitmap.OutBoundX(xx)) continue;
+					if (yy == 0 || xx == ww)
+						bitmap.Bitmap[xx, yy] = colourDark;
+					else if (yy == hh || xx == 0)
+						bitmap.Bitmap[xx, yy] = colourLight;
 				}
 			}
 			return bitmap;
@@ -87,11 +112,10 @@ namespace CivOne.Graphics
 			return bitmap;
 		}
 
-		public static IBitmap DrawText(this IBitmap bitmap, string text, int font, byte colour, int x, int y, TextAlign align = TextAlign.Left) => DrawText(bitmap, text, font, colour, colour, x, y, align);
-		private static IBitmap DrawText(this IBitmap bitmap, string text, int font, byte firstLetterColour, byte colour, int x, int y, TextAlign align = TextAlign.Left)
+		public static IBitmap DrawText(this IBitmap bitmap, string text, int font, byte colour, int x, int y, TextAlign align = TextAlign.Left)
 		{
 			if (string.IsNullOrWhiteSpace(text)) return bitmap;
-			Bytemap textLayer = Resources.Instance.GetText(text, font, firstLetterColour, colour).Bitmap;
+			Bytemap textLayer = Resources.Instance.GetText(text, font, colour).Bitmap;
 			switch(align)
 			{
 				case TextAlign.Center: x -= (textLayer.Width + 1) / 2; break;
@@ -141,6 +165,11 @@ namespace CivOne.Graphics
 			{
 				case TextAlign.Center: x -= (textLayer.Width + 1) / 2; break;
 				case TextAlign.Right: x -= textLayer.Width; break;
+			}
+
+			if (settings.VerticalAlignment == VerticalAlign.Bottom)
+			{
+				y -= Resources.Instance.GetFontHeight(settings.FontId);
 			}
 
 			AddLayer(bitmap, textLayer, x, y, dispose: true);

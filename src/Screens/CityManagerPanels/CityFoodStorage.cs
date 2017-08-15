@@ -26,10 +26,9 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			if (_update)
 			{
-				this.Tile(_background);
-				_canvas.AddBorder(1, 1, 0, 0, 91, 92);
-				this.FillRectangle(1, 1, 1, 89, 8)
-					.FillRectangle(0, 91, 0, 1, 92)
+				this.Tile(_background)
+					.DrawRectangle(colour: 1)
+					.FillRectangle(1, 1, 1, 89, 8)
 					.DrawText($"Food Storage", 1, 17, 6, 2, TextAlign.Left);
 
 				int foodPerLine = (_city.Size + 1);
@@ -72,7 +71,7 @@ namespace CivOne.Screens.CityManagerPanels
 			_city = city;
 			_background = background;
 
-			_canvas = new Picture(92, 92, background.Palette);
+			_canvas = new Picture(91, 92, background.Palette);
 		}
 	}
 }

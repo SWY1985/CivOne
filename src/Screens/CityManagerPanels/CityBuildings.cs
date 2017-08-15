@@ -81,8 +81,7 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			if (_update)
 			{
-				this.Tile(_background)
-					.FillRectangle(0, 107, 0, 1, 97);
+				this.Tile(_background);
 
 				for (int i = (_page * 14); i < _improvements.Length && i < ((_page + 1) * 14); i++)
 				{
@@ -100,7 +99,7 @@ namespace CivOne.Screens.CityManagerPanels
 					DrawButton("More", 9, 1, 76, 87, 29);
 				}
 
-				_canvas.AddBorder(1, 1, 0, 0, 107, 97);
+				this.DrawRectangle(colour: 1);
 				
 				_update = false;
 			}

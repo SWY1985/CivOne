@@ -88,9 +88,8 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			if (_update)
 			{
-				this.Tile(_background);
-				_canvas.AddBorder(1, 1, 0, 0, 133, 92);
-				this.FillRectangle(0, 133, 0, 3, 92);
+				this.Tile(_background)
+					.DrawRectangle(colour: 1);
 				
 				DrawButton("Info", (byte)((_choice == CityInfoChoice.Info) ? 15 : 9), 1, 0, 0, 34);
 				DrawButton("Happy", (byte)((_choice == CityInfoChoice.Happy) ? 15 : 9), 1, 34, 0, 32);
@@ -205,7 +204,7 @@ namespace CivOne.Screens.CityManagerPanels
 			_city = city;
 			_background = background;
 
-			_canvas = new Picture(136, 92, background.Palette);
+			_canvas = new Picture(133, 92, background.Palette);
 		}
 	}
 }

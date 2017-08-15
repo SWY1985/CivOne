@@ -69,6 +69,9 @@ namespace CivOne.Screens
 
 		public ChooseTech() : base(MouseCursor.Pointer)
 		{
+			TextSettings DialogText = new TextSettings() { Colour = 15 };
+			TextSettings HelpText = new TextSettings() { FontId = 1, Colour = 10, Alignment = TextAlign.Right, VerticalAlignment = VerticalAlign.Bottom };
+
 			_availableAdvances = Human.AvailableResearch.Take(8).ToArray();
 			_menuHeight = Resources.Instance.GetFontHeight(0) * _availableAdvances.Count();
 			
@@ -85,19 +88,20 @@ namespace CivOne.Screens
 			int dialogHeight = 41 + _menuHeight;
 			if (dialogHeight < 62) dialogHeight = 62;
 
-			_menuGfx = new Picture(204, dialogHeight);
-			_menuGfx.Tile(Patterns.PanelGrey)
-					.FillRectangle(0, 202, 0, 2, dialogHeight)
-					.AddLayer(governmentPortrait, 1, dialogHeight - 61);
-			_menuGfx.AddBorder(15, 8, 0, 0, 202, dialogHeight);
-			_menuGfx.DrawText("Science Advisor:", 0, 15, 46, 3)
+			_menuGfx = new Picture(202, dialogHeight)
+					.Tile(Patterns.PanelGrey)
+					.AddLayer(governmentPortrait, 1, dialogHeight - 61)
+					.DrawRectangle3D()
+					.DrawText("Science Advisor:", 46, 3, DialogText)
 					.FillRectangle(11, 46, 10, 89, 1)
-					.DrawText("Which discovery should our", 0, 15, 46, 12)
-					.DrawText("wise men be pursuing, sire?", 0, 15, 46, 20)
-					.DrawText("Pick one...", 0, 15, 46, 28)
-					.DrawText($"(Help available)", 1, 10, 202, dialogHeight - Resources.Instance.GetFontHeight(1), TextAlign.Right);
+					.DrawText("Which discovery should our", 46, 12, DialogText)
+					.DrawText("wise men be pursuing, sire?", 46, 20, DialogText)
+					.DrawText("Pick one...", 46, 28, DialogText)
+					.DrawText($"(Help available)", 202, dialogHeight, HelpText)
+					.As<Picture>();
 
-			this.FillRectangle(5, 38, 56, 204, dialogHeight + 2)
+			// this.FillRectangle(5, 38, 56, 204, dialogHeight + 2)
+			this.DrawRectangle(38, 56, 204, dialogHeight + 2)
 				.AddLayer(_menuGfx, 39, 57);
 		}
 
