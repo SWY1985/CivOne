@@ -40,21 +40,6 @@ namespace CivOne.Graphics
 		}
 		
 		public Bytemap Bitmap => _bitmap;
-
-		public byte[,] ScaleBitmap(int scaleX, int scaleY)
-		{
-			byte[,] output = new byte[Width * scaleX, Height * scaleY];
-			for (int yy = 0; yy < Height; yy++)
-			for (int xx = 0; xx < Width; xx++)
-			{
-				for (int sy = 0; sy < scaleY; sy++)
-				for (int sx = 0; sx < scaleX; sx++)
-				{
-					output[(xx * scaleX) + sx, (yy * scaleY) + sy] = _bitmap[xx, yy];
-				}
-			}
-			return output;
-		}
 		
 		public static void ReplaceColours(Picture image, byte colourFrom, byte colourTo)
 		{
