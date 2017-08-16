@@ -148,16 +148,16 @@ namespace CivOne.Graphics
 				if (_city == null)
 				{
 					Random r = new Random(0x4701);
-					_city = new Picture(16, 16);
-					_city.AddLine(5, 7, 3, 11, 3);
-					_city.AddLine(5, 4, 5, 9, 5);
-					_city.AddLine(5, 3, 7, 11, 7);
-					_city.AddLine(5, 5, 9, 9, 9);
-					_city.AddLine(5, 3, 11, 6, 11);
-
-					_city.AddLine(5, 3, 6, 3, 8);
-					_city.AddLine(5, 7, 3, 7, 11);
-					_city.AddLine(5, 11, 5, 11, 11);
+					_city = new Picture(16, 16)
+						.DrawLine(7, 3, 11, 3)
+						.DrawLine(4, 5, 9, 5)
+						.DrawLine(3, 7, 11, 7)
+						.DrawLine(5, 9, 9, 9)
+						.DrawLine(3, 11, 6, 11)
+						.DrawLine(3, 6, 3, 8)
+						.DrawLine(7, 3, 7, 11)
+						.DrawLine(11, 5, 11, 11)
+						.As<Picture>();
 				}
 				return _city;
 			}

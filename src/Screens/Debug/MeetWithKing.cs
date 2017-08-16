@@ -62,7 +62,7 @@ namespace CivOne.Screens.Debug
 
 		public MeetWithKing() : base(MouseCursor.Pointer)
 		{
-			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
+			Palette = Common.Screens.Last().OriginalColours;
 			_players = Game.Players.Where(p => p != 0 && p != Human).ToArray();
 
 			int fontHeight = Resources.Instance.GetFontHeight(0);

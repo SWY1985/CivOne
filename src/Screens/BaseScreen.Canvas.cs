@@ -21,13 +21,37 @@ namespace CivOne.Screens
 
 		internal static Resources Resources => Resources.Instance;
 
-		protected Picture _canvas = new Picture(320, 200);
-		protected int Width => _canvas.Width;
-		protected int Height => _canvas.Height;
+		protected int Width => Bitmap.Width;
+		protected int Height => Bitmap.Height;
 
-		public Bytemap Bitmap => _canvas.Bitmap;
-		public Palette Palette => _canvas.Palette;
-		public Palette OriginalColours => _canvas.OriginalColours;
+		private Bytemap _bitmap;
+		public Bytemap Bitmap
+		{
+			get
+			{
+				return _bitmap;
+			}
+			protected set
+			{
+				_bitmap?.Dispose();
+				_bitmap = value;
+			}
+		}
+		private Palette _palette, _originalColours;
+		public Palette Palette
+		{
+			get
+			{
+				return _palette;
+			}
+			set
+			{
+				_palette = value.Copy();
+				if (_originalColours == null)
+					_originalColours = value.Copy();
+			}
+		}
+		public Palette OriginalColours => _originalColours;
 		
 		protected void DrawPanel(int x, int y, int width, int height, bool border = true)
 		{
@@ -85,6 +109,25 @@ namespace CivOne.Screens
 				.DrawText(text, 1, colourDark, x + (int)Math.Ceiling((double)width / 2), y + 2, TextAlign.Center);
 		}
 
-		public virtual void Dispose() => _canvas.Dispose();
+		//
+		public void ResetPalette()
+		{
+			for (int i = 0; i < 256; i++)
+				Palette[i] = OriginalColours[i];
+		}
+
+		public void SetPalette(Palette palette)
+		{
+			for (int i = 1; i < palette.Length && i < 256; i++)
+				Palette[i] = palette[i];
+		}
+		//
+
+		public virtual void Dispose()
+		{
+			Bitmap?.Dispose();
+			Palette?.Dispose();
+			OriginalColours?.Dispose();
+		}
 	}
 }

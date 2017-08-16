@@ -38,7 +38,7 @@ namespace CivOne.Screens
 			Palette palette = Palette;
 			for (int i = 86; i < 256; i++)
 				palette[i] = FadeColour(OriginalColours[i], _advance.Icon.OriginalColours[i]);
-			_canvas.SetPalette(palette);
+			this.SetPalette(palette);
 		}
 		
 		protected override bool HasUpdate(uint gameTick)
@@ -77,7 +77,7 @@ namespace CivOne.Screens
 
 			Picture background = Resources.Instance.LoadPIC(_modern ? "DISCOVR2" : "DISCOVR1");
 			
-			_canvas = new Picture(320, 200, background.Palette);
+			Palette = background.Palette;
 			this.FillRectangle(32, 0, 0, 320, 200)
 				.AddLayer(background);
 

@@ -75,7 +75,7 @@ namespace CivOne.Screens
 
 			if (_overlay == null || _animation == DestroyAnimation.Sprites)
 			{
-				_overlay = new Picture(_canvas);
+				_overlay = new Picture(Bitmap, Palette);
 
 				int xx = _unit.X - _x;
 				int yy = _unit.Y - _y;
@@ -220,7 +220,7 @@ namespace CivOne.Screens
 			_x = Common.GamePlay.X;
 			_y = Common.GamePlay.Y;
 
-			_canvas = new Picture(320, 200, Common.DefaultPalette);
+			Palette = Common.DefaultPalette;
 			_gameMap = GameMap;
 			_animation = Settings.DestroyAnimation;
 			if (!Resources.Exists("SP257"))

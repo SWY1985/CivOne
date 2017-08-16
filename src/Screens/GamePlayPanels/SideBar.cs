@@ -13,6 +13,7 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.IO;
 using CivOne.Tasks;
 using CivOne.Tiles;
 using CivOne.Units;
@@ -240,14 +241,13 @@ namespace CivOne.Screens.GamePlayPanels
 		
 		public void Resize(int height)
 		{
-			_canvas?.Dispose();
-			_canvas = new Picture(80, height, Palette);
+			Bitmap = new Bytemap(80, height);
 			_gameInfo?.Dispose();
 			_gameInfo = new Picture(80, (height - 89), Palette);
 			_update = true;
 		}
 
-		public SideBar(Palette palette)
+		public SideBar(Palette palette) : base(80, 192)
 		{
 			_miniMap = new Picture(80, 50, palette);
 			_demographics = new Picture(80, 39, palette);
@@ -257,7 +257,7 @@ namespace CivOne.Screens.GamePlayPanels
 			DrawDemographics();
 			DrawGameInfo();
 			
-			_canvas = new Picture(80, 192, palette);
+			Palette = palette.Copy();
 			this.AddLayer(_miniMap, 0, 0)
 				.AddLayer(_demographics, 0, 50)
 				.AddLayer(_gameInfo, 0, 89);

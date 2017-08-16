@@ -70,88 +70,8 @@ namespace CivOne.Graphics
 				image[xx, yy] = coloursTo[j];
 			}
 		}
-		
-		public void ResetPalette()
-		{
-			for (int i = 0; i < 256; i++)
-				_palette[i] = _originalColours[i];
-		}
-
-		public void SetPalette(Palette palette)
-		{
-			for (int i = 1; i < palette.Length && i < 256; i++)
-				_palette[i] = palette[i];
-		}
-		
-		public Picture Cycle(int colour, ref Colour[] colours)
-		{
-			Colour reserve = Palette[colour];
-			Palette[colour] = colours[0];
-			for (int i = 0; i < colours.Length - 1; i++)
-				colours[i] = colours[i + 1];
-			colours[colours.Length - 1] = reserve;
-			Palette = colours;
-			return this;
-		}
-		
-		public Picture Cycle(int start, int end)
-		{
-			if (start > end) return CycleReverse(end, start);
-			
-			Colour reserve = _palette[end];
-			for (int i = end; i > start; i--)
-				_palette[i] = _palette[i - 1];
-			_palette[start] = reserve;
-			return this;
-		}
-		
-		private Picture CycleReverse(int start, int end)
-		{
-			Colour reserve = _palette[start];
-			for (int i = start; i < end; i++)
-				_palette[i] = _palette[i + 1];
-			_palette[end] = reserve;
-			return this;
-		}
 
 		public Picture GetPart(int left, int top, int width, int height) => new Picture(_bitmap[left, top, width, height], Palette);
-
-		public void AddLine(byte colour, int x1, int y1, int x2, int y2)
-		{
-			int difX = (x2 - x1), difY = (y2 - y1);
-			float xx = x1, yy = y1, incX, incY;
-			int steps;
-			if (Math.Abs(difX) < Math.Abs(difY))
-			{
-				incX = ((float)difX / difY);
-				incY = difY < 0 ? -1 : 1;
-				if (difY < 0) incX = -incX;
-				steps = difY;
-			}
-			else
-			{
-				incX = difX < 0 ? -1 : 1;
-				incY = ((float)difY / difX);
-				if (difX < 0) incY = -incY;
-				steps = difX;
-			}
-			for (int i = 0; i < Math.Abs(steps); i++)
-			{
-				_bitmap[(int)Math.Round(xx), (int)Math.Round(yy)] = colour;
-				xx += incX;
-				yy += incY;
-			}
-		}
-		
-		public void ColourReplace(byte colourFrom, byte colourTo, int x, int y, int width, int height)
-		{
-			for (int yy = y; yy < y + height; yy++)
-			for (int xx = x; xx < x + width; xx++)
-			{
-				if (_bitmap[xx, yy] != colourFrom) continue;
-				_bitmap[xx, yy] = colourTo;
-			}
-		}
 		
 		public void ApplyNoise(byte[,] noiseMap, int step)
 		{

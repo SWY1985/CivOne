@@ -83,7 +83,7 @@ namespace CivOne.Screens
 
 		public Search()
 		{
-			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
+			Palette = Common.Screens.Last().OriginalColours;
 
 			this.FillRectangle(5, 64, 78, 225, 25)
 				.FillRectangle(15, 65, 79, 223, 23)

@@ -65,7 +65,7 @@ namespace CivOne.Screens.Debug
 
 		public SetGameYear()
 		{
-			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
+			Palette = Common.Screens.Last().OriginalColours;
 
 			this.FillRectangle(11, 80, 80, 161, 33)
 				.FillRectangle(15, 81, 81, 159, 31)

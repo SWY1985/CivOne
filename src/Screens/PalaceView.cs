@@ -348,8 +348,7 @@ namespace CivOne.Screens
 			}
 			
 			_background = Resources.Instance.LoadPIC("CBACK");
-			
-			_canvas = new Picture(320, 200, _background.Palette);
+			Palette = _background.Palette;
 			if (build) _currentStage = Stage.Message;
 		}
 	}

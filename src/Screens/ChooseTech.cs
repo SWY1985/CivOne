@@ -77,13 +77,11 @@ namespace CivOne.Screens
 			
 			bool modernGovernment = Human.HasAdvance<Invention>();
 			Picture governmentPortrait = Icons.GovernmentPortrait(Human.Government, Advisor.Science, modernGovernment);
-			Palette palette = Common.DefaultPalette;
-			for (int i = 144; i < 256; i++)
+			using (Palette palette = Common.DefaultPalette)
 			{
-				palette[i] = governmentPortrait.Palette[i];
+				palette.MergePalette(governmentPortrait.Palette, 144);
+				Palette = palette;
 			}
-			
-			_canvas = new Picture(320, 200, palette);
 
 			int dialogHeight = 41 + _menuHeight;
 			if (dialogHeight < 62) dialogHeight = 62;

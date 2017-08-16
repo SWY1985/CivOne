@@ -51,7 +51,7 @@ namespace CivOne.Screens
 
 		public CityName(string cityName)
 		{
-			_canvas = new Picture(320, 200, Common.DefaultPalette);
+			Palette = Common.DefaultPalette;
 
 			this.FillRectangle(11, 80, 80, 161, 33)
 				.FillRectangle(15, 81, 81, 159, 31)

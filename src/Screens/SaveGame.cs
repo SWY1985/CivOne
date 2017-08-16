@@ -116,7 +116,7 @@ namespace CivOne.Screens
 		
 		private void DrawDriveQuestion()
 		{
-			_canvas = new Picture(320, 200, _palette);
+			Bitmap.Clear();
 			this.FillRectangle(15, 0, 0, 320, 200);
 			DrawBorder(_border);
 
@@ -134,7 +134,7 @@ namespace CivOne.Screens
 			{
 				if (!_update) return false;
 				_update = false;
-				_canvas = new Picture(320, 200, _palette);
+				Bitmap.Clear();
 				this.FillRectangle(15, 0, 0, 320, 200);
 				DrawBorder(_border);
 
@@ -159,7 +159,7 @@ namespace CivOne.Screens
 			{
 				if (_menu.Update(gameTick))
 				{
-					_canvas = new Picture(320, 200, _palette);
+					Bitmap.Clear();
 					this.FillRectangle(15, 0, 0, 320, 200);
 					DrawBorder(_border);
 					this.AddLayer(_menu);
@@ -257,11 +257,9 @@ namespace CivOne.Screens
 				return _menu.MouseDrag(args);
 			return false;
 		}
-		
-		public SaveGame()
+
+		public SaveGame() : this(-1)
 		{
-			_palette = Resources.Instance.LoadPIC("SP257").Palette;
-			_gameId = -1;
 		}
 		
 		public SaveGame(int gameId)

@@ -68,11 +68,10 @@ namespace CivOne.Screens
 		
 		public WorldMap()
 		{
-			_canvas = new Picture(320, 200, Resources.WorldMapTiles.Palette);
+			Palette = Resources.WorldMapTiles.Palette;
 			this.FillRectangle(5, 0, 0, 320, 200);
 
 			int startX = Game.Human.StartX - 40;
-			// int startY = (VisibleTop - Map.HEIGHT) + VisibleBottom; //(int)Math.Floor((double)(Map.HEIGHT - (VisibleBottom - VisibleTop)) / 2);
 			int startY = ((Map.HEIGHT - (VisibleBottom - VisibleTop)) / 2) - VisibleTop;
 			if (Settings.RevealWorld) startX = 0;
 			if (Settings.RevealWorld || VisibleTop == 0 || VisibleBottom == Map.HEIGHT) startY = 0;

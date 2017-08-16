@@ -36,7 +36,7 @@ namespace CivOne.Screens.Debug
 
 		private void AdvancesMenu()
 		{
-			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
+			Palette = Common.Screens.Last().OriginalColours;
 
 			IAdvance[] advances = _advances.Skip(_index).Take(15).ToArray();
 
@@ -135,7 +135,7 @@ namespace CivOne.Screens.Debug
 
 		public SetPlayerAdvances() : base(MouseCursor.Pointer)
 		{
-			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
+			Palette = Common.Screens.Last().OriginalColours;
 
 			int fontHeight = Resources.Instance.GetFontHeight(0);
 			int hh = (fontHeight * (Game.Players.Count() + 1)) + 5;

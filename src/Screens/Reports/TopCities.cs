@@ -85,7 +85,7 @@ namespace CivOne.Screens.Reports
 		
 		public TopCities()
 		{
-			_canvas = new Picture(320, 200, Common.DefaultPalette);
+			Palette = Common.DefaultPalette;
 
 			// I'm not sure about the order of top 5 cities, but this is pretty close
 			_cities = Game.GetCities()

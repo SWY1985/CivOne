@@ -126,7 +126,7 @@ namespace CivOne.Screens
 		
 		public MissingFiles()
 		{
-			_canvas = new Picture(320, 200, Common.GetPalette256);
+			Palette = Common.GetPalette256;
 			this.FillRectangle(8, 0, 0, 320, 200)
 				.FillRectangle(15, 40, 50, 240, 100)
 				.DrawText("Warning!", 1, 4, 160, 54, TextAlign.Center);

@@ -81,7 +81,7 @@ namespace CivOne.Screens
 				case 2: name = $"{name} Weekly"; break;
 			}
 
-			_canvas = new Picture(320, 200, palette);
+			Palette = palette;
 			this.FillRectangle(15, 0, 0, 320, 100)
 				.DrawText("FLASH", 2, 5, 6, 3)
 				.DrawText("FLASH", 2, 5, 272, 3)

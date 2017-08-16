@@ -45,7 +45,7 @@ namespace CivOne.Screens
 		public GameOver()
 		{
 			_background = Resources.Instance.LoadPIC("ARCH");
-			_canvas = new Picture(320, 200, _background.Palette);
+			Palette = _background.Palette;
 			this.AddLayer(_background);
 			
 			// Load text and replace strings

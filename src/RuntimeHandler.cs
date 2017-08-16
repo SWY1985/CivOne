@@ -87,12 +87,12 @@ namespace CivOne
 			if (Runtime.Bitmap == null || Runtime.Bitmap.GetWidth() != Runtime.CanvasWidth || Runtime.Bitmap.GetWidth() != Runtime.CanvasWidth)
 			{
 				Runtime.Bitmap?.Dispose();
-				Runtime.Bitmap = new Picture(Runtime.CanvasWidth, Runtime.CanvasHeight, Common.TopScreen.Palette);
+				Runtime.Bitmap = new Picture(Runtime.CanvasWidth, Runtime.CanvasHeight, Common.TopScreen.Palette.Copy());
 				Runtime.Bitmap.Palette[0] = Colour.Black;
 			}
 			else
 			{
-				Runtime.Bitmap.Palette.MergePalette(Common.TopScreen.Palette, 1);
+				Runtime.Bitmap.Palette.MergePalette(Common.TopScreen.Palette.Copy(), 1);
 				Runtime.Bitmap.Bitmap.Clear();
 			}
 			

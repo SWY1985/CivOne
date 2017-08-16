@@ -144,13 +144,13 @@ namespace CivOne.Screens.CityManagerPanels
 			return false;
 		}
 
-		public CityBuildings(City city, Picture background)
+		public CityBuildings(City city, Picture background) : base(108, 97)
 		{
 			_city = city;
 			_improvements = GetImprovements.ToArray();
 			_background = background;
-
-			_canvas = new Picture(108, 97, background.Palette);
+			
+			Palette = background.Palette.Copy();
 		}
 	}
 }

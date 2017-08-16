@@ -45,7 +45,7 @@ namespace CivOne.Screens.Dialogs
 			{
 				palette[i] = governmentPortrait.Palette[i];
 			}
-			_canvas.SetPalette(palette);
+			this.SetPalette(palette);
 			
 			_textLines = TextBitmaps(message);
 			DialogBox.AddLayer(governmentPortrait, 2, 2);

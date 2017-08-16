@@ -48,13 +48,11 @@ namespace CivOne.Screens.Reports
 			{
 				Portrait[i] = Icons.GovernmentPortrait(Human.Government, (Advisor)Enum.Parse(typeof(Advisor), $"{i}"), modernGovernment); 
 			}
-			Palette palette = Common.DefaultPalette;
-			for (int i = 144; i < 256; i++)
+			using (Palette palette = Common.DefaultPalette)
 			{
-				palette[i] = Portrait[0].Palette[i];
+				palette.MergePalette(Portrait[0].Palette, 144);
+				Palette = palette;
 			}
-
-			_canvas = new Picture(320, 200, palette);
 			
 			this.FillRectangle(backgroundColour, 0, 0, 320, 200)
 				.DrawText(title, 0, 15, 160, 2, TextAlign.Center)

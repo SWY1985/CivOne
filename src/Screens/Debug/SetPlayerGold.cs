@@ -30,7 +30,7 @@ namespace CivOne.Screens.Debug
 
 		private void CivSelect_Accept(object sender, EventArgs args)
 		{
-			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
+			Bitmap.Clear();
 
 			this.FillRectangle(11, 80, 80, 161, 33)
 				.FillRectangle(15, 81, 81, 159, 31)
@@ -94,7 +94,7 @@ namespace CivOne.Screens.Debug
 
 		public SetPlayerGold() : base(MouseCursor.Pointer)
 		{
-			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
+			Palette = Common.Screens.Last().OriginalColours;
 
 			int fontHeight = Resources.Instance.GetFontHeight(0);
 			int hh = (fontHeight * (Game.Players.Count() + 1)) + 5;

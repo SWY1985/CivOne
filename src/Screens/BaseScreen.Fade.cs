@@ -50,7 +50,7 @@ namespace CivOne.Screens
 			{
 				for (int i = 1; i < 256; i++)
 					palette[i] = FadeColour(new Colour(0, 0, 0), OriginalColours[i]);
-				_canvas.SetPalette(palette);
+				this.SetPalette(palette);
 			}
 		}
 		

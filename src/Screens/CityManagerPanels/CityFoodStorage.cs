@@ -66,12 +66,12 @@ namespace CivOne.Screens.CityManagerPanels
 			_update = true;
 		}
 
-		public CityFoodStorage(City city, Picture background)
+		public CityFoodStorage(City city, Picture background) : base(91, 92)
 		{
 			_city = city;
 			_background = background;
 
-			_canvas = new Picture(91, 92, background.Palette);
+			Palette = background.Palette.Copy();
 		}
 	}
 }

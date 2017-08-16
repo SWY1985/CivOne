@@ -90,12 +90,12 @@ namespace CivOne.Screens
 			}
 			else if (_logoSwipe < 320)
 			{
-				_canvas.Cycle(224, 254);
+				this.Cycle(224, 254);
 				_logoSwipe += 16;
 			}
 			else if (_cycleCounter < 98)
 			{
-				_canvas.Cycle(224, 254);
+				this.Cycle(224, 254);
 				_cycleCounter++;
 			}
 			else if (_noiseCounter > 0)
@@ -148,7 +148,7 @@ namespace CivOne.Screens
 			else if (_noiseCounter == 0)
 			{
 				this.AddLayer(_pictures[2], cx, cy);
-				_canvas.ResetPalette();
+				this.ResetPalette();
 				_done = true;
 				
 				if (_overlay != null)
@@ -332,7 +332,7 @@ namespace CivOne.Screens
 			
 			_menuColours = new byte[] { 8, 15, 7 };
 			
-			_canvas = new Picture(320, 200, _pictures[2].Palette);
+			Palette = _pictures[2].Palette;
 
 			Runtime.PlaySound("opening");
 

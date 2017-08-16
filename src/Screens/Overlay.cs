@@ -117,8 +117,8 @@ namespace CivOne.Screens
 							.DrawText(helpLabel.Text, 0, 15, 5, 5)
 							.As<Picture>();
 
-						_canvas.AddLine(15, helpLabel.PointX, helpLabel.PointY, helpLabel.X + 5, helpLabel.Y + 6);
-						this.AddLayer(label, helpLabel.X, helpLabel.Y);
+						this.DrawLine(helpLabel.PointX, helpLabel.PointY, helpLabel.X + 5, helpLabel.Y + 6, 15)
+							.AddLayer(label, helpLabel.X, helpLabel.Y);
 					}
 				}
 
@@ -189,7 +189,7 @@ namespace CivOne.Screens
 
 		private Overlay() : base(MouseCursor.Pointer)
 		{	
-			_canvas = new Picture(320, 200, Common.TopScreen.Palette);
+			Palette = Common.TopScreen.Palette.Copy();
 		}
 	}
 }

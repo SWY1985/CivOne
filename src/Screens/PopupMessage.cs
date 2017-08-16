@@ -41,7 +41,7 @@ namespace CivOne.Screens
 
 		public PopupMessage(byte colour, string title, string[] message) : base(MouseCursor.Pointer)
 		{
-			_canvas = new Picture(320, 200, Common.DefaultPalette);
+			Palette = Common.DefaultPalette;
 			
 			byte colourLight = (byte)(colour + 8);
 			int lineHeight = Resources.Instance.GetFontHeight(1);

@@ -95,7 +95,7 @@ namespace CivOne.Screens
 			_y = y;
 			_units = Map[_x, _y].Units.Take(12).ToArray();
 
-			_canvas = new Picture(320, 200, Common.TopScreen.Palette);
+			Palette = Common.TopScreen.Palette;
 		}
 	}
 }

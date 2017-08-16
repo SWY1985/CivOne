@@ -64,10 +64,10 @@ namespace CivOne.Screens
 			Picture.ReplaceColours(_background, 0, 5);
 			Picture portrait = _player.Civilization.Leader.GetPortrait();
 			
-			_canvas = new Picture(320, 200, _background.Palette);
-			for (int i = 64; i < 144; i++)
+			using (Palette palette = _background.Palette.Copy())
 			{
-				Palette[i] = portrait.Palette[i];
+				palette.MergePalette(portrait.Palette, 64, 80);
+				Palette = palette;
 			}
 			
 			this.AddLayer(_background)

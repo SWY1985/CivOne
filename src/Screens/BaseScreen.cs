@@ -11,6 +11,7 @@ using System;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.IO;
 
 namespace CivOne.Screens
 {
@@ -41,7 +42,7 @@ namespace CivOne.Screens
 
 		private void Resize(int width, int height)
 		{
-			_canvas = new Picture(width, height, Palette);
+			Bitmap = new Bytemap(width, height);
 			OnResize?.Invoke(this, new ResizeEventArgs(width, height));
 		}
 
@@ -73,6 +74,13 @@ namespace CivOne.Screens
 		protected BaseScreen(MouseCursor cursor = MouseCursor.None)
 		{
 			_cursor = cursor;
+			Bitmap = new Bytemap(320, 200);
+		}
+
+		protected BaseScreen(int width, int height, MouseCursor cursor = MouseCursor.None)
+		{
+			_cursor = cursor;
+			Bitmap = new Bytemap(width, height);
 		}
 	}
 }

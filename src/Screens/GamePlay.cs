@@ -162,7 +162,7 @@ namespace CivOne.Screens
 
 			if (_gameMap.MustUpdate(gameTick)) _update = true;
 			if (_sideBar.Update(gameTick)) _update = true;
-			if (gameTick % 3 == 0) _canvas.Cycle(96, 103).Cycle(104, 111);
+			if (gameTick % 3 == 0) this.Cycle(96, 103).Cycle(104, 111);
 			if (!_update && !_redraw) return (gameTick % 3 == 0);
 			
 			DrawLayer(_menuBar, gameTick, 0, 0);
@@ -356,15 +356,13 @@ namespace CivOne.Screens
 		{
 			OnResize += Resize;
 			
-			Palette palette = Resources.Instance.LoadPIC("SP257").OriginalColours;
-			
-			_canvas = new Picture(320, 200, palette);
+			Palette = Resources.Instance.LoadPIC("SP257").OriginalColours;
 			this.FillRectangle(5, 0, 0, 320, 200);
 			
 			_rightSideBar = Settings.RightSideBar;
 
-			_menuBar = new MenuBar(palette);
-			_sideBar = new SideBar(palette);
+			_menuBar = new MenuBar(Palette);
+			_sideBar = new SideBar(Palette);
 			_gameMap = new GameMap();
 			
 			_menuBar.GameSelected += MenuBarGame;

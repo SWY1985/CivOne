@@ -491,7 +491,7 @@ namespace CivOne.Screens
 		{
 			OnResize += Resize;
 			
-			_canvas = new Picture(320, 200, Common.GetPalette256);
+			Palette = Common.GetPalette256;
 			this.FillRectangle(3, 0, 0, 320, 200);
 		}
 	}

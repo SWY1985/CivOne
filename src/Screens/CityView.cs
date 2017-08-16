@@ -68,14 +68,14 @@ namespace CivOne.Screens
 			Palette palette = _background.Palette;
 			for (int i = 1; i < 256; i++)
 				palette[i] = FadeColour(new Colour(0, 0, 0), _background.OriginalColours[i]);
-			_canvas.SetPalette(palette);
+			this.SetPalette(palette);
 		}
 		
 		protected override bool HasUpdate(uint gameTick)
 		{
 			if (gameTick % 4 == 0)
 			{
-				_canvas.Cycle(64, 79);
+				this.Cycle(64, 79);
 				_update = true;
 			}
 
@@ -706,7 +706,7 @@ namespace CivOne.Screens
 			_founded = founded;
 			_firstView = firstView;
 			
-			_canvas = new Picture(320, 200, _background.Palette);
+			Palette = _background.Palette;
 			_overlay = new Picture(_background);
 			
 			if (founded) return;

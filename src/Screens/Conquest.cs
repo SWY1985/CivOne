@@ -136,7 +136,7 @@ namespace CivOne.Screens
 		{
 			_background = Resources.Instance.LoadPIC("SLAM1");
 			
-			_canvas = new Picture(320, 200, _background.Palette);
+			Palette = _background.Palette;
 			
 			this.AddLayer(_background);
 			

@@ -184,7 +184,7 @@ namespace CivOne.Screens
 		{
 			OnResize += Resize;
 
-			_canvas = new Picture(320, 200, palette);
+			Palette = palette.Copy();
 			_text = text;
 			_fontId = fontId;
 			_textColour = textColour;
@@ -200,7 +200,7 @@ namespace CivOne.Screens
 		{
 			OnResize += Resize;
 
-			_canvas = new Picture(320, 200, palette);
+			Palette = palette.Copy();
 			_text = "";
 			_fontId = fontId;
 			_textColour = textColour;

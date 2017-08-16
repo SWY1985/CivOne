@@ -163,8 +163,8 @@ namespace CivOne.Screens
 		public CityChooseProduction(City city) : base(MouseCursor.Pointer)
 		{
 			_city = city;
-
-			_canvas = new Picture(320, 200, Common.DefaultPalette);
+			
+			Palette = Common.DefaultPalette;
 
 			_availableProduction = _city.AvailableProduction.ToArray();
 			_menuHeight = Resources.Instance.GetFontHeight(0) * _availableProduction.Length;

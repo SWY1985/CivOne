@@ -72,12 +72,12 @@ namespace CivOne.Screens.CityManagerPanels
 			return true;
 		}
 
-		public CityUnits(City city, Picture background)
+		public CityUnits(City city, Picture background) : base(123, 38)
 		{
 			_city = city;
 			_background = background;
 
-			_canvas = new Picture(123, 38, background.Palette);
+			Palette = background.Palette.Copy();
 		}
 	}
 }

@@ -64,7 +64,7 @@ namespace CivOne.Screens.Debug
 
 		private void UnitsMenu()
 		{
-			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
+			Palette = Common.Screens.Last().OriginalColours;
 
 			IUnit[] units = _units.Skip(_index).Take(15).ToArray();
 
@@ -113,7 +113,7 @@ namespace CivOne.Screens.Debug
 		private void CivSelect_Accept(object sender, EventArgs args)
 		{
 			_selectedPlayer = Game.GetPlayer((byte)_civSelect.ActiveItem);
-			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
+			Palette = Common.Screens.Last().OriginalColours;
 			CloseMenus();
 		}
 
@@ -274,7 +274,7 @@ namespace CivOne.Screens.Debug
 
 		public SpawnUnit()
 		{
-			_canvas = new Picture(320, 200, Common.DefaultPalette);
+			Palette = Common.DefaultPalette;
 
 			int fontHeight = Resources.Instance.GetFontHeight(0);
 			int hh = (fontHeight * (Game.Players.Count() + 1)) + 5;

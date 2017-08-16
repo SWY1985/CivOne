@@ -254,7 +254,7 @@ namespace CivOne.Screens
 			}
 			
 			// Draw background
-			_canvas = new Picture(Width, Height, _background.Palette);
+			Bitmap = new Bytemap(Width, Height);
 			if (_difficulty == -1)
 			{
 				this.AddLayer(_background, OffsetX, OffsetY);
@@ -324,7 +324,7 @@ namespace CivOne.Screens
 			
 			_background = Resources.Instance.LoadPIC("DIFFS");
 			
-			_canvas = new Picture(320, 200, _background.Palette);
+			Palette = _background.Palette.Copy();
 			this.AddLayer(_background);
 			
 			if (Settings.Instance.DeityEnabled)

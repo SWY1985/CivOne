@@ -97,7 +97,7 @@ namespace CivOne
 			{
 				GamePlay gamePlay = GamePlay;
 				if (gamePlay != null)
-					return gamePlay.MainPalette;
+					return gamePlay.MainPalette.Copy();
 				return Resources.Instance.LoadPIC("SP257").OriginalColours.Copy();
 			}
 		}

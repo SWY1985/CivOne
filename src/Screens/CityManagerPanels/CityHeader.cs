@@ -93,12 +93,12 @@ namespace CivOne.Screens.CityManagerPanels
 			Destroy();
 		}
 
-		public CityHeader(City city, Picture background)
+		public CityHeader(City city, Picture background) : base(207, 21)
 		{
 			_city = city;
 			_background = background;
 
-			_canvas = new Picture(207, 21, background.Palette);
+			Palette = background.Palette.Copy();
 		}
 	}
 }

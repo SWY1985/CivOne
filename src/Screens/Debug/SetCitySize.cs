@@ -34,7 +34,7 @@ namespace CivOne.Screens.Debug
 
 		private void CitiesMenu()
 		{
-			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
+			Palette = Common.Screens.Last().OriginalColours;
 
 			City[] cities = _cities.Skip(_index).Take(15).ToArray();
 
@@ -116,7 +116,7 @@ namespace CivOne.Screens.Debug
 
 		private void CitySize_Accept(object sender, EventArgs args)
 		{
-			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
+			Palette = Common.Screens.Last().OriginalColours;
 
 			this.FillRectangle(11, 80, 80, 161, 33)
 				.FillRectangle(15, 81, 81, 159, 31)

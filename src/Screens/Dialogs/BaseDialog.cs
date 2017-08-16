@@ -86,7 +86,7 @@ namespace CivOne.Screens.Dialogs
 
 		private void Initialize(int left, int top, int width, int height)
 		{
-			_canvas = new Picture(320, 200, Common.DefaultPalette);
+			Palette = Common.DefaultPalette;
 
 			// We expand the size to add space for the black border
 			left -= 1;

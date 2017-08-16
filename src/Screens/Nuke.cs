@@ -172,12 +172,14 @@ namespace CivOne.Screens
 			_dy = y - 14;
 			
 			Picture nukePic = Resources.Instance.LoadPIC("NUKE1");
-			Palette palette = Common.DefaultPalette;
-			for (int i = 192; i < 256; i++)
+			using (Palette palette = Common.DefaultPalette)
 			{
-				palette[i] = nukePic.Palette[i];
+				for (int i = 192; i < 256; i++)
+				{
+					palette[i] = nukePic.Palette[i];
+				}
+				Palette = palette;
 			}
-			_canvas = new Picture(320, 200, palette);
 			_gameMap = GameMap;
 
 			_sprites = new Picture[28];

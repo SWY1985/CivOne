@@ -82,7 +82,6 @@ namespace CivOne.Screens
 		private MouseCursor _cursor = MouseCursor.None;
 		public override MouseCursor Cursor => _cursor;
 		
-		private readonly Palette _palette;
 		private char _driveLetter = 'C';
 		private bool _update = true;
 		private Menu _menu;
@@ -131,7 +130,7 @@ namespace CivOne.Screens
 		
 		private void DrawDriveQuestion()
 		{
-			_canvas = new Picture(320, 200, _palette);
+			Bitmap.Clear();
 			this.FillRectangle(15, 0, 0, 320, 200)
 				.DrawText("Which drive contains your", 0, 5, 92, 72, TextAlign.Left)
 				.DrawText("saved game files?", 0, 5, 104, 80, TextAlign.Left)
@@ -147,7 +146,7 @@ namespace CivOne.Screens
 			{
 				if (_menu.Update(gameTick))
 				{
-					_canvas = new Picture(320, 200, _palette);
+					Bitmap.Clear();
 					this.FillRectangle(15, 0, 0, 320, 200)
 						.AddLayer(_menu);
 					return true;
@@ -234,7 +233,7 @@ namespace CivOne.Screens
 		
 		public LoadGame(Palette palette)
 		{
-			_palette = palette;
+			Palette = palette;
 		}
 	}
 }

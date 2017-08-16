@@ -137,7 +137,7 @@ namespace CivOne.Screens
 
 		public DebugOptions() : base(MouseCursor.Pointer)
 		{
-			_canvas = new Picture(320, 200, Common.DefaultPalette);
+			Palette = Common.DefaultPalette;
 			this.AddLayer(Common.Screens.Last(), 0, 0)
 				.FillRectangle(5, 24, 16, 133, 97);
 		}

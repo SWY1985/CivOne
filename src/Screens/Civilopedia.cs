@@ -106,7 +106,8 @@ namespace CivOne.Screens
 			
 			if (_singlePage == null)
 			{
-				_canvas = new Picture(320, 200, Resources.WorldMapTiles.Palette);
+				Bitmap.Clear();
+				Palette = Resources.WorldMapTiles.Palette.Copy();
 				
 				this.FillRectangle(14, 0, 0, 320, 200)
 					.FillRectangle(15, 60, 2, 200, 9)
@@ -337,9 +338,8 @@ namespace CivOne.Screens
 
 			_update = false;
 			_singlePage = page;
-			Palette palette = Common.DefaultPalette;
-			if (page.Icon != null) palette = Resources.PaletteCombine(palette, page.Icon.Palette, 16);
-			_canvas = new Picture(320, 200, palette);
+			Palette = Common.DefaultPalette;
+			if (page.Icon != null)Palette.MergePalette(page.Icon.Palette, 16);
 			
 			this.FillRectangle(15, 0, 0, 320, 200);
 			DrawBorder(Common.Random.Next(2));

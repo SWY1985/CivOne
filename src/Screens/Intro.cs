@@ -71,7 +71,7 @@ namespace CivOne.Screens
 			{
 				for (int i = 1; i < 256; i++)
 					palette[i] = FadeColour(new Colour(0, 0, 0), _pictures[_introPicture].OriginalColours[i]);
-				_canvas.SetPalette(palette);
+				this.SetPalette(palette);
 			}
 		}
 		
@@ -94,7 +94,7 @@ namespace CivOne.Screens
 			else
 			{
 				_introPicture = _introPictureNext;
-				_canvas = new Picture(320, 200, _pictures[_introPicture].Palette);
+				Palette = _pictures[_introPicture].Palette;
 				FadeColours();
 			}
 			return true;
@@ -146,14 +146,14 @@ namespace CivOne.Screens
 				
 				switch (_introPicture)
 				{
-					case 0: _canvas.Cycle(184, 176); break;
-					case 1: _canvas.Cycle(32, 47).Cycle(48, 63).Cycle(64, 79); break;
-					case 2: _canvas.Cycle(80, 95).Cycle(96, 111).Cycle(112, 127); break;
-					case 3: _canvas.Cycle(134, 139).Cycle(245, 250); break;
-					case 4: _canvas.Cycle(96, 102).Cycle(135, 140); break;
-					case 5: _canvas.Cycle(136, 138).Cycle(129, 130).Cycle(250, 254); break;
-					case 6: _canvas.Cycle(132, 134).Cycle(135, 138).Cycle(208, 210).Cycle(245, 249); break;
-					case 7: _canvas.Cycle(132, 134).Cycle(208, 210).Cycle(246, 249); break;
+					case 0: this.Cycle(184, 176); break;
+					case 1: this.Cycle(32, 47).Cycle(48, 63).Cycle(64, 79); break;
+					case 2: this.Cycle(80, 95).Cycle(96, 111).Cycle(112, 127); break;
+					case 3: this.Cycle(134, 139).Cycle(245, 250); break;
+					case 4: this.Cycle(96, 102).Cycle(135, 140); break;
+					case 5: this.Cycle(136, 138).Cycle(129, 130).Cycle(250, 254); break;
+					case 6: this.Cycle(132, 134).Cycle(135, 138).Cycle(208, 210).Cycle(245, 249); break;
+					case 7: this.Cycle(132, 134).Cycle(208, 210).Cycle(246, 249); break;
 				}
 			}
 			else if (!update)
@@ -263,7 +263,7 @@ namespace CivOne.Screens
 			for (int i = 0; i < _pictures.Length; i++)
 				_pictures[i] = Resources.Instance.LoadPIC(string.Format("BIRTH{0}", i + 1), true);
 			
-			_canvas = new Picture(320, 200, _pictures[0].Palette);
+			Palette = _pictures[0].Palette;
 		}
 	}
 }

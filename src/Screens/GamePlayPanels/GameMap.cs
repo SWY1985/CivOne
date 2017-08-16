@@ -14,6 +14,7 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.IO;
 using CivOne.Tasks;
 using CivOne.Tiles;
 using CivOne.Units;
@@ -488,8 +489,7 @@ namespace CivOne.Screens.GamePlayPanels
 			_tilesX = (int)Math.Ceiling((double)width / 16);
 			_tilesY = (int)Math.Ceiling((double)height / 16);
 
-			_canvas?.Dispose();
-			_canvas = new Picture(width, height, Palette);
+			Bitmap = new Bytemap(width, height);
 			
 			while (_y + _tilesY > Map.HEIGHT) _y--;
 			_update = true;

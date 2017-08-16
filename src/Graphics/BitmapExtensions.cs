@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using System.Drawing;
 using CivOne.Enums;
 using CivOne.IO;
@@ -60,6 +61,35 @@ namespace CivOne.Graphics
 					else if (yy == hh || xx == left)
 						bitmap.Bitmap[xx, yy] = colourLight;
 				}
+			}
+			return bitmap;
+		}
+		
+		public static IBitmap DrawLine(this IBitmap bitmap, Point from, Point to, byte colour) => DrawLine(bitmap, from.X, from.Y, to.X, to.Y, colour = 5);
+		public static IBitmap DrawLine(this IBitmap bitmap, int x1, int y1, int x2, int y2, byte colour = 5)
+		{
+			int difX = (x2 - x1), difY = (y2 - y1);
+			float xx = x1, yy = y1, incX, incY;
+			int steps;
+			if (Math.Abs(difX) < Math.Abs(difY))
+			{
+				incX = ((float)difX / difY);
+				incY = difY < 0 ? -1 : 1;
+				if (difY < 0) incX = -incX;
+				steps = difY;
+			}
+			else
+			{
+				incX = difX < 0 ? -1 : 1;
+				incY = ((float)difY / difX);
+				if (difX < 0) incY = -incY;
+				steps = difX;
+			}
+			for (int i = 0; i < Math.Abs(steps); i++)
+			{
+				bitmap.Bitmap[(int)Math.Round(xx), (int)Math.Round(yy)] = colour;
+				xx += incX;
+				yy += incY;
 			}
 			return bitmap;
 		}
@@ -177,5 +207,53 @@ namespace CivOne.Graphics
 		}
 
 		public static Bytemap Crop(this IBitmap bitmap, int left, int top, int width, int height) => bitmap.Bitmap[left, top, width, height];
+		
+		public static IBitmap ColourReplace(this IBitmap bitmap, byte colourFrom, byte colourTo, int x, int y, int width, int height)
+		{
+			for (int yy = y; yy < y + height; yy++)
+			{
+				if (yy >= bitmap.GetHeight()) break;
+				if (bitmap.OutBoundY(yy)) continue;
+				for (int xx = x; xx < x + width; xx++)
+				{
+					if (xx >= bitmap.GetWidth()) break;
+					if (bitmap.OutBoundX(xx)) continue;
+					if (bitmap.Bitmap[xx, yy] != colourFrom) continue;
+					bitmap.Bitmap[xx, yy] = colourTo;
+				}
+			}
+			return bitmap;
+		}
+
+		// Palette functions
+		public static IBitmap Cycle(this IBitmap bitmap, int colour, ref Colour[] colours)
+		{
+			Colour reserve = bitmap.Palette[colour];
+			bitmap.Palette[colour] = colours[0];
+			for (int i = 0; i < colours.Length - 1; i++)
+				colours[i] = colours[i + 1];
+			colours[colours.Length - 1] = reserve;
+			for (int i = 0; i < colours.Length && i < bitmap.Palette.Length; i++)
+				bitmap.Palette[i] = colours[i];
+			return bitmap;
+		}
+		
+		public static IBitmap Cycle(this IBitmap bitmap, int start, int end)
+		{
+			Colour reserve;
+			if (start > end)
+			{
+				reserve = bitmap.Palette[start];
+				for (int i = start; i < end; i++)
+					bitmap.Palette[i] = bitmap.Palette[i + 1];
+				bitmap.Palette[end] = reserve;
+				return bitmap;
+			}
+			reserve = bitmap.Palette[end];
+			for (int i = end; i > start; i--)
+				bitmap.Palette[i] = bitmap.Palette[i - 1];
+			bitmap.Palette[start] = reserve;
+			return bitmap;
+		}
 	}
 }
