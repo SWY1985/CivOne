@@ -165,9 +165,8 @@ namespace CivOne.Screens
 			int y = (Height - 200) / 2;
 			if (x != 0 || y != 0)
 			{
-				this.FillRectangle(_pictures[_introPicture].Bitmap[0, 0], 0, 0, Width, Height)
-					.FillRectangle(0, x, y, 320, 200)
-					.FillRectangle(_pictures[_introPicture].Bitmap[10, 100], x, y, 320, 200)
+				this.Clear(_pictures[_introPicture].Bitmap[0, 0])
+					.FillRectangle(x, y, 320, 200, _pictures[_introPicture].Bitmap[10, 100])
 					.AddLayer(_pictures[_introPicture], x, y);
 			}
 			else

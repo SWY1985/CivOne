@@ -46,13 +46,13 @@ namespace CivOne.Screens
 				return;
 			}
 
-			this.FillRectangle(8, 0, 0, 320, 200)
-				.FillRectangle(15, 40, 50, 240, 100);
+			this.Clear(8)
+				.FillRectangle(40, 50, 240, 100, 15);
 
 			if (FileSystem.CopyDataFiles(path))
 			{
-				this.FillRectangle(8, 0, 0, 320, 200)
-					.FillRectangle(15, 40, 50, 240, 100);
+				this.FillRectangle(0, 0, 320, 200, 8)
+					.FillRectangle(40, 50, 240, 100, 15);
 
 				this.DrawText("Succes!", 1, 2, 160, 54, TextAlign.Center);
 
@@ -127,8 +127,8 @@ namespace CivOne.Screens
 		public MissingFiles()
 		{
 			Palette = Common.GetPalette256;
-			this.FillRectangle(8, 0, 0, 320, 200)
-				.FillRectangle(15, 40, 50, 240, 100)
+			this.Clear(8)
+				.FillRectangle(40, 50, 240, 100, 15)
 				.DrawText("Warning!", 1, 4, 160, 54, TextAlign.Center);
 
 			for (int i = 0; i < _text.Length; i++)

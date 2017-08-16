@@ -68,7 +68,7 @@ namespace CivOne.Screens
 				int yy = Y + (_activeItem * fontHeight);
 				int offsetY = 0;
 				
-				this.FillRectangle(0, 0, 0, 320, 200);
+				this.Clear();
 				if (Title != null)
 				{
 					this.DrawText(Title, FontId, TitleColour, X + IndentTitle, Y + 1);
@@ -78,7 +78,7 @@ namespace CivOne.Screens
 				{
 					if (_background == null)
 					{
-						this.FillRectangle(ActiveColour, X, yy + offsetY, MenuWidth, fontHeight);
+						this.FillRectangle(X, yy + offsetY, MenuWidth, fontHeight, ActiveColour);
 					}
 					else
 					{

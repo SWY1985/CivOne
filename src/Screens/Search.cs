@@ -50,9 +50,9 @@ namespace CivOne.Screens
 			_done = true;
 			if (City == null)
 			{
-				this.FillRectangle(15, 64, 78, 224, 10)
+				this.FillRectangle(64, 78, 224, 10, 15)
 					.DrawText("Unknown city.", 0, 5, 82, 80)
-					.FillRectangle(15, 67, 89, 135, 12)
+					.FillRectangle(67, 89, 135, 12, 15)
 					.DrawText(_input.Text, 0, 5, 68, 91);
 				((Input)sender).Close();
 				return;
@@ -85,11 +85,11 @@ namespace CivOne.Screens
 		{
 			Palette = Common.Screens.Last().OriginalColours;
 
-			this.FillRectangle(5, 64, 78, 225, 25)
-				.FillRectangle(15, 65, 79, 223, 23)
+			this.FillRectangle(64, 78, 225, 25, 5)
+				.FillRectangle(65, 79, 223, 23, 15)
 				.DrawText("Where in the heck is ... (city name)", 0, 5, 66, 80)
-				.FillRectangle(5, 66, 88, 137, 14)
-				.FillRectangle(15, 67, 89, 135, 12);
+				.FillRectangle(66, 88, 137, 14, 5)
+				.FillRectangle(67, 89, 135, 12, 15);
 
 			_input = new Input(Palette, string.Empty, 0, 5, 11, 68, 90, 133, 10, 16);
 			_input.Accept += Search_Accept;

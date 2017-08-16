@@ -48,11 +48,11 @@ namespace CivOne.Screens
 			int width = 209;
 			int height = ((message.Length + (title != null ? 1 : 0)) * lineHeight) + 5;
 
-			this.FillRectangle(colourLight, 56, 16, width, 1)
-				.FillRectangle(colourLight, 56, 17, 1, height - 2)
-				.FillRectangle(colourLight, 56 + width - 1, 17, 1, height - 2)
-				.FillRectangle(colourLight, 56, 16 + height - 1, width, 1)
-				.FillRectangle(colour, 57, 17, width - 2, height - 2);
+			this.FillRectangle(56, 16, width, 1, colourLight)
+				.FillRectangle(56, 17, 1, height - 2, colourLight)
+				.FillRectangle(56 + width - 1, 17, 1, height - 2, colourLight)
+				.FillRectangle(56, 16 + height - 1, width, 1, colourLight)
+				.FillRectangle(57, 17, width - 2, height - 2, colour);
 
 			int yy = 19 - lineHeight;
 			if (title != null)

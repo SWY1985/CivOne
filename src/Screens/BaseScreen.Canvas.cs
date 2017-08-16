@@ -101,11 +101,11 @@ namespace CivOne.Screens
 
 		protected void DrawButton(string text, byte colour, byte colourDark, int x, int y, int width)
 		{
-			this.FillRectangle(7, x, y, width, 1)
-				.FillRectangle(7, x, y + 1, 1, 8)
-				.FillRectangle(colourDark, x + 1, y + 8, width - 1, 1)
-				.FillRectangle(colourDark, x + width - 1, y, 1, 8)
-				.FillRectangle(colour, x + 1, y + 1, width - 2, 7)
+			this.FillRectangle(x, y, width, 1, 7)
+				.FillRectangle(x, y + 1, 1, 8, 7)
+				.FillRectangle(x + 1, y + 8, width - 1, 1, colourDark)
+				.FillRectangle(x + width - 1, y, 1, 8, colourDark)
+				.FillRectangle(x + 1, y + 1, width - 2, 7, colour)
 				.DrawText(text, 1, colourDark, x + (int)Math.Ceiling((double)width / 2), y + 2, TextAlign.Center);
 		}
 

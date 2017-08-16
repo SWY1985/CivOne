@@ -76,7 +76,7 @@ namespace CivOne.Screens.Debug
 			Picture menuBackground = menuGfx.GetPart(2, 11, ww - 4, hh - 11);
 			Picture.ReplaceColours(menuBackground, new byte[] { 7, 22 }, new byte[] { 11, 3 });
 
-			this.FillRectangle(5, xx - 1, yy - 1, ww + 2, hh + 2)
+			this.FillRectangle(xx - 1, yy - 1, ww + 2, hh + 2, 5)
 				.AddLayer(menuGfx, xx, yy)
 				.DrawText("Change Human Player...", 0, 15, xx + 8, yy + 3);
 

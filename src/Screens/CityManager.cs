@@ -186,7 +186,7 @@ namespace CivOne.Screens
 			_city.UpdateResources();
 			
 			Palette = Common.DefaultPalette;
-			this.FillRectangle(5, 0, 0, 320, 200);
+			this.Clear(5);
 			
 			_subScreens.Add(_cityHeader = new CityHeader(_city, Patterns.PanelBlue));
 			_subScreens.Add(_cityResources = new CityResources(_city, Patterns.PanelBlue));

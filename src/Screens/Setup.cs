@@ -476,7 +476,7 @@ namespace CivOne.Screens
 
 		private void Resize(object sender, ResizeEventArgs args)
 		{
-			this.FillRectangle(3, 0, 0, args.Width, args.Height);
+			this.Clear(3);
 
 			foreach (Menu menu in Common.Screens.Where(x => x is Menu && (x as Menu).Id == "Setup"))
 			{
@@ -492,7 +492,7 @@ namespace CivOne.Screens
 			OnResize += Resize;
 			
 			Palette = Common.GetPalette256;
-			this.FillRectangle(3, 0, 0, 320, 200);
+			this.Clear(3);
 		}
 	}
 }

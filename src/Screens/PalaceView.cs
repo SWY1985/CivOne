@@ -200,7 +200,7 @@ namespace CivOne.Screens
 								message.DrawText(line.Trim('^'), 0, 15, 4, yy);
 								yy += 8;
 							}
-							this.FillRectangle(5, 20, 16, 271, 41)
+							this.FillRectangle(20, 16, 271, 41, 5)
 								.AddLayer(message, 21, 17);
 						}
 						break;
@@ -211,7 +211,7 @@ namespace CivOne.Screens
 								.DrawRectangle3D()
 								.DrawText("Which section shall we improve?", 0, 15, 4, 4)
 								.As<Picture>();
-							this.FillRectangle(5, 40, 16, 182, 17)
+							this.FillRectangle(40, 16, 182, 17, 5)
 								.AddLayer(message, 41, 17);
 
 							for (int i = 0; i < 7; i++)

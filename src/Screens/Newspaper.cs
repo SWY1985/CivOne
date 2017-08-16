@@ -82,7 +82,7 @@ namespace CivOne.Screens
 			}
 
 			Palette = palette;
-			this.FillRectangle(15, 0, 0, 320, 100)
+			this.FillRectangle(0, 0, 320, 100, 15)
 				.DrawText("FLASH", 2, 5, 6, 3)
 				.DrawText("FLASH", 2, 5, 272, 3)
 				.DrawText(newsflash, 1, 5, 158, 3, TextAlign.Center)
@@ -92,11 +92,11 @@ namespace CivOne.Screens
 				.DrawText(name, 4, 5, 160, 11, TextAlign.Center)
 				.DrawText(date, 0, 5, 8, 28)
 				.DrawText("10 cents", 0, 5, 272, 28)
-				.FillRectangle(5, 1, 1, 318, 1)
-				.FillRectangle(5, 1, 2, 1, 33)
-				.FillRectangle(5, 318, 2, 1, 33)
-				.FillRectangle(5, 0, 35, 320, 1)
-				.FillRectangle(5, 0, 97, 320, 1);
+				.FillRectangle(1, 1, 318, 1, 5)
+				.FillRectangle(1, 2, 1, 33, 5)
+				.FillRectangle(318, 2, 1, 33, 5)
+				.FillRectangle(0, 35, 320, 1, 5)
+				.FillRectangle(0, 97, 320, 1, 5);
 
 			for (int i = 0; i < message.Length; i++)
 			{
@@ -106,7 +106,7 @@ namespace CivOne.Screens
 			if (showGovernment)
 			{
 				string[] advisorNames = new string[] { "Defense Minister", "Domestic Advisor", "Foreign Minister", "Science Advisor" };
-				this.FillRectangle(15, 0, 100, 320, 100)
+				this.FillRectangle(0, 100, 320, 100, 15)
 					.DrawText("New Cabinet:", 5, 5, 106, 102);
 				for (int i = 0; i < 4; i++)
 				{
@@ -125,7 +125,7 @@ namespace CivOne.Screens
 					.DrawRectangle3D()
 					.DrawText("Press any key to continue.", 0, 15, 4, 4)
 					.As<Picture>();
-				this.FillRectangle(5, 80, 128, 153, 17)
+				this.FillRectangle(80, 128, 153, 17, 5)
 					.AddLayer(dialog, 81, 129);
 			}
 		}

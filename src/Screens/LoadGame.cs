@@ -131,7 +131,7 @@ namespace CivOne.Screens
 		private void DrawDriveQuestion()
 		{
 			Bitmap.Clear();
-			this.FillRectangle(15, 0, 0, 320, 200)
+			this.Clear(15)
 				.DrawText("Which drive contains your", 0, 5, 92, 72, TextAlign.Left)
 				.DrawText("saved game files?", 0, 5, 104, 80, TextAlign.Left)
 				.DrawText($"{_driveLetter}:", 0, 5, 146, 96, TextAlign.Left)
@@ -147,7 +147,7 @@ namespace CivOne.Screens
 				if (_menu.Update(gameTick))
 				{
 					Bitmap.Clear();
-					this.FillRectangle(15, 0, 0, 320, 200)
+					this.Clear(15)
 						.AddLayer(_menu);
 					return true;
 				}

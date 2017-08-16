@@ -82,7 +82,7 @@ namespace CivOne.Graphics
 			{
 				if (x < 0 || x >= Width || y < 0 || y >= Height) return;
 
-				this.FillRectangle(value, x, y, 1, 1);
+				Bitmap[x, y] = value;
 			}
 		}
 		

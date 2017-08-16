@@ -20,7 +20,7 @@ namespace CivOne.Screens
 		private readonly MouseCursor _cursor;
 		
 		private bool CanExpand => Common.HasAttribute<Expand>(this);
-		private bool SizeChanged => (this.GetWidth() != Runtime.CanvasWidth || this.GetHeight() != Runtime.CanvasHeight);
+		private bool SizeChanged => (this.Width() != Runtime.CanvasWidth || this.Height() != Runtime.CanvasHeight);
 
 		protected event ResizeEventHandler OnResize;
 

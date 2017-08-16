@@ -83,7 +83,7 @@ namespace CivOne.Screens
 		{
 			if (_singlePage != null && _pageNumber < _singlePage.PageCount)
 			{
-				this.FillRectangle(15, 8, 8, 304, 184);
+				this.FillRectangle(8, 8, 304, 184, 15);
 				DrawPage(++_pageNumber);
 				DrawPageTitle();
 				return true;
@@ -106,12 +106,11 @@ namespace CivOne.Screens
 			
 			if (_singlePage == null)
 			{
-				Bitmap.Clear();
 				Palette = Resources.WorldMapTiles.Palette.Copy();
 				
-				this.FillRectangle(14, 0, 0, 320, 200)
-					.FillRectangle(15, 60, 2, 200, 9)
-					.FillRectangle(15, 2, 14, 316, 184);
+				this.Clear(14)
+					.FillRectangle(60, 2, 200, 9, 15)
+					.FillRectangle(2, 14, 316, 184, 15);
 				
 				this.DrawText("ENCYCLOPEDIA of CIVILIZATION", 0, 5, 67, 4)
 					.DrawText("ENCYCLOPEDIA of CIVILIZATION", 0, 10, 66, 3);
@@ -341,7 +340,7 @@ namespace CivOne.Screens
 			Palette = Common.DefaultPalette;
 			if (page.Icon != null)Palette.MergePalette(page.Icon.Palette, 16);
 			
-			this.FillRectangle(15, 0, 0, 320, 200);
+			this.Clear(15);
 			DrawBorder(Common.Random.Next(2));
 
 			if (_singlePage != null && !Settings.CivilopediaText) _pageNumber++;

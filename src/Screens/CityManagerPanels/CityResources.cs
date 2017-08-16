@@ -124,7 +124,7 @@ namespace CivOne.Screens.CityManagerPanels
 			{
 				this.Tile(_background)
 					.DrawRectangle(colour: 1)
-					.FillRectangle(1, 1, 1, 121, 8)
+					.FillRectangle(1, 1, 121, 8, 1)
 					.DrawText($"City Resources", 1, 17, 6, 2, TextAlign.Left);
 
 				DrawFood();

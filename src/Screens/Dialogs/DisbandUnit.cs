@@ -61,7 +61,7 @@ namespace CivOne.Screens.Dialogs
 
 			DialogBox.AddLayer(governmentPortrait, 2, 2);
 			DialogBox.DrawText("Defense Minister:", 0, 15, 47, 4);
-			DialogBox.FillRectangle(11, 47, 11, 94, 1);
+			DialogBox.FillRectangle(47, 11, 94, 1, 11);
 
 			_textLines = TextPictures(city, unit);
 			for (int i = 0; i < _textLines.Length; i++)

@@ -40,8 +40,8 @@ namespace CivOne.Screens.Reports
 
 				Player owner = Game.GetPlayer(city.Owner);
 
-				this.FillRectangle(colour, xx, yy, ww, hh)
-					.FillRectangle(3, xx + 1, yy + 1, ww - 2, hh - 2);
+				this.FillRectangle(xx, yy, ww, hh, colour)
+					.FillRectangle(xx + 1, yy + 1, ww - 2, hh - 2, 3);
 				
 				int dx = 42;
 				int group = -1;
@@ -98,7 +98,7 @@ namespace CivOne.Screens.Reports
 							.Take(5)
 							.ToArray();
 			
-			this.FillRectangle(3, 0, 0, 320, 200)
+			this.Clear(3)
 				.DrawText("The Top Five Cities in the World", 0, 5, 80, 13)
 				.DrawText("The Top Five Cities in the World", 0, 15, 80, 12);
 		}

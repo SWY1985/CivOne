@@ -19,42 +19,36 @@ namespace CivOne.Graphics
 		private static bool OutBoundX(this IBitmap bitmap, int x) => (x < 0 || x >= bitmap.Bitmap.Width);
 		private static bool OutBoundY(this IBitmap bitmap, int y) => (y < 0 || y >= bitmap.Bitmap.Height);
 
-		public static int GetHeight(this IBitmap bitmap) => bitmap.Bitmap.Height;
-		public static int GetWidth(this IBitmap bitmap) => bitmap.Bitmap.Width;
+		public static Rectangle Bounds(this IBitmap bitmap) => new Rectangle(0, 0, bitmap.Bitmap.Width, bitmap.Bitmap.Height);
+		public static Size Size(this IBitmap bitmap) => new Size(bitmap.Bitmap.Width, bitmap.Bitmap.Height);
+		public static int Height(this IBitmap bitmap) => bitmap.Bitmap.Height;
+		public static int Width(this IBitmap bitmap) => bitmap.Bitmap.Width;
 
 		public static T As<T>(this IBitmap bitmap) where T : class, IBitmap => (bitmap as T);
 
-		public static IBitmap FillRectangle(this IBitmap bitmap, byte colour, Rectangle rectangle) => FillRectangle(bitmap, colour, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
-		public static IBitmap FillRectangle(this IBitmap bitmap, byte colour, Point point, Size size) => FillRectangle(bitmap, colour, point.X, point.Y, size.Width, size.Height);
-		public static IBitmap FillRectangle(this IBitmap bitmap, byte colour, int left, int top, int width, int height)
+		public static IBitmap Clear(this IBitmap bitmap, byte colour = 0) => FillRectangle(bitmap, 0, 0, bitmap.Bitmap.Width, bitmap.Bitmap.Height, colour);
+
+		public static IBitmap FillRectangle(this IBitmap bitmap, Rectangle rectangle, byte colour) => FillRectangle(bitmap, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height, colour);
+		public static IBitmap FillRectangle(this IBitmap bitmap, Point point, Size size, byte colour) => FillRectangle(bitmap, point.X, point.Y, size.Width, size.Height, colour);
+		public static IBitmap FillRectangle(this IBitmap bitmap, int left, int top, int width, int height, byte colour)
 		{
-			for (int yy = top; yy < (top + height); yy++)
-			{
-				if (yy >= bitmap.GetHeight()) break;
-				if (bitmap.OutBoundY(yy)) continue;
-				for (int xx = left; xx < (left + width); xx++)
-				{
-					if (xx >= bitmap.GetWidth()) break;
-					if (bitmap.OutBoundX(xx)) continue;
-					bitmap.Bitmap[xx, yy] = colour;
-				}
-			}
+			bitmap.Bitmap.FillRectangle(left, top, width, height, colour);
 			return bitmap;
 		}
 
 		public static IBitmap DrawRectangle(this IBitmap bitmap, int left = 0, int top = 0, int width = -1, int height = -1, byte colour = 5) => DrawRectangle3D(bitmap, left, top, width, height, colour, colour);
 		public static IBitmap DrawRectangle3D(this IBitmap bitmap, int left = 0, int top = 0, int width = -1, int height = -1, byte colourLight = 15, byte colourDark = 8)
 		{
-			if (width < 0) width = bitmap.GetWidth() - left;
-			if (height < 0) height = bitmap.GetHeight() - top;
+			if (width < 0) width = bitmap.Width() - left;
+			if (height < 0) height = bitmap.Height() - top;
 			int ww = (left + width - 1), hh = (top + height - 1);
 			for (int yy = top; yy <= hh; yy++)
 			{
-				if (yy >= bitmap.GetHeight()) break;
+				if (yy >= bitmap.Height()) break;
 				if (bitmap.OutBoundY(yy)) continue;
 				for (int xx = left; xx <= ww; xx++)
 				{
-					if (xx >= bitmap.GetWidth()) break;
+					if (xx >= bitmap.Width()) break;
 					if (bitmap.OutBoundX(xx)) continue;
 					if (yy == top || xx == ww)
 						bitmap.Bitmap[xx, yy] = colourDark;
@@ -108,11 +102,11 @@ namespace CivOne.Graphics
 			if (layer == null) return bitmap;
 			for (int yy = 0; yy < layer.Height; yy++)
 			{
-				if (top + yy >= bitmap.GetHeight()) break;
+				if (top + yy >= bitmap.Height()) break;
 				if (bitmap.OutBoundY(top + yy)) continue;
 				for (int xx = 0; xx < layer.Width; xx++)
 				{
-					if (left + xx >= bitmap.GetWidth()) break;
+					if (left + xx >= bitmap.Width()) break;
 					if (layer[xx, yy] == 0 || bitmap.OutBoundX(left + xx)) continue;
 					bitmap.Bitmap[left + xx, top + yy] = layer[xx, yy];
 				}
@@ -126,17 +120,17 @@ namespace CivOne.Graphics
 		public static IBitmap Tile(this IBitmap bitmap, IBitmap layer, int left = 0, int top = 0, int width = -1, int height = -1)
 		{
 			if (layer == null) return bitmap;
-			if (width == -1) width = bitmap.GetWidth() - left;
-			if (height == -1) height = bitmap.GetHeight() - top;
+			if (width == -1) width = bitmap.Width() - left;
+			if (height == -1) height = bitmap.Height() - top;
 			for (int yy = 0; yy < height; yy++)
 			{
-				if (top + yy >= bitmap.GetHeight()) break;
+				if (top + yy >= bitmap.Height()) break;
 				if (bitmap.OutBoundY(top + yy)) continue;
 				for (int xx = 0; xx < width; xx++)
 				{
-					if (left + xx >= bitmap.GetWidth()) break;
-					if (layer.Bitmap[xx % layer.GetWidth(), yy % layer.GetHeight()] == 0 || bitmap.OutBoundX(left + xx)) continue;
-					bitmap.Bitmap[left + xx, top + yy] = layer.Bitmap[xx % layer.GetWidth(), yy % layer.GetHeight()];
+					if (left + xx >= bitmap.Width()) break;
+					if (layer.Bitmap[xx % layer.Width(), yy % layer.Height()] == 0 || bitmap.OutBoundX(left + xx)) continue;
+					bitmap.Bitmap[left + xx, top + yy] = layer.Bitmap[xx % layer.Width(), yy % layer.Height()];
 				}
 			}
 			return bitmap;
@@ -212,11 +206,11 @@ namespace CivOne.Graphics
 		{
 			for (int yy = y; yy < y + height; yy++)
 			{
-				if (yy >= bitmap.GetHeight()) break;
+				if (yy >= bitmap.Height()) break;
 				if (bitmap.OutBoundY(yy)) continue;
 				for (int xx = x; xx < x + width; xx++)
 				{
-					if (xx >= bitmap.GetWidth()) break;
+					if (xx >= bitmap.Width()) break;
 					if (bitmap.OutBoundX(xx)) continue;
 					if (bitmap.Bitmap[xx, yy] != colourFrom) continue;
 					bitmap.Bitmap[xx, yy] = colourTo;

@@ -681,8 +681,8 @@ namespace CivOne.Units
 			else if (Common.ColourDark[colour] == 8) Picture.ReplaceColours(icon, new byte[] { 7, 10, 2 }, new byte[] { 3, Common.ColourLight[colour], Common.ColourDark[colour] });
 			else Picture.ReplaceColours(icon, new byte[] { 10, 2 }, new byte[] { Common.ColourLight[colour], Common.ColourDark[colour] });
 			
-			icon.FillRectangle(0, 0, 0, 16, 1);
-			icon.FillRectangle(0, 0, 1, 1, 15);
+			icon.FillRectangle(0, 0, 16, 1, 0)
+				.FillRectangle(0, 1, 1, 15, 0);
 			
 			if (!showState)
 			{

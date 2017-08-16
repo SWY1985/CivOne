@@ -53,7 +53,7 @@ namespace CivOne.Screens.Reports
 		private void DrawBuildings(City city, int y)
 		{
 			int x = 212;
-			this.FillRectangle(11, x, y - 1, 90, 10);
+			this.FillRectangle(x, y - 1, 90, 10, 11);
 			DrawBuilding<Temple>(city, ref x, y);
 			DrawBuilding<MarketPlace>(city, ref x, y);
 			DrawBuilding<Bank>(city, ref x, y);
@@ -65,7 +65,7 @@ namespace CivOne.Screens.Reports
 		{
 			if (!_update) return false;
 
-			this.FillRectangle(9, 0, 28, 320, 172);
+			this.FillRectangle(0, 28, 320, 172, 9);
 
 			int y = 32;
 			for (int i = (_page++ * 16); i < _cities.Length && i < (_page * 16); i++)

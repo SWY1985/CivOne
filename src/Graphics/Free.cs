@@ -171,7 +171,7 @@ namespace CivOne.Graphics
 				{
 					_fortify = new Picture(16, 16, GenerateNoise(26, 27, 28).Take(16 * 16).ToArray(), Common.GetPalette256);
 					_fortify.AddLayer(new Picture(14, 14, GenerateNoise(24, 25, 26).Take(14 * 14).ToArray(), Common.GetPalette256));
-					_fortify.FillRectangle(0, 2, 2, 12, 12);
+					_fortify.FillRectangle(2, 2, 12, 12, 0);
 				}
 				return _fortify;
 			}

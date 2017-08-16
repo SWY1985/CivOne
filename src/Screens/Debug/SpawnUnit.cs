@@ -82,7 +82,7 @@ namespace CivOne.Screens.Debug
 			Picture menuBackground = menuGfx.GetPart(2, 11, ww - 4, hh - 11);
 			Picture.ReplaceColours(menuBackground, new byte[] { 7, 22 }, new byte[] { 11, 3 });
 
-			this.FillRectangle(5, xx - 1, yy - 1, ww + 2, hh + 2)
+			this.FillRectangle(xx - 1, yy - 1, ww + 2, hh + 2, 5)
 				.AddLayer(menuGfx, xx, yy)
 				.DrawText("Spawn Unit...", 0, 15, xx + 8, yy + 3);
 
@@ -167,9 +167,9 @@ namespace CivOne.Screens.Debug
 		private void SidebarHint()
 		{
 			int xx = (Settings.RightSideBar ? 240 : 0);
-			this.FillRectangle(15, xx, 153, 79, 1)
-				.FillRectangle(9, xx, 154, 80, 46)
-				.FillRectangle(1, xx + 1, 155, 78, 44)
+			this.FillRectangle(xx, 153, 79, 1, 15)
+				.FillRectangle(xx, 154, 80, 46, 9)
+				.FillRectangle(xx + 1, 155, 78, 44, 1)
 				.DrawText("Left click:", 1, 15, xx + 3, 157)
 				.DrawText("One unit", 1, 15, xx + 8, 164)
 				.DrawText("Right click:", 1, 15, xx + 3, 171)
@@ -290,7 +290,7 @@ namespace CivOne.Screens.Debug
 			Picture menuBackground = menuGfx.GetPart(2, 11, ww - 4, hh - 11);
 			Picture.ReplaceColours(menuBackground, new byte[] { 7, 22 }, new byte[] { 11, 3 });
 
-			this.FillRectangle(5, xx - 1, yy - 1, ww + 2, hh + 2)
+			this.FillRectangle(xx - 1, yy - 1, ww + 2, hh + 2, 5)
 				.AddLayer(menuGfx, xx, yy)
 				.DrawText("Spawn Unit...", 0, 15, xx + 8, yy + 3);
 

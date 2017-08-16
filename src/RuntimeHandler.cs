@@ -84,7 +84,7 @@ namespace CivOne
 		{
 			if (TopScreen == null) return;
 
-			if (Runtime.Bitmap == null || Runtime.Bitmap.GetWidth() != Runtime.CanvasWidth || Runtime.Bitmap.GetWidth() != Runtime.CanvasWidth)
+			if (Runtime.Bitmap == null || Runtime.Bitmap.Width() != Runtime.CanvasWidth || Runtime.Bitmap.Width() != Runtime.CanvasWidth)
 			{
 				Runtime.Bitmap?.Dispose();
 				Runtime.Bitmap = new Picture(Runtime.CanvasWidth, Runtime.CanvasHeight, Common.TopScreen.Palette.Copy());

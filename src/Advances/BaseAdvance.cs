@@ -130,9 +130,10 @@ namespace CivOne.Advances
 			
 			Picture icon = Resources.Instance[$"ICONPG{page}"].GetPart(xx, yy, ww, hh);
 			
-			Icon = new Picture(112, 68, icon.Palette);
-			Icon.AddLayer(icon, col < 2 ? 0 : 7, row < 2 ? 0 : 4);
-			Icon.FillRectangle(0, 110, 0, 2, 68);
+			Icon = new Picture(112, 68, icon.Palette)
+				.AddLayer(icon, col < 2 ? 0 : 7, row < 2 ? 0 : 4)
+				.FillRectangle(110, 0, 2, 68, 0)
+				.As<Picture>();
 		}
 		
 		public byte Id

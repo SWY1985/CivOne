@@ -169,11 +169,11 @@ namespace CivOne.Screens
 		
 		private void DrawInputBox(string text)
 		{
-			this.FillRectangle(11, OffsetX + 158, OffsetY + 88, 161, 33)
-				.FillRectangle(15, OffsetX + 159, OffsetY + 89, 159, 31)
+			this.FillRectangle(OffsetX + 158, OffsetY + 88, 161, 33, 11)
+				.FillRectangle(OffsetX + 159, OffsetY + 89, 159, 31, 15)
 				.DrawText(text, 6, 5, OffsetX + 166, OffsetY + 90)
-				.FillRectangle(5, OffsetX + 166, OffsetY + 103, 113, 14)
-				.FillRectangle(15, OffsetX + 167, OffsetY + 104, 111, 12);
+				.FillRectangle(OffsetX + 166, OffsetY + 103, 113, 14, 5)
+				.FillRectangle(OffsetX + 167, OffsetY + 104, 111, 12, 15);
 		}
 		
 		protected override bool HasUpdate(uint gameTick)
@@ -191,7 +191,7 @@ namespace CivOne.Screens
 				ICivilization civ = _tribesAvailable[_tribe];
 				Game.CreateGame(_difficulty, _competition, civ, _leaderName, _tribeName, _tribeNamePlural);
 				
-				this.FillRectangle(15, 0, 0, Width, Height);
+				this.Clear(15);
 				DrawBorder(Common.Random.Next(2));
 				
 				this.AddLayer(DifficultyPicture, OffsetX + 134, OffsetY + 20);
@@ -305,7 +305,7 @@ namespace CivOne.Screens
 
 		private void Resize(object sender, ResizeEventArgs args)
 		{
-			this.FillRectangle(5, 0, 0, args.Width, args.Height);
+			this.FillRectangle(0, 0, args.Width, args.Height, 5);
 			if (_leaderName == null)
 			{
 				CloseMenus();

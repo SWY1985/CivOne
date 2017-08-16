@@ -32,7 +32,7 @@ namespace CivOne.Screens.Reports
 
 				Picture icon = unit.GetUnit(player, false);
 				this.AddLayer(icon, ((i % 2 == 0) ? 1 : 18), 27 + (9 * i))
-					.FillRectangle(9, 36, 30 + (i * 9), 284, 1)
+					.FillRectangle(36, 30 + (i * 9), 284, 1, 9)
 					.DrawText(unit.Name, 0, 15, 36, 32 + (i * 9))
 					.DrawText($"({unit.Attack}/{unit.Defense}/{unit.Move})", 0, 11, 112, 32 + (i * 9));
 				if (active > 0)

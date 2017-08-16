@@ -85,7 +85,7 @@ namespace CivOne.Screens.Reports
 		{
 			if (!_update) return false;
 
-			this.FillRectangle(2, 0, 32, 320, 168);
+			this.FillRectangle(0, 32, 320, 168, 2);
 			DrawCityTrade();
 			if ((_page * 18) >= _cities.Length)
 			{

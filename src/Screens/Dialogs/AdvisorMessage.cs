@@ -50,7 +50,7 @@ namespace CivOne.Screens.Dialogs
 			_textLines = TextBitmaps(message);
 			DialogBox.AddLayer(governmentPortrait, 2, 2);
 			DialogBox.DrawText($"{advisorNames[(int)advisor]}:", 0, 15, 47, 4);
-			DialogBox.FillRectangle(11, 47, 11, Resources.Instance.GetText($"{advisorNames[(int)advisor]}:", 0, 15).Width + 1, 1);
+			DialogBox.FillRectangle(47, 11, Resources.Instance.GetText($"{advisorNames[(int)advisor]}:", 0, 15).Width + 1, 1, 11);
 			for (int i = 0; i < _textLines.Length; i++)
 				DialogBox.AddLayer(_textLines[i], 47, (_textLines[i].Height * i) + 13);
 		}

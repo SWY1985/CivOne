@@ -76,7 +76,7 @@ namespace CivOne.Screens
 					
 					if (i == cursorPosition)
 					{
-						this.FillRectangle(_cursorColour, xx, Y, letterWidth + 1, _height);
+						this.FillRectangle(xx, Y, letterWidth + 1, _height, _cursorColour);
 						break;
 					}
 					

@@ -76,10 +76,10 @@ namespace CivOne.Screens.CityManagerPanels
 
 					if (_city.OccupiedTile(tile))
 					{
-						this.FillRectangle(12, (xx * 16) + 1, (yy * 16) + 1, 16, 1)
-							.FillRectangle(12, (xx * 16) + 1, (yy * 16) + 2, 1, 14)
-							.FillRectangle(12, (xx * 16) + 1, (yy * 16) + 16, 16, 1)
-							.FillRectangle(12, (xx * 16) + 16, (yy * 16) + 2, 1, 14);
+						this.FillRectangle((xx * 16) + 1, (yy * 16) + 1, 16, 1, 12)
+							.FillRectangle((xx * 16) + 1, (yy * 16) + 2, 1, 14, 12)
+							.FillRectangle((xx * 16) + 1, (yy * 16) + 16, 16, 1, 12)
+							.FillRectangle((xx * 16) + 16, (yy * 16) + 2, 1, 14, 12);
 					}
 
 					if (_city.ResourceTiles.Contains(tile))

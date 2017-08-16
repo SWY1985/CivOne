@@ -78,7 +78,7 @@ namespace CivOne.Screens
 			Picture background = Resources.Instance.LoadPIC(_modern ? "DISCOVR2" : "DISCOVR1");
 			
 			Palette = background.Palette;
-			this.FillRectangle(32, 0, 0, 320, 200)
+			this.Clear(32)
 				.AddLayer(background);
 
 			string[] text = new string[]

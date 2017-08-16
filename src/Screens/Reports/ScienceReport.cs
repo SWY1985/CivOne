@@ -27,7 +27,7 @@ namespace CivOne.Screens.Reports
 
 			int barWidth = (int)Math.Ceiling(width * Human.ScienceCost);
 			int barX = (320 - barWidth) / 2;
-			this.FillRectangle(9, barX, 25, barWidth, 16);
+			this.FillRectangle(barX, 25, barWidth, 16, 9);
 
 			if (Human.CurrentResearch != null)
 			{

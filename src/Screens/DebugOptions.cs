@@ -128,7 +128,7 @@ namespace CivOne.Screens
 				menu.Items.Add("Toggle Reveal World").OnSelect(MenuRevealWorld);
 				menu.Items.Add("Build Palace").OnSelect(MenuBuildPalace);
 
-				this.FillRectangle(5, 24, 16, 105, menu.RowHeight * (menu.Items.Count + 1));
+				this.FillRectangle(24, 16, 105, menu.RowHeight * (menu.Items.Count + 1), 5);
 
 				AddMenu(menu);
 			}
@@ -139,7 +139,7 @@ namespace CivOne.Screens
 		{
 			Palette = Common.DefaultPalette;
 			this.AddLayer(Common.Screens.Last(), 0, 0)
-				.FillRectangle(5, 24, 16, 133, 97);
+				.FillRectangle(24, 16, 133, 97, 5);
 		}
 	}
 }

@@ -36,7 +36,7 @@ namespace CivOne.Screens.GamePlayPanels
 		{
 			if (_update)
 			{
-				this.FillRectangle(5, 0, 0, 320, 8)
+				this.Clear(5)
 					.DrawText("GAME", 8, 1)
 					.DrawText("ORDERS", 64, 1)
 					.DrawText("ADVISORS", 128, 1)
@@ -106,7 +106,7 @@ namespace CivOne.Screens.GamePlayPanels
 		public MenuBar(Palette palette) : base(320, 8)
 		{
 			Palette = palette.Copy();
-			this.FillRectangle(5, 0, 0, 320, 8);
+			this.Clear(5);
 			_update = true;
 
 			DefaultTextSettings = TextSettings.DifferentFirstLetter(15, 7);

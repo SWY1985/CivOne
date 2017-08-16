@@ -54,7 +54,7 @@ namespace CivOne.Screens.Reports
 				Palette = palette;
 			}
 			
-			this.FillRectangle(backgroundColour, 0, 0, 320, 200)
+			this.Clear(backgroundColour)
 				.DrawText(title, 0, 15, 160, 2, TextAlign.Center)
 				.DrawText(string.Format("{0} of the {1}", "Empire", Human.TribeNamePlural), 0, 15, 160, 10, TextAlign.Center)
 				.DrawText(string.Format("{0} {1}: {2}", "Emperor", Human.LeaderName, Game.GameYear), 0, 15, 160, 18, TextAlign.Center);

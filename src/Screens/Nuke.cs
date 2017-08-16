@@ -109,7 +109,7 @@ namespace CivOne.Screens
 				{
 					if (!Settings.RevealWorld && !t.Visible)
 					{
-						output.FillRectangle(5, t.X * 16, t.Y * 16, 16, 16);
+						output.FillRectangle(t.X * 16, t.Y * 16, 16, 16, 5);
 						continue;
 					}
 					output.AddLayer(t.Image, t.Position);

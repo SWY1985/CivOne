@@ -51,9 +51,10 @@ namespace CivOne.Screens.CityManagerPanels
 			get
 			{
 				//TODO: Draw happiness data/stats
-				Picture output = new Picture(144, 83);
-				output.FillRectangle(1, 5, 15, 122, 1);
-				output.FillRectangle(1, 5, 31, 122, 1);
+				Picture output = new Picture(144, 83)
+					.FillRectangle(5, 15, 122, 1, 1)
+					.FillRectangle(5, 31, 122, 1, 1)
+					.As<Picture>();
 				
 				for (int yy = 1; yy < 30; yy+= 16)
 				for (int i = 0; i < _city.Size; i++)
@@ -74,12 +75,13 @@ namespace CivOne.Screens.CityManagerPanels
 			get
 			{
 				//TODO: Draw map
-				Picture output = new Picture(144, 83);
-				output.FillRectangle(9, 5, 2, 122, 1);
-				output.FillRectangle(9, 5, 3, 1, 74);
-				output.FillRectangle(9, 126, 3, 1, 74);
-				output.FillRectangle(9, 5, 77, 122, 1);
-				output.FillRectangle(5, 6, 3, 120, 74);
+				Picture output = new Picture(144, 83)
+					.FillRectangle(5, 2, 122, 1, 9)
+					.FillRectangle(5, 3, 1, 74, 9)
+					.FillRectangle(126, 3, 1, 74, 9)
+					.FillRectangle(5, 77, 122, 1, 9)
+					.FillRectangle(6, 3, 120, 74, 5)
+					.As<Picture>();
 				return output;
 			}
 		}

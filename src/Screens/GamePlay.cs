@@ -342,7 +342,7 @@ namespace CivOne.Screens
 		
 		private void Resize(object sender, ResizeEventArgs args)
 		{
-			this.FillRectangle(5, 0, 0, args.Width, args.Height);
+			this.FillRectangle(0, 0, args.Width, args.Height, 5);
 
 			_menuBar.Resize();
 			_sideBar.Resize(args.Height - 8);
@@ -357,7 +357,7 @@ namespace CivOne.Screens
 			OnResize += Resize;
 			
 			Palette = Resources.Instance.LoadPIC("SP257").OriginalColours;
-			this.FillRectangle(5, 0, 0, 320, 200);
+			this.Clear(5);
 			
 			_rightSideBar = Settings.RightSideBar;
 

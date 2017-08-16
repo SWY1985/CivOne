@@ -213,7 +213,7 @@ namespace CivOne.Graphics
 				connected = true;
 			}
 			if (connected) return;
-			output.FillRectangle(6, 7, 7, 2, 2);
+			output.FillRectangle(7, 7, 2, 2, 6);
 		}
 		
 		private static void DrawRailRoad(ref Picture output, ITile tile, bool graphics16 = false)
@@ -240,7 +240,7 @@ namespace CivOne.Graphics
 				connected = true;
 			}
 			if (connected) return;
-			output.FillRectangle(5, 7, 7, 2, 2);
+			output.FillRectangle(7, 7, 2, 2, 5);
 		}
 		
 		private static void DrawHut(ref Picture output, ITile tile, bool graphics16 = false)
@@ -415,13 +415,13 @@ namespace CivOne.Graphics
 					icon = Resources.LoadPIC("ICONPGT1", true).GetPart(108, 1, 108, 86);
 					Picture.ReplaceColours(icon, (byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
 					_icons[terrainId] = new Picture(icon);
-					_icons[terrainId].FillRectangle(0, 106, 0, 2, 86);
+					_icons[terrainId].FillRectangle(106, 0, 2, 86, 0);
 					break;
 				case Terrain.Desert:
 					icon = Resources.LoadPIC("ICONPGT2", true).GetPart(1, 1, 108, 86);
 					Picture.ReplaceColours(icon, (byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
 					_icons[terrainId] = new Picture(icon);
-					_icons[terrainId].FillRectangle(0, 106, 0, 2, 86);
+					_icons[terrainId].FillRectangle(106, 0, 2, 86, 0);
 					break;
 				case Terrain.Forest:
 					icon = Resources.LoadPIC("ICONPGT2", true).GetPart(215, 1, 104, 86);
@@ -433,19 +433,19 @@ namespace CivOne.Graphics
 					icon = Resources.LoadPIC("ICONPGT2", true).GetPart(108, 1, 108, 86);
 					Picture.ReplaceColours(icon, (byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
 					_icons[terrainId] = new Picture(icon);
-					_icons[terrainId].FillRectangle(0, 106, 0, 2, 86);
+					_icons[terrainId].FillRectangle(106, 0, 2, 86, 0);
 					break;
 				case Terrain.Hills:
 					icon = Resources.LoadPIC("ICONPGT2", true).GetPart(108, 88, 108, 86);
 					Picture.ReplaceColours(icon, (byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
 					_icons[terrainId] = new Picture(icon);
-					_icons[terrainId].FillRectangle(0, 106, 0, 2, 86);
+					_icons[terrainId].FillRectangle(106, 0, 2, 86, 0);
 					break;
 				case Terrain.Jungle:
 					icon = Resources.LoadPIC("ICONPGT1", true).GetPart(1, 88, 108, 86);
 					Picture.ReplaceColours(icon, (byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
 					_icons[terrainId] = new Picture(icon);
-					_icons[terrainId].FillRectangle(0, 106, 0, 2, 86);
+					_icons[terrainId].FillRectangle(106, 0, 2, 86, 0);
 					break;
 				case Terrain.Mountains:
 					icon = Resources.LoadPIC("ICONPGT2", true).GetPart(215, 88, 104, 86);
@@ -456,13 +456,13 @@ namespace CivOne.Graphics
 					icon = Resources.LoadPIC("ICONPGT1", true).GetPart(108, 88, 108, 86);
 					Picture.ReplaceColours(icon, (byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
 					_icons[terrainId] = new Picture(icon);
-					_icons[terrainId].FillRectangle(0, 106, 0, 2, 86);
+					_icons[terrainId].FillRectangle(106, 0, 2, 86, 0);
 					break;
 				case Terrain.Plains:
 					icon = Resources.LoadPIC("ICONPGT2", true).GetPart(1, 88, 108, 86);
 					Picture.ReplaceColours(icon, (byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
 					_icons[terrainId] = new Picture(icon);
-					_icons[terrainId].FillRectangle(0, 106, 0, 2, 86);
+					_icons[terrainId].FillRectangle(106, 0, 2, 86, 0);
 					break;
 				case Terrain.River:
 					icon = Resources.LoadPIC("ICONPGT1", true).GetPart(215, 88, 104, 86);
@@ -478,7 +478,7 @@ namespace CivOne.Graphics
 					icon = Resources.LoadPIC("ICONPGT1", true).GetPart(1, 1, 108, 86);
 					Picture.ReplaceColours(icon, (byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
 					_icons[terrainId] = new Picture(icon);
-					_icons[terrainId].FillRectangle(0, 106, 0, 2, 86);
+					_icons[terrainId].FillRectangle(106, 0, 2, 86, 0);
 					break;
 			}
 			return _icons[terrainId];

@@ -21,7 +21,7 @@ namespace CivOne.Screens.Reports
 			foreach (Player player in Game.Players.Where(p => p != 0))
 			{
 				if (player.DestroyTurn >= 0) continue;
-				this.FillRectangle(9, 4, yy, 314, 1);
+				this.FillRectangle(4, yy, 314, 1, 9);
 
 				byte id = Game.PlayerNumber(player);
 				byte colour = Common.ColourLight[id];

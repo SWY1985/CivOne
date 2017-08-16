@@ -115,7 +115,7 @@ namespace CivOne.Screens
 		{
 			Palette = Common.DefaultPalette;
 			this.AddLayer(Common.Screens.Last(), 0, 0)
-				.FillRectangle(5, 24, 16, 105, 81);
+				.FillRectangle(24, 16, 105, 81, 5);
 		}
 	}
 }

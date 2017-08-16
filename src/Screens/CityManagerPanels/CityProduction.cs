@@ -90,14 +90,14 @@ namespace CivOne.Screens.CityManagerPanels
 
 				this.Tile(_background)
 					.DrawRectangle(0, 0, width, 19 + height, 1)
-					.FillRectangle(1, 1, 1, (width - 2), 16);
+					.FillRectangle(1, 1, (width - 2), 16, 1);
 				if (width < 88)
 				{
-					this.FillRectangle(5, width, 0, 88 - width, 99);
+					this.FillRectangle(width, 0, 88 - width, 99, 5);
 				}
 				if (height < 80)
 				{
-					this.FillRectangle(5, 0, 19 + height, width, 80 - height);
+					this.FillRectangle(0, 19 + height, width, 80 - height, 5);
 				}
 				bool blink = ProductionInvalid && (gameTick % 4 > 1);
 				if (!(Common.TopScreen is CityManager)) blink = ProductionInvalid;

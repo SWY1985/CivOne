@@ -180,8 +180,6 @@ namespace CivOne.Screens
 			Items = new MenuItemCollection<int>(menuId);
 			
 			Palette = palette.Copy();
-
-			this.FillRectangle(2, 0, 0, 8, 8);
 		}
 	}
 }

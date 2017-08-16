@@ -32,11 +32,11 @@ namespace CivOne.Screens.Debug
 		{
 			Bitmap.Clear();
 
-			this.FillRectangle(11, 80, 80, 161, 33)
-				.FillRectangle(15, 81, 81, 159, 31)
+			this.FillRectangle(80, 80, 161, 33, 11)
+				.FillRectangle(81, 81, 159, 31, 15)
 				.DrawText("Set Player Gold...", 0, 5, 88, 82)
-				.FillRectangle(5, 88, 95, 105, 14)
-				.FillRectangle(15, 89, 96, 103, 12);
+				.FillRectangle(88, 95, 105, 14, 5)
+				.FillRectangle(89, 96, 103, 12, 15);
 
 			_selectedPlayer = Game.GetPlayer((byte)_civSelect.ActiveItem);
 
@@ -110,7 +110,7 @@ namespace CivOne.Screens.Debug
 			Picture menuBackground = menuGfx.GetPart(2, 11, ww - 4, hh - 11);
 			Picture.ReplaceColours(menuBackground, new byte[] { 7, 22 }, new byte[] { 11, 3 });
 
-			this.FillRectangle(5, xx - 1, yy - 1, ww + 2, hh + 2)
+			this.FillRectangle(xx - 1, yy - 1, ww + 2, hh + 2, 5)
 				.AddLayer(menuGfx, xx, yy)
 				.DrawText("Set Player Gold...", 0, 15, xx + 8, yy + 3);
 

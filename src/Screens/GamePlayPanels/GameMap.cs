@@ -168,7 +168,7 @@ namespace CivOne.Screens.GamePlayPanels
 			else
 			{
 				_centerChanged = false;
-				this.FillRectangle(5, 0, 0, Width, Height)
+				this.Clear(5)
 					.AddLayer(Tiles.ToPicture(player: renderPlayer), dispose: true);
 			}
 

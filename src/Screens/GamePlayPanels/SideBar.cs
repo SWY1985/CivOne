@@ -29,7 +29,7 @@ namespace CivOne.Screens.GamePlayPanels
 		
 		private void DrawMiniMap(uint gameTick = 0)
 		{
-			_miniMap.FillRectangle(5, 0, 0, 80, 50);
+			_miniMap.Clear(5);
 			
 			if (GamePlay != null)
 			{
@@ -98,8 +98,8 @@ namespace CivOne.Screens.GamePlayPanels
 		{
 			_demographics.Tile(Patterns.PanelGrey)
 				.DrawRectangle3D()
-				.FillRectangle(11, 3, 2, 74, 11)
-				.FillRectangle(2, 3, 13, 74, 1);
+				.FillRectangle(3, 2, 74, 11, 11)
+				.FillRectangle(3, 13, 74, 1, 2);
 			if (Human.Population > 0)
 			{
 				string population = Common.NumberSeperator(Human.Population);
@@ -123,7 +123,7 @@ namespace CivOne.Screens.GamePlayPanels
 			
 			if (Game.CurrentPlayer != Human || (unit != null && Human != unit.Owner) || (GameTask.Any() && !GameTask.Is<Show>() && !GameTask.Is<Message>()))
 			{
-				_gameInfo.FillRectangle((byte)((gameTick % 4 < 2) ? 15 : 8), 2, _gameInfo.Height - 8, 6, 6);
+				_gameInfo.FillRectangle(2, _gameInfo.Height - 8, 6, 6, (byte)((gameTick % 4 < 2) ? 15 : 8));
 				return;
 			}
 

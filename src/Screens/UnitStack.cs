@@ -40,7 +40,7 @@ namespace CivOne.Screens
 				int yy = (200 - height) / 2;
 
 				Picture dialog = new Picture(WIDTH, height)
-					.FillRectangle(3, 1, 1, WIDTH - 2, height - 2)
+					.FillRectangle(1, 1, WIDTH - 2, height - 2, 3)
 					.DrawRectangle3D()
 					.As<Picture>();
 
@@ -52,7 +52,7 @@ namespace CivOne.Screens
 					dialog.DrawText(unit.Home == null ? "NONE" : unit.Home.Name, 0, 14, 27, (i * 16) + 12);
 				}
 
-				this.FillRectangle(5, XX - 1, yy - 1, WIDTH + 2, height + 2)
+				this.FillRectangle(XX - 1, yy - 1, WIDTH + 2, height + 2, 5)
 					.AddLayer(dialog, XX, yy);
 				
 				return true;

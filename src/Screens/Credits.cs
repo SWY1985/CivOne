@@ -111,7 +111,7 @@ namespace CivOne.Screens
 			
 			// Drawing
 			int ox = (Width - 320), cx = (ox / 2), cy = (Height - 200) / 2;
-			this.FillRectangle(0, 0, 0, Width, Height);
+			this.Clear();
 			if (_introLeft > -320)
 			{
 				this.AddLayer(_pictures[0], _introLeft + ox, cy)
@@ -163,10 +163,10 @@ namespace CivOne.Screens
 				
 				// Draw menu background
 				int mx = ((Width - 120) / 2), my = Height - 59;
-				this.FillRectangle(5, mx, my, 122, 49)
-					.FillRectangle(_menuColours[0], mx + 1, my + 1, 120, 47)
-					.FillRectangle(_menuColours[1], mx + 1, my + 2, 119, 46)
-					.FillRectangle(_menuColours[2], mx + 2, my + 2, 118, 45);
+				this.FillRectangle(mx, my, 122, 49, 5)
+					.FillRectangle(mx + 1, my + 1, 120, 47, _menuColours[0])
+					.FillRectangle(mx + 1, my + 2, 119, 46, _menuColours[1])
+					.FillRectangle(mx + 2, my + 2, 118, 45, _menuColours[2]);
 				
 				CreateMenu();
 			}
@@ -181,8 +181,8 @@ namespace CivOne.Screens
 			_introLeft = -320;
 			_logoSwipe = 320;
 			_cycleCounter = 98;
-			_pictures[0].FillRectangle(5, 0, 0, 320, 200);
-			_pictures[1].FillRectangle(5, 0, 0, 320, 200);
+			_pictures[0].Clear(5);
+			_pictures[1].Clear(5);
 			_introSkipped = true;
 			return true;
 		}

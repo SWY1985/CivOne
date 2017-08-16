@@ -25,7 +25,7 @@ namespace CivOne.Graphics
 				{
 					_food = Resources["SP257"].GetPart(128, 32, 8, 8);
 					Picture.ReplaceColours(_food, 3, 0);
-					_food.FillRectangle(0, 0, 0, 1, 8);
+					_food.FillRectangle(0, 0, 1, 8, 0);
 				}
 				return _food;
 			}
@@ -40,7 +40,7 @@ namespace CivOne.Graphics
 				{
 					_foodLoss = Resources["SP257"].GetPart(128, 32, 8, 8);
 					Picture.ReplaceColours(_foodLoss, new byte[] { 3, 15 }, new byte[] { 0, 5 });
-					_foodLoss.FillRectangle(0, 0, 0, 1, 8);
+					_foodLoss.FillRectangle(0, 0, 1, 8, 0);
 				}
 				return _foodLoss;
 			}
@@ -332,10 +332,10 @@ namespace CivOne.Graphics
 			};
 			
 			if (city.Tile.Units.Length > 0)
-				output.FillRectangle(5, 0, 0, 16, 16);
-			output.FillRectangle(15, 1, 1, 14, 14);
-			output.FillRectangle(Common.ColourDark[city.Owner], 2, 1, 13, 13);
-			output.FillRectangle(Common.ColourLight[city.Owner], 2, 2, 12, 12);
+				output.FillRectangle(0, 0, 16, 16, 5);
+			output.FillRectangle(1, 1, 14, 14, 15)
+				.FillRectangle(2, 1, 13, 13, Common.ColourDark[city.Owner])
+				.FillRectangle(2, 2, 12, 12, Common.ColourLight[city.Owner]);
 			
 			Picture resource;
 			if (Resources.Exists("SP257"))

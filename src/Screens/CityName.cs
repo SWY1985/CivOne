@@ -53,11 +53,11 @@ namespace CivOne.Screens
 		{
 			Palette = Common.DefaultPalette;
 
-			this.FillRectangle(11, 80, 80, 161, 33)
-				.FillRectangle(15, 81, 81, 159, 31)
+			this.FillRectangle(80, 80, 161, 33, 11)
+				.FillRectangle(81, 81, 159, 31, 15)
 				.DrawText("City Name...", 0, 5, 88, 82)
-				.FillRectangle(5, 88, 95, 105, 14)
-				.FillRectangle(15, 89, 96, 103, 12);
+				.FillRectangle(88, 95, 105, 14, 5)
+				.FillRectangle(89, 96, 103, 12, 15);
 
 			_input = new Input(Palette, cityName, 0, 5, 11, 90, 97, 101, 10, 12);
 			_input.Accept += CityName_Accept;

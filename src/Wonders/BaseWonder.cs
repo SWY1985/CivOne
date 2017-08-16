@@ -91,11 +91,12 @@ namespace CivOne.Wonders
 		{
 			Picture icon = Resources.Instance.LoadPIC((Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? "SP299" : "SPRITES")).GetPart(160 + (19 * col), 50 + (10 * row), 20, 10);
 			Picture.ReplaceColours(icon, 0, 5);
-			SmallIcon = new Picture(20, 10);
-			SmallIcon.FillRectangle(5, 0, 0, 20, 10);
-			SmallIcon.AddLayer(icon);
-			SmallIcon.FillRectangle(0, 0, 0, 1, 10);
-			SmallIcon.FillRectangle(0, 19, 0, 1, 10);
+			SmallIcon = new Picture(20, 10)
+				.Clear(5)
+				.AddLayer(icon)
+				.FillRectangle(0, 0, 1, 10, 0)
+				.FillRectangle(19, 0, 1, 10, 0)
+				.As<Picture>();
 		}
 		
 		public byte Id

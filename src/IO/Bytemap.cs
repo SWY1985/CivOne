@@ -49,6 +49,20 @@ namespace CivOne.IO
 			}
 		}
 
+		internal void FillRectangle(int left, int top, int width, int height, byte colour)
+		{
+			if (left < 0) { width -= left; left = 0; }
+			if (top < 0) { height -= top; top = 0; }
+			if (left + width > Width) width = Width - left;
+			if (top + height > Height) height = Height - top;
+
+			byte[] buffer = new byte[width].Clear(colour);
+			for (int yy = top; yy < (top + height); yy++)
+			{
+				Marshal.Copy(buffer, 0, IntPtr.Add(_handle, (Width * yy) + left), buffer.Length);
+			}
+		}
+
 		public new void Clear() => base.Clear();
 
 		public int[] ToColourMap(int[] palette, bool rightToLeft = false, bool bottomToTop = false)

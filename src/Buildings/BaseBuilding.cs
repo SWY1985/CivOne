@@ -87,7 +87,7 @@ namespace CivOne.Buildings
 				Picture icon = Resources.Instance.LoadPIC("CITYPIX2").GetPart(col * 50, row * 50, 52, 50);
 				Picture.ReplaceColours(icon, 1, 0);
 				Icon.AddLayer(icon);
-				Icon.FillRectangle(0, 50, 0, 2, 50);
+				Icon.FillRectangle(50, 0, 2, 50, 0);
 				
 				if (grassTile) _iconsCacheGrass[col, row] = Icon;
 				else _iconsCache[col, row] = Icon;
@@ -101,10 +101,10 @@ namespace CivOne.Buildings
 			{
 				Picture.ReplaceColours(icon, 0, 5);
 				SmallIcon = new Picture(20, 10);
-				SmallIcon.FillRectangle(5, 0, 0, 20, 10);
+				SmallIcon.FillRectangle(0, 0, 20, 10, 5);
 				SmallIcon.AddLayer(icon);
-				SmallIcon.FillRectangle(0, 0, 0, 1, 10);
-				SmallIcon.FillRectangle(0, 19, 0, 1, 10);
+				SmallIcon.FillRectangle(0, 0, 1, 10, 0);
+				SmallIcon.FillRectangle(19, 0, 1, 10, 0);
 			}
 		}
 		

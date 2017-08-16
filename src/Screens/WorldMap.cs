@@ -69,7 +69,7 @@ namespace CivOne.Screens
 		public WorldMap()
 		{
 			Palette = Resources.WorldMapTiles.Palette;
-			this.FillRectangle(5, 0, 0, 320, 200);
+			this.Clear(5);
 
 			int startX = Game.Human.StartX - 40;
 			int startY = ((Map.HEIGHT - (VisibleBottom - VisibleTop)) / 2) - VisibleTop;
@@ -101,12 +101,12 @@ namespace CivOne.Screens
 				
 				if ((city = tile.City) != null && city.Size > 0)
 				{
-					this.FillRectangle(Common.ColourLight[city.Owner], dx, dy, 4, 4);
+					this.FillRectangle(dx, dy, 4, 4, Common.ColourLight[city.Owner]);
 				}
 				else if ((units = tile.Units).Length > 0)
 				{
 					this.FillRectangle(5, dx + 1, dy + 1, 3, 3)
-						.FillRectangle(Common.ColourLight[units[0].Owner], dx, dy, 3, 3);
+						.FillRectangle(dx, dy, 3, 3, Common.ColourLight[units[0].Owner]);
 				}
 			}
 		}
