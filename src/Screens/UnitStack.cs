@@ -39,9 +39,10 @@ namespace CivOne.Screens
 				int height = (16 * _units.Length) + 6;
 				int yy = (200 - height) / 2;
 
-				Picture dialog = new Picture(WIDTH + (4 - (WIDTH % 4)), height);
-				dialog.FillRectangle(3, 1, 1, WIDTH - 2, height - 2);
-				dialog.AddBorder(15, 8, 0, 0, WIDTH, height);
+				Picture dialog = new Picture(WIDTH, height)
+					.FillRectangle(3, 1, 1, WIDTH - 2, height - 2)
+					.DrawRectangle3D()
+					.As<Picture>();
 
 				for (int i = 0; i < _units.Length; i++)
 				{

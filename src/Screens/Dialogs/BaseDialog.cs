@@ -94,10 +94,11 @@ namespace CivOne.Screens.Dialogs
 			width += 2;
 			height += 2;
 			
-			DialogBox = new Picture(width, height);
-			DialogBox.Tile(Patterns.PanelGrey, 1, 1);
-			DialogBox.AddBorder(15, 8, 1, 1, width - 2, height - 2);
-			DialogBox.AddBorder(5, 5, 0, 0, width, height);
+			DialogBox = new Picture(width, height)
+				.Tile(Patterns.PanelGrey, 1, 1)
+				.DrawRectangle3D(1, 1, width - 2, height - 2)
+				.DrawRectangle()
+				.As<Picture>();
 		}
 
 		public BaseDialog(int left, int top, int marginWidth, int marginHeight, string[] message) : base(MouseCursor.Pointer)

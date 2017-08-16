@@ -72,11 +72,11 @@ namespace CivOne.Screens
 			{
 				_update = false;
 
-				Picture menuGfx = new Picture(104, 79);
-				menuGfx.Tile(Patterns.PanelGrey);
-				menuGfx.AddBorder(15, 8, 0, 0, 103, 79);
-				menuGfx.FillRectangle(0, 103, 0, 1, 79);
-				menuGfx.DrawText("Options:", 0, 15, 4, 4);
+				Picture menuGfx = new Picture(103, 79)
+					.Tile(Patterns.PanelGrey)
+					.DrawRectangle3D()
+					.DrawText("Options:", 0, 15, 4, 4)
+					.As<Picture>();
 
 				Picture menuBackground = menuGfx.GetPart(2, 11, 100, 64);
 				Picture.ReplaceColours(menuBackground, new byte[] { 7, 22 }, new byte[] { 11, 3 });

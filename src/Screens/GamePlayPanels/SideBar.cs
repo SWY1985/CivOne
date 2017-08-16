@@ -89,19 +89,16 @@ namespace CivOne.Screens.GamePlayPanels
 					}
 				}
 			}
-			_miniMap.FillRectangle(15, 31, 18, 18, 1);
-			_miniMap.FillRectangle(15, 31, 19, 1, 9);
-			_miniMap.FillRectangle(15, 31, 28, 18, 1);
-			_miniMap.FillRectangle(15, 48, 19, 1, 9);
-			_miniMap.AddBorder(15, 8, 0, 0, 80, 50);
+			_miniMap.DrawRectangle(31, 18, 18, 11, 15)
+				.DrawRectangle3D();
 		}
 
 		private void DrawDemographics()
 		{
-			_demographics.Tile(Patterns.PanelGrey);
-			_demographics.AddBorder(15, 8, 0, 0, 80, 39);
-			_demographics.FillRectangle(11, 3, 2, 74, 11);
-			_demographics.FillRectangle(2, 3, 13, 74, 1);
+			_demographics.Tile(Patterns.PanelGrey)
+				.DrawRectangle3D()
+				.FillRectangle(11, 3, 2, 74, 11)
+				.FillRectangle(2, 3, 13, 74, 1);
 			if (Human.Population > 0)
 			{
 				string population = Common.NumberSeperator(Human.Population);
@@ -120,8 +117,8 @@ namespace CivOne.Screens.GamePlayPanels
 		{
 			IUnit unit = Game.ActiveUnit;
 			
-			_gameInfo.Tile(Patterns.PanelGrey);
-			_gameInfo.AddBorder(15, 8, 0, 0, 80, _gameInfo.Height);
+			_gameInfo.Tile(Patterns.PanelGrey)
+				.DrawRectangle3D();
 			
 			if (Game.CurrentPlayer != Human || (unit != null && Human != unit.Owner) || (GameTask.Any() && !GameTask.Is<Show>() && !GameTask.Is<Message>()))
 			{

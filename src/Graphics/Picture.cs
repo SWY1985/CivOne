@@ -115,17 +115,6 @@ namespace CivOne.Graphics
 		}
 
 		public Picture GetPart(int left, int top, int width, int height) => new Picture(_bitmap[left, top, width, height], Palette);
-		
-		public void AddBorder(byte colourLight, byte colourDark, int x, int y, int width, int height, int depth = 0)
-		{
-			int w = x + (width - 1);
-			int h = y + (height - 1);
-			
-			this.FillRectangle(colourLight, x + depth, y + depth, 1, h - (depth * 2));
-			this.FillRectangle(colourLight, x + depth, h - depth, w - (depth * 2), 1);
-			this.FillRectangle(colourDark, x + depth, y + depth, w - (depth * 2), 1);
-			this.FillRectangle(colourDark, w - depth, y + depth, 1, h - (depth * 2) + 1);
-		}
 
 		public void AddLine(byte colour, int x1, int y1, int x2, int y2)
 		{

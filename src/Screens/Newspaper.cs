@@ -120,11 +120,11 @@ namespace CivOne.Screens
 				{
 					this.AddLayer(Icons.Newspaper, xx, 100);
 				}
-				Picture dialog = new Picture(152, 15);
-				dialog.Tile(Patterns.PanelGrey);
-				dialog.FillRectangle(0, 151, 0, 1, 15);
-				dialog.AddBorder(15, 8, 0, 0, 151, 15);
-				dialog.DrawText("Press any key to continue.", 0, 15, 4, 4);
+				Picture dialog = new Picture(151, 15)
+					.Tile(Patterns.PanelGrey)
+					.DrawRectangle3D()
+					.DrawText("Press any key to continue.", 0, 15, 4, 4)
+					.As<Picture>();
 				this.FillRectangle(5, 80, 128, 153, 17)
 					.AddLayer(dialog, 81, 129);
 			}

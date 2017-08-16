@@ -190,9 +190,10 @@ namespace CivOne.Screens
 				{
 					case Stage.Message:
 						{
-							Picture message = new Picture(269, 39);
-							message.Tile(Patterns.PanelGrey);
-							message.AddBorder(15, 8, 0, 0, 269, 39);
+							Picture message = new Picture(269, 39)
+								.Tile(Patterns.PanelGrey)
+								.DrawRectangle3D()
+								.As<Picture>();
 							int yy = 4;
 							foreach (string line in TextFile.Instance.GetGameText("KING/PALACE"))
 							{
@@ -205,10 +206,11 @@ namespace CivOne.Screens
 						break;
 					case Stage.SelectPart:
 						{
-							Picture message = new Picture(180, 15);
-							message.Tile(Patterns.PanelGrey);
-							message.AddBorder(15, 8, 0, 0, 180, 15);
-							message.DrawText("Which section shall we improve?", 0, 15, 4, 4);
+							Picture message = new Picture(180, 15)
+								.Tile(Patterns.PanelGrey)
+								.DrawRectangle3D()
+								.DrawText("Which section shall we improve?", 0, 15, 4, 4)
+								.As<Picture>();
 							this.FillRectangle(5, 40, 16, 182, 17)
 								.AddLayer(message, 41, 17);
 
