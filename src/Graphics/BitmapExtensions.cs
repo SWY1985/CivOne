@@ -55,9 +55,9 @@ namespace CivOne.Graphics
 				{
 					if (xx >= bitmap.GetWidth()) break;
 					if (bitmap.OutBoundX(xx)) continue;
-					if (yy == 0 || xx == ww)
+					if (yy == top || xx == ww)
 						bitmap.Bitmap[xx, yy] = colourDark;
-					else if (yy == hh || xx == 0)
+					else if (yy == hh || xx == left)
 						bitmap.Bitmap[xx, yy] = colourLight;
 				}
 			}

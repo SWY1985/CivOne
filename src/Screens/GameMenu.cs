@@ -69,18 +69,11 @@ namespace CivOne.Screens
 			int ww = MaxItemWidth + 17;
 			int hh = (Resources.Instance.GetFontHeight(0) * Items.Count) + 9;
 			
-			// This is a workaround, until I figure out how to make bitmaps where Width doesn't divide by 4
-			int ow = ww;
-			if (ww % 4 > 0)
-				ww += (4 - (ww % 4));
-			
-			_canvas = new Picture(ww, hh, _palette);
-			this.Tile(Patterns.PanelGrey, 1, 1);
-			if (ow != ww)
-				this.FillRectangle(0, ow, 0, 4 - (ow % 4), hh);
-			
-			_canvas.AddBorder(5, 5, 0, 0, ow, hh);
-			_canvas.AddBorder(15, 8, 0, 0, ow, hh, 1);
+			_canvas = new Picture(ww, hh, _palette)
+				.Tile(Patterns.PanelGrey, 1, 1)
+				.DrawRectangle()
+				.DrawRectangle3D(1, 1, ww - 2, hh - 2)
+				.As<Picture>();
 			
 			int i = 0;
 			int yy = 5;

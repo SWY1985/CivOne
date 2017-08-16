@@ -62,9 +62,8 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			if (_update)
 			{
-				this.Tile(_background);
-				_canvas.AddBorder(1, 1, 0, 0, 82, 82);
-				this.FillRectangle(0, 82, 0, 2, 82);
+				this.Tile(_background)
+					.DrawRectangle(colour: 1);
 				
 				ITile[,] tiles = _city.CityRadius;
 				this.AddLayer(tiles.ToPicture(TileSettings.CityManager, Settings.RevealWorld ? null : Game.GetPlayer(_city.Owner)), 1, 1, dispose: true);
@@ -116,7 +115,7 @@ namespace CivOne.Screens.CityManagerPanels
 			_city = city;
 			_background = background;
 
-			_canvas = new Picture(84, 82, background.Palette);
+			_canvas = new Picture(82, 82, background.Palette);
 		}
 	}
 }

@@ -26,9 +26,8 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			if (_update)
 			{
-				this.Tile(_background);
-				_canvas.AddBorder(1, 1, 0, 0, 123, 38);
-				this.FillRectangle(0, 123, 0, 1, 38);
+				this.Tile(_background)
+					.DrawRectangle(colour: 1);
 
 				IUnit[] units = _city.Units.Take(14).ToArray();
 				for (int i = 0; i < units.Length; i++)
@@ -78,7 +77,7 @@ namespace CivOne.Screens.CityManagerPanels
 			_city = city;
 			_background = background;
 
-			_canvas = new Picture(124, 38, background.Palette);
+			_canvas = new Picture(123, 38, background.Palette);
 		}
 	}
 }

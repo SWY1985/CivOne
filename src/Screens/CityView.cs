@@ -26,6 +26,8 @@ namespace CivOne.Screens
 		private const float FADE_STEP = 0.1f;
 		private const int NOISE_COUNT = 40;
 
+		private readonly TextSettings _dialogText;
+
 		private readonly City _city;
 		private readonly IProduction _production;
 		private readonly Picture _background;
@@ -695,6 +697,9 @@ namespace CivOne.Screens
 		
 		public CityView(City city, bool founded = false, bool firstView = false, IProduction production = null, bool captured = false)
 		{
+			_dialogText = TextSettings.ShadowText(15, 5);
+			_dialogText.FontId = 5;
+			
 			_city = city;
 			_production = production;
 			_background = new Picture(Resources.Instance.LoadPIC("HILL"));
@@ -741,17 +746,15 @@ namespace CivOne.Screens
 				_x = 0;
 				
 				string[] lines =  new [] { $"{Game.CurrentPlayer.TribeNamePlural} capture", $"{city.Name}. 0 gold", "pieces plundered." };
-				int width = lines.Max(l => Resources.Instance.GetTextSize(5, l).Width) + 10;
-				if (width % 4 > 0) width += (4 - (width % 4));
-				Picture dialog = new Picture(width, 52);
-				dialog.Tile(Patterns.PanelGrey);
-				dialog.AddBorder(15, 8, 0, 0, width, 52);
-				dialog.DrawText(lines[0], 5, 5, 4, 5);
-				dialog.DrawText(lines[0], 5, 15, 4, 4);
-				dialog.DrawText(lines[1], 5, 5, 4, 20);
-				dialog.DrawText(lines[1], 5, 15, 4, 19);
-				dialog.DrawText(lines[2], 5, 5, 4, 35);
-				dialog.DrawText(lines[2], 5, 15, 4, 34);
+				int width = lines.Max(l => Resources.Instance.GetTextSize(5, l).Width) + 12;
+				Picture dialog = new Picture(width, 54)
+					.Tile(Patterns.PanelGrey, 1, 1)
+					.DrawRectangle()
+					.DrawRectangle3D(1, 1, width - 2, 52)
+					.DrawText(lines[0], 5, 6, _dialogText)
+					.DrawText(lines[1], 5, 21, _dialogText)
+					.DrawText(lines[2], 5, 36, _dialogText)
+					.As<Picture>();
 
 				_background.FillRectangle(5, 80, 8, width + 2, 54);
 				_background.AddLayer(dialog, 81, 9);
@@ -767,19 +770,18 @@ namespace CivOne.Screens
 				}
 
 				string[] lines =  new [] { $"{_city.Name} builds", $"{(production as ICivilopedia).Name}." };
-				int width = lines.Max(l => Resources.Instance.GetTextSize(5, l).Width) + 10;
-				Picture dialog = new Picture(width, 37);
-				dialog.Tile(Patterns.PanelGrey);
-				dialog.AddBorder(15, 8, 0, 0, width, 37);
-				dialog.DrawText(lines[0], 5, 5, 4, 5);
-				dialog.DrawText(lines[0], 5, 15, 4, 4);
-				dialog.DrawText(lines[1], 5, 5, 4, 20);
-				dialog.DrawText(lines[1], 5, 15, 4, 19);
+				int width = lines.Max(l => Resources.Instance.GetTextSize(5, l).Width) + 12;
+				Picture dialog = new Picture(width, 39)
+					.Tile(Patterns.PanelGrey, 1, 1)
+					.DrawRectangle()
+					.DrawRectangle3D(1, 1, width - 2, 37)
+					.DrawText(lines[0], 5, 6, _dialogText)
+					.DrawText(lines[1], 5, 21, _dialogText)
+					.As<Picture>();
 
 				foreach (Picture picture in new[] { _background, _overlay })
 				{
-					picture.FillRectangle(5, 80, 8, width + 2, 39);
-					picture.AddLayer(dialog, 81, 9);
+					picture.AddLayer(dialog, 80, 10);
 				}
 				return;
 			}

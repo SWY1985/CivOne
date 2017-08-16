@@ -122,10 +122,9 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			if (_update)
 			{
-				this.Tile(_background);
-				_canvas.AddBorder(1, 1, 0, 0, 123, 43);
-				this.FillRectangle(1, 1, 1, 121, 8)
-					.FillRectangle(0, 123, 0, 1, 43)
+				this.Tile(_background)
+					.DrawRectangle(colour: 1)
+					.FillRectangle(1, 1, 1, 121, 8)
 					.DrawText($"City Resources", 1, 17, 6, 2, TextAlign.Left);
 
 				DrawFood();
@@ -147,7 +146,7 @@ namespace CivOne.Screens.CityManagerPanels
 			_city = city;
 			_background = background;
 
-			_canvas = new Picture(124, 43, background.Palette);
+			_canvas = new Picture(123, 43, background.Palette);
 		}
 	}
 }
