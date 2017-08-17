@@ -40,7 +40,7 @@ namespace CivOne.Graphics
 				if (_foodLoss == null)
 				{
 					_foodLoss = Resources["SP257"].GetPart(128, 32, 8, 8)
-						.ColourReplace(new byte[] { 3, 15 }, new byte[] { 0, 5 })
+						.ColourReplace((3, 0), (15, 5))
 						.FillRectangle(0, 0, 1, 8, 0)
 						.As<Picture>();
 				}
@@ -71,7 +71,7 @@ namespace CivOne.Graphics
 				if (_shieldLoss == null)
 				{
 					_shieldLoss = Resources["SP257"].GetPart(136, 32, 8, 8)
-						.ColourReplace(new byte[] { 3, 15 }, new byte[] { 0, 5 })
+						.ColourReplace((3, 0), (15, 5))
 						.As<Picture>();
 				}
 				return _shieldLoss;

@@ -74,7 +74,7 @@ namespace CivOne.Screens.Debug
 				.DrawRectangle3D()
 				.As<Picture>();
 			Picture menuBackground = menuGfx.GetPart(2, 11, ww - 4, hh - 11)
-				.ColourReplace(new byte[] { 7, 22 }, new byte[] { 11, 3 })
+				.ColourReplace((7, 11), (22, 3))
 				.As<Picture>();
 
 			this.FillRectangle(xx - 1, yy - 1, ww + 2, hh + 2, 5)
