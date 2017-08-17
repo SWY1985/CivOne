@@ -342,7 +342,7 @@ namespace CivOne.Screens
 		
 		private void Resize(object sender, ResizeEventArgs args)
 		{
-			this.FillRectangle(0, 0, args.Width, args.Height, 5);
+			this.Clear(5);
 
 			_menuBar.Resize();
 			_sideBar.Resize(args.Height - 8);
@@ -357,13 +357,21 @@ namespace CivOne.Screens
 			OnResize += Resize;
 			
 			Palette = Resources.Instance.LoadPIC("SP257").OriginalColours;
-			this.Clear(5);
 			
 			_rightSideBar = Settings.RightSideBar;
 
 			_menuBar = new MenuBar(Palette);
 			_sideBar = new SideBar(Palette);
 			_gameMap = new GameMap();
+
+			if (Width != 320 || Height != 200)
+			{
+				Resize(null, new ResizeEventArgs(Width, Height));
+			}
+			else
+			{
+				this.Clear(5);
+			}
 			
 			_menuBar.GameSelected += MenuBarGame;
 			_menuBar.OrdersSelected += MenuBarOrders;

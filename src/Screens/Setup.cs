@@ -484,7 +484,10 @@ namespace CivOne.Screens
 
 				menu.X = (args.Width - menu.MenuWidth) / 2;
 				menu.Y = (args.Height - menuHeight) / 2;
+				menu.ForceUpdate();
 			}
+
+			_update = true;
 		}
 		
 		public Setup() : base(MouseCursor.Pointer)

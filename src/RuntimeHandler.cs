@@ -33,6 +33,9 @@ namespace CivOne
 		private MouseCursor _currentCursor = MouseCursor.None;
 		private CursorType _cursorType = CursorType.Native;
 
+		internal int CanvasWidth => Math.Max(320, Math.Min(512, Runtime.CanvasWidth));
+		internal int CanvasHeight => Math.Max(200, Math.Min(384, Runtime.CanvasHeight));
+
 		private Stopwatch _tickWatch = new Stopwatch();
 		private uint TickWatch
 		{
@@ -84,10 +87,10 @@ namespace CivOne
 		{
 			if (TopScreen == null) return;
 
-			if (Runtime.Bitmap == null || Runtime.Bitmap.Width() != Runtime.CanvasWidth || Runtime.Bitmap.Width() != Runtime.CanvasWidth)
+			if (Runtime.Bitmap == null || Runtime.Bitmap.Width() != CanvasWidth || Runtime.Bitmap.Height() != CanvasHeight)
 			{
 				Runtime.Bitmap?.Dispose();
-				Runtime.Bitmap = new Picture(Runtime.CanvasWidth, Runtime.CanvasHeight, Common.TopScreen.Palette.Copy());
+				Runtime.Bitmap = new Picture(CanvasWidth, CanvasHeight, Common.TopScreen.Palette.Copy());
 				Runtime.Bitmap.Palette[0] = Colour.Black;
 			}
 			else
