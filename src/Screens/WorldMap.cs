@@ -105,7 +105,7 @@ namespace CivOne.Screens
 				}
 				else if ((units = tile.Units).Length > 0)
 				{
-					this.FillRectangle(5, dx + 1, dy + 1, 3, 3)
+					this.FillRectangle(dx + 1, dy + 1, 3, 3, 5)
 						.FillRectangle(dx, dy, 3, 3, Common.ColourLight[units[0].Owner]);
 				}
 			}
