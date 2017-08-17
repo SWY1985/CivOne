@@ -23,9 +23,10 @@ namespace CivOne.Graphics
 			{
 				if (_food == null)
 				{
-					_food = Resources["SP257"].GetPart(128, 32, 8, 8);
-					Picture.ReplaceColours(_food, 3, 0);
-					_food.FillRectangle(0, 0, 1, 8, 0);
+					_food = Resources["SP257"].GetPart(128, 32, 8, 8)
+						.ReplaceColours(3, 0)
+						.FillRectangle(0, 0, 1, 8, 0)
+						.As<Picture>();
 				}
 				return _food;
 			}
@@ -38,9 +39,10 @@ namespace CivOne.Graphics
 			{
 				if (_foodLoss == null)
 				{
-					_foodLoss = Resources["SP257"].GetPart(128, 32, 8, 8);
-					Picture.ReplaceColours(_foodLoss, new byte[] { 3, 15 }, new byte[] { 0, 5 });
-					_foodLoss.FillRectangle(0, 0, 1, 8, 0);
+					_foodLoss = Resources["SP257"].GetPart(128, 32, 8, 8)
+						.ReplaceColours(new byte[] { 3, 15 }, new byte[] { 0, 5 })
+						.FillRectangle(0, 0, 1, 8, 0)
+						.As<Picture>();
 				}
 				return _foodLoss;
 			}
@@ -53,8 +55,9 @@ namespace CivOne.Graphics
 			{
 				if (_shield == null)
 				{
-					_shield = Resources["SP257"].GetPart(136, 32, 8, 8);
-					Picture.ReplaceColours(_shield, 3, 0);
+					_shield = Resources["SP257"].GetPart(136, 32, 8, 8)
+						.ReplaceColours(3, 0)
+						.As<Picture>();
 				}
 				return _shield;
 			}
@@ -67,8 +70,9 @@ namespace CivOne.Graphics
 			{
 				if (_shieldLoss == null)
 				{
-					_shieldLoss = Resources["SP257"].GetPart(136, 32, 8, 8);
-					Picture.ReplaceColours(_shieldLoss, new byte[] { 3, 15 }, new byte[] { 0, 5 });
+					_shieldLoss = Resources["SP257"].GetPart(136, 32, 8, 8)
+						.ReplaceColours(new byte[] { 3, 15 }, new byte[] { 0, 5 })
+						.As<Picture>();
 				}
 				return _shieldLoss;
 			}
@@ -81,8 +85,9 @@ namespace CivOne.Graphics
 			{
 				if (_trade == null)
 				{
-					_trade = Resources["SP257"].GetPart(144, 32, 8, 8);
-					Picture.ReplaceColours(_trade, 3, 0);
+					_trade = Resources["SP257"].GetPart(144, 32, 8, 8)
+						.ReplaceColours(3, 0)
+						.As<Picture>();
 				}
 				return _trade;
 			}
@@ -95,8 +100,9 @@ namespace CivOne.Graphics
 			{
 				if (_unhappy == null)
 				{
-					_unhappy = Resources["SP257"].GetPart(136, 40, 8, 8);
-					Picture.ReplaceColours(_unhappy, 3, 0);
+					_unhappy = Resources["SP257"].GetPart(136, 40, 8, 8)
+						.ReplaceColours(3, 0)
+						.As<Picture>();
 				}
 				return _unhappy;
 			}
@@ -109,8 +115,9 @@ namespace CivOne.Graphics
 			{
 				if (_luxuries == null)
 				{
-					_luxuries = Resources["SP257"].GetPart(144, 40, 8, 8);
-					Picture.ReplaceColours(_luxuries, 3, 0);
+					_luxuries = Resources["SP257"].GetPart(144, 40, 8, 8)
+						.ReplaceColours(3, 0)
+						.As<Picture>();
 				}
 				return _luxuries;
 			}
@@ -123,8 +130,9 @@ namespace CivOne.Graphics
 			{
 				if (_taxes == null)
 				{
-					_taxes = Resources["SP257"].GetPart(152, 32, 8, 8);
-					Picture.ReplaceColours(_taxes, 3, 0);
+					_taxes = Resources["SP257"].GetPart(152, 32, 8, 8)
+						.ReplaceColours(3, 0)
+						.As<Picture>();
 				}
 				return _taxes;
 			}
@@ -137,8 +145,9 @@ namespace CivOne.Graphics
 			{
 				if (_science == null)
 				{
-					_science = Resources["SP257"].GetPart(128, 40, 8, 8);
-					Picture.ReplaceColours(_science, 3, 0);
+					_science = Resources["SP257"].GetPart(128, 40, 8, 8)
+						.ReplaceColours(3, 0)
+						.As<Picture>();
 				}
 				return _science;
 			}
@@ -346,8 +355,8 @@ namespace CivOne.Graphics
 			{
 				resource = Free.Instance.City;
 			}
-			Picture.ReplaceColours(resource, 3, 0);
-			Picture.ReplaceColours(resource, 5, Common.ColourDark[city.Owner]);
+			resource.ReplaceColours(3, 0)
+				.ReplaceColours(5, Common.ColourDark[city.Owner]);
 			output.AddLayer(resource, 0, 0);
 			output.DrawText($"{city.Size}", (smallFont ? 1 : 0), 5, 9, 5, TextAlign.Center);
 			// output.DrawText($"{city.Size}", 9, 5);
@@ -376,7 +385,7 @@ namespace CivOne.Graphics
 					{
 						_fortify = Free.Instance.Fortify;
 					}
-					Picture.ReplaceColours(_fortify, 3, 0);
+					_fortify.ReplaceColours(3, 0);
 				}
 				return _fortify;
 			}
@@ -437,8 +446,9 @@ namespace CivOne.Graphics
 			{
 				if (_fortress == null)
 				{
-					_fortress = Resources["SP257"].GetPart(224, 112, 16, 16);
-					Picture.ReplaceColours(_fortress, 3, 0);
+					_fortress = Resources["SP257"].GetPart(224, 112, 16, 16)
+						.ReplaceColours(3, 0)
+						.As<Picture>();
 				}
 				return _fortress;
 			}

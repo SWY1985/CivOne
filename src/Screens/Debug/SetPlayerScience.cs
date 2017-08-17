@@ -108,8 +108,9 @@ namespace CivOne.Screens.Debug
 				.Tile(Patterns.PanelGrey)
 				.DrawRectangle3D()
 				.As<Picture>();
-			Picture menuBackground = menuGfx.GetPart(2, 11, ww - 4, hh - 11);
-			Picture.ReplaceColours(menuBackground, new byte[] { 7, 22 }, new byte[] { 11, 3 });
+			Picture menuBackground = menuGfx.GetPart(2, 11, ww - 4, hh - 11)
+				.ReplaceColours(new byte[] { 7, 22 }, new byte[] { 11, 3 })
+				.As<Picture>();
 
 			this.FillRectangle(xx - 1, yy - 1, ww + 2, hh + 2, 5)
 				.AddLayer(menuGfx, xx, yy)

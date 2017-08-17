@@ -202,6 +202,15 @@ namespace CivOne.Graphics
 
 		public static Bytemap Crop(this IBitmap bitmap, int left, int top, int width, int height) => bitmap.Bitmap[left, top, width, height];
 		
+		public static IBitmap ReplaceColours(this IBitmap bitmap, byte colourFrom, byte colourTo) => ColourReplace(bitmap, colourFrom, colourTo, 0, 0, bitmap.Bitmap.Width, bitmap.Bitmap.Height);
+		public static IBitmap ReplaceColours(this IBitmap bitmap, byte[] coloursFrom, byte[] coloursTo)
+		{
+			for (int i = 0; i < coloursFrom.Length && i < coloursTo.Length; i++)
+			{
+				bitmap.ColourReplace(coloursFrom[i], coloursTo[i], 0, 0, bitmap.Bitmap.Width, bitmap.Bitmap.Height);
+			}
+			return bitmap;
+		}
 		public static IBitmap ColourReplace(this IBitmap bitmap, byte colourFrom, byte colourTo, int x, int y, int width, int height)
 		{
 			for (int yy = y; yy < y + height; yy++)
@@ -219,19 +228,7 @@ namespace CivOne.Graphics
 			return bitmap;
 		}
 
-		// Palette functions
-		public static IBitmap Cycle(this IBitmap bitmap, int colour, ref Colour[] colours)
-		{
-			Colour reserve = bitmap.Palette[colour];
-			bitmap.Palette[colour] = colours[0];
-			for (int i = 0; i < colours.Length - 1; i++)
-				colours[i] = colours[i + 1];
-			colours[colours.Length - 1] = reserve;
-			for (int i = 0; i < colours.Length && i < bitmap.Palette.Length; i++)
-				bitmap.Palette[i] = colours[i];
-			return bitmap;
-		}
-		
+		// Palette functions		
 		public static IBitmap Cycle(this IBitmap bitmap, int start, int end)
 		{
 			Colour reserve;

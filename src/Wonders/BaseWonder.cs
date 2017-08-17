@@ -89,8 +89,9 @@ namespace CivOne.Wonders
 		
 		protected void SetSmallIcon(int col, int row)
 		{
-			Picture icon = Resources.Instance.LoadPIC((Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? "SP299" : "SPRITES")).GetPart(160 + (19 * col), 50 + (10 * row), 20, 10);
-			Picture.ReplaceColours(icon, 0, 5);
+			Picture icon = Resources.Instance.LoadPIC((Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? "SP299" : "SPRITES")).GetPart(160 + (19 * col), 50 + (10 * row), 20, 10)
+				.ReplaceColours(0, 5)
+				.As<Picture>();
 			SmallIcon = new Picture(20, 10)
 				.Clear(5)
 				.AddLayer(icon)

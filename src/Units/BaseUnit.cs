@@ -654,8 +654,9 @@ namespace CivOne.Units
 		{
 			if (_iconCache[(int)Type] == null)
 			{
-				Picture icon = Resources.Instance.LoadPIC(string.Format("ICONPG{0}", page), true).GetPart(col * 160, row * 62, 160, 60);
-				Picture.ReplaceColours(icon, (byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
+				Picture icon = Resources.Instance.LoadPIC(string.Format("ICONPG{0}", page), true).GetPart(col * 160, row * 62, 160, 60)
+					.ReplaceColours((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0)
+					.As<Picture>();
 				_iconCache[(int)Type] = new Picture(icon);
 			}
 			Icon = _iconCache[(int)Type];
@@ -677,9 +678,9 @@ namespace CivOne.Units
 			{
 				icon = Free.Instance.GetUnit(Type);
 			}
-			if (Common.ColourLight[colour] == 15) Picture.ReplaceColours(icon, new byte[] { 15, 10, 2 }, new byte[] { 11, Common.ColourLight[colour], Common.ColourDark[colour] });
-			else if (Common.ColourDark[colour] == 8) Picture.ReplaceColours(icon, new byte[] { 7, 10, 2 }, new byte[] { 3, Common.ColourLight[colour], Common.ColourDark[colour] });
-			else Picture.ReplaceColours(icon, new byte[] { 10, 2 }, new byte[] { Common.ColourLight[colour], Common.ColourDark[colour] });
+			if (Common.ColourLight[colour] == 15) icon.ReplaceColours(new byte[] { 15, 10, 2 }, new byte[] { 11, Common.ColourLight[colour], Common.ColourDark[colour] });
+			else if (Common.ColourDark[colour] == 8) icon.ReplaceColours(new byte[] { 7, 10, 2 }, new byte[] { 3, Common.ColourLight[colour], Common.ColourDark[colour] });
+			else icon.ReplaceColours(new byte[] { 10, 2 }, new byte[] { Common.ColourLight[colour], Common.ColourDark[colour] });
 			
 			icon.FillRectangle(0, 0, 16, 1, 0)
 				.FillRectangle(0, 1, 1, 15, 0);
@@ -691,7 +692,7 @@ namespace CivOne.Units
 
 			if (Sentry)
 			{
-				Picture.ReplaceColours(icon, new byte[] { 5, 8, }, new byte[] { 7, 7 });
+				icon.ReplaceColours(new byte[] { 5, 8, }, new byte[] { 7, 7 });
 			}
 			else if (FortifyActive)
 			{

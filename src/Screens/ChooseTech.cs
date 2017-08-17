@@ -42,8 +42,9 @@ namespace CivOne.Screens
 			{
 				_update = false;
 
-				Picture background = _menuGfx.GetPart(44, 35, 156, _menuHeight);
-				Picture.ReplaceColours(background, new byte[] { 7, 22 }, new byte[] { 11, 3 });
+				Picture background = _menuGfx.GetPart(44, 35, 156, _menuHeight)
+					.ReplaceColours(new byte[] { 7, 22 }, new byte[] { 11, 3 })
+					.As<Picture>();
 
 				Menu<IAdvance> menu = new Menu<IAdvance>("ChooseTech", Palette, background)
 				{

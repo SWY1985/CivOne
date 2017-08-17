@@ -40,21 +40,6 @@ namespace CivOne.Graphics
 		}
 		
 		public Bytemap Bitmap => _bitmap;
-		
-		public static void ReplaceColours(Picture image, byte colourFrom, byte colourTo)
-		{
-			ReplaceColours(image, new[] { colourFrom }, new[] { colourTo });
-		}
-		public static void ReplaceColours(Picture image, byte[] coloursFrom, byte[] coloursTo)
-		{
-			for (int yy = 0; yy < image.Height; yy++)
-			for (int xx = 0; xx < image.Width; xx++)
-			for (int j = 0; j < coloursFrom.Length && j < coloursTo.Length; j++)
-			{
-				if (image[xx, yy] != coloursFrom[j]) continue;
-				image[xx, yy] = coloursTo[j];
-			}
-		}
 
 		public Picture GetPart(int left, int top, int width, int height) => new Picture(_bitmap[left, top, width, height], Palette);
 		

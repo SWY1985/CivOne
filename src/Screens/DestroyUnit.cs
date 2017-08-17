@@ -232,8 +232,9 @@ namespace CivOne.Screens
 					_destroySprites = new Picture[8];
 					for (int i = 0; i < 8; i++)
 					{
-						_destroySprites[i] = Resources["SP257"].GetPart(16 * i, 96, 16, 16);
-						Picture.ReplaceColours(_destroySprites[i], 9, 0);
+						_destroySprites[i] = Resources["SP257"].GetPart(16 * i, 96, 16, 16)
+							.ReplaceColours(9, 0)
+							.As<Picture>();
 					}
 					break;
 				case DestroyAnimation.Noise:
