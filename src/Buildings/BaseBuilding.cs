@@ -80,13 +80,13 @@ namespace CivOne.Buildings
 				if (grassTile)
 				{
 					Picture grass = Resources.Instance.LoadPIC("CITYPIX2").GetPart(250, 0, 52, 50)
-						.ReplaceColours(1, 0)
+						.ColourReplace(1, 0)
 						.As<Picture>();
 					Icon.AddLayer(grass);
 				}
 				
 				Picture icon = Resources.Instance.LoadPIC("CITYPIX2").GetPart(col * 50, row * 50, 52, 50)
-					.ReplaceColours(1, 0)
+					.ColourReplace(1, 0)
 					.As<Picture>();
 				Icon.AddLayer(icon);
 				Icon.FillRectangle(50, 0, 2, 50, 0);
@@ -101,7 +101,7 @@ namespace CivOne.Buildings
 		{
 			using (Picture icon = Resources.Instance.LoadPIC((Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? "SP299" : "SPRITES")).GetPart(160 + (19 * col), 50 + (10 * row), 20, 10))
 			{
-				icon.ReplaceColours(0, 5);
+				icon.ColourReplace(0, 5);
 				SmallIcon = new Picture(20, 10)
 					.FillRectangle(0, 0, 20, 10, 5)
 					.AddLayer(icon)

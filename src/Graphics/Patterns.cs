@@ -48,7 +48,7 @@ namespace CivOne.Graphics
 					else
 					{
 						_panelBlue = Resources["SP299"].GetPart(288, 120, 32, 16)
-							.ReplaceColours(new byte[] { 7, 22 }, new byte[] { 57, 9 })
+							.ColourReplace(new byte[] { 7, 22 }, new byte[] { 57, 9 })
 							.As<Picture>();
 					}
 				}

@@ -44,7 +44,7 @@ namespace CivOne.Screens.Dialogs
 		protected Picture Selection(int left, int top, int width, int height)
 		{
 			return DialogBox.GetPart(left, top, width, height)
-				.ReplaceColours(new byte[] { 7, 22 }, new byte[] { 11, 3 })
+				.ColourReplace(new byte[] { 7, 22 }, new byte[] { 11, 3 })
 				.As<Picture>();
 		}
 

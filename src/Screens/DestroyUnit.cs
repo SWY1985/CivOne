@@ -233,7 +233,7 @@ namespace CivOne.Screens
 					for (int i = 0; i < 8; i++)
 					{
 						_destroySprites[i] = Resources["SP257"].GetPart(16 * i, 96, 16, 16)
-							.ReplaceColours(9, 0)
+							.ColourReplace(9, 0)
 							.As<Picture>();
 					}
 					break;

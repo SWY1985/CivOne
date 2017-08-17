@@ -61,7 +61,7 @@ namespace CivOne.Screens
 
 			_background = Resources.Instance.LoadPIC($"BACK{govId}{(modern ? "M" : "A")}");
 
-			_background.ReplaceColours(0, 5);
+			_background.ColourReplace(0, 5);
 			Picture portrait = _player.Civilization.Leader.GetPortrait();
 			
 			using (Palette palette = _background.Palette.Copy())

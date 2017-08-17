@@ -99,7 +99,7 @@ namespace CivOne.Screens
 					.As<Picture>();
 
 				Picture menuBackground = menuGfx.GetPart(2, 11, 128, 80)
-					.ReplaceColours(new byte[] { 7, 22 }, new byte[] { 11, 3 })
+					.ColourReplace(new byte[] { 7, 22 }, new byte[] { 11, 3 })
 					.As<Picture>();
 
 				this.AddLayer(menuGfx, 25, 17);

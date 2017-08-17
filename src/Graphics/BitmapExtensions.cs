@@ -202,8 +202,8 @@ namespace CivOne.Graphics
 
 		public static Bytemap Crop(this IBitmap bitmap, int left, int top, int width, int height) => bitmap.Bitmap[left, top, width, height];
 		
-		public static IBitmap ReplaceColours(this IBitmap bitmap, byte colourFrom, byte colourTo) => ColourReplace(bitmap, colourFrom, colourTo, 0, 0, bitmap.Bitmap.Width, bitmap.Bitmap.Height);
-		public static IBitmap ReplaceColours(this IBitmap bitmap, byte[] coloursFrom, byte[] coloursTo)
+		public static IBitmap ColourReplace(this IBitmap bitmap, byte colourFrom, byte colourTo) => ColourReplace(bitmap, colourFrom, colourTo, 0, 0, bitmap.Bitmap.Width, bitmap.Bitmap.Height);
+		public static IBitmap ColourReplace(this IBitmap bitmap, byte[] coloursFrom, byte[] coloursTo)
 		{
 			for (int i = 0; i < coloursFrom.Length && i < coloursTo.Length; i++)
 			{
