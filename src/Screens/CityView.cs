@@ -26,6 +26,8 @@ namespace CivOne.Screens
 		private const float FADE_STEP = 0.1f;
 		private const int NOISE_COUNT = 40;
 
+		private readonly TextSettings _dialogText;
+
 		private readonly City _city;
 		private readonly IProduction _production;
 		private readonly Picture _background;
@@ -66,26 +68,26 @@ namespace CivOne.Screens
 			Palette palette = _background.Palette;
 			for (int i = 1; i < 256; i++)
 				palette[i] = FadeColour(new Colour(0, 0, 0), _background.OriginalColours[i]);
-			_canvas.SetPalette(palette);
+			this.SetPalette(palette);
 		}
 		
 		protected override bool HasUpdate(uint gameTick)
 		{
 			if (gameTick % 4 == 0)
 			{
-				_canvas.Cycle(64, 79);
+				this.Cycle(64, 79);
 				_update = true;
 			}
 
 			if (_captured)
 			{
-				AddLayer(_background);
+				this.AddLayer(_background);
 				int frame = (_x % 30) / 3;
 				for (int i = 7; i >= 0; i--)
 				{
 					int xx = (_x - 65) - (48 * i);
 					if (xx + 78 <= 0) continue;
-					AddLayer(_invaders[frame], xx, _y);
+					this.AddLayer(_invaders[frame], xx, _y);
 				}
 				_x++;
 				return true;
@@ -96,8 +98,8 @@ namespace CivOne.Screens
 				if (_noiseCounter > 0)
 				{
 					_overlay.ApplyNoise(_noiseMap, _noiseCounter--);
-					AddLayer(_background);
-					AddLayer(_overlay);
+					this.AddLayer(_background)
+						.AddLayer(_overlay);
 					return true;
 				}
 				return false;
@@ -115,14 +117,14 @@ namespace CivOne.Screens
 			}
 			if (_founded && (gameTick % 3 == 0))
 			{
-				AddLayer(_background);
-				_canvas.DrawText($"{_city.Name} founded: {Game.GameYear}.", 5, 5, 161, 3, TextAlign.Center);
+				this.AddLayer(_background)
+					.DrawText($"{_city.Name} founded: {Game.GameYear}.", 5, 5, 161, 3, TextAlign.Center);
 
 				int frame = (_x % 4);
-				AddLayer(Resources["SETTLERS"].GetPart(1, 1 + (16 * frame), 48, 15), _x, 120);
-				AddLayer(Resources["SETTLERS"].GetPart(1, 1 + (16 * ((frame + 2) % 4)), 48, 15), _x + 27, 125);
-				AddLayer(Resources["SETTLERS"].GetPart(1, 1 + (16 * ((frame + 3) % 4)), 48, 15), _x + 14, 131);
-				AddLayer(Resources["SETTLERS"].GetPart(1, 1 + (16 * ((frame + 1) % 4)), 48, 15), _x + 40, 135);
+				this.AddLayer(Resources["SETTLERS"][1, 1 + (16 * frame), 48, 15], _x, 120)
+					.AddLayer(Resources["SETTLERS"][1, 1 + (16 * ((frame + 2) % 4)), 48, 15], _x + 27, 125)
+					.AddLayer(Resources["SETTLERS"][1, 1 + (16 * ((frame + 3) % 4)), 48, 15], _x + 14, 131)
+					.AddLayer(Resources["SETTLERS"][1, 1 + (16 * ((frame + 1) % 4)), 48, 15], _x + 40, 135);
 
 				_x++;
 				return true;
@@ -168,36 +170,36 @@ namespace CivOne.Screens
 			if (picture == null) picture = _background;
 			if (typeof(T) == typeof(Pyramids))
 			{
-				picture.AddLayer(Resources["WONDERS2"].GetPart(131, 54, 187, 29), 133, 0);
-				picture.AddLayer(Resources["WONDERS2"].GetPart(318, 54, 1, 29), 0, 0);
+				picture.AddLayer(Resources["WONDERS2"][131, 54, 187, 29], 133, 0);
+				picture.AddLayer(Resources["WONDERS2"][318, 54, 1, 29], 0, 0);
 			}
 			if (typeof(T) == typeof(Colossus))
 			{
-				picture.AddLayer(Resources["WONDERS2"].GetPart(88, 97, 124, 39), 170, 0);
+				picture.AddLayer(Resources["WONDERS2"][88, 97, 124, 39], 170, 0);
 			}
 			if (typeof(T) == typeof(GreatWall))
 			{
-				picture.AddLayer(Resources["WONDERS2"].GetPart(1, 38, 66, 81), 0, 0);
+				picture.AddLayer(Resources["WONDERS2"][1, 38, 66, 81], 0, 0);
 			}
 			if (typeof(T) == typeof(HooverDam))
 			{
-				picture.AddLayer(Resources["WONDERS2"].GetPart(1, 14, 147, 20), 1, 9);
+				picture.AddLayer(Resources["WONDERS2"][1, 14, 147, 20], 1, 9);
 			}
 			if (typeof(T) == typeof(Lighthouse))
 			{
-				picture.AddLayer(Resources["WONDERS"].GetPart(229, 116, 40, 83), x, y);
+				picture.AddLayer(Resources["WONDERS"][229, 116, 40, 83], x, y);
 			}
 			if (typeof(T) == typeof(HangingGardens))
 			{
-				picture.AddLayer(Resources["WONDERS"].GetPart(159, 149, 69, 50), x, y);
+				picture.AddLayer(Resources["WONDERS"][159, 149, 69, 50], x, y);
 			}
 			if (typeof(T) == typeof(Oracle))
 			{
-				picture.AddLayer(Resources["WONDERS"].GetPart(164, 97, 64, 51), x, y);
+				picture.AddLayer(Resources["WONDERS"][164, 97, 64, 51], x, y);
 			}
 			if (typeof(T) == typeof(DarwinsVoyage))
 			{
-				picture.AddLayer(Resources["WONDERS"].GetPart(40, 69, 62, 47), x, y);
+				picture.AddLayer(Resources["WONDERS"][40, 69, 62, 47], x, y);
 			}
 		}
 
@@ -218,13 +220,13 @@ namespace CivOne.Screens
 			if (picture == null) picture = _background;
 			if (typeof(T) == typeof(Aqueduct))
 			{
-				picture.AddLayer(Resources[_buildingFile].GetPart(51, 151, 49, 49), 0, 72);
+				picture.AddLayer(Resources[_buildingFile][51, 151, 49, 49], 0, 72);
 			}
 
 			if (typeof(T) == typeof(CityWalls))
 			{
-				Picture wall = Resources[_buildingFile].GetPart(251, 101, 43, 49);
-				Picture door = Resources[_buildingFile].GetPart(51, 101, 49, 49);
+				Picture wall = Resources[_buildingFile][251, 101, 43, 49];
+				Picture door = Resources[_buildingFile][51, 101, 49, 49];
 
 				for (int xx = 0; xx < 142; xx += 43)
 					picture.AddLayer(wall, xx, 108);
@@ -234,35 +236,35 @@ namespace CivOne.Screens
 			}
 
 			if (typeof(T) == typeof(Barracks))
-				picture.AddLayer(Resources[_buildingFile].GetPart(1, 1, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile][1, 1, 49, 49], x, y);
 			if (typeof(T) == typeof(Granary))
-				picture.AddLayer(Resources[_buildingFile].GetPart(1, 51, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile][1, 51, 49, 49], x, y);
 			if (typeof(T) == typeof(Temple))
-				picture.AddLayer(Resources[_buildingFile].GetPart(1, 101, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile][1, 101, 49, 49], x, y);
 			if (typeof(T) == typeof(MarketPlace))
-				picture.AddLayer(Resources[_buildingFile].GetPart(1, 151, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile][1, 151, 49, 49], x, y);
 			if (typeof(T) == typeof(Library))
-				picture.AddLayer(Resources[_buildingFile].GetPart(51, 1, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile][51, 1, 49, 49], x, y);
 			if (typeof(T) == typeof(Courthouse))
-				picture.AddLayer(Resources[_buildingFile].GetPart(51, 51, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile][51, 51, 49, 49], x, y);
 			if (typeof(T) == typeof(Bank))
-				picture.AddLayer(Resources[_buildingFile].GetPart(101, 1, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile][101, 1, 49, 49], x, y);
 			if (typeof(T) == typeof(Cathedral))
-				picture.AddLayer(Resources[_buildingFile].GetPart(101, 51, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile][101, 51, 49, 49], x, y);
 			if (typeof(T) == typeof(UniversityBuilding))
-				picture.AddLayer(Resources[_buildingFile].GetPart(101, 101, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile][101, 101, 49, 49], x, y);
 			if (typeof(T) == typeof(Colosseum))
-				picture.AddLayer(Resources[_buildingFile].GetPart(151, 1, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile][151, 1, 49, 49], x, y);
 			if (typeof(T) == typeof(Factory))
-				picture.AddLayer(Resources[_buildingFile].GetPart(151, 51, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile][151, 51, 49, 49], x, y);
 			if (typeof(T) == typeof(MfgPlant))
-				picture.AddLayer(Resources[_buildingFile].GetPart(151, 101, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile][151, 101, 49, 49], x, y);
 			if (typeof(T) == typeof(SdiDefense))
-				picture.AddLayer(Resources[_buildingFile].GetPart(151, 151, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile][151, 151, 49, 49], x, y);
 			if (typeof(T) == typeof(RecyclingCenter))
-				picture.AddLayer(Resources[_buildingFile].GetPart(201, 1, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile][201, 1, 49, 49], x, y);
 			if (typeof(T) == typeof(NuclearPlant))
-				picture.AddLayer(Resources[_buildingFile].GetPart(201, 151, 49, 49), x, y);
+				picture.AddLayer(Resources[_buildingFile][201, 151, 49, 49], x, y);
 		}
 
 		private void DrawBuildingOverlay<T>(int x, int y, int offset = -18) where T : IBuilding
@@ -481,22 +483,22 @@ namespace CivOne.Screens
 							{
 								if (Common.Random.Next(10) > 5)
 								{
-									building = Resources["CITYPIX1"].GetPart(1 + (32 * 8), (Common.Random.Next(10) > 5) ? 1 : 33, 31, 31);
+									building = Resources["CITYPIX1"][1 + (32 * 8), (Common.Random.Next(10) > 5) ? 1 : 33, 31, 31];
 								}
 								else
 								{
-									building = Resources["CITYPIX1"].GetPart(1 + (32 * 9), (Common.Random.Next(10) > 5) ? 1 : 33, 31, 31);
+									building = Resources["CITYPIX1"][1 + (32 * 9), (Common.Random.Next(10) > 5) ? 1 : 33, 31, 31];
 								}
 							}
 							else
 							{
 								if (Common.Random.Next(10) > 5)
 								{
-									building = Resources["CITYPIX1"].GetPart(1 + (32 * 6), 33, 31, 31);
+									building = Resources["CITYPIX1"][1 + (32 * 6), 33, 31, 31];
 								}
 								else
 								{
-									building = Resources["CITYPIX1"].GetPart(1 + (32 * 7), 33, 31, 31);
+									building = Resources["CITYPIX1"][1 + (32 * 7), 33, 31, 31];
 								}
 							}
 						}
@@ -506,22 +508,22 @@ namespace CivOne.Screens
 							{
 								if (Common.Random.Next(10) > 5)
 								{
-									building = Resources["CITYPIX1"].GetPart(1 + (32 * 6), 1, 31, 31);
+									building = Resources["CITYPIX1"][1 + (32 * 6), 1, 31, 31];
 								}
 								else
 								{
-									building = Resources["CITYPIX1"].GetPart(1 + (32 * 7), 1, 31, 31);
+									building = Resources["CITYPIX1"][1 + (32 * 7), 1, 31, 31];
 								}
 							}
 							else
 							{
 								if (Common.Random.Next(10) > 5)
 								{
-									building = Resources["CITYPIX1"].GetPart(1 + (32 * 4), 33, 31, 31);
+									building = Resources["CITYPIX1"][1 + (32 * 4), 33, 31, 31];
 								}
 								else
 								{
-									building = Resources["CITYPIX1"].GetPart(1 + (32 * 5), 33, 31, 31);
+									building = Resources["CITYPIX1"][1 + (32 * 5), 33, 31, 31];
 								}
 							}
 						}
@@ -531,22 +533,22 @@ namespace CivOne.Screens
 							{
 								if (Common.Random.Next(10) > 5)
 								{
-									building = Resources["CITYPIX1"].GetPart(1 + (32 * 4), 1, 31, 31);
+									building = Resources["CITYPIX1"][1 + (32 * 4), 1, 31, 31];
 								}
 								else
 								{
-									building = Resources["CITYPIX1"].GetPart(1 + (32 * 5), 1, 31, 31);
+									building = Resources["CITYPIX1"][1 + (32 * 5), 1, 31, 31];
 								}
 							}
 							else
 							{
 								if (Common.Random.Next(10) > 5)
 								{
-									building = Resources["CITYPIX1"].GetPart(1 + (32 * 2), 33, 31, 31);
+									building = Resources["CITYPIX1"][1 + (32 * 2), 33, 31, 31];
 								}
 								else
 								{
-									building = Resources["CITYPIX1"].GetPart(1 + (32 * 3), 33, 31, 31);
+									building = Resources["CITYPIX1"][1 + (32 * 3), 33, 31, 31];
 								}
 							}
 						}
@@ -558,44 +560,44 @@ namespace CivOne.Screens
 								{
 									if (Common.Random.Next((stage - 5) * 4) > centerDistance)
 									{
-										building = Resources["CITYPIX1"].GetPart(1 + (32 * 2), 33, 31, 31);
+										building = Resources["CITYPIX1"][1 + (32 * 2), 33, 31, 31];
 									}
 									else
 									{
-										building = Resources["CITYPIX1"].GetPart(1 + (32 * 2), 1, 31, 31);
+										building = Resources["CITYPIX1"][1 + (32 * 2), 1, 31, 31];
 									}
 								}
 								else
 								{
 									if (Common.Random.Next((stage - 5) * 4) > centerDistance)
 									{
-										building = Resources["CITYPIX1"].GetPart(1 + (32 * 3), 33, 31, 31);
+										building = Resources["CITYPIX1"][1 + (32 * 3), 33, 31, 31];
 									}
 									else
 									{
-										building = Resources["CITYPIX1"].GetPart(1 + (32 * 3), 1, 31, 31);
+										building = Resources["CITYPIX1"][1 + (32 * 3), 1, 31, 31];
 									}
 								}
 							}
 							else
 							{
-								building = Resources["CITYPIX1"].GetPart(1 + (32 * _houseType), 33, 31, 31);
+								building = Resources["CITYPIX1"][1 + (32 * _houseType), 33, 31, 31];
 							}
 						}
 						else
 						{
 							if (Common.Random.Next((-3 - stage)) > centerDistance)
 							{
-								building = Resources["CITYPIX1"].GetPart(1 + (32 * _houseType), 33, 31, 31);
+								building = Resources["CITYPIX1"][1 + (32 * _houseType), 33, 31, 31];
 							}
 							else
 							{
-								building = Resources["CITYPIX1"].GetPart(1 + (32 * _houseType), 1, 31, 31);
+								building = Resources["CITYPIX1"][1 + (32 * _houseType), 1, 31, 31];
 							}
 						}
 						break;
 					case CityViewMap.Tree:
-						building = Resources["CITYPIX1"].GetPart(0, 65, 24, 8);
+						building = Resources["CITYPIX1"][0, 65, 24, 8];
 						dx -= 5;
 						dy += 24;
 						break;
@@ -612,7 +614,7 @@ namespace CivOne.Screens
 						if (sx > 7) sy += 8;
 						sx = (sx % 8) * 24;
 						if (Game.GetPlayer(_city.Owner).HasAdvance<Automobile>()) sy += 16;
-						building = Resources["CITYPIX1"].GetPart(sx, sy, 24, 8);
+						building = Resources["CITYPIX1"][sx, sy, 24, 8];
 						dx -= 5;
 						dy += 24;
 						break;
@@ -695,19 +697,22 @@ namespace CivOne.Screens
 		
 		public CityView(City city, bool founded = false, bool firstView = false, IProduction production = null, bool captured = false)
 		{
+			_dialogText = TextSettings.ShadowText(15, 5);
+			_dialogText.FontId = 5;
+			
 			_city = city;
 			_production = production;
 			_background = new Picture(Resources.Instance.LoadPIC("HILL"));
 			_founded = founded;
 			_firstView = firstView;
 			
-			_canvas = new Picture(320, 200, _background.Palette);
+			Palette = _background.Palette;
 			_overlay = new Picture(_background);
 			
 			if (founded) return;
 
 			DrawBuildings();
-			AddLayer(_background);
+			this.AddLayer(_background);
 			
 			if (_captured = captured)
 			{
@@ -736,24 +741,22 @@ namespace CivOne.Screens
 				{
 					int frameX = (ii % 4);
 					int frameY = (ii - frameX) / 4;
-					_invaders[ii] = invaders.GetPart(xx + (frameX * (ww + 1)), yy + (frameY * (hh + 1)), ww, hh);
+					_invaders[ii] = invaders[xx + (frameX * (ww + 1)), yy + (frameY * (hh + 1)), ww, hh];
 				}
 				_x = 0;
 				
 				string[] lines =  new [] { $"{Game.CurrentPlayer.TribeNamePlural} capture", $"{city.Name}. 0 gold", "pieces plundered." };
-				int width = lines.Max(l => Resources.Instance.GetTextSize(5, l).Width) + 10;
-				if (width % 4 > 0) width += (4 - (width % 4));
-				Picture dialog = new Picture(width, 52);
-				dialog.Tile(Patterns.PanelGrey);
-				dialog.AddBorder(15, 8, 0, 0, width, 52);
-				dialog.DrawText(lines[0], 5, 5, 4, 5);
-				dialog.DrawText(lines[0], 5, 15, 4, 4);
-				dialog.DrawText(lines[1], 5, 5, 4, 20);
-				dialog.DrawText(lines[1], 5, 15, 4, 19);
-				dialog.DrawText(lines[2], 5, 5, 4, 35);
-				dialog.DrawText(lines[2], 5, 15, 4, 34);
+				int width = lines.Max(l => Resources.Instance.GetTextSize(5, l).Width) + 12;
+				Picture dialog = new Picture(width, 54)
+					.Tile(Patterns.PanelGrey, 1, 1)
+					.DrawRectangle()
+					.DrawRectangle3D(1, 1, width - 2, 52)
+					.DrawText(lines[0], 5, 6, _dialogText)
+					.DrawText(lines[1], 5, 21, _dialogText)
+					.DrawText(lines[2], 5, 36, _dialogText)
+					.As<Picture>();
 
-				_background.FillRectangle(5, 80, 8, width + 2, 54);
+				_background.FillRectangle(80, 8, width + 2, 54, 5);
 				_background.AddLayer(dialog, 81, 9);
 			}
 
@@ -767,29 +770,28 @@ namespace CivOne.Screens
 				}
 
 				string[] lines =  new [] { $"{_city.Name} builds", $"{(production as ICivilopedia).Name}." };
-				int width = lines.Max(l => Resources.Instance.GetTextSize(5, l).Width) + 10;
-				Picture dialog = new Picture(width, 37);
-				dialog.Tile(Patterns.PanelGrey);
-				dialog.AddBorder(15, 8, 0, 0, width, 37);
-				dialog.DrawText(lines[0], 5, 5, 4, 5);
-				dialog.DrawText(lines[0], 5, 15, 4, 4);
-				dialog.DrawText(lines[1], 5, 5, 4, 20);
-				dialog.DrawText(lines[1], 5, 15, 4, 19);
+				int width = lines.Max(l => Resources.Instance.GetTextSize(5, l).Width) + 12;
+				Picture dialog = new Picture(width, 39)
+					.Tile(Patterns.PanelGrey, 1, 1)
+					.DrawRectangle()
+					.DrawRectangle3D(1, 1, width - 2, 37)
+					.DrawText(lines[0], 5, 6, _dialogText)
+					.DrawText(lines[1], 5, 21, _dialogText)
+					.As<Picture>();
 
 				foreach (Picture picture in new[] { _background, _overlay })
 				{
-					picture.FillRectangle(5, 80, 8, width + 2, 39);
-					picture.AddLayer(dialog, 81, 9);
+					picture.AddLayer(dialog, 80, 10);
 				}
 				return;
 			}
 
 			if (captured) return;
 			
-			_canvas.DrawText(_city.Name, 5, 5, 161, 3, TextAlign.Center);
-			_canvas.DrawText(_city.Name, 5, 15, 160, 2, TextAlign.Center);
-			_canvas.DrawText(Game.GameYear, 5, 5, 161, 16, TextAlign.Center);
-			_canvas.DrawText(Game.GameYear, 5, 15, 160, 15, TextAlign.Center);
+			this.DrawText(_city.Name, 5, 5, 161, 3, TextAlign.Center)
+				.DrawText(_city.Name, 5, 15, 160, 2, TextAlign.Center)
+				.DrawText(Game.GameYear, 5, 5, 161, 16, TextAlign.Center)
+				.DrawText(Game.GameYear, 5, 15, 160, 15, TextAlign.Center);
 			
 			if (firstView)
 			{
@@ -809,7 +811,7 @@ namespace CivOne.Screens
 				int sx = ((int)(citizen) * 35) + 1, sy = (modern ? 1 : 52);
 				int sw = 34, sh = (modern ? 50 : 52);
 				int dx = (int)(citizen) + offsetX + (11 * i++), dy = 140;
-				AddLayer(Resources["POP"].GetPart(sx, sy, sw, sh), dx, dy);
+				this.AddLayer(Resources["POP"][sx, sy, sw, sh], dx, dy);
 			}
 		}
 	}

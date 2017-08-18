@@ -40,8 +40,8 @@ namespace CivOne.Screens.Reports
 
 				Player owner = Game.GetPlayer(city.Owner);
 
-				_canvas.FillRectangle(colour, xx, yy, ww, hh);
-				_canvas.FillRectangle(3, xx + 1, yy + 1, ww - 2, hh - 2);
+				this.FillRectangle(xx, yy, ww, hh, colour)
+					.FillRectangle(xx + 1, yy + 1, ww - 2, hh - 2, 3);
 				
 				int dx = 42;
 				int group = -1;
@@ -54,17 +54,17 @@ namespace CivOne.Screens.Reports
 						dx += 2;
 						if (group == 3) dx += 4;
 					}
-					AddLayer(Icons.Citizen(citizens[j]), dx, yy + 10);
+					this.AddLayer(Icons.Citizen(citizens[j]), dx, yy + 10);
 				}
 
 				dx += 16;
 				foreach (IWonder wonder in city.Wonders)
 				{
-					AddLayer(wonder.SmallIcon, dx, yy + 11);
+					this.AddLayer(wonder.SmallIcon, dx, yy + 11);
 					dx += 19;
 				}
 
-				_canvas.DrawText($"{i + 1}. {city.Name} ({owner.Civilization.Name})", 0, 15, 160, yy + 3, TextAlign.Center);
+				this.DrawText($"{i + 1}. {city.Name} ({owner.Civilization.Name})", 0, 15, 160, yy + 3, TextAlign.Center);
 			}
 
 			_update = false;
@@ -85,7 +85,7 @@ namespace CivOne.Screens.Reports
 		
 		public TopCities()
 		{
-			_canvas = new Picture(320, 200, Common.DefaultPalette);
+			Palette = Common.DefaultPalette;
 
 			// I'm not sure about the order of top 5 cities, but this is pretty close
 			_cities = Game.GetCities()
@@ -98,9 +98,9 @@ namespace CivOne.Screens.Reports
 							.Take(5)
 							.ToArray();
 			
-			_canvas.FillRectangle(3, 0, 0, 320, 200);
-			_canvas.DrawText("The Top Five Cities in the World", 0, 5, 80, 13);
-			_canvas.DrawText("The Top Five Cities in the World", 0, 15, 80, 12);
+			this.Clear(3)
+				.DrawText("The Top Five Cities in the World", 0, 5, 80, 13)
+				.DrawText("The Top Five Cities in the World", 0, 15, 80, 12);
 		}
 	}
 }

@@ -14,26 +14,12 @@ using CivOne.Graphics;
 
 namespace CivOne.Wonders
 {
-	internal abstract class BaseWonder : IWonder
+	internal abstract class BaseWonder : BaseInstance, IWonder
 	{
-		private static void Log(string text, params object[] parameters) => RuntimeHandler.Runtime.Log(text, parameters);
-
 		public string Name { get; protected set; }
-		public virtual Picture Icon
-		{
-			get
-			{
-				return null;
-			}
-		}
-		public virtual Picture SmallIcon { get; protected set; }
-		public byte PageCount
-		{
-			get
-			{
-				return 2;
-			}
-		}
+		public virtual IBitmap Icon => null;
+		public virtual IBitmap SmallIcon { get; protected set; }
+		public byte PageCount => 2;
 		public Picture DrawPage(byte pageNumber)
 		{
 			string[] text = new string[0];
@@ -78,24 +64,14 @@ namespace CivOne.Wonders
 		public IAdvance RequiredTech { get; protected set; }
 		public IAdvance ObsoleteTech { get; protected set; }
 		public short BuyPrice { get; private set; }
-		public byte ProductionId
-		{
-			get
-			{
-				return (byte)(Math.Abs((int)Type - 232));
-			}
-		}
+		public byte ProductionId => (byte)(Math.Abs((int)Type - 232));
 		public byte Price { get; protected set; }
 		
 		protected void SetSmallIcon(int col, int row)
 		{
-			Picture icon = Resources.Instance.LoadPIC((Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? "SP299" : "SPRITES")).GetPart(160 + (19 * col), 50 + (10 * row), 20, 10);
-			Picture.ReplaceColours(icon, 0, 5);
-			SmallIcon = new Picture(20, 10);
-			SmallIcon.FillRectangle(5, 0, 0, 20, 10);
-			SmallIcon.AddLayer(icon);
-			SmallIcon.FillRectangle(0, 0, 0, 1, 10);
-			SmallIcon.FillRectangle(0, 19, 0, 1, 10);
+			SmallIcon = Resources[GFX256 ? "SP299" : "SPRITES"][160 + (19 * col), 50 + (10 * row), 20, 10]
+				.FillRectangle(0, 0, 1, 10, 0)
+				.FillRectangle(19, 0, 1, 10, 0);
 		}
 		
 		public byte Id

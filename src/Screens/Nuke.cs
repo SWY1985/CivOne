@@ -79,10 +79,10 @@ namespace CivOne.Screens
 			
 			int step = 28 - _frameCounter--;
 
-			AddLayer(_gameMap, cx, cy);
+			this.AddLayer(_gameMap, cx, cy);
 			if (step >= 0 && step < 28)
 			{
-				AddLayer(_sprites[step], xx, yy);
+				this.AddLayer(_sprites[step], xx, yy);
 			}
 
 			return true;
@@ -109,7 +109,7 @@ namespace CivOne.Screens
 				{
 					if (!Settings.RevealWorld && !t.Visible)
 					{
-						output.FillRectangle(5, t.X * 16, t.Y * 16, 16, 16);
+						output.FillRectangle(t.X * 16, t.Y * 16, 16, 16, 5);
 						continue;
 					}
 					output.AddLayer(t.Image, t.Position);
@@ -171,20 +171,21 @@ namespace CivOne.Screens
 			_dx = x - 14;
 			_dy = y - 14;
 			
-			Picture nukePic = Resources.Instance.LoadPIC("NUKE1");
-			Palette palette = Common.DefaultPalette;
-			for (int i = 192; i < 256; i++)
+			using (Palette palette = Common.DefaultPalette)
 			{
-				palette[i] = nukePic.Palette[i];
+				for (int i = 192; i < 256; i++)
+				{
+					palette[i] = Resources["NUKE1"].Palette[i];
+				}
+				Palette = palette;
 			}
-			_canvas = new Picture(320, 200, palette);
 			_gameMap = GameMap;
 
 			_sprites = new Picture[28];
 			for (int yy = 0; yy < 4; yy++)
 			for (int xx = 0; xx < 7; xx++)
 			{
-				_sprites[(yy * 7) + xx] = Resources["NUKE1"].GetPart(1 + (45 * xx), 1 + (45 * yy), 44, 44);
+				_sprites[(yy * 7) + xx] = Resources["NUKE1"][1 + (45 * xx), 1 + (45 * yy), 44, 44];
 			}
 		}
 	}

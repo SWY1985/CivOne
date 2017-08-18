@@ -114,52 +114,6 @@ namespace CivOne.Screens
 				}
 
 				picture.AddLayer(Resources.Instance.GetPalace(palace.GetPalaceStyle(i), part, palace.GetPalaceLevel(i)), xx, 37);
-
-				// int style = palace.GetPalaceStyle(i);
-				// int level = palace.GetPalaceLevel(i);
-				// if (level == 0 && i < 2 || i > 4) continue;
-				// if (level == 0) style = 0;
-
-				// int offsetX = 0, offsetY = 0;
-				// if (style == 2) offsetX = 160;
-				// if (style == 3) offsetY = 100;
-
-				// int xx = 66 + (i * 24);
-				// if (i > 3) xx += 24;
-				
-				
-				// for (int j = 0; j < 2; j++)
-				// {
-				// 	if (level == 0 && ((i == 2 && j == 0) || (i == 4 && j == 1))) continue;
-				// 	if (i == 0 && j == 0) continue;
-				// 	if (i == 6 && j == 1) continue;
-
-				// 	int xx = -7 + (((i * 2) + j) * 24);
-
-				// 	if (level > 0)
-				// 	{
-				// 		if (i == 0 || (i < 3 && j == 0 && palace.GetPalaceLevel(i - 1) == 0))
-				// 		{
-				// 			// 89, 39
-				// 			picture.AddLayer(Resources.Instance[$"CASTLE{level}"].GetPart(103 + offsetX, 1 + offsetY, 28, 99), xx, 39);
-				// 			continue;
-				// 		}
-
-				// 		if (i == 6 || (i > 3 && j == 1 && palace.GetPalaceLevel(i + 1) == 0))
-				// 		{
-				// 			picture.AddLayer(Resources.Instance[$"CASTLE{level}"].GetPart(132 + offsetX, 1 + offsetY, 28, 99), xx, 39);
-				// 			continue;
-				// 		}
-				// 	}
-
-				// 	if ((j == 0 && (i == 1 || i == 4)) ||
-				// 		(j == 1 && level > 0 && (i < 3 && palace.GetPalaceLevel(i - 1) == 0)))
-				// 	{
-				// 		picture.AddLayer(Resources.Instance[$"CASTLE{level}"].GetPart(53 + offsetX, 1 + offsetY, 24, 99), xx, 37);
-				// 		continue;
-				// 	}
-				// 	picture.AddLayer(Resources.Instance[$"CASTLE{level}"].GetPart(78 + offsetX, 1 + offsetY, 24, 99), xx, 37);
-				// }
 			}
 
 			// Draw palace middle
@@ -184,49 +138,51 @@ namespace CivOne.Screens
 		{
 			if (_update)
 			{
-				AddLayer(DrawPalace());
+				this.AddLayer(DrawPalace());
 
 				switch (_currentStage)
 				{
 					case Stage.Message:
 						{
-							Picture message = new Picture(269, 39);
-							message.Tile(Patterns.PanelGrey);
-							message.AddBorder(15, 8, 0, 0, 269, 39);
+							Picture message = new Picture(269, 39)
+								.Tile(Patterns.PanelGrey)
+								.DrawRectangle3D()
+								.As<Picture>();
 							int yy = 4;
 							foreach (string line in TextFile.Instance.GetGameText("KING/PALACE"))
 							{
 								message.DrawText(line.Trim('^'), 0, 15, 4, yy);
 								yy += 8;
 							}
-							_canvas.FillRectangle(5, 20, 16, 271, 41);
-							AddLayer(message, 21, 17);
+							this.FillRectangle(20, 16, 271, 41, 5)
+								.AddLayer(message, 21, 17);
 						}
 						break;
 					case Stage.SelectPart:
 						{
-							Picture message = new Picture(180, 15);
-							message.Tile(Patterns.PanelGrey);
-							message.AddBorder(15, 8, 0, 0, 180, 15);
-							message.DrawText("Which section shall we improve?", 0, 15, 4, 4);
-							_canvas.FillRectangle(5, 40, 16, 182, 17);
-							AddLayer(message, 41, 17);
+							Picture message = new Picture(180, 15)
+								.Tile(Patterns.PanelGrey)
+								.DrawRectangle3D()
+								.DrawText("Which section shall we improve?", 0, 15, 4, 4)
+								.As<Picture>();
+							this.FillRectangle(40, 16, 182, 17, 5)
+								.AddLayer(message, 41, 17);
 
 							for (int i = 0; i < 7; i++)
 							{
 								if (Human.Palace.GetPalaceLevel(i) >= 4) continue;
 
 								int xx = 12 + (48 * i);
-								_canvas.DrawText($"{i + 1}", 0, 5, xx, 145);
-								_canvas.DrawText($"{i + 1}", 0, 14, xx, 144);
+								this.DrawText($"{i + 1}", 0, 5, xx, 145)
+									.DrawText($"{i + 1}", 0, 14, xx, 144);
 							}
 							for (int i = 0; i < 3; i++)
 							{
 								if (Human.Palace.GetGardenLevel(i) >= 3) continue;
 
 								int xx = 40 + (120 * i);
-								_canvas.DrawText($"{(char)('A' + i)}", 0, 5, xx, 161);
-								_canvas.DrawText($"{(char)('A' + i)}", 0, 14, xx, 160);
+								this.DrawText($"{(char)('A' + i)}", 0, 5, xx, 161)
+									.DrawText($"{(char)('A' + i)}", 0, 14, xx, 160);
 							}
 						}
 						break;
@@ -234,8 +190,8 @@ namespace CivOne.Screens
 						if (_noiseCounter > 0)
 						{
 							_palaceMorph.ApplyNoise(_noiseMap, _noiseCounter--);
-							AddLayer(DrawPalace());
-							AddLayer(_palaceMorph);
+							this.AddLayer(DrawPalace())
+								.AddLayer(_palaceMorph);
 							return true;
 						}
 						_currentStage = Stage.View;
@@ -346,8 +302,7 @@ namespace CivOne.Screens
 			}
 			
 			_background = Resources.Instance.LoadPIC("CBACK");
-			
-			_canvas = new Picture(320, 200, _background.Palette);
+			Palette = _background.Palette;
 			if (build) _currentStage = Stage.Message;
 		}
 	}

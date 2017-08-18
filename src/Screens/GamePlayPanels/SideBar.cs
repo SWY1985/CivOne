@@ -13,6 +13,7 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.IO;
 using CivOne.Tasks;
 using CivOne.Tiles;
 using CivOne.Units;
@@ -28,7 +29,7 @@ namespace CivOne.Screens.GamePlayPanels
 		
 		private void DrawMiniMap(uint gameTick = 0)
 		{
-			_miniMap.FillRectangle(5, 0, 0, 80, 50);
+			_miniMap.Clear(5);
 			
 			if (GamePlay != null)
 			{
@@ -89,19 +90,16 @@ namespace CivOne.Screens.GamePlayPanels
 					}
 				}
 			}
-			_miniMap.FillRectangle(15, 31, 18, 18, 1);
-			_miniMap.FillRectangle(15, 31, 19, 1, 9);
-			_miniMap.FillRectangle(15, 31, 28, 18, 1);
-			_miniMap.FillRectangle(15, 48, 19, 1, 9);
-			_miniMap.AddBorder(15, 8, 0, 0, 80, 50);
+			_miniMap.DrawRectangle(31, 18, 18, 11, 15)
+				.DrawRectangle3D();
 		}
 
 		private void DrawDemographics()
 		{
-			_demographics.Tile(Patterns.PanelGrey);
-			_demographics.AddBorder(15, 8, 0, 0, 80, 39);
-			_demographics.FillRectangle(11, 3, 2, 74, 11);
-			_demographics.FillRectangle(2, 3, 13, 74, 1);
+			_demographics.Tile(Patterns.PanelGrey)
+				.DrawRectangle3D()
+				.FillRectangle(3, 2, 74, 11, 11)
+				.FillRectangle(3, 13, 74, 1, 2);
 			if (Human.Population > 0)
 			{
 				string population = Common.NumberSeperator(Human.Population);
@@ -120,12 +118,12 @@ namespace CivOne.Screens.GamePlayPanels
 		{
 			IUnit unit = Game.ActiveUnit;
 			
-			_gameInfo.Tile(Patterns.PanelGrey);
-			_gameInfo.AddBorder(15, 8, 0, 0, 80, _gameInfo.Height);
+			_gameInfo.Tile(Patterns.PanelGrey)
+				.DrawRectangle3D();
 			
 			if (Game.CurrentPlayer != Human || (unit != null && Human != unit.Owner) || (GameTask.Any() && !GameTask.Is<Show>() && !GameTask.Is<Message>()))
 			{
-				_gameInfo.FillRectangle((byte)((gameTick % 4 < 2) ? 15 : 8), 2, _gameInfo.Height - 8, 6, 6);
+				_gameInfo.FillRectangle(2, _gameInfo.Height - 8, 6, 6, (byte)((gameTick % 4 < 2) ? 15 : 8));
 				return;
 			}
 
@@ -194,9 +192,9 @@ namespace CivOne.Screens.GamePlayPanels
 				DrawDemographics();
 				DrawGameInfo(gameTick);
 				
-				AddLayer(_miniMap, 0, 0);
-				AddLayer(_demographics, 0, 50);
-				AddLayer(_gameInfo, 0, 89);
+				this.AddLayer(_miniMap, 0, 0)
+					.AddLayer(_demographics, 0, 50)
+					.AddLayer(_gameInfo, 0, 89);
 				
 				_update = false;
 				return true;
@@ -243,14 +241,13 @@ namespace CivOne.Screens.GamePlayPanels
 		
 		public void Resize(int height)
 		{
-			_canvas?.Dispose();
-			_canvas = new Picture(80, height, _canvas.Palette);
+			Bitmap = new Bytemap(80, height);
 			_gameInfo?.Dispose();
-			_gameInfo = new Picture(80, (height - 89), _canvas.Palette);
+			_gameInfo = new Picture(80, (height - 89), Palette);
 			_update = true;
 		}
 
-		public SideBar(Palette palette)
+		public SideBar(Palette palette) : base(80, 192)
 		{
 			_miniMap = new Picture(80, 50, palette);
 			_demographics = new Picture(80, 39, palette);
@@ -260,10 +257,10 @@ namespace CivOne.Screens.GamePlayPanels
 			DrawDemographics();
 			DrawGameInfo();
 			
-			_canvas = new Picture(80, 192, palette);
-			AddLayer(_miniMap, 0, 0);
-			AddLayer(_demographics, 0, 50);
-			AddLayer(_gameInfo, 0, 89);
+			Palette = palette.Copy();
+			this.AddLayer(_miniMap, 0, 0)
+				.AddLayer(_demographics, 0, 50)
+				.AddLayer(_gameInfo, 0, 89);
 		}
 
 		public override void Dispose()

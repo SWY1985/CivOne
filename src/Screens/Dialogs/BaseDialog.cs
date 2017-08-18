@@ -41,11 +41,9 @@ namespace CivOne.Screens.Dialogs
 			}
 		}
 		
-		protected Picture Selection(int left, int top, int width, int height)
+		protected IBitmap Selection(int left, int top, int width, int height)
 		{
-			Picture background = DialogBox.GetPart(left, top, width, height);
-			Picture.ReplaceColours(background, new byte[] { 7, 22 }, new byte[] { 11, 3 });
-			return background;
+			return DialogBox[left, top, width, height].ColourReplace((7, 11), (22, 3));
 		}
 
 		protected virtual void Cancel(object sender = null, EventArgs args = null)
@@ -63,7 +61,7 @@ namespace CivOne.Screens.Dialogs
 			if (_update)
 			{
 				_update = false;
-				_canvas.AddLayer(DialogBox, _left, _top);
+				this.AddLayer(DialogBox, _left, _top);
 
 				FirstUpdate();
 
@@ -86,7 +84,7 @@ namespace CivOne.Screens.Dialogs
 
 		private void Initialize(int left, int top, int width, int height)
 		{
-			_canvas = new Picture(320, 200, Common.DefaultPalette);
+			Palette = Common.DefaultPalette;
 
 			// We expand the size to add space for the black border
 			left -= 1;
@@ -94,10 +92,11 @@ namespace CivOne.Screens.Dialogs
 			width += 2;
 			height += 2;
 			
-			DialogBox = new Picture(width, height);
-			DialogBox.Tile(Patterns.PanelGrey, 1, 1);
-			DialogBox.AddBorder(15, 8, 1, 1, width - 2, height - 2);
-			DialogBox.AddBorder(5, 5, 0, 0, width, height);
+			DialogBox = new Picture(width, height)
+				.Tile(Patterns.PanelGrey, 1, 1)
+				.DrawRectangle3D(1, 1, width - 2, height - 2)
+				.DrawRectangle()
+				.As<Picture>();
 		}
 
 		public BaseDialog(int left, int top, int marginWidth, int marginHeight, string[] message) : base(MouseCursor.Pointer)

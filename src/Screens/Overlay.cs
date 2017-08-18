@@ -109,14 +109,16 @@ namespace CivOne.Screens
 					{
 						Size textSize = Resources.Instance.GetTextSize(0, helpLabel.Text);
 
-						Picture label = new Picture(textSize.Width + 11, textSize.Height + 9);
-						label.Tile(Patterns.PanelGrey);
-						label.AddBorder(15, 8, 1, 1, label.Width - 2, label.Height - 2);
-						label.AddBorder(5, 5, 0, 0, label.Width, label.Height);
-						label.DrawText(helpLabel.Text, 0, 15, 5, 5);
+						int ww = textSize.Width + 11, hh = textSize.Height + 9;
+						Picture label = new Picture(textSize.Width + 11, textSize.Height + 9)
+							.Tile(Patterns.PanelGrey)
+							.DrawRectangle()
+							.DrawRectangle3D(1, 1, ww - 2, hh - 2)
+							.DrawText(helpLabel.Text, 0, 15, 5, 5)
+							.As<Picture>();
 
-						_canvas.AddLine(15, helpLabel.PointX, helpLabel.PointY, helpLabel.X + 5, helpLabel.Y + 6);
-						AddLayer(label, helpLabel.X, helpLabel.Y);
+						this.DrawLine(helpLabel.PointX, helpLabel.PointY, helpLabel.X + 5, helpLabel.Y + 6, 15)
+							.AddLayer(label, helpLabel.X, helpLabel.Y);
 					}
 				}
 
@@ -125,7 +127,7 @@ namespace CivOne.Screens
 					int cx = Settings.RightSideBar ? 0 : 80;
 					int cy = 8;
 
-					AddLayer(Map[_x, _y, 15, 12].ToPicture(TileSettings.Terrain, Human), cx, cy, dispose: true);
+					this.AddLayer(Map[_x, _y, 15, 12].ToPicture(TileSettings.Terrain, Human), cx, cy, dispose: true);
 				}
 
 				_update = false;
@@ -187,7 +189,7 @@ namespace CivOne.Screens
 
 		private Overlay() : base(MouseCursor.Pointer)
 		{	
-			_canvas = new Picture(320, 200, Common.TopScreen.Palette);
+			Palette = Common.TopScreen.Palette.Copy();
 		}
 	}
 }

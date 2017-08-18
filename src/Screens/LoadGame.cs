@@ -82,7 +82,6 @@ namespace CivOne.Screens
 		private MouseCursor _cursor = MouseCursor.None;
 		public override MouseCursor Cursor => _cursor;
 		
-		private readonly Palette _palette;
 		private char _driveLetter = 'C';
 		private bool _update = true;
 		private Menu _menu;
@@ -131,16 +130,14 @@ namespace CivOne.Screens
 		
 		private void DrawDriveQuestion()
 		{
-			_canvas = new Picture(320, 200, _palette);
-			_canvas.FillRectangle(15, 0, 0, 320, 200);
-			_canvas.DrawText("Which drive contains your", 0, 5, 92, 72, TextAlign.Left);
-			_canvas.DrawText("saved game files?", 0, 5, 104, 80, TextAlign.Left);
-			
-			_canvas.DrawText(string.Format("{0}:", _driveLetter), 0, 5, 146, 96, TextAlign.Left);
-			
-			_canvas.DrawText("Press drive letter and", 0, 5, 104, 112, TextAlign.Left);
-			_canvas.DrawText("Return when disk is inserted", 0, 5, 80, 120, TextAlign.Left);
-			_canvas.DrawText("Press Escape to cancel", 0, 5, 104, 128, TextAlign.Left);
+			Bitmap.Clear();
+			this.Clear(15)
+				.DrawText("Which drive contains your", 0, 5, 92, 72, TextAlign.Left)
+				.DrawText("saved game files?", 0, 5, 104, 80, TextAlign.Left)
+				.DrawText($"{_driveLetter}:", 0, 5, 146, 96, TextAlign.Left)
+				.DrawText("Press drive letter and", 0, 5, 104, 112, TextAlign.Left)
+				.DrawText("Return when disk is inserted", 0, 5, 80, 120, TextAlign.Left)
+				.DrawText("Press Escape to cancel", 0, 5, 104, 128, TextAlign.Left);
 		}
 		
 		protected override bool HasUpdate(uint gameTick)
@@ -149,9 +146,9 @@ namespace CivOne.Screens
 			{
 				if (_menu.Update(gameTick))
 				{
-					_canvas = new Picture(320, 200, _palette);
-					_canvas.FillRectangle(15, 0, 0, 320, 200);
-					AddLayer(_menu);
+					Bitmap.Clear();
+					this.Clear(15)
+						.AddLayer(_menu);
 					return true;
 				}
 				return Cancel;
@@ -188,7 +185,7 @@ namespace CivOne.Screens
 					Title = "Select Load File...",
 					X = 51,
 					Y = 70,
-					Width = 217,
+					MenuWidth = 217,
 					TitleColour = 12,
 					ActiveColour = 11,
 					TextColour = 5,
@@ -236,7 +233,7 @@ namespace CivOne.Screens
 		
 		public LoadGame(Palette palette)
 		{
-			_palette = palette;
+			Palette = palette;
 		}
 	}
 }

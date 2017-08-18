@@ -116,18 +116,16 @@ namespace CivOne.Screens
 		
 		private void DrawDriveQuestion()
 		{
-			_canvas = new Picture(320, 200, _palette);
-			_canvas.FillRectangle(15, 0, 0, 320, 200);
+			Bitmap.Clear();
+			this.Clear(15);
 			DrawBorder(_border);
 
-			_canvas.DrawText("Which drive contains your", 0, 5, 92, 72, TextAlign.Left);
-			_canvas.DrawText("Save Game disk?", 0, 5, 104, 80, TextAlign.Left);
-			
-			_canvas.DrawText(string.Format("{0}:", _driveLetter), 0, 5, 146, 96, TextAlign.Left);
-			
-			_canvas.DrawText("Press drive letter and", 0, 5, 104, 112, TextAlign.Left);
-			_canvas.DrawText("Return when disk is inserted", 0, 5, 80, 120, TextAlign.Left);
-			_canvas.DrawText("Press Escape to cancel", 0, 5, 104, 128, TextAlign.Left);
+			this.DrawText("Which drive contains your", 0, 5, 92, 72, TextAlign.Left)
+				.DrawText("Save Game disk?", 0, 5, 104, 80, TextAlign.Left)
+				.DrawText(string.Format("{0}:", _driveLetter), 0, 5, 146, 96, TextAlign.Left)
+				.DrawText("Press drive letter and", 0, 5, 104, 112, TextAlign.Left)
+				.DrawText("Return when disk is inserted", 0, 5, 80, 120, TextAlign.Left)
+				.DrawText("Press Escape to cancel", 0, 5, 104, 128, TextAlign.Left);
 		}
 		
 		protected override bool HasUpdate(uint gameTick)
@@ -136,35 +134,34 @@ namespace CivOne.Screens
 			{
 				if (!_update) return false;
 				_update = false;
-				_canvas = new Picture(320, 200, _palette);
-				_canvas.FillRectangle(15, 0, 0, 320, 200);
+				Bitmap.Clear();
+				this.Clear(15);
 				DrawBorder(_border);
 
 				if (_menu != null)
 				{
-					AddLayer(_menu);
+					this.AddLayer(_menu);
 					_menu.Close();
 					_menu = null;
 				}
 
 				DrawPanel(64, 86, 124, 41);
-				_canvas.DrawText($"{char.ToLower(_driveLetter)}:CIVIL{_gameId}.SVE", 0, 5, 75, 91);
-				_canvas.DrawText($"{Common.DifficultyName(Game.Difficulty)} {Game.HumanPlayer.LeaderName}", 0, 5, 75, 99);
-				_canvas.DrawText($"{Game.HumanPlayer.TribeNamePlural}/{Game.GameYear}", 0, 5, 75, 107);
-				_canvas.DrawText("... save in progress.", 0, 5, 75, 115);
+				this.DrawText($"{char.ToLower(_driveLetter)}:CIVIL{_gameId}.SVE", 0, 5, 75, 91)
+					.DrawText($"{Common.DifficultyName(Game.Difficulty)} {Game.HumanPlayer.LeaderName}", 0, 5, 75, 99)
+					.DrawText($"{Game.HumanPlayer.TribeNamePlural}/{Game.GameYear}", 0, 5, 75, 107)
+					.DrawText("... save in progress.", 0, 5, 75, 115);
 				
-				_canvas.DrawText("Game has been saved.", 0, 5, 75, 132);
-				_canvas.DrawText("Press key to continue.", 0, 5, 75, 140);
+				this.DrawText("Game has been saved.", 0, 5, 75, 132)
+					.DrawText("Press key to continue.", 0, 5, 75, 140);
 				return true;
 			}
 			else if (_menu != null)
 			{
 				if (_menu.Update(gameTick))
 				{
-					_canvas = new Picture(320, 200, _palette);
-					_canvas.FillRectangle(15, 0, 0, 320, 200);
+					this.Clear(15);
 					DrawBorder(_border);
-					AddLayer(_menu);
+					this.AddLayer(_menu);
 					return true;
 				}
 				return false;
@@ -213,7 +210,7 @@ namespace CivOne.Screens
 					Title = "Select Save File...",
 					X = 51,
 					Y = 38,
-					Width = 217,
+					MenuWidth = 217,
 					TitleColour = 12,
 					ActiveColour = 11,
 					TextColour = 5,
@@ -259,11 +256,9 @@ namespace CivOne.Screens
 				return _menu.MouseDrag(args);
 			return false;
 		}
-		
-		public SaveGame()
+
+		public SaveGame() : this(-1)
 		{
-			_palette = Resources.Instance.LoadPIC("SP257").Palette;
-			_gameId = -1;
 		}
 		
 		public SaveGame(int gameId)

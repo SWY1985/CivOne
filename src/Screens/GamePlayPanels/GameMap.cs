@@ -14,6 +14,7 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.IO;
 using CivOne.Tasks;
 using CivOne.Tiles;
 using CivOne.Units;
@@ -79,27 +80,27 @@ namespace CivOne.Screens.GamePlayPanels
 			
 			if (_helperDirection.X < 0)
 			{
-				AddLayer(Icons.HelperArrow(Direction.North), x - 16, y - 16);
-				AddLayer(Icons.HelperArrow(Direction.West), x - 16, y);
-				AddLayer(Icons.HelperArrow(Direction.South), x - 16, y + 16);
+				this.AddLayer(Icons.HelperArrow(Direction.North), x - 16, y - 16)
+					.AddLayer(Icons.HelperArrow(Direction.West), x - 16, y)
+					.AddLayer(Icons.HelperArrow(Direction.South), x - 16, y + 16);
 			}
 			if (_helperDirection.X > 0)
 			{
-				AddLayer(Icons.HelperArrow(Direction.North), x + 16, y - 16);
-				AddLayer(Icons.HelperArrow(Direction.East), x + 16, y);
-				AddLayer(Icons.HelperArrow(Direction.South), x + 16, y + 16);
+				this.AddLayer(Icons.HelperArrow(Direction.North), x + 16, y - 16)
+					.AddLayer(Icons.HelperArrow(Direction.East), x + 16, y)
+					.AddLayer(Icons.HelperArrow(Direction.South), x + 16, y + 16);
 			}
 			if (_helperDirection.Y < 0)
 			{
-				AddLayer(Icons.HelperArrow(Direction.West), x - 16, y - 16);
-				AddLayer(Icons.HelperArrow(Direction.North), x, y - 16);
-				AddLayer(Icons.HelperArrow(Direction.East), x + 16, y - 16);
+				this.AddLayer(Icons.HelperArrow(Direction.West), x - 16, y - 16)
+					.AddLayer(Icons.HelperArrow(Direction.North), x, y - 16)
+					.AddLayer(Icons.HelperArrow(Direction.East), x + 16, y - 16);
 			}
 			if (_helperDirection.Y > 0)
 			{
-				AddLayer(Icons.HelperArrow(Direction.West), x - 16, y + 16);
-				AddLayer(Icons.HelperArrow(Direction.South), x, y + 16);
-				AddLayer(Icons.HelperArrow(Direction.East), x + 16, y + 16);
+				this.AddLayer(Icons.HelperArrow(Direction.West), x - 16, y + 16)
+					.AddLayer(Icons.HelperArrow(Direction.South), x, y + 16)
+					.AddLayer(Icons.HelperArrow(Direction.East), x + 16, y + 16);
 			}
 		}
 		
@@ -152,13 +153,13 @@ namespace CivOne.Screens.GamePlayPanels
 					dx *= 16; dy *= 16;
 
 					MoveUnit movement = movingUnit.Movement;
-					AddLayer(Map[movingUnit.X - 1, movingUnit.Y - 1, 3, 3].ToPicture(player: renderPlayer), dx - 16, dy - 16, dispose: true);
-					using (Picture unitPicture = movingUnit.GetUnit(movingUnit.Owner))
+					this.AddLayer(Map[movingUnit.X - 1, movingUnit.Y - 1, 3, 3].ToPicture(player: renderPlayer), dx - 16, dy - 16, dispose: true);
+					using (IBitmap unitPicture = movingUnit.GetUnit(movingUnit.Owner))
 					{
-						AddLayer(unitPicture, dx + movement.X, dy + movement.Y);
+						this.AddLayer(unitPicture, dx + movement.X, dy + movement.Y);
 						if (movingUnit is IBoardable && tile.Units.Any(u => u.Class == UnitClass.Land && (tile.City == null || (tile.City != null && u.Sentry))))
 						{
-							AddLayer(unitPicture, dx + movement.X - 1, dy + movement.Y - 1);
+							this.AddLayer(unitPicture, dx + movement.X - 1, dy + movement.Y - 1);
 						}
 					}
 					return true;
@@ -167,8 +168,8 @@ namespace CivOne.Screens.GamePlayPanels
 			else
 			{
 				_centerChanged = false;
-				_canvas.FillRectangle(5, 0, 0, _canvas.Width, _canvas.Height);
-				AddLayer(Tiles.ToPicture(player: renderPlayer), dispose: true);
+				this.Clear(5)
+					.AddLayer(Tiles.ToPicture(player: renderPlayer), dispose: true);
 			}
 
 			IUnit activeUnit = ActiveUnit;
@@ -184,7 +185,7 @@ namespace CivOne.Screens.GamePlayPanels
 					// blink status
 					if ((gameTick % 4) >= 2)
 					{
-						AddLayer(tile.ToPicture(TileSettings.Blink), dx, dy, dispose: true);
+						this.AddLayer(tile.ToPicture(TileSettings.Blink), dx, dy, dispose: true);
 					}
 
 					DrawHelperArrows(dx, dy);
@@ -488,8 +489,7 @@ namespace CivOne.Screens.GamePlayPanels
 			_tilesX = (int)Math.Ceiling((double)width / 16);
 			_tilesY = (int)Math.Ceiling((double)height / 16);
 
-			_canvas?.Dispose();
-			_canvas = new Picture(width, height, _canvas.Palette);
+			Bitmap = new Bytemap(width, height);
 			
 			while (_y + _tilesY > Map.HEIGHT) _y--;
 			_update = true;

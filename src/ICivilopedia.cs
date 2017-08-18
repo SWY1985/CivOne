@@ -14,7 +14,7 @@ namespace CivOne
 	public interface ICivilopedia
 	{
 		string Name { get; }
-		Picture Icon { get; }
+		IBitmap Icon { get; }
 		byte PageCount { get; }
 		Picture DrawPage(byte pageNumber);
 	}

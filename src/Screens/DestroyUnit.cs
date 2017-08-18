@@ -42,7 +42,7 @@ namespace CivOne.Screens
 
 		private Picture _gameMap, _overlay = null;
 
-		private Picture[] _destroySprites = null;
+		private IBitmap[] _destroySprites = null;
 		
 		private IEnumerable<RenderTile> RenderTiles
 		{
@@ -75,7 +75,7 @@ namespace CivOne.Screens
 
 			if (_overlay == null || _animation == DestroyAnimation.Sprites)
 			{
-				_overlay = new Picture(_canvas);
+				_overlay = new Picture(Bitmap, Palette);
 
 				int xx = _unit.X - _x;
 				int yy = _unit.Y - _y;
@@ -101,8 +101,8 @@ namespace CivOne.Screens
 				_overlay.ApplyNoise(_noiseMap, --_noiseCounter);
 			}
 
-			AddLayer(_gameMap, cx, cy);
-			AddLayer(_overlay, 0, 0);
+			this.AddLayer(_gameMap, cx, cy)
+				.AddLayer(_overlay, 0, 0);
 
 			if (_noiseCounter == 0)
 			{
@@ -146,7 +146,7 @@ namespace CivOne.Screens
 				{
 					if (!Settings.RevealWorld && !t.Visible)
 					{
-						output.FillRectangle(5, t.X * 16, t.Y * 16, 16, 16);
+						output.FillRectangle(t.X * 16, t.Y * 16, 16, 16, 5);
 						continue;
 					}
 					output.AddLayer(t.Image, t.Position);
@@ -220,7 +220,7 @@ namespace CivOne.Screens
 			_x = Common.GamePlay.X;
 			_y = Common.GamePlay.Y;
 
-			_canvas = new Picture(320, 200, Common.DefaultPalette);
+			Palette = Common.DefaultPalette;
 			_gameMap = GameMap;
 			_animation = Settings.DestroyAnimation;
 			if (!Resources.Exists("SP257"))
@@ -229,11 +229,10 @@ namespace CivOne.Screens
 			switch (_animation)
 			{
 				case DestroyAnimation.Sprites:
-					_destroySprites = new Picture[8];
+					_destroySprites = new IBitmap[8];
 					for (int i = 0; i < 8; i++)
 					{
-						_destroySprites[i] = Resources["SP257"].GetPart(16 * i, 96, 16, 16);
-						Picture.ReplaceColours(_destroySprites[i], 9, 0);
+						_destroySprites[i] = Resources["SP257"][16 * i, 96, 16, 16] .ColourReplace(9, 0);
 					}
 					break;
 				case DestroyAnimation.Noise:

@@ -14,8 +14,8 @@ namespace CivOne.Graphics
 		private static Resources Resources => Resources.Instance;
 		private static Free Free => Free.Instance;
 
-		private static Picture _panelGrey;
-		public static Picture PanelGrey
+		private static IBitmap _panelGrey;
+		public static IBitmap PanelGrey
 		{
 			get
 			{
@@ -27,15 +27,15 @@ namespace CivOne.Graphics
 					}
 					else
 					{
-						_panelGrey = Resources["SP299"].GetPart(288, 120, 32, 16);
+						_panelGrey = Resources["SP299"][288, 120, 32, 16];
 					}
 				}
 				return _panelGrey;
 			}
 		}
 
-		private static Picture _panelBlue;
-		public static Picture PanelBlue
+		private static IBitmap _panelBlue;
+		public static IBitmap PanelBlue
 		{
 			get
 			{
@@ -47,8 +47,8 @@ namespace CivOne.Graphics
 					}
 					else
 					{
-						_panelBlue = Resources["SP299"].GetPart(288, 120, 32, 16);
-						Picture.ReplaceColours(_panelBlue, new byte[] { 7, 22 }, new byte[] { 57, 9 });
+						_panelBlue = Resources["SP299"][288, 120, 32, 16]
+							.ColourReplace((7, 57), (22, 9));
 					}
 				}
 				return _panelBlue;

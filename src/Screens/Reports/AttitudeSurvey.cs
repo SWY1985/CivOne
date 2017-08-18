@@ -30,7 +30,7 @@ namespace CivOne.Screens.Reports
 			IBuilding building;
 			if ((building = city.Buildings.FirstOrDefault(b => b is T)) == null) return;
 
-			AddLayer(building.SmallIcon, x, y - 1);
+			this.AddLayer(building.SmallIcon, x, y - 1);
 			x += 18;
 		}
 
@@ -46,14 +46,14 @@ namespace CivOne.Screens.Reports
 					x += 2;
 					if (group == 3) x += 4;
 				}
-				AddLayer(Icons.Citizen(citizens[j]), x, y - 4);
+				this.AddLayer(Icons.Citizen(citizens[j]), x, y - 4);
 			}
 		}
 
 		private void DrawBuildings(City city, int y)
 		{
 			int x = 212;
-			_canvas.FillRectangle(11, x, y - 1, 90, 10);
+			this.FillRectangle(x, y - 1, 90, 10, 11);
 			DrawBuilding<Temple>(city, ref x, y);
 			DrawBuilding<MarketPlace>(city, ref x, y);
 			DrawBuilding<Bank>(city, ref x, y);
@@ -65,14 +65,14 @@ namespace CivOne.Screens.Reports
 		{
 			if (!_update) return false;
 
-			_canvas.FillRectangle(9, 0, 28, 320, 172);
+			this.FillRectangle(0, 28, 320, 172, 9);
 
 			int y = 32;
 			for (int i = (_page++ * 16); i < _cities.Length && i < (_page * 16); i++)
 			{
 				City city = _cities[i];
 
-				_canvas.DrawText($"{city.Name}:", FONT_ID, 15, 16, y);
+				this.DrawText($"{city.Name}:", FONT_ID, 15, 16, y);
 				
 				DrawCitizens(city, (i % 2 == 0) ? 72 : 76, y);
 				DrawBuildings(city, y);
@@ -95,7 +95,7 @@ namespace CivOne.Screens.Reports
 					int happy = (int)Math.Floor((double)(100 / totalCitizens) * happyCitizens);
 					int content = (int)Math.Floor((double)(100 / totalCitizens) * contentCitizens);
 					int unhappy = (int)Math.Floor((double)(100 / totalCitizens) * unhappyCitizens);
-					_canvas.DrawText($"Population: {population} Happy:{happy}% Content:{content}% Unhappy:{unhappy}%", 0, 15, 16, y);
+					this.DrawText($"Population: {population} Happy:{happy}% Content:{content}% Unhappy:{unhappy}%", 0, 15, 16, y);
 				}
 			}
 

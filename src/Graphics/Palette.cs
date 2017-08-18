@@ -55,10 +55,7 @@ namespace CivOne.Graphics
 
 		public static Palette Copy(Palette source) => new Palette(source);
 
-		public static implicit operator Palette(Colour[] palette)
-		{
-			return new Palette(palette);
-		}
+		public static implicit operator Palette(Colour[] palette) => new Palette(palette);
 
 		private Palette(Colour[] palette) : this(palette.Length)
 		{

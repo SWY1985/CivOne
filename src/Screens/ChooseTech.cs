@@ -42,14 +42,13 @@ namespace CivOne.Screens
 			{
 				_update = false;
 
-				Picture background = _menuGfx.GetPart(44, 35, 156, _menuHeight);
-				Picture.ReplaceColours(background, new byte[] { 7, 22 }, new byte[] { 11, 3 });
+				IBitmap background = _menuGfx[44, 35, 156, _menuHeight].ColourReplace((7, 11), (22, 3));
 
 				Menu<IAdvance> menu = new Menu<IAdvance>("ChooseTech", Palette, background)
 				{
 					X = 83,
 					Y = 92,
-					Width = 156,
+					MenuWidth = 156,
 					ActiveColour = 11,
 					TextColour = 5,
 					FontId = 0
@@ -69,37 +68,37 @@ namespace CivOne.Screens
 
 		public ChooseTech() : base(MouseCursor.Pointer)
 		{
+			TextSettings DialogText = new TextSettings() { Colour = 15 };
+			TextSettings HelpText = new TextSettings() { FontId = 1, Colour = 10, Alignment = TextAlign.Right, VerticalAlignment = VerticalAlign.Bottom };
+
 			_availableAdvances = Human.AvailableResearch.Take(8).ToArray();
 			_menuHeight = Resources.Instance.GetFontHeight(0) * _availableAdvances.Count();
 			
 			bool modernGovernment = Human.HasAdvance<Invention>();
-			Picture governmentPortrait = Icons.GovernmentPortrait(Human.Government, Advisor.Science, modernGovernment);
-			Palette palette = Common.DefaultPalette;
-			for (int i = 144; i < 256; i++)
+			IBitmap governmentPortrait = Icons.GovernmentPortrait(Human.Government, Advisor.Science, modernGovernment);
+			using (Palette palette = Common.DefaultPalette)
 			{
-				palette[i] = governmentPortrait.Palette[i];
+				palette.MergePalette(governmentPortrait.Palette, 144);
+				Palette = palette;
 			}
-			
-			_canvas = new Picture(320, 200, palette);
 
 			int dialogHeight = 41 + _menuHeight;
 			if (dialogHeight < 62) dialogHeight = 62;
 
-			_menuGfx = new Picture(204, dialogHeight);
-			_menuGfx.Tile(Patterns.PanelGrey);
-			_menuGfx.FillRectangle(0, 202, 0, 2, dialogHeight);
-			_menuGfx.AddLayer(governmentPortrait, 1, dialogHeight - 61);
+			_menuGfx = new Picture(202, dialogHeight)
+					.Tile(Patterns.PanelGrey)
+					.AddLayer(governmentPortrait, 1, dialogHeight - 61)
+					.DrawRectangle3D()
+					.DrawText("Science Advisor:", 46, 3, DialogText)
+					.FillRectangle(46, 10, 89, 1, 11)
+					.DrawText("Which discovery should our", 46, 12, DialogText)
+					.DrawText("wise men be pursuing, sire?", 46, 20, DialogText)
+					.DrawText("Pick one...", 46, 28, DialogText)
+					.DrawText($"(Help available)", 202, dialogHeight, HelpText)
+					.As<Picture>();
 
-			_menuGfx.AddBorder(15, 8, 0, 0, 202, dialogHeight);
-			_menuGfx.DrawText("Science Advisor:", 0, 15, 46, 3);
-			_menuGfx.FillRectangle(11, 46, 10, 89, 1);
-			_menuGfx.DrawText("Which discovery should our", 0, 15, 46, 12);
-			_menuGfx.DrawText("wise men be pursuing, sire?", 0, 15, 46, 20);
-			_menuGfx.DrawText("Pick one...", 0, 15, 46, 28);
-			_menuGfx.DrawText($"(Help available)", 1, 10, 202, dialogHeight - Resources.Instance.GetFontHeight(1), TextAlign.Right);
-
-			_canvas.FillRectangle(5, 38, 56, 204, dialogHeight + 2);
-			AddLayer(_menuGfx, 39, 57);
+			this.DrawRectangle(38, 56, 204, dialogHeight + 2)
+				.AddLayer(_menuGfx, 39, 57);
 		}
 
 		public override void Dispose()

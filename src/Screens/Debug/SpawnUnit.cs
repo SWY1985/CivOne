@@ -64,7 +64,7 @@ namespace CivOne.Screens.Debug
 
 		private void UnitsMenu()
 		{
-			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
+			Palette = Common.Screens.Last().OriginalColours;
 
 			IUnit[] units = _units.Skip(_index).Take(15).ToArray();
 
@@ -75,21 +75,21 @@ namespace CivOne.Screens.Debug
 			int xx = (320 - ww) / 2;
 			int yy = (200 - hh) / 2;
 
-			Picture menuGfx = new Picture(ww, hh);
-			menuGfx.Tile(Patterns.PanelGrey);
-			menuGfx.AddBorder(15, 8, 0, 0, ww, hh);
-			Picture menuBackground = menuGfx.GetPart(2, 11, ww - 4, hh - 11);
-			Picture.ReplaceColours(menuBackground, new byte[] { 7, 22 }, new byte[] { 11, 3 });
+			Picture menuGfx = new Picture(ww, hh)
+				.Tile(Patterns.PanelGrey)
+				.DrawRectangle3D()
+				.As<Picture>();
+			IBitmap menuBackground = menuGfx[2, 11, ww - 4, hh - 11].ColourReplace((7, 11), (22, 3));
 
-			_canvas.FillRectangle(5, xx - 1, yy - 1, ww + 2, hh + 2);
-			_canvas.AddLayer(menuGfx, xx, yy);
-			_canvas.DrawText("Spawn Unit...", 0, 15, xx + 8, yy + 3);
+			this.FillRectangle(xx - 1, yy - 1, ww + 2, hh + 2, 5)
+				.AddLayer(menuGfx, xx, yy)
+				.DrawText("Spawn Unit...", 0, 15, xx + 8, yy + 3);
 
 			_unitSelect = new Menu(Palette, menuBackground)
 			{
 				X = xx + 2,
 				Y = yy + 11,
-				Width = ww - 4,
+				MenuWidth = ww - 4,
 				ActiveColour = 11,
 				TextColour = 5,
 				DisabledColour = 3,
@@ -112,7 +112,7 @@ namespace CivOne.Screens.Debug
 		private void CivSelect_Accept(object sender, EventArgs args)
 		{
 			_selectedPlayer = Game.GetPlayer((byte)_civSelect.ActiveItem);
-			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
+			Palette = Common.Screens.Last().OriginalColours;
 			CloseMenus();
 		}
 
@@ -166,15 +166,15 @@ namespace CivOne.Screens.Debug
 		private void SidebarHint()
 		{
 			int xx = (Settings.RightSideBar ? 240 : 0);
-			_canvas.FillRectangle(15, xx, 153, 79, 1);
-			_canvas.FillRectangle(9, xx, 154, 80, 46);
-			_canvas.FillRectangle(1, xx + 1, 155, 78, 44);
-			_canvas.DrawText("Left click:", 1, 15, xx + 3, 157);
-			_canvas.DrawText("One unit", 1, 15, xx + 8, 164);
-			_canvas.DrawText("Right click:", 1, 15, xx + 3, 171);
-			_canvas.DrawText("Multiple units", 1, 15, xx + 8, 178);
-			_canvas.DrawText("Escape key:", 1, 15, xx + 3, 185);
-			_canvas.DrawText("Cancel", 1, 15, xx + 8, 192);
+			this.FillRectangle(xx, 153, 79, 1, 15)
+				.FillRectangle(xx, 154, 80, 46, 9)
+				.FillRectangle(xx + 1, 155, 78, 44, 1)
+				.DrawText("Left click:", 1, 15, xx + 3, 157)
+				.DrawText("One unit", 1, 15, xx + 8, 164)
+				.DrawText("Right click:", 1, 15, xx + 3, 171)
+				.DrawText("Multiple units", 1, 15, xx + 8, 178)
+				.DrawText("Escape key:", 1, 15, xx + 3, 185)
+				.DrawText("Cancel", 1, 15, xx + 8, 192);
 		}
 		
 		public override bool KeyDown(KeyboardEventArgs args)
@@ -260,11 +260,11 @@ namespace CivOne.Screens.Debug
 
 				if (xx > 320 || yy > 200) return false;
 
-				_canvas = new Picture(320, 200, Common.DefaultPalette);
+				Bitmap.Clear();
 				SidebarHint();
 				_cursor = ValidTile ? MouseCursor.Goto : MouseCursor.Pointer;
 				if (!ValidTile) return _hasUpdate;
-				_canvas.AddLayer(_selectedUnit.GetUnit(Game.PlayerNumber(_selectedPlayer), false), xx, yy);
+				this.AddLayer(_selectedUnit.GetUnit(Game.PlayerNumber(_selectedPlayer), false), xx, yy);
 				
 				return _hasUpdate;
 			}
@@ -273,7 +273,7 @@ namespace CivOne.Screens.Debug
 
 		public SpawnUnit()
 		{
-			_canvas = new Picture(320, 200, Common.DefaultPalette);
+			Palette = Common.DefaultPalette;
 
 			int fontHeight = Resources.Instance.GetFontHeight(0);
 			int hh = (fontHeight * (Game.Players.Count() + 1)) + 5;
@@ -282,21 +282,21 @@ namespace CivOne.Screens.Debug
 			int xx = (320 - ww) / 2;
 			int yy = (200 - hh) / 2;
 
-			Picture menuGfx = new Picture(ww, hh);
-			menuGfx.Tile(Patterns.PanelGrey);
-			menuGfx.AddBorder(15, 8, 0, 0, ww, hh);
-			Picture menuBackground = menuGfx.GetPart(2, 11, ww - 4, hh - 11);
-			Picture.ReplaceColours(menuBackground, new byte[] { 7, 22 }, new byte[] { 11, 3 });
+			Picture menuGfx = new Picture(ww, hh)
+				.Tile(Patterns.PanelGrey)
+				.DrawRectangle3D()
+				.As<Picture>();
+			IBitmap menuBackground = menuGfx[2, 11, ww - 4, hh - 11].ColourReplace((7, 11), (22, 3));
 
-			_canvas.FillRectangle(5, xx - 1, yy - 1, ww + 2, hh + 2);
-			_canvas.AddLayer(menuGfx, xx, yy);
-			_canvas.DrawText("Spawn Unit...", 0, 15, xx + 8, yy + 3);
+			this.FillRectangle(xx - 1, yy - 1, ww + 2, hh + 2, 5)
+				.AddLayer(menuGfx, xx, yy)
+				.DrawText("Spawn Unit...", 0, 15, xx + 8, yy + 3);
 
 			_civSelect = new Menu(Palette, menuBackground)
 			{
 				X = xx + 2,
 				Y = yy + 11,
-				Width = ww - 4,
+				MenuWidth = ww - 4,
 				ActiveColour = 11,
 				TextColour = 5,
 				DisabledColour = 3,

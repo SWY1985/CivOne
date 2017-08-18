@@ -67,7 +67,7 @@ namespace CivOne.Screens
 		{
 			if (_update)
 			{
-				_canvas.FillRectangle(0, 0, 0, 320, 200);
+				this.FillRectangle(0, 0, 320, 200, 0);
 
 				List<string> menuItems = new List<string>();
 				string menuHeaderText = $"What shall we build in {_city.Name}?";
@@ -119,23 +119,23 @@ namespace CivOne.Screens
 
 				using (Picture menuGfx = new Picture(width, height))
 				{
-					menuGfx.Tile(Patterns.PanelGrey);
-					menuGfx.AddBorder(15, 8, 0, 0, width, height);
-					menuGfx.DrawText(menuHeaderText, _fontId, 15, 4, 4);
-					menuGfx.DrawText($"(Help available)", 1, 10, width, height - Resources.Instance.GetFontHeight(1), TextAlign.Right);
+					menuGfx.Tile(Patterns.PanelGrey)
+						.DrawRectangle3D()
+						.DrawText(menuHeaderText, _fontId, 15, 4, 4)
+						.DrawText($"(Help available)", 1, 10, width, height - Resources.Instance.GetFontHeight(1), TextAlign.Right);
 
-					_canvas.FillRectangle(5, 80, 8, width + 2, height + 2);
-					AddLayer(menuGfx, 81, 9);
+					this.FillRectangle(80, 8, width + 2, height + 2, 5)
+						.AddLayer(menuGfx, 81, 9);
 					
-					using (Picture background = menuGfx.GetPart(2, 3 + Resources.Instance.GetFontHeight(_fontId), itemWidth, Resources.Instance.GetFontHeight(_fontId) * menuItems.Count + 4))
+					using (Picture background = menuGfx[2, 3 + Resources.Instance.GetFontHeight(_fontId), itemWidth, Resources.Instance.GetFontHeight(_fontId) * menuItems.Count + 4])
 					{
-						Picture.ReplaceColours(background, new byte[] { 7, 22 }, new byte[] { 11, 3 });
+						background.ColourReplace((7, 11), (22, 3));
 
 						Menu menu = new Menu(Palette, background)
 						{
 							X = 83,
 							Y = 12 + Resources.Instance.GetFontHeight(_fontId),
-							Width = itemWidth,
+							MenuWidth = itemWidth,
 							ActiveColour = 11,
 							TextColour = 5,
 							FontId = _fontId
@@ -148,7 +148,7 @@ namespace CivOne.Screens
 								.OnSelect(ProductionChoice)
 								.OnContext(ProductionContext);
 						}
-						menu.Width += 10;
+						menu.MenuWidth += 10;
 						menu.MissClick += MenuCancel;
 						menu.Cancel += MenuCancel;
 
@@ -163,8 +163,8 @@ namespace CivOne.Screens
 		public CityChooseProduction(City city) : base(MouseCursor.Pointer)
 		{
 			_city = city;
-
-			_canvas = new Picture(320, 200, Common.DefaultPalette);
+			
+			Palette = Common.DefaultPalette;
 
 			_availableProduction = _city.AvailableProduction.ToArray();
 			_menuHeight = Resources.Instance.GetFontHeight(0) * _availableProduction.Length;

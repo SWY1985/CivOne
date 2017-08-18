@@ -72,22 +72,22 @@ namespace CivOne.Screens
 			{
 				_update = false;
 
-				Picture menuGfx = new Picture(104, 79);
-				menuGfx.Tile(Patterns.PanelGrey);
-				menuGfx.AddBorder(15, 8, 0, 0, 103, 79);
-				menuGfx.FillRectangle(0, 103, 0, 1, 79);
-				menuGfx.DrawText("Options:", 0, 15, 4, 4);
+				Picture menuGfx = new Picture(103, 79)
+					.Tile(Patterns.PanelGrey)
+					.DrawRectangle3D()
+					.DrawText("Options:", 0, 15, 4, 4)
+					.As<Picture>();
 
-				Picture menuBackground = menuGfx.GetPart(2, 11, 100, 64);
-				Picture.ReplaceColours(menuBackground, new byte[] { 7, 22 }, new byte[] { 11, 3 });
+				IBitmap menuBackground = menuGfx[2, 11, 100, 64]
+					.ColourReplace((7, 11), (22, 3));
 
-				AddLayer(menuGfx, 25, 17);
+				this.AddLayer(menuGfx, 25, 17);
 
 				Menu menu = new Menu(Palette, menuBackground)
 				{
 					X = 27,
 					Y = 28,
-					Width = 99,
+					MenuWidth = 99,
 					ActiveColour = 11,
 					TextColour = 5,
 					DisabledColour = 3,
@@ -113,9 +113,9 @@ namespace CivOne.Screens
 
 		public GameOptions() : base(MouseCursor.Pointer)
 		{
-			_canvas = new Picture(320, 200, Common.DefaultPalette);
-			_canvas.AddLayer(Common.Screens.Last(), 0, 0);
-			_canvas.FillRectangle(5, 24, 16, 105, 81);
+			Palette = Common.DefaultPalette;
+			this.AddLayer(Common.Screens.Last(), 0, 0)
+				.FillRectangle(24, 16, 105, 81, 5);
 		}
 	}
 }

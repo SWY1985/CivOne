@@ -67,7 +67,7 @@ namespace CivOne.Screens
 			X = -1;
 			Y = -1;
 			
-			_canvas = new Picture(320, 200, Common.TopScreen.Palette);
+			Palette = Common.TopScreen.Palette;
 		}
 	}
 }

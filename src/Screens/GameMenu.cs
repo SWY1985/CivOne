@@ -14,13 +14,13 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.IO;
 using CivOne.UserInterface;
 
 namespace CivOne.Screens
 {
 	public class GameMenu : BaseScreen
 	{
-		private readonly Palette _palette;
 		public readonly MenuItemCollection<int> Items;
 		
 		private int _activeItem = -1;
@@ -53,13 +53,13 @@ namespace CivOne.Screens
 
 		private int MaxItemWidth => Items.Select(x => ItemWidth(x)).Max();
 
-		private void MenuItemDraw(MenuItem<int> menuItem, Picture picture, int x, int y)
+		private void MenuItemDraw(MenuItem<int> menuItem, int x, int y)
 		{
 			if (menuItem == null || menuItem.Text == null) return;
-			picture.DrawText(menuItem.Text, 0, (byte)(menuItem.Enabled ? 5 : 3), x, y, TextAlign.Left);
+			this.DrawText(menuItem.Text, 0, (byte)(menuItem.Enabled ? 5 : 3), x, y, TextAlign.Left);
 			if (menuItem.Shortcut == null) return;
 			int textWidth = Resources.GetTextSize(0, menuItem.Text).Width;
-			picture.DrawText(menuItem.Shortcut, 0, 15, x + textWidth + 8, y, TextAlign.Left);
+			this.DrawText(menuItem.Shortcut, 0, 15, x + textWidth + 8, y, TextAlign.Left);
 		}
 		
 		protected override bool HasUpdate(uint gameTick)
@@ -69,18 +69,11 @@ namespace CivOne.Screens
 			int ww = MaxItemWidth + 17;
 			int hh = (Resources.Instance.GetFontHeight(0) * Items.Count) + 9;
 			
-			// This is a workaround, until I figure out how to make bitmaps where Width doesn't divide by 4
-			int ow = ww;
-			if (ww % 4 > 0)
-				ww += (4 - (ww % 4));
-			
-			_canvas = new Picture(ww, hh, _palette);
-			_canvas.Tile(Patterns.PanelGrey, 1, 1);
-			if (ow != ww)
-				_canvas.FillRectangle(0, ow, 0, 4 - (ow % 4), hh);
-			
-			_canvas.AddBorder(5, 5, 0, 0, ow, hh);
-			_canvas.AddBorder(15, 8, 0, 0, ow, hh, 1);
+			Bitmap = new Bytemap(ww, hh);
+			this.Tile(Patterns.PanelGrey, 1, 1)
+				.DrawRectangle()
+				.DrawRectangle3D(1, 1, ww - 2, hh - 2)
+				.As<Picture>();
 			
 			int i = 0;
 			int yy = 5;
@@ -88,10 +81,10 @@ namespace CivOne.Screens
 			{
 				if (i == _activeItem)
 				{
-					_canvas.ColourReplace(7, 11, 3, yy - 1, MaxItemWidth + 11, Resources.Instance.GetFontHeight(0));
-					_canvas.ColourReplace(22, 3, 3, yy - 1, MaxItemWidth + 11, Resources.Instance.GetFontHeight(0));
+					this.ColourReplace(7, 11, 3, yy - 1, MaxItemWidth + 11, Resources.Instance.GetFontHeight(0))
+						.ColourReplace(22, 3, 3, yy - 1, MaxItemWidth + 11, Resources.Instance.GetFontHeight(0));
 				}
-				MenuItemDraw(menuItem, _canvas, 11, yy);
+				MenuItemDraw(menuItem, 11, yy);
 				yy += Resources.Instance.GetFontHeight(0);
 				i++;
 			}
@@ -182,14 +175,11 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public GameMenu(string menuId, Palette palette)
+		public GameMenu(string menuId, Palette palette) : base(8, 8)
 		{
 			Items = new MenuItemCollection<int>(menuId);
 			
-			_palette = palette;
-			
-			_canvas = new Picture(8, 8, _palette);
-			_canvas.FillRectangle(2, 0, 0, 8, 8);
+			Palette = palette.Copy();
 		}
 	}
 }

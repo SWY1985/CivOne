@@ -20,7 +20,7 @@ namespace CivOne.Screens.CityManagerPanels
 	{
 		private readonly City _city;
 
-		private readonly Picture _background;
+		private readonly IBitmap _background;
 		
 		private CityInfoChoice _choice = CityInfoChoice.Info;
 		private bool _update = true;
@@ -51,9 +51,10 @@ namespace CivOne.Screens.CityManagerPanels
 			get
 			{
 				//TODO: Draw happiness data/stats
-				Picture output = new Picture(144, 83);
-				output.FillRectangle(1, 5, 15, 122, 1);
-				output.FillRectangle(1, 5, 31, 122, 1);
+				Picture output = new Picture(144, 83)
+					.FillRectangle(5, 15, 122, 1, 1)
+					.FillRectangle(5, 31, 122, 1, 1)
+					.As<Picture>();
 				
 				for (int yy = 1; yy < 30; yy+= 16)
 				for (int i = 0; i < _city.Size; i++)
@@ -74,12 +75,13 @@ namespace CivOne.Screens.CityManagerPanels
 			get
 			{
 				//TODO: Draw map
-				Picture output = new Picture(144, 83);
-				output.FillRectangle(9, 5, 2, 122, 1);
-				output.FillRectangle(9, 5, 3, 1, 74);
-				output.FillRectangle(9, 126, 3, 1, 74);
-				output.FillRectangle(9, 5, 77, 122, 1);
-				output.FillRectangle(5, 6, 3, 120, 74);
+				Picture output = new Picture(144, 83)
+					.FillRectangle(5, 2, 122, 1, 9)
+					.FillRectangle(5, 3, 1, 74, 9)
+					.FillRectangle(126, 3, 1, 74, 9)
+					.FillRectangle(5, 77, 122, 1, 9)
+					.FillRectangle(6, 3, 120, 74, 5)
+					.As<Picture>();
 				return output;
 			}
 		}
@@ -88,9 +90,8 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			if (_update)
 			{
-				_canvas.Tile(_background);
-				_canvas.AddBorder(1, 1, 0, 0, 133, 92);
-				_canvas.FillRectangle(0, 133, 0, 3, 92);
+				this.Tile(_background)
+					.DrawRectangle(colour: 1);
 				
 				DrawButton("Info", (byte)((_choice == CityInfoChoice.Info) ? 15 : 9), 1, 0, 0, 34);
 				DrawButton("Happy", (byte)((_choice == CityInfoChoice.Happy) ? 15 : 9), 1, 34, 0, 32);
@@ -100,13 +101,13 @@ namespace CivOne.Screens.CityManagerPanels
 				switch (_choice)
 				{
 					case CityInfoChoice.Info:
-						AddLayer(InfoFrame, 0, 9);
+						this.AddLayer(InfoFrame, 0, 9);
 						break;
 					case CityInfoChoice.Happy:
-						AddLayer(HappyFrame, 0, 9);
+						this.AddLayer(HappyFrame, 0, 9);
 						break;
 					case CityInfoChoice.Map:
-						AddLayer(MapFrame, 0, 9);
+						this.AddLayer(MapFrame, 0, 9);
 						break;
 				}
 
@@ -200,12 +201,12 @@ namespace CivOne.Screens.CityManagerPanels
 			return true;
 		}
 
-		public CityInfo(City city, Picture background)
+		public CityInfo(City city, IBitmap background) : base(133, 92)
 		{
 			_city = city;
 			_background = background;
 
-			_canvas = new Picture(136, 92, background.Palette);
+			Palette = background.Palette.Copy();
 		}
 	}
 }
