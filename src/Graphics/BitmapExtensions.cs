@@ -12,6 +12,9 @@ using System.Drawing;
 using CivOne.Enums;
 using CivOne.IO;
 
+using static CivOne.Enums.TextAlign;
+using static CivOne.Enums.VerticalAlign;
+
 namespace CivOne.Graphics
 {
 	public static class BitmapExtensions
@@ -36,7 +39,12 @@ namespace CivOne.Graphics
 			return bitmap;
 		}
 
+		public static IBitmap DrawRectangle(this IBitmap bitmap, Rectangle rectangle, byte colour = 5) => DrawRectangle3D(bitmap, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height, colour, colour);
+		public static IBitmap DrawRectangle(this IBitmap bitmap, Point point, Size size, byte colour = 5) => DrawRectangle3D(bitmap, point.X, point.Y, size.Width, size.Height, colour, colour);
 		public static IBitmap DrawRectangle(this IBitmap bitmap, int left = 0, int top = 0, int width = -1, int height = -1, byte colour = 5) => DrawRectangle3D(bitmap, left, top, width, height, colour, colour);
+
+		public static IBitmap DrawRectangle3D(this IBitmap bitmap, Rectangle rectangle, byte colourLight = 15, byte colourDark = 8) => DrawRectangle3D(bitmap, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height, colourLight, colourDark);
+		public static IBitmap DrawRectangle3D(this IBitmap bitmap, Point point, Size size, byte colourLight = 15, byte colourDark = 8) => DrawRectangle3D(bitmap, point.X, point.Y, size.Width, size.Height, colourLight, colourDark);
 		public static IBitmap DrawRectangle3D(this IBitmap bitmap, int left = 0, int top = 0, int width = -1, int height = -1, byte colourLight = 15, byte colourDark = 8)
 		{
 			if (width < 0) width = bitmap.Width() - left;
@@ -136,14 +144,14 @@ namespace CivOne.Graphics
 			return bitmap;
 		}
 
-		public static IBitmap DrawText(this IBitmap bitmap, string text, int font, byte colour, int x, int y, TextAlign align = TextAlign.Left)
+		public static IBitmap DrawText(this IBitmap bitmap, string text, int font, byte colour, int x, int y, TextAlign align = Left)
 		{
 			if (string.IsNullOrWhiteSpace(text)) return bitmap;
 			Bytemap textLayer = Resources.Instance.GetText(text, font, colour).Bitmap;
 			switch(align)
 			{
-				case TextAlign.Center: x -= (textLayer.Width + 1) / 2; break;
-				case TextAlign.Right: x -= textLayer.Width; break;
+				case Center: x -= (textLayer.Width + 1) / 2; break;
+				case Right: x -= textLayer.Width; break;
 			}
 			AddLayer(bitmap, textLayer, x, y, dispose: true);
 			return bitmap;
@@ -187,11 +195,11 @@ namespace CivOne.Graphics
 
 			switch(settings.Alignment)
 			{
-				case TextAlign.Center: x -= (textLayer.Width + 1) / 2; break;
-				case TextAlign.Right: x -= textLayer.Width; break;
+				case Center: x -= (textLayer.Width + 1) / 2; break;
+				case Right: x -= textLayer.Width; break;
 			}
 
-			if (settings.VerticalAlignment == VerticalAlign.Bottom)
+			if (settings.VerticalAlignment == Bottom)
 			{
 				y -= Resources.Instance.GetFontHeight(settings.FontId);
 			}
@@ -200,9 +208,9 @@ namespace CivOne.Graphics
 			return bitmap;
 		}
 
+		public static Bytemap Crop(this IBitmap bitmap, Point point, Size size) => bitmap.Bitmap[point.X, point.Y, size.Width, size.Height];
 		public static Bytemap Crop(this IBitmap bitmap, int left, int top, int width, int height) => bitmap.Bitmap[left, top, width, height];
 		
-		public static IBitmap ColourReplace(this IBitmap bitmap, byte colourFrom, byte colourTo) => ColourReplace(bitmap, colourFrom, colourTo, 0, 0, bitmap.Bitmap.Width, bitmap.Bitmap.Height);
 		public static IBitmap ColourReplace(this IBitmap bitmap, params (byte From, byte To)[] fromToColours)
 		{
 			foreach ((byte From, byte To) colour in fromToColours)
@@ -211,7 +219,10 @@ namespace CivOne.Graphics
 			}
 			return bitmap;
 		}
-		public static IBitmap ColourReplace(this IBitmap bitmap, byte colourFrom, byte colourTo, int x, int y, int width, int height)
+		public static IBitmap ColourReplace(this IBitmap bitmap, byte from, byte to) => ColourReplace(bitmap, from, to, 0, 0, bitmap.Bitmap.Width, bitmap.Bitmap.Height);
+		public static IBitmap ColourReplace(this IBitmap bitmap, byte from, byte to, Rectangle rectangle) => ColourReplace(bitmap, from, to, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
+		public static IBitmap ColourReplace(this IBitmap bitmap, byte from, byte to, Point point, Size size) => ColourReplace(bitmap, from, to, point.X, point.Y, size.Width, size.Height);
+		public static IBitmap ColourReplace(this IBitmap bitmap, byte from, byte to, int x, int y, int width, int height)
 		{
 			for (int yy = y; yy < y + height; yy++)
 			{
@@ -221,14 +232,14 @@ namespace CivOne.Graphics
 				{
 					if (xx >= bitmap.Width()) break;
 					if (bitmap.OutBoundX(xx)) continue;
-					if (bitmap.Bitmap[xx, yy] != colourFrom) continue;
-					bitmap.Bitmap[xx, yy] = colourTo;
+					if (bitmap.Bitmap[xx, yy] != from) continue;
+					bitmap.Bitmap[xx, yy] = to;
 				}
 			}
 			return bitmap;
 		}
 
-		// Palette functions		
+		// Palette functions
 		public static IBitmap Cycle(this IBitmap bitmap, int start, int end)
 		{
 			Colour reserve;
