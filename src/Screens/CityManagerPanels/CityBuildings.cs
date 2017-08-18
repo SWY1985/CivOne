@@ -23,7 +23,7 @@ namespace CivOne.Screens.CityManagerPanels
 		private readonly City _city;
 		private IProduction[] _improvements;
 
-		private readonly Picture _background;
+		private readonly IBitmap _background;
 		
 		private bool _update = true;
 		
@@ -36,16 +36,16 @@ namespace CivOne.Screens.CityManagerPanels
 			int xx = (offset % 2 == 0) ? 21 : 1;
 			int yy = -1 + (6 * offset);
 			if (yy < 0)
-				AddLayer(wonder.SmallIcon.GetPart(0, Math.Abs(yy), wonder.SmallIcon.Width, wonder.SmallIcon.Height + yy), xx, 0);
+				this.AddLayer(wonder.SmallIcon.Crop(0, Math.Abs(yy), wonder.SmallIcon.Width(), wonder.SmallIcon.Height() + yy), xx, 0);
 			else
-				AddLayer(wonder.SmallIcon, xx, yy);
+				this.AddLayer(wonder.SmallIcon, xx, yy);
 			
 			string name = wonder.Name;
 			while (Resources.Instance.GetTextSize(1, name).Width > 62)
 			{
 				name = $"{name.Substring(0, name.Length - 2)}.";
 			}
-			_canvas.DrawText(name, 1, 15, 42, 3 + (6 * offset));
+			this.DrawText(name, 1, 15, 42, 3 + (6 * offset));
 		}
 
 		private void DrawBuilding(IBuilding building, int offset)
@@ -53,17 +53,17 @@ namespace CivOne.Screens.CityManagerPanels
 			int xx = (offset % 2 == 0) ? 21 : 1;
 			int yy = -1 + (6 * offset);
 			if (yy < 0)
-				AddLayer(building.SmallIcon.GetPart(0, Math.Abs(yy), building.SmallIcon.Width, building.SmallIcon.Height + yy), xx, 0);
+				this.AddLayer(building.SmallIcon.Crop(0, Math.Abs(yy), building.SmallIcon.Width(), building.SmallIcon.Height() + yy), xx, 0);
 			else
-				AddLayer(building.SmallIcon, xx, yy);
+				this.AddLayer(building.SmallIcon, xx, yy);
 
 			string name = building.Name;
 			while (Resources.Instance.GetTextSize(1, name).Width > 54)
 			{
 				name = $"{name.Substring(0, name.Length - 1)}";
 			}
-			_canvas.DrawText(name, 1, 15, 42, 3 + (6 * offset));
-			AddLayer(Icons.SellButton, 98, 2 + (6 * offset));
+			this.DrawText(name, 1, 15, 42, 3 + (6 * offset))
+				.AddLayer(Icons.SellButton, 98, 2 + (6 * offset));
 		}
 
 		private IEnumerable<IProduction> GetImprovements
@@ -81,8 +81,7 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			if (_update)
 			{
-				_canvas.Tile(_background);
-				_canvas.FillRectangle(0, 107, 0, 1, 97);
+				this.Tile(_background);
 
 				for (int i = (_page * 14); i < _improvements.Length && i < ((_page + 1) * 14); i++)
 				{
@@ -100,7 +99,7 @@ namespace CivOne.Screens.CityManagerPanels
 					DrawButton("More", 9, 1, 76, 87, 29);
 				}
 
-				_canvas.AddBorder(1, 1, 0, 0, 107, 97);
+				this.DrawRectangle(colour: 1);
 				
 				_update = false;
 			}
@@ -145,13 +144,13 @@ namespace CivOne.Screens.CityManagerPanels
 			return false;
 		}
 
-		public CityBuildings(City city, Picture background)
+		public CityBuildings(City city, IBitmap background) : base(108, 97)
 		{
 			_city = city;
 			_improvements = GetImprovements.ToArray();
 			_background = background;
-
-			_canvas = new Picture(108, 97, background.Palette);
+			
+			Palette = background.Palette.Copy();
 		}
 	}
 }

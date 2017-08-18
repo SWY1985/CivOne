@@ -61,9 +61,9 @@ namespace CivOne.Screens
 			Menu menu = new Menu("Setup", Palette)
 			{
 				Title = title,
-				X = (_canvas.Width - width) / 2,
-				Y = (_canvas.Height - height) / 2,
-				Width = width,
+				X = (Width - width) / 2,
+				Y = (Height - height) / 2,
+				MenuWidth = width,
 				TitleColour = 15,
 				ActiveColour = 11,
 				TextColour = 5,
@@ -476,23 +476,26 @@ namespace CivOne.Screens
 
 		private void Resize(object sender, ResizeEventArgs args)
 		{
-			_canvas.FillRectangle(3, 0, 0, args.Width, args.Height);
+			this.Clear(3);
 
 			foreach (Menu menu in Common.Screens.Where(x => x is Menu && (x as Menu).Id == "Setup"))
 			{
 				int menuHeight = GetMenuHeight(menu.Title, menu.Items.Select(x => x.Text).ToArray());
 
-				menu.X = (args.Width - menu.Width) / 2;
+				menu.X = (args.Width - menu.MenuWidth) / 2;
 				menu.Y = (args.Height - menuHeight) / 2;
+				menu.ForceUpdate();
 			}
+
+			_update = true;
 		}
 		
 		public Setup() : base(MouseCursor.Pointer)
 		{
 			OnResize += Resize;
 			
-			_canvas = new Picture(320, 200, Common.GetPalette256);
-			_canvas.FillRectangle(3, 0, 0, 320, 200);
+			Palette = Common.GetPalette256;
+			this.Clear(3);
 		}
 	}
 }

@@ -57,11 +57,15 @@ namespace CivOne.Screens
 			
 			if (!_icon) titleX = 160;
 			if (_singlePage.Icon != null && _icon)
-				AddLayer(_singlePage.Icon, iconX, iconY);
-			_canvas.DrawText(_singlePage.Name.ToUpper(), 5, 5, titleX, 20, TextAlign.Center);
-			_canvas.DrawText(category, 6, 7, titleX, 36, TextAlign.Center);
+			{
+				this.AddLayer(_singlePage.Icon, iconX, iconY);
+			}
+			this.DrawText(_singlePage.Name.ToUpper(), 5, 5, titleX, 20, TextAlign.Center)
+				.DrawText(category, 6, 7, titleX, 36, TextAlign.Center);
 			if (_pageNumber == 2 && _discovered)
-				_canvas.DrawText("(Discovered)", 6, 7, titleX, 48, TextAlign.Center);
+			{
+				this.DrawText("(Discovered)", 6, 7, titleX, 48, TextAlign.Center);
+			}
 		}
 		
 		private void DrawPage(byte pageNumber)
@@ -71,7 +75,7 @@ namespace CivOne.Screens
 			DrawTerrainText();
 			using (IBitmap page = _singlePage.DrawPage(pageNumber))
 			{
-				AddLayer(page);
+				this.AddLayer(page);
 			}
 		}
 		
@@ -79,7 +83,7 @@ namespace CivOne.Screens
 		{
 			if (_singlePage != null && _pageNumber < _singlePage.PageCount)
 			{
-				_canvas.FillRectangle(15, 8, 8, 304, 184);
+				this.FillRectangle(8, 8, 304, 184, 15);
 				DrawPage(++_pageNumber);
 				DrawPageTitle();
 				return true;
@@ -102,28 +106,28 @@ namespace CivOne.Screens
 			
 			if (_singlePage == null)
 			{
-				_canvas = new Picture(320, 200, Resources.WorldMapTiles.Palette);
+				Palette = Resources.WorldMapTiles.Palette.Copy();
 				
-				_canvas.FillRectangle(14, 0, 0, 320, 200);
-				_canvas.FillRectangle(15, 60, 2, 200, 9);
-				_canvas.FillRectangle(15, 2, 14, 316, 184);
+				this.Clear(14)
+					.FillRectangle(60, 2, 200, 9, 15)
+					.FillRectangle(2, 14, 316, 184, 15);
 				
-				_canvas.DrawText("ENCYCLOPEDIA of CIVILIZATION", 0, 5, 67, 4);
-				_canvas.DrawText("ENCYCLOPEDIA of CIVILIZATION", 0, 10, 66, 3);
+				this.DrawText("ENCYCLOPEDIA of CIVILIZATION", 0, 5, 67, 4)
+					.DrawText("ENCYCLOPEDIA of CIVILIZATION", 0, 10, 66, 3);
 				
 				if (_pages.Length > 78)
 				{
-					_canvas.DrawText("MORE", 0, 12, 8, 4);
+					this.DrawText("MORE", 0, 12, 8, 4);
 				}
-				_canvas.DrawText("EXIT", 0, 12, 286, 4);
+				this.DrawText("EXIT", 0, 12, 286, 4);
 				
 				int xx = 10, yy = 16;
 				int columns = (int)Math.Ceiling((float)_pages.Length / 26);
 				for (int i = _startIndex; i < _pages.Length; i++)
 				{
 					string name = _pages[i].Name;
-					if (columns >= 3 && name.Length >= 18) name = string.Format("{0}.", name.Substring(0, 17)); 
-					_canvas.DrawText(name, 0, 5, xx, yy);
+					if (columns >= 3 && name.Length >= 18) name = $"{name.Substring(0, 17)}."; 
+					this.DrawText(name, 0, 5, xx, yy);
 					
 					yy += 7;
 					if (yy <= 192) continue;
@@ -206,32 +210,32 @@ namespace CivOne.Screens
 			string productionFormat = "Production: {0} units.";
 			string tradeFormat = "Trade: {0}";
 			
-			_canvas.DrawText(name, 6, 1, 12, y);
+			this.DrawText(name, 6, 1, 12, y);
 			y += 8;
 			if (food != null)
 			{
 				if (foodIrrigation != null)
 					food = string.Format("{0} ({1} with Irrigation)", food, foodIrrigation);
-				_canvas.DrawText(string.Format(foodFormat, food), 6, 9, 16, y);
+				this.DrawText(string.Format(foodFormat, food), 6, 9, 16, y);
 				y += 8;
 			}
 			if (production != null)
 			{
 				if (productionMining != null)
 					production = string.Format("{0} ({1} with Mining)", production, productionMining);
-				_canvas.DrawText(string.Format(productionFormat, production), 6, 9, 16, y);
+				this.DrawText(string.Format(productionFormat, production), 6, 9, 16, y);
 				y += 8;
 			}
 			if (trade != null)
 			{
 				if (tradeRoads != null)
 					trade = string.Format("{0} ({1} with Roads)", trade, tradeRoads);
-				_canvas.DrawText(string.Format(tradeFormat, trade), 6, 9, 16, y);
+				this.DrawText(string.Format(tradeFormat, trade), 6, 9, 16, y);
 				y += 8;
 			}			
 			if (food == null && production == null && trade == null)
 			{
-				_canvas.DrawText("nothing", 6, 9, 16, y);
+				this.DrawText("nothing", 6, 9, 16, y);
 				y += 8;
 			}
 			y += 4;
@@ -309,11 +313,11 @@ namespace CivOne.Screens
 					break;
 			}
 			
-			_canvas.DrawText("*  -1 if government is Despotism/Anarchy.", 6, 9, 16, yy); yy += 8;
-			_canvas.DrawText("%  +1 if government is Republic/Democracy.", 6, 9, 16, yy); yy += 12;
+			this.DrawText("*  -1 if government is Despotism/Anarchy.", 6, 9, 16, yy); yy += 8;
+			this.DrawText("%  +1 if government is Republic/Democracy.", 6, 9, 16, yy); yy += 12;
 			
-			_canvas.DrawText(string.Format("Movement cost: {0} MP", move), 6, 12, 12, yy); yy += 8;
-			_canvas.DrawText(string.Format("Defense bonus: +{0}%", defense), 6, 12, 12, yy);
+			this.DrawText($"Movement cost: {move} MP", 6, 12, 12, yy); yy += 8;
+			this.DrawText($"Defense bonus: +{defense}%", 6, 12, 12, yy);
 		}
 
 		private void Close()
@@ -333,11 +337,10 @@ namespace CivOne.Screens
 
 			_update = false;
 			_singlePage = page;
-			Palette palette = Common.DefaultPalette;
-			if (page.Icon != null) palette = Resources.PaletteCombine(palette, page.Icon.Palette, 16);
-			_canvas = new Picture(320, 200, palette);
+			Palette = Common.DefaultPalette;
+			if (page.Icon != null)Palette.MergePalette(page.Icon.Palette, 16);
 			
-			_canvas.FillRectangle(15, 0, 0, 320, 200);
+			this.Clear(15);
 			DrawBorder(Common.Random.Next(2));
 
 			if (_singlePage != null && !Settings.CivilopediaText) _pageNumber++;

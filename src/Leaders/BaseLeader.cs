@@ -28,14 +28,14 @@ namespace CivOne.Leaders
 				_picture = Resources.Instance.LoadPIC(_picFile);
 			}
 
-			Picture output = _picture.GetPart(181, 67, 139, 133);
+			Picture output = _picture[181, 67, 139, 133];
 			switch (state)
 			{
 				case FaceState.Smiling:
-					output.AddLayer(_picture.GetPart(1, 51, 59, 49), _overlayX, _overlayY);
+					output.AddLayer(_picture[1, 51, 59, 49], _overlayX, _overlayY);
 					break;
 				case FaceState.Angry:
-					output.AddLayer(_picture.GetPart(1, 151, 59, 49), _overlayX, _overlayY);
+					output.AddLayer(_picture[1, 151, 59, 49], _overlayX, _overlayY);
 					break;
 				default:
 					// TODO: Add other states
@@ -59,7 +59,7 @@ namespace CivOne.Leaders
 				{
 					int col = (id % 7);
 					int row = (id - col) / 7;
-					_portraitSmall = Resources.Instance["SLAM2"].GetPart((28 * col) + 1, 34 * row, 27, 33);
+					_portraitSmall = Resources.Instance["SLAM2"][(28 * col) + 1, 34 * row, 27, 33];
 					_portraitSmall.ColourReplace(0, 191, 0, 0, 27, 33);
 					return;
 				}

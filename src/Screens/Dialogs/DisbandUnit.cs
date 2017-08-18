@@ -27,7 +27,7 @@ namespace CivOne.Screens.Dialogs
 			{
 				X = 103,
 				Y = 100,
-				Width = menuWidth,
+				MenuWidth = menuWidth,
 				ActiveColour = 11,
 				TextColour = 5,
 				FontId = 0
@@ -50,18 +50,18 @@ namespace CivOne.Screens.Dialogs
 		public DisbandUnit(City city, IUnit unit) : base(58, 72, TextPictures(city, unit).Max(b => b.Width) + 52, 62)
 		{
 			bool modernGovernment = Human.HasAdvance<Invention>();
-			Picture governmentPortrait = Icons.GovernmentPortrait(Human.Government, Advisor.Defense, modernGovernment);
+			IBitmap governmentPortrait = Icons.GovernmentPortrait(Human.Government, Advisor.Defense, modernGovernment);
 			
 			Palette palette = Common.DefaultPalette;
 			for (int i = 144; i < 256; i++)
 			{
 				palette[i] = governmentPortrait.Palette[i];
 			}
-			_canvas.SetPalette(palette);
+			this.SetPalette(palette);
 
 			DialogBox.AddLayer(governmentPortrait, 2, 2);
 			DialogBox.DrawText("Defense Minister:", 0, 15, 47, 4);
-			DialogBox.FillRectangle(11, 47, 11, 94, 1);
+			DialogBox.FillRectangle(47, 11, 94, 1, 11);
 
 			_textLines = TextPictures(city, unit);
 			for (int i = 0; i < _textLines.Length; i++)

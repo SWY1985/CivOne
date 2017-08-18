@@ -33,11 +33,10 @@ namespace CivOne.Screens
 				return true;
 			}
 			
-			AddLayer(_background);
-			
-			_canvas.DrawText(_textLines[_currentLine], 5, 15, 159, 7, TextAlign.Center);
-			_canvas.DrawText(_textLines[_currentLine], 5, 13, 159, 9, TextAlign.Center);
-			_canvas.DrawText(_textLines[_currentLine], 5, 14, 159, 8, TextAlign.Center);
+			this.AddLayer(_background)
+				.DrawText(_textLines[_currentLine], 5, 15, 159, 7, TextAlign.Center)
+				.DrawText(_textLines[_currentLine], 5, 13, 159, 9, TextAlign.Center)
+				.DrawText(_textLines[_currentLine], 5, 14, 159, 8, TextAlign.Center);
 			
 			_currentLine++;
 			return true;
@@ -46,8 +45,8 @@ namespace CivOne.Screens
 		public GameOver()
 		{
 			_background = Resources.Instance.LoadPIC("ARCH");
-			_canvas = new Picture(320, 200, _background.Palette);
-			AddLayer(_background);
+			Palette = _background.Palette;
+			this.AddLayer(_background);
 			
 			// Load text and replace strings
 			_textLines = TextFile.Instance.GetGameText("KING/ARCH");

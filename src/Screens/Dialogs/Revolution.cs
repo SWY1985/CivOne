@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using CivOne.Graphics;
 
 namespace CivOne.Screens.Dialogs
 {
@@ -25,7 +26,7 @@ namespace CivOne.Screens.Dialogs
 			{
 				X = 67,
 				Y = 92,
-				Width = 227,
+				MenuWidth = 227,
 				ActiveColour = 11,
 				TextColour = 5,
 				FontId = 0,

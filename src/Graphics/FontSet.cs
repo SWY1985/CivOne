@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Collections.Generic;
+using CivOne.IO;
 
 namespace CivOne.Graphics
 {
@@ -22,37 +23,16 @@ namespace CivOne.Graphics
 		private readonly byte _charBottomRow;
 		private readonly byte _fontSpaceX;
 		private readonly byte _fontSpaceY;
-		private readonly Palette _palette;
 		private Dictionary<char, byte> _charWidths = new Dictionary<char, byte>();
 		private Dictionary<char, byte[]> _characters = new Dictionary<char, byte[]>();
 		
-		public int FontHeight
-		{
-			get
-			{
-				return 1 + _charBottomRow - _charTopRow;
-			}
-		}
+		public int FontHeight => 1 + _charBottomRow - _charTopRow;
+		public byte FirstChar => _fontAsciiFirst;
+		public byte LastChar => _fontAsciiLast;
 		
-		public byte FirstChar
+		public Bytemap GetLetter(char character, byte colour)
 		{
-			get
-			{
-				return _fontAsciiFirst;
-			}
-		}
-		
-		public byte LastChar
-		{
-			get
-			{
-				return _fontAsciiLast;
-			}
-		}
-		
-		public Picture GetLetter(char character, byte colour)
-		{
-			if (!_charWidths.ContainsKey(character) || !_characters.ContainsKey(character)) return new Picture(8, 8);
+			if (!_charWidths.ContainsKey(character) || !_characters.ContainsKey(character)) return new Bytemap(8, 8);
 			int ww = _charWidths[character];
 
 			byte[] pixels = new byte[ww * FontHeight];
@@ -85,14 +65,11 @@ namespace CivOne.Graphics
 					}
 				}
 			}
-
-			return new Picture(ww, FontHeight, pixels, _palette);
+			return new Bytemap(ww, FontHeight).FromByteArray(pixels);
 		}
 
-		public Fontset(byte[] bytes, ushort offset, Palette palette)
+		public Fontset(byte[] bytes, ushort offset)
 		{
-			_palette = palette;
-
 			_fontAsciiFirst = bytes[offset - 8];
 			_fontAsciiLast = bytes[offset - 7];
 			_charByteLength = bytes[offset - 6];

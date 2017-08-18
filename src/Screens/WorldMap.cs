@@ -68,11 +68,10 @@ namespace CivOne.Screens
 		
 		public WorldMap()
 		{
-			_canvas = new Picture(320, 200, Resources.WorldMapTiles.Palette);
-			_canvas.FillRectangle(5, 0, 0, 320, 200);
+			Palette = Resources.WorldMapTiles.Palette;
+			this.Clear(5);
 
 			int startX = Game.Human.StartX - 40;
-			// int startY = (VisibleTop - Map.HEIGHT) + VisibleBottom; //(int)Math.Floor((double)(Map.HEIGHT - (VisibleBottom - VisibleTop)) / 2);
 			int startY = ((Map.HEIGHT - (VisibleBottom - VisibleTop)) / 2) - VisibleTop;
 			if (Settings.RevealWorld) startX = 0;
 			if (Settings.RevealWorld || VisibleTop == 0 || VisibleBottom == Map.HEIGHT) startY = 0;
@@ -98,16 +97,16 @@ namespace CivOne.Screens
 				while (dx > 320) dx -= 320;
 				while (dx < 0) dx += 320;
 
-				AddLayer(Resources.WorldMapTiles.GetPart(xx, yy, 4, 4), dx, dy);
+				this.AddLayer(Resources.WorldMapTiles[xx, yy, 4, 4], dx, dy);
 				
 				if ((city = tile.City) != null && city.Size > 0)
 				{
-					_canvas.FillRectangle(Common.ColourLight[city.Owner], dx, dy, 4, 4);
+					this.FillRectangle(dx, dy, 4, 4, Common.ColourLight[city.Owner]);
 				}
 				else if ((units = tile.Units).Length > 0)
 				{
-					_canvas.FillRectangle(5, dx + 1, dy + 1, 3, 3);
-					_canvas.FillRectangle(Common.ColourLight[units[0].Owner], dx, dy, 3, 3);
+					this.FillRectangle(dx + 1, dy + 1, 3, 3, 5)
+						.FillRectangle(dx, dy, 3, 3, Common.ColourLight[units[0].Owner]);
 				}
 			}
 		}

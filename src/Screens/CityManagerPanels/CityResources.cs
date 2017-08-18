@@ -17,7 +17,7 @@ namespace CivOne.Screens.CityManagerPanels
 	{
 		private readonly City _city;
 
-		private readonly Picture _background;
+		private readonly IBitmap _background;
 		
 		private bool _update = true;
 
@@ -34,17 +34,17 @@ namespace CivOne.Screens.CityManagerPanels
 
 			for (int i = 0; (i < costs) && (i < costs + income); i++)
 			{
-				AddLayer(Icons.Food, 1 + (width * i), 9);
+				this.AddLayer(Icons.Food, 1 + (width * i), 9);
 			}
 			for (int i = 0; i < income; i++)
 			{
-				AddLayer(Icons.Food, 5 + (width * costs) + (width * i), 9);
+				this.AddLayer(Icons.Food, 5 + (width * costs) + (width * i), 9);
 			}
 			if (income < 0)
 			{
 				for (int i = 0; i < -income; i++)
 				{
-					AddLayer(Icons.FoodLoss, 5 + (width * (costs + income)) + (width * i), 9);
+					this.AddLayer(Icons.FoodLoss, 5 + (width * (costs + income)) + (width * i), 9);
 				}
 			}
 		}
@@ -62,17 +62,17 @@ namespace CivOne.Screens.CityManagerPanels
 			
 			for (int i = 0; (i < costs) && (i < costs + income); i++)
 			{
-				AddLayer(Icons.Shield, 1 + (width * i), 17);
+				this.AddLayer(Icons.Shield, 1 + (width * i), 17);
 			}
 			for (int i = 0; i < income; i++)
 			{
-				AddLayer(Icons.Shield, (costs > 0 ? 5 : 1) + (width * costs) + (width * i), 17);
+				this.AddLayer(Icons.Shield, (costs > 0 ? 5 : 1) + (width * costs) + (width * i), 17);
 			}
 			if (income < 0)
 			{
 				for (int i = 0; i < -income; i++)
 				{
-					AddLayer(Icons.ShieldLoss, 5 + (8 * (costs + income)) + (width * i), 17);
+					this.AddLayer(Icons.ShieldLoss, 5 + (8 * (costs + income)) + (width * i), 17);
 				}
 			}
 		}
@@ -88,7 +88,7 @@ namespace CivOne.Screens.CityManagerPanels
 			
 			for (int i = 0; i < _city.TradeTotal; i++)
 			{
-				AddLayer(Icons.Trade, 1 + (width * i), 25);
+				this.AddLayer(Icons.Trade, 1 + (width * i), 25);
 			}
 			
 			width = 8;
@@ -101,19 +101,19 @@ namespace CivOne.Screens.CityManagerPanels
 			int xx = 1;
 			for (int i = 0; i < _city.Luxuries; i++)
 			{
-				AddLayer(Icons.Luxuries, xx, 33);
+				this.AddLayer(Icons.Luxuries, xx, 33);
 				xx += width;
 			}
 			if (_city.Luxuries > 0) xx += 4;
 			for (int i = 0; i < _city.Taxes; i++)
 			{
-				AddLayer(Icons.Taxes, xx, 33);
+				this.AddLayer(Icons.Taxes, xx, 33);
 				xx += width;
 			}
 			if (_city.Taxes > 0) xx += 4;
 			for (int i = 0; i < _city.Science; i++)
 			{
-				AddLayer(Icons.Science, xx, 33);
+				this.AddLayer(Icons.Science, xx, 33);
 				xx += width;
 			}
 		}
@@ -122,11 +122,10 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			if (_update)
 			{
-				_canvas.Tile(_background);
-				_canvas.AddBorder(1, 1, 0, 0, 123, 43);
-				_canvas.FillRectangle(1, 1, 1, 121, 8);
-				_canvas.FillRectangle(0, 123, 0, 1, 43);
-				_canvas.DrawText($"City Resources", 1, 17, 6, 2, TextAlign.Left);
+				this.Tile(_background)
+					.DrawRectangle(colour: 1)
+					.FillRectangle(1, 1, 121, 8, 1)
+					.DrawText($"City Resources", 1, 17, 6, 2, TextAlign.Left);
 
 				DrawFood();
 				DrawShields();
@@ -142,12 +141,12 @@ namespace CivOne.Screens.CityManagerPanels
 			_update = true;
 		}
 
-		public CityResources(City city, Picture background)
+		public CityResources(City city, IBitmap background) : base(123, 43)
 		{
 			_city = city;
 			_background = background;
 
-			_canvas = new Picture(124, 43, background.Palette);
+			Palette = background.Palette.Copy();
 		}
 	}
 }

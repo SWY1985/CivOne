@@ -11,6 +11,7 @@ using System;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.IO;
 
 namespace CivOne.Screens
 {
@@ -18,8 +19,10 @@ namespace CivOne.Screens
 	{
 		private readonly MouseCursor _cursor;
 		
+		private int CanvasWidth => RuntimeHandler.Instance.CanvasWidth;
+		private int CanvasHeight => RuntimeHandler.Instance.CanvasHeight;
 		private bool CanExpand => Common.HasAttribute<Expand>(this);
-		private bool SizeChanged => (this.GetWidth() != Runtime.CanvasWidth || this.GetHeight() != Runtime.CanvasHeight);
+		private bool SizeChanged => (this.Width() != CanvasWidth || this.Height() != CanvasHeight);
 
 		protected event ResizeEventHandler OnResize;
 
@@ -41,7 +44,7 @@ namespace CivOne.Screens
 
 		private void Resize(int width, int height)
 		{
-			_canvas = new Picture(width, height, _canvas.Palette);
+			Bitmap = new Bytemap(width, height);
 			OnResize?.Invoke(this, new ResizeEventArgs(width, height));
 		}
 
@@ -73,6 +76,20 @@ namespace CivOne.Screens
 		protected BaseScreen(MouseCursor cursor = MouseCursor.None)
 		{
 			_cursor = cursor;
+			if (CanExpand)
+			{
+				Bitmap = new Bytemap(CanvasWidth, CanvasHeight);
+			}
+			else
+			{
+				Bitmap = new Bytemap(320, 200);
+			}
+		}
+
+		protected BaseScreen(int width, int height, MouseCursor cursor = MouseCursor.None)
+		{
+			_cursor = cursor;
+			Bitmap = new Bytemap(width, height);
 		}
 	}
 }

@@ -18,7 +18,7 @@ namespace CivOne.Screens.CityManagerPanels
 	{
 		private readonly City _city;
 
-		private readonly Picture _background;
+		private readonly IBitmap _background;
 		
 		private bool _update = true;
 		
@@ -26,9 +26,8 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			if (_update)
 			{
-				_canvas.Tile(_background);
-				_canvas.AddBorder(1, 1, 0, 0, 123, 38);
-				_canvas.FillRectangle(0, 123, 0, 1, 38);
+				this.Tile(_background)
+					.DrawRectangle(colour: 1);
 
 				IUnit[] units = _city.Units.Take(14).ToArray();
 				for (int i = 0; i < units.Length; i++)
@@ -57,15 +56,15 @@ namespace CivOne.Screens.CityManagerPanels
 						if (food > 0)
 						{
 							for (int ix = 0; ix < food; ix++)
-								AddLayer(Icons.Food, xx + (4 * ix), yy + 12);
+								this.AddLayer(Icons.Food, xx + (4 * ix), yy + 12);
 						}
 						if (shields > 0)
 						{
-							AddLayer(Icons.Shield, xx + 8, yy + 12);
+							this.AddLayer(Icons.Shield, xx + 8, yy + 12);
 						}
 					}
 
-					AddLayer(units[i].GetUnit(units[0].Owner, showState: false), xx, yy);
+					this.AddLayer(units[i].GetUnit(units[0].Owner, showState: false), xx, yy);
 				}
 				
 				_update = false;
@@ -73,12 +72,12 @@ namespace CivOne.Screens.CityManagerPanels
 			return true;
 		}
 
-		public CityUnits(City city, Picture background)
+		public CityUnits(City city, IBitmap background) : base(123, 38)
 		{
 			_city = city;
 			_background = background;
 
-			_canvas = new Picture(124, 38, background.Palette);
+			Palette = background.Palette.Copy();
 		}
 	}
 }

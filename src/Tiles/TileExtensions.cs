@@ -91,7 +91,7 @@ namespace CivOne.Tiles
 			return output;
 		}
 
-		public static Picture UnitsToPicture(this ITile tile)
+		public static IBitmap UnitsToPicture(this ITile tile)
 		{
 			if (tile == null || tile.Units.Length == 0 || (tile.Units.Length == 1 && tile.Units[0] == Game.MovingUnit)) return null;
 			
@@ -101,8 +101,8 @@ namespace CivOne.Tiles
 			bool stack = (units.Length > 1);
 			IUnit unit = units.First();
 			
-			Picture output = new Picture(16, 16, Palette);
-			using (Picture unitPicture = unit.GetUnit(unit.Owner))
+			IBitmap output = new Picture(16, 16, Palette);
+			using (IBitmap unitPicture = unit.GetUnit(unit.Owner))
 			{
 				output.AddLayer(unitPicture);
 				if (stack)

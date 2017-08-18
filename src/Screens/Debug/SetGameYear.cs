@@ -65,15 +65,15 @@ namespace CivOne.Screens.Debug
 
 		public SetGameYear()
 		{
-			_canvas = new Picture(320, 200, Common.Screens.Last().OriginalColours);
+			Palette = Common.Screens.Last().OriginalColours;
 
-			_canvas.FillRectangle(11, 80, 80, 161, 33);
-			_canvas.FillRectangle(15, 81, 81, 159, 31);
-			_canvas.DrawText("Set Game Year...", 0, 5, 88, 82);
-			_canvas.FillRectangle(5, 88, 95, 105, 14);
-			_canvas.FillRectangle(15, 89, 96, 103, 12);
+			this.FillRectangle(80, 80, 161, 33, 11)
+				.FillRectangle(81, 81, 159, 31, 15)
+				.DrawText("Set Game Year...", 0, 5, 88, 82)
+				.FillRectangle(88, 95, 105, 14, 5)
+				.FillRectangle(89, 96, 103, 12, 15);
 
-			_input = new Input(_canvas.Palette, Common.TurnToYear(Game.GameTurn).ToString(), 0, 5, 11, 90, 97, 101, 10, 5);
+			_input = new Input(Palette, Common.TurnToYear(Game.GameTurn).ToString(), 0, 5, 11, 90, 97, 101, 10, 5);
 			_input.Accept += GameYear_Accept;
 			_input.Cancel += GameYear_Cancel;
 		}

@@ -20,7 +20,7 @@ namespace CivOne.Screens.Reports
 	{
 		private bool _update = true;
 
-		protected readonly Picture[] Portrait = new Picture[4];
+		protected readonly IBitmap[] Portrait = new Picture[4];
 		
 		protected override bool HasUpdate(uint gameTick)
 		{
@@ -48,18 +48,16 @@ namespace CivOne.Screens.Reports
 			{
 				Portrait[i] = Icons.GovernmentPortrait(Human.Government, (Advisor)Enum.Parse(typeof(Advisor), $"{i}"), modernGovernment); 
 			}
-			Palette palette = Common.DefaultPalette;
-			for (int i = 144; i < 256; i++)
+			using (Palette palette = Common.DefaultPalette)
 			{
-				palette[i] = Portrait[0].Palette[i];
+				palette.MergePalette(Portrait[0].Palette, 144);
+				Palette = palette;
 			}
-
-			_canvas = new Picture(320, 200, palette);
 			
-			_canvas.FillRectangle(backgroundColour, 0, 0, 320, 200);
-			_canvas.DrawText(title, 0, 15, 160, 2, TextAlign.Center);
-			_canvas.DrawText(string.Format("{0} of the {1}", "Empire", Human.TribeNamePlural), 0, 15, 160, 10, TextAlign.Center);
-			_canvas.DrawText(string.Format("{0} {1}: {2}", "Emperor", Human.LeaderName, Game.GameYear), 0, 15, 160, 18, TextAlign.Center);
+			this.Clear(backgroundColour)
+				.DrawText(title, 0, 15, 160, 2, TextAlign.Center)
+				.DrawText(string.Format("{0} of the {1}", "Empire", Human.TribeNamePlural), 0, 15, 160, 10, TextAlign.Center)
+				.DrawText(string.Format("{0} {1}: {2}", "Emperor", Human.LeaderName, Game.GameYear), 0, 15, 160, 18, TextAlign.Center);
 		}
 	}
 }

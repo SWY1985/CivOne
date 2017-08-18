@@ -17,26 +17,11 @@ namespace CivOne.Tiles
 {
 	internal abstract class BaseTile : BaseInstance, ITile
 	{
-		public virtual Picture Icon
-		{
-			get
-			{
-				return TileResources.GetIcon(Type);
-			}
-		}
+		public virtual IBitmap Icon => TileResources.GetIcon(Type);
 		public Terrain Type { get; protected set; }
 		public string Name { get; protected set; }
-		public byte PageCount
-		{
-			get
-			{
-				return 1;
-			}
-		}
-		public Picture DrawPage(byte pageNumber)
-		{
-			return new Picture(320, 200);
-		}
+		public byte PageCount => 1;
+		public Picture DrawPage(byte pageNumber) => new Picture(320, 200);
 		
 		public int X { get; private set; }
 		public int Y { get; private set; }
@@ -185,43 +170,14 @@ namespace CivOne.Tiles
 			Visited = (byte)(Visited + (0x01 << owner));
 		}
 
-		public virtual bool IsOcean
-		{
-			get
-			{
-				return false;
-			}
-		}
+		public virtual bool IsOcean => false;
 		
 		// This method is used to calculate whether a river or grassland tile is special.
-		protected bool AlternateSpecial()
-		{
-			return ((X + Y) % 4 == 0) || ((X + Y) % 4 == 3);
-		}
+		protected bool AlternateSpecial() => ((X + Y) % 4 == 0) || ((X + Y) % 4 == 3);
+		public City City => Game.GetCity(X, Y);
+		public IUnit[] Units => Game.GetUnits(X, Y);
 
-		public City City
-		{
-			get
-			{
-				return Game.GetCity(X, Y);
-			}
-		}
-
-		public IUnit[] Units
-		{
-			get
-			{
-				return Game.GetUnits(X, Y);
-			}
-		}
-
-		public ITile this[int relativeX, int relativeY]
-		{
-			get
-			{
-				return Map[X + relativeX, Y + relativeY];
-			}
-		}
+		public ITile this[int relativeX, int relativeY] => Map[X + relativeX, Y + relativeY];
 		
 		protected BaseTile(int x, int y, bool special = false)
 		{

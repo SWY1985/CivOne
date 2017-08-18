@@ -61,17 +61,17 @@ namespace CivOne.Screens
 
 			_background = Resources.Instance.LoadPIC($"BACK{govId}{(modern ? "M" : "A")}");
 
-			Picture.ReplaceColours(_background, 0, 5);
+			_background.ColourReplace(0, 5);
 			Picture portrait = _player.Civilization.Leader.GetPortrait();
 			
-			_canvas = new Picture(320, 200, _background.Palette);
-			for (int i = 64; i < 144; i++)
+			using (Palette palette = _background.Palette.Copy())
 			{
-				_canvas.Palette[i] = portrait.Palette[i];
+				palette.MergePalette(portrait.Palette, 64, 80);
+				Palette = palette;
 			}
 			
-			AddLayer(_background);
-			AddLayer(portrait, 90, 0);
+			this.AddLayer(_background)
+				.AddLayer(portrait, 90, 0);
 		}
 	}
 }

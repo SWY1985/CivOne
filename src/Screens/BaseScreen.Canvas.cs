@@ -15,15 +15,42 @@ using CivOne.IO;
 
 namespace CivOne.Screens
 {
-	public abstract partial class BaseScreen
+	public abstract partial class BaseScreen : IDefaultTextSettings
 	{
-		internal static Resources Resources => Resources.Instance;
+		public TextSettings DefaultTextSettings { get; set; }
 
-		protected Picture _canvas = new Picture(320, 200);
+		protected int Width => Bitmap.Width;
+		protected int Height => Bitmap.Height;
+
+		private Bytemap _bitmap;
+		public Bytemap Bitmap
+		{
+			get
+			{
+				return _bitmap;
+			}
+			protected set
+			{
+				_bitmap?.Dispose();
+				_bitmap = value;
+			}
+		}
+		private Palette _palette, _originalColours;
+		public Palette Palette
+		{
+			get
+			{
+				return _palette;
+			}
+			set
+			{
+				_palette = value.Copy();
+				if (_originalColours == null)
+					_originalColours = value.Copy();
+			}
+		}
+		public Palette OriginalColours => _originalColours;
 		
-		protected IBitmap AddLayer(IBitmap bitmap, Point point, bool dispose = false) => _canvas.AddLayer(bitmap, point.X, point.Y, dispose);
-		protected IBitmap AddLayer(IBitmap bitmap, int x = 0, int y = 0, bool dispose = false) => _canvas.AddLayer(bitmap, x, y, dispose);
-
 		protected void DrawPanel(int x, int y, int width, int height, bool border = true)
 		{
 			int xx = x, yy = y, ww = width, hh = height;
@@ -33,12 +60,11 @@ namespace CivOne.Screens
 				yy++;
 				ww -= 2;
 				hh -= 2;
-				_canvas.FillRectangle(5, x, y, width, height);
+				this.DrawRectangle(x, y, width, height);
 			}
-			Picture panel = new Picture(ww, hh);
-			panel.Tile(Patterns.PanelGrey);
-			panel.AddBorder(15, 8, 0, 0, ww, hh);
-			_canvas.AddLayer(panel, xx, yy);
+			this.AddLayer(new Picture(ww, hh)
+				.Tile(Patterns.PanelGrey)
+				.DrawRectangle3D(), xx, yy, dispose: true);
 		}
 
 		protected void DrawBorder(int border)
@@ -49,40 +75,55 @@ namespace CivOne.Screens
 			for (int yy = 0; yy < 2; yy++)
 			for (int xx = 0; xx < 4; xx++)
 			{
-				borders[index] = Resources["SP299"].GetPart(((border == 0) ? 192 : 224) + (8 * xx), 120 + (8 * yy), 8, 8);
+				borders[index] = Resources["SP299"][((border == 0) ? 192 : 224) + (8 * xx), 120 + (8 * yy), 8, 8];
 				index++;
 			}
 			
-			for (int x = 8; x < _canvas.Width - 8; x += 8)
+			for (int x = 8; x < Width - 8; x += 8)
 			{
-				AddLayer(borders[4], x, 0);
-				AddLayer(borders[6], x, _canvas.Height - 8);
-			}
-			for (int y = 8; y < _canvas.Height - 8; y += 8)
+				this.AddLayer(borders[4], x, 0)
+					.AddLayer(borders[6], x, Height - 8);
+	}
+			for (int y = 8; y < Height - 8; y += 8)
 			{
-				AddLayer(borders[7], 0, y);
-				AddLayer(borders[5], _canvas.Width - 8, y);
+				this.AddLayer(borders[7], 0, y)
+					.AddLayer(borders[5], Width - 8, y);
 			}
-			AddLayer(borders[0], 0, 0);
-			AddLayer(borders[1], _canvas.Width - 8, 0);
-			AddLayer(borders[2], 0, _canvas.Height - 8);
-			AddLayer(borders[3], _canvas.Width - 8, _canvas.Height - 8);
+			this.AddLayer(borders[0], 0, 0)
+				.AddLayer(borders[1], Width - 8, 0)
+				.AddLayer(borders[2], 0, Height - 8)
+				.AddLayer(borders[3], Width - 8, Height - 8);
 		}
 
 		protected void DrawButton(string text, byte colour, byte colourDark, int x, int y, int width)
 		{
-			_canvas.FillRectangle(7, x, y, width, 1);
-			_canvas.FillRectangle(7, x, y + 1, 1, 8);
-			_canvas.FillRectangle(colourDark, x + 1, y + 8, width - 1, 1);
-			_canvas.FillRectangle(colourDark, x + width - 1, y, 1, 8);
-			_canvas.FillRectangle(colour, x + 1, y + 1, width - 2, 7);
-			_canvas.DrawText(text, 1, colourDark, x + (int)Math.Ceiling((double)width / 2), y + 2, TextAlign.Center);
+			this.FillRectangle(x, y, width, 1, 7)
+				.FillRectangle(x, y + 1, 1, 8, 7)
+				.FillRectangle(x + 1, y + 8, width - 1, 1, colourDark)
+				.FillRectangle(x + width - 1, y, 1, 8, colourDark)
+				.FillRectangle(x + 1, y + 1, width - 2, 7, colour)
+				.DrawText(text, 1, colourDark, x + (int)Math.Ceiling((double)width / 2), y + 2, TextAlign.Center);
 		}
-		
-		public Bytemap Bitmap => _canvas.Bitmap;
-		public Palette Palette => _canvas.Palette;
-		public Palette OriginalColours => _canvas.OriginalColours;
 
-		public virtual void Dispose() => _canvas.Dispose();
+		//
+		public void ResetPalette()
+		{
+			for (int i = 0; i < 256; i++)
+				Palette[i] = OriginalColours[i];
+		}
+
+		public void SetPalette(Palette palette)
+		{
+			for (int i = 1; i < palette.Length && i < 256; i++)
+				Palette[i] = palette[i];
+		}
+		//
+
+		public virtual void Dispose()
+		{
+			Bitmap?.Dispose();
+			Palette?.Dispose();
+			OriginalColours?.Dispose();
+		}
 	}
 }

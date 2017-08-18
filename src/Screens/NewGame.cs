@@ -30,8 +30,8 @@ namespace CivOne.Screens
 		
 		private readonly Picture _background;
 
-		private int OffsetX => ((_canvas.Width - 320) / 2);
-		private int OffsetY => ((_canvas.Height - 200) / 2);
+		private int OffsetX => ((Width - 320) / 2);
+		private int OffsetY => ((Height - 200) / 2);
 
 		private int _difficulty = -1, _competition = -1, _tribe = -1;
 		private string _leaderName = null, _tribeName = null, _tribeNamePlural = null;
@@ -44,7 +44,7 @@ namespace CivOne.Screens
 				Title = title,
 				X = OffsetX + 163,
 				Y = OffsetY + 39,
-				Width = 114,
+				MenuWidth = 114,
 				TitleColour = 3,
 				ActiveColour = 11,
 				TextColour = 5,
@@ -88,7 +88,7 @@ namespace CivOne.Screens
 			if (Common.HasScreenType<Input>()) return;
 			
 			ICivilization civ = _tribesAvailable[_tribe];
-			Input input = new Input(_canvas.Palette, civ.Leader.Name, 6, 5, 11, OffsetX + 168, OffsetY + 105, 109, 10, 13);
+			Input input = new Input(Palette, civ.Leader.Name, 6, 5, 11, OffsetX + 168, OffsetY + 105, 109, 10, 13);
 			input.Accept += LeaderName_Accept;
 			input.Cancel += LeaderName_Accept;
 			Common.AddScreen(input);
@@ -127,11 +127,11 @@ namespace CivOne.Screens
 			if (sender.GetType() != typeof(Menu)) return;
 			
 			_tribe = Common.Random.Next(_competition);
-			AddLayer((Menu)sender);
+			this.AddLayer((Menu)sender);
 			CloseMenus();
 			
 			ICivilization civ = _tribesAvailable[_tribe];
-			Input input = new Input(_canvas.Palette, civ.NamePlural, 6, 5, 11, OffsetX + 168, OffsetY + 105, 109, 10, 11);
+			Input input = new Input(Palette, civ.NamePlural, 6, 5, 11, OffsetX + 168, OffsetY + 105, 109, 10, 11);
 			input.Accept += TribeName_Accept;
 			input.Cancel += TribeName_Accept;
 			Common.AddScreen(input);
@@ -163,17 +163,17 @@ namespace CivOne.Screens
 
 				int x = (pictureId % 2) == 0 ? 21 : 80;
 				int y = 6 + (35 * pictureId);
-				return _background.GetPart(x, y, 53, 47);
+				return _background[x, y, 53, 47];
 			}
 		}
 		
 		private void DrawInputBox(string text)
 		{
-			_canvas.FillRectangle(11, OffsetX + 158, OffsetY + 88, 161, 33);
-			_canvas.FillRectangle(15, OffsetX + 159, OffsetY + 89, 159, 31);
-			_canvas.DrawText(text, 6, 5, OffsetX + 166, OffsetY + 90);
-			_canvas.FillRectangle(5, OffsetX + 166, OffsetY + 103, 113, 14);
-			_canvas.FillRectangle(15, OffsetX + 167, OffsetY + 104, 111, 12);
+			this.FillRectangle(OffsetX + 158, OffsetY + 88, 161, 33, 11)
+				.FillRectangle(OffsetX + 159, OffsetY + 89, 159, 31, 15)
+				.DrawText(text, 6, 5, OffsetX + 166, OffsetY + 90)
+				.FillRectangle(OffsetX + 166, OffsetY + 103, 113, 14, 5)
+				.FillRectangle(OffsetX + 167, OffsetY + 104, 111, 12, 15);
 		}
 		
 		protected override bool HasUpdate(uint gameTick)
@@ -191,16 +191,16 @@ namespace CivOne.Screens
 				ICivilization civ = _tribesAvailable[_tribe];
 				Game.CreateGame(_difficulty, _competition, civ, _leaderName, _tribeName, _tribeNamePlural);
 				
-				_canvas.FillRectangle(15, 0, 0, _canvas.Width, _canvas.Height);
+				this.Clear(15);
 				DrawBorder(Common.Random.Next(2));
 				
-				AddLayer(DifficultyPicture, OffsetX + 134, OffsetY + 20);
+				this.AddLayer(DifficultyPicture, OffsetX + 134, OffsetY + 20);
 				
 				int yy = OffsetY + 81;
 				foreach (string textLine in TextFile.Instance.GetGameText("KING/INIT"))
 				{
 					string line = textLine.Replace("$RPLC1", Human.LeaderName).Replace("$US", Human.TribeNamePlural).Replace("^", "");
-					_canvas.DrawText(line, 0, 5, OffsetX + 88, yy);
+					this.DrawText(line, 0, 5, OffsetX + 88, yy);
 					yy += 8;
 					Log(line);
 				}
@@ -216,7 +216,7 @@ namespace CivOne.Screens
 
 				foreach (string line in sb.ToString().Split('|'))
 				{
-					_canvas.DrawText(line, 0, 5, OffsetX + 88, yy);
+					this.DrawText(line, 0, 5, OffsetX + 88, yy);
 					Log(line);
 					yy += 8;
 				}
@@ -254,24 +254,24 @@ namespace CivOne.Screens
 			}
 			
 			// Draw background
-			_canvas = new Picture(_canvas.Width, _canvas.Height, _background.Palette);
+			Bitmap = new Bytemap(Width, Height);
 			if (_difficulty == -1)
 			{
-				AddLayer(_background, OffsetX, OffsetY);
+				this.AddLayer(_background, OffsetX, OffsetY);
 			}
 			else
 			{
 				if (_tribe == -1)
-					AddLayer(_background.GetPart(140, 0, 180, 200), OffsetX + 140, OffsetY);
+					this.AddLayer(_background[140, 0, 180, 200], OffsetX + 140, OffsetY);
 				int pictureStack = (_competition <= 0) ? 1 : _competition;
 				for (int i = pictureStack; i > 0; i--)
 				{
-					AddLayer(DifficultyPicture, OffsetX + 22 + (i * 2), OffsetY + 100 + (i * 3));
+					this.AddLayer(DifficultyPicture, OffsetX + 22 + (i * 2), OffsetY + 100 + (i * 3));
 				}
 				
 				if (_tribe != -1 && _leaderName == null)
 				{
-					_canvas.DrawText(_tribeNamePlural, 6, 15, OffsetX + 47, OffsetY + 92, TextAlign.Center);
+					this.DrawText(_tribeNamePlural, 6, 15, OffsetX + 47, OffsetY + 92, TextAlign.Center);
 					DrawInputBox("Your Name...");
 				}
 			}
@@ -305,7 +305,7 @@ namespace CivOne.Screens
 
 		private void Resize(object sender, ResizeEventArgs args)
 		{
-			_canvas.FillRectangle(5, 0, 0, args.Width, args.Height);
+			this.FillRectangle(0, 0, args.Width, args.Height, 5);
 			if (_leaderName == null)
 			{
 				CloseMenus();
@@ -324,8 +324,8 @@ namespace CivOne.Screens
 			
 			_background = Resources.Instance.LoadPIC("DIFFS");
 			
-			_canvas = new Picture(320, 200, _background.Palette);
-			AddLayer(_background);
+			Palette = _background.Palette.Copy();
+			this.AddLayer(_background);
 			
 			if (Settings.Instance.DeityEnabled)
 				_menuItemsDifficulty = new[] { "Chieftain (easiest)", "Warlord", "Prince", "King", "Emperor", "Deity (toughest)" };

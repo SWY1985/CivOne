@@ -20,7 +20,7 @@ namespace CivOne.Screens
 		
 		protected override bool HasUpdate(uint gameTick)
 		{
-			_canvas.Cycle(224, 254);
+			this.Cycle(224, 254);
 			return true;
 		}
 		
@@ -50,13 +50,12 @@ namespace CivOne.Screens
 					break;
 			}
 			
-			_canvas = new Picture(320, 200, logo.Palette);
-			AddLayer(background, 0, 0);
-			AddLayer(logo, 0, 0);
-			
-			_canvas.DrawText("One more turn...", 3, _textColours[0], 160, 160, TextAlign.Center);
-			_canvas.DrawText("One more turn...", 3, _textColours[2], 160, 162, TextAlign.Center);
-			_canvas.DrawText("One more turn...", 3, _textColours[1], 160, 161, TextAlign.Center);
+			Palette = logo.Palette;
+			this.AddLayer(background, 0, 0)
+				.AddLayer(logo, 0, 0)
+				.DrawText("One more turn...", 3, _textColours[0], 160, 160, TextAlign.Center)
+				.DrawText("One more turn...", 3, _textColours[2], 160, 162, TextAlign.Center)
+				.DrawText("One more turn...", 3, _textColours[1], 160, 161, TextAlign.Center);
 		}
 	}
 }

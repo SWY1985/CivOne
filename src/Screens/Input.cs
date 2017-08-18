@@ -60,7 +60,7 @@ namespace CivOne.Screens
 		
 		protected override bool HasUpdate(uint gameTick)
 		{
-			_canvas.FillRectangle(0, 0, 0, 320, 200);
+			Bitmap.Clear();
 			int fontHeight = Resources.Instance.GetFontHeight(_fontId);
 			int cursorPosition = _cursorPosition;
 			if (cursorPosition < 0) cursorPosition = 0;
@@ -76,7 +76,7 @@ namespace CivOne.Screens
 					
 					if (i == cursorPosition)
 					{
-						_canvas.FillRectangle(_cursorColour, xx, Y, letterWidth + 1, _height);
+						this.FillRectangle(xx, Y, letterWidth + 1, _height, _cursorColour);
 						break;
 					}
 					
@@ -84,7 +84,7 @@ namespace CivOne.Screens
 				}
 			}
 			if (_text.Length > 0)
-				_canvas.DrawText(_text, _fontId, _textColour, X, yy);
+				this.DrawText(_text, _fontId, _textColour, X, yy);
 			
 			return true;
 		}
@@ -174,10 +174,17 @@ namespace CivOne.Screens
 		{
 			Destroy();
 		}
+
+		private void Resize(object sender, ResizeEventArgs args)
+		{
+			HasUpdate(0);
+		}
 		
 		public Input(Palette palette, string text, int fontId, byte textColour, byte cursorColour, int x, int y, int width, int height, int maxLength)
 		{
-			_canvas = new Picture(320, 200, palette);
+			OnResize += Resize;
+
+			Palette = palette.Copy();
 			_text = text;
 			_fontId = fontId;
 			_textColour = textColour;
@@ -188,17 +195,12 @@ namespace CivOne.Screens
 			_height = height;
 			_maxLength = maxLength;
 		}
-
-		private void Resize(object sender, ResizeEventArgs args)
-		{
-			HasUpdate(0);
-		}
 		
 		public Input(Palette palette, int fontId, byte textColour, byte cursorColour, int x, int y, int width, int height, int maxLength)
 		{
 			OnResize += Resize;
 
-			_canvas = new Picture(320, 200, palette);
+			Palette = palette.Copy();
 			_text = "";
 			_fontId = fontId;
 			_textColour = textColour;

@@ -39,9 +39,10 @@ namespace CivOne.Screens
 				int height = (16 * _units.Length) + 6;
 				int yy = (200 - height) / 2;
 
-				Picture dialog = new Picture(WIDTH + (4 - (WIDTH % 4)), height);
-				dialog.FillRectangle(3, 1, 1, WIDTH - 2, height - 2);
-				dialog.AddBorder(15, 8, 0, 0, WIDTH, height);
+				Picture dialog = new Picture(WIDTH, height)
+					.FillRectangle(1, 1, WIDTH - 2, height - 2, 3)
+					.DrawRectangle3D()
+					.As<Picture>();
 
 				for (int i = 0; i < _units.Length; i++)
 				{
@@ -51,8 +52,8 @@ namespace CivOne.Screens
 					dialog.DrawText(unit.Home == null ? "NONE" : unit.Home.Name, 0, 14, 27, (i * 16) + 12);
 				}
 
-				_canvas.FillRectangle(5, XX - 1, yy - 1, WIDTH + 2, height + 2);
-				AddLayer(dialog, XX, yy);
+				this.FillRectangle(XX - 1, yy - 1, WIDTH + 2, height + 2, 5)
+					.AddLayer(dialog, XX, yy);
 				
 				return true;
 			}
@@ -94,7 +95,7 @@ namespace CivOne.Screens
 			_y = y;
 			_units = Map[_x, _y].Units.Take(12).ToArray();
 
-			_canvas = new Picture(320, 200, Common.TopScreen.Palette);
+			Palette = Common.TopScreen.Palette;
 		}
 	}
 }

@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Collections.Generic;
+using CivOne.IO;
 
 namespace CivOne.Graphics
 {
@@ -16,36 +17,16 @@ namespace CivOne.Graphics
 		private const bool B0 = false, B1 = true;
 		private readonly Dictionary<char, bool[,]> _characters;
 
-		public int FontHeight
-		{
-			get
-			{
-				return 8;
-			}
-		}
+		public int FontHeight => 8;
+		public byte FirstChar => 32;
+		public byte LastChar => 127;
 
-		public byte FirstChar
+		public Bytemap GetLetter(char character, byte colour)
 		{
-			get
-			{
-				return 32;
-			}
-		}
-
-		public byte LastChar
-		{
-			get
-			{
-				return 127;
-			}
-		}
-
-		public Picture GetLetter(char character, byte colour)
-		{
-			if (!_characters.ContainsKey(character)) return new Picture(7, 7);
+			if (!_characters.ContainsKey(character)) return new Bytemap(7, 7);
 
 			bool[,] pixels = _characters[character];
-			Picture output = new Picture(pixels.GetLength(0), pixels.GetLength(1));
+			Bytemap output = new Bytemap(pixels.GetLength(0), pixels.GetLength(1));
 			for (int yy = 0; yy < pixels.GetLength(1); yy++)
 			for (int xx = 0; xx < pixels.GetLength(0); xx++)
 			{

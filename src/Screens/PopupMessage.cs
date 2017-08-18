@@ -41,24 +41,24 @@ namespace CivOne.Screens
 
 		public PopupMessage(byte colour, string title, string[] message) : base(MouseCursor.Pointer)
 		{
-			_canvas = new Picture(320, 200, Common.DefaultPalette);
+			Palette = Common.DefaultPalette;
 			
 			byte colourLight = (byte)(colour + 8);
 			int lineHeight = Resources.Instance.GetFontHeight(1);
 			int width = 209;
 			int height = ((message.Length + (title != null ? 1 : 0)) * lineHeight) + 5;
 
-			_canvas.FillRectangle(colourLight, 56, 16, width, 1);
-			_canvas.FillRectangle(colourLight, 56, 17, 1, height - 2);
-			_canvas.FillRectangle(colourLight, 56 + width - 1, 17, 1, height - 2);
-			_canvas.FillRectangle(colourLight, 56, 16 + height - 1, width, 1);
-			_canvas.FillRectangle(colour, 57, 17, width - 2, height - 2);
+			this.FillRectangle(56, 16, width, 1, colourLight)
+				.FillRectangle(56, 17, 1, height - 2, colourLight)
+				.FillRectangle(56 + width - 1, 17, 1, height - 2, colourLight)
+				.FillRectangle(56, 16 + height - 1, width, 1, colourLight)
+				.FillRectangle(57, 17, width - 2, height - 2, colour);
 
 			int yy = 19 - lineHeight;
 			if (title != null)
-				_canvas.DrawText(title, 1, 5, 160, (yy += lineHeight), TextAlign.Center);
+				this.DrawText(title, 1, 5, 160, (yy += lineHeight), TextAlign.Center);
 			for (int i = 0; i < message.Length; i++)
-				_canvas.DrawText(message[i], 1, 15, 64, (yy += lineHeight));
+				this.DrawText(message[i], 1, 15, 64, (yy += lineHeight));
 		}
 	}
 }

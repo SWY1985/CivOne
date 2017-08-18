@@ -24,7 +24,7 @@ namespace CivOne.Screens.CityManagerPanels
 
 		private readonly City _city;
 
-		private readonly Picture _background;
+		private readonly IBitmap _background;
 		
 		private bool _update = true;
 
@@ -48,7 +48,7 @@ namespace CivOne.Screens.CityManagerPanels
 			{
 				double x = 1 + (_shieldWidth * (i % _shieldsPerLine));
 				int y = 17 + (((i - (i % _shieldsPerLine)) / _shieldsPerLine) * SHIELD_HEIGHT);
-				AddLayer(Icons.Shield, (int)Math.Floor(x), y);
+				this.AddLayer(Icons.Shield, (int)Math.Floor(x), y);
 			}
 		}
 
@@ -88,16 +88,16 @@ namespace CivOne.Screens.CityManagerPanels
 				int height = SHIELD_HEIGHT * ((_shieldPrice - (_shieldPrice % _shieldsPerLine)) / _shieldsPerLine);
 				if (height < SHIELD_HEIGHT) height = SHIELD_HEIGHT;
 
-				_canvas.Tile(_background);
-				_canvas.AddBorder(1, 1, 0, 0, width, 19 + height);
-				_canvas.FillRectangle(1, 1, 1, (width - 2), 16);
+				this.Tile(_background)
+					.DrawRectangle(0, 0, width, 19 + height, 1)
+					.FillRectangle(1, 1, (width - 2), 16, 1);
 				if (width < 88)
 				{
-					_canvas.FillRectangle(5, width, 0, 88 - width, 99);
+					this.FillRectangle(width, 0, 88 - width, 99, 5);
 				}
 				if (height < 80)
 				{
-					_canvas.FillRectangle(5, 0, 19 + height, width, 80 - height);
+					this.FillRectangle(0, 19 + height, width, 80 - height, 5);
 				}
 				bool blink = ProductionInvalid && (gameTick % 4 > 1);
 				if (!(Common.TopScreen is CityManager)) blink = ProductionInvalid;
@@ -109,7 +109,7 @@ namespace CivOne.Screens.CityManagerPanels
 				if (_city.CurrentProduction is IUnit)
 				{
 					IUnit unit = (_city.CurrentProduction as IUnit);
-					AddLayer(unit.GetUnit(_city.Owner), 33, 0);
+					this.AddLayer(unit.GetUnit(_city.Owner), 33, 0);
 				}
 				else
 				{
@@ -118,7 +118,7 @@ namespace CivOne.Screens.CityManagerPanels
 					{
 						name = $"{name.Substring(0, name.Length - 2)}.";
 					}
-					_canvas.DrawText(name, 1, 15, 44, 1, TextAlign.Center);
+					this.DrawText(name, 1, 15, 44, 1, TextAlign.Center);
 				}
 				
 				_update = false;
@@ -184,12 +184,12 @@ namespace CivOne.Screens.CityManagerPanels
 			return false;
 		}
 
-		public CityProduction(City city, Picture background)
+		public CityProduction(City city, IBitmap background) : base(88, 99)
 		{
 			_city = city;
 			_background = background;
 
-			_canvas = new Picture(88, 99, background.Palette);
+			Palette = background.Palette.Copy();
 		}
 	}
 }

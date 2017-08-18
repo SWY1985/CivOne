@@ -52,7 +52,7 @@ namespace CivOne.Screens
 			bool modernGovernment = Human.HasAdvance<Invention>();
 			Palette palette = Common.DefaultPalette;
 
-			Picture[] governmentPortraits = new Picture[4];
+			IBitmap[] governmentPortraits = new IBitmap[4];
 			if (showGovernment)
 			{
 				for (int i = 0; i < 4; i++)
@@ -81,53 +81,53 @@ namespace CivOne.Screens
 				case 2: name = $"{name} Weekly"; break;
 			}
 
-			_canvas = new Picture(320, 200, palette);
-			_canvas.FillRectangle(15, 0, 0, 320, 100);
-			
-			_canvas.DrawText("FLASH", 2, 5, 6, 3);
-			_canvas.DrawText("FLASH", 2, 5, 272, 3);
-			_canvas.DrawText(newsflash, 1, 5, 158, 3, TextAlign.Center);
-			_canvas.DrawText(newsflash, 1, 5, 158, 3, TextAlign.Center);
-			_canvas.DrawText(",-.", 4, 5, 8, 11);
-			_canvas.DrawText(",-.", 4, 5, 268, 11);
-			_canvas.DrawText(name, 4, 5, 160, 11, TextAlign.Center);
-			_canvas.DrawText(date, 0, 5, 8, 28);
-			_canvas.DrawText("10 cents", 0, 5, 272, 28);
-			_canvas.FillRectangle(5, 1, 1, 318, 1);
-			_canvas.FillRectangle(5, 1, 2, 1, 33);
-			_canvas.FillRectangle(5, 318, 2, 1, 33);
-			_canvas.FillRectangle(5, 0, 35, 320, 1);
-			_canvas.FillRectangle(5, 0, 97, 320, 1);
+			Palette = palette;
+			this.FillRectangle(0, 0, 320, 100, 15)
+				.DrawText("FLASH", 2, 5, 6, 3)
+				.DrawText("FLASH", 2, 5, 272, 3)
+				.DrawText(newsflash, 1, 5, 158, 3, TextAlign.Center)
+				.DrawText(newsflash, 1, 5, 158, 3, TextAlign.Center)
+				.DrawText(",-.", 4, 5, 8, 11)
+				.DrawText(",-.", 4, 5, 268, 11)
+				.DrawText(name, 4, 5, 160, 11, TextAlign.Center)
+				.DrawText(date, 0, 5, 8, 28)
+				.DrawText("10 cents", 0, 5, 272, 28)
+				.FillRectangle(1, 1, 318, 1, 5)
+				.FillRectangle(1, 2, 1, 33, 5)
+				.FillRectangle(318, 2, 1, 33, 5)
+				.FillRectangle(0, 35, 320, 1, 5)
+				.FillRectangle(0, 97, 320, 1, 5);
 
 			for (int i = 0; i < message.Length; i++)
 			{
-				_canvas.DrawText(message[i], 3, 5, 16, 40 + (i * 17));
+				this.DrawText(message[i], 3, 5, 16, 40 + (i * 17));
 			}
 
 			if (showGovernment)
 			{
 				string[] advisorNames = new string[] { "Defense Minister", "Domestic Advisor", "Foreign Minister", "Science Advisor" };
-				_canvas.FillRectangle(15, 0, 100, 320, 100);
-				_canvas.DrawText("New Cabinet:", 5, 5, 106, 102);
+				this.FillRectangle(0, 100, 320, 100, 15)
+					.DrawText("New Cabinet:", 5, 5, 106, 102);
 				for (int i = 0; i < 4; i++)
 				{
-					AddLayer(governmentPortraits[i], 20 + (80 * i), 118);
-					_canvas.DrawText(advisorNames[i], 1, 5, 40 + (80 * i), (i % 2) == 0 ? 180 : 186, TextAlign.Center);
+					this.AddLayer(governmentPortraits[i], 20 + (80 * i), 118)
+						.DrawText(advisorNames[i], 1, 5, 40 + (80 * i), (i % 2) == 0 ? 180 : 186, TextAlign.Center);
 				}
 			}
 			else
 			{
-				for (int xx = 0; xx < _canvas.Width; xx += Icons.Newspaper.Width)
+				for (int xx = 0; xx < Width; xx += Icons.Newspaper.Width())
 				{
-					AddLayer(Icons.Newspaper, xx, 100);
+					this.AddLayer(Icons.Newspaper, xx, 100);
 				}
-				Picture dialog = new Picture(152, 15);
-				dialog.Tile(Patterns.PanelGrey);
-				dialog.FillRectangle(0, 151, 0, 1, 15);
-				dialog.AddBorder(15, 8, 0, 0, 151, 15);
-				dialog.DrawText("Press any key to continue.", 0, 15, 4, 4);
-				_canvas.FillRectangle(5, 80, 128, 153, 17);
-				AddLayer(dialog, 81, 129);
+				using (IBitmap dialog = new Picture(151, 15)
+						.Tile(Patterns.PanelGrey)
+						.DrawRectangle3D()
+						.DrawText("Press any key to continue.", 0, 15, 4, 4))
+				{
+					this.FillRectangle(80, 128, 153, 17, 5)
+						.AddLayer(dialog, 81, 129);
+				}
 			}
 		}
 	}

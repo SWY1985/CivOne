@@ -310,45 +310,40 @@ namespace CivOne.Units
 			}
 		}
 
-		public override Picture GetUnit(byte colour, bool showState = true)
+		public override IBitmap GetUnit(byte colour, bool showState = true)
 		{
 			if (!showState)
 				return base.GetUnit(colour);
 
 			if (BuildingRoad > 0)
 			{
-				Picture unit = new Picture(base.GetUnit(colour));
-				unit.DrawText("R", 0, 5, 8, 9, TextAlign.Center);
-				unit.DrawText("R", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
-				return unit; 
+				return base.GetUnit(colour)
+					.DrawText("R", 0, 5, 8, 9, TextAlign.Center)
+					.DrawText("R", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
 			}
 			else if (BuildingIrrigation > 0)
 			{
-				Picture unit = new Picture(base.GetUnit(colour));
-				unit.DrawText("I", 0, 5, 8, 9, TextAlign.Center);
-				unit.DrawText("I", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
-				return unit; 
+				return base.GetUnit(colour)
+					.DrawText("I", 0, 5, 8, 9, TextAlign.Center)
+					.DrawText("I", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
 			}
 			else if (BuildingMine > 0)
 			{
-				Picture unit = new Picture(base.GetUnit(colour));
-				unit.DrawText("M", 0, 5, 8, 9, TextAlign.Center);
-				unit.DrawText("M", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
-				return unit; 
+				return base.GetUnit(colour)
+					.DrawText("M", 0, 5, 8, 9, TextAlign.Center)
+					.DrawText("M", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
 			}
 			else if (BuildingFortress > 0)
 			{
-				Picture unit = new Picture(base.GetUnit(colour));
-				unit.DrawText("F", 0, 5, 8, 9, TextAlign.Center);
-				unit.DrawText("F", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
-				return unit; 
+				return base.GetUnit(colour)
+					.DrawText("F", 0, 5, 8, 9, TextAlign.Center)
+					.DrawText("F", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
 			}
 			else if (Human == Owner && !Goto.IsEmpty)
 			{
-				Picture unit = new Picture(base.GetUnit(colour));
-				unit.DrawText("G", 0, 5, 8, 9, TextAlign.Center);
-				unit.DrawText("G", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
-				return unit; 
+				return base.GetUnit(colour)
+					.DrawText("G", 0, 5, 8, 9, TextAlign.Center)
+					.DrawText("G", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
 			}
 			return base.GetUnit(colour);
 		}

@@ -51,7 +51,7 @@ namespace CivOne.Screens.Dialogs
 			{
 				X = 103,
 				Y = 92,
-				Width = 130,
+				MenuWidth = 130,
 				ActiveColour = 11,
 				TextColour = 5,
 				FontId = FONT_ID

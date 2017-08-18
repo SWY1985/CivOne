@@ -92,22 +92,21 @@ namespace CivOne.Screens
 			{
 				_update = false;
 
-				Picture menuGfx = new Picture(132, 95);
-				menuGfx.Tile(Patterns.PanelGrey);
-				menuGfx.AddBorder(15, 8, 0, 0, 131, 95);
-				menuGfx.FillRectangle(0, 131, 0, 1, 95);
-				menuGfx.DrawText("Debug Options:", 0, 15, 4, 4);
+				Picture menuGfx = new Picture(131, 95)
+					.Tile(Patterns.PanelGrey)
+					.DrawRectangle3D()
+					.DrawText("Debug Options:", 0, 15, 4, 4)
+					.As<Picture>();
 
-				Picture menuBackground = menuGfx.GetPart(2, 11, 128, 80);
-				Picture.ReplaceColours(menuBackground, new byte[] { 7, 22 }, new byte[] { 11, 3 });
+				IBitmap menuBackground = menuGfx[2, 11, 128, 80].ColourReplace((7, 11), (22, 3));
 
-				AddLayer(menuGfx, 25, 17);
+				this.AddLayer(menuGfx, 25, 17);
 
 				Menu menu = new Menu(Palette, menuBackground)
 				{
 					X = 27,
 					Y = 28,
-					Width = 127,
+					MenuWidth = 127,
 					ActiveColour = 11,
 					TextColour = 5,
 					DisabledColour = 3,
@@ -128,7 +127,7 @@ namespace CivOne.Screens
 				menu.Items.Add("Toggle Reveal World").OnSelect(MenuRevealWorld);
 				menu.Items.Add("Build Palace").OnSelect(MenuBuildPalace);
 
-				_canvas.FillRectangle(5, 24, 16, 105, menu.RowHeight * (menu.Items.Count + 1));
+				this.FillRectangle(24, 16, 105, menu.RowHeight * (menu.Items.Count + 1), 5);
 
 				AddMenu(menu);
 			}
@@ -137,9 +136,9 @@ namespace CivOne.Screens
 
 		public DebugOptions() : base(MouseCursor.Pointer)
 		{
-			_canvas = new Picture(320, 200, Common.DefaultPalette);
-			_canvas.AddLayer(Common.Screens.Last(), 0, 0);
-			_canvas.FillRectangle(5, 24, 16, 133, 97);
+			Palette = Common.DefaultPalette;
+			this.AddLayer(Common.Screens.Last(), 0, 0)
+				.FillRectangle(24, 16, 133, 97, 5);
 		}
 	}
 }

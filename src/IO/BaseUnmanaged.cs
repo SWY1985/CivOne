@@ -14,7 +14,7 @@ namespace CivOne.IO
 {
 	public abstract class BaseUnmanaged : IDisposable
 	{
-		private IntPtr _handle;
+		protected IntPtr _handle;
 		protected int Size { get; private set; }
 
 		protected byte ReadByte(int offset) => Marshal.ReadByte(_handle, offset);

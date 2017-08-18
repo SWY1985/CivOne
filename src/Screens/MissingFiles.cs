@@ -46,32 +46,32 @@ namespace CivOne.Screens
 				return;
 			}
 
-			_canvas.FillRectangle(8, 0, 0, 320, 200);
-			_canvas.FillRectangle(15, 40, 50, 240, 100);
+			this.Clear(8)
+				.FillRectangle(40, 50, 240, 100, 15);
 
 			if (FileSystem.CopyDataFiles(path))
 			{
-				_canvas.FillRectangle(8, 0, 0, 320, 200);
-				_canvas.FillRectangle(15, 40, 50, 240, 100);
+				this.FillRectangle(0, 0, 320, 200, 8)
+					.FillRectangle(40, 50, 240, 100, 15);
 
-				_canvas.DrawText("Succes!", 1, 2, 160, 54, TextAlign.Center);
+				this.DrawText("Succes!", 1, 2, 160, 54, TextAlign.Center);
 
 				string[] text = new string[] { "Done copying the data files.", "Please close the window and restart the game.", " ", "Press any key to close the game..." };
 
 				for (int i = 0; i < text.Length; i++)
 				{
-					_canvas.DrawText(text[i], 1, 5, 44, 66 + (i * 9), TextAlign.Left);
+					this.DrawText(text[i], 1, 5, 44, 66 + (i * 9), TextAlign.Left);
 				}
 			}
 			else
 			{
-				_canvas.DrawText("Failed!", 1, 4, 160, 54, TextAlign.Center);
+				this.DrawText("Failed!", 1, 4, 160, 54, TextAlign.Center);
 
 				string[] text = new string[] { "Copying the data files has failed.", "Please make sure you pointed to the correct", "data folder and try again.", " ", "Press any key to close the game..." };
 
 				for (int i = 0; i < text.Length; i++)
 				{
-					_canvas.DrawText(text[i], 1, 5, 44, 66 + (i * 9), TextAlign.Left);
+					this.DrawText(text[i], 1, 5, 44, 66 + (i * 9), TextAlign.Left);
 				}
 			}
 
@@ -93,7 +93,7 @@ namespace CivOne.Screens
 				{
 					X = 44,
 					Y = _y,
-					Width = 232,
+					MenuWidth = 232,
 					ActiveColour = 11,
 					TextColour = 5,
 					FontId = 1,
@@ -126,15 +126,14 @@ namespace CivOne.Screens
 		
 		public MissingFiles()
 		{
-			_canvas = new Picture(320, 200, Common.GetPalette256);
-			_canvas.FillRectangle(8, 0, 0, 320, 200);
-			_canvas.FillRectangle(15, 40, 50, 240, 100);
-
-			_canvas.DrawText("Warning!", 1, 4, 160, 54, TextAlign.Center);
+			Palette = Common.GetPalette256;
+			this.Clear(8)
+				.FillRectangle(40, 50, 240, 100, 15)
+				.DrawText("Warning!", 1, 4, 160, 54, TextAlign.Center);
 
 			for (int i = 0; i < _text.Length; i++)
 			{
-				_canvas.DrawText(_text[i], 1, 5, 44, 66 + (i * 9), TextAlign.Left);
+				this.DrawText(_text[i], 1, 5, 44, 66 + (i * 9), TextAlign.Left);
 			}
 
 			_y = 75 + (9 * _text.Length);
