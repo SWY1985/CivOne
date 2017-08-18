@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using CivOne.Graphics;
 
 namespace CivOne
 {
@@ -15,6 +16,7 @@ namespace CivOne
 		protected static Game Game => Game.Instance;
 		protected static Map Map => Map.Instance;
 		protected static Player Human => Game.Instance.HumanPlayer;
+		protected static Resources Resources => Resources.Instance;
 		protected static IRuntime Runtime => RuntimeHandler.Runtime;
 		protected static Settings Settings => Settings.Instance;
 

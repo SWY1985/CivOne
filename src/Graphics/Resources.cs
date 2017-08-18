@@ -18,7 +18,7 @@ using CivOne.Tiles;
 
 namespace CivOne.Graphics
 {
-	internal class Resources
+	public class Resources
 	{
 		private static void Log(string text, params object[] parameters) => RuntimeHandler.Runtime.Log(text, parameters);
 
