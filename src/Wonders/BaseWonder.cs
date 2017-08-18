@@ -69,8 +69,7 @@ namespace CivOne.Wonders
 		
 		protected void SetSmallIcon(int col, int row)
 		{
-			SmallIcon = Resources[Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? "SP299" : "SPRITES"]
-				.GetPart(160 + (19 * col), 50 + (10 * row), 20, 10)
+			SmallIcon = Resources[GFX256 ? "SP299" : "SPRITES"][160 + (19 * col), 50 + (10 * row), 20, 10]
 				.FillRectangle(0, 0, 1, 10, 0)
 				.FillRectangle(19, 0, 1, 10, 0);
 		}

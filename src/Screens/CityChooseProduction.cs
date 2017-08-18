@@ -127,7 +127,7 @@ namespace CivOne.Screens
 					this.FillRectangle(80, 8, width + 2, height + 2, 5)
 						.AddLayer(menuGfx, 81, 9);
 					
-					using (Picture background = menuGfx.GetPart(2, 3 + Resources.Instance.GetFontHeight(_fontId), itemWidth, Resources.Instance.GetFontHeight(_fontId) * menuItems.Count + 4))
+					using (Picture background = menuGfx[2, 3 + Resources.Instance.GetFontHeight(_fontId), itemWidth, Resources.Instance.GetFontHeight(_fontId) * menuItems.Count + 4])
 					{
 						background.ColourReplace((7, 11), (22, 3));
 

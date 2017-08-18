@@ -114,52 +114,6 @@ namespace CivOne.Screens
 				}
 
 				picture.AddLayer(Resources.Instance.GetPalace(palace.GetPalaceStyle(i), part, palace.GetPalaceLevel(i)), xx, 37);
-
-				// int style = palace.GetPalaceStyle(i);
-				// int level = palace.GetPalaceLevel(i);
-				// if (level == 0 && i < 2 || i > 4) continue;
-				// if (level == 0) style = 0;
-
-				// int offsetX = 0, offsetY = 0;
-				// if (style == 2) offsetX = 160;
-				// if (style == 3) offsetY = 100;
-
-				// int xx = 66 + (i * 24);
-				// if (i > 3) xx += 24;
-				
-				
-				// for (int j = 0; j < 2; j++)
-				// {
-				// 	if (level == 0 && ((i == 2 && j == 0) || (i == 4 && j == 1))) continue;
-				// 	if (i == 0 && j == 0) continue;
-				// 	if (i == 6 && j == 1) continue;
-
-				// 	int xx = -7 + (((i * 2) + j) * 24);
-
-				// 	if (level > 0)
-				// 	{
-				// 		if (i == 0 || (i < 3 && j == 0 && palace.GetPalaceLevel(i - 1) == 0))
-				// 		{
-				// 			// 89, 39
-				// 			picture.AddLayer(Resources.Instance[$"CASTLE{level}"].GetPart(103 + offsetX, 1 + offsetY, 28, 99), xx, 39);
-				// 			continue;
-				// 		}
-
-				// 		if (i == 6 || (i > 3 && j == 1 && palace.GetPalaceLevel(i + 1) == 0))
-				// 		{
-				// 			picture.AddLayer(Resources.Instance[$"CASTLE{level}"].GetPart(132 + offsetX, 1 + offsetY, 28, 99), xx, 39);
-				// 			continue;
-				// 		}
-				// 	}
-
-				// 	if ((j == 0 && (i == 1 || i == 4)) ||
-				// 		(j == 1 && level > 0 && (i < 3 && palace.GetPalaceLevel(i - 1) == 0)))
-				// 	{
-				// 		picture.AddLayer(Resources.Instance[$"CASTLE{level}"].GetPart(53 + offsetX, 1 + offsetY, 24, 99), xx, 37);
-				// 		continue;
-				// 	}
-				// 	picture.AddLayer(Resources.Instance[$"CASTLE{level}"].GetPart(78 + offsetX, 1 + offsetY, 24, 99), xx, 37);
-				// }
 			}
 
 			// Draw palace middle

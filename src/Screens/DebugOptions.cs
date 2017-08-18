@@ -98,9 +98,7 @@ namespace CivOne.Screens
 					.DrawText("Debug Options:", 0, 15, 4, 4)
 					.As<Picture>();
 
-				Picture menuBackground = menuGfx.GetPart(2, 11, 128, 80)
-					.ColourReplace((7, 11), (22, 3))
-					.As<Picture>();
+				IBitmap menuBackground = menuGfx[2, 11, 128, 80].ColourReplace((7, 11), (22, 3));
 
 				this.AddLayer(menuGfx, 25, 17);
 

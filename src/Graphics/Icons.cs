@@ -23,7 +23,7 @@ namespace CivOne.Graphics
 			{
 				if (_food == null)
 				{
-					_food = Resources["SP257"].GetPart(128, 32, 8, 8)
+					_food = Resources["SP257"][128, 32, 8, 8]
 						.ColourReplace(3, 0)
 						.FillRectangle(0, 0, 1, 8, 0);
 				}
@@ -38,7 +38,7 @@ namespace CivOne.Graphics
 			{
 				if (_foodLoss == null)
 				{
-					_foodLoss = Resources["SP257"].GetPart(128, 32, 8, 8)
+					_foodLoss = Resources["SP257"][128, 32, 8, 8]
 						.ColourReplace((3, 0), (15, 5))
 						.FillRectangle(0, 0, 1, 8, 0);
 				}
@@ -53,8 +53,7 @@ namespace CivOne.Graphics
 			{
 				if (_shield == null)
 				{
-					_shield = Resources["SP257"].GetPart(136, 32, 8, 8)
-						.ColourReplace(3, 0);
+					_shield = Resources["SP257"][136, 32, 8, 8].ColourReplace(3, 0);
 				}
 				return _shield;
 			}
@@ -67,8 +66,7 @@ namespace CivOne.Graphics
 			{
 				if (_shieldLoss == null)
 				{
-					_shieldLoss = Resources["SP257"].GetPart(136, 32, 8, 8)
-						.ColourReplace((3, 0), (15, 5));
+					_shieldLoss = Resources["SP257"][136, 32, 8, 8].ColourReplace((3, 0), (15, 5));
 				}
 				return _shieldLoss;
 			}
@@ -81,8 +79,7 @@ namespace CivOne.Graphics
 			{
 				if (_trade == null)
 				{
-					_trade = Resources["SP257"].GetPart(144, 32, 8, 8)
-						.ColourReplace(3, 0);
+					_trade = Resources["SP257"][144, 32, 8, 8].ColourReplace(3, 0);
 				}
 				return _trade;
 			}
@@ -95,8 +92,7 @@ namespace CivOne.Graphics
 			{
 				if (_unhappy == null)
 				{
-					_unhappy = Resources["SP257"].GetPart(136, 40, 8, 8)
-						.ColourReplace(3, 0);
+					_unhappy = Resources["SP257"][136, 40, 8, 8].ColourReplace(3, 0);
 				}
 				return _unhappy;
 			}
@@ -109,8 +105,7 @@ namespace CivOne.Graphics
 			{
 				if (_luxuries == null)
 				{
-					_luxuries = Resources["SP257"].GetPart(144, 40, 8, 8)
-						.ColourReplace(3, 0);
+					_luxuries = Resources["SP257"][144, 40, 8, 8].ColourReplace(3, 0);
 				}
 				return _luxuries;
 			}
@@ -123,8 +118,7 @@ namespace CivOne.Graphics
 			{
 				if (_taxes == null)
 				{
-					_taxes = Resources["SP257"].GetPart(152, 32, 8, 8)
-						.ColourReplace(3, 0);
+					_taxes = Resources["SP257"][152, 32, 8, 8].ColourReplace(3, 0);
 				}
 				return _taxes;
 			}
@@ -137,8 +131,7 @@ namespace CivOne.Graphics
 			{
 				if (_science == null)
 				{
-					_science = Resources["SP257"].GetPart(128, 40, 8, 8)
-						.ColourReplace(3, 0);
+					_science = Resources["SP257"][128, 40, 8, 8].ColourReplace(3, 0);
 				}
 				return _science;
 			}
@@ -151,7 +144,7 @@ namespace CivOne.Graphics
 			{
 				if (_newspaper == null)
 				{
-					_newspaper = Resources["SP257"].GetPart(176, 128, 32, 16);
+					_newspaper = Resources["SP257"][176, 128, 32, 16];
 				}
 				return _newspaper;
 			}
@@ -274,7 +267,7 @@ namespace CivOne.Graphics
 		{
 			if (_citizen[(int)citizen] == null)
 			{
-				_citizen[(int)citizen] = Resources["SP257"].GetPart((8 * (int)citizen), 128, 8, 16);
+				_citizen[(int)citizen] = Resources["SP257"][(8 * (int)citizen), 128, 8, 16];
 			}
 			return _citizen[(int)citizen];
 		}
@@ -287,7 +280,7 @@ namespace CivOne.Graphics
 			
 			if (_lamp[stage] == null)
 			{
-				_lamp[stage] = Resources["SP257"].GetPart(128 + (8 * stage), 48, 8, 8);
+				_lamp[stage] = Resources["SP257"][128 + (8 * stage), 48, 8, 8];
 			}
 			return _lamp[stage];
 		}
@@ -318,7 +311,7 @@ namespace CivOne.Graphics
 				filename = "GOVT0" + (modern ? "M" : "A");
 			}
 			if (_governmentPortrait[governmentId, (int)advisor] == null)
-				_governmentPortrait[governmentId, (int)advisor] = Resources[filename].GetPart((40 * (int)advisor), 0, 40, 60);
+				_governmentPortrait[governmentId, (int)advisor] = Resources[filename][(40 * (int)advisor), 0, 40, 60];
 			return _governmentPortrait[governmentId, (int)advisor];
 		}
 
@@ -340,7 +333,7 @@ namespace CivOne.Graphics
 			IBitmap resource;
 			if (Resources.Exists("SP257"))
 			{
-				resource = Resources["SP257"].GetPart(192, 112, 16, 16);
+				resource = Resources["SP257"][192, 112, 16, 16];
 			}
 			else
 			{
@@ -370,7 +363,7 @@ namespace CivOne.Graphics
 				{
 					if (Resources.Exists("SP257"))
 					{
-						_fortify = Resources["SP257"].GetPart(208, 112, 16, 16);
+						_fortify = Resources["SP257"][208, 112, 16, 16];
 					}
 					else
 					{
@@ -404,7 +397,7 @@ namespace CivOne.Graphics
 							{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0,}
 						}, Common.GetPalette256);
 					}
-					return Resources["SP257"].GetPart(113, 33, 15, 15);
+					return Resources["SP257"][113, 33, 15, 15];
 				case MouseCursor.Goto:
 					if (builtIn)
 					{
@@ -425,7 +418,7 @@ namespace CivOne.Graphics
 							{ 0,15,15,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,}
 						}, Common.GetPalette256);
 					}
-					return Resources["SP257"].GetPart(33, 33, 15, 15);
+					return Resources["SP257"][33, 33, 15, 15];
 			}
 			return null;
 		}
@@ -437,8 +430,7 @@ namespace CivOne.Graphics
 			{
 				if (_fortress == null)
 				{
-					_fortress = Resources["SP257"].GetPart(224, 112, 16, 16)
-						.ColourReplace(3, 0);
+					_fortress = Resources["SP257"][224, 112, 16, 16].ColourReplace(3, 0);
 				}
 				return _fortress;
 			}

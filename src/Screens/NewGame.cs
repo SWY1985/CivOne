@@ -163,7 +163,7 @@ namespace CivOne.Screens
 
 				int x = (pictureId % 2) == 0 ? 21 : 80;
 				int y = 6 + (35 * pictureId);
-				return _background.GetPart(x, y, 53, 47);
+				return _background[x, y, 53, 47];
 			}
 		}
 		
@@ -262,7 +262,7 @@ namespace CivOne.Screens
 			else
 			{
 				if (_tribe == -1)
-					this.AddLayer(_background.GetPart(140, 0, 180, 200), OffsetX + 140, OffsetY);
+					this.AddLayer(_background[140, 0, 180, 200], OffsetX + 140, OffsetY);
 				int pictureStack = (_competition <= 0) ? 1 : _competition;
 				for (int i = pictureStack; i > 0; i--)
 				{

@@ -82,7 +82,7 @@ namespace CivOne.Screens
 					}
 					else
 					{
-						this.AddLayer(_background.GetPart(0, (_activeItem * fontHeight) + offsetY, MenuWidth, fontHeight), X, yy + offsetY, dispose: true);
+						this.AddLayer(_background[0, (_activeItem * fontHeight) + offsetY, MenuWidth, fontHeight], X, yy + offsetY, dispose: true);
 					}
 				}
 				for (int i = 0; i < Items.Count; i++)
@@ -228,11 +228,11 @@ namespace CivOne.Screens
 
 	public class Menu : Menu<int>
 	{
-		public Menu(Palette palette, Picture background = null) : base(null, palette, background)
+		public Menu(Palette palette, IBitmap background = null) : base(null, palette, background)
 		{
 		}
 
-		public Menu(string menuId, Palette palette, Picture background = null) : base(menuId, palette, background)
+		public Menu(string menuId, Palette palette, IBitmap background = null) : base(menuId, palette, background)
 		{
 		}
 	}

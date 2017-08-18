@@ -27,7 +27,7 @@ namespace CivOne.Graphics
 					}
 					else
 					{
-						_panelGrey = Resources["SP299"].GetPart(288, 120, 32, 16);
+						_panelGrey = Resources["SP299"][288, 120, 32, 16];
 					}
 				}
 				return _panelGrey;
@@ -47,7 +47,7 @@ namespace CivOne.Graphics
 					}
 					else
 					{
-						_panelBlue = Resources["SP299"].GetPart(288, 120, 32, 16)
+						_panelBlue = Resources["SP299"][288, 120, 32, 16]
 							.ColourReplace((7, 57), (22, 9));
 					}
 				}

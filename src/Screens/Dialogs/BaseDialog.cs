@@ -41,11 +41,9 @@ namespace CivOne.Screens.Dialogs
 			}
 		}
 		
-		protected Picture Selection(int left, int top, int width, int height)
+		protected IBitmap Selection(int left, int top, int width, int height)
 		{
-			return DialogBox.GetPart(left, top, width, height)
-				.ColourReplace((7, 11), (22, 3))
-				.As<Picture>();
+			return DialogBox[left, top, width, height].ColourReplace((7, 11), (22, 3));
 		}
 
 		protected virtual void Cancel(object sender = null, EventArgs args = null)

@@ -20,6 +20,8 @@ namespace CivOne.Graphics
 {
 	public class Resources
 	{
+		private static Settings Settings => Settings.Instance;
+
 		private static void Log(string text, params object[] parameters) => RuntimeHandler.Runtime.Log(text, parameters);
 
 		private readonly Dictionary<string, Picture> _cache = new Dictionary<string, Picture>();
@@ -36,7 +38,7 @@ namespace CivOne.Graphics
 		private void LoadFonts()
 		{
 			byte[] file;
-			string filename = Path.Combine(Settings.Instance.DataDirectory, "FONTS.CV");
+			string filename = Path.Combine(Settings.DataDirectory, "FONTS.CV");
 			if (!File.Exists(filename))
 			{
 				Log("Font file not found, fallback to default font");
@@ -155,7 +157,7 @@ namespace CivOne.Graphics
 			
 			Picture output = null;
 			PicFile picFile = new PicFile(filename);
-			if ((Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 && picFile.GetPicture256 != null) || picFile.GetPicture16 == null)
+			if ((Settings.GraphicsMode == GraphicsMode.Graphics256 && picFile.GetPicture256 != null) || picFile.GetPicture16 == null)
 			{
 				output = new Picture(picFile.GetPicture256, picFile.GetPalette256);
 			}
@@ -211,7 +213,7 @@ namespace CivOne.Graphics
 				{
 					Picture sp299 = Resources.Instance.LoadPIC("SP299");
 					_worldMapTiles = new Picture(48, 8, sp299.Palette);
-					_worldMapTiles.AddLayer(sp299.GetPart(160, 111, 48, 8));
+					_worldMapTiles.AddLayer(sp299[160, 111, 48, 8]);
 				}
 				return _worldMapTiles;
 			}
@@ -229,7 +231,7 @@ namespace CivOne.Graphics
 		{
 			get
 			{
-				if (Settings.Instance.GraphicsMode == GraphicsMode.Graphics16)
+				if (Settings.GraphicsMode == GraphicsMode.Graphics16)
 				{
 					return TileResources.GetTile16(tile, improvements, roads);
 				}
@@ -260,19 +262,19 @@ namespace CivOne.Graphics
 						picture = new Picture(35, 101);
 						if (style == PalaceStyle.Classical)
 						{
-							picture.AddLayer(Instance[$"CASTLE{level}"].GetPart(160, 1 + offsetY, 35, 99), 0, 2);
+							picture.AddLayer(Instance[$"CASTLE{level}"][160, 1 + offsetY, 35, 99], 0, 2);
 							break;
 						}
-						picture.AddLayer(Instance[$"CASTLE{level}"].GetPart(104 + offsetX, 1 + offsetY, 27, 99), 8, 2);
+						picture.AddLayer(Instance[$"CASTLE{level}"][104 + offsetX, 1 + offsetY, 27, 99], 8, 2);
 						break;
 					case PalacePart.RightTower:
 						picture = new Picture(35, 101);
 						if (style == PalaceStyle.Classical)
 						{
-							picture.AddLayer(Instance[$"CASTLE{level}"].GetPart(196, 1 + offsetY, 35, 99), 0, 2);
+							picture.AddLayer(Instance[$"CASTLE{level}"][196, 1 + offsetY, 35, 99], 0, 2);
 							break;
 						}
-						picture.AddLayer(Instance[$"CASTLE{level}"].GetPart(132 + offsetX, 1 + offsetY, 27, 99), 0, 2);
+						picture.AddLayer(Instance[$"CASTLE{level}"][132 + offsetX, 1 + offsetY, 27, 99], 0, 2);
 						break;
 					case PalacePart.Wall:
 					case PalacePart.WallShadow:
@@ -280,13 +282,13 @@ namespace CivOne.Graphics
 						picture = new Picture(48, 101);
 						if (level == 0)
 						{
-							picture.AddLayer(Instance["CASTLE0"].GetPart(53 + offsetX, 1 + offsetY, 24, 99));
+							picture.AddLayer(Instance["CASTLE0"][53 + offsetX, 1 + offsetY, 24, 99]);
 							break;
 						}
 						for (int i = 0; i < 2; i++)
 						{
 							bool shadow = (part == PalacePart.WallShadow && i == 0);
-							picture.AddLayer(Instance[$"CASTLE{level}"].GetPart((shadow ? 53 : 78) + offsetX, 1 + offsetY, 24, 99), (24 * i));
+							picture.AddLayer(Instance[$"CASTLE{level}"][(shadow ? 53 : 78) + offsetX, 1 + offsetY, 24, 99], (24 * i));
 						}
 						break;
 					}
@@ -295,16 +297,16 @@ namespace CivOne.Graphics
 						picture = new Picture(57, 101);
 						if (level == 0)
 						{
-							picture.AddLayer(Instance["CASTLE0"].GetPart(78 + offsetX, 1 + offsetY, 24, 99), 33);
+							picture.AddLayer(Instance["CASTLE0"][78 + offsetX, 1 + offsetY, 24, 99], 33);
 							break;
 						}
-						picture.AddLayer(Instance[$"CASTLE{level}"].GetPart(53 + offsetX, 1 + offsetY, 24, 99), 33);
+						picture.AddLayer(Instance[$"CASTLE{level}"][53 + offsetX, 1 + offsetY, 24, 99], 33);
 						if (style == PalaceStyle.Classical)
 						{
-							picture.AddLayer(Instance[$"CASTLE{level}"].GetPart(160, 1 + offsetY, 35, 99), 0, 2);
+							picture.AddLayer(Instance[$"CASTLE{level}"][160, 1 + offsetY, 35, 99], 0, 2);
 							break;
 						}
-						picture.AddLayer(Instance[$"CASTLE{level}"].GetPart(104 + offsetX, 1 + offsetY, 27, 99), 8, 2);
+						picture.AddLayer(Instance[$"CASTLE{level}"][104 + offsetX, 1 + offsetY, 27, 99], 8, 2);
 						break;
 					}
 					case PalacePart.RightTowerWall:
@@ -313,23 +315,23 @@ namespace CivOne.Graphics
 						picture = new Picture(57, 101);
 						if (level == 0)
 						{
-							picture.AddLayer(Instance["CASTLE0"].GetPart(53 + offsetX, 1 + offsetY, 24, 99));
+							picture.AddLayer(Instance["CASTLE0"][53 + offsetX, 1 + offsetY, 24, 99]);
 							break;
 						}
 						
 						bool shadow = (part == PalacePart.RightTowerWallShadow);
-						picture.AddLayer(Instance[$"CASTLE{level}"].GetPart((shadow ? 53 : 78) + offsetX, 1 + offsetY, 24, 99), 0);
+						picture.AddLayer(Instance[$"CASTLE{level}"][(shadow ? 53 : 78) + offsetX, 1 + offsetY, 24, 99], 0);
 						if (style == PalaceStyle.Classical)
 						{
-							picture.AddLayer(Instance[$"CASTLE{level}"].GetPart(196, 1 + offsetY, 35, 99), 21, 2);
+							picture.AddLayer(Instance[$"CASTLE{level}"][196, 1 + offsetY, 35, 99], 21, 2);
 							break;
 						}
-						picture.AddLayer(Instance[$"CASTLE{level}"].GetPart(132 + offsetX, 1 + offsetY, 27, 99), 21, 2);
+						picture.AddLayer(Instance[$"CASTLE{level}"][132 + offsetX, 1 + offsetY, 27, 99], 21, 2);
 						break;
 					}
 					case PalacePart.Center:
 					{
-						picture = Instance[$"CASTLE{level}"].GetPart(0 + offsetX, 1 + offsetY, 52, 99);
+						picture = Instance[$"CASTLE{level}"][0 + offsetX, 1 + offsetY, 52, 99];
 						break;
 					}
 				}
@@ -365,10 +367,10 @@ namespace CivOne.Graphics
 			}
 			else
 			{
-				_fog.Add(Direction.West, this["SP257"].GetPart(128, 128, 16, 16));
-				_fog.Add(Direction.South, this["SP257"].GetPart(112, 128, 16, 16));
-				_fog.Add(Direction.East, this["SP257"].GetPart(96, 128, 16, 16));
-				_fog.Add(Direction.North, this["SP257"].GetPart(80, 128, 16, 16));
+				_fog.Add(Direction.West, this["SP257"][128, 128, 16, 16]);
+				_fog.Add(Direction.South, this["SP257"][112, 128, 16, 16]);
+				_fog.Add(Direction.East, this["SP257"][96, 128, 16, 16]);
+				_fog.Add(Direction.North, this["SP257"][80, 128, 16, 16]);
 			}
 		}
 	}

@@ -124,13 +124,13 @@ namespace CivOne.Advances
 			int ww = col < 2 ? 112 : 96;
 			int hh = row < 2 ? 68 : 60;
 			
-			IBitmap icon = Resources[$"ICONPG{page}"]
-				.GetPart(xx, yy, ww, hh);
-			
-			Icon = new Picture(112, 68, icon.Palette)
-				.AddLayer(icon, col < 2 ? 0 : 7, row < 2 ? 0 : 4)
-				.FillRectangle(110, 0, 2, 68, 0);
-			OriginalColours = icon.Palette.Copy();
+			using (IBitmap icon = Resources[$"ICONPG{page}"][xx, yy, ww, hh])
+			{
+				Icon = new Picture(112, 68, icon.Palette)
+					.AddLayer(icon, col < 2 ? 0 : 7, row < 2 ? 0 : 4)
+					.FillRectangle(110, 0, 2, 68, 0);
+				OriginalColours = icon.Palette.Copy();
+			}
 		}
 		
 		public byte Id => (byte)Type;

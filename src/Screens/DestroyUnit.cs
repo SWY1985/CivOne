@@ -42,7 +42,7 @@ namespace CivOne.Screens
 
 		private Picture _gameMap, _overlay = null;
 
-		private Picture[] _destroySprites = null;
+		private IBitmap[] _destroySprites = null;
 		
 		private IEnumerable<RenderTile> RenderTiles
 		{
@@ -229,12 +229,10 @@ namespace CivOne.Screens
 			switch (_animation)
 			{
 				case DestroyAnimation.Sprites:
-					_destroySprites = new Picture[8];
+					_destroySprites = new IBitmap[8];
 					for (int i = 0; i < 8; i++)
 					{
-						_destroySprites[i] = Resources["SP257"].GetPart(16 * i, 96, 16, 16)
-							.ColourReplace(9, 0)
-							.As<Picture>();
+						_destroySprites[i] = Resources["SP257"][16 * i, 96, 16, 16] .ColourReplace(9, 0);
 					}
 					break;
 				case DestroyAnimation.Noise:

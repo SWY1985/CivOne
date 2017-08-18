@@ -97,7 +97,7 @@ namespace CivOne.Screens
 				while (dx > 320) dx -= 320;
 				while (dx < 0) dx += 320;
 
-				this.AddLayer(Resources.WorldMapTiles.GetPart(xx, yy, 4, 4), dx, dy);
+				this.AddLayer(Resources.WorldMapTiles[xx, yy, 4, 4], dx, dy);
 				
 				if ((city = tile.City) != null && city.Size > 0)
 				{

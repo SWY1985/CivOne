@@ -623,9 +623,8 @@ namespace CivOne.Units
 		{
 			if (_iconCache[(int)Type] == null)
 			{
-				_iconCache[(int)Type] = Resources.LoadPIC(string.Format("ICONPG{0}", page), true)
-					.GetPart(col * 160, row * 62, 160, 60)
-					.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
+				_iconCache[(int)Type] = Resources.LoadPIC($"ICONPG{page}", true)[col * 160, row * 62, 160, 60]
+					.ColourReplace((byte)(GFX256 ? 253 : 15), 0);
 			}
 			Icon = _iconCache[(int)Type];
 		}
@@ -633,14 +632,14 @@ namespace CivOne.Units
 		public virtual IBitmap GetUnit(byte colour, bool showState = true)
 		{
 			int unitId = (int)Type;
-			string resFile = Settings.GraphicsMode == GraphicsMode.Graphics256 ? "SP257" : "SPRITES";
+			string resFile = GFX256 ? "SP257" : "SPRITES";
 			int xx = (unitId % 20) * 16;
 			int yy = unitId < 20 ? 160 : 176;
 			
 			IBitmap icon;
 			if (Resources.Instance.Exists(resFile))
 			{
-				icon = Resources.Instance[resFile].GetPart(xx, yy, 16, 16);
+				icon = Resources.Instance[resFile][xx, yy, 16, 16];
 			}
 			else
 			{

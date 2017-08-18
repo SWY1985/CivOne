@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using CivOne.Enums;
 using CivOne.Graphics;
 
 namespace CivOne
@@ -21,5 +22,7 @@ namespace CivOne
 		protected static Settings Settings => Settings.Instance;
 
 		protected static void Log(string text, params object[] parameters) => Runtime.Log(text, parameters);
+
+		protected bool GFX256 => (Settings.GraphicsMode == GraphicsMode.Graphics256);
 	}
 }

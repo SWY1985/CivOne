@@ -18,9 +18,7 @@ namespace CivOne.Buildings
 	{
 		private static IBitmap[,] _iconsCache = new IBitmap[6, 4], _iconsCacheGrass = new IBitmap[6, 4];
 		
-		private IBitmap GrassIcon => Resources["CITYPIX2"]
-										.GetPart(250, 0, 50, 50)
-										.ColourReplace(1, 0);
+		private IBitmap GrassIcon => Resources["CITYPIX2"][250, 0, 50, 50].ColourReplace(1, 0);
 		
 		public virtual IBitmap Icon { get; protected set; }
 		public virtual IBitmap SmallIcon { get; protected set; }
@@ -83,8 +81,7 @@ namespace CivOne.Buildings
 				if (grassTile)
 					Icon.AddLayer(GrassIcon);
 				
-				Icon.AddLayer(Resources["CITYPIX2"]
-								.GetPart(col * 50, row * 50, 50, 50)
+				Icon.AddLayer(Resources["CITYPIX2"][col * 50, row * 50, 50, 50]
 								.ColourReplace(1, 0));
 				
 				if (grassTile) _iconsCacheGrass[col, row] = Icon;
@@ -95,8 +92,7 @@ namespace CivOne.Buildings
 		
 		protected void SetSmallIcon(int col, int row)
 		{
-			SmallIcon = Resources[Settings.GraphicsMode == GraphicsMode.Graphics256 ? "SP299" : "SPRITES"]
-				.GetPart(160 + (19 * col), 50 + (10 * row), 20, 10)
+			SmallIcon = Resources[GFX256 ? "SP299" : "SPRITES"][160 + (19 * col), 50 + (10 * row), 20, 10]
 				.ColourReplace(0, 5)
 				.FillRectangle(0, 0, 1, 10, 0)
 				.FillRectangle(19, 0, 1, 10, 0);

@@ -132,7 +132,7 @@ namespace CivOne.Screens
 				{
 					if (_logoSwipe > 0)
 					{
-						this.AddLayer(_pictures[2].GetPart(0, 0, _logoSwipe, 200), cx, cy);
+						this.AddLayer(_pictures[2][0, 0, _logoSwipe, 200], cx, cy);
 					}
 				}
 				else
