@@ -16,8 +16,8 @@ namespace CivOne.Graphics
 	internal class Icons
 	{
 		private static Resources Resources => Resources.Instance;
-		private static Picture _food;
-		public static Picture Food
+		private static IBitmap _food;
+		public static IBitmap Food
 		{
 			get
 			{
@@ -25,15 +25,14 @@ namespace CivOne.Graphics
 				{
 					_food = Resources["SP257"].GetPart(128, 32, 8, 8)
 						.ColourReplace(3, 0)
-						.FillRectangle(0, 0, 1, 8, 0)
-						.As<Picture>();
+						.FillRectangle(0, 0, 1, 8, 0);
 				}
 				return _food;
 			}
 		}
 
-		private static Picture _foodLoss;
-		public static Picture FoodLoss
+		private static IBitmap _foodLoss;
+		public static IBitmap FoodLoss
 		{
 			get
 			{
@@ -41,120 +40,112 @@ namespace CivOne.Graphics
 				{
 					_foodLoss = Resources["SP257"].GetPart(128, 32, 8, 8)
 						.ColourReplace((3, 0), (15, 5))
-						.FillRectangle(0, 0, 1, 8, 0)
-						.As<Picture>();
+						.FillRectangle(0, 0, 1, 8, 0);
 				}
 				return _foodLoss;
 			}
 		}
 		
-		private static Picture _shield;
-		public static Picture Shield
+		private static IBitmap _shield;
+		public static IBitmap Shield
 		{
 			get
 			{
 				if (_shield == null)
 				{
 					_shield = Resources["SP257"].GetPart(136, 32, 8, 8)
-						.ColourReplace(3, 0)
-						.As<Picture>();
+						.ColourReplace(3, 0);
 				}
 				return _shield;
 			}
 		}
 		
-		private static Picture _shieldLoss;
-		public static Picture ShieldLoss
+		private static IBitmap _shieldLoss;
+		public static IBitmap ShieldLoss
 		{
 			get
 			{
 				if (_shieldLoss == null)
 				{
 					_shieldLoss = Resources["SP257"].GetPart(136, 32, 8, 8)
-						.ColourReplace((3, 0), (15, 5))
-						.As<Picture>();
+						.ColourReplace((3, 0), (15, 5));
 				}
 				return _shieldLoss;
 			}
 		}
 		
-		private static Picture _trade;
-		public static Picture Trade
+		private static IBitmap _trade;
+		public static IBitmap Trade
 		{
 			get
 			{
 				if (_trade == null)
 				{
 					_trade = Resources["SP257"].GetPart(144, 32, 8, 8)
-						.ColourReplace(3, 0)
-						.As<Picture>();
+						.ColourReplace(3, 0);
 				}
 				return _trade;
 			}
 		}
 		
-		private static Picture _unhappy;
-		public static Picture Unhappy
+		private static IBitmap _unhappy;
+		public static IBitmap Unhappy
 		{
 			get
 			{
 				if (_unhappy == null)
 				{
 					_unhappy = Resources["SP257"].GetPart(136, 40, 8, 8)
-						.ColourReplace(3, 0)
-						.As<Picture>();
+						.ColourReplace(3, 0);
 				}
 				return _unhappy;
 			}
 		}
 		
-		private static Picture _luxuries;
-		public static Picture Luxuries
+		private static IBitmap _luxuries;
+		public static IBitmap Luxuries
 		{
 			get
 			{
 				if (_luxuries == null)
 				{
 					_luxuries = Resources["SP257"].GetPart(144, 40, 8, 8)
-						.ColourReplace(3, 0)
-						.As<Picture>();
+						.ColourReplace(3, 0);
 				}
 				return _luxuries;
 			}
 		}
 		
-		private static Picture _taxes;
-		public static Picture Taxes
+		private static IBitmap _taxes;
+		public static IBitmap Taxes
 		{
 			get
 			{
 				if (_taxes == null)
 				{
 					_taxes = Resources["SP257"].GetPart(152, 32, 8, 8)
-						.ColourReplace(3, 0)
-						.As<Picture>();
+						.ColourReplace(3, 0);
 				}
 				return _taxes;
 			}
 		}
 		
-		private static Picture _science;
-		public static Picture Science
+		private static IBitmap _science;
+		public static IBitmap Science
 		{
 			get
 			{
 				if (_science == null)
 				{
 					_science = Resources["SP257"].GetPart(128, 40, 8, 8)
-						.ColourReplace(3, 0)
-						.As<Picture>();
+						.ColourReplace(3, 0);
 				}
 				return _science;
 			}
 		}
 		
-		private static Picture _newspaper;
-		public static Picture Newspaper
+		private static IBitmap _newspaper;
+		public static IBitmap Newspaper
 		{
 			get
 			{
@@ -166,8 +157,8 @@ namespace CivOne.Graphics
 			}
 		}
 
-		private static Picture _sellButton;
-		public static Picture SellButton
+		private static IBitmap _sellButton;
+		public static IBitmap SellButton
 		{
 			get
 			{
@@ -188,12 +179,12 @@ namespace CivOne.Graphics
 			}
 		}
 
-		private static Picture[] _helperArrow;
-		public static Picture HelperArrow(Direction direction)
+		private static IBitmap[] _helperArrow;
+		public static IBitmap HelperArrow(Direction direction)
 		{
 			if (_helperArrow == null)
 			{
-				_helperArrow = new Picture[4];
+				_helperArrow = new IBitmap[4];
 				_helperArrow[0] = new Picture(16, 16, new byte[] {
 					0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 					0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -278,8 +269,8 @@ namespace CivOne.Graphics
 			return null;
 		}
 
-		private static Picture[] _citizen = new Picture[9];
-		public static Picture Citizen(Citizen citizen)
+		private static IBitmap[] _citizen = new Picture[9];
+		public static IBitmap Citizen(Citizen citizen)
 		{
 			if (_citizen[(int)citizen] == null)
 			{
@@ -288,8 +279,8 @@ namespace CivOne.Graphics
 			return _citizen[(int)citizen];
 		}
 
-		private static Picture[] _lamp = new Picture[4];
-		public static Picture Lamp(int stage)
+		private static IBitmap[] _lamp = new Picture[4];
+		public static IBitmap Lamp(int stage)
 		{
 			if (stage < 0 || stage > 3)
 				return null;
@@ -301,8 +292,8 @@ namespace CivOne.Graphics
 			return _lamp[stage];
 		}
 
-		private static Picture[,] _governmentPortrait = new Picture[7, 4];
-		public static Picture GovernmentPortrait(IGovernment government, Advisor advisor, bool modern)
+		private static IBitmap[,] _governmentPortrait = new Picture[7, 4];
+		public static IBitmap GovernmentPortrait(IGovernment government, Advisor advisor, bool modern)
 		{
 			string filename;
 			int governmentId;
@@ -331,9 +322,9 @@ namespace CivOne.Graphics
 			return _governmentPortrait[governmentId, (int)advisor];
 		}
 
-		public static Picture City(City city, bool smallFont = false)
+		public static IBitmap City(City city, bool smallFont = false)
 		{
-			Picture output = new Picture(16, 16);
+			IBitmap output = new Picture(16, 16);
 			TextSettings settings = new TextSettings()
 			{
 				FontId = smallFont ? 1 : 0,
@@ -346,7 +337,7 @@ namespace CivOne.Graphics
 				.FillRectangle(2, 1, 13, 13, Common.ColourDark[city.Owner])
 				.FillRectangle(2, 2, 12, 12, Common.ColourLight[city.Owner]);
 			
-			Picture resource;
+			IBitmap resource;
 			if (Resources.Exists("SP257"))
 			{
 				resource = Resources["SP257"].GetPart(192, 112, 16, 16);
@@ -355,11 +346,11 @@ namespace CivOne.Graphics
 			{
 				resource = Free.Instance.City;
 			}
-			resource.ColourReplace(3, 0)
+			resource
+				.ColourReplace(3, 0)
 				.ColourReplace(5, Common.ColourDark[city.Owner]);
-			output.AddLayer(resource, 0, 0);
-			output.DrawText($"{city.Size}", (smallFont ? 1 : 0), 5, 9, 5, TextAlign.Center);
-			// output.DrawText($"{city.Size}", 9, 5);
+			output.AddLayer(resource, 0, 0)
+				.DrawText($"{city.Size}", (smallFont ? 1 : 0), 5, 9, 5, TextAlign.Center);
 			resource?.Dispose();
 
 			if (city.HasBuilding<CityWalls>())
@@ -370,8 +361,8 @@ namespace CivOne.Graphics
 			return output;
 		}
 
-		private static Picture _fortify;
-		public static Picture Fortify
+		private static IBitmap _fortify;
+		public static IBitmap Fortify
 		{
 			get
 			{
@@ -391,7 +382,7 @@ namespace CivOne.Graphics
 			}
 		}
 
-		public static Picture Cursor(MouseCursor cursor, bool builtIn = false)
+		public static IBitmap Cursor(MouseCursor cursor, bool builtIn = false)
 		{
 			switch (cursor)
 			{
@@ -439,16 +430,15 @@ namespace CivOne.Graphics
 			return null;
 		}
 
-		private static Picture _fortress;
-		public static Picture Fortress
+		private static IBitmap _fortress;
+		public static IBitmap Fortress
 		{
 			get
 			{
 				if (_fortress == null)
 				{
 					_fortress = Resources["SP257"].GetPart(224, 112, 16, 16)
-						.ColourReplace(3, 0)
-						.As<Picture>();
+						.ColourReplace(3, 0);
 				}
 				return _fortress;
 			}

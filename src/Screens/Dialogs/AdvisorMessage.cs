@@ -38,7 +38,7 @@ namespace CivOne.Screens.Dialogs
 		{
 			string[] advisorNames = new string[] { "Defense Minister", "Domestic Advisor", "Foreign Minister", "Science Advisor" };
 			bool modernGovernment = Human.HasAdvance<Invention>();
-			Picture governmentPortrait = Icons.GovernmentPortrait(Human.Government, advisor, modernGovernment);
+			IBitmap governmentPortrait = Icons.GovernmentPortrait(Human.Government, advisor, modernGovernment);
 			
 			Palette palette = Common.DefaultPalette;
 			for (int i = 144; i < 256; i++)

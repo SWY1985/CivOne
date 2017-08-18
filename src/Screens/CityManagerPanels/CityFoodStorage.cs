@@ -18,7 +18,7 @@ namespace CivOne.Screens.CityManagerPanels
 	{
 		private readonly City _city;
 
-		private readonly Picture _background;
+		private readonly IBitmap _background;
 		
 		private bool _update = true;
 		
@@ -66,7 +66,7 @@ namespace CivOne.Screens.CityManagerPanels
 			_update = true;
 		}
 
-		public CityFoodStorage(City city, Picture background) : base(91, 92)
+		public CityFoodStorage(City city, IBitmap background) : base(91, 92)
 		{
 			_city = city;
 			_background = background;

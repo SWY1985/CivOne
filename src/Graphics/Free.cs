@@ -15,9 +15,9 @@ namespace CivOne.Graphics
 {
 	internal class Free
 	{
-		private Picture _panelGrey, _panelBlue;
-		private Picture _landBase, _seaBase, _city, _fortify;
-		private Picture[] _terrain = new Picture[10];
+		private IBitmap _panelGrey, _panelBlue;
+		private IBitmap _landBase, _seaBase, _city, _fortify;
+		private IBitmap[] _terrain = new IBitmap[10];
 
 		private IEnumerable<byte> GenerateNoise(params byte[] values)
 		{
@@ -52,7 +52,7 @@ namespace CivOne.Graphics
 			}
 		}
 
-		public Picture PanelGrey
+		public IBitmap PanelGrey
 		{
 			get
 			{
@@ -64,7 +64,7 @@ namespace CivOne.Graphics
 			}
 		}
 
-		public Picture PanelBlue
+		public IBitmap PanelBlue
 		{
 			get
 			{
@@ -76,7 +76,7 @@ namespace CivOne.Graphics
 			}
 		}
 
-		public Picture LandBase
+		public IBitmap LandBase
 		{
 			get
 			{
@@ -88,7 +88,7 @@ namespace CivOne.Graphics
 			}
 		}
 
-		public Picture SeaBase
+		public IBitmap SeaBase
 		{
 			get
 			{
@@ -100,7 +100,7 @@ namespace CivOne.Graphics
 			}
 		}
 
-		public Picture Plains
+		public IBitmap Plains
 		{
 			get
 			{
@@ -112,7 +112,7 @@ namespace CivOne.Graphics
 			}
 		}
 
-		public Picture Forest
+		public IBitmap Forest
 		{
 			get
 			{
@@ -141,7 +141,7 @@ namespace CivOne.Graphics
 			}
 		}
 
-		public Picture City
+		public IBitmap City
 		{
 			get
 			{
@@ -156,14 +156,13 @@ namespace CivOne.Graphics
 						.DrawLine(3, 11, 6, 11)
 						.DrawLine(3, 6, 3, 8)
 						.DrawLine(7, 3, 7, 11)
-						.DrawLine(11, 5, 11, 11)
-						.As<Picture>();
+						.DrawLine(11, 5, 11, 11);
 				}
 				return _city;
 			}
 		}
 
-		public Picture Fortify
+		public IBitmap Fortify
 		{
 			get
 			{
@@ -177,9 +176,9 @@ namespace CivOne.Graphics
 			}
 		}
 
-		public Picture Fog(Direction direction)
+		public IBitmap Fog(Direction direction)
 		{
-			Picture output = new Picture(16, 16);
+			IBitmap output = new Picture(16, 16);
 			switch(direction)
 			{
 				case Direction.West:
@@ -198,9 +197,9 @@ namespace CivOne.Graphics
 			return output;
 		}
 
-		public Picture GetUnit(Unit type)
+		public IBitmap GetUnit(Unit type)
 		{
-			Picture output = new Picture(16, 16, GenerateUnit().ToArray(), Common.GetPalette256);
+			IBitmap output = new Picture(16, 16, GenerateUnit().ToArray(), Common.GetPalette256);
 			char text = ' ';
 			switch (type)
 			{

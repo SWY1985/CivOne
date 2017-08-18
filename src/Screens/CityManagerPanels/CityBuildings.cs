@@ -23,7 +23,7 @@ namespace CivOne.Screens.CityManagerPanels
 		private readonly City _city;
 		private IProduction[] _improvements;
 
-		private readonly Picture _background;
+		private readonly IBitmap _background;
 		
 		private bool _update = true;
 		
@@ -36,7 +36,7 @@ namespace CivOne.Screens.CityManagerPanels
 			int xx = (offset % 2 == 0) ? 21 : 1;
 			int yy = -1 + (6 * offset);
 			if (yy < 0)
-				this.AddLayer(wonder.SmallIcon.GetPart(0, Math.Abs(yy), wonder.SmallIcon.Width, wonder.SmallIcon.Height + yy), xx, 0);
+				this.AddLayer(wonder.SmallIcon.Crop(0, Math.Abs(yy), wonder.SmallIcon.Width(), wonder.SmallIcon.Height() + yy), xx, 0);
 			else
 				this.AddLayer(wonder.SmallIcon, xx, yy);
 			
@@ -53,7 +53,7 @@ namespace CivOne.Screens.CityManagerPanels
 			int xx = (offset % 2 == 0) ? 21 : 1;
 			int yy = -1 + (6 * offset);
 			if (yy < 0)
-				this.AddLayer(building.SmallIcon.GetPart(0, Math.Abs(yy), building.SmallIcon.Width, building.SmallIcon.Height + yy), xx, 0);
+				this.AddLayer(building.SmallIcon.Crop(0, Math.Abs(yy), building.SmallIcon.Width(), building.SmallIcon.Height() + yy), xx, 0);
 			else
 				this.AddLayer(building.SmallIcon, xx, yy);
 
@@ -144,7 +144,7 @@ namespace CivOne.Screens.CityManagerPanels
 			return false;
 		}
 
-		public CityBuildings(City city, Picture background) : base(108, 97)
+		public CityBuildings(City city, IBitmap background) : base(108, 97)
 		{
 			_city = city;
 			_improvements = GetImprovements.ToArray();

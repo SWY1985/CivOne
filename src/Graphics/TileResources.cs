@@ -16,7 +16,7 @@ namespace CivOne.Graphics
 	{
 		private static Resources Resources => Resources.Instance;
 		
-		private static Picture[] _icons = new Picture[12];
+		private static IBitmap[] _icons = new Picture[12];
 		
 		private static void DrawOceanBorderNorth(ref Picture output, ITile tile)
 		{
@@ -247,10 +247,9 @@ namespace CivOne.Graphics
 		{
 			if (!tile.Hut) return;
 			
-			Picture resource = Resources[graphics16 ? "SPRITES" : "SP257"].GetPart(240, 112, 16, 16)
-				.ColourReplace(3, 0)
-				.As<Picture>();
-			output.AddLayer(resource, 0, 0);
+			output.AddLayer(Resources[graphics16 ? "SPRITES" : "SP257"]
+								.GetPart(240, 112, 16, 16)
+								.ColourReplace(3, 0), 0, 0);
 		}
 		
 		internal static Picture GetTile16(ITile tile, bool improvements, bool roads)
@@ -285,10 +284,9 @@ namespace CivOne.Graphics
 			if (tile.Special)
 			{
 				int terrainId = (int)tile.Type;
-				Picture resource = Resources["SPRITES"].GetPart(terrainId * 16, 112, 16, 16)
-					.ColourReplace(3, 0)
-					.As<Picture>();
-				output.AddLayer(resource);
+				output.AddLayer(Resources["SPRITES"]
+									.GetPart(terrainId * 16, 112, 16, 16)
+									.ColourReplace(3, 0));
 			}
 			
 			// Add tile improvements
@@ -376,17 +374,15 @@ namespace CivOne.Graphics
 			if (!Map.TileIsType(tile, Terrain.Grassland1, Terrain.Grassland2) && tile.Special)
 			{
 				int terrainId = (int)tile.Type;
-				Picture resource = Resources["SP257"].GetPart(terrainId * 16, 112, 16, 16)
-					.ColourReplace(3, 0)
-					.As<Picture>();
-				output.AddLayer(resource);
+				output.AddLayer(Resources["SP257"]
+									.GetPart(terrainId * 16, 112, 16, 16)
+									.ColourReplace(3, 0));
 			}
 			else if (tile.Type == Terrain.Grassland2)
 			{
-				Picture resource = Resources["SP257"].GetPart(152, 40, 8, 8)
-					.ColourReplace(3, 0)
-					.As<Picture>();
-				output.AddLayer(resource, 4, 4);
+				output.AddLayer(Resources["SP257"]
+									.GetPart(152, 40, 8, 8)
+									.ColourReplace(3, 0), 4, 4);
 			}
 			
 			// Add tile improvements
@@ -405,96 +401,83 @@ namespace CivOne.Graphics
 			return output;
 		}
 		
-		internal static Picture GetIcon(Terrain terrain)
+		internal static IBitmap GetIcon(Terrain terrain)
 		{
 			int terrainId = (int)terrain;
 			if (terrainId == 12) terrainId = 2;
 			if (_icons[terrainId] != null)
 				return _icons[terrainId];
 			
-			Picture icon;
 			switch (terrain)
 			{
 				case Terrain.Arctic:
-					icon = Resources.LoadPIC("ICONPGT1", true).GetPart(108, 1, 108, 86)
+					_icons[terrainId] = Resources.LoadPIC("ICONPGT1", true)
+						.GetPart(108, 1, 108, 86)
 						.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0)
-						.As<Picture>();
-					_icons[terrainId] = new Picture(icon);
-					_icons[terrainId].FillRectangle(106, 0, 2, 86, 0);
+						.FillRectangle(106, 0, 2, 86, 0);
 					break;
 				case Terrain.Desert:
-					icon = Resources.LoadPIC("ICONPGT2", true).GetPart(1, 1, 108, 86)
+					_icons[terrainId] = Resources.LoadPIC("ICONPGT2", true)
+						.GetPart(1, 1, 108, 86)
 						.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0)
-						.As<Picture>();
-					_icons[terrainId] = new Picture(icon);
-					_icons[terrainId].FillRectangle(106, 0, 2, 86, 0);
+						.FillRectangle(106, 0, 2, 86, 0);
 					break;
 				case Terrain.Forest:
-					icon = Resources.LoadPIC("ICONPGT2", true).GetPart(215, 1, 104, 86)
-						.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0)
-						.As<Picture>();
-					_icons[terrainId] = new Picture(icon);
+					_icons[terrainId] = Resources.LoadPIC("ICONPGT2", true)
+						.GetPart(215, 1, 104, 86)
+						.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
 					break;
 				case Terrain.Grassland1:
 				case Terrain.Grassland2:
-					icon = Resources.LoadPIC("ICONPGT2", true).GetPart(108, 1, 108, 86)
+					_icons[terrainId] = Resources.LoadPIC("ICONPGT2", true)
+						.GetPart(108, 1, 108, 86)
 						.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0)
-						.As<Picture>();
-					_icons[terrainId] = new Picture(icon);
-					_icons[terrainId].FillRectangle(106, 0, 2, 86, 0);
+						.FillRectangle(106, 0, 2, 86, 0);
 					break;
 				case Terrain.Hills:
-					icon = Resources.LoadPIC("ICONPGT2", true).GetPart(108, 88, 108, 86)
+					_icons[terrainId] = Resources.LoadPIC("ICONPGT2", true)
+						.GetPart(108, 88, 108, 86)
 						.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0)
-						.As<Picture>();
-					_icons[terrainId] = new Picture(icon);
-					_icons[terrainId].FillRectangle(106, 0, 2, 86, 0);
+						.FillRectangle(106, 0, 2, 86, 0);
 					break;
 				case Terrain.Jungle:
-					icon = Resources.LoadPIC("ICONPGT1", true).GetPart(1, 88, 108, 86)
+					_icons[terrainId] = Resources.LoadPIC("ICONPGT1", true)
+						.GetPart(1, 88, 108, 86)
 						.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0)
-						.As<Picture>();
-					_icons[terrainId] = new Picture(icon);
-					_icons[terrainId].FillRectangle(106, 0, 2, 86, 0);
+						.FillRectangle(106, 0, 2, 86, 0);
 					break;
 				case Terrain.Mountains:
-					icon = Resources.LoadPIC("ICONPGT2", true).GetPart(215, 88, 104, 86)
-						.ColourReplace(253, 0)
-						.As<Picture>();
-					_icons[terrainId] = new Picture(icon);
+					_icons[terrainId] = Resources.LoadPIC("ICONPGT2", true)
+						.GetPart(215, 88, 104, 86)
+						.ColourReplace(253, 0);
 					break;
 				case Terrain.Ocean:
-					icon = Resources.LoadPIC("ICONPGT1", true).GetPart(108, 88, 108, 86)
+					_icons[terrainId] = Resources.LoadPIC("ICONPGT1", true)
+						.GetPart(108, 88, 108, 86)
 						.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0)
-						.As<Picture>();
-					_icons[terrainId] = new Picture(icon);
-					_icons[terrainId].FillRectangle(106, 0, 2, 86, 0);
+						.FillRectangle(106, 0, 2, 86, 0);
 					break;
 				case Terrain.Plains:
-					icon = Resources.LoadPIC("ICONPGT2", true).GetPart(1, 88, 108, 86)
+					_icons[terrainId] = Resources.LoadPIC("ICONPGT2", true)
+						.GetPart(1, 88, 108, 86)
 						.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0)
-						.As<Picture>();
-					_icons[terrainId] = new Picture(icon);
-					_icons[terrainId].FillRectangle(106, 0, 2, 86, 0);
+						.FillRectangle(106, 0, 2, 86, 0);
 					break;
 				case Terrain.River:
-					icon = Resources.LoadPIC("ICONPGT1", true).GetPart(215, 88, 104, 86)
-						.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0)
-						.As<Picture>();
-					_icons[terrainId] = new Picture(icon);
+					_icons[terrainId] = Resources.LoadPIC("ICONPGT1", true)
+						.GetPart(215, 88, 104, 86)
+						.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
 					break;
 				case Terrain.Swamp:
-					icon = Resources.LoadPIC("ICONPGT1", true).GetPart(215, 1, 104, 86)
-						.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0)
-						.As<Picture>();
-					_icons[terrainId] = new Picture(icon);
+					_icons[terrainId] = Resources.LoadPIC("ICONPGT1", true)
+						.GetPart(215, 1, 104, 86)
+						.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
 					break;
 				case Terrain.Tundra:
-					icon = Resources.LoadPIC("ICONPGT1", true).GetPart(1, 1, 108, 86)
+					_icons[terrainId] = Resources.LoadPIC("ICONPGT1", true)
+						.GetPart(1, 1, 108, 86)
 						.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0)
-						.As<Picture>();
-					_icons[terrainId] = new Picture(icon);
-					_icons[terrainId].FillRectangle(106, 0, 2, 86, 0);
+						.FillRectangle(106, 0, 2, 86, 0);
 					break;
 			}
 			return _icons[terrainId];

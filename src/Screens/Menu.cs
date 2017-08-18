@@ -202,7 +202,7 @@ namespace CivOne.Screens
 			Destroy();
 		}
 		
-		public Menu(string menuId, Palette palette, Picture background = null) : base(MouseCursor.Pointer)
+		public Menu(string menuId, Palette palette, IBitmap background = null) : base(MouseCursor.Pointer)
 		{
 			OnResize += Resize;
 

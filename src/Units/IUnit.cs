@@ -53,7 +53,7 @@ namespace CivOne.Units
 		void Explore();
 		void SetHome();
 		void SetHome(City city);
-		Picture GetUnit(byte colour, bool showState = true);
+		IBitmap GetUnit(byte colour, bool showState = true);
 		IEnumerable<MenuItem<int>> MenuItems { get; }
 	}
 }

@@ -18,7 +18,7 @@ namespace CivOne.Screens.CityManagerPanels
 	{
 		private readonly City _city;
 
-		private readonly Picture _background;
+		private readonly IBitmap _background;
 		
 		private bool _update = true;
 		
@@ -72,7 +72,7 @@ namespace CivOne.Screens.CityManagerPanels
 			return true;
 		}
 
-		public CityUnits(City city, Picture background) : base(123, 38)
+		public CityUnits(City city, IBitmap background) : base(123, 38)
 		{
 			_city = city;
 			_background = background;

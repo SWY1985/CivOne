@@ -52,7 +52,7 @@ namespace CivOne.Screens
 			bool modernGovernment = Human.HasAdvance<Invention>();
 			Palette palette = Common.DefaultPalette;
 
-			Picture[] governmentPortraits = new Picture[4];
+			IBitmap[] governmentPortraits = new IBitmap[4];
 			if (showGovernment)
 			{
 				for (int i = 0; i < 4; i++)
@@ -116,17 +116,18 @@ namespace CivOne.Screens
 			}
 			else
 			{
-				for (int xx = 0; xx < Width; xx += Icons.Newspaper.Width)
+				for (int xx = 0; xx < Width; xx += Icons.Newspaper.Width())
 				{
 					this.AddLayer(Icons.Newspaper, xx, 100);
 				}
-				Picture dialog = new Picture(151, 15)
-					.Tile(Patterns.PanelGrey)
-					.DrawRectangle3D()
-					.DrawText("Press any key to continue.", 0, 15, 4, 4)
-					.As<Picture>();
-				this.FillRectangle(80, 128, 153, 17, 5)
-					.AddLayer(dialog, 81, 129);
+				using (IBitmap dialog = new Picture(151, 15)
+						.Tile(Patterns.PanelGrey)
+						.DrawRectangle3D()
+						.DrawText("Press any key to continue.", 0, 15, 4, 4))
+				{
+					this.FillRectangle(80, 128, 153, 17, 5)
+						.AddLayer(dialog, 81, 129);
+				}
 			}
 		}
 	}

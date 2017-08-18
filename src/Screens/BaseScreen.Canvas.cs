@@ -19,8 +19,6 @@ namespace CivOne.Screens
 	{
 		public TextSettings DefaultTextSettings { get; set; }
 
-		internal static Resources Resources => Resources.Instance;
-
 		protected int Width => Bitmap.Width;
 		protected int Height => Bitmap.Height;
 
@@ -64,11 +62,9 @@ namespace CivOne.Screens
 				hh -= 2;
 				this.DrawRectangle(x, y, width, height);
 			}
-			Picture panel = new Picture(ww, hh)
+			this.AddLayer(new Picture(ww, hh)
 				.Tile(Patterns.PanelGrey)
-				.DrawRectangle3D()
-				.As<Picture>();
-			this.AddLayer(panel, xx, yy);
+				.DrawRectangle3D(), xx, yy, dispose: true);
 		}
 
 		protected void DrawBorder(int border)

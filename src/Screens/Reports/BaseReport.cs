@@ -20,7 +20,7 @@ namespace CivOne.Screens.Reports
 	{
 		private bool _update = true;
 
-		protected readonly Picture[] Portrait = new Picture[4];
+		protected readonly IBitmap[] Portrait = new Picture[4];
 		
 		protected override bool HasUpdate(uint gameTick)
 		{

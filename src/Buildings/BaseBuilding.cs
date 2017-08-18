@@ -10,17 +10,20 @@
 using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Graphics;
+using CivOne.IO;
 
 namespace CivOne.Buildings
 {
-	internal abstract class BaseBuilding : IBuilding
+	internal abstract class BaseBuilding : BaseInstance, IBuilding
 	{
-		private static void Log(string text, params object[] parameters) => RuntimeHandler.Runtime.Log(text, parameters);
-
-		private static Picture[,] _iconsCache = new Picture[6, 4], _iconsCacheGrass = new Picture[6, 4];
+		private static IBitmap[,] _iconsCache = new IBitmap[6, 4], _iconsCacheGrass = new IBitmap[6, 4];
 		
-		public virtual Picture Icon { get; protected set; }
-		public virtual Picture SmallIcon { get; protected set; }
+		private IBitmap GrassIcon => Resources["CITYPIX2"]
+										.GetPart(250, 0, 50, 50)
+										.ColourReplace(1, 0);
+		
+		public virtual IBitmap Icon { get; protected set; }
+		public virtual IBitmap SmallIcon { get; protected set; }
 		public string Name { get; protected set; }
 		public byte PageCount => 2;
 		public Picture DrawPage(byte pageNumber)
@@ -75,21 +78,14 @@ namespace CivOne.Buildings
 		{
 			if ((grassTile && _iconsCacheGrass[col, row] == null) || (!grassTile && _iconsCache[col, row] == null))
 			{
-				Icon = new Picture(52, 50, Resources.Instance.LoadPIC("CITYPIX2").Palette);
+				Icon = new Picture(50, 50, Resources["CITYPIX2"].Palette);
 				
 				if (grassTile)
-				{
-					Picture grass = Resources.Instance.LoadPIC("CITYPIX2").GetPart(250, 0, 52, 50)
-						.ColourReplace(1, 0)
-						.As<Picture>();
-					Icon.AddLayer(grass);
-				}
+					Icon.AddLayer(GrassIcon);
 				
-				Picture icon = Resources.Instance.LoadPIC("CITYPIX2").GetPart(col * 50, row * 50, 52, 50)
-					.ColourReplace(1, 0)
-					.As<Picture>();
-				Icon.AddLayer(icon);
-				Icon.FillRectangle(50, 0, 2, 50, 0);
+				Icon.AddLayer(Resources["CITYPIX2"]
+								.GetPart(col * 50, row * 50, 50, 50)
+								.ColourReplace(1, 0));
 				
 				if (grassTile) _iconsCacheGrass[col, row] = Icon;
 				else _iconsCache[col, row] = Icon;
@@ -99,16 +95,11 @@ namespace CivOne.Buildings
 		
 		protected void SetSmallIcon(int col, int row)
 		{
-			using (Picture icon = Resources.Instance.LoadPIC((Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? "SP299" : "SPRITES")).GetPart(160 + (19 * col), 50 + (10 * row), 20, 10))
-			{
-				icon.ColourReplace(0, 5);
-				SmallIcon = new Picture(20, 10)
-					.FillRectangle(0, 0, 20, 10, 5)
-					.AddLayer(icon)
-					.FillRectangle(0, 0, 1, 10, 0)
-					.FillRectangle(19, 0, 1, 10, 0)
-					.As<Picture>();
-			}
+			SmallIcon = Resources[Settings.GraphicsMode == GraphicsMode.Graphics256 ? "SP299" : "SPRITES"]
+				.GetPart(160 + (19 * col), 50 + (10 * row), 20, 10)
+				.ColourReplace(0, 5)
+				.FillRectangle(0, 0, 1, 10, 0)
+				.FillRectangle(19, 0, 1, 10, 0);
 		}
 		
 		public byte Id => (byte)Type;

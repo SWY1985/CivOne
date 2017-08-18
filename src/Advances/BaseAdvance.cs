@@ -29,16 +29,12 @@ namespace CivOne.Advances
 			}
 		}
 		
-		public virtual Picture Icon { get; protected set; }
+		public virtual IBitmap Icon { get; protected set; }
+
+		public Palette OriginalColours { get; private set; }
 		
 		public string Name { get; protected set; }
-		public byte PageCount
-		{
-			get
-			{
-				return 2;
-			}
-		}
+		public byte PageCount => 2;
 		public Picture DrawPage(byte pageNumber)
 		{
 			Picture output = new Picture(320, 200);
@@ -128,21 +124,16 @@ namespace CivOne.Advances
 			int ww = col < 2 ? 112 : 96;
 			int hh = row < 2 ? 68 : 60;
 			
-			Picture icon = Resources.Instance[$"ICONPG{page}"].GetPart(xx, yy, ww, hh);
+			IBitmap icon = Resources[$"ICONPG{page}"]
+				.GetPart(xx, yy, ww, hh);
 			
 			Icon = new Picture(112, 68, icon.Palette)
 				.AddLayer(icon, col < 2 ? 0 : 7, row < 2 ? 0 : 4)
-				.FillRectangle(110, 0, 2, 68, 0)
-				.As<Picture>();
+				.FillRectangle(110, 0, 2, 68, 0);
+			OriginalColours = icon.Palette.Copy();
 		}
 		
-		public byte Id
-		{
-			get
-			{
-				return (byte)Type;
-			}
-		}
+		public byte Id => (byte)Type;
 		
 		public bool Requires(byte id)
 		{
@@ -151,15 +142,9 @@ namespace CivOne.Advances
 			return false;
 		}
 
-		public bool Is<T>() where T : IAdvance
-		{
-			return (this is T);
-		}
+		public bool Is<T>() where T : IAdvance => (this is T);
 
-		public bool Not<T>() where T : IAdvance
-		{
-			return !(this is T);
-		}
+		public bool Not<T>() where T : IAdvance => !(this is T);
 		
 		protected BaseAdvance(params Advance[] requiredTechs)
 		{

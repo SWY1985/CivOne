@@ -50,7 +50,7 @@ namespace CivOne.Screens.Dialogs
 		public DisbandUnit(City city, IUnit unit) : base(58, 72, TextPictures(city, unit).Max(b => b.Width) + 52, 62)
 		{
 			bool modernGovernment = Human.HasAdvance<Invention>();
-			Picture governmentPortrait = Icons.GovernmentPortrait(Human.Government, Advisor.Defense, modernGovernment);
+			IBitmap governmentPortrait = Icons.GovernmentPortrait(Human.Government, Advisor.Defense, modernGovernment);
 			
 			Palette palette = Common.DefaultPalette;
 			for (int i = 144; i < 256; i++)

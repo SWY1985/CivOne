@@ -41,7 +41,7 @@ namespace CivOne.Graphics
 		
 		public Bytemap Bitmap => _bitmap;
 
-		public Picture GetPart(int left, int top, int width, int height) => new Picture(_bitmap[left, top, width, height], Palette);
+		public Picture GetPart(int left, int top, int width, int height) => new Picture(_bitmap[left, top, width, height], Palette.Copy());
 		
 		public void ApplyNoise(byte[,] noiseMap, int step)
 		{

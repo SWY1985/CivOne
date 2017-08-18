@@ -26,7 +26,7 @@ namespace CivOne.Graphics
 		private readonly Dictionary<string, Bytemap> _textCache = new Dictionary<string, Bytemap>();
 		private readonly IFont _defaultFont = new DefaultFont();
 		private readonly List<Fontset> _fonts = new List<Fontset>();
-		private readonly Dictionary<Direction, Picture> _fog = new Dictionary<Direction, Picture>();
+		private readonly Dictionary<Direction, IBitmap> _fog = new Dictionary<Direction, IBitmap>();
 		
 		internal void ClearTextCache()
 		{
@@ -217,7 +217,7 @@ namespace CivOne.Graphics
 			}
 		}
 
-		public Picture GetFog(Direction direction)
+		public IBitmap GetFog(Direction direction)
 		{
 			if (!_fog.ContainsKey(direction)) return null;
 			return _fog[direction];

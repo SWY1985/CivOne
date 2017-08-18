@@ -16,8 +16,8 @@ namespace CivOne.Concepts
 		private static void Log(string text, params object[] parameters) => RuntimeHandler.Runtime.Log(text, parameters);
 
 		public string Name { get; protected set; }
-		public Picture Icon { get { return null; } }
-		public byte PageCount { get { return 2; } }
+		public IBitmap Icon => null;
+		public byte PageCount => 2;
 		public Picture DrawPage(byte pageNumber)
 		{
 			string[] text = new string[0];

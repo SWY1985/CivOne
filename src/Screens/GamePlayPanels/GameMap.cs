@@ -154,7 +154,7 @@ namespace CivOne.Screens.GamePlayPanels
 
 					MoveUnit movement = movingUnit.Movement;
 					this.AddLayer(Map[movingUnit.X - 1, movingUnit.Y - 1, 3, 3].ToPicture(player: renderPlayer), dx - 16, dy - 16, dispose: true);
-					using (Picture unitPicture = movingUnit.GetUnit(movingUnit.Owner))
+					using (IBitmap unitPicture = movingUnit.GetUnit(movingUnit.Owner))
 					{
 						this.AddLayer(unitPicture, dx + movement.X, dy + movement.Y);
 						if (movingUnit is IBoardable && tile.Units.Any(u => u.Class == UnitClass.Land && (tile.City == null || (tile.City != null && u.Sentry))))

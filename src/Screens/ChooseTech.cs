@@ -42,9 +42,8 @@ namespace CivOne.Screens
 			{
 				_update = false;
 
-				Picture background = _menuGfx.GetPart(44, 35, 156, _menuHeight)
-					.ColourReplace((7, 11), (22, 3))
-					.As<Picture>();
+				IBitmap background = _menuGfx.GetPart(44, 35, 156, _menuHeight)
+					.ColourReplace((7, 11), (22, 3));
 
 				Menu<IAdvance> menu = new Menu<IAdvance>("ChooseTech", Palette, background)
 				{
@@ -77,7 +76,7 @@ namespace CivOne.Screens
 			_menuHeight = Resources.Instance.GetFontHeight(0) * _availableAdvances.Count();
 			
 			bool modernGovernment = Human.HasAdvance<Invention>();
-			Picture governmentPortrait = Icons.GovernmentPortrait(Human.Government, Advisor.Science, modernGovernment);
+			IBitmap governmentPortrait = Icons.GovernmentPortrait(Human.Government, Advisor.Science, modernGovernment);
 			using (Palette palette = Common.DefaultPalette)
 			{
 				palette.MergePalette(governmentPortrait.Palette, 144);

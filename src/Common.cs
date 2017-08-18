@@ -76,7 +76,7 @@ namespace CivOne
 			}
 		}
 
-		public static Picture CursorGraphics
+		public static IBitmap CursorGraphics
 		{
 			get
 			{

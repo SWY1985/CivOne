@@ -447,20 +447,10 @@ namespace CivOne.Units
 			}
 		}
 		
-		private static Picture[] _iconCache = new Picture[28];
-		public virtual Picture Icon
-		{
-			get;
-			private set;
-		}
+		private static IBitmap[] _iconCache = new IBitmap[28];
+		public virtual IBitmap Icon { get; private set; }
 		public string Name { get; protected set; }
-		public byte PageCount
-		{
-			get
-			{
-				return 2;
-			}
-		}
+		public byte PageCount => 2;
 		public Picture DrawPage(byte pageNumber)
 		{
 			string[] text = new string[0];
@@ -511,13 +501,7 @@ namespace CivOne.Units
 		public Unit Type { get; protected set; }
 		public City Home { get; protected set; }
 		public short BuyPrice { get; private set; }
-		public byte ProductionId
-		{
-			get
-			{
-				return (byte)Type;
-			}
-		}
+		public byte ProductionId => (byte)Type;
 		public byte Price { get; protected set; }
 		public virtual UnitRole Role
 		{
@@ -568,13 +552,7 @@ namespace CivOne.Units
 			}
 		}
 		public Point Goto { get; set; }
-		public ITile Tile
-		{
-			get
-			{
-				return Map[_x, _y];
-			}
-		}
+		public ITile Tile => Map[_x, _y];
 		private byte _owner;
 		public byte Owner
 		{
@@ -589,13 +567,7 @@ namespace CivOne.Units
 			}
 		}
 
-		public Player Player
-		{
-			get
-			{
-				return Game.GetPlayer(Owner);
-			}
-		}
+		public Player Player => Game.GetPlayer(Owner);
 		public byte Status
 		{
 			get
@@ -639,10 +611,7 @@ namespace CivOne.Units
 			Home = Map[X, Y].City;
 		}
 
-		public void SetHome(City city)
-		{
-			Home = city;
-		}
+		public void SetHome(City city) => Home = city;
 		
 		public virtual void SkipTurn()
 		{
@@ -654,22 +623,21 @@ namespace CivOne.Units
 		{
 			if (_iconCache[(int)Type] == null)
 			{
-				Picture icon = Resources.Instance.LoadPIC(string.Format("ICONPG{0}", page), true).GetPart(col * 160, row * 62, 160, 60)
-					.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0)
-					.As<Picture>();
-				_iconCache[(int)Type] = new Picture(icon);
+				_iconCache[(int)Type] = Resources.LoadPIC(string.Format("ICONPG{0}", page), true)
+					.GetPart(col * 160, row * 62, 160, 60)
+					.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
 			}
 			Icon = _iconCache[(int)Type];
 		}
 		
-		public virtual Picture GetUnit(byte colour, bool showState = true)
+		public virtual IBitmap GetUnit(byte colour, bool showState = true)
 		{
 			int unitId = (int)Type;
 			string resFile = Settings.GraphicsMode == GraphicsMode.Graphics256 ? "SP257" : "SPRITES";
 			int xx = (unitId % 20) * 16;
 			int yy = unitId < 20 ? 160 : 176;
 			
-			Picture icon;
+			IBitmap icon;
 			if (Resources.Instance.Exists(resFile))
 			{
 				icon = Resources.Instance[resFile].GetPart(xx, yy, 16, 16);

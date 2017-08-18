@@ -37,7 +37,7 @@ namespace CivOne.Screens
 			
 			Palette palette = Palette;
 			for (int i = 86; i < 256; i++)
-				palette[i] = FadeColour(OriginalColours[i], _advance.Icon.OriginalColours[i]);
+				palette[i] = FadeColour(OriginalColours[i], _advance.OriginalColours[i]);
 			this.SetPalette(palette);
 		}
 		

@@ -20,7 +20,7 @@ namespace CivOne.Screens.CityManagerPanels
 	{
 		private readonly City _city;
 
-		private readonly Picture _background;
+		private readonly IBitmap _background;
 		
 		private bool _update = true;
 		
@@ -47,7 +47,7 @@ namespace CivOne.Screens.CityManagerPanels
 
 			for (int i = 0; i < count; i++)
 			{
-				Picture icon;
+				IBitmap icon;
 				if (i >= food + shield) icon = Icons.Trade;
 				else if (i >= food) icon = Icons.Shield;
 				else icon = Icons.Food; 
@@ -110,7 +110,7 @@ namespace CivOne.Screens.CityManagerPanels
 			return true;
 		}
 
-		public CityMap(City city, Picture background) : base(82, 82)
+		public CityMap(City city, IBitmap background) : base(82, 82)
 		{
 			_city = city;
 			_background = background;
