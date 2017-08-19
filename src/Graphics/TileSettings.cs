@@ -31,11 +31,21 @@ namespace CivOne.Graphics
 			ActiveUnit = true
 		};
 
-		public static TileSettings Blink => new TileSettings()
+		public static TileSettings BlinkOn => new TileSettings()
 		{
 			Improvements = true,
 			Roads = true,
-			Cities = true
+			Cities = true,
+			CityLabels = false,
+			Units = true
+		};
+
+		public static TileSettings BlinkOff => new TileSettings()
+		{
+			Improvements = true,
+			Roads = true,
+			Cities = true,
+			CityLabels = false
 		};
 
 		public static TileSettings Terrain => new TileSettings()

@@ -142,6 +142,7 @@ namespace CivOne.Screens.GamePlayPanels
 
 			Player renderPlayer = Settings.RevealWorld ? null : Human;
 
+			IUnit activeUnit = ActiveUnit;
 			if (Game.MovingUnit != null && !_centerChanged)
 			{
 				IUnit movingUnit = Game.MovingUnit;
@@ -172,7 +173,6 @@ namespace CivOne.Screens.GamePlayPanels
 					.AddLayer(Tiles.ToPicture(player: renderPlayer), dispose: true);
 			}
 
-			IUnit activeUnit = ActiveUnit;
 			if (activeUnit != null && Game.CurrentPlayer == Human && !GameTask.Any())
 			{
 				ITile tile = activeUnit.Tile;
@@ -183,14 +183,33 @@ namespace CivOne.Screens.GamePlayPanels
 					dx *= 16; dy *= 16;
 					
 					// blink status
-					if ((gameTick % 4) >= 2)
-					{
-						this.AddLayer(tile.ToPicture(TileSettings.Blink), dx, dy, dispose: true);
-					}
+					TileSettings setting = ((gameTick % 4) < 2) ? TileSettings.BlinkOn : TileSettings.BlinkOff;
+					this.AddLayer(tile.ToPicture(setting), dx, dy, dispose: true);
 
 					DrawHelperArrows(dx, dy);
 				}
+				return true;
 			}
+
+			// IUnit activeUnit = ActiveUnit;
+			// if (activeUnit != null && Game.CurrentPlayer == Human && !GameTask.Any())
+			// {
+			// 	ITile tile = activeUnit.Tile;
+			// 	int dx = GetX(tile);
+			// 	int dy = GetY(tile);
+			// 	if (dx < _tilesX && dy < _tilesY)
+			// 	{
+			// 		dx *= 16; dy *= 16;
+					
+			// 		// blink status
+			// 		if ((gameTick % 4) >= 2)
+			// 		{
+			// 			this.AddLayer(tile.ToPicture(TileSettings.Blink), dx, dy, dispose: true);
+			// 		}
+
+			// 		DrawHelperArrows(dx, dy);
+			// 	}
+			// }
 			
 			_update = false;
 			return true;

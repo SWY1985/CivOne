@@ -12,13 +12,17 @@ using CivOne.Enums;
 using CivOne.Graphics;
 using CivOne.Units;
 
+using static CivOne.Enums.Direction;
+
 namespace CivOne.Tiles
 {
-	public static class Extensions
+	public static class TileExtensions
 	{
 		private static Game Game => Game.Instance;
 		private static Resources Resources => Resources.Instance;
 		private static Palette Palette => Resources["SP257"].Palette;
+
+		private static TextSettings CityLabel = TextSettings.ShadowText(11, 5);
 
 		public static Picture ToPicture(this ITile[,] tiles, TileSettings settings = null, Player player = null)
 		{
@@ -33,16 +37,7 @@ namespace CivOne.Tiles
 				if (tile == null || player != null && !player.Visible(tile)) continue;
 
 				int x = (xx * 16), y = (yy * 16);
-				output.AddLayer(tile.ToPicture(settings), x, y, dispose: true);
-
-				if (player != null)
-				{
-					foreach (Direction direction in new[] { Direction.West, Direction.North, Direction.East, Direction.South })
-					{
-						if (player.Visible(tile, direction)) continue;
-						output.AddLayer(Resources.GetFog(direction), x, y);
-					}
-				}
+				output.AddLayer(tile.ToPicture(settings, player), x, y, dispose: true);
 			}
 
 			if (settings.CityLabels)
@@ -55,8 +50,7 @@ namespace CivOne.Tiles
 					int x = (xx == 0) ? 0 : (xx * 16) - 8;
 					int y = (yy * 16) + 16;
 					string label = tile.City.Name;
-					output.DrawText(label, 0, 5, x, y + 1);
-					output.DrawText(label, 0, 11, x, y);
+					output.DrawText(label, x, y, CityLabel);
 				}
 			}
 
@@ -71,6 +65,15 @@ namespace CivOne.Tiles
 
 			output.AddLayer(Resources[tile, settings.Improvements, settings.Roads], dispose: true);
 
+			if (player != null)
+			{
+				foreach (Direction direction in new[] { West, North, East, South })
+				{
+					if (player.Visible(tile, direction)) continue;
+					output.AddLayer(Resources.GetFog(direction));
+				}
+			}
+
 			if (settings.Cities && tile.City != null)
 			{
 				output.AddLayer(Icons.City(tile.City, smallFont: settings.CitySmallFonts));
@@ -79,7 +82,8 @@ namespace CivOne.Tiles
 					output.AddLayer(tile.UnitsToPicture(), -1, -1, dispose: true);
 				}
 			}
-			else if (settings.EnemyUnits || settings.Units)
+			
+			if ((settings.EnemyUnits || settings.Units) && (tile.City == null || tile.Units.Any(u => u == Game.ActiveUnit)))
 			{
 				int unitCount = tile.Units.Count(u => settings.Units || player == null || u.Owner != Game.PlayerNumber(player));
 				if (unitCount > 0)
