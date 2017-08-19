@@ -108,9 +108,8 @@ namespace CivOne.Tiles
 			IBitmap output = new Picture(16, 16, Palette);
 			using (IBitmap unitPicture = unit.GetUnit(unit.Owner))
 			{
-				output.AddLayer(unitPicture);
-				if (stack)
-					output.AddLayer(unitPicture, -1, -1);
+				if (tile.City == null) output.AddLayer(unitPicture);
+				if (stack || tile.City != null) output.AddLayer(unitPicture, -1, -1);
 			}
 			return output;
 		}
