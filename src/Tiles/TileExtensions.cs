@@ -24,11 +24,11 @@ namespace CivOne.Tiles
 
 		private static TextSettings CityLabel = TextSettings.ShadowText(11, 5);
 
-		public static Picture ToPicture(this ITile[,] tiles, TileSettings settings = null, Player player = null)
+		public static IBitmap ToBitmap(this ITile[,] tiles, TileSettings settings = null, Player player = null)
 		{
 			if (settings == null) settings = TileSettings.Default;
 
-			Picture output = new Picture(16 * tiles.GetLength(0), 16 * tiles.GetLength(1), Palette);
+			IBitmap output = new Picture(16 * tiles.GetLength(0), 16 * tiles.GetLength(1), Palette);
 
 			for (int yy = 0; yy < tiles.GetLength(1); yy++)
 			for (int xx = 0; xx < tiles.GetLength(0); xx++)
@@ -37,7 +37,7 @@ namespace CivOne.Tiles
 				if (tile == null || player != null && !player.Visible(tile)) continue;
 
 				int x = (xx * 16), y = (yy * 16);
-				output.AddLayer(tile.ToPicture(settings, player), x, y, dispose: true);
+				output.AddLayer(tile.ToBitmap(settings, player), x, y, dispose: true);
 			}
 
 			if (settings.CityLabels)
@@ -57,11 +57,11 @@ namespace CivOne.Tiles
 			return output;
 		}
 
-		public static Picture ToPicture(this ITile tile, TileSettings settings = null, Player player = null)
+		public static IBitmap ToBitmap(this ITile tile, TileSettings settings = null, Player player = null)
 		{
 			if (settings == null) settings = TileSettings.Default;
 
-			Picture output = new Picture(16, 16, Palette);
+			IBitmap output = new Picture(16, 16, Palette);
 
 			output.AddLayer(Resources[tile, settings.Improvements, settings.Roads], dispose: true);
 

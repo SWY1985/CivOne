@@ -154,7 +154,7 @@ namespace CivOne.Screens.GamePlayPanels
 					dx *= 16; dy *= 16;
 
 					MoveUnit movement = movingUnit.Movement;
-					this.AddLayer(Map[movingUnit.X - 1, movingUnit.Y - 1, 3, 3].ToPicture(player: renderPlayer), dx - 16, dy - 16, dispose: true);
+					this.AddLayer(Map[movingUnit.X - 1, movingUnit.Y - 1, 3, 3].ToBitmap(player: renderPlayer), dx - 16, dy - 16, dispose: true);
 					using (IBitmap unitPicture = movingUnit.GetUnit(movingUnit.Owner))
 					{
 						this.AddLayer(unitPicture, dx + movement.X, dy + movement.Y);
@@ -170,7 +170,7 @@ namespace CivOne.Screens.GamePlayPanels
 			{
 				_centerChanged = false;
 				this.Clear(5)
-					.AddLayer(Tiles.ToPicture(player: renderPlayer), dispose: true);
+					.AddLayer(Tiles.ToBitmap(player: renderPlayer), dispose: true);
 			}
 
 			if (activeUnit != null && Game.CurrentPlayer == Human && !GameTask.Any())
@@ -184,7 +184,7 @@ namespace CivOne.Screens.GamePlayPanels
 					
 					// blink status
 					TileSettings setting = ((gameTick % 4) < 2) ? TileSettings.BlinkOn : TileSettings.BlinkOff;
-					this.AddLayer(tile.ToPicture(setting), dx, dy, dispose: true);
+					this.AddLayer(tile.ToBitmap(setting), dx, dy, dispose: true);
 
 					DrawHelperArrows(dx, dy);
 				}
