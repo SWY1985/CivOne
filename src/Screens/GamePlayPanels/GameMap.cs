@@ -28,9 +28,10 @@ namespace CivOne.Screens.GamePlayPanels
 		private readonly Palette _palette;
 		private Point _helperDirection = new Point(0, 0);
 		private bool _update = true;
-		private bool _centerChanged = false;
+		private bool _fullRedraw = false;
 		private int _x, _y;
 		private IUnit _lastUnit;
+		private ushort _lastTurn;
 
 		private int _tilesX = 15, _tilesY = 12;
 
@@ -108,6 +109,18 @@ namespace CivOne.Screens.GamePlayPanels
 		{
 			IUnit unit = ActiveUnit;
 
+			if ((gameTick % 2) == 0 && (_lastTurn != Game.GameTurn || _lastUnit != unit))
+			{
+				if (_lastUnit != unit && unit != null && Game.Human == unit.Owner && ShouldCenter())
+				{
+					CenterOnUnit();
+				}
+				_fullRedraw = true;
+				_update = true;
+				_lastUnit = unit;
+				_lastTurn = Game.GameTurn;
+			}
+
 			// Check if the active unit is on the screen and the blink status has changed.
 			if (unit == null)
 			{
@@ -117,7 +130,7 @@ namespace CivOne.Screens.GamePlayPanels
 
 			if (TileList.Any(t => t != null && t.X == unit.X && t.Y == unit.Y) && (gameTick % 2) == 0)
 			{
-				_lastUnit = unit;
+				// _lastUnit = unit;
 				_update = true;
 			}
 			else if (unit.Moving)
@@ -132,17 +145,24 @@ namespace CivOne.Screens.GamePlayPanels
 				}
 				CenterOnUnit();
 				_update = true;
+				_fullRedraw = true;
+			}
+			else
+			{
+				_update = (unit != _lastUnit);
 			}
 			return _update;
 		}
 		
 		protected override bool HasUpdate(uint gameTick)
 		{
-			if (!(_update || _centerChanged)) return false;
+			if (!(_update || _fullRedraw)) return false;
+			if (Game.MovingUnit == null && (gameTick % 2 == 1)) return false;
 
 			Player renderPlayer = Settings.RevealWorld ? null : Human;
 
-			if (Game.MovingUnit != null && !_centerChanged)
+			IUnit activeUnit = ActiveUnit;
+			if (Game.MovingUnit != null && !_fullRedraw)
 			{
 				IUnit movingUnit = Game.MovingUnit;
 				ITile tile = movingUnit.Tile;
@@ -153,7 +173,7 @@ namespace CivOne.Screens.GamePlayPanels
 					dx *= 16; dy *= 16;
 
 					MoveUnit movement = movingUnit.Movement;
-					this.AddLayer(Map[movingUnit.X - 1, movingUnit.Y - 1, 3, 3].ToPicture(player: renderPlayer), dx - 16, dy - 16, dispose: true);
+					this.AddLayer(Map[movingUnit.X - 1, movingUnit.Y - 1, 3, 3].ToBitmap(player: renderPlayer), dx - 16, dy - 16, dispose: true);
 					using (IBitmap unitPicture = movingUnit.GetUnit(movingUnit.Owner))
 					{
 						this.AddLayer(unitPicture, dx + movement.X, dy + movement.Y);
@@ -165,14 +185,13 @@ namespace CivOne.Screens.GamePlayPanels
 					return true;
 				}
 			}
-			else
+			else if (_fullRedraw)
 			{
-				_centerChanged = false;
+				_fullRedraw = false;
 				this.Clear(5)
-					.AddLayer(Tiles.ToPicture(player: renderPlayer), dispose: true);
+					.AddLayer(Tiles.ToBitmap(player: renderPlayer), dispose: true);
 			}
 
-			IUnit activeUnit = ActiveUnit;
 			if (activeUnit != null && Game.CurrentPlayer == Human && !GameTask.Any())
 			{
 				ITile tile = activeUnit.Tile;
@@ -183,13 +202,12 @@ namespace CivOne.Screens.GamePlayPanels
 					dx *= 16; dy *= 16;
 					
 					// blink status
-					if ((gameTick % 4) >= 2)
-					{
-						this.AddLayer(tile.ToPicture(TileSettings.Blink), dx, dy, dispose: true);
-					}
+					TileSettings setting = ((gameTick % 4) < 2) ? TileSettings.BlinkOn : TileSettings.BlinkOff;
+					this.AddLayer(tile.ToBitmap(setting), dx, dy, dispose: true);
 
 					DrawHelperArrows(dx, dy);
 				}
+				return true;
 			}
 			
 			_update = false;
@@ -198,7 +216,7 @@ namespace CivOne.Screens.GamePlayPanels
 
 		internal void ForceRefresh()
 		{
-			_centerChanged = true;
+			_fullRedraw = true;
 		}
 		
 		internal void CenterOnPoint(int x, int y)
@@ -207,7 +225,8 @@ namespace CivOne.Screens.GamePlayPanels
 			_y = y - 6;
 			while (_y < 0) _y++;
 			while (_y + 11 >= Map.HEIGHT) _y--;
-			_centerChanged = true;
+			_update = true;
+			_fullRedraw = true;
 		}
 		
 		private void CenterOnUnit()
@@ -479,6 +498,7 @@ namespace CivOne.Screens.GamePlayPanels
 					while (_y < 0) _y++;
 					while (_y + _tilesY > Map.HEIGHT) _y--;
 					_update = true;
+					_fullRedraw = true;
 				}
 			}
 			return _update;
@@ -493,6 +513,7 @@ namespace CivOne.Screens.GamePlayPanels
 			
 			while (_y + _tilesY > Map.HEIGHT) _y--;
 			_update = true;
+			_fullRedraw = true;
 		}
 		
 		public GameMap()
