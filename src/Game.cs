@@ -370,7 +370,7 @@ namespace CivOne
 			while (x >= Map.WIDTH) x-= Map.WIDTH;
 			if (y < 0) return null;
 			if (y >= Map.HEIGHT) return null; 
-			return _units.Where(u => u.X == x && u.Y == y).ToArray();
+			return _units.Where(u => u.X == x && u.Y == y).OrderBy(u => (u == ActiveUnit) ? 0 : (u.Fortify || u.FortifyActive ? 1 : 2)).ToArray();
 		}
 
 		internal IUnit[] GetUnits()

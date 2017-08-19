@@ -127,7 +127,7 @@ namespace CivOne.Screens
 					int cx = Settings.RightSideBar ? 0 : 80;
 					int cy = 8;
 
-					this.AddLayer(Map[_x, _y, 15, 12].ToPicture(TileSettings.Terrain, Human), cx, cy, dispose: true);
+					this.AddLayer(Map[_x, _y, 15, 12].ToBitmap(TileSettings.Terrain, Human), cx, cy, dispose: true);
 				}
 
 				_update = false;
