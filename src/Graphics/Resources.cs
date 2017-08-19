@@ -152,7 +152,6 @@ namespace CivOne.Graphics
 			if (_cache.ContainsKey(key))
 			{
 				if (!noCache) return _cache[key];
-				_cache.Remove(key);
 			}
 			
 			Picture output = null;
