@@ -24,13 +24,7 @@ namespace CivOne.Tasks
 		public int X { get; private set; }
 		public int Y { get; private set; }
 
-		private IUnit ActiveUnit
-		{
-			get
-			{
-				return Game.ActiveUnit;
-			}
-		}
+		public IUnit ActiveUnit { get; private set; }
 
 		protected override bool Step()
 		{
@@ -45,25 +39,15 @@ namespace CivOne.Tasks
 
 		public override void Run()
 		{
-			if (ActiveUnit == null || (!Settings.RevealWorld && !Human.Visible(ActiveUnit.X, ActiveUnit.Y)))
-			{
-				// Off screen? End task immediately
-				EndTask();
-			}
 		}
 
-		internal ITile TargetTile
-		{
-			get
-			{
-				return ActiveUnit.Tile[RelX, RelY];
-			}
-		}
+		internal ITile TargetTile => ActiveUnit.Tile[RelX, RelY];
 
 		public MoveUnit(int relX, int relY)
 		{
 			RelX = relX;
 			RelY = relY;
+			ActiveUnit = Game.ActiveUnit;
 		}
 	}
 }

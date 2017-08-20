@@ -80,13 +80,7 @@ namespace CivOne.Units
 			}
 		}
 
-		public bool Moving
-		{
-			get
-			{
-				return (Movement != null); 
-			}
-		}
+		public bool Moving => (Movement != null);
 		public MoveUnit Movement { get; protected set; }
 
 		private int AttackStrength(IUnit defendUnit)

@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CivOne.Events;
 using CivOne.Tasks;
 
 namespace CivOne
@@ -23,6 +24,17 @@ namespace CivOne
 		public static bool Is<T>() where T : GameTask => (_currentTask != null && _currentTask is T);
 		public static bool Fast => Common.HasAttribute<Fast>(_currentTask);
 		public static int Count<T>() where T : GameTask => _tasks.Count(t => t is T);
+
+		private static void NextTask()
+		{
+			_currentTask = _tasks[0];
+			TaskEventArgs eventArgs = new TaskEventArgs();
+			Started?.Invoke(_currentTask, eventArgs);
+			if (eventArgs.Aborted)
+				_currentTask.EndTask();
+			else
+				_currentTask.Run();
+		}
 		
 		public static bool Update()
 		{
@@ -31,7 +43,7 @@ namespace CivOne
 			else if (_tasks.Count == 0)
 				return false;
 			
-			(_currentTask = _tasks[0]).Run();
+			NextTask();
 			return true;
 		}
 
@@ -51,17 +63,18 @@ namespace CivOne
 		{
 			_tasks.Remove((sender as GameTask));
 			if (!_tasks.Any())
+			{
 				_currentTask = null;
-			else
-				(_currentTask = _tasks[0]).Run();
+				return;
+			}
+
+			NextTask();
 		}
 
+		public static event TaskEventHandler Started;
 		public event EventHandler Done;
 
-		protected virtual bool Step()
-		{
-			return false;
-		}
+		protected virtual bool Step() => false;
 
 		public abstract void Run();
 

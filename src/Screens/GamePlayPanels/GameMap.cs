@@ -61,6 +61,7 @@ namespace CivOne.Screens.GamePlayPanels
 		}
 
 		private IEnumerable<ITile> TileList
+				// _lastUnit = unit;
 		{
 			get
 			{
@@ -130,19 +131,14 @@ namespace CivOne.Screens.GamePlayPanels
 
 			if (TileList.Any(t => t != null && t.X == unit.X && t.Y == unit.Y) && (gameTick % 2) == 0)
 			{
-				// _lastUnit = unit;
 				_update = true;
 			}
 			else if (unit.Moving)
 			{
 				_update = true;
 			}
-			else if (unit != _lastUnit && ShouldCenter())
+			else if (unit != _lastUnit && ShouldCenter() && Human == unit.Owner)
 			{
-				if (!Settings.RevealWorld && Human != unit.Owner && !Human.Visible(unit.Tile))
-				{
-					return (_update = false);
-				}
 				CenterOnUnit();
 				_update = true;
 				_fullRedraw = true;
@@ -237,18 +233,18 @@ namespace CivOne.Screens.GamePlayPanels
 
 		private bool ShouldCenter(int relX = 0, int relY = 0)
 		{
-			if (Game.ActiveUnit == null)
-				return false;
+			IUnit unit = Game.ActiveUnit;
+			if (unit == null) return false;
 			int viewRange = 1;
-			if (Game.ActiveUnit.Class == UnitClass.Water)
+			if (unit.Class == UnitClass.Water)
 			{
-				viewRange = (Game.ActiveUnit as BaseUnitSea).Range;
+				viewRange = (unit as BaseUnitSea).Range;
 			}
-			if (Game.ActiveUnit.Class == UnitClass.Air)
+			if (unit.Class == UnitClass.Air)
 			{
 				viewRange = 2;
 			}
-			return (!Map.QueryMapPart(_x + viewRange, _y + viewRange, (_tilesX - (viewRange * 2)), (_tilesY - (viewRange * 2))).Any(t => t.X == Game.ActiveUnit.X + relX && t.Y == Game.ActiveUnit.Y + relY));
+			return (!Map.QueryMapPart(_x + viewRange, _y + viewRange, (_tilesX - (viewRange * 2)), (_tilesY - (viewRange * 2))).Any(t => t.X == unit.X + relX && t.Y == unit.Y + relY));
 		}
 
 		private bool MoveTo(int relX, int relY)
@@ -258,13 +254,27 @@ namespace CivOne.Screens.GamePlayPanels
 			if (Game.ActiveUnit == null)
 				return false;
 			
-			if (ShouldCenter(relX, relY))
-			{
-				// The unit is moving near the edge of the on screen map, center on the unit before moving.
-				CenterOnUnit();
-			}
-			
 			return Game.ActiveUnit.MoveTo(relX, relY);
+		}
+
+		private void TaskStarted(object sender, TaskEventArgs args)
+		{
+			if (!(sender is GameTask)) return;
+			switch (sender)
+			{
+				case MoveUnit moveUnit:
+					IUnit unit = moveUnit.ActiveUnit;
+					if (unit == null || (Human != unit.Owner && !Settings.EnemyMoves) || (!Settings.RevealWorld && Human != unit.Owner && !Human.Visible(unit.X, unit.Y)))
+					{
+						args.Abort();
+						return;
+					}
+					if (ShouldCenter(moveUnit.RelX, moveUnit.RelY))
+					{
+						CenterOnUnit();
+					}
+					return;
+			}
 		}
 
 		private bool KeyDownActiveUnit(KeyboardEventArgs args)
@@ -518,6 +528,8 @@ namespace CivOne.Screens.GamePlayPanels
 		
 		public GameMap()
 		{
+			GameTask.Started += TaskStarted;
+
 			_x = 0;
 			_y = 0;
 			
