@@ -242,6 +242,7 @@ namespace CivOne
 		internal bool EndOfTurn { get; set; }
 		internal bool InstantAdvice { get; set; }
 		internal bool AutoSave { get; set; }
+		internal bool EnemyMoves { get; set; }
 
 		internal void RevealWorldCheat()
 		{

@@ -59,21 +59,9 @@ namespace CivOne
 			return false;
 		}
 
-		public int Difficulty
-		{
-			get
-			{
-				return _difficulty;
-			}
-		}
+		public int Difficulty => _difficulty;
 
-		public bool HasUpdate
-		{
-			get
-			{
-				return false;
-			}
-		}
+		public bool HasUpdate => false;
 		
 		private ushort _gameTurn;
 		internal ushort GameTurn
@@ -1624,6 +1612,7 @@ namespace CivOne
 			Settings.Animations = true;
 			Settings.CivilopediaText = true;
 			Settings.Sound = true;
+			Settings.EnemyMoves = true;
 			
 			_cities = new List<City>();
 			_units = new List<IUnit>();
