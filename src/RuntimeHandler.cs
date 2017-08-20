@@ -198,6 +198,11 @@ namespace CivOne
 			runtime.MouseUp += OnMouseUp;
 			runtime.MouseDown += OnMouseDown;
 			runtime.MouseMove += OnMouseMove;
+
+			foreach (IPlugin plugin in Reflect.Plugins())
+			{
+				runtime.Log($"Plugin loaded: {plugin.Name} version {plugin.Version} by {plugin.Author}");
+			}
 		}
 	}
 }
