@@ -1612,6 +1612,7 @@ namespace CivOne
 			Settings.Animations = true;
 			Settings.CivilopediaText = true;
 			Settings.Sound = true;
+			Settings.EnemyMoves = true;
 			
 			_cities = new List<City>();
 			_units = new List<IUnit>();

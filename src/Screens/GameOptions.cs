@@ -36,6 +36,12 @@ namespace CivOne.Screens
 			Update();
 		}
 
+		private void MenuEnemyMoves(object sender, EventArgs args)
+		{
+			Settings.EnemyMoves = !Settings.EnemyMoves;
+			Update();
+		}
+
 		private void MenuCivilopediaText(object sender, EventArgs args)
 		{
 			Settings.CivilopediaText = !Settings.CivilopediaText;
@@ -102,7 +108,7 @@ namespace CivOne.Screens
 				menu.Items.Add($"{(Settings.EndOfTurn ? '^' : ' ')}End of Turn").OnSelect(MenuEndOfTurn);
 				menu.Items.Add($"{(Settings.Animations ? '^' : ' ')}Animations").OnSelect(MenuAnimations);
 				menu.Items.Add($"{(Settings.Sound ? '^' : ' ')}Sound").OnSelect(MenuSound);
-				menu.Items.Add(" Enemy Moves").Disable();
+				menu.Items.Add($"{(Settings.EnemyMoves ? '^' : ' ')}Enemy Moves").OnSelect(MenuEnemyMoves);
 				menu.Items.Add($"{(Settings.CivilopediaText ? '^' : ' ')}Civilopedia Text").OnSelect(MenuCivilopediaText);
 				menu.Items.Add(" Palace").Disable();
 

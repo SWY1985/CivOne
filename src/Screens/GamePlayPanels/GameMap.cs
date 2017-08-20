@@ -270,7 +270,7 @@ namespace CivOne.Screens.GamePlayPanels
 			{
 				case MoveUnit moveUnit:
 					IUnit unit = moveUnit.ActiveUnit;
-					if (unit == null || (!Settings.RevealWorld && Human != unit.Owner && !Human.Visible(unit.X, unit.Y)))
+					if (unit == null || (Human != unit.Owner && !Settings.EnemyMoves) || (!Settings.RevealWorld && Human != unit.Owner && !Human.Visible(unit.X, unit.Y)))
 					{
 						args.Abort();
 						return;
@@ -279,11 +279,6 @@ namespace CivOne.Screens.GamePlayPanels
 					{
 						CenterOnUnit();
 					}
-					// if (ActiveUnit == null || (!Settings.RevealWorld && !Human.Visible(ActiveUnit.X, ActiveUnit.Y)))
-					// {
-					// 	// Off screen? End task immediately
-					// 	EndTask();
-					// }
 					return;
 			}
 		}
