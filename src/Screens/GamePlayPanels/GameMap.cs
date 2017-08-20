@@ -254,12 +254,6 @@ namespace CivOne.Screens.GamePlayPanels
 			if (Game.ActiveUnit == null)
 				return false;
 			
-			// if (ShouldCenter(relX, relY))
-			// {
-			// 	// The unit is moving near the edge of the on screen map, center on the unit before moving.
-			// 	CenterOnUnit();
-			// }
-			
 			return Game.ActiveUnit.MoveTo(relX, relY);
 		}
 
