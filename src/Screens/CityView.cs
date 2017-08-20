@@ -756,8 +756,8 @@ namespace CivOne.Screens
 					.DrawText(lines[2], 5, 36, _dialogText)
 					.As<Picture>();
 
-				_background.FillRectangle(80, 8, width + 2, 54, 5);
-				_background.AddLayer(dialog, 81, 9);
+				// _background.FillRectangle(80, 8, width + 2, 54, 5);
+				_background.AddLayer(dialog, 80, 8);
 			}
 
 			if (production != null)
