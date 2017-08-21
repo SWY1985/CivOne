@@ -8,12 +8,11 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using CivOne.Enums;
-using CivOne.Graphics;
 using CivOne.IO;
 
 using static CivOne.Enums.CursorType;
 
-namespace CivOne.Sprites
+namespace CivOne.Graphics.Sprites
 {
 	public static class Cursor
 	{

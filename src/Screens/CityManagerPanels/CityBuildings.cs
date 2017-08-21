@@ -14,7 +14,7 @@ using CivOne.Buildings;
 using CivOne.Events;
 using CivOne.Graphics;
 using CivOne.Screens.Dialogs;
-using CivOne.Sprites;
+using CivOne.Graphics.Sprites;
 using CivOne.Wonders;
 
 namespace CivOne.Screens.CityManagerPanels

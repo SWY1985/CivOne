@@ -12,7 +12,7 @@ using System.Drawing;
 using CivOne.Enums;
 using CivOne.Graphics;
 using CivOne.IO;
-using CivOne.Sprites;
+using CivOne.Graphics.Sprites;
 
 namespace CivOne.Screens
 {

@@ -14,7 +14,7 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
 using CivOne.IO;
-using CivOne.Sprites;
+using CivOne.Graphics.Sprites;
 using CivOne.Tasks;
 using CivOne.Tiles;
 using CivOne.Units;

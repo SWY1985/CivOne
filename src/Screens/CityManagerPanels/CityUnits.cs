@@ -10,7 +10,7 @@
 using System.Linq;
 using CivOne.Governments;
 using CivOne.Graphics;
-using CivOne.Sprites;
+using CivOne.Graphics.Sprites;
 using CivOne.Units;
 
 namespace CivOne.Screens.CityManagerPanels

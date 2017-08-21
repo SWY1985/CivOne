@@ -18,7 +18,7 @@ using CivOne.IO;
 using CivOne.Graphics;
 using CivOne.Graphics.ImageFormats;
 using CivOne.Screens;
-using CivOne.Sprites;
+using CivOne.Graphics.Sprites;
 using CivOne.Tiles;
 
 namespace CivOne

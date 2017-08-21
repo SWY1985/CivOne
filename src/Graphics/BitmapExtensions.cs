@@ -11,7 +11,7 @@ using System;
 using System.Drawing;
 using CivOne.Enums;
 using CivOne.IO;
-using CivOne.Sprites;
+using CivOne.Graphics.Sprites;
 
 using static CivOne.Enums.TextAlign;
 using static CivOne.Enums.VerticalAlign;

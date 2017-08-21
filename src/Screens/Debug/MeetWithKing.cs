@@ -11,7 +11,7 @@ using System;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.Graphics;
-using CivOne.Sprites;
+using CivOne.Graphics.Sprites;
 using CivOne.UserInterface;
 
 namespace CivOne.Screens.Debug

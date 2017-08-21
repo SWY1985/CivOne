@@ -10,7 +10,7 @@
 using System;
 using CivOne.Enums;
 using CivOne.Graphics;
-using CivOne.Sprites;
+using CivOne.Graphics.Sprites;
 
 namespace CivOne.Screens.CityManagerPanels
 {

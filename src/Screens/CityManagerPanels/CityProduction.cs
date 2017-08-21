@@ -13,7 +13,7 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
 using CivOne.Screens.Dialogs;
-using CivOne.Sprites;
+using CivOne.Graphics.Sprites;
 using CivOne.Units;
 using CivOne.Wonders;
 

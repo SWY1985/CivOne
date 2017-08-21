@@ -10,7 +10,7 @@
 using System;
 using CivOne.IO;
 
-namespace CivOne.Sprites
+namespace CivOne.Graphics.Sprites
 {
 	public class CachedSprite : BaseInstance, ISprite
 	{

@@ -7,12 +7,15 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using CivOne.IO;
-
-namespace CivOne.Sprites
+namespace CivOne.Graphics.Sprites
 {
-	public interface ISprite
+	public static class SpriteExtensions
 	{
-		Bytemap Bitmap { get; }
+		public static IBitmap ToBitmap(this ISprite sprite)
+		{
+			if (sprite == null)
+				return null;
+			return new Picture(sprite.Bitmap, Common.DefaultPalette);
+		}
 	}
 }
