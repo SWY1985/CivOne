@@ -10,6 +10,7 @@
 using System.Linq;
 using CivOne.Governments;
 using CivOne.Graphics;
+using CivOne.Sprites;
 using CivOne.Units;
 
 namespace CivOne.Screens.CityManagerPanels
@@ -17,8 +18,6 @@ namespace CivOne.Screens.CityManagerPanels
 	internal class CityUnits : BaseScreen
 	{
 		private readonly City _city;
-
-		private readonly IBitmap _background;
 		
 		private bool _update = true;
 		
@@ -26,7 +25,7 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			if (_update)
 			{
-				this.Tile(_background)
+				this.Tile(Patterns.PanelBlue)
 					.DrawRectangle(colour: 1);
 
 				IUnit[] units = _city.Units.Take(14).ToArray();
@@ -72,12 +71,9 @@ namespace CivOne.Screens.CityManagerPanels
 			return true;
 		}
 
-		public CityUnits(City city, IBitmap background) : base(123, 38)
+		public CityUnits(City city) : base(123, 38)
 		{
 			_city = city;
-			_background = background;
-
-			Palette = background.Palette.Copy();
 		}
 	}
 }

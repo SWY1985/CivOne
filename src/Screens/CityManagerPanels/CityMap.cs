@@ -12,6 +12,7 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.Sprites;
 using CivOne.Tiles;
 
 namespace CivOne.Screens.CityManagerPanels
@@ -19,8 +20,6 @@ namespace CivOne.Screens.CityManagerPanels
 	internal class CityMap : BaseScreen
 	{
 		private readonly City _city;
-
-		private readonly IBitmap _background;
 		
 		private bool _update = true;
 		
@@ -62,7 +61,7 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			if (_update)
 			{
-				this.Tile(_background)
+				this.Tile(Patterns.PanelBlue)
 					.DrawRectangle(colour: 1);
 				
 				ITile[,] tiles = _city.CityRadius;
@@ -110,12 +109,9 @@ namespace CivOne.Screens.CityManagerPanels
 			return true;
 		}
 
-		public CityMap(City city, IBitmap background) : base(82, 82)
+		public CityMap(City city) : base(82, 82)
 		{
 			_city = city;
-			_background = background;
-
-			Palette = background.Palette.Copy();
 		}
 	}
 }

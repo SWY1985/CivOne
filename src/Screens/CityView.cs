@@ -14,6 +14,7 @@ using CivOne.Buildings;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.Sprites;
 using CivOne.Wonders;
 
 using UniversityBuilding = CivOne.Buildings.University;

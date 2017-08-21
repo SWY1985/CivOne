@@ -14,6 +14,7 @@ using CivOne.Buildings;
 using CivOne.Events;
 using CivOne.Graphics;
 using CivOne.Screens.Dialogs;
+using CivOne.Sprites;
 using CivOne.Wonders;
 
 namespace CivOne.Screens.CityManagerPanels
@@ -22,8 +23,6 @@ namespace CivOne.Screens.CityManagerPanels
 	{
 		private readonly City _city;
 		private IProduction[] _improvements;
-
-		private readonly IBitmap _background;
 		
 		private bool _update = true;
 		
@@ -81,7 +80,7 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			if (_update)
 			{
-				this.Tile(_background);
+				this.Tile(Patterns.PanelBlue);
 
 				for (int i = (_page * 14); i < _improvements.Length && i < ((_page + 1) * 14); i++)
 				{
@@ -144,13 +143,10 @@ namespace CivOne.Screens.CityManagerPanels
 			return false;
 		}
 
-		public CityBuildings(City city, IBitmap background) : base(108, 97)
+		public CityBuildings(City city) : base(108, 97)
 		{
 			_city = city;
 			_improvements = GetImprovements.ToArray();
-			_background = background;
-			
-			Palette = background.Palette.Copy();
 		}
 	}
 }

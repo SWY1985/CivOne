@@ -188,14 +188,14 @@ namespace CivOne.Screens
 			Palette = Common.DefaultPalette;
 			this.Clear(5);
 			
-			_subScreens.Add(_cityHeader = new CityHeader(_city, Patterns.PanelBlue));
-			_subScreens.Add(_cityResources = new CityResources(_city, Patterns.PanelBlue));
-			_subScreens.Add(_cityUnits = new CityUnits(_city, Patterns.PanelBlue));
-			_subScreens.Add(_cityMap = new CityMap(_city, Patterns.PanelBlue));
-			_subScreens.Add(_cityBuildings = new CityBuildings(_city, Patterns.PanelBlue));
-			_subScreens.Add(_cityFoodStorage = new CityFoodStorage(_city, Patterns.PanelBlue));
-			_subScreens.Add(_cityInfo = new CityInfo(_city, Patterns.PanelBlue));
-			_subScreens.Add(_cityProduction = new CityProduction(_city, Patterns.PanelBlue));
+			_subScreens.Add(_cityHeader = new CityHeader(_city));
+			_subScreens.Add(_cityResources = new CityResources(_city));
+			_subScreens.Add(_cityUnits = new CityUnits(_city));
+			_subScreens.Add(_cityMap = new CityMap(_city));
+			_subScreens.Add(_cityBuildings = new CityBuildings(_city));
+			_subScreens.Add(_cityFoodStorage = new CityFoodStorage(_city));
+			_subScreens.Add(_cityInfo = new CityInfo(_city));
+			_subScreens.Add(_cityProduction = new CityProduction(_city));
 
 			_cityBuildings.BuildingUpdate += BuildingUpdate;
 			_cityHeader.HeaderUpdate += HeaderUpdate;

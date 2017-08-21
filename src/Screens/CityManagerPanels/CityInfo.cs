@@ -12,6 +12,7 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.Sprites;
 using CivOne.Units;
 
 namespace CivOne.Screens.CityManagerPanels
@@ -19,8 +20,6 @@ namespace CivOne.Screens.CityManagerPanels
 	internal class CityInfo : BaseScreen
 	{
 		private readonly City _city;
-
-		private readonly IBitmap _background;
 		
 		private CityInfoChoice _choice = CityInfoChoice.Info;
 		private bool _update = true;
@@ -90,7 +89,7 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			if (_update)
 			{
-				this.Tile(_background)
+				this.Tile(Patterns.PanelBlue)
 					.DrawRectangle(colour: 1);
 				
 				DrawButton("Info", (byte)((_choice == CityInfoChoice.Info) ? 15 : 9), 1, 0, 0, 34);
@@ -201,12 +200,9 @@ namespace CivOne.Screens.CityManagerPanels
 			return true;
 		}
 
-		public CityInfo(City city, IBitmap background) : base(133, 92)
+		public CityInfo(City city) : base(133, 92)
 		{
 			_city = city;
-			_background = background;
-
-			Palette = background.Palette.Copy();
 		}
 	}
 }

@@ -11,14 +11,13 @@ using System.Linq;
 using CivOne.Buildings;
 using CivOne.Enums;
 using CivOne.Graphics;
+using CivOne.Sprites;
 
 namespace CivOne.Screens.CityManagerPanels
 {
 	internal class CityFoodStorage : BaseScreen
 	{
 		private readonly City _city;
-
-		private readonly IBitmap _background;
 		
 		private bool _update = true;
 		
@@ -26,7 +25,7 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			if (_update)
 			{
-				this.Tile(_background)
+				this.Tile(Patterns.PanelBlue)
 					.DrawRectangle(colour: 1)
 					.FillRectangle(1, 1, 89, 8, 1)
 					.DrawText($"Food Storage", 1, 17, 6, 2, TextAlign.Left);
@@ -66,12 +65,9 @@ namespace CivOne.Screens.CityManagerPanels
 			_update = true;
 		}
 
-		public CityFoodStorage(City city, IBitmap background) : base(91, 92)
+		public CityFoodStorage(City city) : base(91, 92)
 		{
 			_city = city;
-			_background = background;
-
-			Palette = background.Palette.Copy();
 		}
 	}
 }

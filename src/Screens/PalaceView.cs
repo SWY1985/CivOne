@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.Sprites;
 using CivOne.IO;
 
 namespace CivOne.Screens

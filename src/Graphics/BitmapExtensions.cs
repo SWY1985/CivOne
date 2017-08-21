@@ -11,6 +11,7 @@ using System;
 using System.Drawing;
 using CivOne.Enums;
 using CivOne.IO;
+using CivOne.Sprites;
 
 using static CivOne.Enums.TextAlign;
 using static CivOne.Enums.VerticalAlign;
@@ -125,9 +126,17 @@ namespace CivOne.Graphics
 			return bitmap;
 		}
 
-		public static IBitmap Tile(this IBitmap bitmap, IBitmap layer, Rectangle rectangle) => Tile(bitmap, layer, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
-		public static IBitmap Tile(this IBitmap bitmap, IBitmap layer, Point point, Size size) => Tile(bitmap, layer, point.X, point.Y, size.Width, size.Height);
-		public static IBitmap Tile(this IBitmap bitmap, IBitmap layer, int left = 0, int top = 0, int width = -1, int height = -1)
+		public static IBitmap Tile(this IBitmap bitmap, IBitmap layer, Rectangle rectangle) => Tile(bitmap, layer.Bitmap, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
+		public static IBitmap Tile(this IBitmap bitmap, IBitmap layer, Point point, Size size) => Tile(bitmap, layer.Bitmap, point.X, point.Y, size.Width, size.Height);
+		public static IBitmap Tile(this IBitmap bitmap, IBitmap layer, int left = 0, int top = 0, int width = -1, int height = -1) => Tile(bitmap, layer.Bitmap, left, top, width, height);
+
+		public static IBitmap Tile(this IBitmap bitmap, ISprite sprite, Rectangle rectangle) => Tile(bitmap, sprite.Bitmap, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
+		public static IBitmap Tile(this IBitmap bitmap, ISprite sprite, Point point, Size size) => Tile(bitmap, sprite.Bitmap, point.X, point.Y, size.Width, size.Height);
+		public static IBitmap Tile(this IBitmap bitmap, ISprite sprite, int left = 0, int top = 0, int width = -1, int height = -1) => Tile(bitmap, sprite.Bitmap, left, top, width, height);
+
+		public static IBitmap Tile(this IBitmap bitmap, Bytemap layer, Rectangle rectangle) => Tile(bitmap, layer, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
+		public static IBitmap Tile(this IBitmap bitmap, Bytemap layer, Point point, Size size) => Tile(bitmap, layer, point.X, point.Y, size.Width, size.Height);
+		public static IBitmap Tile(this IBitmap bitmap, Bytemap layer, int left = 0, int top = 0, int width = -1, int height = -1)
 		{
 			if (layer == null) return bitmap;
 			if (width == -1) width = bitmap.Width() - left;
@@ -139,8 +148,8 @@ namespace CivOne.Graphics
 				for (int xx = 0; xx < width; xx++)
 				{
 					if (left + xx >= bitmap.Width()) break;
-					if (layer.Bitmap[xx % layer.Width(), yy % layer.Height()] == 0 || bitmap.OutBoundX(left + xx)) continue;
-					bitmap.Bitmap[left + xx, top + yy] = layer.Bitmap[xx % layer.Width(), yy % layer.Height()];
+					if (layer[xx % layer.Width, yy % layer.Height] == 0 || bitmap.OutBoundX(left + xx)) continue;
+					bitmap.Bitmap[left + xx, top + yy] = layer[xx % layer.Width, yy % layer.Height];
 				}
 			}
 			return bitmap;
