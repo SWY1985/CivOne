@@ -25,7 +25,7 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			if (_update)
 			{
-				this.Tile(Patterns.PanelBlue)
+				this.Tile(Pattern.PanelBlue)
 					.DrawRectangle(colour: 1);
 
 				IUnit[] units = _city.Units.Take(14).ToArray();

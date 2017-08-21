@@ -80,7 +80,7 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			if (_update)
 			{
-				this.Tile(Patterns.PanelBlue);
+				this.Tile(Pattern.PanelBlue);
 
 				for (int i = (_page * 14); i < _improvements.Length && i < ((_page + 1) * 14); i++)
 				{

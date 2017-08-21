@@ -87,7 +87,7 @@ namespace CivOne.Screens.CityManagerPanels
 				int height = SHIELD_HEIGHT * ((_shieldPrice - (_shieldPrice % _shieldsPerLine)) / _shieldsPerLine);
 				if (height < SHIELD_HEIGHT) height = SHIELD_HEIGHT;
 
-				this.Tile(Patterns.PanelBlue)
+				this.Tile(Pattern.PanelBlue)
 					.DrawRectangle(0, 0, width, 19 + height, 1)
 					.FillRectangle(1, 1, (width - 2), 16, 1);
 				if (width < 88)

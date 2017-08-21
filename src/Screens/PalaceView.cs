@@ -146,7 +146,7 @@ namespace CivOne.Screens
 					case Stage.Message:
 						{
 							Picture message = new Picture(269, 39)
-								.Tile(Patterns.PanelGrey)
+								.Tile(Pattern.PanelGrey)
 								.DrawRectangle3D()
 								.As<Picture>();
 							int yy = 4;
@@ -162,7 +162,7 @@ namespace CivOne.Screens
 					case Stage.SelectPart:
 						{
 							Picture message = new Picture(180, 15)
-								.Tile(Patterns.PanelGrey)
+								.Tile(Pattern.PanelGrey)
 								.DrawRectangle3D()
 								.DrawText("Which section shall we improve?", 0, 15, 4, 4)
 								.As<Picture>();

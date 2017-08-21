@@ -121,7 +121,7 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			if (_update)
 			{
-				this.Tile(Patterns.PanelBlue)
+				this.Tile(Pattern.PanelBlue)
 					.DrawRectangle(colour: 1)
 					.FillRectangle(1, 1, 121, 8, 1)
 					.DrawText($"City Resources", 1, 17, 6, 2, TextAlign.Left);

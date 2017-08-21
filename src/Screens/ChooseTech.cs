@@ -87,7 +87,7 @@ namespace CivOne.Screens
 			if (dialogHeight < 62) dialogHeight = 62;
 
 			_menuGfx = new Picture(202, dialogHeight)
-					.Tile(Patterns.PanelGrey)
+					.Tile(Pattern.PanelGrey)
 					.AddLayer(governmentPortrait, 1, dialogHeight - 61)
 					.DrawRectangle3D()
 					.DrawText("Science Advisor:", 46, 3, DialogText)

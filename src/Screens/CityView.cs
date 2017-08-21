@@ -749,7 +749,7 @@ namespace CivOne.Screens
 				string[] lines =  new [] { $"{Game.CurrentPlayer.TribeNamePlural} capture", $"{city.Name}. 0 gold", "pieces plundered." };
 				int width = lines.Max(l => Resources.GetTextSize(5, l).Width) + 12;
 				Picture dialog = new Picture(width, 54)
-					.Tile(Patterns.PanelGrey, 1, 1)
+					.Tile(Pattern.PanelGrey, 1, 1)
 					.DrawRectangle()
 					.DrawRectangle3D(1, 1, width - 2, 52)
 					.DrawText(lines[0], 5, 6, _dialogText)
@@ -772,7 +772,7 @@ namespace CivOne.Screens
 				string[] lines =  new [] { $"{_city.Name} builds", $"{(production as ICivilopedia).Name}." };
 				int width = lines.Max(l => Resources.GetTextSize(5, l).Width) + 12;
 				Picture dialog = new Picture(width, 39)
-					.Tile(Patterns.PanelGrey, 1, 1)
+					.Tile(Pattern.PanelGrey, 1, 1)
 					.DrawRectangle()
 					.DrawRectangle3D(1, 1, width - 2, 37)
 					.DrawText(lines[0], 5, 6, _dialogText)

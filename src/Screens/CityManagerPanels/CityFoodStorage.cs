@@ -25,7 +25,7 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			if (_update)
 			{
-				this.Tile(Patterns.PanelBlue)
+				this.Tile(Pattern.PanelBlue)
 					.DrawRectangle(colour: 1)
 					.FillRectangle(1, 1, 89, 8, 1)
 					.DrawText($"Food Storage", 1, 17, 6, 2, TextAlign.Left);

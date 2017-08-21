@@ -71,7 +71,7 @@ namespace CivOne.Screens
 			int hh = (Resources.GetFontHeight(0) * Items.Count) + 9;
 			
 			Bitmap = new Bytemap(ww, hh);
-			this.Tile(Patterns.PanelGrey, 1, 1)
+			this.Tile(Pattern.PanelGrey, 1, 1)
 				.DrawRectangle()
 				.DrawRectangle3D(1, 1, ww - 2, hh - 2)
 				.As<Picture>();

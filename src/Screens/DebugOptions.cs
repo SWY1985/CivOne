@@ -94,7 +94,7 @@ namespace CivOne.Screens
 				_update = false;
 
 				Picture menuGfx = new Picture(131, 95)
-					.Tile(Patterns.PanelGrey)
+					.Tile(Pattern.PanelGrey)
 					.DrawRectangle3D()
 					.DrawText("Debug Options:", 0, 15, 4, 4)
 					.As<Picture>();

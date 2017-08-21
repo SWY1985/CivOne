@@ -30,7 +30,7 @@ namespace CivOne.Screens.CityManagerPanels
 			{
 				string population = Common.NumberSeperator(_city.Population);
 
-				this.Tile(Patterns.PanelBlue)
+				this.Tile(Pattern.PanelBlue)
 					.DrawRectangle(colour: 1)
 					.DrawText($"{_city.Name} (Pop:{population})", 1, 17, 104, 1, TextAlign.Center);
 

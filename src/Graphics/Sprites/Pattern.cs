@@ -9,7 +9,7 @@
 
 namespace CivOne.Graphics.Sprites
 {
-	public static class Patterns
+	public static class Pattern
 	{
 		private static Resources Resources => Resources.Instance;
 		private static Free Free => Free.Instance;

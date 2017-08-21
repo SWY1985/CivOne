@@ -112,7 +112,7 @@ namespace CivOne.Screens
 
 						int ww = textSize.Width + 11, hh = textSize.Height + 9;
 						Picture label = new Picture(textSize.Width + 11, textSize.Height + 9)
-							.Tile(Patterns.PanelGrey)
+							.Tile(Pattern.PanelGrey)
 							.DrawRectangle()
 							.DrawRectangle3D(1, 1, ww - 2, hh - 2)
 							.DrawText(helpLabel.Text, 0, 15, 5, 5)

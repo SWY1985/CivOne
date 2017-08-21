@@ -97,7 +97,7 @@ namespace CivOne.Screens.GamePlayPanels
 
 		private void DrawDemographics()
 		{
-			_demographics.Tile(Patterns.PanelGrey)
+			_demographics.Tile(Pattern.PanelGrey)
 				.DrawRectangle3D()
 				.FillRectangle(3, 2, 74, 11, 11)
 				.FillRectangle(3, 13, 74, 1, 2);
@@ -119,7 +119,7 @@ namespace CivOne.Screens.GamePlayPanels
 		{
 			IUnit unit = Game.ActiveUnit;
 			
-			_gameInfo.Tile(Patterns.PanelGrey)
+			_gameInfo.Tile(Pattern.PanelGrey)
 				.DrawRectangle3D();
 			
 			if (Game.CurrentPlayer != Human || (unit != null && Human != unit.Owner) || (GameTask.Any() && !GameTask.Is<Show>() && !GameTask.Is<Message>()))

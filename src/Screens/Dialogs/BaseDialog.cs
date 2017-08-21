@@ -94,7 +94,7 @@ namespace CivOne.Screens.Dialogs
 			height += 2;
 			
 			DialogBox = new Picture(width, height)
-				.Tile(Patterns.PanelGrey, 1, 1)
+				.Tile(Pattern.PanelGrey, 1, 1)
 				.DrawRectangle3D(1, 1, width - 2, height - 2)
 				.DrawRectangle()
 				.As<Picture>();

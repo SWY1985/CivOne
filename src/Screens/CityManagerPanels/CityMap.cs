@@ -61,7 +61,7 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			if (_update)
 			{
-				this.Tile(Patterns.PanelBlue)
+				this.Tile(Pattern.PanelBlue)
 					.DrawRectangle(colour: 1);
 				
 				ITile[,] tiles = _city.CityRadius;

@@ -120,7 +120,7 @@ namespace CivOne.Screens
 
 				using (Picture menuGfx = new Picture(width, height))
 				{
-					menuGfx.Tile(Patterns.PanelGrey)
+					menuGfx.Tile(Pattern.PanelGrey)
 						.DrawRectangle3D()
 						.DrawText(menuHeaderText, _fontId, 15, 4, 4)
 						.DrawText($"(Help available)", 1, 10, width, height - Resources.GetFontHeight(1), TextAlign.Right);

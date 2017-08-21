@@ -122,7 +122,7 @@ namespace CivOne.Screens
 					this.AddLayer(Icons.Newspaper, xx, 100);
 				}
 				using (IBitmap dialog = new Picture(151, 15)
-						.Tile(Patterns.PanelGrey)
+						.Tile(Pattern.PanelGrey)
 						.DrawRectangle3D()
 						.DrawText("Press any key to continue.", 0, 15, 4, 4))
 				{

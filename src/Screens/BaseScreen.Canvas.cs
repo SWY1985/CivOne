@@ -64,7 +64,7 @@ namespace CivOne.Screens
 				this.DrawRectangle(x, y, width, height);
 			}
 			this.AddLayer(new Picture(ww, hh)
-				.Tile(Patterns.PanelGrey)
+				.Tile(Pattern.PanelGrey)
 				.DrawRectangle3D(), xx, yy, dispose: true);
 		}
 
