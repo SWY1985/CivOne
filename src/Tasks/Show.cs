@@ -66,6 +66,7 @@ namespace CivOne.Tasks
 				{
 					if (Human != Game.CurrentPlayer) return;
 					if (Game.ActiveUnit == null) return;
+					if (gotoScreen.X == -1 || gotoScreen.Y == -1) return;
 					Game.ActiveUnit.Goto = new Point(gotoScreen.X, gotoScreen.Y);
 				};
 				return new Show(gotoScreen);
