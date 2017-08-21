@@ -215,7 +215,9 @@ namespace CivOne
 				_cursorType = value;
 				string saveValue = ((int)_cursorType).ToString();
 				SetSetting("CursorType", saveValue);
+				Sprites.Cursor.ClearCache();
 				Common.ReloadSettings = true;
+
 			}
 		}
 

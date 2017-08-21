@@ -67,28 +67,13 @@ namespace CivOne
 			}
 		}
 
-		public static MouseCursor Cursor
+		public static MouseCursor MouseCursor
 		{
 			get
 			{
 				if (TopScreen == null)
 					return MouseCursor.None;
 				return TopScreen.Cursor;
-			}
-		}
-
-		public static IBitmap CursorGraphics
-		{
-			get
-			{
-				switch (Settings.Instance.CursorType)
-				{
-					case CursorType.Default:
-					case CursorType.Builtin:
-						return Icons.Cursor(Cursor, (Settings.Instance.CursorType == CursorType.Builtin));
-					default:
-						return null;
-				}
 			}
 		}
 

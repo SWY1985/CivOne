@@ -18,6 +18,7 @@ using CivOne.IO;
 using CivOne.Graphics;
 using CivOne.Graphics.ImageFormats;
 using CivOne.Screens;
+using CivOne.Sprites;
 using CivOne.Tiles;
 
 namespace CivOne
@@ -111,11 +112,11 @@ namespace CivOne
 				}
 			}
 
-			if (_currentCursor != Common.Cursor || _cursorType != Settings.Instance.CursorType)
+			if (_currentCursor != Common.MouseCursor || _cursorType != Settings.Instance.CursorType)
 			{
-				_currentCursor = Common.Cursor;
+				_currentCursor = Common.MouseCursor;
 				_cursorType = Settings.Instance.CursorType;
-				Runtime.Cursor = Common.CursorGraphics;
+				Runtime.Cursor = Cursor.Current.ToBitmap();
 			}
 		}
 
