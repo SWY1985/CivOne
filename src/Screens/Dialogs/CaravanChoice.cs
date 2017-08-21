@@ -47,7 +47,7 @@ namespace CivOne.Screens.Dialogs
 			int choices = 2;
 			if (_city.CurrentProduction is IWonder) choices++;
 
-			Menu menu = new Menu(Palette, Selection(3, 12, 130, (choices * Resources.Instance.GetFontHeight(FONT_ID)) + 4))
+			Menu menu = new Menu(Palette, Selection(3, 12, 130, (choices * Resources.GetFontHeight(FONT_ID)) + 4))
 			{
 				X = 103,
 				Y = 92,
@@ -72,7 +72,7 @@ namespace CivOne.Screens.Dialogs
 		{
 			int choices = 2;
 			if (city.CurrentProduction is IWonder) choices++;
-			return (choices * Resources.Instance.GetFontHeight(FONT_ID)) + 17;
+			return (choices * Resources.GetFontHeight(FONT_ID)) + 17;
 		}
 
 		internal CaravanChoice(Caravan unit, City city) : base(100, 80, 136, DialogHeight(unit, city))

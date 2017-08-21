@@ -16,6 +16,8 @@ using CivOne.Graphics;
 using CivOne.Tiles;
 using CivOne.Units;
 
+using static CivOne.Enums.Direction;
+
 namespace CivOne.Screens
 {
 	internal class Nuke : BaseScreen
@@ -115,10 +117,10 @@ namespace CivOne.Screens
 					output.AddLayer(t.Image, t.Position);
 					if (Settings.RevealWorld) continue;
 					
-					if (!Human.Visible(t.Tile, Direction.West)) output.AddLayer(Resources.Instance.GetFog(Direction.West), t.Position);
-					if (!Human.Visible(t.Tile, Direction.North)) output.AddLayer(Resources.Instance.GetFog(Direction.North), t.Position);
-					if (!Human.Visible(t.Tile, Direction.East)) output.AddLayer(Resources.Instance.GetFog(Direction.East), t.Position);
-					if (!Human.Visible(t.Tile, Direction.South)) output.AddLayer(Resources.Instance.GetFog(Direction.South), t.Position);
+					if (!Human.Visible(t.Tile, West)) output.AddLayer(Resources.GetFog(West), t.Position);
+					if (!Human.Visible(t.Tile, North)) output.AddLayer(Resources.GetFog(North), t.Position);
+					if (!Human.Visible(t.Tile, East)) output.AddLayer(Resources.GetFog(East), t.Position);
+					if (!Human.Visible(t.Tile, South)) output.AddLayer(Resources.GetFog(South), t.Position);
 				}
 
 				foreach (RenderTile t in renderTiles)

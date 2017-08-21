@@ -44,7 +44,7 @@ namespace CivOne.Screens
 			Palette = Common.DefaultPalette;
 			
 			byte colourLight = (byte)(colour + 8);
-			int lineHeight = Resources.Instance.GetFontHeight(1);
+			int lineHeight = Resources.GetFontHeight(1);
 			int width = 209;
 			int height = ((message.Length + (title != null ? 1 : 0)) * lineHeight) + 5;
 

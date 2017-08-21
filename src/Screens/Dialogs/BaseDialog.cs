@@ -105,7 +105,7 @@ namespace CivOne.Screens.Dialogs
 			_top = top;
 			TextLines = new Picture[message.Length];
 			for (int i = 0; i < message.Length; i++)
-				TextLines[i] = Resources.Instance.GetText(message[i], 0, 15);
+				TextLines[i] = Resources.GetText(message[i], 0, 15);
 
 			Initialize(left, top, TextWidth + marginWidth, TextHeight + marginHeight);
 		}

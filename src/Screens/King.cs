@@ -59,7 +59,7 @@ namespace CivOne.Screens
 				modern = false;
 			}
 
-			_background = Resources.Instance.LoadPIC($"BACK{govId}{(modern ? "M" : "A")}");
+			_background = Resources[$"BACK{govId}{(modern ? "M" : "A")}"];
 
 			_background.ColourReplace(0, 5);
 			Picture portrait = _player.Civilization.Leader.GetPortrait();

@@ -68,7 +68,7 @@ namespace CivOne.Screens.Debug
 
 			IUnit[] units = _units.Skip(_index).Take(15).ToArray();
 
-			int fontHeight = Resources.Instance.GetFontHeight(0);
+			int fontHeight = Resources.GetFontHeight(0);
 			int hh = (fontHeight * (units.Length + 2)) + 5;
 			int ww = 136;
 
@@ -275,7 +275,7 @@ namespace CivOne.Screens.Debug
 		{
 			Palette = Common.DefaultPalette;
 
-			int fontHeight = Resources.Instance.GetFontHeight(0);
+			int fontHeight = Resources.GetFontHeight(0);
 			int hh = (fontHeight * (Game.Players.Count() + 1)) + 5;
 			int ww = 136;
 

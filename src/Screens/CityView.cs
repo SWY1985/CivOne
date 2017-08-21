@@ -702,7 +702,7 @@ namespace CivOne.Screens
 			
 			_city = city;
 			_production = production;
-			_background = new Picture(Resources.Instance.LoadPIC("HILL"));
+			_background = new Picture(Resources["HILL"]);
 			_founded = founded;
 			_firstView = firstView;
 			
@@ -720,15 +720,15 @@ namespace CivOne.Screens
 				int xx = 0, yy = 2, ww = 78, hh = 60;
 				if (Game.CurrentPlayer.HasAdvance<Conscription>())
 				{
-					invaders = Resources.Instance.LoadPIC("INVADERS");
+					invaders = Resources["INVADERS"];
 				}
 				else if (Game.CurrentPlayer.HasAdvance<Gunpowder>())
 				{
-					invaders = Resources.Instance.LoadPIC("INVADER2");
+					invaders = Resources["INVADER2"];
 				}
 				else
 				{
-					invaders = Resources.Instance.LoadPIC("INVADER3");
+					invaders = Resources["INVADER3"];
 					xx = 1;
 					yy = 1;
 					ww = 78;
@@ -746,7 +746,7 @@ namespace CivOne.Screens
 				_x = 0;
 				
 				string[] lines =  new [] { $"{Game.CurrentPlayer.TribeNamePlural} capture", $"{city.Name}. 0 gold", "pieces plundered." };
-				int width = lines.Max(l => Resources.Instance.GetTextSize(5, l).Width) + 12;
+				int width = lines.Max(l => Resources.GetTextSize(5, l).Width) + 12;
 				Picture dialog = new Picture(width, 54)
 					.Tile(Patterns.PanelGrey, 1, 1)
 					.DrawRectangle()
@@ -769,7 +769,7 @@ namespace CivOne.Screens
 				}
 
 				string[] lines =  new [] { $"{_city.Name} builds", $"{(production as ICivilopedia).Name}." };
-				int width = lines.Max(l => Resources.Instance.GetTextSize(5, l).Width) + 12;
+				int width = lines.Max(l => Resources.GetTextSize(5, l).Width) + 12;
 				Picture dialog = new Picture(width, 39)
 					.Tile(Patterns.PanelGrey, 1, 1)
 					.DrawRectangle()

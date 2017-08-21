@@ -533,7 +533,7 @@ namespace CivOne.Screens.GamePlayPanels
 			_x = 0;
 			_y = 0;
 			
-			_palette = Resources.Instance.LoadPIC("SP257").Palette.Copy();
+			_palette = Resources["SP257"].Palette.Copy();
 		}
 	}
 }

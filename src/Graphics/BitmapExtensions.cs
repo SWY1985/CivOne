@@ -19,6 +19,8 @@ namespace CivOne.Graphics
 {
 	public static class BitmapExtensions
 	{
+		private static Resources Resources => Resources.Instance;
+
 		private static bool OutBoundX(this IBitmap bitmap, int x) => (x < 0 || x >= bitmap.Bitmap.Width);
 		private static bool OutBoundY(this IBitmap bitmap, int y) => (y < 0 || y >= bitmap.Bitmap.Height);
 
@@ -147,7 +149,7 @@ namespace CivOne.Graphics
 		public static IBitmap DrawText(this IBitmap bitmap, string text, int font, byte colour, int x, int y, TextAlign align = Left)
 		{
 			if (string.IsNullOrWhiteSpace(text)) return bitmap;
-			Bytemap textLayer = Resources.Instance.GetText(text, font, colour).Bitmap;
+			Bytemap textLayer = Resources.GetText(text, font, colour).Bitmap;
 			switch(align)
 			{
 				case Center: x -= (textLayer.Width + 1) / 2; break;
@@ -167,30 +169,30 @@ namespace CivOne.Graphics
 					settings = new TextSettings();
 			}
 			
-			Size textSize = Resources.Instance.GetTextSize(settings.FontId, text);
+			Size textSize = Resources.GetTextSize(settings.FontId, text);
 			Bytemap textLayer;
 			if (settings.FirstLetterColour != 0)
 			{
-				textLayer = Resources.Instance.GetText(text, settings.FontId, settings.FirstLetterColour, settings.Colour).Bitmap;
+				textLayer = Resources.GetText(text, settings.FontId, settings.FirstLetterColour, settings.Colour).Bitmap;
 			}
 			else if (settings.TopColour != 0 && settings.BottomColour != 0)
 			{
 				textLayer = new Picture(textSize.Width, textSize.Height + 2)
-					.AddLayer(Resources.Instance.GetText(text, settings.FontId, settings.TopColour))
-					.AddLayer(Resources.Instance.GetText(text, settings.FontId, settings.BottomColour), top: 2)
-					.AddLayer(Resources.Instance.GetText(text, settings.FontId, settings.Colour), top: 1)
+					.AddLayer(Resources.GetText(text, settings.FontId, settings.TopColour))
+					.AddLayer(Resources.GetText(text, settings.FontId, settings.BottomColour), top: 2)
+					.AddLayer(Resources.GetText(text, settings.FontId, settings.Colour), top: 1)
 					.Bitmap;
 			}
 			else if (settings.BottomColour != 0)
 			{
 				textLayer = new Picture(textSize.Width, textSize.Height + 1)
-					.AddLayer(Resources.Instance.GetText(text, settings.FontId, settings.BottomColour), top: 1)
-					.AddLayer(Resources.Instance.GetText(text, settings.FontId, settings.Colour))
+					.AddLayer(Resources.GetText(text, settings.FontId, settings.BottomColour), top: 1)
+					.AddLayer(Resources.GetText(text, settings.FontId, settings.Colour))
 					.Bitmap;
 			}
 			else
 			{
-				textLayer = Resources.Instance.GetText(text, settings.FontId, settings.Colour).Bitmap;
+				textLayer = Resources.GetText(text, settings.FontId, settings.Colour).Bitmap;
 			}
 
 			switch(settings.Alignment)
@@ -201,7 +203,7 @@ namespace CivOne.Graphics
 
 			if (settings.VerticalAlignment == Bottom)
 			{
-				y -= Resources.Instance.GetFontHeight(settings.FontId);
+				y -= Resources.GetFontHeight(settings.FontId);
 			}
 
 			AddLayer(bitmap, textLayer, x, y, dispose: true);

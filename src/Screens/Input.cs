@@ -35,7 +35,7 @@ namespace CivOne.Screens
 
 		private bool AppendCharacter(char character)
 		{
-			if (!Resources.Instance.ValidCharacter(_fontId, character)) return false;
+			if (!Resources.ValidCharacter(_fontId, character)) return false;
 			
 			if (_cursorPosition == -1)
 			{
@@ -61,7 +61,7 @@ namespace CivOne.Screens
 		protected override bool HasUpdate(uint gameTick)
 		{
 			Bitmap.Clear();
-			int fontHeight = Resources.Instance.GetFontHeight(_fontId);
+			int fontHeight = Resources.GetFontHeight(_fontId);
 			int cursorPosition = _cursorPosition;
 			if (cursorPosition < 0) cursorPosition = 0;
 			
@@ -72,7 +72,7 @@ namespace CivOne.Screens
 			{
 				for (int i = 0; i <= _text.Length; i++)
 				{
-					int letterWidth = (_text.Length <= i) ? 7 : Resources.Instance.GetLetterSize(_fontId, _text[i]).Width;
+					int letterWidth = (_text.Length <= i) ? 7 : Resources.GetLetterSize(_fontId, _text[i]).Width;
 					
 					if (i == cursorPosition)
 					{

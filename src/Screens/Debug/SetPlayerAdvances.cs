@@ -40,7 +40,7 @@ namespace CivOne.Screens.Debug
 
 			IAdvance[] advances = _advances.Skip(_index).Take(15).ToArray();
 
-			int fontHeight = Resources.Instance.GetFontHeight(0);
+			int fontHeight = Resources.GetFontHeight(0);
 			int hh = (fontHeight * (advances.Length + 2)) + 5;
 			int ww = 136;
 
@@ -136,7 +136,7 @@ namespace CivOne.Screens.Debug
 		{
 			Palette = Common.Screens.Last().OriginalColours;
 
-			int fontHeight = Resources.Instance.GetFontHeight(0);
+			int fontHeight = Resources.GetFontHeight(0);
 			int hh = (fontHeight * (Game.Players.Count() + 1)) + 5;
 			int ww = 136;
 

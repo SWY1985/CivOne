@@ -56,7 +56,7 @@ namespace CivOne.Screens
 			else if (HIDE_INTRO_LINE.Contains(_introLeft))
 			{
 				_showIntroLine = false;
-				Resources.Instance.ClearTextCache();
+				Resources.ClearTextCache();
 			}
 		}
 		
@@ -310,8 +310,8 @@ namespace CivOne.Screens
 			if (_introText.Length == 0) _introText = new string[25];
 			_pictures = new Picture[3];
 			for (int i = 0; i < 2; i++)
-				_pictures[i] = Resources.Instance.LoadPIC(string.Format("BIRTH{0}", i), true);
-			_pictures[2] = Resources.Instance.LoadPIC("LOGO", true);
+				_pictures[i] = Resources[$"BIRTH{i}"];
+			_pictures[2] = Resources["LOGO"];
 			_noiseMap = new byte[320, 200];
 			for (int x = 0; x < 320; x++)
 			for (int y = 0; y < 200; y++)

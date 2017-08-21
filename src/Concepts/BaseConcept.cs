@@ -11,10 +11,8 @@ using CivOne.Graphics;
 
 namespace CivOne.Concepts
 {
-	internal abstract class BaseConcept : IConcept
+	internal abstract class BaseConcept : BaseInstance, IConcept
 	{
-		private static void Log(string text, params object[] parameters) => RuntimeHandler.Runtime.Log(text, parameters);
-
 		public string Name { get; protected set; }
 		public IBitmap Icon => null;
 		public byte PageCount => 2;
@@ -24,10 +22,10 @@ namespace CivOne.Concepts
 			switch (pageNumber)
 			{
 				case 1:
-					text = Resources.Instance.GetCivilopediaText("BLURB4/" + Name.ToUpper());
+					text = Resources.GetCivilopediaText("BLURB4/" + Name.ToUpper());
 					break;
 				case 2:
-					text = Resources.Instance.GetCivilopediaText("BLURB4/" + Name.ToUpper() + "2");
+					text = Resources.GetCivilopediaText("BLURB4/" + Name.ToUpper() + "2");
 					break;
 				default:
 					Log("Invalid page number: {0}", pageNumber);

@@ -107,7 +107,7 @@ namespace CivOne.Screens
 				{
 					foreach (HelpLabel helpLabel in HelpLabels)
 					{
-						Size textSize = Resources.Instance.GetTextSize(0, helpLabel.Text);
+						Size textSize = Resources.GetTextSize(0, helpLabel.Text);
 
 						int ww = textSize.Width + 11, hh = textSize.Height + 9;
 						Picture label = new Picture(textSize.Width + 11, textSize.Height + 9)

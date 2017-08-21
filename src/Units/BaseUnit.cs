@@ -451,10 +451,10 @@ namespace CivOne.Units
 			switch (pageNumber)
 			{
 				case 1:
-					text = Resources.Instance.GetCivilopediaText("BLURB2/" + Name.ToUpper());
+					text = Resources.GetCivilopediaText("BLURB2/" + Name.ToUpper());
 					break;
 				case 2:
-					text = Resources.Instance.GetCivilopediaText("BLURB2/" + Name.ToUpper() + "2");
+					text = Resources.GetCivilopediaText("BLURB2/" + Name.ToUpper() + "2");
 					break;
 				default:
 					Log("Invalid page number: {0}", pageNumber);
@@ -617,7 +617,7 @@ namespace CivOne.Units
 		{
 			if (_iconCache[(int)Type] == null)
 			{
-				_iconCache[(int)Type] = Resources.LoadPIC($"ICONPG{page}", true)[col * 160, row * 62, 160, 60]
+				_iconCache[(int)Type] = Resources[$"ICONPG{page}"][col * 160, row * 62, 160, 60]
 					.ColourReplace((byte)(GFX256 ? 253 : 15), 0);
 			}
 			Icon = _iconCache[(int)Type];
@@ -631,9 +631,9 @@ namespace CivOne.Units
 			int yy = unitId < 20 ? 160 : 176;
 			
 			IBitmap icon;
-			if (Resources.Instance.Exists(resFile))
+			if (Resources.Exists(resFile))
 			{
-				icon = Resources.Instance[resFile][xx, yy, 16, 16];
+				icon = Resources[resFile][xx, yy, 16, 16];
 			}
 			else
 			{

@@ -114,7 +114,7 @@ namespace CivOne.Screens.CityManagerPanels
 				else
 				{
 					string name = (_city.CurrentProduction as ICivilopedia).Name;
-					while (Resources.Instance.GetTextSize(1, name).Width > 86)
+					while (Resources.GetTextSize(1, name).Width > 86)
 					{
 						name = $"{name.Substring(0, name.Length - 2)}.";
 					}

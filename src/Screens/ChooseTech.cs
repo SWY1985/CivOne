@@ -72,7 +72,7 @@ namespace CivOne.Screens
 			TextSettings HelpText = new TextSettings() { FontId = 1, Colour = 10, Alignment = TextAlign.Right, VerticalAlignment = VerticalAlign.Bottom };
 
 			_availableAdvances = Human.AvailableResearch.Take(8).ToArray();
-			_menuHeight = Resources.Instance.GetFontHeight(0) * _availableAdvances.Count();
+			_menuHeight = Resources.GetFontHeight(0) * _availableAdvances.Count();
 			
 			bool modernGovernment = Human.HasAdvance<Invention>();
 			IBitmap governmentPortrait = Icons.GovernmentPortrait(Human.Government, Advisor.Science, modernGovernment);

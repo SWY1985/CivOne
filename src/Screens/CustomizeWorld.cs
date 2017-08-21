@@ -26,9 +26,9 @@ namespace CivOne.Screens
 		{
 			int i = 0;
 			Picture[] texts = new Picture[items.Length + 1];
-			texts[i++] = Resources.Instance.GetText(" " + title, 0, 15);
+			texts[i++] = Resources.GetText(" " + title, 0, 15);
 			foreach (string item in items)
-				texts[i++] = Resources.Instance.GetText(" " + item, 0, 5);
+				texts[i++] = Resources.GetText(" " + item, 0, 5);
 			return (texts.Select(t => t.Width).Max()) + 6;
 		}
 		
@@ -124,7 +124,7 @@ namespace CivOne.Screens
 		
 		public CustomizeWorld()
 		{
-			Picture background = Resources.Instance.LoadPIC("CUSTOM");
+			Picture background = Resources["CUSTOM"];
 			
 			Palette = background.Palette;
 			this.AddLayer(background, 0, 0);

@@ -41,7 +41,7 @@ namespace CivOne.Screens.CityManagerPanels
 				this.AddLayer(wonder.SmallIcon, xx, yy);
 			
 			string name = wonder.Name;
-			while (Resources.Instance.GetTextSize(1, name).Width > 62)
+			while (Resources.GetTextSize(1, name).Width > 62)
 			{
 				name = $"{name.Substring(0, name.Length - 2)}.";
 			}
@@ -58,7 +58,7 @@ namespace CivOne.Screens.CityManagerPanels
 				this.AddLayer(building.SmallIcon, xx, yy);
 
 			string name = building.Name;
-			while (Resources.Instance.GetTextSize(1, name).Width > 54)
+			while (Resources.GetTextSize(1, name).Width > 54)
 			{
 				name = $"{name.Substring(0, name.Length - 1)}";
 			}

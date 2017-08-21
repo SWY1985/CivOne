@@ -107,7 +107,7 @@ namespace CivOne.Screens.GamePlayPanels
 			}
 			_demographics.DrawText(Game.GameYear, 0, 5, 2, 23, TextAlign.Left);
 
-			int width = Resources.Instance.GetTextSize(0, Game.GameYear).Width;
+			int width = Resources.GetTextSize(0, Game.GameYear).Width;
 			int stage = (int)Math.Floor(((double)Human.Science / Human.ScienceCost) * 4);
 			_demographics.AddLayer(Icons.Lamp(stage), 4 + width, 22);
 

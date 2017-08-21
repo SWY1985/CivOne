@@ -62,7 +62,7 @@ namespace CivOne.Screens.Debug
 		{
 			Palette = Common.Screens.Last().OriginalColours;
 
-			int fontHeight = Resources.Instance.GetFontHeight(0);
+			int fontHeight = Resources.GetFontHeight(0);
 			int hh = (fontHeight * (Game.Players.Count() + 1)) + 5;
 			int ww = 128;
 

@@ -63,7 +63,7 @@ namespace CivOne.Advances
 			{
 				case 1:
 					string[] text = new string[0];
-					text = Resources.Instance.GetCivilopediaText("BLURB0/" + Name.ToUpper());
+					text = Resources.GetCivilopediaText("BLURB0/" + Name.ToUpper());
 					
 					yy = 76;
 					foreach (string line in text)
