@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class BridgeBuilding : BaseAdvance
 	{
-		public BridgeBuilding() : base(Advance.IronWorking, Advance.Construction)
+		public BridgeBuilding() : base(4, 1, 0, Advance.IronWorking, Advance.Construction)
 		{
 			Name = "Bridge Building";
 			Type = Advance.BridgeBuilding;
-			SetIcon(4, 1, 0);
 		}
 	}
 }

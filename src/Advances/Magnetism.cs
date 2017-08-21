@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Magnetism : BaseAdvance
 	{
-		public Magnetism() : base(Advance.Navigation, Advance.Physics)
+		public Magnetism() : base(6, 0, 1, Advance.Navigation, Advance.Physics)
 		{
 			Name = "Magnetism";
 			Type = Advance.Magnetism;
-			SetIcon(6, 0, 1);
 		}
 	}
 }

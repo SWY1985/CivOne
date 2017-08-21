@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Robotics : BaseAdvance
 	{
-		public Robotics() : base(Advance.Plastics, Advance.Computers)
+		public Robotics() : base(7, 2, 0, Advance.Plastics, Advance.Computers)
 		{
 			Name = "Robotics";
 			Type = Advance.Robotics;
-			SetIcon(7, 2, 0);
 		}
 	}
 }

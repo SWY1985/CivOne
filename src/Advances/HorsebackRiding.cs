@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class HorsebackRiding : BaseAdvance
 	{
-		public HorsebackRiding() : base()
+		public HorsebackRiding() : base(7, 0, 1)
 		{
 			Name = "Horseback Riding";
 			Type = Advance.HorsebackRiding;
-			SetIcon(7, 0, 1);
 		}
 	}
 }

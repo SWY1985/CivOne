@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class TheWheel : BaseAdvance
 	{
-		public TheWheel() : base()
+		public TheWheel() : base(3, 2, 2)
 		{
 			Name = "The Wheel";
 			Type = Advance.TheWheel;
-			SetIcon(3, 2, 2);
 		}
 	}
 }

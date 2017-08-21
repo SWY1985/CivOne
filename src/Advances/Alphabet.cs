@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Alphabet : BaseAdvance
 	{
-		public Alphabet() : base()
+		public Alphabet() : base(3, 2, 1)
 		{
 			Name = "Alphabet";
 			Type = Advance.Alphabet;
-			SetIcon(3, 2, 1);
 		}
 	}
 }

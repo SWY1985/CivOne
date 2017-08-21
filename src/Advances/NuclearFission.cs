@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class NuclearFission : BaseAdvance
 	{
-		public NuclearFission() : base(Advance.MassProduction, Advance.AtomicTheory)
+		public NuclearFission() : base(5, 0, 1, Advance.MassProduction, Advance.AtomicTheory)
 		{
 			Name = "Nuclear Fission";
 			Type = Advance.NuclearFission;
-			SetIcon(5, 0, 1);
 		}
 	}
 }

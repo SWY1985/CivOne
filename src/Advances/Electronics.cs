@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Electronics : BaseAdvance
 	{
-		public Electronics() : base(Advance.Electricity)
+		public Electronics() : base(4, 2, 1, Advance.Electricity)
 		{
 			Name = "Electronics";
 			Type = Advance.Electronics;
-			SetIcon(4, 2, 1);
 		}
 	}
 }

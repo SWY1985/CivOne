@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Conscription : BaseAdvance
 	{
-		public Conscription() : base(Advance.TheRepublic, Advance.Explosives)
+		public Conscription() : base(7, 0, 0, Advance.TheRepublic, Advance.Explosives)
 		{
 			Name = "Conscription";
 			Type = Advance.Conscription;
-			SetIcon(7, 0, 0);
 		}
 	}
 }

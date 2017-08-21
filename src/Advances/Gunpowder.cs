@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Gunpowder : BaseAdvance
 	{
-		public Gunpowder() : base(Advance.Invention, Advance.IronWorking)
+		public Gunpowder() : base(6, 1, 0, Advance.Invention, Advance.IronWorking)
 		{
 			Name = "Gunpowder";
 			Type = Advance.Gunpowder;
-			SetIcon(6, 1, 0);
 		}
 	}
 }

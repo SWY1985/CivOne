@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Mathematics : BaseAdvance
 	{
-		public Mathematics() : base(Advance.Alphabet, Advance.Masonry)
+		public Mathematics() : base(7, 1, 1, Advance.Alphabet, Advance.Masonry)
 		{
 			Name = "Mathematics";
 			Type = Advance.Mathematics;
-			SetIcon(7, 1, 1);
 		}
 	}
 }

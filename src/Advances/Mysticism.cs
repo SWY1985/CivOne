@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Mysticism : BaseAdvance
 	{
-		public Mysticism() : base(Advance.CeremonialBurial)
+		public Mysticism() : base(1, 1, 1, Advance.CeremonialBurial)
 		{
 			Name = "Mysticism";
 			Type = Advance.Mysticism;
-			SetIcon(1, 1, 1);
 		}
 	}
 }

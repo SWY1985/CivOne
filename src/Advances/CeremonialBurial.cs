@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class CeremonialBurial : BaseAdvance
 	{
-		public CeremonialBurial() : base()
+		public CeremonialBurial() : base(8, 2, 0)
 		{
 			Name = "Ceremonial Burial";
 			Type = Advance.CeremonialBurial;
-			SetIcon(8, 2, 0);
 		}
 	}
 }

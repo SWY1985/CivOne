@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Pottery : BaseAdvance
 	{
-		public Pottery() : base()
+		public Pottery() : base(7, 0, 2)
 		{
 			Name = "Pottery";
 			Type = Advance.Pottery;
-			SetIcon(7, 0, 2);
 		}
 	}
 }

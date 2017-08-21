@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Flight : BaseAdvance
 	{
-		public Flight() : base(Advance.Combustion, Advance.Physics)
+		public Flight() : base(3, 1, 0, Advance.Combustion, Advance.Physics)
 		{
 			Name = "Flight";
 			Type = Advance.Flight;
-			SetIcon(3, 1, 0);
 		}
 	}
 }

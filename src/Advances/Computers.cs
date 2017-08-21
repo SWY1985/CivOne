@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Computers : BaseAdvance
 	{
-		public Computers() : base(Advance.Mathematics, Advance.Electronics)
+		public Computers() : base(3, 0, 2, Advance.Mathematics, Advance.Electronics)
 		{
 			Name = "Computers";
 			Type = Advance.Computers;
-			SetIcon(3, 0, 2);
 		}
 	}
 }

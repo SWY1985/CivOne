@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Trade : BaseAdvance
 	{
-		public Trade() : base(Advance.Currency, Advance.CodeOfLaws)
+		public Trade() : base(1, 0, 0, Advance.Currency, Advance.CodeOfLaws)
 		{
 			Name = "Trade";
 			Type = Advance.Trade;
-			SetIcon(1, 0, 0);
 		}
 	}
 }

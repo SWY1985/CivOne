@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Democracy : BaseAdvance
 	{
-		public Democracy() : base(Advance.Philosophy, Advance.Literacy)
+		public Democracy() : base(2, 2, 1, Advance.Philosophy, Advance.Literacy)
 		{
 			Name = "Democracy";
 			Type = Advance.Democracy;
-			SetIcon(2, 2, 1);
 		}
 	}
 }

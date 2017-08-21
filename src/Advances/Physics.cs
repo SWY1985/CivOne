@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Physics : BaseAdvance
 	{
-		public Physics() : base(Advance.Mathematics, Advance.Navigation)
+		public Physics() : base(1, 2, 0, Advance.Mathematics, Advance.Navigation)
 		{
 			Name = "Physics";
 			Type = Advance.Physics;
-			SetIcon(1, 2, 0);
 		}
 	}
 }

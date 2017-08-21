@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class SteamEngine : BaseAdvance
 	{
-		public SteamEngine() : base(Advance.Physics, Advance.Invention)
+		public SteamEngine() : base(6, 1, 2, Advance.Physics, Advance.Invention)
 		{
 			Name = "Steam Engine";
 			Type = Advance.SteamEngine;
-			SetIcon(6, 1, 2);
 		}
 	}
 }

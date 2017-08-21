@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class TheRepublic : BaseAdvance
 	{
-		public TheRepublic() : base(Advance.CodeOfLaws, Advance.Literacy)
+		public TheRepublic() : base(2, 0, 0, Advance.CodeOfLaws, Advance.Literacy)
 		{
 			Name = "The Republic";
 			Type = Advance.TheRepublic;
-			SetIcon(2, 0, 0);
 		}
 	}
 }

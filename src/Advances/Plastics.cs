@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Plastics : BaseAdvance
 	{
-		public Plastics() : base(Advance.Refining, Advance.SpaceFlight)
+		public Plastics() : base(4, 0, 0, Advance.Refining, Advance.SpaceFlight)
 		{
 			Name = "Plastics";
 			Type = Advance.Plastics;
-			SetIcon(4, 0, 0);
 		}
 	}
 }

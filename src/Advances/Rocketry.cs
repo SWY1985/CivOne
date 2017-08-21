@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Rocketry : BaseAdvance
 	{
-		public Rocketry() : base(Advance.AdvancedFlight, Advance.Electronics)
+		public Rocketry() : base(8, 0, 1, Advance.AdvancedFlight, Advance.Electronics)
 		{
 			Name = "Rocketry";
 			Type = Advance.Rocketry;
-			SetIcon(8, 0, 1);
 		}
 	}
 }

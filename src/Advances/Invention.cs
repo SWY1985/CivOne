@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Invention : BaseAdvance
 	{
-		public Invention() : base(Advance.Engineering, Advance.Literacy)
+		public Invention() : base(6, 2, 1, Advance.Engineering, Advance.Literacy)
 		{
 			Name = "Invention";
 			Type = Advance.Invention;
-			SetIcon(6, 2, 1);
 		}
 	}
 }

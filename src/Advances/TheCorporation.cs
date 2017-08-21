@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class TheCorporation : BaseAdvance
 	{
-		public TheCorporation() : base(Advance.Banking, Advance.Industrialization)
+		public TheCorporation() : base(7, 2, 2, Advance.Banking, Advance.Industrialization)
 		{
 			Name = "The Corporation";
 			Type = Advance.TheCorporation;
-			SetIcon(7, 2, 2);
 		}
 	}
 }

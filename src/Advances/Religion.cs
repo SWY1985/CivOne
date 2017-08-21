@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Religion : BaseAdvance
 	{
-		public Religion() : base(Advance.Philosophy, Advance.Writing)
+		public Religion() : base(3, 2, 0, Advance.Philosophy, Advance.Writing)
 		{
 			Name = "Religion";
 			Type = Advance.Religion;
-			SetIcon(3, 2, 0);
 		}
 	}
 }

@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Electricity : BaseAdvance
 	{
-		public Electricity() : base(Advance.Magnetism, Advance.Metallurgy)
+		public Electricity() : base(8, 0, 0, Advance.Magnetism, Advance.Metallurgy)
 		{
 			Name = "Electricity";
 			Type = Advance.Electricity;
-			SetIcon(8, 0, 0);
 		}
 	}
 }

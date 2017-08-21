@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class LaborUnion : BaseAdvance
 	{
-		public LaborUnion() : base(Advance.MassProduction, Advance.Communism)
+		public LaborUnion() : base(1, 0, 1, Advance.MassProduction, Advance.Communism)
 		{
 			Name = "Labor Union";
 			Type = Advance.LaborUnion;
-			SetIcon(1, 0, 1);
 		}
 	}
 }

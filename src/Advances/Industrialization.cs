@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Industrialization : BaseAdvance
 	{
-		public Industrialization() : base(Advance.RailRoad, Advance.Banking)
+		public Industrialization() : base(2, 0, 2, Advance.RailRoad, Advance.Banking)
 		{
 			Name = "Industrialization";
 			Type = Advance.Industrialization;
-			SetIcon(2, 0, 2);
 		}
 	}
 }

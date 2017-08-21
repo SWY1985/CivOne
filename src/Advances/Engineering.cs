@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Engineering : BaseAdvance
 	{
-		public Engineering() : base(Advance.TheWheel, Advance.Construction)
+		public Engineering() : base(4, 1, 1, Advance.TheWheel, Advance.Construction)
 		{
 			Name = "Engineering";
 			Type = Advance.Engineering;
-			SetIcon(4, 1, 1);
 		}
 	}
 }
