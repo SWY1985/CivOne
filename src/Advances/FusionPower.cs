@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class FusionPower : BaseAdvance
 	{
-		public FusionPower() : base(Advance.NuclearPower, Advance.SuperConductor)
+		public FusionPower() : base(7, 1, 0, Advance.NuclearPower, Advance.SuperConductor)
 		{
 			Name = "Fusion Power";
 			Type = Advance.FusionPower;
-			SetIcon(7, 1, 0);
 		}
 	}
 }

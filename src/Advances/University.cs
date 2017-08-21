@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class University : BaseAdvance
 	{
-		public University() : base(Advance.Mathematics, Advance.Philosophy)
+		public University() : base(1, 0, 2, Advance.Mathematics, Advance.Philosophy)
 		{
 			Name = "University";
 			Type = Advance.University;
-			SetIcon(1, 0, 2);
 		}
 	}
 }

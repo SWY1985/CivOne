@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Masonry : BaseAdvance
 	{
-		public Masonry() : base()
+		public Masonry() : base(2, 1, 2)
 		{
 			Name = "Masonry";
 			Type = Advance.Masonry;
-			SetIcon(2, 1, 2);
 		}
 	}
 }

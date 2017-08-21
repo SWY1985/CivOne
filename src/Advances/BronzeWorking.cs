@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class BronzeWorking : BaseAdvance
 	{
-		public BronzeWorking() : base()
+		public BronzeWorking() : base(5, 2, 0)
 		{
 			Name = "Bronze Working";
 			Type = Advance.BronzeWorking;
-			SetIcon(5, 2, 0);
 		}
 	}
 }

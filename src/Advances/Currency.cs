@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Currency : BaseAdvance
 	{
-		public Currency() : base(Advance.BronzeWorking)
+		public Currency() : base(5, 0, 0, Advance.BronzeWorking)
 		{
 			Name = "Currency";
 			Type = Advance.Currency;
-			SetIcon(5, 0, 0);
 		}
 	}
 }

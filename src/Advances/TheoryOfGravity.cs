@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class TheoryOfGravity : BaseAdvance
 	{
-		public TheoryOfGravity() : base(Advance.Astronomy, Advance.University)
+		public TheoryOfGravity() : base(2, 1, 1, Advance.Astronomy, Advance.University)
 		{
 			Name = "Theory of Gravity";
 			Type = Advance.TheoryOfGravity;
-			SetIcon(2, 1, 1);
 		}
 	}
 }

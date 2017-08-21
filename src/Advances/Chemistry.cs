@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Chemistry : BaseAdvance
 	{
-		public Chemistry() : base(Advance.University, Advance.Medicine)
+		public Chemistry() : base(1, 2, 1, Advance.University, Advance.Medicine)
 		{
 			Name = "Chemistry";
 			Type = Advance.Chemistry;
-			SetIcon(1, 2, 1);
 		}
 	}
 }

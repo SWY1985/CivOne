@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class NuclearPower : BaseAdvance
 	{
-		public NuclearPower() : base(Advance.NuclearFission, Advance.Electronics)
+		public NuclearPower() : base(2, 2, 2, Advance.NuclearFission, Advance.Electronics)
 		{
 			Name = "Nuclear Power";
 			Type = Advance.NuclearPower;
-			SetIcon(2, 2, 2);
 		}
 	}
 }

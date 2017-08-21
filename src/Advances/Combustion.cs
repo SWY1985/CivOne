@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Combustion : BaseAdvance
 	{
-		public Combustion() : base(Advance.Refining, Advance.Explosives)
+		public Combustion() : base(4, 2, 0, Advance.Refining, Advance.Explosives)
 		{
 			Name = "Combustion";
 			Type = Advance.Combustion;
-			SetIcon(4, 2, 0);
 		}
 	}
 }

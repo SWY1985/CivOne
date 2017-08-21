@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Explosives : BaseAdvance
 	{
-		public Explosives() : base(Advance.Gunpowder, Advance.Chemistry)
+		public Explosives() : base(5, 1, 2, Advance.Gunpowder, Advance.Chemistry)
 		{
 			Name = "Explosives";
 			Type = Advance.Explosives;
-			SetIcon(5, 1, 2);
 		}
 	}
 }

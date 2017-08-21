@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class RailRoad : BaseAdvance
 	{
-		public RailRoad() : base(Advance.SteamEngine, Advance.BridgeBuilding)
+		public RailRoad() : base(3, 0, 1, Advance.SteamEngine, Advance.BridgeBuilding)
 		{
 			Name = "RailRoad";
 			Type = Advance.RailRoad;
-			SetIcon(3, 0, 1);
 		}
 	}
 }

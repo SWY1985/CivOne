@@ -20,6 +20,8 @@ namespace CivOne.Advances
 {
 	internal abstract class BaseAdvance : BaseInstance, IAdvance
 	{
+		private readonly byte _page, _column, _row;
+
 		private Advance[] _requiredTechs;
 		private IEnumerable<IAdvance> GetRequiredTechs()
 		{
@@ -29,7 +31,24 @@ namespace CivOne.Advances
 			}
 		}
 		
-		public virtual IBitmap Icon { get; protected set; }
+		public IBitmap Icon
+		{
+			get
+			{
+				int xx = 1 + (111 * _column);
+				int yy = 1 + (69 * _row);
+				int ww = _column < 2 ? 112 : 96;
+				int hh = _row < 2 ? 68 : 60;
+				
+				using (IBitmap icon = Resources[$"ICONPG{_page}"][xx, yy, ww, hh])
+				{
+					OriginalColours = icon.Palette.Copy();
+					return new Picture(112, 68, icon.Palette)
+						.AddLayer(icon, _column < 2 ? 0 : 7, _row < 2 ? 0 : 4)
+						.FillRectangle(110, 0, 2, 68, 0);
+				}
+			}
+		}
 
 		public Palette OriginalColours { get; private set; }
 		
@@ -109,29 +128,7 @@ namespace CivOne.Advances
 		
 		protected Advance Type { get; set; }
 		
-		public IAdvance[] RequiredTechs
-		{
-			get
-			{
-				return GetRequiredTechs().ToArray();
-			}
-		}
-		
-		protected void SetIcon(int page, int col, int row)
-		{
-			int xx = 1 + (111 * col);
-			int yy = 1 + (69 * row);
-			int ww = col < 2 ? 112 : 96;
-			int hh = row < 2 ? 68 : 60;
-			
-			using (IBitmap icon = Resources[$"ICONPG{page}"][xx, yy, ww, hh])
-			{
-				Icon = new Picture(112, 68, icon.Palette)
-					.AddLayer(icon, col < 2 ? 0 : 7, row < 2 ? 0 : 4)
-					.FillRectangle(110, 0, 2, 68, 0);
-				OriginalColours = icon.Palette.Copy();
-			}
-		}
+		public IAdvance[] RequiredTechs => GetRequiredTechs().ToArray();
 		
 		public byte Id => (byte)Type;
 		
@@ -146,8 +143,11 @@ namespace CivOne.Advances
 
 		public bool Not<T>() where T : IAdvance => !(this is T);
 		
-		protected BaseAdvance(params Advance[] requiredTechs)
+		protected BaseAdvance(byte page, byte column, byte row, params Advance[] requiredTechs)
 		{
+			_page = page;
+			_column = column;
+			_row = row;
 			_requiredTechs = requiredTechs;
 		}
 	}

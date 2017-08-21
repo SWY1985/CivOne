@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Navigation : BaseAdvance
 	{
-		public Navigation() : base(Advance.MapMaking, Advance.Astronomy)
+		public Navigation() : base(6, 2, 2, Advance.MapMaking, Advance.Astronomy)
 		{
 			Name = "Navigation";
 			Type = Advance.Navigation;
-			SetIcon(6, 2, 2);
 		}
 	}
 }

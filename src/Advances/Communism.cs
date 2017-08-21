@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Communism : BaseAdvance
 	{
-		public Communism() : base(Advance.Philosophy, Advance.Industrialization)
+		public Communism() : base(4, 0, 2, Advance.Philosophy, Advance.Industrialization)
 		{
 			Name = "Communism";
 			Type = Advance.Communism;
-			SetIcon(4, 0, 2);
 		}
 	}
 }

@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Automobile : BaseAdvance
 	{
-		public Automobile() : base(Advance.Combustion, Advance.Steel)
+		public Automobile() : base(6, 0, 2, Advance.Combustion, Advance.Steel)
 		{
 			Name = "Automobile";
 			Type = Advance.Automobile;
-			SetIcon(6, 0, 2);
 		}
 	}
 }

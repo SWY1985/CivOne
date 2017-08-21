@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class MassProduction : BaseAdvance
 	{
-		public MassProduction() : base(Advance.Automobile, Advance.TheCorporation)
+		public MassProduction() : base(5, 1, 0, Advance.Automobile, Advance.TheCorporation)
 		{
 			Name = "Mass Production";
 			Type = Advance.MassProduction;
-			SetIcon(5, 1, 0);
 		}
 	}
 }

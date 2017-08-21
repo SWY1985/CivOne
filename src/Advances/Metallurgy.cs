@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Metallurgy : BaseAdvance
 	{
-		public Metallurgy() : base(Advance.Gunpowder, Advance.University)
+		public Metallurgy() : base(7, 2, 1, Advance.Gunpowder, Advance.University)
 		{
 			Name = "Metallurgy";
 			Type = Advance.Metallurgy;
-			SetIcon(7, 2, 1);
 		}
 	}
 }

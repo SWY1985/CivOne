@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Recycling : BaseAdvance
 	{
-		public Recycling() : base(Advance.MassProduction, Advance.Democracy)
+		public Recycling() : base(5, 0, 2, Advance.MassProduction, Advance.Democracy)
 		{
 			Name = "Recycling";
 			Type = Advance.Recycling;
-			SetIcon(5, 0, 2);
 		}
 	}
 }

@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Steel : BaseAdvance
 	{
-		public Steel() : base(Advance.Metallurgy, Advance.Industrialization)
+		public Steel() : base(3, 0, 0, Advance.Metallurgy, Advance.Industrialization)
 		{
 			Name = "Steel";
 			Type = Advance.Steel;
-			SetIcon(3, 0, 0);
 		}
 	}
 }

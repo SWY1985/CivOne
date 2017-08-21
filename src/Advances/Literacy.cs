@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Literacy : BaseAdvance
 	{
-		public Literacy() : base(Advance.Writing, Advance.CodeOfLaws)
+		public Literacy() : base(4, 1, 2, Advance.Writing, Advance.CodeOfLaws)
 		{
 			Name = "Literacy";
 			Type = Advance.Literacy;
-			SetIcon(4, 1, 2);
 		}
 	}
 }

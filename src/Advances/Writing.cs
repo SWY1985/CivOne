@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Writing : BaseAdvance
 	{
-		public Writing() : base(Advance.Alphabet)
+		public Writing() : base(3, 1, 1, Advance.Alphabet)
 		{
 			Name = "Writing";
 			Type = Advance.Writing;
-			SetIcon(3, 1, 1);
 		}
 	}
 }

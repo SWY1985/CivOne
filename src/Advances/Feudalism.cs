@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Feudalism : BaseAdvance
 	{
-		public Feudalism() : base(Advance.Masonry, Advance.Monarchy)
+		public Feudalism() : base(1, 1, 0, Advance.Masonry, Advance.Monarchy)
 		{
 			Name = "Feudalism";
 			Type = Advance.Feudalism;
-			SetIcon(1, 1, 0);
 		}
 	}
 }

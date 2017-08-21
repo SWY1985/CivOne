@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class SuperConductor : BaseAdvance
 	{
-		public SuperConductor() : base(Advance.Plastics, Advance.MassProduction)
+		public SuperConductor() : base(5, 2, 2, Advance.Plastics, Advance.MassProduction)
 		{
 			Name = "SuperConductor";
 			Type = Advance.SuperConductor;
-			SetIcon(5, 2, 2);
 		}
 	}
 }

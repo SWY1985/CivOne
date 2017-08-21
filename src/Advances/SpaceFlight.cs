@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class SpaceFlight : BaseAdvance
 	{
-		public SpaceFlight() : base(Advance.Computers, Advance.Rocketry)
+		public SpaceFlight() : base(4, 2, 2, Advance.Computers, Advance.Rocketry)
 		{
 			Name = "Space Flight";
 			Type = Advance.SpaceFlight;
-			SetIcon(4, 2, 2);
 		}
 	}
 }

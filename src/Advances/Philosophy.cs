@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Philosophy : BaseAdvance
 	{
-		public Philosophy() : base(Advance.Mysticism, Advance.Literacy)
+		public Philosophy() : base(8, 1, 0, Advance.Mysticism, Advance.Literacy)
 		{
 			Name = "Philosophy";
 			Type = Advance.Philosophy;
-			SetIcon(8, 1, 0);
 		}
 	}
 }

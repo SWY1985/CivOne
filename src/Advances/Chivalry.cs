@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Chivalry : BaseAdvance
 	{
-		public Chivalry() : base(Advance.Feudalism, Advance.HorsebackRiding)
+		public Chivalry() : base(6, 1, 1, Advance.Feudalism, Advance.HorsebackRiding)
 		{
 			Name = "Chivalry";
 			Type = Advance.Chivalry;
-			SetIcon(6, 1, 1);
 		}
 	}
 }

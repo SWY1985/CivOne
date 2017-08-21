@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class MapMaking : BaseAdvance
 	{
-		public MapMaking() : base(Advance.Alphabet)
+		public MapMaking() : base(7, 1, 2, Advance.Alphabet)
 		{
 			Name = "MapMaking";
 			Type = Advance.MapMaking;
-			SetIcon(7, 1, 2);
 		}
 	}
 }

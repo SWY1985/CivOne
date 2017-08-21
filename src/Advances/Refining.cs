@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Refining : BaseAdvance
 	{
-		public Refining() : base(Advance.Chemistry, Advance.TheCorporation)
+		public Refining() : base(6, 2, 0, Advance.Chemistry, Advance.TheCorporation)
 		{
 			Name = "Refining";
 			Type = Advance.Refining;
-			SetIcon(6, 2, 0);
 		}
 	}
 }

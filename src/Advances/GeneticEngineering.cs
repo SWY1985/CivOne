@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class GeneticEngineering : BaseAdvance
 	{
-		public GeneticEngineering() : base(Advance.Medicine, Advance.TheCorporation)
+		public GeneticEngineering() : base(1, 1, 2, Advance.Medicine, Advance.TheCorporation)
 		{
 			Name = "Genetic Engineering";
 			Type = Advance.GeneticEngineering;
-			SetIcon(1, 1, 2);
 		}
 	}
 }

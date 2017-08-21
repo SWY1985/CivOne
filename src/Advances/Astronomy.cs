@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Astronomy : BaseAdvance
 	{
-		public Astronomy() : base(Advance.Mysticism, Advance.Mathematics)
+		public Astronomy() : base(6, 0, 0, Advance.Mysticism, Advance.Mathematics)
 		{
 			Name = "Astronomy";
 			Type = Advance.Astronomy;
-			SetIcon(6, 0, 0);
 		}
 	}
 }

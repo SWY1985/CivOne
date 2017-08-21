@@ -13,11 +13,10 @@ namespace CivOne.Advances
 {
 	internal class Monarchy : BaseAdvance
 	{
-		public Monarchy() : base(Advance.CeremonialBurial, Advance.CodeOfLaws)
+		public Monarchy() : base(2, 2, 0, Advance.CeremonialBurial, Advance.CodeOfLaws)
 		{
 			Name = "Monarchy";
 			Type = Advance.Monarchy;
-			SetIcon(2, 2, 0);
 		}
 	}
 }
