@@ -43,10 +43,6 @@ namespace CivOne.Graphics.Sprites
 				{
 					_sprites.Add(index, new Sprite(GetSprite(index)));
 				}
-				else
-				{
-					RuntimeHandler.Runtime.Log($"Tile exists: {index}, {_sprites[index].Bitmap.Width}");
-				}
 				return _sprites[index];
 			}
 		}

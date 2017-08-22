@@ -42,8 +42,102 @@ namespace CivOne.Graphics.Sprites
 				return null;
 			return Resources[picFile].Bitmap[0, 160, 16, 16];
 		}
+
+		private static bool DrawCoastCorners(ref Picture output, Direction land)
+		{
+			if (!Resources.Exists("SP299")) return false;
+
+			Picture pic = Resources["SP299"];
+
+			if (land.And(South | East) && land.Not(North | West | SouthWest | NorthEast)) output.AddLayer(pic[224, 100, 16, 16]);
+			else if (land.And(North | West) && land.Not(South | East | NorthEast | SouthWest)) output.AddLayer(pic[240, 100, 16, 16]);
+			else if (land.And(North | East) && land.Not(South | West | NorthWest | SouthEast)) output.AddLayer(pic[256, 100, 16, 16]);
+			else if (land.And(South | West) && land.Not(North | East | SouthEast | NorthWest)) output.AddLayer(pic[272, 100, 16, 16]);
+			else return false;
+			return true;
+		}
+
+		private static void DrawCoastSegments(ref Picture output, Direction land)
+		{
+			if (!Resources.Exists("TER257")) return;
+
+			Picture pic = Resources["TER257"];
+			
+			if (land.And(North))
+			{
+				int xw = land.And(West) ? 80 : land.And(NorthWest) ? 96 : 64;
+				int xe = land.And(East) ? 88 : land.And(NorthEast) ? 56 : 24;
+				
+				output.AddLayer(pic[xw, 176, 8, 8], 0, 0);
+				output.AddLayer(pic[xe, 176, 8, 8], 8, 0);
+			}
+			if (land.And(East))
+			{
+				int xn = land.And(North) ? 88 : land.And(NorthEast) ? 104 : 72;
+				int xs = land.And(South) ? 88 : land.And(SouthEast) ? 56 : 24;
+				
+				output.AddLayer(pic[xn, 176, 8, 8], 8, 0);
+				output.AddLayer(pic[xs, 184, 8, 8], 8, 8);
+			}
+			if (land.And(South))
+			{
+				int xw = land.And(West) ? 80 : land.And(SouthWest) ? 48 : 16;
+				int xe = land.And(East) ? 88 : land.And(SouthEast) ? 104 : 72;
+
+				output.AddLayer(pic[xw, 184, 8, 8], 0, 8);
+				output.AddLayer(pic[xe, 184, 8, 8], 8, 8);
+			}
+			if (land.And(West))
+			{
+				int xn = land.And(North) ? 80 : land.And(NorthWest) ? 48 : 16;
+				int xs = land.And(South) ? 80 : land.And(SouthWest) ? 96 : 64;
+				
+				output.AddLayer(pic[xn, 176, 8, 8], 0, 0);
+				output.AddLayer(pic[xs, 184, 8, 8], 0, 8);
+			}
+		}
+
+		private static void DrawCoastDiagonal(ref Picture output, Direction land)
+		{
+			if (!Resources.Exists("TER257")) return;
+
+			Picture pic = Resources["TER257"];
+
+			if (land.And(NorthWest) && land.Not(North | West)) output.AddLayer(pic[32, 176, 8, 8], 0, 0);
+			if (land.And(NorthEast) && land.Not(North | East)) output.AddLayer(pic[40, 176, 8, 8], 8, 0);
+			if (land.And(SouthWest) && land.Not(South | West)) output.AddLayer(pic[32, 184, 8, 8], 0, 8);
+			if (land.And(SouthEast) && land.Not(South | East)) output.AddLayer(pic[40, 184, 8, 8], 8, 8);
+		}
+
+		private static void DrawRiverMouths(ref Picture output, Direction rivers)
+		{
+			if (!Resources.Exists("TER257")) return;
+
+			Picture pic = Resources["TER257"];
+
+			if (rivers.And(North)) output.AddLayer(pic[128, 176, 16, 16]);
+			if (rivers.And(East)) output.AddLayer(pic[144, 176, 16, 16]);
+			if (rivers.And(South)) output.AddLayer(pic[160, 176, 16, 16]);
+			if (rivers.And(West)) output.AddLayer(pic[176, 176, 16, 16]);
+		}
+
+		private static Bytemap GetOceanLayer((Direction Land, Direction Rivers) directions)
+		{
+			string picFile = (GFX256 ? "TER257" : "SPRITES");
+			if (!Resources.Exists(picFile))
+				return null;
+			if (!GFX256)
+				return Resources[picFile].Bitmap[((int)directions.Land & 0xF) * 16, 64, 16, 16];
+
+			Picture output = new Picture(16, 16);
+			if (!DrawCoastCorners(ref output, directions.Land))
+				DrawCoastSegments(ref output, directions.Land);
+			DrawCoastDiagonal(ref output, directions.Land);
+			DrawRiverMouths(ref output, directions.Rivers);
+			return output.Bitmap;
+		}
 		
-		private static Bytemap GetRiver(Direction directions)
+		private static Bytemap GetRiverLayer(Direction directions)
 		{
 			string picFile = (GFX256 ? "SP257" : "SPRITES");
 			if (!Resources.Exists(picFile))
@@ -78,36 +172,54 @@ namespace CivOne.Graphics.Sprites
 		public static readonly ISpriteCollection<Direction> Hills = new CachedSpriteCollection<Direction>(GetTileLayer<Hills>);
 		public static readonly ISpriteCollection<Direction> Jungle = new CachedSpriteCollection<Direction>(GetTileLayer<Jungle>);
 		public static readonly ISpriteCollection<Direction> Mountains = new CachedSpriteCollection<Direction>(GetTileLayer<Mountains>);
+		public static readonly ISpriteCollection<(Direction land, Direction rivers)> Ocean = new CachedSpriteCollection<(Direction, Direction)>(GetOceanLayer);
 		public static readonly ISpriteCollection<Direction> Plains = new CachedSpriteCollection<Direction>(GetTileLayer<Plains>);
-		public static readonly ISpriteCollection<Direction> River = new CachedSpriteCollection<Direction>(GetRiver);
+		public static readonly ISpriteCollection<Direction> River = new CachedSpriteCollection<Direction>(GetRiverLayer);
 		public static readonly ISpriteCollection<Direction> Swamp = new CachedSpriteCollection<Direction>(GetTileLayer<Swamp>);
 		public static readonly ISpriteCollection<Direction> Tundra = new CachedSpriteCollection<Direction>(GetTileLayer<Tundra>);
 
 		public static ISprite TileBase(ITile tile) => tile.IsOcean ? OceanBase : LandBase;
 		public static ISprite TileLayer(ITile tile)
 		{
-			Direction directions = None;
-			foreach (Direction direction in new[] { North, East, South, West })
+			Direction directions = None, riverDirections = None;
+			if (tile is Ocean)
 			{
-				ITile borderTile = tile.GetBorderTile(direction);
-				if (borderTile == null) continue;
-
-				switch (tile)
+				foreach (Direction direction in new[] { North, East, South, West, NorthWest, NorthEast, SouthWest, SouthEast })
 				{
-					case Ocean _:
-						continue;
-					case River _:
-						if (borderTile is River || borderTile is Ocean) break;
-						continue;
-					default:
-						if (borderTile.GetType() == tile.GetType()) break;
-						continue;
+					ITile borderTile = tile.GetBorderTile(direction);
+					if (borderTile == null) continue;
+					if (borderTile is Ocean) continue;
+					directions |= direction;
 				}
+				foreach (Direction direction in new[] { North, East, South, West })
+				{
+					ITile borderTile = tile.GetBorderTile(direction);
+					if (borderTile == null) continue;
+					if (borderTile is River) riverDirections |= direction;
+				}
+			}
+			else
+			{
+				foreach (Direction direction in new[] { North, East, South, West })
+				{
+					ITile borderTile = tile.GetBorderTile(direction);
+					if (borderTile == null) continue;
 
-				directions |= direction;
+					switch (tile)
+					{
+						case River _:
+							if (borderTile is River || borderTile is Ocean) break;
+							continue;
+						default:
+							if (borderTile.GetType() == tile.GetType()) break;
+							continue;
+					}
+
+					directions |= direction;
+				}
 			}
 
-			if (!GFX256 && Resources.Exists("SPRITES"))
+			if (!(tile is River || tile is Ocean) && !GFX256 && Resources.Exists("SPRITES"))
 			{
 				directions = ((tile.X + tile.Y) % 2 == 1) ? Alternating : Direction.None;
 			}
@@ -121,6 +233,7 @@ namespace CivOne.Graphics.Sprites
 				case Hills _: return Hills[directions];
 				case Jungle _: return Jungle[directions];
 				case Mountains _: return Mountains[directions];
+				case Ocean _: return Ocean[(directions, riverDirections)];
 				case Plains _: return Plains[directions];
 				case River _: return River[directions];
 				case Swamp _: return Swamp[directions];

@@ -19,163 +19,6 @@ namespace CivOne.Graphics
 		
 		private static IBitmap[] _icons = new Picture[12];
 		
-		private static void DrawOceanBorderNorth(ref Picture output, ITile tile)
-		{
-			if (tile.GetBorderType(Direction.North) == Terrain.Ocean) return;
-			if (tile.GetBorderType(Direction.West) == Terrain.Ocean)
-			{
-				if (tile.GetBorderType(Direction.NorthWest) == Terrain.Ocean)
-					output.AddLayer(Resources["TER257"][64, 176, 8, 8], 0, 0);
-				else
-					output.AddLayer(Resources["TER257"][96, 176, 8, 8], 0, 0);
-			}
-			else
-			{
-				output.AddLayer(Resources["TER257"][80, 176, 8, 8], 0, 0);
-			}
-			if (tile.GetBorderType(Direction.East) == Terrain.Ocean)
-			{
-				if (tile.GetBorderType(Direction.NorthEast) == Terrain.Ocean)
-					output.AddLayer(Resources["TER257"][24, 176, 8, 8], 8, 0);
-				else
-					output.AddLayer(Resources["TER257"][56, 176, 8, 8], 8, 0);
-			}
-			else
-			{
-				output.AddLayer(Resources["TER257"][88, 176, 8, 8], 8, 0);
-			}
-		}
-		
-		private static void DrawOceanBorderEast(ref Picture output, ITile tile)
-		{
-			if (tile.GetBorderType(Direction.East) == Terrain.Ocean) return;
-			if (tile.GetBorderType(Direction.North) == Terrain.Ocean)
-			{
-				if (tile.GetBorderType(Direction.NorthEast) == Terrain.Ocean)
-					output.AddLayer(Resources["TER257"][72, 176, 8, 8], 8, 0);
-				else
-					output.AddLayer(Resources["TER257"][104, 176, 8, 8], 8, 0);
-			}
-			else
-			{
-				output.AddLayer(Resources["TER257"][88, 176, 8, 8], 8, 0);
-			}
-			if (tile.GetBorderType(Direction.South) == Terrain.Ocean)
-			{
-				if (tile.GetBorderType(Direction.SouthEast) == Terrain.Ocean)
-					output.AddLayer(Resources["TER257"][24, 184, 8, 8], 8, 8);
-				else
-					output.AddLayer(Resources["TER257"][56, 184, 8, 8], 8, 8);
-			}
-			else
-			{
-				output.AddLayer(Resources["TER257"][88, 184, 8, 8], 8, 8);
-			}
-		}
-		
-		private static void DrawOceanBorderSouth(ref Picture output, ITile tile)
-		{
-			if (tile.GetBorderType(Direction.South) == Terrain.Ocean) return;
-			if (tile.GetBorderType(Direction.West) == Terrain.Ocean)
-			{
-				if (tile.GetBorderType(Direction.SouthWest) == Terrain.Ocean)
-					output.AddLayer(Resources["TER257"][16, 184, 8, 8], 0, 8);
-				else
-					output.AddLayer(Resources["TER257"][48, 184, 8, 8], 0, 8);
-			}
-			else
-			{
-				output.AddLayer(Resources["TER257"][80, 184, 8, 8], 0, 8);
-			}
-			if (tile.GetBorderType(Direction.East) == Terrain.Ocean)
-			{
-				if (tile.GetBorderType(Direction.SouthEast) == Terrain.Ocean)
-					output.AddLayer(Resources["TER257"][72, 184, 8, 8], 8, 8);
-				else
-					output.AddLayer(Resources["TER257"][104, 184, 8, 8], 8, 8);
-			}
-			else
-			{
-				output.AddLayer(Resources["TER257"][88, 184, 8, 8], 8, 8);
-			}
-		}
-		
-		private static void DrawOceanBorderWest(ref Picture output, ITile tile)
-		{
-			if (tile.GetBorderType(Direction.West) == Terrain.Ocean) return;
-			if (tile.GetBorderType(Direction.North) == Terrain.Ocean)
-			{
-				if (tile.GetBorderType(Direction.NorthWest) == Terrain.Ocean)
-					output.AddLayer(Resources["TER257"][16, 176, 8, 8], 0, 0);
-				else
-					output.AddLayer(Resources["TER257"][48, 176, 8, 8], 0, 0);
-			}
-			else
-			{
-				output.AddLayer(Resources["TER257"][80, 176, 8, 8], 0, 0);
-			}
-			if (tile.GetBorderType(Direction.South) == Terrain.Ocean)
-			{
-				if (tile.GetBorderType(Direction.SouthWest) == Terrain.Ocean)
-					output.AddLayer(Resources["TER257"][64, 184, 8, 8], 0, 8);
-				else
-					output.AddLayer(Resources["TER257"][96, 184, 8, 8], 0, 8);
-			}
-			else
-			{
-				output.AddLayer(Resources["TER257"][80, 184, 8, 8], 0, 8);
-			}
-		}
-		
-		private static bool DrawOceanCorners(ref Picture output, ITile tile)
-		{
-			int borders = 0;
-			if (tile.GetBorderType(Direction.North) != Terrain.Ocean) borders += 1;
-			if (tile.GetBorderType(Direction.East) != Terrain.Ocean) borders += 2;
-			if (tile.GetBorderType(Direction.South) != Terrain.Ocean) borders += 4;
-			if (tile.GetBorderType(Direction.West) != Terrain.Ocean) borders += 8;
-			
-			if (borders == 6) // South East
-			{
-				if (tile.GetBorderType(Direction.NorthEast) != Terrain.Ocean) return false;
-				if (tile.GetBorderType(Direction.SouthWest) != Terrain.Ocean) return false;
-				output.AddLayer(Resources["SP299"][224, 100, 16, 16], 0, 0);
-			}
-			if (borders == 9) // North West
-			{
-				if (tile.GetBorderType(Direction.NorthEast) != Terrain.Ocean) return false;
-				if (tile.GetBorderType(Direction.SouthWest) != Terrain.Ocean) return false;
-				output.AddLayer(Resources["SP299"][240, 100, 16, 16], 0, 0);
-			}
-			else if (borders == 3) // North East
-			{
-				if (tile.GetBorderType(Direction.NorthWest) != Terrain.Ocean) return false;
-				if (tile.GetBorderType(Direction.SouthEast) != Terrain.Ocean) return false;
-				output.AddLayer(Resources["SP299"][256, 100, 16, 16], 0, 0);
-			}
-			else if (borders == 12) // South West
-			{
-				if (tile.GetBorderType(Direction.NorthWest) != Terrain.Ocean) return false;
-				if (tile.GetBorderType(Direction.SouthEast) != Terrain.Ocean) return false;
-				output.AddLayer(Resources["SP299"][272, 100, 16, 16], 0, 0);
-			}
-			else return false;
-			return true;
-		}
-		
-		private static void DrawDiagonalCoast(ref Picture output, ITile tile)
-		{
-			bool north = (tile.GetBorderType(Direction.North) == Terrain.Ocean);
-			bool east = (tile.GetBorderType(Direction.East) == Terrain.Ocean);
-			bool south = (tile.GetBorderType(Direction.South) == Terrain.Ocean);
-			bool west = (tile.GetBorderType(Direction.West) == Terrain.Ocean);
-			
-			if (north && west && (tile.GetBorderType(Direction.NorthWest) != Terrain.Ocean)) output.AddLayer(Resources["TER257"][32, 176, 8, 8], 0, 0);
-			if (north && east && (tile.GetBorderType(Direction.NorthEast) != Terrain.Ocean)) output.AddLayer(Resources["TER257"][40, 176, 8, 8], 8, 0);
-			if (south && west && (tile.GetBorderType(Direction.SouthWest) != Terrain.Ocean)) output.AddLayer(Resources["TER257"][32, 184, 8, 8], 0, 8);
-			if (south && east && (tile.GetBorderType(Direction.SouthEast) != Terrain.Ocean)) output.AddLayer(Resources["TER257"][40, 184, 8, 8], 8, 8);
-		}
-		
 		private static void DrawIrrigation(ref Picture output, ITile tile, bool graphics16 = false)
 		{
 			if (!tile.Irrigation) return;
@@ -255,24 +98,8 @@ namespace CivOne.Graphics
 		{
 			Picture output = new Picture(16, 16);
 			
-			bool altTile = ((tile.X + tile.Y) % 2 == 1);
-			
-			// Set tile base
 			output.AddLayer(MapTile.TileBase(tile).Bitmap);
-			
-			// Add tile terrain
-			switch (tile.Type)
-			{
-				case Terrain.River:
-					output.AddLayer(MapTile.TileLayer(tile).Bitmap);
-					break;
-				case Terrain.Ocean:
-					output.AddLayer(Resources["SPRITES"][tile.Borders * 16, 64, 16, 16]);
-					break;
-				default:
-					output.AddLayer(MapTile.TileLayer(tile).Bitmap);
-					break;
-			}
+			output.AddLayer(MapTile.TileLayer(tile).Bitmap);
 			
 			// Add special resources
 			if (tile.Special)
@@ -304,46 +131,8 @@ namespace CivOne.Graphics
 
 			output.AddLayer(MapTile.TileBase(tile).Bitmap);
 
-			if (!Resources.Exists("SP257"))
-			{
-				switch (tile.Type)
-				{
-					case Terrain.Plains:
-						output.AddLayer(Free.Instance.Plains);
-						break;
-					case Terrain.Forest:
-						output.AddLayer(Free.Instance.Forest);
-						break;
-					default:
-						break;
-				}
-				return output;
-			}
-			
-			// Add tile terrain
-			switch (tile.Type)
-			{
-				case Terrain.Ocean:
-					if (!DrawOceanCorners(ref output, tile))
-					{
-						DrawOceanBorderNorth(ref output, tile);
-						DrawOceanBorderEast(ref output, tile);
-						DrawOceanBorderSouth(ref output, tile);
-						DrawOceanBorderWest(ref output, tile);
-					}
-					
-					if (tile.GetBorderType(Direction.North) == Terrain.River) output.AddLayer(Resources["TER257"][128, 176, 16, 16]);
-					if (tile.GetBorderType(Direction.East) == Terrain.River) output.AddLayer(Resources["TER257"][144, 176, 16, 16]);
-					if (tile.GetBorderType(Direction.South) == Terrain.River) output.AddLayer(Resources["TER257"][160, 176, 16, 16]);
-					if (tile.GetBorderType(Direction.West) == Terrain.River) output.AddLayer(Resources["TER257"][176, 176, 16, 16]);
-					
-					DrawDiagonalCoast(ref output, tile);
-					break;
-				default:
-					if (improvements) DrawIrrigation(ref output, tile);
-					output.AddLayer(MapTile.TileLayer(tile).Bitmap);
-					break;
-			}
+			if (improvements) DrawIrrigation(ref output, tile);
+			output.AddLayer(MapTile.TileLayer(tile).Bitmap);
 			
 			// Add special resources
 			if (!Map.TileIsType(tile, Terrain.Grassland1, Terrain.Grassland2) && tile.Special)
