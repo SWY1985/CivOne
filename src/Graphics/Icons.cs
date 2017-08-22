@@ -374,18 +374,5 @@ namespace CivOne.Graphics
 				return _fortify;
 			}
 		}
-
-		private static IBitmap _fortress;
-		public static IBitmap Fortress
-		{
-			get
-			{
-				if (_fortress == null)
-				{
-					_fortress = Resources["SP257"][224, 112, 16, 16].ColourReplace(3, 0);
-				}
-				return _fortress;
-			}
-		}
 	}
 }

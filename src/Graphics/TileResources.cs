@@ -18,29 +18,11 @@ namespace CivOne.Graphics
 		private static Resources Resources => Resources.Instance;
 		
 		private static IBitmap[] _icons = new Picture[12];
-		
-		private static void DrawIrrigation(ref Picture output, ITile tile, bool graphics16 = false)
-		{
-			if (!tile.Irrigation) return;
-			if (Game.Instance != null && tile.City == null)
-			
-			output.AddLayer(Resources[graphics16 ? "SPRITES" : "SP257"][64, 32, 16, 16], 0, 0);
-		}
-		
-		private static void DrawMine(ref Picture output, ITile tile, bool graphics16 = false)
-		{
-			if (!tile.Mine) return;
-			
-			output.AddLayer(Resources[graphics16 ? "SPRITES" : "SP257"][80, 32, 16, 16], 0, 0);
-		}
-		
-		private static void DrawFortress(ref Picture output, ITile tile, bool graphics16 = false)
-		{
-			if (!tile.Fortress) return;
-			if (Game.Instance != null && tile.City == null)
-			
-			output.AddLayer(Icons.Fortress, 0, 0);
-		}
+
+		private static bool DrawIrrigation(ITile tile) => tile.Irrigation && tile.City == null;
+		private static bool DrawMine(ITile tile) => tile.Mine;
+		private static bool DrawFortress(ITile tile) => tile.Fortress && tile.City == null;
+		private static bool DrawHut(ITile tile) => tile.Hut;
 		
 		private static void DrawRoad(ref Picture output, ITile tile, bool graphics16 = false)
 		{
@@ -87,13 +69,6 @@ namespace CivOne.Graphics
 			output.FillRectangle(7, 7, 2, 2, 5);
 		}
 		
-		private static void DrawHut(ref Picture output, ITile tile, bool graphics16 = false)
-		{
-			if (!tile.Hut) return;
-			
-			output.AddLayer(Resources[graphics16 ? "SPRITES" : "SP257"][240, 112, 16, 16].ColourReplace(3, 0), 0, 0);
-		}
-		
 		internal static Picture GetTile16(ITile tile, bool improvements, bool roads)
 		{
 			Picture output = new Picture(16, 16);
@@ -111,16 +86,16 @@ namespace CivOne.Graphics
 			// Add tile improvements
 			if (improvements && tile.Type != Terrain.River)
 			{
-				DrawIrrigation(ref output, tile, true);
-				DrawMine(ref output, tile, true);
+				if (DrawIrrigation(tile)) output.AddLayer(MapTile.Irrigation.Bitmap);
+				if (DrawMine(tile)) output.AddLayer(MapTile.Mine.Bitmap);
 			}
 			if (roads)
 			{
 				DrawRoad(ref output, tile, true);
 				DrawRailRoad(ref output, tile, true);
 			}
-			DrawFortress(ref output, tile, true);
-			DrawHut(ref output, tile, true);
+			if (DrawFortress(tile)) output.AddLayer(MapTile.Fortress.Bitmap);
+			if (DrawHut(tile)) output.AddLayer(MapTile.Hut.Bitmap);
 			
 			return output;
 		}
@@ -130,8 +105,7 @@ namespace CivOne.Graphics
 			Picture output = new Picture(16, 16);
 
 			output.AddLayer(MapTile.TileBase(tile).Bitmap);
-
-			if (improvements) DrawIrrigation(ref output, tile);
+			if (improvements && DrawIrrigation(tile)) output.AddLayer(MapTile.Irrigation.Bitmap);
 			output.AddLayer(MapTile.TileLayer(tile).Bitmap);
 			
 			// Add special resources
@@ -148,15 +122,15 @@ namespace CivOne.Graphics
 			// Add tile improvements
 			if (tile.Type != Terrain.River && improvements)
 			{
-				DrawMine(ref output, tile);
+				if (DrawMine(tile)) output.AddLayer(MapTile.Mine.Bitmap);
 			}
 			if (roads)
 			{
 				DrawRoad(ref output, tile);
 				DrawRailRoad(ref output, tile, true);
 			}
-			DrawFortress(ref output, tile, true);
-			DrawHut(ref output, tile);
+			if (DrawFortress(tile)) output.AddLayer(MapTile.Fortress.Bitmap);
+			if (DrawHut(tile)) output.AddLayer(MapTile.Hut.Bitmap);
 			
 			return output;
 		}

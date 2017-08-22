@@ -163,6 +163,40 @@ namespace CivOne.Graphics.Sprites
 			return Resources[picFile].Bitmap[(int)directions * 16, terrainId * 16, 16, 16];
 		}
 
+		private static Bytemap GetIrrigation()
+		{
+			string picFile = (GFX256 ? "SP257" : "SPRITES");
+			if (!Resources.Exists(picFile))
+				return null;
+			return Resources[picFile].Bitmap[64, 32, 16, 16];
+		}
+
+		private static Bytemap GetMine()
+		{
+			string picFile = (GFX256 ? "SP257" : "SPRITES");
+			if (!Resources.Exists(picFile))
+				return null;
+			return Resources[picFile].Bitmap[80, 32, 16, 16];
+		}
+
+		private static Bytemap GetFortress()
+		{
+			string picFile = (GFX256 ? "SP257" : "SPRITES");
+			if (!Resources.Exists(picFile))
+				return null;
+			return Resources[picFile][224, 112, 16, 16]
+				.ColourReplace(3, 0).Bitmap;
+		}
+
+		private static Bytemap GetHut()
+		{
+			string picFile = (GFX256 ? "SP257" : "SPRITES");
+			if (!Resources.Exists(picFile))
+				return null;
+			return Resources[picFile][240, 112, 16, 16]
+				.ColourReplace(3, 0).Bitmap;
+		}
+
 		public static readonly ISprite LandBase = new CachedSprite(GetLandBase);
 		public static readonly ISprite OceanBase = new CachedSprite(GetOceanBase);
 		public static readonly ISpriteCollection<Direction> Arctic = new CachedSpriteCollection<Direction>(GetTileLayer<Arctic>);
@@ -177,6 +211,10 @@ namespace CivOne.Graphics.Sprites
 		public static readonly ISpriteCollection<Direction> River = new CachedSpriteCollection<Direction>(GetRiverLayer);
 		public static readonly ISpriteCollection<Direction> Swamp = new CachedSpriteCollection<Direction>(GetTileLayer<Swamp>);
 		public static readonly ISpriteCollection<Direction> Tundra = new CachedSpriteCollection<Direction>(GetTileLayer<Tundra>);
+		public static readonly ISprite Irrigation = new CachedSprite(GetIrrigation);
+		public static readonly ISprite Mine = new CachedSprite(GetMine);
+		public static readonly ISprite Fortress = new CachedSprite(GetFortress);
+		public static readonly ISprite Hut = new CachedSprite(GetHut);
 
 		public static ISprite TileBase(ITile tile) => tile.IsOcean ? OceanBase : LandBase;
 		public static ISprite TileLayer(ITile tile)
