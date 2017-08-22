@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using CivOne.Enums;
+using CivOne.Graphics.Sprites;
 using CivOne.Tiles;
 
 namespace CivOne.Graphics
@@ -257,18 +258,16 @@ namespace CivOne.Graphics
 			bool altTile = ((tile.X + tile.Y) % 2 == 1);
 			
 			// Set tile base
-			if (tile.Type != Terrain.Ocean)
-			{
-				output.AddLayer(Resources["SPRITES"][0, 80, 16, 16]);
-			}
+			output.AddLayer(MapTile.TileBase(tile).Bitmap);
 			
 			// Add tile terrain
 			switch (tile.Type)
 			{
-				case Terrain.Ocean:
 				case Terrain.River:
-					bool ocean = (tile.Type == Terrain.Ocean);
-					output.AddLayer(Resources["SPRITES"][tile.Borders * 16, (ocean ? 64 : 80), 16, 16]);
+					output.AddLayer(MapTile.TileLayer(tile).Bitmap);
+					break;
+				case Terrain.Ocean:
+					output.AddLayer(Resources["SPRITES"][tile.Borders * 16, 64, 16, 16]);
 					break;
 				default:
 					int terrainId = (int)tile.Type;
@@ -306,10 +305,10 @@ namespace CivOne.Graphics
 		{
 			Picture output = new Picture(16, 16);
 
+			output.AddLayer(MapTile.TileBase(tile).Bitmap);
+
 			if (!Resources.Exists("SP257"))
 			{
-				output.AddLayer(tile.IsOcean ? Free.Instance.SeaBase : Free.Instance.LandBase);
-
 				switch (tile.Type)
 				{
 					case Terrain.Plains:
@@ -322,13 +321,6 @@ namespace CivOne.Graphics
 						break;
 				}
 				return output;
-			}
-			
-			// Set tile base
-			switch (tile.Type)
-			{
-				case Terrain.Ocean: output.AddLayer(Resources["TER257"][0, 160, 16, 16]); break;
-				default: output.AddLayer(Resources["SP257"][0, 64, 16, 16]); break;
 			}
 			
 			// Add tile terrain
@@ -356,13 +348,18 @@ namespace CivOne.Graphics
 						DrawIrrigation(ref output, tile);
 						DrawMine(ref output, tile);
 					}
-					output.AddLayer(Resources["SP257"][tile.Borders * 16, 80, 16, 16]);
+					output.AddLayer(MapTile.TileLayer(tile).Bitmap);
+					break;
+				case Terrain.Forest:
+					if (improvements) DrawIrrigation(ref output, tile);
+					output.AddLayer(MapTile.TileLayer(tile).Bitmap);
 					break;
 				default:
 					int terrainId = (int)tile.Type;
 					if (tile.Type == Terrain.Grassland2) { terrainId = (int)Terrain.Grassland1; }
 					if (improvements) DrawIrrigation(ref output, tile);
-					output.AddLayer(Resources["TER257"][tile.Borders * 16, terrainId * 16, 16, 16]);
+					output.AddLayer(MapTile.TileLayer(tile).Bitmap);
+					// output.AddLayer(Resources["TER257"][tile.Borders * 16, terrainId * 16, 16, 16]);
 					break;
 			}
 			

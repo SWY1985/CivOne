@@ -19,14 +19,14 @@ namespace CivOne.Graphics.Sprites
 		private static Resources Resources => Resources.Instance;
 		private static Settings Settings => Settings.Instance;
 
-		private static ISprite CursorPointer()
+		private static Bytemap CursorPointer()
 		{
 			switch(Settings.CursorType)
 			{
 				case Default:
-					return new CachedSprite(() => Resources["SP257"][113, 33, 15, 15].Bitmap);
+					return Resources["SP257"][113, 33, 15, 15].Bitmap;
 				case Builtin:
-					return new CachedSprite(() => new Bytemap(11, 16).FromByteArray(new byte[] {
+					return new Bytemap(11, 16).FromByteArray(new byte[] {
 						 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 						 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 						 5,15, 5, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -43,20 +43,20 @@ namespace CivOne.Graphics.Sprites
 						 0, 0, 0, 0, 0, 5,15,15, 5, 0, 0,
 						 0, 0, 0, 0, 0, 5,15,15, 5, 0, 0,
 						 0, 0, 0, 0, 0, 0, 5, 5, 0, 0, 0
-					}));
+					});
 				default:
 					return null;
 			}
 		}
 
-		private static ISprite CursorGoto()
+		private static Bytemap CursorGoto()
 		{
 			switch(Settings.CursorType)
 			{
 				case Default:
-					return new CachedSprite(() => Resources["SP257"][33, 33, 15, 15].Bitmap);
+					return Resources["SP257"][33, 33, 15, 15].Bitmap;
 				case Builtin:
-					return new CachedSprite(() => new Bytemap(13, 16).FromByteArray(new byte[] {
+					return new Bytemap(13, 16).FromByteArray(new byte[] {
 						 5, 0, 0, 0, 0,15,15, 0, 0, 0,15,15, 0,
 						 5, 5, 0, 0,15, 0, 0, 0, 0,15, 0, 0,15,
 						 5,15, 5, 0,15, 0,15,15, 0,15, 0, 0,15,
@@ -73,14 +73,14 @@ namespace CivOne.Graphics.Sprites
 						 0, 0, 0, 0, 0, 5,15,15, 5, 0, 0, 0, 0,
 						 0, 0, 0, 0, 0, 5,15,15, 5, 0, 0, 0, 0,
 						 0, 0, 0, 0, 0, 0, 5, 5, 0, 0, 0, 0, 0
-					}));
+					});
 				default:
 					return null;
 			}
 		}
 
-		public static ISprite Pointer = CursorPointer();
-		public static ISprite Goto = CursorGoto();
+		public readonly static ISprite Pointer = new CachedSprite(CursorPointer);
+		public readonly static ISprite Goto = new CachedSprite(CursorGoto);
 		public static ISprite Current
 		{
 			get
@@ -99,8 +99,10 @@ namespace CivOne.Graphics.Sprites
 
 		public static void ClearCache()
 		{
-			Pointer = CursorPointer();
-			Goto = CursorGoto();
+			foreach (ICached cached in new[] { Pointer, Goto })
+			{
+				cached.Clear();
+			}
 		}
 	}
 }

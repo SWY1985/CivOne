@@ -88,7 +88,7 @@ namespace CivOne.Graphics
 			}
 		}
 
-		public IBitmap SeaBase
+		public IBitmap OceanBase
 		{
 			get
 			{

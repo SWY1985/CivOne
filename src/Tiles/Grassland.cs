@@ -100,6 +100,7 @@ namespace CivOne.Tiles
 		}
 		public Grassland() : this(-1, -1)
 		{
+			Type = Terrain.Grassland1;
 		}
 	}
 }

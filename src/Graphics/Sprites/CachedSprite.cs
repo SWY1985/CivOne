@@ -12,7 +12,7 @@ using CivOne.IO;
 
 namespace CivOne.Graphics.Sprites
 {
-	public class CachedSprite : BaseInstance, ISprite
+	internal class CachedSprite : BaseInstance, ISprite, ICached
 	{
 		private readonly Func<Bytemap> GetSprite;
 
@@ -25,6 +25,12 @@ namespace CivOne.Graphics.Sprites
 					_bitmap = GetSprite();
 				return _bitmap;
 			}
+		}
+
+		public void Clear()
+		{
+			_bitmap?.Dispose();
+			_bitmap = null;
 		}
 
 		public CachedSprite(Func<Bytemap> getSprite)
