@@ -73,30 +73,23 @@ namespace CivOne.Graphics
 		{
 			Picture output = new Picture(16, 16);
 			
-			output.AddLayer(MapTile.TileBase(tile)?.Bitmap);
-			output.AddLayer(MapTile.TileLayer(tile)?.Bitmap);
-			output.AddLayer(MapTile.TileSpecial(tile)?.Bitmap);
-			
-			// // Add special resources
-			// if (tile.Special)
-			// {
-			// 	int terrainId = (int)tile.Type;
-			// 	output.AddLayer(Resources["SPRITES"][terrainId * 16, 112, 16, 16].ColourReplace(3, 0));
-			// }
+			output.AddLayer(MapTile.TileBase(tile));
+			output.AddLayer(MapTile.TileLayer(tile));
+			output.AddLayer(MapTile.TileSpecial(tile));
 			
 			// Add tile improvements
 			if (improvements && tile.Type != Terrain.River)
 			{
-				if (DrawIrrigation(tile)) output.AddLayer(MapTile.Irrigation?.Bitmap);
-				if (DrawMine(tile)) output.AddLayer(MapTile.Mine?.Bitmap);
+				if (DrawIrrigation(tile)) output.AddLayer(MapTile.Irrigation);
+				if (DrawMine(tile)) output.AddLayer(MapTile.Mine);
 			}
 			if (roads)
 			{
 				DrawRoad(ref output, tile, true);
 				DrawRailRoad(ref output, tile, true);
 			}
-			if (DrawFortress(tile)) output.AddLayer(MapTile.Fortress?.Bitmap);
-			if (DrawHut(tile)) output.AddLayer(MapTile.Hut?.Bitmap);
+			if (DrawFortress(tile)) output.AddLayer(MapTile.Fortress);
+			if (DrawHut(tile)) output.AddLayer(MapTile.Hut);
 			
 			return output;
 		}
@@ -105,23 +98,23 @@ namespace CivOne.Graphics
 		{
 			Picture output = new Picture(16, 16);
 
-			output.AddLayer(MapTile.TileBase(tile)?.Bitmap);
-			if (improvements && DrawIrrigation(tile)) output.AddLayer(MapTile.Irrigation?.Bitmap);
-			output.AddLayer(MapTile.TileLayer(tile)?.Bitmap);
-			output.AddLayer(MapTile.TileSpecial(tile)?.Bitmap);
+			output.AddLayer(MapTile.TileBase(tile));
+			if (improvements && DrawIrrigation(tile)) output.AddLayer(MapTile.Irrigation);
+			output.AddLayer(MapTile.TileLayer(tile));
+			output.AddLayer(MapTile.TileSpecial(tile));
 			
 			// Add tile improvements
 			if (tile.Type != Terrain.River && improvements)
 			{
-				if (DrawMine(tile)) output.AddLayer(MapTile.Mine?.Bitmap);
+				if (DrawMine(tile)) output.AddLayer(MapTile.Mine);
 			}
 			if (roads)
 			{
 				DrawRoad(ref output, tile);
 				DrawRailRoad(ref output, tile, true);
 			}
-			if (DrawFortress(tile)) output.AddLayer(MapTile.Fortress?.Bitmap);
-			if (DrawHut(tile)) output.AddLayer(MapTile.Hut?.Bitmap);
+			if (DrawFortress(tile)) output.AddLayer(MapTile.Fortress);
+			if (DrawHut(tile)) output.AddLayer(MapTile.Hut);
 			
 			return output;
 		}
