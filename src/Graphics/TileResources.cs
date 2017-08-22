@@ -270,10 +270,7 @@ namespace CivOne.Graphics
 					output.AddLayer(Resources["SPRITES"][tile.Borders * 16, 64, 16, 16]);
 					break;
 				default:
-					int terrainId = (int)tile.Type;
-					if (tile.Type == Terrain.Grassland1) altTile = false;
-					else if (tile.Type == Terrain.Grassland2) { altTile = true; terrainId = (int)Terrain.Grassland1; }
-					output.AddLayer(Resources["SPRITES"][terrainId * 16, (altTile ? 0 : 16), 16, 16]);
+					output.AddLayer(MapTile.TileLayer(tile).Bitmap);
 					break;
 			}
 			
@@ -342,24 +339,9 @@ namespace CivOne.Graphics
 					
 					DrawDiagonalCoast(ref output, tile);
 					break;
-				case Terrain.River:
-					if (improvements)
-					{
-						DrawIrrigation(ref output, tile);
-						DrawMine(ref output, tile);
-					}
-					output.AddLayer(MapTile.TileLayer(tile).Bitmap);
-					break;
-				case Terrain.Forest:
-					if (improvements) DrawIrrigation(ref output, tile);
-					output.AddLayer(MapTile.TileLayer(tile).Bitmap);
-					break;
 				default:
-					int terrainId = (int)tile.Type;
-					if (tile.Type == Terrain.Grassland2) { terrainId = (int)Terrain.Grassland1; }
 					if (improvements) DrawIrrigation(ref output, tile);
 					output.AddLayer(MapTile.TileLayer(tile).Bitmap);
-					// output.AddLayer(Resources["TER257"][tile.Borders * 16, terrainId * 16, 16, 16]);
 					break;
 			}
 			

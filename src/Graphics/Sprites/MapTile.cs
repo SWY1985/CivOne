@@ -54,7 +54,7 @@ namespace CivOne.Graphics.Sprites
 		private static Bytemap GetTileLayer<T>(Direction directions) where T : ITile, new()
 		{
 			int terrainId = (int)new T().Type;
-			string picFile = (GFX256 ? "SP257" : "SPRITES");
+			string picFile = (GFX256 ? "TER257" : "SPRITES");
 			if (!Resources.Exists(picFile))
 			{
 				switch (new T().Type)
@@ -64,7 +64,9 @@ namespace CivOne.Graphics.Sprites
 				}
 				return null;
 			}
-			return Resources["TER257"].Bitmap[(int)directions * 16, terrainId * 16, 16, 16];
+			if (!GFX256)
+				return Resources[picFile].Bitmap[terrainId * 16, (directions == Alternating) ? 0 : 16, 16, 16];
+			return Resources[picFile].Bitmap[(int)directions * 16, terrainId * 16, 16, 16];
 		}
 
 		public static readonly ISprite LandBase = new CachedSprite(GetLandBase);
@@ -84,7 +86,7 @@ namespace CivOne.Graphics.Sprites
 		public static ISprite TileBase(ITile tile) => tile.IsOcean ? OceanBase : LandBase;
 		public static ISprite TileLayer(ITile tile)
 		{
-			Direction directions = 0;
+			Direction directions = None;
 			foreach (Direction direction in new[] { North, East, South, West })
 			{
 				ITile borderTile = tile.GetBorderTile(direction);
@@ -105,6 +107,11 @@ namespace CivOne.Graphics.Sprites
 				directions |= direction;
 			}
 
+			if (!GFX256 && Resources.Exists("SPRITES"))
+			{
+				directions = ((tile.X + tile.Y) % 2 == 1) ? Alternating : Direction.None;
+			}
+			
 			switch (tile)
 			{
 				case Arctic _: return Arctic[directions];
