@@ -163,6 +163,18 @@ namespace CivOne.Graphics.Sprites
 			return Resources[picFile].Bitmap[(int)directions * 16, terrainId * 16, 16, 16];
 		}
 
+		private static Bytemap GetSpecial<T>() where T : ITile, new()
+		{
+			int terrainId = (int)new T().Type;
+			string picFile = (GFX256 ? "SP257" : "SPRITES");
+			if (!Resources.Exists(picFile))
+				return null;
+			if (typeof(T) == typeof(Grassland))
+				return new Picture(16, 16)
+					.AddLayer(Resources[picFile][152, 40, 8, 8].ColourReplace(3, 0), 4, 4).Bitmap;
+			return Resources[picFile][terrainId * 16, 112, 16, 16].ColourReplace(3, 0).Bitmap;
+		}
+
 		private static Bytemap GetIrrigation()
 		{
 			string picFile = (GFX256 ? "SP257" : "SPRITES");
@@ -196,7 +208,7 @@ namespace CivOne.Graphics.Sprites
 			return Resources[picFile][240, 112, 16, 16]
 				.ColourReplace(3, 0).Bitmap;
 		}
-
+		
 		public static readonly ISprite LandBase = new CachedSprite(GetLandBase);
 		public static readonly ISprite OceanBase = new CachedSprite(GetOceanBase);
 		public static readonly ISpriteCollection<Direction> Arctic = new CachedSpriteCollection<Direction>(GetTileLayer<Arctic>);
@@ -215,6 +227,17 @@ namespace CivOne.Graphics.Sprites
 		public static readonly ISprite Mine = new CachedSprite(GetMine);
 		public static readonly ISprite Fortress = new CachedSprite(GetFortress);
 		public static readonly ISprite Hut = new CachedSprite(GetHut);
+		public static readonly ISprite Seals = new CachedSprite(GetSpecial<Arctic>);
+		public static readonly ISprite Oasis = new CachedSprite(GetSpecial<Desert>);
+		public static readonly ISprite Deer = new CachedSprite(GetSpecial<Forest>);
+		public static readonly ISprite Shield = new CachedSprite(GetSpecial<Grassland>);
+		public static readonly ISprite Coal = new CachedSprite(GetSpecial<Hills>);
+		public static readonly ISprite Gems = new CachedSprite(GetSpecial<Jungle>);
+		public static readonly ISprite Gold = new CachedSprite(GetSpecial<Mountains>);
+		public static readonly ISprite Fish = new CachedSprite(GetSpecial<Ocean>);
+		public static readonly ISprite Horses = new CachedSprite(GetSpecial<Plains>);
+		public static readonly ISprite Oil = new CachedSprite(GetSpecial<Swamp>);
+		public static readonly ISprite Game = new CachedSprite(GetSpecial<Tundra>);
 
 		public static ISprite TileBase(ITile tile) => tile.IsOcean ? OceanBase : LandBase;
 		public static ISprite TileLayer(ITile tile)
@@ -278,6 +301,25 @@ namespace CivOne.Graphics.Sprites
 				case Tundra _: return Tundra[directions];
 			}
 
+			return null;
+		}
+		public static ISprite TileSpecial(ITile tile)
+		{
+			if (tile is River || (!tile.Special && tile.Type != Terrain.Grassland2)) return null;
+			switch (tile)
+			{
+				case Arctic _: return Seals;
+				case Desert _: return Oasis;
+				case Forest _: return Deer;
+				case Grassland _: return Shield;
+				case Hills _: return Coal;
+				case Jungle _: return Gems;
+				case Mountains _: return Gold;
+				case Ocean _: return Fish;
+				case Plains _: return Horses;
+				case Swamp _: return Oil;
+				case Tundra _: return Game;
+			}
 			return null;
 		}
 	}

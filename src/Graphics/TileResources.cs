@@ -73,29 +73,30 @@ namespace CivOne.Graphics
 		{
 			Picture output = new Picture(16, 16);
 			
-			output.AddLayer(MapTile.TileBase(tile).Bitmap);
-			output.AddLayer(MapTile.TileLayer(tile).Bitmap);
+			output.AddLayer(MapTile.TileBase(tile)?.Bitmap);
+			output.AddLayer(MapTile.TileLayer(tile)?.Bitmap);
+			output.AddLayer(MapTile.TileSpecial(tile)?.Bitmap);
 			
-			// Add special resources
-			if (tile.Special)
-			{
-				int terrainId = (int)tile.Type;
-				output.AddLayer(Resources["SPRITES"][terrainId * 16, 112, 16, 16].ColourReplace(3, 0));
-			}
+			// // Add special resources
+			// if (tile.Special)
+			// {
+			// 	int terrainId = (int)tile.Type;
+			// 	output.AddLayer(Resources["SPRITES"][terrainId * 16, 112, 16, 16].ColourReplace(3, 0));
+			// }
 			
 			// Add tile improvements
 			if (improvements && tile.Type != Terrain.River)
 			{
-				if (DrawIrrigation(tile)) output.AddLayer(MapTile.Irrigation.Bitmap);
-				if (DrawMine(tile)) output.AddLayer(MapTile.Mine.Bitmap);
+				if (DrawIrrigation(tile)) output.AddLayer(MapTile.Irrigation?.Bitmap);
+				if (DrawMine(tile)) output.AddLayer(MapTile.Mine?.Bitmap);
 			}
 			if (roads)
 			{
 				DrawRoad(ref output, tile, true);
 				DrawRailRoad(ref output, tile, true);
 			}
-			if (DrawFortress(tile)) output.AddLayer(MapTile.Fortress.Bitmap);
-			if (DrawHut(tile)) output.AddLayer(MapTile.Hut.Bitmap);
+			if (DrawFortress(tile)) output.AddLayer(MapTile.Fortress?.Bitmap);
+			if (DrawHut(tile)) output.AddLayer(MapTile.Hut?.Bitmap);
 			
 			return output;
 		}
@@ -104,33 +105,23 @@ namespace CivOne.Graphics
 		{
 			Picture output = new Picture(16, 16);
 
-			output.AddLayer(MapTile.TileBase(tile).Bitmap);
-			if (improvements && DrawIrrigation(tile)) output.AddLayer(MapTile.Irrigation.Bitmap);
-			output.AddLayer(MapTile.TileLayer(tile).Bitmap);
-			
-			// Add special resources
-			if (!Map.TileIsType(tile, Terrain.Grassland1, Terrain.Grassland2) && tile.Special)
-			{
-				int terrainId = (int)tile.Type;
-				output.AddLayer(Resources["SP257"][terrainId * 16, 112, 16, 16].ColourReplace(3, 0));
-			}
-			else if (tile.Type == Terrain.Grassland2)
-			{
-				output.AddLayer(Resources["SP257"][152, 40, 8, 8].ColourReplace(3, 0), 4, 4);
-			}
+			output.AddLayer(MapTile.TileBase(tile)?.Bitmap);
+			if (improvements && DrawIrrigation(tile)) output.AddLayer(MapTile.Irrigation?.Bitmap);
+			output.AddLayer(MapTile.TileLayer(tile)?.Bitmap);
+			output.AddLayer(MapTile.TileSpecial(tile)?.Bitmap);
 			
 			// Add tile improvements
 			if (tile.Type != Terrain.River && improvements)
 			{
-				if (DrawMine(tile)) output.AddLayer(MapTile.Mine.Bitmap);
+				if (DrawMine(tile)) output.AddLayer(MapTile.Mine?.Bitmap);
 			}
 			if (roads)
 			{
 				DrawRoad(ref output, tile);
 				DrawRailRoad(ref output, tile, true);
 			}
-			if (DrawFortress(tile)) output.AddLayer(MapTile.Fortress.Bitmap);
-			if (DrawHut(tile)) output.AddLayer(MapTile.Hut.Bitmap);
+			if (DrawFortress(tile)) output.AddLayer(MapTile.Fortress?.Bitmap);
+			if (DrawHut(tile)) output.AddLayer(MapTile.Hut?.Bitmap);
 			
 			return output;
 		}
