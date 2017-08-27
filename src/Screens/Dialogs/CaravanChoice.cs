@@ -9,6 +9,7 @@
 
 using System;
 using CivOne.Graphics;
+using CivOne.Tiles;
 using CivOne.Units;
 using CivOne.UserInterface;
 using CivOne.Wonders;
@@ -40,7 +41,7 @@ namespace CivOne.Screens.Dialogs
 			Cancel();
 		}
 
-		private bool AllowEstablishTradeRoute => (_unit.Home == null) || (_unit.Home.Tile.DistanceTo(_city.Tile) >= 10);
+		private bool AllowEstablishTradeRoute => (_unit.Home == null) || (_unit.Home.Tile.DistanceTo(_city) >= 10);
 
 		protected override void FirstUpdate()
 		{

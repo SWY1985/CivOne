@@ -18,9 +18,6 @@ namespace CivOne.Tiles
 	{
 		int X { get; }
 		int Y { get; }
-		int DistanceTo(int x, int y);
-		int DistanceTo(Point point);
-		int DistanceTo(ITile tile);
 		Terrain Type { get; }
 		bool Special { get; }
 		byte ContinentId { get; set; }
@@ -36,7 +33,6 @@ namespace CivOne.Tiles
 		sbyte MiningShieldBonus { get; }
 		byte MiningCost { get; }
 		byte Borders { get; }
-		Terrain GetBorderType(Direction direction);
 		bool Road { get; set; }
 		bool RailRoad { get; set; }
 		bool Irrigation { get; set; }

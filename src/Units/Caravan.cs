@@ -30,7 +30,7 @@ namespace CivOne.Units
 
 			if (Home != null)
 			{
-				distance = Home.Tile.DistanceTo(targetCity.Tile);
+				distance = Home.Tile.DistanceTo(targetCity);
 				tradeHome = Home.TradeTotal;
 			}
 
@@ -79,7 +79,7 @@ namespace CivOne.Units
 			ITile moveTarget = Map[X, Y][relX, relY];
 			City city = moveTarget.City;
 
-			if (city == null || city == Home || (city.Owner == Owner && Home != null && moveTarget.DistanceTo(Home.Tile) < 10))
+			if (city == null || city == Home || (city.Owner == Owner && Home != null && moveTarget.DistanceTo(Home) < 10))
 			{
 				Movement = new MoveUnit(relX, relY);
 				Movement.Done += MoveEnd;

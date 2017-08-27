@@ -100,9 +100,6 @@ namespace CivOne.Tiles
 		
 		public int X { get; private set; }
 		public int Y { get; private set; }
-		public int DistanceTo(int x, int y) => Common.DistanceToTile(X, Y, x, y);
-		public int DistanceTo(Point point) => Common.DistanceToTile(X, Y, point.X, point.Y);
-		public int DistanceTo(ITile tile) => Common.DistanceToTile(X, Y, tile.X, tile.Y);
 		public bool Special { get; protected set; }
 		public byte ContinentId { get; set; }
 		public byte LandValue { get; set; }
@@ -137,14 +134,6 @@ namespace CivOne.Tiles
 		public abstract sbyte MiningShieldBonus { get; }
 		public abstract byte MiningCost { get; }
 		
-		public Terrain GetBorderType(Direction direction)
-		{
-			ITile tile = this.GetBorderTile(direction);
-			if (tile == null) return Terrain.None;
-			if (tile.Type == Terrain.Grassland2) return Terrain.Grassland1;
-			return tile.Type;
-		}
-		
 		public byte Borders
 		{
 			get
@@ -156,24 +145,24 @@ namespace CivOne.Tiles
 				switch (type)
 				{
 					case Terrain.Ocean:
-						foreach (Direction direction in new[] { Direction.North, Direction.East, Direction.South, Direction.West })
+						foreach (Direction direction in new[] { North, East, South, West })
 						{
-							if (GetBorderType(direction) != Terrain.Ocean)
+							if (this.GetBorderType(direction) != Terrain.Ocean)
 								output += (byte)direction;
 						}
 						break;
 					case Terrain.River:
-						foreach (Direction direction in new[] { Direction.North, Direction.East, Direction.South, Direction.West })
+						foreach (Direction direction in new[] { North, East, South, West })
 						{
 							Terrain borderType;
-							if ((borderType = GetBorderType(direction)) == type || borderType == Terrain.Ocean)
+							if ((borderType = this.GetBorderType(direction)) == type || borderType == Terrain.Ocean)
 								output += (byte)direction;
 						}
 						break;
 					default:
-						foreach (Direction direction in new[] { Direction.North, Direction.East, Direction.South, Direction.West })
+						foreach (Direction direction in new[] { North, East, South, West })
 						{
-							if (GetBorderType(direction) == type)
+							if (this.GetBorderType(direction) == type)
 								output += (byte)direction;
 						}
 						break;

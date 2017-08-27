@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.Graphics;
@@ -35,6 +36,19 @@ namespace CivOne.Tiles
 		public static bool DrawMine(this ITile tile) => tile.Mine;
 		public static bool DrawFortress(this ITile tile) => tile.Fortress && tile.City == null;
 		public static bool DrawHut(this ITile tile) => tile.Hut;
+
+		public static int DistanceTo(this ITile tile, int x, int y) => Common.DistanceToTile(tile.X, tile.Y, x, y);
+		public static int DistanceTo(this ITile tile, Point point) => Common.DistanceToTile(tile.X, tile.Y, point.X, point.Y);
+		public static int DistanceTo(this ITile tile, ITile destinationTile) => Common.DistanceToTile(tile.X, tile.Y, destinationTile.X, destinationTile.Y);
+		public static int DistanceTo(this ITile tile, City city) => Common.DistanceToTile(tile.X, tile.Y, city.X, city.Y);
+
+		public static Terrain GetBorderType(this ITile tile, Direction direction)
+		{
+			ITile borderTile = GetBorderTile(tile, direction);
+			if (borderTile == null) return Terrain.None;
+			if (borderTile.Type == Terrain.Grassland2) return Terrain.Grassland1;
+			return borderTile.Type;
+		}
 
 		public static ITile GetBorderTile(this ITile tile, Direction direction)
 		{
