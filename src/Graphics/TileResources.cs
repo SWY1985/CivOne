@@ -17,28 +17,11 @@ namespace CivOne.Graphics
 	{
 		private static Resources Resources => Resources.Instance;
 
+		private static bool DrawRoad(ITile tile) => tile.Road && (!tile.RailRoad || tile.BorderRoads() != tile.BorderRailRoads());
 		private static bool DrawIrrigation(ITile tile) => tile.Irrigation && tile.City == null;
 		private static bool DrawMine(ITile tile) => tile.Mine;
 		private static bool DrawFortress(ITile tile) => tile.Fortress && tile.City == null;
 		private static bool DrawHut(ITile tile) => tile.Hut;
-		
-		private static void DrawRoad(ref Picture output, ITile tile, bool graphics16 = false)
-		{
-			if (!tile.Road || tile.RailRoad) return;
-			
-			bool connected = false;
-			ITile borderTile = null;
-			Direction[] directions = new [] { Direction.North, Direction.NorthEast, Direction.East, Direction.SouthEast, Direction.South, Direction.SouthWest, Direction.West, Direction.NorthWest };
-			for (int i = 0; i < directions.Length; i++)
-			{
-				if ((borderTile = tile.GetBorderTile(directions[i])) == null) continue;
-				if (!(borderTile.Road || borderTile.RailRoad) || (tile.City != null && borderTile.City != null)) continue;
-				output.AddLayer(Resources[graphics16 ? "SPRITES" : "SP257"][(i * 16), 48, 16, 16], 0, 0);
-				connected = true;
-			}
-			if (connected) return;
-			output.FillRectangle(7, 7, 2, 2, 6);
-		}
 		
 		private static void DrawRailRoad(ref Picture output, ITile tile, bool graphics16 = false)
 		{
@@ -83,7 +66,7 @@ namespace CivOne.Graphics
 			}
 			if (roads)
 			{
-				DrawRoad(ref output, tile, true);
+				if (DrawRoad(tile)) output.AddLayer(MapTile.Road[tile.DrawRoadDirections()]);
 				DrawRailRoad(ref output, tile, true);
 			}
 			if (DrawFortress(tile)) output.AddLayer(MapTile.Fortress);
@@ -108,7 +91,8 @@ namespace CivOne.Graphics
 			}
 			if (roads)
 			{
-				DrawRoad(ref output, tile);
+				// DrawRoad(ref output, tile);
+				if (DrawRoad(tile)) output.AddLayer(MapTile.Road[tile.DrawRoadDirections()]);
 				DrawRailRoad(ref output, tile, true);
 			}
 			if (DrawFortress(tile)) output.AddLayer(MapTile.Fortress);

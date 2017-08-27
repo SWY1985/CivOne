@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System.Collections.Generic;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.Graphics;
@@ -23,6 +24,76 @@ namespace CivOne.Tiles
 		private static Palette Palette => Resources["SP257"].Palette;
 
 		private static TextSettings CityLabel = TextSettings.ShadowText(11, 5);
+
+		public static ITile GetBorderTile(this ITile tile, Direction direction)
+		{
+			switch (direction)
+			{
+				case North: return tile[0, -1];
+				case East: return tile[1, 0];
+				case South: return tile[0, 1];
+				case West: return tile[-1, 0];
+				case NorthWest: return tile[-1, -1];
+				case NorthEast: return tile[1, -1];
+				case SouthWest: return tile[-1, 1];
+				case SouthEast: return tile[1, 1];
+			}
+			return null;
+		}
+		
+		public static IEnumerable<ITile> GetBorderTiles(this ITile tile)
+		{
+			for (int relY = -1; relY <= 1; relY++)
+			for (int relX = -1; relX <= 1; relX++)
+			{
+				if (relX == 0 && relY == 0) continue;
+				if (tile[relX, relY] == null) continue;
+				yield return tile[relX, relY];
+			}
+		}
+
+		public static IEnumerable<ITile> CrossTiles(this ITile tile)
+		{
+			for (int relY = -1; relY <= 1; relY++)
+			for (int relX = -1; relX <= 1; relX++)
+			{
+				if (relX == 0 && relY == 0) continue;
+				if (relX != 0 && relY != 0) continue;
+				if (tile[relX, relY] == null) continue;
+				yield return tile[relX, relY];
+			}
+		}
+
+		public static Direction BorderRoads(this ITile tile)
+		{
+			Direction output = Direction.None;
+			for (int i = 1; i <= 128; i *= 2)
+			{
+				if (!GetBorderTile(tile, (Direction)i).Road && !GetBorderTile(tile, (Direction)i).RailRoad) continue;
+				output += i;
+			}
+			return output;
+		}
+
+		public static Direction BorderRailRoads(this ITile tile)
+		{
+			Direction output = Direction.None;
+			for (int i = 1; i <= 128; i *= 2)
+			{
+				if (!GetBorderTile(tile, (Direction)i).RailRoad) continue;
+				output += i;
+			}
+			return output;
+		}
+
+		public static Direction DrawRoadDirections(this ITile tile)
+		{
+			if (!tile.Road)
+				return Direction.None;
+			if (!tile.RailRoad)
+				return BorderRoads(tile);
+			return (Direction)(BorderRoads(tile) - BorderRailRoads(tile));
+		}
 
 		public static IBitmap ToBitmap(this ITile[,] tiles, TileSettings settings = null, Player player = null)
 		{

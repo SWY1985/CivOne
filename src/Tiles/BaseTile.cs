@@ -13,6 +13,8 @@ using CivOne.Enums;
 using CivOne.Graphics;
 using CivOne.Units;
 
+using static CivOne.Enums.Direction;
+
 namespace CivOne.Tiles
 {
 	internal abstract class BaseTile : BaseInstance, ITile
@@ -135,48 +137,9 @@ namespace CivOne.Tiles
 		public abstract sbyte MiningShieldBonus { get; }
 		public abstract byte MiningCost { get; }
 		
-		public ITile GetBorderTile(Direction direction)
-		{
-			switch (direction)
-			{
-				case Direction.North: return Map[X, Y - 1];
-				case Direction.East: return Map[X + 1, Y];
-				case Direction.South: return Map[X, Y + 1];
-				case Direction.West: return Map[X - 1, Y];
-				case Direction.NorthWest: return Map[X - 1, Y - 1];
-				case Direction.NorthEast: return Map[X + 1, Y - 1];
-				case Direction.SouthWest: return Map[X - 1, Y + 1];
-				case Direction.SouthEast: return Map[X + 1, Y + 1];
-			}
-			return null;
-		}
-		
-		public IEnumerable<ITile> GetBorderTiles()
-		{
-			for (int relY = -1; relY <= 1; relY++)
-			for (int relX = -1; relX <= 1; relX++)
-			{
-				if (relX == 0 && relY == 0) continue;
-				if (this[relX, relY] == null) continue;
-				yield return this[relX, relY];
-			}
-		}
-
-		public IEnumerable<ITile> Cross()
-		{
-			for (int relY = -1; relY <= 1; relY++)
-			for (int relX = -1; relX <= 1; relX++)
-			{
-				if (relX == 0 && relY == 0) continue;
-				if (relX != 0 && relY != 0) continue;
-				if (this[relX, relY] == null) continue;
-				yield return this[relX, relY];
-			}
-		}
-		
 		public Terrain GetBorderType(Direction direction)
 		{
-			ITile tile = GetBorderTile(direction);
+			ITile tile = this.GetBorderTile(direction);
 			if (tile == null) return Terrain.None;
 			if (tile.Type == Terrain.Grassland2) return Terrain.Grassland1;
 			return tile.Type;
