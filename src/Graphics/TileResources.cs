@@ -17,38 +17,12 @@ namespace CivOne.Graphics
 	{
 		private static Resources Resources => Resources.Instance;
 
-		private static bool DrawRoad(ITile tile) => tile.Road && (!tile.RailRoad || tile.BorderRoads() != tile.BorderRailRoads());
+		private static bool DrawRoad(ITile tile) => (tile.Road || tile.RailRoad) && (!tile.RailRoad || (tile.RailRoad && tile.BorderRoads() != tile.BorderRailRoads()));
+		private static bool DrawRailRoad(ITile tile) => tile.RailRoad;
 		private static bool DrawIrrigation(ITile tile) => tile.Irrigation && tile.City == null;
 		private static bool DrawMine(ITile tile) => tile.Mine;
 		private static bool DrawFortress(ITile tile) => tile.Fortress && tile.City == null;
 		private static bool DrawHut(ITile tile) => tile.Hut;
-		
-		private static void DrawRailRoad(ref Picture output, ITile tile, bool graphics16 = false)
-		{
-			if (!tile.RailRoad && tile.City == null) return;
-			
-			bool connected = false;
-			ITile borderTile = null;
-			Direction[] directions = new [] { Direction.North, Direction.NorthEast, Direction.East, Direction.SouthEast, Direction.South, Direction.SouthWest, Direction.West, Direction.NorthWest };
-			for (int i = 0; i < directions.Length; i++)
-			{
-				if ((borderTile = tile.GetBorderTile(directions[i])) == null) continue;
-				// if (!borderTile.Road || borderTile.RailRoad || (tile.City != null && borderTile.City != null)) continue;
-				if (!borderTile.Road || borderTile.RailRoad || borderTile.City != null) continue;
-				output.AddLayer(Resources[graphics16 ? "SPRITES" : "SP257"][(i * 16), 48, 16, 16], 0, 0);
-				connected = true;
-			}
-			for (int i = 0; i < directions.Length; i++)
-			{
-				if ((borderTile = tile.GetBorderTile(directions[i])) == null) continue;
-				if (!borderTile.RailRoad && tile.City == null && borderTile.City == null) continue;
-				if (tile.City != null && borderTile.City == null && !borderTile.RailRoad) continue;
-				output.AddLayer(Resources[graphics16 ? "SPRITES" : "SP257"][128 + (i * 16), 96, 16, 16], 0, 0);
-				connected = true;
-			}
-			if (connected) return;
-			output.FillRectangle(7, 7, 2, 2, 5);
-		}
 		
 		internal static Picture GetTile16(ITile tile, bool improvements, bool roads)
 		{
@@ -67,7 +41,7 @@ namespace CivOne.Graphics
 			if (roads)
 			{
 				if (DrawRoad(tile)) output.AddLayer(MapTile.Road[tile.DrawRoadDirections()]);
-				DrawRailRoad(ref output, tile, true);
+				if (DrawRailRoad(tile)) output.AddLayer(MapTile.RailRoad[tile.DrawRailRoadDirections()]);
 			}
 			if (DrawFortress(tile)) output.AddLayer(MapTile.Fortress);
 			if (DrawHut(tile)) output.AddLayer(MapTile.Hut);
@@ -91,9 +65,8 @@ namespace CivOne.Graphics
 			}
 			if (roads)
 			{
-				// DrawRoad(ref output, tile);
 				if (DrawRoad(tile)) output.AddLayer(MapTile.Road[tile.DrawRoadDirections()]);
-				DrawRailRoad(ref output, tile, true);
+				if (DrawRailRoad(tile)) output.AddLayer(MapTile.RailRoad[tile.DrawRailRoadDirections()]);
 			}
 			if (DrawFortress(tile)) output.AddLayer(MapTile.Fortress);
 			if (DrawHut(tile)) output.AddLayer(MapTile.Hut);

@@ -17,6 +17,7 @@ namespace CivOne.Graphics.Sprites
 {
 	public static class MapTile
 	{
+		private static Direction[] Clockwise => new [] { North, NorthEast, East, SouthEast, South, SouthWest, West, NorthWest };
 		private static Free Free => Free.Instance;
 		private static Resources Resources => Resources.Instance;
 		private static Settings Settings => Settings.Instance;
@@ -184,11 +185,27 @@ namespace CivOne.Graphics.Sprites
 
 			string picFile = (GFX256 ? "SP257" : "SPRITES");
 			Picture output = new Picture(16, 16);
-			Direction[] allDirections = new [] { North, NorthEast, East, SouthEast, South, SouthWest, West, NorthWest };
-			for (int i = 0; i < allDirections.Length; i++)
+			for (int i = 0; i < Clockwise.Length; i++)
 			{
-				if (((int)directions & (int)allDirections[i]) == 0) continue;
+				if (((int)directions & (int)Clockwise[i]) == 0) continue;
 				output.AddLayer(Resources[picFile][(i * 16), 48, 16, 16], 0, 0);
+			}
+			return output.Bitmap;
+		}
+
+		private static Bytemap GetRailRoad(Direction directions)
+		{
+			if (directions == Direction.None)
+			{
+				return new Picture(16, 16).FillRectangle(7, 7, 2, 2, 5).Bitmap;
+			}
+
+			string picFile = (GFX256 ? "SP257" : "SPRITES");
+			Picture output = new Picture(16, 16);
+			for (int i = 0; i < Clockwise.Length; i++)
+			{
+				if (((int)directions & (int)Clockwise[i]) == 0) continue;
+				output.AddLayer(Resources[picFile][128 + (i * 16), 96, 16, 16], 0, 0);
 			}
 			return output.Bitmap;
 		}
@@ -242,6 +259,7 @@ namespace CivOne.Graphics.Sprites
 		public static readonly ISpriteCollection<Direction> Swamp = new CachedSpriteCollection<Direction>(GetTileLayer<Swamp>);
 		public static readonly ISpriteCollection<Direction> Tundra = new CachedSpriteCollection<Direction>(GetTileLayer<Tundra>);
 		public static readonly ISpriteCollection<Direction> Road = new CachedSpriteCollection<Direction>(GetRoad);
+		public static readonly ISpriteCollection<Direction> RailRoad = new CachedSpriteCollection<Direction>(GetRailRoad);
 		public static readonly ISprite Irrigation = new CachedSprite(GetIrrigation);
 		public static readonly ISprite Mine = new CachedSprite(GetMine);
 		public static readonly ISprite Fortress = new CachedSprite(GetFortress);

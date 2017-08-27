@@ -69,7 +69,8 @@ namespace CivOne.Tiles
 			Direction output = Direction.None;
 			for (int i = 1; i <= 128; i *= 2)
 			{
-				if (!GetBorderTile(tile, (Direction)i).Road && !GetBorderTile(tile, (Direction)i).RailRoad) continue;
+				ITile borderTile = GetBorderTile(tile, (Direction)i);
+				if (borderTile == null || (!borderTile.Road && !borderTile.RailRoad && borderTile.City == null)) continue;
 				output += i;
 			}
 			return output;
@@ -80,7 +81,8 @@ namespace CivOne.Tiles
 			Direction output = Direction.None;
 			for (int i = 1; i <= 128; i *= 2)
 			{
-				if (!GetBorderTile(tile, (Direction)i).RailRoad) continue;
+				ITile borderTile = GetBorderTile(tile, (Direction)i);
+				if (borderTile == null || (!borderTile.RailRoad && borderTile.City == null)) continue;
 				output += i;
 			}
 			return output;
@@ -88,11 +90,18 @@ namespace CivOne.Tiles
 
 		public static Direction DrawRoadDirections(this ITile tile)
 		{
+			if (tile.RailRoad)
+				return (Direction)(BorderRoads(tile) - BorderRailRoads(tile));
 			if (!tile.Road)
 				return Direction.None;
+			return BorderRoads(tile);
+		}
+
+		public static Direction DrawRailRoadDirections(this ITile tile)
+		{
 			if (!tile.RailRoad)
-				return BorderRoads(tile);
-			return (Direction)(BorderRoads(tile) - BorderRailRoads(tile));
+				return Direction.None;
+			return BorderRailRoads(tile);
 		}
 
 		public static IBitmap ToBitmap(this ITile[,] tiles, TileSettings settings = null, Player player = null)
