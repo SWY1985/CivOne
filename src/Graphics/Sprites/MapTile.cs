@@ -18,6 +18,7 @@ namespace CivOne.Graphics.Sprites
 	public static class MapTile
 	{
 		private static Direction[] Clockwise => new [] { North, NorthEast, East, SouthEast, South, SouthWest, West, NorthWest };
+		private static Direction[] Cross => new [] { North, East, South, West };
 		private static Free Free => Free.Instance;
 		private static Resources Resources => Resources.Instance;
 		private static Settings Settings => Settings.Instance;
@@ -176,6 +177,31 @@ namespace CivOne.Graphics.Sprites
 			return Resources[picFile][terrainId * 16, 112, 16, 16].ColourReplace(3, 0).Bitmap;
 		}
 
+		private static Bytemap GetFog(Direction directions)
+		{
+			Picture output = new Picture(16, 16);
+			if (directions == None) return output.Bitmap;
+
+			if (!Resources.Exists("SP257"))
+			{
+				foreach (Direction direction in Cross)
+				{
+					if (((int)directions & (int)direction) == 0) continue;
+					output.AddLayer(Free.Instance.Fog(direction));
+				}
+			}
+			else
+			{
+				for (int i = 0; i < Cross.Length; i++)
+				{
+					if (((int)directions & (int)(Cross[i])) == 0) continue;
+					output.AddLayer(Resources["SP257"].Bitmap[80 + (i * 16), 128, 16, 16]);
+				}
+			}
+
+			return output.Bitmap;
+		}
+
 		private static Bytemap GetRoad(Direction directions)
 		{
 			if (directions == Direction.None)
@@ -258,6 +284,7 @@ namespace CivOne.Graphics.Sprites
 		public static readonly ISpriteCollection<Direction> River = new CachedSpriteCollection<Direction>(GetRiverLayer);
 		public static readonly ISpriteCollection<Direction> Swamp = new CachedSpriteCollection<Direction>(GetTileLayer<Swamp>);
 		public static readonly ISpriteCollection<Direction> Tundra = new CachedSpriteCollection<Direction>(GetTileLayer<Tundra>);
+		public static readonly ISpriteCollection<Direction> Fog = new CachedSpriteCollection<Direction>(GetFog);
 		public static readonly ISpriteCollection<Direction> Road = new CachedSpriteCollection<Direction>(GetRoad);
 		public static readonly ISpriteCollection<Direction> RailRoad = new CachedSpriteCollection<Direction>(GetRailRoad);
 		public static readonly ISprite Irrigation = new CachedSprite(GetIrrigation);

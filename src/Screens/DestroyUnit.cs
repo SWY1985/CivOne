@@ -13,6 +13,8 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.Graphics.Sprites;
+using CivOne.IO;
 using CivOne.Tiles;
 using CivOne.Units;
 
@@ -27,7 +29,7 @@ namespace CivOne.Screens
 			public bool Visible;
 			public int X, Y;
 			public ITile Tile;
-			public IBitmap Image => Resources[Tile];
+			public IBitmap Image => Tile.ToBitmap();
 			public Point Position => new Point(X * 16, Y * 16);
 		}
 
@@ -154,10 +156,10 @@ namespace CivOne.Screens
 					output.AddLayer(t.Image, t.Position);
 					if (Settings.RevealWorld) continue;
 					
-					if (!Human.Visible(t.Tile, West)) output.AddLayer(Resources.GetFog(West), t.Position);
-					if (!Human.Visible(t.Tile, North)) output.AddLayer(Resources.GetFog(North), t.Position);
-					if (!Human.Visible(t.Tile, East)) output.AddLayer(Resources.GetFog(East), t.Position);
-					if (!Human.Visible(t.Tile, South)) output.AddLayer(Resources.GetFog(South), t.Position);
+					if (!Human.Visible(t.Tile, West)) output.AddLayer(MapTile.Fog[West], t.Position);
+					if (!Human.Visible(t.Tile, North)) output.AddLayer(MapTile.Fog[North], t.Position);
+					if (!Human.Visible(t.Tile, East)) output.AddLayer(MapTile.Fog[East], t.Position);
+					if (!Human.Visible(t.Tile, South)) output.AddLayer(MapTile.Fog[South], t.Position);
 				}
 
 				foreach (RenderTile t in renderTiles)

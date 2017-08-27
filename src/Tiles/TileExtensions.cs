@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.Graphics;
+using CivOne.Graphics.Sprites;
 using CivOne.Units;
 
 using static CivOne.Enums.Direction;
@@ -22,8 +23,18 @@ namespace CivOne.Tiles
 		private static Game Game => Game.Instance;
 		private static Resources Resources => Resources.Instance;
 		private static Palette Palette => Resources["SP257"].Palette;
+		private static Settings Settings => Settings.Instance;
+		
+		private static bool GFX256 => (Settings.GraphicsMode == GraphicsMode.Graphics256);
 
 		private static TextSettings CityLabel = TextSettings.ShadowText(11, 5);
+
+		public static bool DrawRoad(this ITile tile) => (tile.Road || tile.RailRoad) && (!tile.RailRoad || (tile.RailRoad && tile.BorderRoads() != tile.BorderRailRoads()));
+		public static bool DrawRailRoad(this ITile tile) => tile.RailRoad;
+		public static bool DrawIrrigation(this ITile tile) => tile.Irrigation && tile.City == null;
+		public static bool DrawMine(this ITile tile) => tile.Mine;
+		public static bool DrawFortress(this ITile tile) => tile.Fortress && tile.City == null;
+		public static bool DrawHut(this ITile tile) => tile.Hut;
 
 		public static ITile GetBorderTile(this ITile tile, Direction direction)
 		{
@@ -143,15 +154,34 @@ namespace CivOne.Tiles
 
 			IBitmap output = new Picture(16, 16, Palette);
 
-			output.AddLayer(Resources[tile, settings.Improvements, settings.Roads], dispose: true);
+			output.AddLayer(MapTile.TileBase(tile));
+			if (GFX256 && settings.Improvements && tile.DrawIrrigation()) output.AddLayer(MapTile.Irrigation);
+			output.AddLayer(MapTile.TileLayer(tile));
+			output.AddLayer(MapTile.TileSpecial(tile));
+			
+			// Add tile improvements
+			if (tile.Type != Terrain.River && settings.Improvements)
+			{
+				if (!GFX256 && tile.DrawIrrigation()) output.AddLayer(MapTile.Irrigation);
+				if (tile.DrawMine()) output.AddLayer(MapTile.Mine);
+			}
+			if (settings.Roads)
+			{
+				if (tile.DrawRoad()) output.AddLayer(MapTile.Road[tile.DrawRoadDirections()]);
+				if (tile.DrawRailRoad()) output.AddLayer(MapTile.RailRoad[tile.DrawRailRoadDirections()]);
+			}
+			if (tile.DrawFortress()) output.AddLayer(MapTile.Fortress);
+			if (tile.DrawHut()) output.AddLayer(MapTile.Hut);
 
 			if (player != null)
 			{
+				Direction fog = Direction.None;
 				foreach (Direction direction in new[] { West, North, East, South })
 				{
 					if (player.Visible(tile, direction)) continue;
-					output.AddLayer(Resources.GetFog(direction));
+					fog += (int)direction;
 				}
+				if (fog != None) output.AddLayer(MapTile.Fog[fog]);
 			}
 
 			if (settings.Cities && tile.City != null)
