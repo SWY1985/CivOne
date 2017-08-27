@@ -13,77 +13,15 @@ namespace CivOne.Tiles
 {
 	internal class Mountains : BaseTile
 	{
-		public override byte Movement
-		{
-			get
-			{
-				return 3;
-			}
-		}
-		
-		public override byte Defense
-		{
-			get
-			{
-				return 6;
-			}
-		}
-		
-		public override sbyte Food
-		{
-			get
-			{
-				return 0; 
-			}
-		}
-		
-		public override sbyte Shield
-		{
-			get
-			{
-				return (sbyte)(1 + (Mine ? 1 : 0));
-			}
-		}
-		
-		public override sbyte Trade
-		{
-			get
-			{
-				return (sbyte)(Special ? 5 : 0);
-			}
-		}
-		
-		public override sbyte IrrigationFoodBonus
-		{
-			get
-			{
-				return -1;
-			}
-		}
-		
-		public override byte IrrigationCost
-		{
-			get
-			{
-				return 0;
-			}
-		}
-		
-		public override sbyte MiningShieldBonus
-		{
-			get
-			{
-				return -2;
-			}
-		}
-		
-		public override byte MiningCost
-		{
-			get
-			{
-				return 10;
-			}
-		}
+		public override byte Movement => 3;
+		public override byte Defense => 6;
+		public override sbyte Food => 0;
+		public override sbyte Shield => (sbyte)(1 + (Mine ? 1 : 0));
+		public override sbyte Trade => (sbyte)(Special ? 5 : 0);
+		public override sbyte IrrigationFoodBonus => -1;
+		public override byte IrrigationCost => 0;
+		public override sbyte MiningShieldBonus => -2;
+		public override byte MiningCost => 10;
 		
 		public Mountains(int x, int y, bool special) : base(x, y, special)
 		{

@@ -13,77 +13,15 @@ namespace CivOne.Tiles
 {
 	internal class Jungle : BaseTile
 	{
-		public override byte Movement
-		{
-			get
-			{
-				return 2;
-			}
-		}
-		
-		public override byte Defense
-		{
-			get
-			{
-				return 3;
-			}
-		}
-		
-		public override sbyte Food
-		{
-			get
-			{
-				return 1;
-			}
-		}
-		
-		public override sbyte Shield
-		{
-			get
-			{
-				return 0;
-			}
-		}
-		
-		public override sbyte Trade
-		{
-			get
-			{
-				return (sbyte)(Special ? 3 : 0);
-			}
-		}
-		
-		public override sbyte IrrigationFoodBonus
-		{
-			get
-			{
-				return 10;
-			}
-		}
-		
-		public override byte IrrigationCost
-		{
-			get
-			{
-				return 15;
-			}
-		}
-		
-		public override sbyte MiningShieldBonus
-		{
-			get
-			{
-				return 2;
-			}
-		}
-		
-		public override byte MiningCost
-		{
-			get
-			{
-				return 15;
-			}
-		}
+		public override byte Movement => 2;
+		public override byte Defense => 3;
+		public override sbyte Food => 1;
+		public override sbyte Shield => 0;
+		public override sbyte Trade => (sbyte)(Special ? 3 : 0);
+		public override sbyte IrrigationFoodBonus => 10;
+		public override byte IrrigationCost => 15;
+		public override sbyte MiningShieldBonus => 2;
+		public override byte MiningCost => 15;
 		
 		public Jungle(int x, int y, bool special) : base(x, y, special)
 		{
