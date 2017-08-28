@@ -41,9 +41,9 @@ namespace CivOne.Screens
 		{
 			int i = 0;
 			Picture[] texts = new Picture[items.Length + 1];
-			texts[i++] = Resources.Instance.GetText(" " + title, MenuFont, 15);
+			texts[i++] = Resources.GetText(" " + title, MenuFont, 15);
 			foreach (string item in items)
-				texts[i++] = Resources.Instance.GetText(" " + item, MenuFont, 5);
+				texts[i++] = Resources.GetText(" " + item, MenuFont, 5);
 			return (texts.Select(t => t.Width).Max()) + 6;
 		}
 		
@@ -51,7 +51,7 @@ namespace CivOne.Screens
 		{
 			int menuItems = items.Length;
 			if (title != null) menuItems++;
-			return menuItems * Resources.Instance.GetFontHeight(MenuFont);
+			return menuItems * Resources.GetFontHeight(MenuFont);
 		}
 		
 		private Menu CreateMenu(string title, MenuItemEventHandler<int> setChoice, params string[] menuTexts)

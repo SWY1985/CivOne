@@ -11,6 +11,7 @@ using System;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.Graphics;
+using CivOne.Graphics.Sprites;
 using CivOne.UserInterface;
 
 namespace CivOne.Screens
@@ -79,7 +80,7 @@ namespace CivOne.Screens
 				_update = false;
 
 				Picture menuGfx = new Picture(103, 79)
-					.Tile(Patterns.PanelGrey)
+					.Tile(Pattern.PanelGrey)
 					.DrawRectangle3D()
 					.DrawText("Options:", 0, 15, 4, 4)
 					.As<Picture>();

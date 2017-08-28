@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using CivOne.Advances;
 using CivOne.Enums;
-using CivOne.Graphics;
 using CivOne.IO;
 using CivOne.Screens;
 using CivOne.Tasks;
@@ -310,47 +309,9 @@ namespace CivOne.Units
 			}
 		}
 
-		public override IBitmap GetUnit(byte colour, bool showState = true)
-		{
-			if (!showState)
-				return base.GetUnit(colour);
-
-			if (BuildingRoad > 0)
-			{
-				return base.GetUnit(colour)
-					.DrawText("R", 0, 5, 8, 9, TextAlign.Center)
-					.DrawText("R", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
-			}
-			else if (BuildingIrrigation > 0)
-			{
-				return base.GetUnit(colour)
-					.DrawText("I", 0, 5, 8, 9, TextAlign.Center)
-					.DrawText("I", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
-			}
-			else if (BuildingMine > 0)
-			{
-				return base.GetUnit(colour)
-					.DrawText("M", 0, 5, 8, 9, TextAlign.Center)
-					.DrawText("M", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
-			}
-			else if (BuildingFortress > 0)
-			{
-				return base.GetUnit(colour)
-					.DrawText("F", 0, 5, 8, 9, TextAlign.Center)
-					.DrawText("F", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
-			}
-			else if (Human == Owner && !Goto.IsEmpty)
-			{
-				return base.GetUnit(colour)
-					.DrawText("G", 0, 5, 8, 9, TextAlign.Center)
-					.DrawText("G", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
-			}
-			return base.GetUnit(colour);
-		}
-
 		public Settlers() : base(4, 0, 1, 1)
 		{
-			Type = Unit.Settlers;
+			Type = UnitType.Settlers;
 			Name = "Settlers";
 			RequiredTech = null;
 			ObsoleteTech = null;

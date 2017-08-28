@@ -17,6 +17,7 @@ using CivOne.Buildings;
 using CivOne.Civilizations;
 using CivOne.Concepts;
 using CivOne.Governments;
+using CivOne.Graphics.Sprites;
 using CivOne.Tiles;
 using CivOne.Units;
 using CivOne.Wonders;

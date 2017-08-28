@@ -13,6 +13,7 @@ using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.Graphics.Sprites;
 using CivOne.UserInterface;
 
 namespace CivOne.Screens
@@ -72,7 +73,7 @@ namespace CivOne.Screens
 			TextSettings HelpText = new TextSettings() { FontId = 1, Colour = 10, Alignment = TextAlign.Right, VerticalAlignment = VerticalAlign.Bottom };
 
 			_availableAdvances = Human.AvailableResearch.Take(8).ToArray();
-			_menuHeight = Resources.Instance.GetFontHeight(0) * _availableAdvances.Count();
+			_menuHeight = Resources.GetFontHeight(0) * _availableAdvances.Count();
 			
 			bool modernGovernment = Human.HasAdvance<Invention>();
 			IBitmap governmentPortrait = Icons.GovernmentPortrait(Human.Government, Advisor.Science, modernGovernment);
@@ -86,7 +87,7 @@ namespace CivOne.Screens
 			if (dialogHeight < 62) dialogHeight = 62;
 
 			_menuGfx = new Picture(202, dialogHeight)
-					.Tile(Patterns.PanelGrey)
+					.Tile(Pattern.PanelGrey)
 					.AddLayer(governmentPortrait, 1, dialogHeight - 61)
 					.DrawRectangle3D()
 					.DrawText("Science Advisor:", 46, 3, DialogText)

@@ -13,77 +13,15 @@ namespace CivOne.Tiles
 {
 	internal class Plains : BaseTile
 	{
-		public override byte Movement
-		{
-			get
-			{
-				return 1;
-			}
-		}
-		
-		public override byte Defense
-		{
-			get
-			{
-				return 2;
-			}
-		}
-		
-		public override sbyte Food
-		{
-			get
-			{
-				return (sbyte)(1 + (Irrigation ? 1 : 0)); 
-			}
-		}
-		
-		public override sbyte Shield
-		{
-			get
-			{
-				return (sbyte)(Special ? 3 : 1);
-			}
-		}
-		
-		public override sbyte Trade
-		{
-			get
-			{
-				return (sbyte)((Road || RailRoad) ? 1 : 0);
-			}
-		}
-		
-		public override sbyte IrrigationFoodBonus
-		{
-			get
-			{
-				return -2;
-			}
-		}
-		
-		public override byte IrrigationCost
-		{
-			get
-			{
-				return 5;
-			}
-		}
-		
-		public override sbyte MiningShieldBonus
-		{
-			get
-			{
-				return 2;
-			}
-		}
-		
-		public override byte MiningCost
-		{
-			get
-			{
-				return 15;
-			}
-		}
+		public override byte Movement => 1;
+		public override byte Defense => 2;
+		public override sbyte Food => (sbyte)(1 + (Irrigation ? 1 : 0));
+		public override sbyte Shield => (sbyte)(Special ? 3 : 1);
+		public override sbyte Trade => (sbyte)((Road || RailRoad) ? 1 : 0);
+		public override sbyte IrrigationFoodBonus => -2;
+		public override byte IrrigationCost => 5;
+		public override sbyte MiningShieldBonus => 2;
+		public override byte MiningCost => 15;
 		
 		public Plains(int x, int y, bool special) : base(x, y, special)
 		{

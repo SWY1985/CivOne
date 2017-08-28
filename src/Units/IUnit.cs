@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using CivOne.Advances;
 using CivOne.Enums;
-using CivOne.Graphics;
 using CivOne.Screens;
 using CivOne.Tasks;
 using CivOne.Tiles;
@@ -27,7 +26,7 @@ namespace CivOne.Units
 		IWonder RequiredWonder { get; }
 		IAdvance ObsoleteTech { get; }
 		UnitClass Class { get; }
-		Unit Type { get; }
+		UnitType Type { get; }
 		City Home { get; }
 		UnitRole Role { get; }
 		byte Attack { get; }
@@ -53,7 +52,6 @@ namespace CivOne.Units
 		void Explore();
 		void SetHome();
 		void SetHome(City city);
-		IBitmap GetUnit(byte colour, bool showState = true);
 		IEnumerable<MenuItem<int>> MenuItems { get; }
 	}
 }

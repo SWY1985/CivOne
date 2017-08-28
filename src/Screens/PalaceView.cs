@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.Graphics.Sprites;
 using CivOne.IO;
 
 namespace CivOne.Screens
@@ -45,9 +46,9 @@ namespace CivOne.Screens
 			picture.AddLayer(_background);
 			switch (palace.GetGardenLevel(1))
 			{
-				case 1: picture.AddLayer(Resources.Instance["CBACKS1"], 0, 135); break;
-				case 2: picture.AddLayer(Resources.Instance["CBACKS2"], 0, 135); break;
-				case 3: picture.AddLayer(Resources.Instance["CBACKS3"], 0, 135); break;
+				case 1: picture.AddLayer(Resources["CBACKS1"], 0, 135); break;
+				case 2: picture.AddLayer(Resources["CBACKS2"], 0, 135); break;
+				case 3: picture.AddLayer(Resources["CBACKS3"], 0, 135); break;
 			}
 
 			for (int i = palace.PalaceLeft; i <= palace.PalaceRight; i++)
@@ -113,23 +114,23 @@ namespace CivOne.Screens
 						break;
 				}
 
-				picture.AddLayer(Resources.Instance.GetPalace(palace.GetPalaceStyle(i), part, palace.GetPalaceLevel(i)), xx, 37);
+				picture.AddLayer(Resources.GetPalace(palace.GetPalaceStyle(i), part, palace.GetPalaceLevel(i)), xx, 37);
 			}
 
 			// Draw palace middle
-			picture.AddLayer(Resources.Instance.GetPalace(palace.GetPalaceStyle(3), PalacePart.Center, palace.GetPalaceLevel(3)), 135, palace.GetPalaceLevel(3) == 0 ? 37 : 38);
+			picture.AddLayer(Resources.GetPalace(palace.GetPalaceStyle(3), PalacePart.Center, palace.GetPalaceLevel(3)), 135, palace.GetPalaceLevel(3) == 0 ? 37 : 38);
 			
 			switch (palace.GetGardenLevel(0))
 			{
-				case 1: picture.AddLayer(Resources.Instance["CBRUSH0"], 0, 105); break;
-				case 2: picture.AddLayer(Resources.Instance["CBRUSH2"], 0, 94); break;
-				case 3: picture.AddLayer(Resources.Instance["CBRUSH4"], 0, 94); break;
+				case 1: picture.AddLayer(Resources["CBRUSH0"], 0, 105); break;
+				case 2: picture.AddLayer(Resources["CBRUSH2"], 0, 94); break;
+				case 3: picture.AddLayer(Resources["CBRUSH4"], 0, 94); break;
 			}
 			switch (palace.GetGardenLevel(2))
 			{
-				case 1: picture.AddLayer(Resources.Instance["CBRUSH1"], 184, 105); break;
-				case 2: picture.AddLayer(Resources.Instance["CBRUSH3"], 184, 94); break;
-				case 3: picture.AddLayer(Resources.Instance["CBRUSH5"], 184, 94); break;
+				case 1: picture.AddLayer(Resources["CBRUSH1"], 184, 105); break;
+				case 2: picture.AddLayer(Resources["CBRUSH3"], 184, 94); break;
+				case 3: picture.AddLayer(Resources["CBRUSH5"], 184, 94); break;
 			}
 			return picture;
 		}
@@ -145,7 +146,7 @@ namespace CivOne.Screens
 					case Stage.Message:
 						{
 							Picture message = new Picture(269, 39)
-								.Tile(Patterns.PanelGrey)
+								.Tile(Pattern.PanelGrey)
 								.DrawRectangle3D()
 								.As<Picture>();
 							int yy = 4;
@@ -161,7 +162,7 @@ namespace CivOne.Screens
 					case Stage.SelectPart:
 						{
 							Picture message = new Picture(180, 15)
-								.Tile(Patterns.PanelGrey)
+								.Tile(Pattern.PanelGrey)
 								.DrawRectangle3D()
 								.DrawText("Which section shall we improve?", 0, 15, 4, 4)
 								.As<Picture>();
@@ -301,7 +302,7 @@ namespace CivOne.Screens
 				_noiseMap[x, y] = (byte)Common.Random.Next(1, NOISE_COUNT);
 			}
 			
-			_background = Resources.Instance.LoadPIC("CBACK");
+			_background = Resources["CBACK"];
 			Palette = _background.Palette;
 			if (build) _currentStage = Stage.Message;
 		}

@@ -10,14 +10,13 @@
 using System;
 using CivOne.Enums;
 using CivOne.Graphics;
+using CivOne.Graphics.Sprites;
 
 namespace CivOne.Screens.CityManagerPanels
 {
 	internal class CityResources : BaseScreen
 	{
 		private readonly City _city;
-
-		private readonly IBitmap _background;
 		
 		private bool _update = true;
 
@@ -122,7 +121,7 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			if (_update)
 			{
-				this.Tile(_background)
+				this.Tile(Pattern.PanelBlue)
 					.DrawRectangle(colour: 1)
 					.FillRectangle(1, 1, 121, 8, 1)
 					.DrawText($"City Resources", 1, 17, 6, 2, TextAlign.Left);
@@ -141,12 +140,9 @@ namespace CivOne.Screens.CityManagerPanels
 			_update = true;
 		}
 
-		public CityResources(City city, IBitmap background) : base(123, 43)
+		public CityResources(City city) : base(123, 43)
 		{
 			_city = city;
-			_background = background;
-
-			Palette = background.Palette.Copy();
 		}
 	}
 }

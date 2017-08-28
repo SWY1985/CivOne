@@ -13,77 +13,15 @@ namespace CivOne.Tiles
 {
 	internal class River : BaseTile
 	{
-		public override byte Movement
-		{
-			get
-			{
-				return 1;
-			}
-		}
-		
-		public override byte Defense
-		{
-			get
-			{
-				return 3;
-			}
-		}
-		
-		public override sbyte Food
-		{
-			get
-			{
-				return 2;
-			}
-		}
-		
-		public override sbyte Shield
-		{
-			get
-			{
-				return (sbyte)(Special ? 1 : 0);
-			}
-		}
-		
-		public override sbyte Trade
-		{
-			get
-			{
-				return 1;
-			}
-		}
-		
-		public override sbyte IrrigationFoodBonus
-		{
-			get
-			{
-				return -2;
-			}
-		}
-		
-		public override byte IrrigationCost
-		{
-			get
-			{
-				return 5;
-			}
-		}
-		
-		public override sbyte MiningShieldBonus
-		{
-			get
-			{
-				return -1;
-			}
-		}
-		
-		public override byte MiningCost
-		{
-			get
-			{
-				return 0;
-			}
-		}
+		public override byte Movement => 1;
+		public override byte Defense => 3;
+		public override sbyte Food => 2;
+		public override sbyte Shield => (sbyte)(Special ? 1 : 0);
+		public override sbyte Trade => 1;
+		public override sbyte IrrigationFoodBonus => -2;
+		public override byte IrrigationCost => 5;
+		public override sbyte MiningShieldBonus => -1;
+		public override byte MiningCost => 0;
 		
 		public River(int x, int y) : base(x, y, false)
 		{

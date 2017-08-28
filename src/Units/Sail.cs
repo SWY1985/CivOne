@@ -24,7 +24,7 @@ namespace CivOne.Units
 
 		public Sail() : base(4, 1, 1, 3)
 		{
-			Type = Unit.Sail;
+			Type = UnitType.Sail;
 			Name = "Sail";
 			RequiredTech = new Navigation();
 			ObsoleteTech = new Magnetism();

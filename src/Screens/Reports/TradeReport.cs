@@ -43,14 +43,14 @@ namespace CivOne.Screens.Reports
 					.DrawText(city.Name, 0, 15, 16, yy)
 					.DrawText($"{city.Luxuries}{LUXURIES}/{city.Taxes}{GOLD}/{city.Science}{SCIENCE}", 0, 10, 86, yy);
 
-				yy += Resources.Instance.GetFontHeight(0);
+				yy += Resources.GetFontHeight(0);
 			}
 			
 			if ((_page * 18) >= _cities.Length)
 			{
 				yy += 4;
 				this.DrawText($"Total Income: {totalIncome}$", 0, 10, 8, yy);
-				yy += Resources.Instance.GetFontHeight(0);
+				yy += Resources.GetFontHeight(0);
 				if (totalScience > 0 && yy <= 188)
 				{
 					this.DrawText($"Discoveries: {(int)Math.Ceiling((double)Human.ScienceCost / totalScience)} turns", 0, 10, 8, yy);
@@ -74,7 +74,7 @@ namespace CivOne.Screens.Reports
 				if (building.Maintenance == 0) continue;
 
 				this.DrawText($"{count} {building.Name}, {building.Maintenance * count}$", 0, 14, 160, yy);
-				yy += Resources.Instance.GetFontHeight(0);
+				yy += Resources.GetFontHeight(0);
 			}
 
 			yy += 4;

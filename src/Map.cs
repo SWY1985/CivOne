@@ -22,6 +22,7 @@ namespace CivOne
 {
 	public class Map
 	{
+		private static Resources Resources = Resources.Instance;
 		private static void Log(string text, params object[] parameters) => RuntimeHandler.Runtime.Log(text, parameters);
 
 		public const int WIDTH = 80;
@@ -710,7 +711,7 @@ namespace CivOne
 			Log("Map: Loading {0} - Random seed: {1}", filename, randomSeed);
 			_terrainMasterWord = randomSeed;
 			
-			using (Bytemap bitmap = Resources.Instance.LoadPIC(filename, true).Bitmap)
+			using (Bytemap bitmap = Resources[filename].Bitmap)
 			{
 				_tiles = new ITile[WIDTH, HEIGHT];
 				
@@ -755,7 +756,7 @@ namespace CivOne
 		{
 			Log($"Map: Saving {filename} - Random seed: {_terrainMasterWord}");
 
-			using (Bytemap bitmap = Resources.Instance.LoadPIC("SP299").Bitmap)
+			using (Bytemap bitmap = Resources["SP299"].Bitmap)
 			{
 				// Save terrainlayer
 				for (int x = 0; x < WIDTH; x++)
@@ -812,7 +813,7 @@ namespace CivOne
 					bitmap[x + (WIDTH * 2), y] = _tiles[x, y].Visited;
 				}
 
-				using (Picture picture = new Picture(bitmap, Resources.Instance.LoadPIC("SP299").Palette))
+				using (Picture picture = new Picture(bitmap, Resources["SP299"].Palette))
 				{
 					PicFile picFile = new PicFile(picture)
 					{
@@ -831,7 +832,7 @@ namespace CivOne
 		{
 			Log("Map: Loading MAP.PIC");
 			
-			using (Bytemap bitmap = Resources.Instance.LoadPIC("MAP", true).Bitmap)
+			using (Bytemap bitmap = Resources["MAP"].Bitmap)
 			{
 				LoadMap(bitmap);
 			}

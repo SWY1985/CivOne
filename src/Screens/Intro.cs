@@ -260,7 +260,7 @@ namespace CivOne.Screens
 			}
 			_pictures = new Picture[8];
 			for (int i = 0; i < _pictures.Length; i++)
-				_pictures[i] = Resources.Instance.LoadPIC(string.Format("BIRTH{0}", i + 1), true);
+				_pictures[i] = Resources[$"BIRTH{(i + 1)}"];
 			
 			Palette = _pictures[0].Palette;
 		}

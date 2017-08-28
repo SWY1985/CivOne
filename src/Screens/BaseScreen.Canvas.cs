@@ -12,6 +12,7 @@ using System.Drawing;
 using CivOne.Enums;
 using CivOne.Graphics;
 using CivOne.IO;
+using CivOne.Graphics.Sprites;
 
 namespace CivOne.Screens
 {
@@ -63,7 +64,7 @@ namespace CivOne.Screens
 				this.DrawRectangle(x, y, width, height);
 			}
 			this.AddLayer(new Picture(ww, hh)
-				.Tile(Patterns.PanelGrey)
+				.Tile(Pattern.PanelGrey)
 				.DrawRectangle3D(), xx, yy, dispose: true);
 		}
 

@@ -16,7 +16,7 @@ namespace CivOne.Units
 	{
 		public Ironclad() : base(6, 4, 4, 4)
 		{
-			Type = Unit.Ironclad;
+			Type = UnitType.Ironclad;
 			Name = "Ironclad";
 			RequiredTech = new SteamEngine();
 			ObsoleteTech = new Combustion();

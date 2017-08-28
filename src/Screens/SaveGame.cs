@@ -263,7 +263,7 @@ namespace CivOne.Screens
 		
 		public SaveGame(int gameId)
 		{
-			_palette = Resources.Instance.LoadPIC("SP257").Palette;
+			_palette = Resources["SP257"].Palette;
 			_gameId = gameId;
 		}
 	}

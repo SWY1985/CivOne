@@ -75,7 +75,7 @@ namespace CivOne.Screens
 			_modern = Human.HasAdvance<Electricity>() && advance.Not<Electricity>();
 			string scientistName = Human.HasAdvance<Invention>() && (advance.Not<Invention>()) ? "scientists" : "wise men";
 
-			Picture background = Resources.Instance.LoadPIC(_modern ? "DISCOVR2" : "DISCOVR1");
+			Picture background = Resources[$"DISCOVR{(_modern ? 2 : 1)}"];
 			
 			Palette = background.Palette;
 			this.Clear(32)

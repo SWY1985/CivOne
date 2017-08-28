@@ -12,14 +12,13 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.Graphics.Sprites;
 
 namespace CivOne.Screens.CityManagerPanels
 {
 	internal class CityHeader : BaseScreen
 	{
 		private readonly City _city;
-
-		private readonly IBitmap _background;
 		
 		private bool _update = true;
 		
@@ -31,7 +30,7 @@ namespace CivOne.Screens.CityManagerPanels
 			{
 				string population = Common.NumberSeperator(_city.Population);
 
-				this.Tile(_background)
+				this.Tile(Pattern.PanelBlue)
 					.DrawRectangle(colour: 1)
 					.DrawText($"{_city.Name} (Pop:{population})", 1, 17, 104, 1, TextAlign.Center);
 
@@ -93,12 +92,9 @@ namespace CivOne.Screens.CityManagerPanels
 			Destroy();
 		}
 
-		public CityHeader(City city, IBitmap background) : base(207, 21)
+		public CityHeader(City city) : base(207, 21)
 		{
 			_city = city;
-			_background = background;
-
-			Palette = background.Palette.Copy();
 		}
 	}
 }

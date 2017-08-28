@@ -13,6 +13,7 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
 using CivOne.Screens.Dialogs;
+using CivOne.Graphics.Sprites;
 using CivOne.Units;
 using CivOne.Wonders;
 
@@ -23,8 +24,6 @@ namespace CivOne.Screens.CityManagerPanels
 		private const int SHIELD_HEIGHT = 8;
 
 		private readonly City _city;
-
-		private readonly IBitmap _background;
 		
 		private bool _update = true;
 
@@ -88,7 +87,7 @@ namespace CivOne.Screens.CityManagerPanels
 				int height = SHIELD_HEIGHT * ((_shieldPrice - (_shieldPrice % _shieldsPerLine)) / _shieldsPerLine);
 				if (height < SHIELD_HEIGHT) height = SHIELD_HEIGHT;
 
-				this.Tile(_background)
+				this.Tile(Pattern.PanelBlue)
 					.DrawRectangle(0, 0, width, 19 + height, 1)
 					.FillRectangle(1, 1, (width - 2), 16, 1);
 				if (width < 88)
@@ -109,12 +108,12 @@ namespace CivOne.Screens.CityManagerPanels
 				if (_city.CurrentProduction is IUnit)
 				{
 					IUnit unit = (_city.CurrentProduction as IUnit);
-					this.AddLayer(unit.GetUnit(_city.Owner), 33, 0);
+					this.AddLayer(unit.ToBitmap(_city.Owner), 33, 0);
 				}
 				else
 				{
 					string name = (_city.CurrentProduction as ICivilopedia).Name;
-					while (Resources.Instance.GetTextSize(1, name).Width > 86)
+					while (Resources.GetTextSize(1, name).Width > 86)
 					{
 						name = $"{name.Substring(0, name.Length - 2)}.";
 					}
@@ -184,12 +183,9 @@ namespace CivOne.Screens.CityManagerPanels
 			return false;
 		}
 
-		public CityProduction(City city, IBitmap background) : base(88, 99)
+		public CityProduction(City city) : base(88, 99)
 		{
 			_city = city;
-			_background = background;
-
-			Palette = background.Palette.Copy();
 		}
 	}
 }
