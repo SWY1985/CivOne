@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -22,50 +23,20 @@ using static CivOne.Enums.Direction;
 
 namespace CivOne.Screens
 {
+	[Expand]
 	internal class Nuke : BaseScreen
 	{
-		private struct RenderTile
-		{
-			public bool Visible;
-			public int X, Y;
-			public ITile Tile;
-			public IBitmap Image => Tile.ToBitmap();
-			public Point Position => new Point(X * 16, Y * 16);
-		}
-
 		private const int FRAME_COUNT = 28;
 
 		private int _x, _y, _dx, _dy;
+
+		private int _tilesX = 15, _tilesY = 12;
 		
 		private int _frameCounter = FRAME_COUNT + 2;
 
-		private Picture _gameMap;
+		private IBitmap _gameMap;
 
 		private Picture[] _sprites = null;
-		
-		private IEnumerable<RenderTile> RenderTiles
-		{
-			get
-			{
-				for (int x = 0; x < 15; x++)
-				for (int y = 0; y < 12; y++)
-				{
-					int tx = _x + x;
-					int ty = _y + y;
-					while (tx >= Map.WIDTH) tx -= Map.WIDTH;
-					
-					if (ty < 0 || ty >= Map.HEIGHT) continue;
-
-					yield return new RenderTile
-					{
-						Visible = Human.Visible(tx, ty),
-						X = x,
-						Y = y,
-						Tile = Map[tx, ty]
-					};
-				}
-			}
-		}
 		
 		protected override bool HasUpdate(uint gameTick)
 		{
@@ -92,79 +63,19 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
-		{
-			return false;
-		}
+		public override bool KeyDown(KeyboardEventArgs args) => false;
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		public override bool MouseDown(ScreenEventArgs args) => false;
+
+		public void Resize(int width, int height)
 		{
-			return false;
-		}
+			_tilesX = (int)Math.Ceiling((double)(width - 80) / 16);
+			_tilesY = (int)Math.Ceiling((double)(height - 8) / 16);
 
-		private Picture GameMap
-		{
-			get
-			{
-				Picture output = new Picture(240, 192);
-
-				RenderTile[] renderTiles = RenderTiles.ToArray();
-				foreach (RenderTile t in renderTiles)
-				{
-					if (!Settings.RevealWorld && !t.Visible)
-					{
-						output.FillRectangle(t.X * 16, t.Y * 16, 16, 16, 5);
-						continue;
-					}
-					output.AddLayer(t.Image, t.Position);
-					if (Settings.RevealWorld) continue;
-					
-					if (!Human.Visible(t.Tile, West)) output.AddLayer(MapTile.Fog[West], t.Position);
-					if (!Human.Visible(t.Tile, North)) output.AddLayer(MapTile.Fog[North], t.Position);
-					if (!Human.Visible(t.Tile, East)) output.AddLayer(MapTile.Fog[East], t.Position);
-					if (!Human.Visible(t.Tile, South)) output.AddLayer(MapTile.Fog[South], t.Position);
-				}
-
-				foreach (RenderTile t in renderTiles)
-				{
-					if (!Settings.RevealWorld && !t.Visible) continue;
-
-					if (t.Tile.City != null) continue;
-
-					IUnit[] units = t.Tile.Units.ToArray();
-					if (units.Length == 0) continue;
-					
-					IUnit drawUnit = units[0];
-
-					if (t.Tile.IsOcean && drawUnit.Class != UnitClass.Water && drawUnit.Sentry)
-					{
-						// Do not draw sentried land units at sea
-						continue;
-					}
-					
-					output.AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position);
-					if (units.Length == 1) continue;
-					output.AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position.X - 1, t.Position.Y - 1);
-				}
-
-				foreach (RenderTile t in renderTiles.Reverse())
-				{
-					if (!Settings.RevealWorld && !t.Visible) continue;
-
-					City city = t.Tile.City;
-					if (city == null) continue;
-					
-					output.AddLayer(Icons.City(city), t.Position);
-					
-					if (t.Y == 11) continue;
-					int labelX = (t.X == 0) ? t.Position.X : t.Position.X - 8;
-					int labelY = t.Position.Y + 16;
-					output.DrawText(city.Name, 0, 5, labelX, labelY + 1, TextAlign.Left);
-					output.DrawText(city.Name, 0, 11, labelX, labelY, TextAlign.Left);
-				}
-
-				return output;
-			}
+			Bitmap = new Bytemap(width, height);
+			
+			Player renderPlayer = Settings.RevealWorld ? null : Human;
+			_gameMap = Map[_x, _y, _tilesX, _tilesY].ToBitmap(TileSettings.BlinkOff, renderPlayer);
 		}
 
 		internal Nuke(int x, int y)
@@ -183,7 +94,8 @@ namespace CivOne.Screens
 				}
 				Palette = palette;
 			}
-			_gameMap = GameMap;
+			Player renderPlayer = Settings.RevealWorld ? null : Human;
+			_gameMap = Map[_x, _y, 15, 12].ToBitmap(TileSettings.BlinkOff, renderPlayer);
 
 			_sprites = new Picture[28];
 			for (int yy = 0; yy < 4; yy++)
