@@ -55,6 +55,15 @@ namespace CivOne.Graphics
 			}
 		}
 
+		private void DiffPanel(ref Bytemap bytemap, int left, int top, int width, int height)
+		{
+			byte[] colours = new byte[] { 42, 41, 47, 15 };
+			for (int i = 0; i < colours.Length; i++)
+			{
+				bytemap.FillRectangle(left + i, top + i, width - (i * 2), height - (i * 2), colours[i]);
+			}
+		}
+
 		public Bytemap PanelGrey
 		{
 			get
@@ -469,6 +478,34 @@ namespace CivOne.Graphics
 						.Bitmap);
 			}
 			return output;
+		}
+
+		public Bytemap Difficulties
+		{
+			get
+			{
+				Bytemap output = new Bytemap(320, 200);
+				
+				DiffPanel(ref output, 155, 29, 131, 137);
+				
+				(int Skip, byte[] Colours)[] backgrounds = new (int Skip, byte[] Colours)[]
+				{
+					(139, new byte[] { 23, 24, 25, 26, 27, 1 }),
+					(2075, new byte[] { 24, 25, 26, 27, 28, 2 }),
+					(4085, new byte[] { 25, 26, 27, 28, 29, 3 }),
+					(6750, new byte[] { 26, 27, 28, 29, 30, 6 }),
+					(8412, new byte[] { 27, 28, 29, 30, 31, 4 })
+				};
+				for (int i = 0; i < 5; i++)
+				{
+					int xx = (i % 2) == 0 ? 21 : 80;
+					int yy = 6 + (35 * i);
+					DiffPanel(ref output, xx, yy, 53, 47);
+					output.AddLayer(new Bytemap(47, 41).FromByteArray(GenerateNoise(backgrounds[i].Colours).Skip(backgrounds[i].Skip).Take(47 * 41).ToArray()), xx + 3, yy + 3);
+				}
+
+				return output;
+			}
 		}
 
 		private static Free _instance;

@@ -322,7 +322,14 @@ namespace CivOne.Screens
 		{
 			OnResize += Resize;
 			
-			_background = Resources["DIFFS"];
+			if (Runtime.Settings.Free || !Resources.Exists("DIFFS"))
+			{
+				_background = new Picture(Free.Instance.Difficulties, Common.GetPalette256);
+			}
+			else
+			{
+				_background = Resources["DIFFS"];
+			}
 			
 			Palette = _background.Palette.Copy();
 			this.AddLayer(_background);
