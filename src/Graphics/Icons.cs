@@ -338,7 +338,7 @@ namespace CivOne.Graphics
 			}
 			else
 			{
-				resource = Free.Instance.City;
+				resource = new Picture(Free.Instance.City, Common.GetPalette256);
 			}
 			resource
 				.ColourReplace(3, 0)

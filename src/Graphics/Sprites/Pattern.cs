@@ -19,16 +19,16 @@ namespace CivOne.Graphics.Sprites
 		private static Bytemap PatternPanelGrey()
 		{
 			if (!Resources.Exists("SP299"))
-				return Free.PanelGrey.Bitmap;
+				return Free.PanelGrey;
 			return Resources["SP299"].Bitmap[288, 120, 32, 16];
 		}
 
 		private static Bytemap PatternPanelBlue()
 		{
 			if (!Resources.Exists("SP299"))
-				return Free.PanelBlue.Bitmap;
-			return Resources["SP299"][288, 120, 32, 16]
-				.ColourReplace((7, 57), (22, 9)).Bitmap;
+				return Free.PanelBlue;
+			return Resources["SP299"].Bitmap[288, 120, 32, 16]
+				.ColourReplace((7, 57), (22, 9));
 		}
 
 		public static readonly ISprite PanelGrey = new CachedSprite(PatternPanelGrey);

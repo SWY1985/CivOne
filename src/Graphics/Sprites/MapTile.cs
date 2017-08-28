@@ -29,7 +29,7 @@ namespace CivOne.Graphics.Sprites
 		{
 			string picFile = (GFX256 ? "SP257" : "SPRITES");
 			if (!Resources.Exists(picFile))
-				return Free.LandBase.Bitmap;
+				return Free.LandBase;
 			if (!GFX256)
 				return Resources[picFile].Bitmap[0, 80, 16, 16];
 			return Resources[picFile].Bitmap[0, 64, 16, 16];
@@ -39,17 +39,17 @@ namespace CivOne.Graphics.Sprites
 		{
 			string picFile = (GFX256 ? "TER257" : "SPRITES");
 			if (!Resources.Exists(picFile))
-				return Free.OceanBase.Bitmap;
+				return Free.OceanBase;
 			if (!GFX256)
 				return null;
 			return Resources[picFile].Bitmap[0, 160, 16, 16];
 		}
 
-		private static bool DrawCoastCorners(ref Picture output, Direction land)
+		private static bool DrawCoastCorners(ref Bytemap output, Direction land)
 		{
 			if (!Resources.Exists("SP299")) return false;
 
-			Picture pic = Resources["SP299"];
+			Bytemap pic = Resources["SP299"].Bitmap;
 
 			if (land.And(South | East) && land.Not(North | West | SouthWest | NorthEast)) output.AddLayer(pic[224, 100, 16, 16]);
 			else if (land.And(North | West) && land.Not(South | East | NorthEast | SouthWest)) output.AddLayer(pic[240, 100, 16, 16]);
@@ -59,11 +59,11 @@ namespace CivOne.Graphics.Sprites
 			return true;
 		}
 
-		private static void DrawCoastSegments(ref Picture output, Direction land)
+		private static void DrawCoastSegments(ref Bytemap output, Direction land)
 		{
 			if (!Resources.Exists("TER257")) return;
 
-			Picture pic = Resources["TER257"];
+			Bytemap pic = Resources["TER257"].Bitmap;
 			
 			if (land.And(North))
 			{
@@ -99,11 +99,11 @@ namespace CivOne.Graphics.Sprites
 			}
 		}
 
-		private static void DrawCoastDiagonal(ref Picture output, Direction land)
+		private static void DrawCoastDiagonal(ref Bytemap output, Direction land)
 		{
 			if (!Resources.Exists("TER257")) return;
 
-			Picture pic = Resources["TER257"];
+			Bytemap pic = Resources["TER257"].Bitmap;
 
 			if (land.And(NorthWest) && land.Not(North | West)) output.AddLayer(pic[32, 176, 8, 8], 0, 0);
 			if (land.And(NorthEast) && land.Not(North | East)) output.AddLayer(pic[40, 176, 8, 8], 8, 0);
@@ -111,11 +111,11 @@ namespace CivOne.Graphics.Sprites
 			if (land.And(SouthEast) && land.Not(South | East)) output.AddLayer(pic[40, 184, 8, 8], 8, 8);
 		}
 
-		private static void DrawRiverMouths(ref Picture output, Direction rivers)
+		private static void DrawRiverMouths(ref Bytemap output, Direction rivers)
 		{
 			if (!Resources.Exists("TER257")) return;
 
-			Picture pic = Resources["TER257"];
+			Bytemap pic = Resources["TER257"].Bitmap;
 
 			if (rivers.And(North)) output.AddLayer(pic[128, 176, 16, 16]);
 			if (rivers.And(East)) output.AddLayer(pic[144, 176, 16, 16]);
@@ -131,12 +131,12 @@ namespace CivOne.Graphics.Sprites
 			if (!GFX256)
 				return Resources[picFile].Bitmap[((int)directions.Land & 0xF) * 16, 64, 16, 16];
 
-			Picture output = new Picture(16, 16);
+			Bytemap output = new Bytemap(16, 16);
 			if (!DrawCoastCorners(ref output, directions.Land))
 				DrawCoastSegments(ref output, directions.Land);
 			DrawCoastDiagonal(ref output, directions.Land);
 			DrawRiverMouths(ref output, directions.Rivers);
-			return output.Bitmap;
+			return output;
 		}
 		
 		private static Bytemap GetRiverLayer(Direction directions)
@@ -155,8 +155,8 @@ namespace CivOne.Graphics.Sprites
 			{
 				switch (new T().Type)
 				{
-					case Terrain.Forest: return Free.Forest.Bitmap;
-					case Terrain.Plains: return Free.Plains.Bitmap;
+					case Terrain.Forest: return Free.Forest;
+					case Terrain.Plains: return Free.Plains;
 				}
 				return null;
 			}
@@ -172,15 +172,15 @@ namespace CivOne.Graphics.Sprites
 			if (!Resources.Exists(picFile))
 				return null;
 			if (typeof(T) == typeof(Grassland))
-				return new Picture(16, 16)
-					.AddLayer(Resources[picFile][152, 40, 8, 8].ColourReplace(3, 0), 4, 4).Bitmap;
-			return Resources[picFile][terrainId * 16, 112, 16, 16].ColourReplace(3, 0).Bitmap;
+				return new Bytemap(16, 16)
+					.AddLayer(Resources[picFile].Bitmap[152, 40, 8, 8].ColourReplace(3, 0), 4, 4);
+			return Resources[picFile].Bitmap[terrainId * 16, 112, 16, 16].ColourReplace(3, 0);
 		}
 
 		private static Bytemap GetFog(Direction directions)
 		{
-			Picture output = new Picture(16, 16);
-			if (directions == None) return output.Bitmap;
+			Bytemap output = new Bytemap(16, 16);
+			if (directions == None) return output;
 
 			if (!Resources.Exists("SP257"))
 			{
@@ -199,41 +199,41 @@ namespace CivOne.Graphics.Sprites
 				}
 			}
 
-			return output.Bitmap;
+			return output;
 		}
 
 		private static Bytemap GetRoad(Direction directions)
 		{
 			if (directions == Direction.None)
 			{
-				return new Picture(16, 16).FillRectangle(7, 7, 2, 2, 6).Bitmap;
+				return new Bytemap(16, 16).FillRectangle(7, 7, 2, 2, 6);
 			}
 
 			string picFile = (GFX256 ? "SP257" : "SPRITES");
-			Picture output = new Picture(16, 16);
+			Bytemap output = new Bytemap(16, 16);
 			for (int i = 0; i < Clockwise.Length; i++)
 			{
 				if (((int)directions & (int)Clockwise[i]) == 0) continue;
-				output.AddLayer(Resources[picFile][(i * 16), 48, 16, 16], 0, 0);
+				output.AddLayer(Resources[picFile].Bitmap[(i * 16), 48, 16, 16]);
 			}
-			return output.Bitmap;
+			return output;
 		}
 
 		private static Bytemap GetRailRoad(Direction directions)
 		{
 			if (directions == Direction.None)
 			{
-				return new Picture(16, 16).FillRectangle(7, 7, 2, 2, 5).Bitmap;
+				return new Bytemap(16, 16).FillRectangle(7, 7, 2, 2, 5);
 			}
 
 			string picFile = (GFX256 ? "SP257" : "SPRITES");
-			Picture output = new Picture(16, 16);
+			Bytemap output = new Bytemap(16, 16);
 			for (int i = 0; i < Clockwise.Length; i++)
 			{
 				if (((int)directions & (int)Clockwise[i]) == 0) continue;
-				output.AddLayer(Resources[picFile][128 + (i * 16), 96, 16, 16], 0, 0);
+				output.AddLayer(Resources[picFile].Bitmap[128 + (i * 16), 96, 16, 16]);
 			}
-			return output.Bitmap;
+			return output;
 		}
 
 		private static Bytemap GetIrrigation()
@@ -257,8 +257,8 @@ namespace CivOne.Graphics.Sprites
 			string picFile = (GFX256 ? "SP257" : "SPRITES");
 			if (!Resources.Exists(picFile))
 				return null;
-			return Resources[picFile][224, 112, 16, 16]
-				.ColourReplace(3, 0).Bitmap;
+			return Resources[picFile].Bitmap[224, 112, 16, 16]
+				.ColourReplace(3, 0);
 		}
 
 		private static Bytemap GetHut()
@@ -266,8 +266,8 @@ namespace CivOne.Graphics.Sprites
 			string picFile = (GFX256 ? "SP257" : "SPRITES");
 			if (!Resources.Exists(picFile))
 				return null;
-			return Resources[picFile][240, 112, 16, 16]
-				.ColourReplace(3, 0).Bitmap;
+			return Resources[picFile].Bitmap[240, 112, 16, 16]
+				.ColourReplace(3, 0);
 		}
 		
 		public static readonly ISprite LandBase = new CachedSprite(GetLandBase);

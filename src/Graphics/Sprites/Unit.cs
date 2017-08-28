@@ -31,10 +31,10 @@ namespace CivOne.Graphics.Sprites
 			int xx = (unitId % 20) * 16;
 			int yy = unitId < 20 ? 160 : 176;
 
-			IBitmap output;
+			Bytemap output;
 			if (Resources.Exists(resFile))
 			{
-				output = Resources[resFile][xx, yy, 16, 16]
+				output = Resources[resFile].Bitmap[xx, yy, 16, 16]
 					.FillRectangle(0, 0, 16, 1, 0)
 					.FillRectangle(0, 1, 1, 15, 0);
 			}
@@ -47,7 +47,7 @@ namespace CivOne.Graphics.Sprites
 			else if (colourDark == 8) output.ColourReplace((7, 3), (10, colourLight), (2, colourDark));
 			else output.ColourReplace((10, colourLight), (2, colourDark));
 			
-			return output.Bitmap;
+			return output;
 		}
 
 		private static Bytemap GetUnitSentry((UnitType Type, byte PlayerNumber) unit)
