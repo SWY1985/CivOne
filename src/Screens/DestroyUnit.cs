@@ -86,9 +86,9 @@ namespace CivOne.Screens
 				while (xx < 0) xx += 80;
 				while (xx >= 80) xx -= 80;
 
-				_overlay.AddLayer(_unit.GetUnit(_unit.Owner), cx + (xx * 16), cy + (yy * 16));
+				_overlay.AddLayer(_unit.ToBitmap(), cx + (xx * 16), cy + (yy * 16));
 				if (_unit.Tile.Units.Length > 1 && !_unit.Tile.Fortress && _unit.Tile.City == null)
-					_overlay.AddLayer(_unit.GetUnit(_unit.Owner), cx + (xx * 16) - 1, cy + (yy * 16) - 1);
+					_overlay.AddLayer(_unit.ToBitmap(), cx + (xx * 16) - 1, cy + (yy * 16) - 1);
 				
 				if (_animation == DestroyAnimation.Sprites)
 				{
@@ -191,9 +191,9 @@ namespace CivOne.Screens
 						continue;
 					}
 					
-					output.AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position);
+					output.AddLayer(drawUnit.ToBitmap(), t.Position);
 					if (units.Length == 1) continue;
-					output.AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position.X - 1, t.Position.Y - 1);
+					output.AddLayer(drawUnit.ToBitmap(), t.Position.X - 1, t.Position.Y - 1);
 				}
 
 				foreach (RenderTile t in renderTiles.Reverse())

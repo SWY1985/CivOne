@@ -103,7 +103,7 @@ namespace CivOne.Units
 
 		public Caravan() : base(5, 0, 1, 1)
 		{
-			Type = Unit.Caravan;
+			Type = UnitType.Caravan;
 			Name = "Caravan";
 			RequiredTech = new Trade();
 			ObsoleteTech = null;

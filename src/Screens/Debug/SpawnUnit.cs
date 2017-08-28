@@ -265,7 +265,7 @@ namespace CivOne.Screens.Debug
 				SidebarHint();
 				_cursor = ValidTile ? MouseCursor.Goto : MouseCursor.Pointer;
 				if (!ValidTile) return _hasUpdate;
-				this.AddLayer(_selectedUnit.GetUnit(Game.PlayerNumber(_selectedPlayer), false), xx, yy);
+				this.AddLayer(_selectedUnit.ToBitmap(Game.PlayerNumber(_selectedPlayer), false), xx, yy);
 				
 				return _hasUpdate;
 			}

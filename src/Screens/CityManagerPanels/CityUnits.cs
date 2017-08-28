@@ -63,7 +63,7 @@ namespace CivOne.Screens.CityManagerPanels
 						}
 					}
 
-					this.AddLayer(units[i].GetUnit(units[0].Owner, showState: false), xx, yy);
+					this.AddLayer(units[i].ToBitmap(false), xx, yy);
 				}
 				
 				_update = false;

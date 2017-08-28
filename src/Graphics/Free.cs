@@ -197,13 +197,13 @@ namespace CivOne.Graphics
 			return output;
 		}
 
-		public IBitmap GetUnit(Unit type)
+		public IBitmap GetUnit(UnitType type)
 		{
 			IBitmap output = new Picture(16, 16, GenerateUnit().ToArray(), Common.GetPalette256);
 			char text = ' ';
 			switch (type)
 			{
-				case Unit.Settlers:
+				case UnitType.Settlers:
 					output.AddLayer(new Picture(10, 10, new byte[] {
 						0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 						0,  5,  5,  5,  5,  5,  5,  5,  0,  0,
@@ -217,7 +217,7 @@ namespace CivOne.Graphics
 						0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 					}, Common.GetPalette256), 3, 3);
 					break;
-				case Unit.Militia:
+				case UnitType.Militia:
 					output.AddLayer(new Picture(10, 10, new byte[] {
 						0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 						0,  0,  0,  4,  4,  4,  0,  0,  0,  0,
@@ -231,32 +231,32 @@ namespace CivOne.Graphics
 						0,  5,  5,  5,  5,  5,  5,  5,  5,  0,
 					}, Common.GetPalette256), 3, 3);
 					break;
-				case Unit.Phalanx: text = 'P'; break;
-				case Unit.Legion: text = 'L'; break;
-				case Unit.Musketeers: text = 'M'; break;
-				case Unit.Riflemen: text = 'R'; break;
-				case Unit.Cavalry: text = 'c'; break;
-				case Unit.Knights: text = 'K'; break;
-				case Unit.Catapult: text = 'C'; break;
-				case Unit.Cannon: text = 'X'; break;
-				case Unit.Chariot: text = 'W'; break;
-				case Unit.Armor: text = 'a'; break;
-				case Unit.MechInf: text = 'I'; break;
-				case Unit.Artillery: text = 'A'; break;
-				case Unit.Fighter: text = 'F'; break;
-				case Unit.Bomber: text = 'B'; break;
-				case Unit.Trireme: text = 'T'; break;
-				case Unit.Sail: text = 's'; break;
-				case Unit.Frigate: text = 'f'; break;
-				case Unit.Ironclad: text = 'i'; break;
-				case Unit.Cruiser: text = 'Y'; break;
-				case Unit.Battleship: text = 'Z'; break;
-				case Unit.Submarine: text = 'U'; break;
-				case Unit.Carrier: text = 'G'; break;
-				case Unit.Transport: text = 'H'; break;
-				case Unit.Nuclear: text = 'N'; break;
-				case Unit.Diplomat: text = 'D'; break;
-				case Unit.Caravan: text = 't'; break;
+				case UnitType.Phalanx: text = 'P'; break;
+				case UnitType.Legion: text = 'L'; break;
+				case UnitType.Musketeers: text = 'M'; break;
+				case UnitType.Riflemen: text = 'R'; break;
+				case UnitType.Cavalry: text = 'c'; break;
+				case UnitType.Knights: text = 'K'; break;
+				case UnitType.Catapult: text = 'C'; break;
+				case UnitType.Cannon: text = 'X'; break;
+				case UnitType.Chariot: text = 'W'; break;
+				case UnitType.Armor: text = 'a'; break;
+				case UnitType.MechInf: text = 'I'; break;
+				case UnitType.Artillery: text = 'A'; break;
+				case UnitType.Fighter: text = 'F'; break;
+				case UnitType.Bomber: text = 'B'; break;
+				case UnitType.Trireme: text = 'T'; break;
+				case UnitType.Sail: text = 's'; break;
+				case UnitType.Frigate: text = 'f'; break;
+				case UnitType.Ironclad: text = 'i'; break;
+				case UnitType.Cruiser: text = 'Y'; break;
+				case UnitType.Battleship: text = 'Z'; break;
+				case UnitType.Submarine: text = 'U'; break;
+				case UnitType.Carrier: text = 'G'; break;
+				case UnitType.Transport: text = 'H'; break;
+				case UnitType.Nuclear: text = 'N'; break;
+				case UnitType.Diplomat: text = 'D'; break;
+				case UnitType.Caravan: text = 't'; break;
 			}
 			if (text != ' ')
 			{

@@ -30,7 +30,7 @@ namespace CivOne.Screens.Reports
 				int active = units.Count(u => u.Type == unit.Type);
 				int inProduction = production.Count(u => u.Type == unit.Type);
 				
-				this.AddLayer(unit.GetUnit(player, false), ((i % 2 == 0) ? 1 : 18), 27 + (9 * i))
+				this.AddLayer(unit.ToBitmap(player, false), ((i % 2 == 0) ? 1 : 18), 27 + (9 * i))
 					.FillRectangle(36, 30 + (i * 9), 284, 1, 9)
 					.DrawText(unit.Name, 0, 15, 36, 32 + (i * 9))
 					.DrawText($"({unit.Attack}/{unit.Defense}/{unit.Move})", 0, 11, 112, 32 + (i * 9));

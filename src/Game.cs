@@ -291,39 +291,39 @@ namespace CivOne
 			return _cities.Where(c => c.X == x && c.Y == y && c.Size > 0).FirstOrDefault();
 		}
 		
-		private static IUnit CreateUnit(Unit type, int x, int y)
+		private static IUnit CreateUnit(UnitType type, int x, int y)
 		{
 			IUnit unit;
 			switch (type)
 			{
-				case Unit.Settlers: unit = new Settlers(); break; 
-				case Unit.Militia: unit = new Militia(); break;
-				case Unit.Phalanx: unit = new Phalanx(); break;
-				case Unit.Legion: unit = new Legion(); break;
-				case Unit.Musketeers: unit = new Musketeers(); break;
-				case Unit.Riflemen: unit = new Riflemen(); break;
-				case Unit.Cavalry: unit = new Cavalry(); break;
-				case Unit.Knights: unit = new Knights(); break;
-				case Unit.Catapult: unit = new Catapult(); break;
-				case Unit.Cannon: unit = new Cannon(); break;
-				case Unit.Chariot: unit = new Chariot(); break;
-				case Unit.Armor: unit = new Armor(); break;
-				case Unit.MechInf: unit = new MechInf(); break;
-				case Unit.Artillery: unit = new Artillery(); break;
-				case Unit.Fighter: unit = new Fighter(); break;
-				case Unit.Bomber: unit = new Bomber(); break;
-				case Unit.Trireme: unit = new Trireme(); break;
-				case Unit.Sail: unit = new Sail(); break;
-				case Unit.Frigate: unit = new Frigate(); break;
-				case Unit.Ironclad: unit = new Ironclad(); break;
-				case Unit.Cruiser: unit = new Cruiser(); break;
-				case Unit.Battleship: unit = new Battleship(); break;
-				case Unit.Submarine: unit = new Submarine(); break;
-				case Unit.Carrier: unit = new Carrier(); break;
-				case Unit.Transport: unit = new Transport(); break;
-				case Unit.Nuclear: unit = new Nuclear(); break;
-				case Unit.Diplomat: unit = new Diplomat(); break;
-				case Unit.Caravan: unit = new Caravan(); break;
+				case UnitType.Settlers: unit = new Settlers(); break; 
+				case UnitType.Militia: unit = new Militia(); break;
+				case UnitType.Phalanx: unit = new Phalanx(); break;
+				case UnitType.Legion: unit = new Legion(); break;
+				case UnitType.Musketeers: unit = new Musketeers(); break;
+				case UnitType.Riflemen: unit = new Riflemen(); break;
+				case UnitType.Cavalry: unit = new Cavalry(); break;
+				case UnitType.Knights: unit = new Knights(); break;
+				case UnitType.Catapult: unit = new Catapult(); break;
+				case UnitType.Cannon: unit = new Cannon(); break;
+				case UnitType.Chariot: unit = new Chariot(); break;
+				case UnitType.Armor: unit = new Armor(); break;
+				case UnitType.MechInf: unit = new MechInf(); break;
+				case UnitType.Artillery: unit = new Artillery(); break;
+				case UnitType.Fighter: unit = new Fighter(); break;
+				case UnitType.Bomber: unit = new Bomber(); break;
+				case UnitType.Trireme: unit = new Trireme(); break;
+				case UnitType.Sail: unit = new Sail(); break;
+				case UnitType.Frigate: unit = new Frigate(); break;
+				case UnitType.Ironclad: unit = new Ironclad(); break;
+				case UnitType.Cruiser: unit = new Cruiser(); break;
+				case UnitType.Battleship: unit = new Battleship(); break;
+				case UnitType.Submarine: unit = new Submarine(); break;
+				case UnitType.Carrier: unit = new Carrier(); break;
+				case UnitType.Transport: unit = new Transport(); break;
+				case UnitType.Nuclear: unit = new Nuclear(); break;
+				case UnitType.Diplomat: unit = new Diplomat(); break;
+				case UnitType.Caravan: unit = new Caravan(); break;
 				default: return null;
 			}
 			unit.X = x;
@@ -331,9 +331,9 @@ namespace CivOne
 			return unit;
 		}
 
-		public IUnit CreateUnit(Unit type, int x, int y, byte owner, bool endTurn = false)
+		public IUnit CreateUnit(UnitType type, int x, int y, byte owner, bool endTurn = false)
 		{
-			IUnit unit = CreateUnit((Unit)type, x, y);
+			IUnit unit = CreateUnit((UnitType)type, x, y);
 			if (unit == null) return null;
 
 			unit.Owner = owner;
@@ -611,7 +611,7 @@ namespace CivOne
 					byte moves = Common.BinaryReadByte(br, i + 4);
 					byte homeCity = Common.BinaryReadByte(br, i + 11);
 					
-					IUnit unit = CreateUnit((Unit)type, x, y);
+					IUnit unit = CreateUnit((UnitType)type, x, y);
 					if (unit == null) continue;
 
 					unit.Status = status;
@@ -1088,7 +1088,7 @@ namespace CivOne
 				// Unit types
 				for (int i = 0; i < 28; i++)
 				{
-					IUnit unit = CreateUnit(((Unit)i), -1, -1);
+					IUnit unit = CreateUnit(((UnitType)i), -1, -1);
 
 					short obsoleteTech = 0;
 					if (unit.ObsoleteTech != null) obsoleteTech = unit.ObsoleteTech.Id;
@@ -1473,7 +1473,7 @@ namespace CivOne
 				}
 				
 				// Starting position found, add Settlers
-				IUnit unit = CreateUnit(Unit.Settlers, x, y);
+				IUnit unit = CreateUnit(UnitType.Settlers, x, y);
 				unit.Owner = player;
 				_units.Add(unit);
 
@@ -1549,7 +1549,7 @@ namespace CivOne
 			{
 				// If the Bonus value of the civ is 4 or higher, then the civ is granted an extra Settlers unit, for a total of two Settlers units.
 				// In this case, the Bonus value is reduced by 3 afterwards.
-				IUnit unit = CreateUnit(Unit.Settlers, x, y);
+				IUnit unit = CreateUnit(UnitType.Settlers, x, y);
 				unit.Owner = player;
 				_units.Add(unit);
 

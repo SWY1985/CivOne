@@ -119,7 +119,7 @@ namespace CivOne.Units
 					return;
 				case HutResult.FriendlyTribe:
 					TribalHutMessage((s, e) => {
-						Game.Instance.CreateUnit(Common.Random.Next(0, 100) < 50 ? Unit.Cavalry : Unit.Legion, X, Y, Owner, true);
+						Game.Instance.CreateUnit(Common.Random.Next(0, 100) < 50 ? UnitType.Cavalry : UnitType.Legion, X, Y, Owner, true);
 					}, "You have discovered", "a friendly tribe of", "skilled mercenaries.");
 					return;
 				case HutResult.AdvancedTribe:
@@ -152,7 +152,7 @@ namespace CivOne.Units
 								if (tile.City != null || tile.Units.Length > 0) continue;
 								if (Common.Random.Next(0, 10) < 6) continue;
 								if (tile.IsOcean) continue;
-								Game.Instance.CreateUnit(Common.Random.Next(0, 100) < 50 ? Unit.Cavalry : Unit.Legion, tile.X, tile.Y, 0, true);
+								Game.Instance.CreateUnit(Common.Random.Next(0, 100) < 50 ? UnitType.Cavalry : UnitType.Legion, tile.X, tile.Y, 0, true);
 								count++;
 							}
 							if (count > 0) break;

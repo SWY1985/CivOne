@@ -16,7 +16,7 @@ namespace CivOne.Units
 	{
 		public Cannon() : base(4, 8, 1, 1)
 		{
-			Type = Unit.Cannon;
+			Type = UnitType.Cannon;
 			Name = "Cannon";
 			RequiredTech = new Metallurgy();
 			ObsoleteTech = new Robotics();

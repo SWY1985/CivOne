@@ -21,7 +21,7 @@ namespace CivOne.Units
 
 		public Fighter() : base(6, 4, 2, 10)
 		{
-			Type = Unit.Fighter;
+			Type = UnitType.Fighter;
 			Name = "Fighter";
 			RequiredTech = new Flight();
 			ObsoleteTech = null;

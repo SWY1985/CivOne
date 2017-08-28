@@ -170,7 +170,7 @@ namespace CivOne.Screens.GamePlayPanels
 				{
 					int ix = 7 + ((i % 4) * 16);
 					int iy = yy + (((i - (i % 4)) / 4) * 16);
-					_gameInfo.AddLayer(units[i].GetUnit(units[i].Owner), ix, iy);
+					_gameInfo.AddLayer(units[i].ToBitmap(), ix, iy);
 				}
 			}
 			else

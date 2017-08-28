@@ -16,7 +16,7 @@ namespace CivOne.Units
 	{
 		public Artillery() : base(6, 12, 2, 2)
 		{
-			Type = Unit.Artillery;
+			Type = UnitType.Artillery;
 			Name = "Artillery";
 			RequiredTech = new Robotics();
 			ObsoleteTech = null;

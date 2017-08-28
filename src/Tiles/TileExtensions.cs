@@ -13,6 +13,7 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.Graphics;
 using CivOne.Graphics.Sprites;
+using CivOne.IO;
 using CivOne.Units;
 
 using static CivOne.Enums.Direction;
@@ -230,11 +231,9 @@ namespace CivOne.Tiles
 			IUnit unit = units.First();
 			
 			IBitmap output = new Picture(16, 16, Palette);
-			using (IBitmap unitPicture = unit.GetUnit(unit.Owner))
-			{
-				if (tile.City == null) output.AddLayer(unitPicture);
-				if (stack || tile.City != null) output.AddLayer(unitPicture, -1, -1);
-			}
+			Bytemap unitPicture = unit.ToBitmap();
+			if (tile.City == null) output.AddLayer(unitPicture);
+			if (stack || tile.City != null) output.AddLayer(unitPicture, -1, -1);
 			return output;
 		}
 	}

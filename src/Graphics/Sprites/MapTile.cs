@@ -279,7 +279,7 @@ namespace CivOne.Graphics.Sprites
 		public static readonly ISpriteCollection<Direction> Hills = new CachedSpriteCollection<Direction>(GetTileLayer<Hills>);
 		public static readonly ISpriteCollection<Direction> Jungle = new CachedSpriteCollection<Direction>(GetTileLayer<Jungle>);
 		public static readonly ISpriteCollection<Direction> Mountains = new CachedSpriteCollection<Direction>(GetTileLayer<Mountains>);
-		public static readonly ISpriteCollection<(Direction land, Direction rivers)> Ocean = new CachedSpriteCollection<(Direction, Direction)>(GetOceanLayer);
+		public static readonly ISpriteCollection<(Direction, Direction)> Ocean = new CachedSpriteCollection<(Direction, Direction)>(GetOceanLayer);
 		public static readonly ISpriteCollection<Direction> Plains = new CachedSpriteCollection<Direction>(GetTileLayer<Plains>);
 		public static readonly ISpriteCollection<Direction> River = new CachedSpriteCollection<Direction>(GetRiverLayer);
 		public static readonly ISpriteCollection<Direction> Swamp = new CachedSpriteCollection<Direction>(GetTileLayer<Swamp>);

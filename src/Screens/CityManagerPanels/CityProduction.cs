@@ -108,7 +108,7 @@ namespace CivOne.Screens.CityManagerPanels
 				if (_city.CurrentProduction is IUnit)
 				{
 					IUnit unit = (_city.CurrentProduction as IUnit);
-					this.AddLayer(unit.GetUnit(_city.Owner), 33, 0);
+					this.AddLayer(unit.ToBitmap(_city.Owner), 33, 0);
 				}
 				else
 				{

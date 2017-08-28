@@ -9,6 +9,7 @@
 
 using CivOne.Buildings;
 using CivOne.Enums;
+using CivOne.Graphics.Sprites;
 using CivOne.Governments;
 
 namespace CivOne.Graphics
@@ -348,31 +349,10 @@ namespace CivOne.Graphics
 
 			if (city.HasBuilding<CityWalls>())
 			{
-				output.AddLayer(Fortify, 0, 0);
+				output.AddLayer(Generic.Fortify, 0, 0);
 			}
 			
 			return output;
-		}
-
-		private static IBitmap _fortify;
-		public static IBitmap Fortify
-		{
-			get
-			{
-				if (_fortify == null)
-				{
-					if (Resources.Exists("SP257"))
-					{
-						_fortify = Resources["SP257"][208, 112, 16, 16];
-					}
-					else
-					{
-						_fortify = Free.Instance.Fortify;
-					}
-					_fortify.ColourReplace(3, 0);
-				}
-				return _fortify;
-			}
 		}
 	}
 }
