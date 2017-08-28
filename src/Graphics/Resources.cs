@@ -339,7 +339,7 @@ namespace CivOne.Graphics
 		
 		private Resources()
 		{
-			LoadFonts();
+			if (!RuntimeHandler.Runtime.Settings.Free) LoadFonts();
 		}
 	}
 }
