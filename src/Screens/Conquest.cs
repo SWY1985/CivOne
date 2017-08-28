@@ -134,7 +134,7 @@ namespace CivOne.Screens
 		
 		public Conquest()
 		{
-			_background = Resources.Instance.LoadPIC("SLAM1");
+			_background = Resources["SLAM1"];
 			
 			Palette = _background.Palette;
 			

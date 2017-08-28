@@ -10,14 +10,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using CivOne.Enums;
+using CivOne.IO;
 
 namespace CivOne.Graphics
 {
 	internal class Free
 	{
-		private IBitmap _panelGrey, _panelBlue;
-		private IBitmap _landBase, _seaBase, _city, _fortify;
-		private IBitmap[] _terrain = new IBitmap[10];
+		private Bytemap _panelGrey, _panelBlue;
+		private Bytemap _landBase, _seaBase, _city, _fortify;
+		private Bytemap[] _terrain = new Bytemap[10];
 
 		private IEnumerable<byte> GenerateNoise(params byte[] values)
 		{
@@ -52,73 +53,73 @@ namespace CivOne.Graphics
 			}
 		}
 
-		public IBitmap PanelGrey
+		public Bytemap PanelGrey
 		{
 			get
 			{
 				if (_panelGrey == null)
 				{
-					_panelGrey = new Picture(16, 16, GenerateNoise(7, 22).Take(16 * 16).ToArray(), Common.GetPalette256);
+					_panelGrey = new Bytemap(16, 16).FromByteArray(GenerateNoise(7, 22).Take(16 * 16).ToArray());
 				}
 				return _panelGrey;
 			}
 		}
 
-		public IBitmap PanelBlue
+		public Bytemap PanelBlue
 		{
 			get
 			{
 				if (_panelBlue == null)
 				{
-					_panelBlue = new Picture(16, 16, GenerateNoise(57, 9).Take(16 * 16).ToArray(), Common.GetPalette256);
+					_panelBlue = new Bytemap(16, 16).FromByteArray(GenerateNoise(57, 9).Take(16 * 16).ToArray());
 				}
 				return _panelBlue;
 			}
 		}
 
-		public IBitmap LandBase
+		public Bytemap LandBase
 		{
 			get
 			{
 				if (_landBase == null)
 				{
-					_landBase = new Picture(16, 16, GenerateNoise(37, 38, 39).Take(16 * 16).ToArray(), Common.GetPalette256);
+					_landBase = new Bytemap(16, 16).FromByteArray(GenerateNoise(37, 38, 39).Take(16 * 16).ToArray());
 				}
 				return _landBase;
 			}
 		}
 
-		public IBitmap SeaBase
+		public Bytemap OceanBase
 		{
 			get
 			{
 				if (_seaBase == null)
 				{
-					_seaBase = new Picture(16, 16, GenerateNoise(77, 78, 79).Take(16 * 16).ToArray(), Common.GetPalette256);
+					_seaBase = new Bytemap(16, 16).FromByteArray(GenerateNoise(77, 78, 79).Take(16 * 16).ToArray());
 				}
 				return _seaBase;
 			}
 		}
 
-		public IBitmap Plains
+		public Bytemap Plains
 		{
 			get
 			{
 				if (_terrain[(int)Terrain.Plains] == null)
 				{
-					_terrain[(int)Terrain.Plains] = new Picture(16, 16, GenerateNoise(0, 0, 0, 47, 48, 0, 0, 0, 0).Take(16 * 16).ToArray(), Common.GetPalette256);
+					_terrain[(int)Terrain.Plains] = new Bytemap(16, 16).FromByteArray(GenerateNoise(0, 0, 0, 47, 48, 0, 0, 0, 0).Take(16 * 16).ToArray());
 				}
 				return _terrain[(int)Terrain.Plains];
 			}
 		}
 
-		public IBitmap Forest
+		public Bytemap Forest
 		{
 			get
 			{
 				if (_terrain[(int)Terrain.Forest] == null)
 				{
-					_terrain[(int)Terrain.Forest] = new Picture(16, 16, new byte[] {
+					_terrain[(int)Terrain.Forest] = new Bytemap(16, 16).FromByteArray(
 						0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 						0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 						0,  0,  0,  0,  0,  0,  5,  5,  0,  0,  0,  5,  5,  0,  0,  0,
@@ -134,14 +135,14 @@ namespace CivOne.Graphics
 						0,  5,  5,  5, 38, 39, 39, 38,  5,  5,  5,  0,  0,  0,  0,  0,
 						0,  0,  0,  0,  5, 47, 47,  5,  0,  0,  0,  0,  0,  0,  0,  0,
 						0,  0,  0,  0,  0,  5,  5,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-						0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-					}, Common.GetPalette256);
+						0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
+					);
 				}
 				return _terrain[(int)Terrain.Forest];
 			}
 		}
 
-		public IBitmap City
+		public Bytemap City
 		{
 			get
 			{
@@ -156,55 +157,56 @@ namespace CivOne.Graphics
 						.DrawLine(3, 11, 6, 11)
 						.DrawLine(3, 6, 3, 8)
 						.DrawLine(7, 3, 7, 11)
-						.DrawLine(11, 5, 11, 11);
+						.DrawLine(11, 5, 11, 11).Bitmap;
 				}
 				return _city;
 			}
 		}
 
-		public IBitmap Fortify
+		public Bytemap Fortify
 		{
 			get
 			{
 				if (_fortify == null)
 				{
-					_fortify = new Picture(16, 16, GenerateNoise(26, 27, 28).Take(16 * 16).ToArray(), Common.GetPalette256);
-					_fortify.AddLayer(new Picture(14, 14, GenerateNoise(24, 25, 26).Take(14 * 14).ToArray(), Common.GetPalette256));
-					_fortify.FillRectangle(2, 2, 12, 12, 0);
+					_fortify = new Bytemap(16, 16)
+						.FromByteArray(GenerateNoise(26, 27, 28).Take(16 * 16).ToArray())
+						.AddLayer(new Bytemap(14, 14).FromByteArray(GenerateNoise(24, 25, 26).Take(14 * 14).ToArray()))
+						.FillRectangle(2, 2, 12, 12, 0);
 				}
 				return _fortify;
 			}
 		}
 
-		public IBitmap Fog(Direction direction)
+		public Bytemap Fog(Direction direction)
 		{
-			IBitmap output = new Picture(16, 16);
+			Bytemap output = new Bytemap(16, 16);
 			switch(direction)
 			{
 				case Direction.West:
-					output.AddLayer(new Picture(3, 16, GenerateNoise(0, 28, 29, 30, 31).Take(3 * 16).ToArray(), Common.GetPalette256), 0, 0);
+					output.AddLayer(new Bytemap(3, 16).FromByteArray(GenerateNoise(0, 28, 29, 30, 31).Take(3 * 16).ToArray()), 0, 0);
 					break;
 				case Direction.South:
-					output.AddLayer(new Picture(16, 3, GenerateNoise(28, 0, 29, 30, 31).Take(16 * 3).ToArray(), Common.GetPalette256), 0, 13);
+					output.AddLayer(new Bytemap(16, 3).FromByteArray(GenerateNoise(28, 0, 29, 30, 31).Take(16 * 3).ToArray()), 0, 13);
 					break;
 				case Direction.East:
-					output.AddLayer(new Picture(3, 16, GenerateNoise(28, 29, 0, 30, 31).Take(3 * 16).ToArray(), Common.GetPalette256), 13, 0);
+					output.AddLayer(new Bytemap(3, 16).FromByteArray(GenerateNoise(28, 29, 0, 30, 31).Take(3 * 16).ToArray()), 13, 0);
 					break;
 				case Direction.North:
-					output.AddLayer(new Picture(16, 3, GenerateNoise(28, 29, 30, 0, 31).Take(16 * 3).ToArray(), Common.GetPalette256), 0, 0);
+					output.AddLayer(new Bytemap(16, 3).FromByteArray(GenerateNoise(28, 29, 30, 0, 31).Take(16 * 3).ToArray()), 0, 0);
 					break;
 			}
 			return output;
 		}
 
-		public IBitmap GetUnit(Unit type)
+		public Bytemap GetUnit(UnitType type)
 		{
-			IBitmap output = new Picture(16, 16, GenerateUnit().ToArray(), Common.GetPalette256);
+			Bytemap output = new Bytemap(16, 16).FromByteArray(GenerateUnit().ToArray());
 			char text = ' ';
 			switch (type)
 			{
-				case Unit.Settlers:
-					output.AddLayer(new Picture(10, 10, new byte[] {
+				case UnitType.Settlers:
+					output.AddLayer(new Bytemap(10, 10).FromByteArray(
 						0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 						0,  5,  5,  5,  5,  5,  5,  5,  0,  0,
 						5, 15, 15,  8, 15, 15,  8,  7,  5,  0,
@@ -214,11 +216,11 @@ namespace CivOne.Graphics
 						0,  8,  5,  0,  8,  8,  5,  0,  8,  0,
 						0,  8,  0,  0,  8,  8,  0,  0,  8,  0,
 						0,  0,  8,  8,  0,  0,  8,  8,  0,  0,
-						0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-					}, Common.GetPalette256), 3, 3);
+						0,  0,  0,  0,  0,  0,  0,  0,  0,  0
+					), 3, 3);
 					break;
-				case Unit.Militia:
-					output.AddLayer(new Picture(10, 10, new byte[] {
+				case UnitType.Militia:
+					output.AddLayer(new Bytemap(10, 10).FromByteArray(
 						0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 						0,  0,  0,  4,  4,  4,  0,  0,  0,  0,
 						0,  0,  4,  4,  4,  4,  4,  0,  0,  0,
@@ -228,40 +230,43 @@ namespace CivOne.Graphics
 						0,  0, 47, 47, 47, 47, 47,  0,  0, 21,
 						0,  0, 47,  8,  8,  8, 47,  0, 41, 41,
 						0,  0,  5, 47, 47, 47,  5,  0,  5,  5,
-						0,  5,  5,  5,  5,  5,  5,  5,  5,  0,
-					}, Common.GetPalette256), 3, 3);
+						0,  5,  5,  5,  5,  5,  5,  5,  5,  0
+					), 3, 3);
 					break;
-				case Unit.Phalanx: text = 'P'; break;
-				case Unit.Legion: text = 'L'; break;
-				case Unit.Musketeers: text = 'M'; break;
-				case Unit.Riflemen: text = 'R'; break;
-				case Unit.Cavalry: text = 'c'; break;
-				case Unit.Knights: text = 'K'; break;
-				case Unit.Catapult: text = 'C'; break;
-				case Unit.Cannon: text = 'X'; break;
-				case Unit.Chariot: text = 'W'; break;
-				case Unit.Armor: text = 'a'; break;
-				case Unit.MechInf: text = 'I'; break;
-				case Unit.Artillery: text = 'A'; break;
-				case Unit.Fighter: text = 'F'; break;
-				case Unit.Bomber: text = 'B'; break;
-				case Unit.Trireme: text = 'T'; break;
-				case Unit.Sail: text = 's'; break;
-				case Unit.Frigate: text = 'f'; break;
-				case Unit.Ironclad: text = 'i'; break;
-				case Unit.Cruiser: text = 'Y'; break;
-				case Unit.Battleship: text = 'Z'; break;
-				case Unit.Submarine: text = 'U'; break;
-				case Unit.Carrier: text = 'G'; break;
-				case Unit.Transport: text = 'H'; break;
-				case Unit.Nuclear: text = 'N'; break;
-				case Unit.Diplomat: text = 'D'; break;
-				case Unit.Caravan: text = 't'; break;
+				case UnitType.Phalanx: text = 'P'; break;
+				case UnitType.Legion: text = 'L'; break;
+				case UnitType.Musketeers: text = 'M'; break;
+				case UnitType.Riflemen: text = 'R'; break;
+				case UnitType.Cavalry: text = 'c'; break;
+				case UnitType.Knights: text = 'K'; break;
+				case UnitType.Catapult: text = 'C'; break;
+				case UnitType.Cannon: text = 'X'; break;
+				case UnitType.Chariot: text = 'W'; break;
+				case UnitType.Armor: text = 'a'; break;
+				case UnitType.MechInf: text = 'I'; break;
+				case UnitType.Artillery: text = 'A'; break;
+				case UnitType.Fighter: text = 'F'; break;
+				case UnitType.Bomber: text = 'B'; break;
+				case UnitType.Trireme: text = 'T'; break;
+				case UnitType.Sail: text = 's'; break;
+				case UnitType.Frigate: text = 'f'; break;
+				case UnitType.Ironclad: text = 'i'; break;
+				case UnitType.Cruiser: text = 'Y'; break;
+				case UnitType.Battleship: text = 'Z'; break;
+				case UnitType.Submarine: text = 'U'; break;
+				case UnitType.Carrier: text = 'G'; break;
+				case UnitType.Transport: text = 'H'; break;
+				case UnitType.Nuclear: text = 'N'; break;
+				case UnitType.Diplomat: text = 'D'; break;
+				case UnitType.Caravan: text = 't'; break;
 			}
 			if (text != ' ')
 			{
-				output.DrawText(text.ToString(), 0, 8, 8, 5, TextAlign.Center);
-				output.DrawText(text.ToString(), 0, 7, 8, 4, TextAlign.Center);
+				output.AddLayer(
+					new Picture(16, 16)
+						.DrawText(text.ToString(), 0, 8, 8, 5, TextAlign.Center)
+						.DrawText(text.ToString(), 0, 7, 8, 4, TextAlign.Center)
+						.Bitmap);
 			}
 			return output;
 		}

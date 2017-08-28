@@ -31,14 +31,14 @@ namespace CivOne.Screens.Reports
 
 			this.FillRectangle(0, 32, 320, 168, 8);
 
-			int fontHeight = Resources.Instance.GetFontHeight(FONT_ID);
+			int fontHeight = Resources.GetFontHeight(FONT_ID);
 			int yy = 32;
 			for (int i = (_page++ * 20); i < _cities.Length && i < (_page * 20); i++)
 			{
 				City city = _cities[i];
 
 				string production = (city.CurrentProduction as ICivilopedia).Name;
-				int productionWidth = Resources.Instance.GetTextSize(1, production).Width;
+				int productionWidth = Resources.GetTextSize(1, production).Width;
 
 				this.DrawText(city.Name, FONT_ID, 15, 8, yy)
 					.DrawText($"{city.Size}-{city.FoodTotal}{FOOD} {city.ShieldTotal}{SHIELD} {city.TradeTotal}{TRADE}", FONT_ID, 15, 80, yy)

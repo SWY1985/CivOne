@@ -13,77 +13,15 @@ namespace CivOne.Tiles
 {
 	internal class Arctic : BaseTile
 	{
-		public override byte Movement
-		{
-			get
-			{
-				return 2;
-			}
-		}
-		
-		public override byte Defense
-		{
-			get
-			{
-				return 2;
-			}
-		}
-		
-		public override sbyte Food
-		{
-			get
-			{
-				return (sbyte)(Special ? 2 : 0);
-			}
-		}
-		
-		public override sbyte Shield
-		{
-			get
-			{
-				return 0;
-			}
-		}
-		
-		public override sbyte Trade
-		{
-			get
-			{
-				return 0;
-			}
-		}
-		
-		public override sbyte IrrigationFoodBonus
-		{
-			get
-			{
-				return -1;
-			}
-		}
-		
-		public override byte IrrigationCost
-		{
-			get
-			{
-				return 0;
-			}
-		}
-		
-		public override sbyte MiningShieldBonus
-		{
-			get
-			{
-				return -1;
-			}
-		}
-		
-		public override byte MiningCost
-		{
-			get
-			{
-				return 0;
-			}
-		}
+		public override byte Movement => 2;
+		public override byte Defense => 2;
+		public override sbyte Food => (sbyte)(Special ? 2 : 0);
+		public override sbyte Shield => 0;
+		public override sbyte Trade => 0;
+		public override sbyte IrrigationFoodBonus => -1;
+		public override byte IrrigationCost => 0;
+		public override sbyte MiningShieldBonus => -1;
+		public override byte MiningCost => 0;
 		
 		public Arctic(int x, int y, bool special) : base(x, y, special)
 		{

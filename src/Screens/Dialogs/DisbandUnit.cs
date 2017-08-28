@@ -43,7 +43,7 @@ namespace CivOne.Screens.Dialogs
 			string[] message = new string[] { $"{city.Name} can't support", $"{unit.Name}." };
 			Picture[] output = new Picture[message.Length];
 			for (int i = 0; i < message.Length; i++)
-				output[i] = Resources.Instance.GetText(message[i], 0, 15);
+				output[i] = Resources.GetText(message[i], 0, 15);
 			return output;
 		}
 

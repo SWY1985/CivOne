@@ -33,6 +33,13 @@ namespace CivOne.Graphics
 			BottomColour = shadowColour
 		};
 
+		public static TextSettings UnitText(byte playerNumber) => new TextSettings()
+		{
+			Colour = (byte)(playerNumber == 1 ? 9 : 15),
+			BottomColour = 5,
+			Alignment = TextAlign.Center
+		};
+
 		public static TextSettings ThreeLayers(byte colour, byte topColour, byte bottomColour) => new TextSettings()
 		{
 			Colour = colour,

@@ -49,7 +49,7 @@ namespace CivOne.IO
 			}
 		}
 
-		internal void FillRectangle(int left, int top, int width, int height, byte colour)
+		internal void Fill(int left, int top, int width, int height, byte colour)
 		{
 			if (left < 0) { width -= left; left = 0; }
 			if (top < 0) { height -= top; top = 0; }

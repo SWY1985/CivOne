@@ -9,7 +9,7 @@
 
 namespace CivOne.Enums
 {
-	public enum Unit
+	public enum UnitType
 	{
 		Settlers = 0,
 		Militia = 1,

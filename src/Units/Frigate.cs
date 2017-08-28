@@ -24,7 +24,7 @@ namespace CivOne.Units
 
 		public Frigate() : base(4, 2, 2, 3)
 		{
-			Type = Unit.Frigate;
+			Type = UnitType.Frigate;
 			Name = "Frigate";
 			RequiredTech = new Magnetism();
 			ObsoleteTech = null;

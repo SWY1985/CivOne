@@ -17,7 +17,7 @@ namespace CivOne.Units
 	{
 		public Musketeers() : base(3, 2, 3, 1)
 		{
-			Type = Unit.Musketeers;
+			Type = UnitType.Musketeers;
 			Name = "Musketeers";
 			RequiredTech = new Gunpowder();
 			ObsoleteTech = new Conscription();

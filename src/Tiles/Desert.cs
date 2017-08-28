@@ -13,77 +13,15 @@ namespace CivOne.Tiles
 {
 	internal class Desert : BaseTile
 	{
-		public override byte Movement
-		{
-			get
-			{
-				return 1;
-			}
-		}
-		
-		public override byte Defense
-		{
-			get
-			{
-				return 2;
-			}
-		}
-		
-		public override sbyte Food
-		{
-			get
-			{
-				return (sbyte)((Special ? 2 : 0) + (Irrigation ? 1 : 0));
-			}
-		}
-		
-		public override sbyte Shield
-		{
-			get
-			{
-				return (sbyte)(1 + (Mine ? 1 : 0));
-			}
-		}
-		
-		public override sbyte Trade
-		{
-			get
-			{
-				return (sbyte)(Road || RailRoad ? 1 : 0);
-			}
-		}
-		
-		public override sbyte IrrigationFoodBonus
-		{
-			get
-			{
-				return -2;
-			}
-		}
-		
-		public override byte IrrigationCost
-		{
-			get
-			{
-				return 5;
-			}
-		}
-		
-		public override sbyte MiningShieldBonus
-		{
-			get
-			{
-				return -2;
-			}
-		}
-		
-		public override byte MiningCost
-		{
-			get
-			{
-				return 5;
-			}
-		}
+		public override byte Movement => 1;
+		public override byte Defense => 2;
+		public override sbyte Food => (sbyte)((Special ? 2 : 0) + (Irrigation ? 1 : 0));
+		public override sbyte Shield => (sbyte)(1 + (Mine ? 1 : 0));
+		public override sbyte Trade => (sbyte)(Road || RailRoad ? 1 : 0);
+		public override sbyte IrrigationFoodBonus => -2;
+		public override byte IrrigationCost => 5;
+		public override sbyte MiningShieldBonus => -2;
+		public override byte MiningCost => 5;
 		
 		public Desert(int x, int y, bool special) : base(x, y, special)
 		{

@@ -16,7 +16,7 @@ namespace CivOne.Units
 	{
 		public Cruiser() : base(8, 6, 6, 6, 2)
 		{
-			Type = Unit.Cruiser;
+			Type = UnitType.Cruiser;
 			Name = "Cruiser";
 			RequiredTech = new Combustion();
 			ObsoleteTech = null;

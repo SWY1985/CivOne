@@ -11,6 +11,8 @@ namespace CivOne.Enums
 {
 	public enum Direction
 	{
+		Alternating = -1,
+		None = 0,
 		North = 1,
 		East = 2,
 		South = 4,

@@ -13,6 +13,7 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.Graphics.Sprites;
 using CivOne.Tiles;
 using CivOne.Units;
 
@@ -107,11 +108,11 @@ namespace CivOne.Screens
 				{
 					foreach (HelpLabel helpLabel in HelpLabels)
 					{
-						Size textSize = Resources.Instance.GetTextSize(0, helpLabel.Text);
+						Size textSize = Resources.GetTextSize(0, helpLabel.Text);
 
 						int ww = textSize.Width + 11, hh = textSize.Height + 9;
 						Picture label = new Picture(textSize.Width + 11, textSize.Height + 9)
-							.Tile(Patterns.PanelGrey)
+							.Tile(Pattern.PanelGrey)
 							.DrawRectangle()
 							.DrawRectangle3D(1, 1, ww - 2, hh - 2)
 							.DrawText(helpLabel.Text, 0, 15, 5, 5)

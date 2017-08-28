@@ -9,6 +9,7 @@
 
 using CivOne.Buildings;
 using CivOne.Enums;
+using CivOne.Graphics.Sprites;
 using CivOne.Governments;
 
 namespace CivOne.Graphics
@@ -337,7 +338,7 @@ namespace CivOne.Graphics
 			}
 			else
 			{
-				resource = Free.Instance.City;
+				resource = new Picture(Free.Instance.City, Common.GetPalette256);
 			}
 			resource
 				.ColourReplace(3, 0)
@@ -348,92 +349,10 @@ namespace CivOne.Graphics
 
 			if (city.HasBuilding<CityWalls>())
 			{
-				output.AddLayer(Fortify, 0, 0);
+				output.AddLayer(Generic.Fortify, 0, 0);
 			}
 			
 			return output;
-		}
-
-		private static IBitmap _fortify;
-		public static IBitmap Fortify
-		{
-			get
-			{
-				if (_fortify == null)
-				{
-					if (Resources.Exists("SP257"))
-					{
-						_fortify = Resources["SP257"][208, 112, 16, 16];
-					}
-					else
-					{
-						_fortify = Free.Instance.Fortify;
-					}
-					_fortify.ColourReplace(3, 0);
-				}
-				return _fortify;
-			}
-		}
-
-		public static IBitmap Cursor(MouseCursor cursor, bool builtIn = false)
-		{
-			switch (cursor)
-			{
-				case MouseCursor.Pointer:
-					if (builtIn)
-					{
-						return new Picture(new byte[,]
-						{
-							{ 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0 },
-							{ 0, 5,15,15,15,15,15,15,15,15, 5, 0, 0, 0, 0, 0 },
-							{ 0, 0, 5,15,15,15,15,15,15,15, 5, 0, 0, 0, 0, 0 },
-							{ 0, 0, 0, 5,15,15,15,15,15,15, 5, 0, 0, 0, 0, 0 },
-							{ 0, 0, 0, 0, 5,15,15,15,15,15,15, 5, 5, 0, 0, 0 },
-							{ 0, 0, 0, 0, 0, 5,15,15,15,15,15,15,15, 5, 5, 0 },
-							{ 0, 0, 0, 0, 0, 0, 5,15,15,15, 5,15,15,15,15, 5 },
-							{ 0, 0, 0, 0, 0, 0, 0, 5,15,15, 5, 5, 5,15,15, 5 },
-							{ 0, 0, 0, 0, 0, 0, 0, 0, 5,15, 5, 0, 0, 5, 5, 0 },
-							{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 0, 0, 0, 0, 0,},
-							{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0,}
-						}, Common.GetPalette256);
-					}
-					return Resources["SP257"][113, 33, 15, 15];
-				case MouseCursor.Goto:
-					if (builtIn)
-					{
-						return new Picture(new byte[,]
-						{
-							{ 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0 },
-							{ 0, 5,15,15,15,15,15,15,15,15, 5, 0, 0, 0, 0, 0 },
-							{ 0, 0, 5,15,15,15,15,15,15,15, 5, 0, 0, 0, 0, 0 },
-							{ 0, 0, 0, 5,15,15,15,15,15,15, 5, 0, 0, 0, 0, 0 },
-							{ 0,15,15,15, 5,15,15,15,15,15,15, 5, 5, 0, 0, 0 },
-							{15, 0, 0, 0,15, 5,15,15,15,15,15,15,15, 5, 5, 0 },
-							{15, 0,15, 0,15, 0, 5,15,15,15, 5,15,15,15,15, 5 },
-							{ 0, 0,15,15, 0, 0, 0, 5,15,15, 5, 5, 5,15,15, 5 },
-							{ 0, 0, 0, 0, 0, 0, 0, 0, 5,15, 5, 0, 0, 5, 5, 0 },
-							{ 0,15,15,15, 0, 0, 0, 0, 0, 5, 5, 0, 0, 0, 0, 0,},
-							{15, 0, 0, 0,15, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0,},
-							{15, 0, 0, 0,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,},
-							{ 0,15,15,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,}
-						}, Common.GetPalette256);
-					}
-					return Resources["SP257"][33, 33, 15, 15];
-			}
-			return null;
-		}
-
-		private static IBitmap _fortress;
-		public static IBitmap Fortress
-		{
-			get
-			{
-				if (_fortress == null)
-				{
-					_fortress = Resources["SP257"][224, 112, 16, 16].ColourReplace(3, 0);
-				}
-				return _fortress;
-			}
 		}
 	}
 }

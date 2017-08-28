@@ -170,13 +170,11 @@ namespace CivOne.Screens.GamePlayPanels
 
 					MoveUnit movement = movingUnit.Movement;
 					this.AddLayer(Map[movingUnit.X - 1, movingUnit.Y - 1, 3, 3].ToBitmap(player: renderPlayer), dx - 16, dy - 16, dispose: true);
-					using (IBitmap unitPicture = movingUnit.GetUnit(movingUnit.Owner))
+					Bytemap unitPicture = movingUnit.ToBitmap();
+					this.AddLayer(unitPicture, dx + movement.X, dy + movement.Y);
+					if (movingUnit is IBoardable && tile.Units.Any(u => u.Class == UnitClass.Land && (tile.City == null || (tile.City != null && u.Sentry))))
 					{
-						this.AddLayer(unitPicture, dx + movement.X, dy + movement.Y);
-						if (movingUnit is IBoardable && tile.Units.Any(u => u.Class == UnitClass.Land && (tile.City == null || (tile.City != null && u.Sentry))))
-						{
-							this.AddLayer(unitPicture, dx + movement.X - 1, dy + movement.Y - 1);
-						}
+						this.AddLayer(unitPicture, dx + movement.X - 1, dy + movement.Y - 1);
 					}
 					return true;
 				}
@@ -533,7 +531,7 @@ namespace CivOne.Screens.GamePlayPanels
 			_x = 0;
 			_y = 0;
 			
-			_palette = Resources.Instance.LoadPIC("SP257").Palette.Copy();
+			_palette = Resources["SP257"].Palette.Copy();
 		}
 	}
 }

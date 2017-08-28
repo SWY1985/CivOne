@@ -10,6 +10,7 @@
 using System;
 using System.IO;
 using CivOne.Enums;
+using CivOne.Graphics.Sprites;
 
 namespace CivOne
 {
@@ -215,7 +216,9 @@ namespace CivOne
 				_cursorType = value;
 				string saveValue = ((int)_cursorType).ToString();
 				SetSetting("CursorType", saveValue);
+				Cursor.ClearCache();
 				Common.ReloadSettings = true;
+
 			}
 		}
 

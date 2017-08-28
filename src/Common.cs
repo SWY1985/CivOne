@@ -25,6 +25,7 @@ namespace CivOne
 {
 	internal class Common
 	{
+		private static Resources Resources => Resources.Instance;
 		private static IRuntime Runtime => RuntimeHandler.Runtime;
 		private static Settings Settings => Settings.Instance;
 		private static void Log(string text, params object[] parameters) => RuntimeHandler.Runtime.Log(text, parameters);
@@ -66,28 +67,13 @@ namespace CivOne
 			}
 		}
 
-		public static MouseCursor Cursor
+		public static MouseCursor MouseCursor
 		{
 			get
 			{
 				if (TopScreen == null)
 					return MouseCursor.None;
 				return TopScreen.Cursor;
-			}
-		}
-
-		public static IBitmap CursorGraphics
-		{
-			get
-			{
-				switch (Settings.Instance.CursorType)
-				{
-					case CursorType.Default:
-					case CursorType.Builtin:
-						return Icons.Cursor(Cursor, (Settings.Instance.CursorType == CursorType.Builtin));
-					default:
-						return null;
-				}
 			}
 		}
 
@@ -98,7 +84,7 @@ namespace CivOne
 				GamePlay gamePlay = GamePlay;
 				if (gamePlay != null)
 					return gamePlay.MainPalette.Copy();
-				return Resources.Instance.LoadPIC("SP257").OriginalColours.Copy();
+				return Resources["SP257"].Palette.Copy();
 			}
 		}
 

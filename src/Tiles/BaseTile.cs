@@ -13,11 +13,86 @@ using CivOne.Enums;
 using CivOne.Graphics;
 using CivOne.Units;
 
+using static CivOne.Enums.Direction;
+
 namespace CivOne.Tiles
 {
 	internal abstract class BaseTile : BaseInstance, ITile
 	{
-		public virtual IBitmap Icon => TileResources.GetIcon(Type);
+		private static IBitmap[] _icons = new Picture[12];
+		public virtual IBitmap Icon
+		{
+			get
+			{
+				int terrainId = (int)Type;
+				if (terrainId == 12) terrainId = 2;
+				if (_icons[terrainId] == null)
+				{
+					switch (Type)
+					{
+						case Terrain.Arctic:
+							_icons[terrainId] = Resources["ICONPGT1"][108, 1, 108, 86]
+								.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0)
+								.FillRectangle(106, 0, 2, 86, 0);
+							break;
+						case Terrain.Desert:
+							_icons[terrainId] = Resources["ICONPGT2"][1, 1, 108, 86]
+								.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0)
+								.FillRectangle(106, 0, 2, 86, 0);
+							break;
+						case Terrain.Forest:
+							_icons[terrainId] = Resources["ICONPGT2"][215, 1, 104, 86]
+								.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
+							break;
+						case Terrain.Grassland1:
+						case Terrain.Grassland2:
+							_icons[terrainId] = Resources["ICONPGT2"][108, 1, 108, 86]
+								.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0)
+								.FillRectangle(106, 0, 2, 86, 0);
+							break;
+						case Terrain.Hills:
+							_icons[terrainId] = Resources["ICONPGT2"][108, 88, 108, 86]
+								.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0)
+								.FillRectangle(106, 0, 2, 86, 0);
+							break;
+						case Terrain.Jungle:
+							_icons[terrainId] = Resources["ICONPGT1"][1, 88, 108, 86]
+								.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0)
+								.FillRectangle(106, 0, 2, 86, 0);
+							break;
+						case Terrain.Mountains:
+							_icons[terrainId] = Resources["ICONPGT2"][215, 88, 104, 86]
+								.ColourReplace(253, 0);
+							break;
+						case Terrain.Ocean:
+							_icons[terrainId] = Resources["ICONPGT1"][108, 88, 108, 86]
+								.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0)
+								.FillRectangle(106, 0, 2, 86, 0);
+							break;
+						case Terrain.Plains:
+							_icons[terrainId] = Resources["ICONPGT2"][1, 88, 108, 86]
+								.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0)
+								.FillRectangle(106, 0, 2, 86, 0);
+							break;
+						case Terrain.River:
+							_icons[terrainId] = Resources["ICONPGT1"][215, 88, 104, 86]
+								.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
+							break;
+						case Terrain.Swamp:
+							_icons[terrainId] = Resources["ICONPGT1"][215, 1, 104, 86]
+								.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0);
+							break;
+						case Terrain.Tundra:
+							_icons[terrainId] = Resources["ICONPGT1"][1, 1, 108, 86]
+								.ColourReplace((byte)(Settings.Instance.GraphicsMode == GraphicsMode.Graphics256 ? 253 : 15), 0)
+								.FillRectangle(106, 0, 2, 86, 0);
+							break;
+					}
+				}
+				return _icons[terrainId];
+			}
+		}
+
 		public Terrain Type { get; protected set; }
 		public string Name { get; protected set; }
 		public byte PageCount => 1;
@@ -25,9 +100,6 @@ namespace CivOne.Tiles
 		
 		public int X { get; private set; }
 		public int Y { get; private set; }
-		public int DistanceTo(int x, int y) => Common.DistanceToTile(X, Y, x, y);
-		public int DistanceTo(Point point) => Common.DistanceToTile(X, Y, point.X, point.Y);
-		public int DistanceTo(ITile tile) => Common.DistanceToTile(X, Y, tile.X, tile.Y);
 		public bool Special { get; protected set; }
 		public byte ContinentId { get; set; }
 		public byte LandValue { get; set; }
@@ -62,53 +134,6 @@ namespace CivOne.Tiles
 		public abstract sbyte MiningShieldBonus { get; }
 		public abstract byte MiningCost { get; }
 		
-		public ITile GetBorderTile(Direction direction)
-		{
-			switch (direction)
-			{
-				case Direction.North: return Map[X, Y - 1];
-				case Direction.East: return Map[X + 1, Y];
-				case Direction.South: return Map[X, Y + 1];
-				case Direction.West: return Map[X - 1, Y];
-				case Direction.NorthWest: return Map[X - 1, Y - 1];
-				case Direction.NorthEast: return Map[X + 1, Y - 1];
-				case Direction.SouthWest: return Map[X - 1, Y + 1];
-				case Direction.SouthEast: return Map[X + 1, Y + 1];
-			}
-			return null;
-		}
-		
-		public IEnumerable<ITile> GetBorderTiles()
-		{
-			for (int relY = -1; relY <= 1; relY++)
-			for (int relX = -1; relX <= 1; relX++)
-			{
-				if (relX == 0 && relY == 0) continue;
-				if (this[relX, relY] == null) continue;
-				yield return this[relX, relY];
-			}
-		}
-
-		public IEnumerable<ITile> Cross()
-		{
-			for (int relY = -1; relY <= 1; relY++)
-			for (int relX = -1; relX <= 1; relX++)
-			{
-				if (relX == 0 && relY == 0) continue;
-				if (relX != 0 && relY != 0) continue;
-				if (this[relX, relY] == null) continue;
-				yield return this[relX, relY];
-			}
-		}
-		
-		public Terrain GetBorderType(Direction direction)
-		{
-			ITile tile = GetBorderTile(direction);
-			if (tile == null) return Terrain.None;
-			if (tile.Type == Terrain.Grassland2) return Terrain.Grassland1;
-			return tile.Type;
-		}
-		
 		public byte Borders
 		{
 			get
@@ -120,24 +145,24 @@ namespace CivOne.Tiles
 				switch (type)
 				{
 					case Terrain.Ocean:
-						foreach (Direction direction in new[] { Direction.North, Direction.East, Direction.South, Direction.West })
+						foreach (Direction direction in new[] { North, East, South, West })
 						{
-							if (GetBorderType(direction) != Terrain.Ocean)
+							if (this.GetBorderType(direction) != Terrain.Ocean)
 								output += (byte)direction;
 						}
 						break;
 					case Terrain.River:
-						foreach (Direction direction in new[] { Direction.North, Direction.East, Direction.South, Direction.West })
+						foreach (Direction direction in new[] { North, East, South, West })
 						{
 							Terrain borderType;
-							if ((borderType = GetBorderType(direction)) == type || borderType == Terrain.Ocean)
+							if ((borderType = this.GetBorderType(direction)) == type || borderType == Terrain.Ocean)
 								output += (byte)direction;
 						}
 						break;
 					default:
-						foreach (Direction direction in new[] { Direction.North, Direction.East, Direction.South, Direction.West })
+						foreach (Direction direction in new[] { North, East, South, West })
 						{
-							if (GetBorderType(direction) == type)
+							if (this.GetBorderType(direction) == type)
 								output += (byte)direction;
 						}
 						break;
@@ -174,8 +199,8 @@ namespace CivOne.Tiles
 		
 		// This method is used to calculate whether a river or grassland tile is special.
 		protected bool AlternateSpecial() => ((X + Y) % 4 == 0) || ((X + Y) % 4 == 3);
-		public City City => Game.GetCity(X, Y);
-		public IUnit[] Units => Game.GetUnits(X, Y);
+		public City City => Game?.GetCity(X, Y);
+		public IUnit[] Units => Game?.GetUnits(X, Y);
 
 		public ITile this[int relativeX, int relativeY] => Map[X + relativeX, Y + relativeY];
 		

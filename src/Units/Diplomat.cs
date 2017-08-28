@@ -16,7 +16,7 @@ namespace CivOne.Units
 	{
 		public Diplomat() : base(3, 0, 0, 2)
 		{
-			Type = Unit.Diplomat;
+			Type = UnitType.Diplomat;
 			Name = "Diplomat";
 			RequiredTech = new Writing();
 			ObsoleteTech = null;

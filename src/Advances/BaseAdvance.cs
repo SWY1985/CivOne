@@ -63,7 +63,7 @@ namespace CivOne.Advances
 			{
 				case 1:
 					string[] text = new string[0];
-					text = Resources.Instance.GetCivilopediaText("BLURB0/" + Name.ToUpper());
+					text = Resources.GetCivilopediaText("BLURB0/" + Name.ToUpper());
 					
 					yy = 76;
 					foreach (string line in text)
@@ -101,7 +101,7 @@ namespace CivOne.Advances
 						yy += 4;
 						foreach (IUnit unit in Reflect.GetUnits().Where(u => u.RequiredTech != null && u.RequiredTech.Id == Id))
 						{
-							output.AddLayer(unit.GetUnit(Game.PlayerNumber(Human)), 40, yy - 5);
+							output.AddLayer(unit.ToBitmap(Game.PlayerNumber(Human)), 40, yy - 5);
 							output.DrawText(string.Format("{0} unit", unit.Name), 6, 12, 60, yy); yy += 12;
 						}
 						foreach (IBuilding building in Reflect.GetBuildings().Where(b => b.RequiredTech != null && b.RequiredTech.Id == Id))

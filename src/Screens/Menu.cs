@@ -61,7 +61,7 @@ namespace CivOne.Screens
 		
 		protected override bool HasUpdate(uint gameTick)
 		{
-			int fontHeight = Resources.Instance.GetFontHeight(FontId);
+			int fontHeight = Resources.GetFontHeight(FontId);
 			if (RowHeight != 0) fontHeight = RowHeight;
 			if (_change)
 			{
@@ -127,7 +127,7 @@ namespace CivOne.Screens
 		
 		private int MouseOverItem(ScreenEventArgs args)
 		{
-			int fontHeight = Resources.Instance.GetFontHeight(FontId);
+			int fontHeight = Resources.GetFontHeight(FontId);
 			if (RowHeight != 0) fontHeight = RowHeight;
 			int yy = Y;
 			

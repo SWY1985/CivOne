@@ -31,7 +31,7 @@ namespace CivOne.Screens.Dialogs
 
 		protected override void FirstUpdate()
 		{
-			Menu<IGovernment> menu = new Menu<IGovernment>("ChooseGovernment", Palette, Selection(3, 20, 84, (_availableGovernments.Length * Resources.Instance.GetFontHeight(0))))
+			Menu<IGovernment> menu = new Menu<IGovernment>("ChooseGovernment", Palette, Selection(3, 20, 84, (_availableGovernments.Length * Resources.GetFontHeight(0))))
 			{
 				X = 103,
 				Y = 84,
@@ -51,7 +51,7 @@ namespace CivOne.Screens.Dialogs
 		{
 			get
 			{
-				return (Game.HumanPlayer.AvailableGovernments.Count() * Resources.Instance.GetFontHeight(0)) + 23;
+				return (Game.HumanPlayer.AvailableGovernments.Count() * Resources.GetFontHeight(0)) + 23;
 			}
 		}
 

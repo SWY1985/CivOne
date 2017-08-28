@@ -451,10 +451,10 @@ namespace CivOne.Units
 			switch (pageNumber)
 			{
 				case 1:
-					text = Resources.Instance.GetCivilopediaText("BLURB2/" + Name.ToUpper());
+					text = Resources.GetCivilopediaText("BLURB2/" + Name.ToUpper());
 					break;
 				case 2:
-					text = Resources.Instance.GetCivilopediaText("BLURB2/" + Name.ToUpper() + "2");
+					text = Resources.GetCivilopediaText("BLURB2/" + Name.ToUpper() + "2");
 					break;
 				default:
 					Log("Invalid page number: {0}", pageNumber);
@@ -463,7 +463,7 @@ namespace CivOne.Units
 			
 			Picture output = new Picture(320, 200);
 			
-			output.AddLayer(GetUnit(1), 215, 47);
+			output.AddLayer(this.ToBitmap(1), 215, 47);
 			
 			int yy = 76;
 			foreach (string line in text)
@@ -492,7 +492,7 @@ namespace CivOne.Units
 		public IWonder RequiredWonder { get; protected set; }
 		public IAdvance ObsoleteTech { get; protected set; }
 		public UnitClass Class { get; protected set; }
-		public Unit Type { get; protected set; }
+		public UnitType Type { get; protected set; }
 		public City Home { get; protected set; }
 		public short BuyPrice { get; private set; }
 		public byte ProductionId => (byte)Type;
@@ -617,59 +617,10 @@ namespace CivOne.Units
 		{
 			if (_iconCache[(int)Type] == null)
 			{
-				_iconCache[(int)Type] = Resources.LoadPIC($"ICONPG{page}", true)[col * 160, row * 62, 160, 60]
+				_iconCache[(int)Type] = Resources[$"ICONPG{page}"][col * 160, row * 62, 160, 60]
 					.ColourReplace((byte)(GFX256 ? 253 : 15), 0);
 			}
 			Icon = _iconCache[(int)Type];
-		}
-		
-		public virtual IBitmap GetUnit(byte colour, bool showState = true)
-		{
-			int unitId = (int)Type;
-			string resFile = GFX256 ? "SP257" : "SPRITES";
-			int xx = (unitId % 20) * 16;
-			int yy = unitId < 20 ? 160 : 176;
-			
-			IBitmap icon;
-			if (Resources.Instance.Exists(resFile))
-			{
-				icon = Resources.Instance[resFile][xx, yy, 16, 16];
-			}
-			else
-			{
-				icon = Free.Instance.GetUnit(Type);
-			}
-			if (Common.ColourLight[colour] == 15) icon.ColourReplace((15, 11), (10, Common.ColourLight[colour]), (2, Common.ColourDark[colour]));
-			else if (Common.ColourDark[colour] == 8) icon.ColourReplace((7, 3), (10, Common.ColourLight[colour]), (2, Common.ColourDark[colour]));
-			else icon.ColourReplace((10, Common.ColourLight[colour]), (2, Common.ColourDark[colour]));
-			
-			icon.FillRectangle(0, 0, 16, 1, 0)
-				.FillRectangle(0, 1, 1, 15, 0);
-			
-			if (!showState)
-			{
-				return icon;
-			}
-
-			if (Sentry)
-			{
-				icon.ColourReplace((5, 7), (8, 7));
-			}
-			else if (FortifyActive)
-			{
-				icon.DrawText("F", 0, 5, 8, 9, TextAlign.Center);
-				icon.DrawText("F", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
-			}
-			else if (_fortify)
-			{
-				icon.AddLayer(Icons.Fortify, 0, 0);
-			}
-			else if (Human == Owner && Goto != Point.Empty)
-			{
-				icon.DrawText("G", 0, 5, 8, 9, TextAlign.Center);
-				icon.DrawText("G", 0, (byte)(colour == 1 ? 9 : 15), 8, 8, TextAlign.Center);
-			}
-			return icon;
 		}
 
 		protected MenuItem<int> MenuNoOrders() => MenuItem<int>.Create("No Orders").SetShortcut("space").OnSelect((s, a) => SkipTurn());

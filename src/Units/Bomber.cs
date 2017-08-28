@@ -21,7 +21,7 @@ namespace CivOne.Units
 		
 		public Bomber() : base(12, 12, 1, 8)
 		{
-			Type = Unit.Bomber;
+			Type = UnitType.Bomber;
 			Name = "Bomber";
 			RequiredTech = new AdvancedFlight();
 			ObsoleteTech = null;

@@ -13,85 +13,16 @@ namespace CivOne.Tiles
 {
 	internal class Ocean : BaseTile
 	{
-		public override byte Movement
-		{
-			get
-			{
-				return 1;
-			}
-		}
-		
-		public override byte Defense
-		{
-			get
-			{
-				return 2;
-			}
-		}
-		
-		public override sbyte Food
-		{
-			get
-			{
-				return (sbyte)(Special ? 2 : 1);
-			}
-		}
-		
-		public override sbyte Shield
-		{
-			get
-			{
-				return 0;
-			}
-		}
-		
-		public override sbyte Trade
-		{
-			get
-			{
-				return (sbyte)(2 + (Road || RailRoad ? 1 : 0));
-			}
-		}
-		
-		public override sbyte IrrigationFoodBonus
-		{
-			get
-			{
-				return -1;
-			}
-		}
-		
-		public override byte IrrigationCost
-		{
-			get
-			{
-				return 0;
-			}
-		}
-		
-		public override sbyte MiningShieldBonus
-		{
-			get
-			{
-				return -1;
-			}
-		}
-		
-		public override byte MiningCost
-		{
-			get
-			{
-				return 0;
-			}
-		}
-		
-		public override bool IsOcean
-		{
-			get
-			{
-				return true;
-			}
-		}
+		public override byte Movement => 1;
+		public override byte Defense => 2;
+		public override sbyte Food => (sbyte)(Special ? 2 : 1);
+		public override sbyte Shield => 0;
+		public override sbyte Trade => (sbyte)(2 + (Road || RailRoad ? 1 : 0));
+		public override sbyte IrrigationFoodBonus => -1;
+		public override byte IrrigationCost => 0;
+		public override sbyte MiningShieldBonus => -1;
+		public override byte MiningCost => 0;
+		public override bool IsOcean => true;
 		
 		public Ocean(int x, int y, bool special) : base(x, y, special)
 		{

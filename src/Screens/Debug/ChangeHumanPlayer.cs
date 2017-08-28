@@ -12,6 +12,7 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.Graphics.Sprites;
 using CivOne.UserInterface;
 
 namespace CivOne.Screens.Debug
@@ -62,7 +63,7 @@ namespace CivOne.Screens.Debug
 		{
 			Palette = Common.Screens.Last().OriginalColours;
 
-			int fontHeight = Resources.Instance.GetFontHeight(0);
+			int fontHeight = Resources.GetFontHeight(0);
 			int hh = (fontHeight * (Game.Players.Count() + 1)) + 5;
 			int ww = 128;
 
@@ -70,7 +71,7 @@ namespace CivOne.Screens.Debug
 			int yy = (200 - hh) / 2;
 
 			Picture menuGfx = new Picture(ww, hh)
-				.Tile(Patterns.PanelGrey)
+				.Tile(Pattern.PanelGrey)
 				.DrawRectangle3D()
 				.As<Picture>();
 			IBitmap menuBackground = menuGfx[2, 11, ww - 4, hh - 11].ColourReplace((7, 11), (22, 3));

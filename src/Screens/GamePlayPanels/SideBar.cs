@@ -14,6 +14,7 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
 using CivOne.IO;
+using CivOne.Graphics.Sprites;
 using CivOne.Tasks;
 using CivOne.Tiles;
 using CivOne.Units;
@@ -96,7 +97,7 @@ namespace CivOne.Screens.GamePlayPanels
 
 		private void DrawDemographics()
 		{
-			_demographics.Tile(Patterns.PanelGrey)
+			_demographics.Tile(Pattern.PanelGrey)
 				.DrawRectangle3D()
 				.FillRectangle(3, 2, 74, 11, 11)
 				.FillRectangle(3, 13, 74, 1, 2);
@@ -107,7 +108,7 @@ namespace CivOne.Screens.GamePlayPanels
 			}
 			_demographics.DrawText(Game.GameYear, 0, 5, 2, 23, TextAlign.Left);
 
-			int width = Resources.Instance.GetTextSize(0, Game.GameYear).Width;
+			int width = Resources.GetTextSize(0, Game.GameYear).Width;
 			int stage = (int)Math.Floor(((double)Human.Science / Human.ScienceCost) * 4);
 			_demographics.AddLayer(Icons.Lamp(stage), 4 + width, 22);
 
@@ -118,7 +119,7 @@ namespace CivOne.Screens.GamePlayPanels
 		{
 			IUnit unit = Game.ActiveUnit;
 			
-			_gameInfo.Tile(Patterns.PanelGrey)
+			_gameInfo.Tile(Pattern.PanelGrey)
 				.DrawRectangle3D();
 			
 			if (Game.CurrentPlayer != Human || (unit != null && Human != unit.Owner) || (GameTask.Any() && !GameTask.Is<Show>() && !GameTask.Is<Message>()))
@@ -169,7 +170,7 @@ namespace CivOne.Screens.GamePlayPanels
 				{
 					int ix = 7 + ((i % 4) * 16);
 					int iy = yy + (((i - (i % 4)) / 4) * 16);
-					_gameInfo.AddLayer(units[i].GetUnit(units[i].Owner), ix, iy);
+					_gameInfo.AddLayer(units[i].ToBitmap(), ix, iy);
 				}
 			}
 			else

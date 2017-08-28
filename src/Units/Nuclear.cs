@@ -22,7 +22,7 @@ namespace CivOne.Units
 		
 		public Nuclear() : base(16, 99, 0, 16)
 		{
-			Type = Unit.Nuclear;
+			Type = UnitType.Nuclear;
 			Name = "Nuclear";
 			RequiredTech = new Rocketry();
 			RequiredWonder = new ManhattanProject();

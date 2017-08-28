@@ -13,8 +13,12 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.Graphics.Sprites;
+using CivOne.IO;
 using CivOne.Tiles;
 using CivOne.Units;
+
+using static CivOne.Enums.Direction;
 
 namespace CivOne.Screens
 {
@@ -25,7 +29,7 @@ namespace CivOne.Screens
 			public bool Visible;
 			public int X, Y;
 			public ITile Tile;
-			public IBitmap Image => Resources[Tile];
+			public IBitmap Image => Tile.ToBitmap();
 			public Point Position => new Point(X * 16, Y * 16);
 		}
 
@@ -82,9 +86,9 @@ namespace CivOne.Screens
 				while (xx < 0) xx += 80;
 				while (xx >= 80) xx -= 80;
 
-				_overlay.AddLayer(_unit.GetUnit(_unit.Owner), cx + (xx * 16), cy + (yy * 16));
+				_overlay.AddLayer(_unit.ToBitmap(), cx + (xx * 16), cy + (yy * 16));
 				if (_unit.Tile.Units.Length > 1 && !_unit.Tile.Fortress && _unit.Tile.City == null)
-					_overlay.AddLayer(_unit.GetUnit(_unit.Owner), cx + (xx * 16) - 1, cy + (yy * 16) - 1);
+					_overlay.AddLayer(_unit.ToBitmap(), cx + (xx * 16) - 1, cy + (yy * 16) - 1);
 				
 				if (_animation == DestroyAnimation.Sprites)
 				{
@@ -152,10 +156,10 @@ namespace CivOne.Screens
 					output.AddLayer(t.Image, t.Position);
 					if (Settings.RevealWorld) continue;
 					
-					if (!Human.Visible(t.Tile, Direction.West)) output.AddLayer(Resources.Instance.GetFog(Direction.West), t.Position);
-					if (!Human.Visible(t.Tile, Direction.North)) output.AddLayer(Resources.Instance.GetFog(Direction.North), t.Position);
-					if (!Human.Visible(t.Tile, Direction.East)) output.AddLayer(Resources.Instance.GetFog(Direction.East), t.Position);
-					if (!Human.Visible(t.Tile, Direction.South)) output.AddLayer(Resources.Instance.GetFog(Direction.South), t.Position);
+					if (!Human.Visible(t.Tile, West)) output.AddLayer(MapTile.Fog[West], t.Position);
+					if (!Human.Visible(t.Tile, North)) output.AddLayer(MapTile.Fog[North], t.Position);
+					if (!Human.Visible(t.Tile, East)) output.AddLayer(MapTile.Fog[East], t.Position);
+					if (!Human.Visible(t.Tile, South)) output.AddLayer(MapTile.Fog[South], t.Position);
 				}
 
 				foreach (RenderTile t in renderTiles)
@@ -187,9 +191,9 @@ namespace CivOne.Screens
 						continue;
 					}
 					
-					output.AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position);
+					output.AddLayer(drawUnit.ToBitmap(), t.Position);
 					if (units.Length == 1) continue;
-					output.AddLayer(drawUnit.GetUnit(units[0].Owner), t.Position.X - 1, t.Position.Y - 1);
+					output.AddLayer(drawUnit.ToBitmap(), t.Position.X - 1, t.Position.Y - 1);
 				}
 
 				foreach (RenderTile t in renderTiles.Reverse())

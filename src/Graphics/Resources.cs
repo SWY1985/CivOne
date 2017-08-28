@@ -145,29 +145,6 @@ namespace CivOne.Graphics
 			}
 			return _textCache[key];
 		}
-		
-		public Picture LoadPIC(string filename, bool noCache = false)
-		{
-			string key = filename.ToUpper();
-			if (_cache.ContainsKey(key))
-			{
-				if (!noCache) return _cache[key];
-			}
-			
-			Picture output = null;
-			PicFile picFile = new PicFile(filename);
-			if ((Settings.GraphicsMode == GraphicsMode.Graphics256 && picFile.GetPicture256 != null) || picFile.GetPicture16 == null)
-			{
-				output = new Picture(picFile.GetPicture256, picFile.GetPalette256);
-			}
-			else
-			{
-				output = new Picture(picFile.GetPicture16, picFile.GetPalette16);
-			}
-			
-			if (!noCache) _cache.Add(key, output);
-			return output;
-		}
 
 		public bool Exists(string filename)
 		{
@@ -210,7 +187,7 @@ namespace CivOne.Graphics
 			{
 				if (_worldMapTiles == null)
 				{
-					Picture sp299 = Resources.Instance.LoadPIC("SP299");
+					Picture sp299 = Instance["SP299"];
 					_worldMapTiles = new Picture(48, 8, sp299.Palette);
 					_worldMapTiles.AddLayer(sp299[160, 111, 48, 8]);
 				}
@@ -218,23 +195,29 @@ namespace CivOne.Graphics
 			}
 		}
 
-		public IBitmap GetFog(Direction direction)
-		{
-			if (!_fog.ContainsKey(direction)) return null;
-			return _fog[direction];
-		}
-
-		public Picture this[string filename] => LoadPIC(filename);
-
-		public IBitmap this[ITile tile, bool improvements = true, bool roads = true]
+		public Picture this[string filename]
 		{
 			get
 			{
-				if (Settings.GraphicsMode == GraphicsMode.Graphics16)
+				string key = filename.ToUpper();
+				if (_cache.ContainsKey(key))
 				{
-					return TileResources.GetTile16(tile, improvements, roads);
+					return new Picture(_cache[key].Bitmap, _cache[key].Palette);
 				}
-				return TileResources.GetTile256(tile, improvements, roads);
+				
+				Picture output = null;
+				PicFile picFile = new PicFile(filename);
+				if ((Settings.GraphicsMode == GraphicsMode.Graphics256 && picFile.GetPicture256 != null) || picFile.GetPicture16 == null)
+				{
+					output = new Picture(picFile.GetPicture256, picFile.GetPalette256);
+				}
+				else
+				{
+					output = new Picture(picFile.GetPicture16, picFile.GetPalette16);
+				}
+				
+				if (!_cache.ContainsKey(key)) _cache.Add(key, output);
+				return new Picture(_cache[key].Bitmap, _cache[key].Palette);
 			}
 		}
 
@@ -356,21 +339,6 @@ namespace CivOne.Graphics
 		private Resources()
 		{
 			LoadFonts();
-
-			if (!Exists("SP257"))
-			{
-				foreach (Direction direction in new [] { Direction.West, Direction.South, Direction.East, Direction.North })
-				{
-					_fog.Add(direction, Free.Instance.Fog(direction));
-				}
-			}
-			else
-			{
-				_fog.Add(Direction.West, this["SP257"][128, 128, 16, 16]);
-				_fog.Add(Direction.South, this["SP257"][112, 128, 16, 16]);
-				_fog.Add(Direction.East, this["SP257"][96, 128, 16, 16]);
-				_fog.Add(Direction.North, this["SP257"][80, 128, 16, 16]);
-			}
 		}
 	}
 }

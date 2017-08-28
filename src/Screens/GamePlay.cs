@@ -356,7 +356,7 @@ namespace CivOne.Screens
 		{
 			OnResize += Resize;
 			
-			Palette = Resources.Instance.LoadPIC("SP257").OriginalColours;
+			Palette = Resources["SP257"].Palette;
 			
 			_rightSideBar = Settings.RightSideBar;
 

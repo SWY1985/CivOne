@@ -11,6 +11,7 @@ using System;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.Graphics;
+using CivOne.Graphics.Sprites;
 using CivOne.Tasks;
 using CivOne.UserInterface;
 
@@ -40,7 +41,7 @@ namespace CivOne.Screens.Debug
 
 			bool more = (cities.Length < _cities.Length);
 
-			int fontHeight = Resources.Instance.GetFontHeight(0);
+			int fontHeight = Resources.GetFontHeight(0);
 			int hh = (fontHeight * (cities.Length + (more ? 2 : 1))) + 5;
 			int ww = 136;
 
@@ -48,7 +49,7 @@ namespace CivOne.Screens.Debug
 			int yy = (200 - hh) / 2;
 
 			Picture menuGfx = new Picture(ww, hh)
-				.Tile(Patterns.PanelGrey)
+				.Tile(Pattern.PanelGrey)
 				.DrawRectangle3D()
 				.As<Picture>();
 			IBitmap menuBackground = menuGfx[2, 11, ww - 4, hh - 11].ColourReplace((7, 11), (22, 3));

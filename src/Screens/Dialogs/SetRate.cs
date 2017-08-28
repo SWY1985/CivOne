@@ -49,7 +49,7 @@ namespace CivOne.Screens.Dialogs
 		{
 			get
 			{
-				return MenuOptions(_luxuries).Max(x => Resources.Instance.GetTextSize(0, x).Width) + 11;
+				return MenuOptions(_luxuries).Max(x => Resources.GetTextSize(0, x).Width) + 11;
 			}
 		}
 
@@ -65,7 +65,7 @@ namespace CivOne.Screens.Dialogs
 
 		protected override void FirstUpdate()
 		{
-			Menu menu = new Menu(Palette, Selection(3, 12, ItemWidth, (_menuItems.Length * Resources.Instance.GetFontHeight(FONT_ID)) + 4))
+			Menu menu = new Menu(Palette, Selection(3, 12, ItemWidth, (_menuItems.Length * Resources.GetFontHeight(FONT_ID)) + 4))
 			{
 				X = 103,
 				Y = 92,
@@ -111,12 +111,12 @@ namespace CivOne.Screens.Dialogs
 
 		private static int DialogWidth(bool luxuries)
 		{
-			return MenuOptions(luxuries).Max(x => Resources.Instance.GetTextSize(0, x).Width) + 15;
+			return MenuOptions(luxuries).Max(x => Resources.GetTextSize(0, x).Width) + 15;
 		}
 
 		private static int DialogHeight(bool luxuries)
 		{
-			return (MenuOptions(luxuries).Count() * Resources.Instance.GetFontHeight(FONT_ID)) + 15;
+			return (MenuOptions(luxuries).Count() * Resources.GetFontHeight(FONT_ID)) + 15;
 		}
 
 		public static SetRate Taxes

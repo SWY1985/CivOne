@@ -15,6 +15,7 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
 using CivOne.IO;
+using CivOne.Graphics.Sprites;
 using CivOne.UserInterface;
 
 namespace CivOne.Screens
@@ -67,10 +68,10 @@ namespace CivOne.Screens
 			if (!_update) return true;
 			
 			int ww = MaxItemWidth + 17;
-			int hh = (Resources.Instance.GetFontHeight(0) * Items.Count) + 9;
+			int hh = (Resources.GetFontHeight(0) * Items.Count) + 9;
 			
 			Bitmap = new Bytemap(ww, hh);
-			this.Tile(Patterns.PanelGrey, 1, 1)
+			this.Tile(Pattern.PanelGrey, 1, 1)
 				.DrawRectangle()
 				.DrawRectangle3D(1, 1, ww - 2, hh - 2)
 				.As<Picture>();
@@ -81,11 +82,11 @@ namespace CivOne.Screens
 			{
 				if (i == _activeItem)
 				{
-					this.ColourReplace(7, 11, 3, yy - 1, MaxItemWidth + 11, Resources.Instance.GetFontHeight(0))
-						.ColourReplace(22, 3, 3, yy - 1, MaxItemWidth + 11, Resources.Instance.GetFontHeight(0));
+					this.ColourReplace(7, 11, 3, yy - 1, MaxItemWidth + 11, Resources.GetFontHeight(0))
+						.ColourReplace(22, 3, 3, yy - 1, MaxItemWidth + 11, Resources.GetFontHeight(0));
 				}
 				MenuItemDraw(menuItem, 11, yy);
-				yy += Resources.Instance.GetFontHeight(0);
+				yy += Resources.GetFontHeight(0);
 				i++;
 			}
 			
@@ -126,7 +127,7 @@ namespace CivOne.Screens
 		
 		private int MouseOverItem(ScreenEventArgs args)
 		{
-			int fontHeight = Resources.Instance.GetFontHeight(0);
+			int fontHeight = Resources.GetFontHeight(0);
 			int yy = 5;
 			
 			for (int i = 0; i < Items.Count; i++)

@@ -38,8 +38,8 @@ namespace CivOne.Screens
 		
 		public Demo() : base(MouseCursor.Pointer)
 		{
-			Picture background = Resources.Instance.LoadPIC("BIRTH1");
-			Picture logo = Resources.Instance.LoadPIC("LOGO");
+			Picture background = Resources["BIRTH1"];
+			Picture logo = Resources["LOGO"];
 			switch (Settings.GraphicsMode)
 			{
 				case GraphicsMode.Graphics256:

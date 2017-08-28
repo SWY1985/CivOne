@@ -16,7 +16,7 @@ namespace CivOne.Units
 	{
 		public Legion() : base(2, 3, 1, 1)
 		{
-			Type = Unit.Legion;
+			Type = UnitType.Legion;
 			Name = "Legion";
 			RequiredTech = new IronWorking();
 			ObsoleteTech = new Conscription();
