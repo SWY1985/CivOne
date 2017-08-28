@@ -143,7 +143,7 @@ namespace CivOne.Graphics.Sprites
 		{
 			string picFile = (GFX256 ? "SP257" : "SPRITES");
 			if (!Resources.Exists(picFile))
-				return null;
+				return Free.River(directions);
 			return Resources[picFile].Bitmap[(int)directions * 16, 80, 16, 16];
 		}
 
@@ -155,8 +155,17 @@ namespace CivOne.Graphics.Sprites
 			{
 				switch (new T().Type)
 				{
+					case Terrain.Arctic: return Free.Arctic;
+					case Terrain.Desert: return Free.Desert;
 					case Terrain.Forest: return Free.Forest;
+					case Terrain.Grassland1:
+					case Terrain.Grassland2: return Free.Grassland;
+					case Terrain.Jungle: return Free.Jungle;
+					case Terrain.Hills: return Free.Hills;
+					case Terrain.Mountains: return Free.Mountains;
 					case Terrain.Plains: return Free.Plains;
+					case Terrain.Swamp: return Free.Swamp;
+					case Terrain.Tundra: return Free.Tundra;
 				}
 				return null;
 			}
@@ -170,7 +179,7 @@ namespace CivOne.Graphics.Sprites
 			int terrainId = (int)new T().Type;
 			string picFile = (GFX256 ? "SP257" : "SPRITES");
 			if (!Resources.Exists(picFile))
-				return null;
+				return Free.Special(new T().Type);
 			if (typeof(T) == typeof(Grassland))
 				return new Bytemap(16, 16)
 					.AddLayer(Resources[picFile].Bitmap[152, 40, 8, 8].ColourReplace(3, 0), 4, 4);
