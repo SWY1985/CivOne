@@ -148,6 +148,7 @@ namespace CivOne.Graphics
 
 		public bool Exists(string filename)
 		{
+			if (RuntimeHandler.Runtime.Settings.Free) return false;
 			return PicFile.Exists(filename);
 		}
 		

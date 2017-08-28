@@ -288,9 +288,9 @@ namespace CivOne.Graphics.ImageFormats
 			filename = GetFilename(filename);
 
 			// generate an exception if the file is not found
-			if (!File.Exists(filename))
+			if (RuntimeHandler.Runtime.Settings.Free || !File.Exists(filename))
 			{
-				Log($"File not found: {filename.ToUpper()}.PIC");
+				if (!File.Exists(filename)) Log($"File not found: {filename.ToUpper()}.PIC");
 				HasPalette16 = true;
 				HasPalette256 = true;
 				_palette256 = Common.GetPalette256;

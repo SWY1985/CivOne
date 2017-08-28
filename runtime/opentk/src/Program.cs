@@ -20,8 +20,10 @@ arguments:
   -h|--help             Show this documentation.
 
 runtime-options:
-  --demo                Show the Demo screen before launching the game.
-  --setup               Show the Setup screen before launching the game.
+  --demo                Show the Demo screen before launching the game
+  --setup               Show the Setup screen before launching the game
+  --free                Launch the game with free assets. Does not load assets,
+                        disables sound, skips data check, intro and credits
   --no-data-check       Disables checking for game data files
   --no-sound            Disable ingame sounds
   --skip-credits        Skips the game credits sequence
@@ -53,12 +55,18 @@ Try 'civone-opentk --help' for more information.
 				{
 					case "demo": settings.Demo = true; continue;
 					case "setup": settings.Setup = true; continue;
+					case "free": settings.Free = true; continue;
 					case "no-sound": settings["no-sound"] = true; continue;
 					case "no-data-check": settings.DataCheck = false; continue;
 					case "skip-credits": settings.ShowCredits = false; continue;
 					case "skip-intro": settings.ShowIntro = false; continue;
 					default: Console.WriteLine(ErrorText); return;
 				}
+			}
+
+			if (settings.Free)
+			{
+				settings["no-sound"] = true;
 			}
 
 			using (Runtime runtime = new Runtime(settings))
