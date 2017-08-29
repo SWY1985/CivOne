@@ -114,7 +114,7 @@ namespace CivOne.Screens
 			_gameMenu.Items.Add("Top 5 Cities (F8)").OnSelect((s, a) => Common.AddScreen(new TopCities()));;
 			_gameMenu.Items.Add("Civilization Score (F9)").OnSelect((s, a) => Common.AddScreen(new CivilizationScore()));
 			_gameMenu.Items.Add("World Map (F10)").OnSelect((s, a) => Common.AddScreen(new WorldMap()));
-			_gameMenu.Items.Add("Demographics");
+			_gameMenu.Items.Add("Demographics").OnSelect((s, a) => Common.AddScreen(new Demographics()));
 			_gameMenu.Items.Add("SpaceShips").Disable();
 			
 			_menuX = 144;
