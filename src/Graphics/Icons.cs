@@ -24,9 +24,16 @@ namespace CivOne.Graphics
 			{
 				if (_food == null)
 				{
-					_food = Resources["SP257"][128, 32, 8, 8]
-						.ColourReplace(3, 0)
-						.FillRectangle(0, 0, 1, 8, 0);
+					if (RuntimeHandler.Runtime.Settings.Free || !Resources.Exists("SP257"))
+					{
+						_food = new Picture(Free.Instance.Food, Common.GetPalette256);
+					}
+					else
+					{
+						_food = Resources["SP257"][128, 32, 8, 8]
+							.ColourReplace(3, 0)
+							.FillRectangle(0, 0, 1, 8, 0);
+					}
 				}
 				return _food;
 			}
@@ -54,7 +61,14 @@ namespace CivOne.Graphics
 			{
 				if (_shield == null)
 				{
-					_shield = Resources["SP257"][136, 32, 8, 8].ColourReplace(3, 0);
+					if (RuntimeHandler.Runtime.Settings.Free || !Resources.Exists("SP257"))
+					{
+						_shield = new Picture(Free.Instance.Shield, Common.GetPalette256);
+					}
+					else
+					{
+						_shield = Resources["SP257"][136, 32, 8, 8].ColourReplace(3, 0);
+					}
 				}
 				return _shield;
 			}
@@ -80,7 +94,14 @@ namespace CivOne.Graphics
 			{
 				if (_trade == null)
 				{
-					_trade = Resources["SP257"][144, 32, 8, 8].ColourReplace(3, 0);
+					if (RuntimeHandler.Runtime.Settings.Free || !Resources.Exists("SP257"))
+					{
+						_trade = new Picture(Free.Instance.Trade, Common.GetPalette256);
+					}
+					else
+					{
+						_trade = Resources["SP257"][144, 32, 8, 8].ColourReplace(3, 0);
+					}
 				}
 				return _trade;
 			}
@@ -106,7 +127,14 @@ namespace CivOne.Graphics
 			{
 				if (_luxuries == null)
 				{
-					_luxuries = Resources["SP257"][144, 40, 8, 8].ColourReplace(3, 0);
+					if (RuntimeHandler.Runtime.Settings.Free || !Resources.Exists("SP257"))
+					{
+						_luxuries = new Picture(Free.Instance.Luxuries, Common.GetPalette256);
+					}
+					else
+					{
+						_luxuries = Resources["SP257"][144, 40, 8, 8].ColourReplace(3, 0);
+					}
 				}
 				return _luxuries;
 			}
@@ -119,7 +147,14 @@ namespace CivOne.Graphics
 			{
 				if (_taxes == null)
 				{
-					_taxes = Resources["SP257"][152, 32, 8, 8].ColourReplace(3, 0);
+					if (RuntimeHandler.Runtime.Settings.Free || !Resources.Exists("SP257"))
+					{
+						_taxes = new Picture(Free.Instance.Taxes, Common.GetPalette256);
+					}
+					else
+					{
+						_taxes = Resources["SP257"][152, 32, 8, 8].ColourReplace(3, 0);
+					}
 				}
 				return _taxes;
 			}
@@ -132,7 +167,14 @@ namespace CivOne.Graphics
 			{
 				if (_science == null)
 				{
-					_science = Resources["SP257"][128, 40, 8, 8].ColourReplace(3, 0);
+					if (RuntimeHandler.Runtime.Settings.Free || !Resources.Exists("SP257"))
+					{
+						_science = new Picture(Free.Instance.Science, Common.GetPalette256);
+					}
+					else
+					{
+						_science = Resources["SP257"][128, 40, 8, 8].ColourReplace(3, 0);
+					}
 				}
 				return _science;
 			}
