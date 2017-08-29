@@ -209,6 +209,8 @@ namespace CivOne
 		{
 			get
 			{
+				if (Runtime.Settings.Free && _cursorType == CursorType.Default)
+					return CursorType.Builtin;
 				return _cursorType;
 			}
 			set
