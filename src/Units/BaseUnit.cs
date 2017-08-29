@@ -324,6 +324,13 @@ namespace CivOne.Units
 						}
 					}
 					Movement = null;
+					if (Map[X, Y][relX, relY].City != null)
+					{
+						if (!Map[X, Y][relX, relY].City.HasBuilding<CityWalls>())
+						{
+							Map[X, Y][relX, relY].City.Size--;
+						}
+					}
 				};
 			}
 			else
