@@ -82,7 +82,6 @@ namespace CivOne.Screens
 		
 		internal static int SelectedGame = 0;
 		
-		private readonly Palette _palette;
 		private char _driveLetter = 'C';
 		private readonly int _border = Common.Random.Next(2);
 		private int _gameId;
@@ -263,7 +262,7 @@ namespace CivOne.Screens
 		
 		public SaveGame(int gameId)
 		{
-			_palette = Resources["SP257"].Palette;
+			Palette = Resources["SP257"].Palette;
 			_gameId = gameId;
 		}
 	}
