@@ -251,6 +251,7 @@ namespace CivOne.Units
 					((Map[X, Y] is Jungle) || (Map[X, Y] is Swamp)) ? "Change to Grassland" :
 					"Build Irrigation")
 			.SetShortcut("i")
+			.SetEnabled(Map[X, Y].AllowIrrigation() || Map[X, Y].AllowChangeTerrain())
 			.OnSelect((s, a) => GameTask.Enqueue(Orders.BuildIrrigation(this)));
 
 		private MenuItem<int> MenuBuildMines() => MenuItem<int>
@@ -262,7 +263,7 @@ namespace CivOne.Units
 		private MenuItem<int> MenuBuildFortress() => MenuItem<int>
 			.Create("Build fortress")
 			.SetShortcut("f")
-			.SetEnabled(!Game.CurrentPlayer.HasAdvance<Construction>())
+			.SetEnabled(Game.CurrentPlayer.HasAdvance<Construction>())
 			.OnSelect((s, a) => GameTask.Enqueue(Orders.BuildFortress(this)));
 		
 		public override IEnumerable<MenuItem<int>> MenuItems

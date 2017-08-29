@@ -130,6 +130,18 @@ namespace CivOne.Tiles
 			return BorderRailRoads(tile);
 		}
 
+		public static bool AllowIrrigation(this ITile tile)
+		{
+			if (tile.Irrigation) return false;
+			if (!(tile is Desert || tile is Grassland || tile is Hills || tile is Plains || tile is River)) return false;
+			return (CrossTiles(tile).Any(x => x.Irrigation || x is River || x is Ocean));
+		}
+
+		public static bool AllowChangeTerrain(this ITile tile)
+		{
+			return (tile is Forest || tile is Jungle || tile is Swamp);
+		}
+
 		public static IBitmap ToBitmap(this ITile[,] tiles, TileSettings settings = null, Player player = null)
 		{
 			if (settings == null) settings = TileSettings.Default;
