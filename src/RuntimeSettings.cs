@@ -15,9 +15,27 @@ namespace CivOne
 	{
 		private readonly Dictionary<string, object> _customSettings = new Dictionary<string, object>();
 
+		private bool _free;
+
 		public bool Demo { get; set; }
 		public bool Setup { get; set; }
 		public bool DataCheck { get; set; }
+		public bool Free
+		{
+			get
+			{
+				return _free;
+			}
+			set
+			{
+				if (_free = value)
+				{
+					DataCheck = false;
+					ShowCredits = false;
+					ShowIntro = false;
+				}
+			}
+		}
 		public bool ShowCredits { get; set; }
 		public bool ShowIntro { get; set; }
 
@@ -54,6 +72,7 @@ namespace CivOne
 			DataCheck = true;
 			ShowCredits = true;
 			ShowIntro = true;
+			Free = false;
 		}
 	}
 }

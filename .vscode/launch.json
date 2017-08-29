@@ -40,6 +40,18 @@
 			"internalConsoleOptions": "openOnFirstSessionStart"
 		},
 		{
+			"name": "Launch Free",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "build",
+			"program": "${workspaceRoot}/runtime/opentk/bin/Debug/netcoreapp2.0/CivOne.OpenTK.dll",
+			"args": ["free"],
+			"cwd": "${workspaceRoot}",
+			"stopAtEntry": false,
+			"console": "internalConsole",
+			"internalConsoleOptions": "openOnFirstSessionStart"
+		},
+		{
 			"name": "Launch Win32",
 			"type": "mono",
 			"request": "launch",

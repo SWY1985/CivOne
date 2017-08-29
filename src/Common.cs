@@ -320,13 +320,20 @@ namespace CivOne
 						{
 							// Greens
 							int ii = (i % 8);
-							_palette256[i] = new Colour(0, 197 - (ii * 8), 80 - (ii * 7));
+							_palette256[i] = new Colour(0, 197 - (ii * 11), 80 - (ii * 7));
 							continue;
 						}
-						if (i >= 40 && i < 48)
+						if (i >= 40 && i < 42)
+						{
+							// Browns
+							int ii = (i % 2);
+							_palette256[i] = new Colour(128 + (ii * 16), 64 + (ii * 8), 0);
+							continue;
+						}
+						if (i >= 42 && i < 48)
 						{
 							// Yellows
-							int ii = (i % 8);
+							int ii = (i + 2 % 6);
 							_palette256[i] = new Colour(254 - (ii * 6), 245 - (ii * 6), 0);
 							continue;
 						}
