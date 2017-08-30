@@ -745,8 +745,17 @@ namespace CivOne.Screens
 					_invaders[ii] = invaders[xx + (frameX * (ww + 1)), yy + (frameY * (hh + 1)), ww, hh];
 				}
 				_x = 0;
+
+				int totalLuxuries = Game.GetPlayer(_city.Owner).Cities.Sum(x => x.Luxuries);
+				int totalGold = Game.GetPlayer(_city.Owner).Gold;
+				int cityLuxuries = _city.Luxuries;
+				if (cityLuxuries == 0) cityLuxuries = 1;
+				int captureGold = (int)Math.Floor(((float)totalGold / totalLuxuries) * cityLuxuries);
+
+				Game.GetPlayer(_city.Owner).Gold -= (short)captureGold;
+				Game.CurrentPlayer.Gold += (short)captureGold;
 				
-				string[] lines =  new [] { $"{Game.CurrentPlayer.TribeNamePlural} capture", $"{city.Name}. 0 gold", "pieces plundered." };
+				string[] lines =  new [] { $"{Game.CurrentPlayer.TribeNamePlural} capture", $"{city.Name}. {captureGold} gold", "pieces plundered." };
 				int width = lines.Max(l => Resources.GetTextSize(5, l).Width) + 12;
 				Picture dialog = new Picture(width, 54)
 					.Tile(Pattern.PanelGrey, 1, 1)
