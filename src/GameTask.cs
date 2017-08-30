@@ -82,6 +82,7 @@ namespace CivOne
 		{
 			if (Done == null) return;
 			Done(this, null);
+			Done = null;
 		}
 	}
 }
