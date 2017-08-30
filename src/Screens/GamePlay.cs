@@ -268,31 +268,37 @@ namespace CivOne.Screens
 			return _gameMap.KeyDown(args);
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
-			if (Cursor == MouseCursor.None) return true;
+			if (Cursor == MouseCursor.None)
+			{
+				args.Handled = true;
+				return;
+			}
 			if (_gameMenu != null && _gameMenu.KeepOpen)
 			{
 				MouseArgsOffset(ref args, _menuX, _menuY);
 				_update |= _gameMenu.MouseDown(args);
-				return _update;
+				args.Handled = _update;
+				return;
 			}
 
 			if (args.Y < 8)
 			{
-				return _menuBar.MouseDown(args);
+				args.Handled = _menuBar.MouseDown(args);
+				return;
 			}
 			if (_rightSideBar)
 			{
 				if (args.X > (Width - 80))
 				{
 					MouseArgsOffset(ref args, (Width - 80), 8);
-					return _sideBar.MouseDown(args);
+					args.Handled = _sideBar.MouseDown(args);
 				}
 				else
 				{
 					MouseArgsOffset(ref args, 0, 8);
-					return (_update = _gameMap.MouseDown(args));
+					args.Handled = (_update = _gameMap.MouseDown(args));
 				}
 			}
 			else
@@ -300,44 +306,53 @@ namespace CivOne.Screens
 				if (args.X < 80)
 				{
 					MouseArgsOffset(ref args, 0, 8);
-					return _sideBar.MouseDown(args);
+					args.Handled = _sideBar.MouseDown(args);
 				}
 				else
 				{
 					MouseArgsOffset(ref args, 80, 8);
-					return (_update = _gameMap.MouseDown(args));
+					args.Handled = (_update = _gameMap.MouseDown(args));
 				}
 			}
 		}
 		
-		public override bool MouseUp(ScreenEventArgs args)
+		private void MouseUp(object sender, ScreenEventArgs args)
 		{
-			if (Cursor == MouseCursor.None) return true;
-			if (_gameMenu == null) return false;
+			if (Cursor == MouseCursor.None)
+			{
+				args.Handled = true;
+				return;
+			}
+			if (_gameMenu == null) return;
 			if (args.Y < 8)
 			{
 				_menuBar.MouseDown(args);
 				if (!_menuBar.MenuDrag)
 				{
 					_gameMenu.KeepOpen = true;
-					return true;
+					args.Handled = true;
+					return;
 				}
 			}
 			
 			_gameMenu.MouseUp(args);
 			_gameMenu = null;
 			_redraw = true;
-			return true;
+			args.Handled = true;
 		}
 		
-		public override bool MouseDrag(ScreenEventArgs args)
+		private void MouseDrag(object sender, ScreenEventArgs args)
 		{
-			if (Cursor == MouseCursor.None) return true;
-			if (_gameMenu == null) return false;
+			if (Cursor == MouseCursor.None)
+			{
+				args.Handled = true;
+				return;
+			}
+			if (_gameMenu == null) return;
 			
 			MouseArgsOffset(ref args, _menuX, _menuY);
 			_update |= _gameMenu.MouseDrag(args);
-			return _update;
+			args.Handled = _update;
 		}
 		
 		private void Resize(object sender, ResizeEventArgs args)
@@ -354,9 +369,12 @@ namespace CivOne.Screens
 		
 		public GamePlay()
 		{
-			OnResize += Resize;
-			
 			Palette = Resources["SP257"].Palette;
+			
+			OnMouseDown += MouseDown;
+			OnMouseUp += MouseUp;
+			OnMouseDrag += MouseDrag;
+			OnResize += Resize;
 			
 			_rightSideBar = Settings.RightSideBar;
 

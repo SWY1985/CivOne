@@ -62,11 +62,11 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
 			if (_fadeStep >= 1.0F)
 				Destroy();
-			return true;
+			args.Handled = true;
 		}
 		
 		public Discovery(IAdvance advance)
@@ -80,6 +80,8 @@ namespace CivOne.Screens
 			Palette = background.Palette;
 			this.Clear(32)
 				.AddLayer(background);
+
+			OnMouseDown += MouseDown;
 
 			string[] text = new string[]
 			{

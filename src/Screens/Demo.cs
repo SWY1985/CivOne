@@ -30,16 +30,17 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
+			args.Handled = true;
 			Destroy();
-			return true;
 		}
 		
 		public Demo() : base(MouseCursor.Pointer)
 		{
 			Picture background = Resources["BIRTH1"];
 			Picture logo = Resources["LOGO"];
+
 			switch (Settings.GraphicsMode)
 			{
 				case GraphicsMode.Graphics256:
@@ -51,6 +52,9 @@ namespace CivOne.Screens
 			}
 			
 			Palette = logo.Palette;
+
+			OnMouseDown += MouseDown;
+
 			this.AddLayer(background, 0, 0)
 				.AddLayer(logo, 0, 0)
 				.DrawText("One more turn...", 3, _textColours[0], 160, 160, TextAlign.Center)

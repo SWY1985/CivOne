@@ -15,6 +15,7 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
 using CivOne.Screens.CityManagerPanels;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens
 {
@@ -29,6 +30,8 @@ namespace CivOne.Screens
 		private readonly CityFoodStorage _cityFoodStorage;
 		private readonly CityInfo _cityInfo;
 		private readonly CityProduction _cityProduction;
+
+		private readonly Button _rename;
 		
 		private bool _update = true;
 		private bool _redraw = false;
@@ -71,7 +74,6 @@ namespace CivOne.Screens
 				DrawLayer(_cityInfo, gameTick, 95, 106);
 				DrawLayer(_cityProduction, gameTick, 230, 99);
 
-				DrawButton("Rename", 9, 1, 231, 190, 42);
 				DrawButton("Exit", 12, 4, 284, 190, 33);
 
 				_update = false;
@@ -87,6 +89,13 @@ namespace CivOne.Screens
 			_city.Name = (sender as CityName).Value;
 			_cityHeader.Update();
 		}
+
+		private void RenameClick(object sender, EventArgs args)
+		{
+			CityName name = new CityName(_city.Name);
+			name.Accept += CityRename;
+			Common.AddScreen(name);
+		}
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
@@ -99,59 +108,63 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
 			_mouseDown = true;
 			
-			if (new Rectangle(231, 190, 42, 10).Contains(args.Location))
-			{
-				// Rename button
-				CityName name = new CityName(_city.Name);
-				name.Accept += CityRename;
-				Common.AddScreen(name);
-				return true;
-			}
 			if (new Rectangle(2, 1, 208, 21).Contains(args.Location))
 			{
 				MouseArgsOffset(ref args, 2, 1);
-				return _cityHeader.MouseDown(args);
+				args.Handled = _cityHeader.MouseDown(args);
+				return;
 			}
 			if (new Rectangle(127, 23, 82, 82).Contains(args.Location))
 			{
 				MouseArgsOffset(ref args, 127, 23);
-				return _cityMap.MouseDown(args);
+				args.Handled = _cityMap.MouseDown(args);
+				return;
 			}
 			if (new Rectangle(95, 106, 133, 92).Contains(args.Location))
 			{
 				MouseArgsOffset(ref args, 95, 106);
-				return _cityInfo.MouseDown(args);
+				args.Handled = _cityInfo.MouseDown(args);
+				return;
 			}
 			if (new Rectangle(211, 1, 107, 97).Contains(args.Location))
 			{
 				MouseArgsOffset(ref args, 211, 1);
 				if (_cityBuildings.MouseDown(args))
-					return true;
+				{
+					args.Handled = true;
+					return;
+				}
 			}
 			if (new Rectangle(230, 99, 88, 99).Contains(args.Location))
 			{
 				MouseArgsOffset(ref args, 230, 99);
 				if (_cityProduction.MouseDown(args))
-					return true;
+				{
+					args.Handled = true;
+					return;
+				}
 			}
 			CloseScreen();
-			return true;
+			args.Handled = true;
 		}
 		
-		public override bool MouseUp(ScreenEventArgs args)
+		private void MouseUp(object sender, ScreenEventArgs args)
 		{
-			if (!_mouseDown) return true;
+			if (!_mouseDown)
+			{
+				args.Handled = true;
+				return;
+			}
 
 			if (new Rectangle(230, 99, 88, 99).Contains(args.Location))
 			{
 				MouseArgsOffset(ref args, 230, 99);
-				return _cityProduction.MouseUp(args);
+				args.Handled = _cityProduction.MouseUp(args);
 			}
-			return false;
 		}
 
 		private void BuildingUpdate(object sender, EventArgs args)
@@ -176,10 +189,17 @@ namespace CivOne.Screens
 		public CityManager(City city) : base(MouseCursor.Pointer)
 		{
 			_city = city;
-
 			_city.UpdateResources();
+
+			_rename = new Button("Rename", 231, 190, 42);
+			_rename.Clicked += RenameClick;
+			Elements.Add(_rename);
 			
 			Palette = Common.DefaultPalette;
+
+			OnMouseDown += MouseDown;
+			OnMouseUp += MouseUp;
+
 			this.Clear(5);
 			
 			_subScreens.Add(_cityHeader = new CityHeader(_city));

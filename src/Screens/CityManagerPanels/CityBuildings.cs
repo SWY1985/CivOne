@@ -115,7 +115,7 @@ namespace CivOne.Screens.CityManagerPanels
 				BuildingUpdate(this, null);
 		}
 
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
 			if (!_city.BuildingSold && args.X > 97 && args.X < 105)
 			{
@@ -127,7 +127,8 @@ namespace CivOne.Screens.CityManagerPanels
 						ConfirmSell confirmSell = new ConfirmSell(_improvements[i] as IBuilding);
 						confirmSell.Sell += SellBuilding;
 						Common.AddScreen(confirmSell);
-						return true;
+						args.Handled = true;
+						return;
 					}
 					yy += 6;
 				}
@@ -138,15 +139,16 @@ namespace CivOne.Screens.CityManagerPanels
 				_page++;
 				if ((_page * 14) > _improvements.Length) _page = 0;
 				_update = true;
-				return true;
+				args.Handled = true;
 			}
-			return false;
 		}
 
 		public CityBuildings(City city) : base(108, 97)
 		{
 			_city = city;
 			_improvements = GetImprovements.ToArray();
+
+			OnMouseDown += MouseDown;
 		}
 	}
 }

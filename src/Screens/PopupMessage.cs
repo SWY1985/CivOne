@@ -33,14 +33,16 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
+			args.Handled = true;
 			Destroy();
-			return true;
 		}
 
 		public PopupMessage(byte colour, string title, string[] message) : base(MouseCursor.Pointer)
 		{
+			OnMouseDown += MouseDown;
+
 			Palette = Common.DefaultPalette;
 			
 			byte colourLight = (byte)(colour + 8);

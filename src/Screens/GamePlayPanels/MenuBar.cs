@@ -77,7 +77,7 @@ namespace CivOne.Screens.GamePlayPanels
 			return true;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
 			_mouseX = args.X;
 			_mouseY = args.Y;
@@ -87,15 +87,11 @@ namespace CivOne.Screens.GamePlayPanels
 			if (_rectMenus[2].Contains(args.Location) && AdvisorsSelected != null) AdvisorsSelected(this, null);
 			if (_rectMenus[3].Contains(args.Location) && WorldSelected != null) WorldSelected(this, null);
 			if (_rectMenus[4].Contains(args.Location) && CivilopediaSelected != null) CivilopediaSelected(this, null);
-			
-			return false;
 		}
 		
-		public override bool MouseUp(ScreenEventArgs args)
+		private void MouseUp(object sender, ScreenEventArgs args)
 		{
 			MenuDrag = !(args.X == _mouseX && args.Y == _mouseY);
-
-			return false;
 		}
 
 		public void Resize()
@@ -106,6 +102,10 @@ namespace CivOne.Screens.GamePlayPanels
 		public MenuBar(Palette palette) : base(320, 8)
 		{
 			Palette = palette.Copy();
+
+			OnMouseDown += MouseDown;
+			OnMouseUp += MouseUp;
+
 			this.Clear(5);
 			_update = true;
 

@@ -153,34 +153,35 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
-			if (_closing) return false;
+			if (_closing) return;
 			if (_singlePage != null)
 			{
 				if (!NextPage()) 
 					_closing = true;
-				return true;
+				args.Handled = true;
+				return;
 			}
 			
 			if (args.Y < 16)
 			{
 				if (args.X < 160)
 				{
-					if (_pages.Length <= 78) return false;
+					if (_pages.Length <= 78) return;
 					_startIndex += 78;
 					if (_startIndex >= _pages.Length) _startIndex = 0;
 					_update = true;
-					return true;
 				}
 				else
 				{
 					_closing = true;
-					return true;
 				}
+				args.Handled = true;
+				return;
 			}
 			
-			if (args.X < 10 || args.X > 310) return false;
+			if (args.X < 10 || args.X > 310) return;
 			int xx = 10, yy = 16;
 			int columns = (int)Math.Ceiling((float)_pages.Length / 26);
 			int columnWidth = (columns < 3) ? 150 : 100;
@@ -191,7 +192,8 @@ namespace CivOne.Screens
 				{
 					Log("Opening Civilopedia page: {0}", _pages[i].Name);
 					Common.AddScreen(new Civilopedia(_pages[i]));
-					return true;
+					args.Handled = true;
+					return;
 				}
 				
 				yy += 7;
@@ -201,7 +203,6 @@ namespace CivOne.Screens
 				if (xx >= 300) break;
 				yy = 16;
 			}
-			return false;
 		}
 		
 		private void DrawTerrainTextValues(ref int y, string name, string food = null, string production = null, string trade = null, string foodIrrigation = null, string productionMining = null, string tradeRoads = null)
@@ -327,18 +328,23 @@ namespace CivOne.Screens
 		
 		public Civilopedia(ICivilopedia[] pages) : base(MouseCursor.Pointer)
 		{
+			OnMouseDown += MouseDown;
+			
+			Palette = Common.DefaultPalette;
 			_pages = pages;
 		}
 		
 		public Civilopedia(ICivilopedia page, bool discovered = false, bool icon = true)
 		{
+			OnMouseDown += MouseDown;
+
 			_discovered = discovered;
 			_icon = icon;
 
 			_update = false;
 			_singlePage = page;
 			Palette = Common.DefaultPalette;
-			if (page.Icon != null)Palette.MergePalette(page.Icon.Palette, 16);
+			if (page.Icon != null) Palette.MergePalette(page.Icon.Palette, 16);
 			
 			this.Clear(15);
 			DrawBorder(Common.Random.Next(2));

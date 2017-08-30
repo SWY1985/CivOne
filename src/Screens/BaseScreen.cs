@@ -8,10 +8,12 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.Collections.Generic;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
 using CivOne.IO;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens
 {
@@ -23,8 +25,13 @@ namespace CivOne.Screens
 		private int CanvasHeight => RuntimeHandler.Instance.CanvasHeight;
 		private bool CanExpand => Common.HasAttribute<Expand>(this);
 		private bool SizeChanged => (this.Width() != CanvasWidth || this.Height() != CanvasHeight);
+		
+		private bool _forceUpdate = false;
+
+		protected readonly List<IElement> Elements = new List<IElement>();
 
 		protected event ResizeEventHandler OnResize;
+		protected event ScreenEventHandler OnMouseDown, OnMouseUp, OnMouseDrag, OnMouseMove;
 
 		protected void MouseArgsOffset(ref ScreenEventArgs args, int offsetX, int offsetY)
 		{
@@ -50,21 +57,66 @@ namespace CivOne.Screens
 
 		public virtual MouseCursor Cursor => _cursor;
 
+		private bool UpdateDraw(uint gameTick)
+		{
+			bool result = HasUpdate(gameTick);
+			if (_forceUpdate) result = true;
+			foreach (IElement element in Elements)
+			{
+				if (element.Bitmap == null) continue;
+				this.AddLayer(element.Bitmap, element.Left, element.Top);
+			}
+			return result;
+		}
+
 		public bool Update(uint gameTick)
 		{
 			if (CanExpand && SizeChanged)
 			{
 				Resize(Runtime.CanvasWidth, Runtime.CanvasHeight);
-				HasUpdate(gameTick);
-				return true;
+				_forceUpdate = true;
 			}
-			return HasUpdate(gameTick);
+			return UpdateDraw(gameTick);
 		}
 		public virtual bool KeyDown(KeyboardEventArgs args) => false;
-		public virtual bool MouseDown(ScreenEventArgs args) => false;
-		public virtual bool MouseUp(ScreenEventArgs args) => false;
-		public virtual bool MouseDrag(ScreenEventArgs args) => false;
-		public virtual bool MouseMove(ScreenEventArgs args) => false;
+		public bool MouseDown(ScreenEventArgs args)
+		{
+			foreach (IElement element in Elements)
+			{
+				switch (element)
+				{
+					case Button button:
+						if (button.Bounds.Contains(args.Location))
+						{
+							_forceUpdate = true;
+							button.Click();
+							return (args.Handled = true);
+						}
+						break;
+				}
+			}
+
+			OnMouseDown?.Invoke(this, args);
+			return args.Handled;
+		}
+
+		public bool MouseUp(ScreenEventArgs args)
+		{
+			OnMouseUp?.Invoke(this, args);
+			return args.Handled;
+		}
+
+		public bool MouseDrag(ScreenEventArgs args)
+		{
+			OnMouseDrag?.Invoke(this, args);
+			return args.Handled;
+		}
+
+		public bool MouseMove(ScreenEventArgs args)
+		{
+			OnMouseMove?.Invoke(this, args);
+			return args.Handled;
+		}
 
 		protected void Destroy()
 		{

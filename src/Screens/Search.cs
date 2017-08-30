@@ -32,20 +32,22 @@ namespace CivOne.Screens
 
 		public event EventHandler Accept, Cancel;
 
-		public override bool MouseDown(ScreenEventArgs args)
-		{
-			Close();
-			return true;
-		}
-
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
 			Close();
 			return true;
 		}
 
+		private void MouseDown(object sender, ScreenEventArgs args)
+		{
+			Close();
+			args.Handled = true;
+		}
+
 		private void Search_Accept(object sender, EventArgs args)
 		{
+			OnMouseDown += MouseDown;
+
 			City = Game.GetCities().FirstOrDefault(x => x.Name.ToLower().StartsWith(_input.Text.ToLower()) && Human.Visible(x.X, x.Y));
 			_done = true;
 			if (City == null)

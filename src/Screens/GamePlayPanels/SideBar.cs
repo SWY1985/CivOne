@@ -203,11 +203,12 @@ namespace CivOne.Screens.GamePlayPanels
 			return false;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
+			args.Handled = true;
 			if (args.Y <= 50)
 			{
-				if (args.X < 1 || args.Y < 1 || args.X > 79 || args.Y > 49) return true;
+				if (args.X < 1 || args.Y < 1 || args.X > 79 || args.Y > 49) return;
 				
 				int xx = (args.X - 1) + GamePlay.X - 30;
 				int yy = (args.Y - 1) + GamePlay.Y - 18;
@@ -219,14 +220,10 @@ namespace CivOne.Screens.GamePlayPanels
 				Log("Sidebar: Palace View");
 				Common.AddScreen(new PalaceView());
 			}
-			else if (args.Y >= 62)
+			else if (args.Y >= 62 && Game.CurrentPlayer == Human && Game.ActiveUnit == null)
 			{
-				if (Game.CurrentPlayer == Human && Game.ActiveUnit == null)
-				{
-					GameTask.Enqueue(Turn.End());
-				}
+				GameTask.Enqueue(Turn.End());
 			}
-			return true;
 		}
 
 		private GamePlay GamePlay
@@ -266,6 +263,8 @@ namespace CivOne.Screens.GamePlayPanels
 
 		public override void Dispose()
 		{
+			OnMouseDown += MouseDown;
+
 			_miniMap.Dispose();
 			_demographics.Dispose();
 			_gameInfo.Dispose();

@@ -62,10 +62,6 @@ namespace CivOne.Screens
 
 			return true;
 		}
-		
-		public override bool KeyDown(KeyboardEventArgs args) => false;
-		
-		public override bool MouseDown(ScreenEventArgs args) => false;
 
 		public void Resize(int width, int height)
 		{

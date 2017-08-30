@@ -274,8 +274,10 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
+			args.Handled = true;
+			
 			switch (_currentStage)
 			{
 				case Stage.Message:
@@ -290,11 +292,12 @@ namespace CivOne.Screens
 					Destroy();
 					break;
 			}
-			return true;
 		}
 		
 		public PalaceView(bool build = false)
 		{
+			OnMouseDown += MouseDown;
+
 			_noiseMap = new byte[320, 200];
 			for (int x = 0; x < 320; x++)
 			for (int y = 0; y < 200; y++)

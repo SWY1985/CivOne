@@ -67,17 +67,19 @@ namespace CivOne.Screens.Reports
 			return true;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
 			if ((++_page * 7) > _wonders.Length)
 				Destroy();
 			else
 				_update = true;
-			return true;
+			args.Handled = true;
 		}
 		
 		public WorldWonders()
 		{
+			OnMouseDown += MouseDown;
+
 			Palette = Common.DefaultPalette;
 
 			_wonders = Game.BuiltWonders.OrderBy(w => w.Id).Select(w => new CityWonders()

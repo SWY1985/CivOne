@@ -53,7 +53,7 @@ namespace CivOne.Screens.CityManagerPanels
 			return true;
 		}
 
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
 			if (args.Y > 6 && args.Y < 20)
 			{
@@ -74,11 +74,10 @@ namespace CivOne.Screens.CityManagerPanels
 
 					_city.ChangeSpecialist(index);
 					Update();
-					return true;
+					args.Handled = true;
+					return;
 				}
-				return false;
 			}
-			return false;
 		}
 
 		public void Update()
@@ -95,6 +94,8 @@ namespace CivOne.Screens.CityManagerPanels
 		public CityHeader(City city) : base(207, 21)
 		{
 			_city = city;
+
+			OnMouseDown += MouseDown;
 		}
 	}
 }

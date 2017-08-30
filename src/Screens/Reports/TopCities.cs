@@ -77,14 +77,16 @@ namespace CivOne.Screens.Reports
 			return true;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
+			args.Handled = true;
 			Destroy();
-			return true;
 		}
 		
 		public TopCities()
 		{
+			OnMouseDown += MouseDown;
+
 			Palette = Common.DefaultPalette;
 
 			// I'm not sure about the order of top 5 cities, but this is pretty close

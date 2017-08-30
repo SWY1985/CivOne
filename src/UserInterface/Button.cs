@@ -1,0 +1,147 @@
+// CivOne
+//
+// To the extent possible under law, the person who associated CC0 with
+// CivOne has waived all copyright and related or neighboring rights
+// to CivOne.
+//
+// You should have received a copy of the CC0 legalcode along with this
+// work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
+
+using System;
+using System.Drawing;
+using CivOne.Enums;
+using CivOne.Graphics;
+using CivOne.IO;
+
+namespace CivOne.UserInterface
+{
+	public class Button : IElement
+	{
+		public Bytemap Bitmap { get; private set; }
+
+		private readonly TextSettings _textSettings;
+
+		private int FontHeight => Resources.Instance.GetFontHeight(_textSettings.FontId);
+
+		private byte _colour, _colourLight, _colourDark;
+		private string _text;
+
+		public event EventHandler Clicked;
+
+		public Rectangle Bounds => new Rectangle(Left, Top, Width, Height);
+		public Point Location => new Point(Left, Top);
+		public Size Size => new Size(Width, Height);
+
+		public int Left { get; private set; }
+		public int Top { get; private set; }
+		public int Width => Bitmap.Width;
+		public int Height => Bitmap.Height;
+
+		public TextSettings TextSettings => _textSettings;
+
+		public byte Colour
+		{
+			get
+			{
+				return _colour;
+			}
+			set
+			{
+				if (_colour == value) return;
+				_colour = value;
+				Draw();
+			}
+		}
+
+		public byte ColourLight
+		{
+			get
+			{
+				return _colourLight;
+			}
+			set
+			{
+				if (_colourLight == value) return;
+				_colourLight = value;
+				Draw();
+			}
+		}
+
+		public byte ColourDark
+		{
+			get
+			{
+				return _colourDark;
+			}
+			set
+			{
+				if (_colourDark == value) return;
+				_colourDark = value;
+				Draw();
+			}
+		}
+
+		public string Text
+		{
+			get
+			{
+				return _text;
+			}
+			set
+			{
+				if (_text == value) return;
+				_text = value;
+				Draw();
+			}
+		}
+
+		private void Draw(object sender = null, EventArgs args = null)
+		{
+			using (Picture picture = new Picture(Width, Height))
+			{
+				picture.FillRectangle(1, 1, Width - 2, Height - 2, _colour)
+					.DrawRectangle(0, 0, Width - 1, 1, _colourLight)
+					.DrawRectangle(0, 1, 1, Height - 1, _colourLight)
+					.DrawRectangle(Width - 1, 0, 1, Height, _colourDark)
+					.DrawRectangle(1, Height - 1, Width - 1, 1, _colourDark)
+					.DrawText(Text, (int)Math.Ceiling((float)Width / 2), (int)Math.Ceiling(((float)Height - FontHeight) / 2), _textSettings);
+				Bitmap.AddLayer(picture.Bitmap);
+			}
+		}
+
+		public void Click()
+		{
+			if (Clicked == null) return;
+			Clicked(this, EventArgs.Empty);
+		}
+
+		public Button(string text, int left, int top, int width, int height = -1)
+		{
+			_text = text;
+			_colour = 9;
+			_colourLight = 7;
+			_colourDark = 1;
+
+			if (height == -1) height = Resources.Instance.GetFontHeight(1) + 3;
+
+			Bitmap = new Bytemap(width, height);
+			Left = left;
+			Top = top;
+			
+			_textSettings = new TextSettings()
+			{
+				FontId = 1,
+				Colour = ColourDark,
+				Alignment = TextAlign.Center
+			};
+			_textSettings.Changed += Draw;
+
+			Draw();
+		}
+
+		public void Dispose()
+		{
+			Bitmap.Dispose();
+		}
+	}
+}

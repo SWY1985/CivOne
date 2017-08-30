@@ -69,9 +69,9 @@ namespace CivOne.Screens.Reports
 			return NextPage();
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		protected override void MouseDown(object sender, ScreenEventArgs args)
 		{
-			return NextPage();
+			args.Handled = NextPage();
 		}
 
 		public CityStatus() : base("CITY STATUS", 8)

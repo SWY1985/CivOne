@@ -66,8 +66,9 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
+			args.Handled = true;
 			if (args.X >= XX && args.X < (XX + WIDTH))
 			{
 				int height = (16 * _units.Length) + 6;
@@ -76,21 +77,21 @@ namespace CivOne.Screens
 				{
 					int y = (args.Y - yy - 3);
 					int uid = (y - (y % 16)) / 16;
-					if (uid < 0 || uid >= _units.Length)
-						return true;
+					if (uid < 0 || uid >= _units.Length) return;
 					
 					Game.ActiveUnit = _units[uid];
 					_units[uid].Busy = false;
-					return true;
+					return;
 				}
 			}
 
 			Destroy();
-			return true;
 		}
 
 		internal UnitStack(int x, int y) : base(MouseCursor.Pointer)
 		{
+			OnMouseDown += MouseDown;
+
 			_x = x;
 			_y = y;
 			_units = Map[_x, _y].Units.Take(12).ToArray();

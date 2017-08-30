@@ -139,41 +139,40 @@ namespace CivOne.Screens
 			return -1;
 		}
 		
-		public override bool MouseDrag(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
-			if (KeepOpen) return false;
+			if (!KeepOpen) return;
 			int index = MouseOverItem(args);
-			if (index == _activeItem) return false;
+			if (index == _activeItem) return;
 						
 			_activeItem = index;
 			
 			_update = true;
-			return true;
+			args.Handled = true;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseUp(object sender, ScreenEventArgs args)
 		{
-			if (!KeepOpen) return false;
-			int index = MouseOverItem(args);
-			if (index == _activeItem) return false;
-						
-			_activeItem = index;
-			
-			_update = true;
-			return true;
-		}
-		
-		public override bool MouseUp(ScreenEventArgs args)
-		{
-			if (_activeItem < 0 && !KeepOpen) return false;
+			if (_activeItem < 0 && !KeepOpen) return;
 			if (_activeItem < 0 && KeepOpen)
 			{
 				KeepOpen = false;
-				return false;
+				return;
 			}
 			Items[_activeItem]?.Select();
+			args.Handled = true;
+		}
+		
+		private void MouseDrag(object sender, ScreenEventArgs args)
+		{
+			if (KeepOpen) return;
+			int index = MouseOverItem(args);
+			if (index == _activeItem) return;
+						
+			_activeItem = index;
 			
-			return true;
+			_update = true;
+			args.Handled = true;
 		}
 		
 		public GameMenu(string menuId, Palette palette) : base(8, 8)
@@ -181,6 +180,10 @@ namespace CivOne.Screens
 			Items = new MenuItemCollection<int>(menuId);
 			
 			Palette = palette.Copy();
+
+			OnMouseDown += MouseDown;
+			OnMouseUp += MouseUp;
+			OnMouseDrag += MouseDrag;
 		}
 	}
 }

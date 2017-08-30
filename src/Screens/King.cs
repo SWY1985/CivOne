@@ -37,14 +37,16 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
 			Destroy();
-			return true;
+			args.Handled = true;
 		}
 		
 		public King(Player player)
 		{
+			OnMouseDown += MouseDown;
+
 			_player = player;
 
 			bool modern = player.HasAdvance<Invention>();

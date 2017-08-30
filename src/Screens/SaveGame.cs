@@ -235,25 +235,22 @@ namespace CivOne.Screens
 			return false;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
-			if (_menu != null)
-				return _menu.MouseDown(args);
-			return false;
+			if (_menu == null) return;
+			args.Handled = _menu.MouseDown(args);
 		}
 		
-		public override bool MouseUp(ScreenEventArgs args)
+		private void MouseUp(object sender, ScreenEventArgs args)
 		{
-			if (_menu != null)
-				return _menu.MouseUp(args);
-			return false;
+			if (_menu == null) return;
+			args.Handled = _menu.MouseUp(args);
 		}
 		
-		public override bool MouseDrag(ScreenEventArgs args)
+		private void MouseDrag(object sender, ScreenEventArgs args)
 		{
-			if (_menu != null)
-				return _menu.MouseDrag(args);
-			return false;
+			if (_menu == null) return;
+			args.Handled = _menu.MouseDrag(args);
 		}
 
 		public SaveGame() : this(-1)
@@ -263,6 +260,11 @@ namespace CivOne.Screens
 		public SaveGame(int gameId)
 		{
 			Palette = Resources["SP257"].Palette;
+			
+			OnMouseDown += MouseDown;
+			OnMouseUp += MouseUp;
+			OnMouseDrag += MouseDrag;
+
 			_gameId = gameId;
 		}
 	}

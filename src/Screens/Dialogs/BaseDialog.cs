@@ -77,10 +77,10 @@ namespace CivOne.Screens.Dialogs
 			return true;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
+			args.Handled = true;
 			Cancel();
-			return true;
 		}
 
 		private void Initialize(int left, int top, int width, int height)
@@ -113,6 +113,8 @@ namespace CivOne.Screens.Dialogs
 		
 		public BaseDialog(int left, int top, int width, int height) : base(MouseCursor.Pointer)
 		{
+			OnMouseDown += MouseDown;
+
 			_left = left;
 			_top = top;
 

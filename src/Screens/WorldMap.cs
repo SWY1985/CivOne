@@ -32,10 +32,10 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
+			args.Handled = true;
 			Destroy();
-			return true;
 		}
 
 		private int VisibleTop
@@ -68,6 +68,8 @@ namespace CivOne.Screens
 		
 		public WorldMap()
 		{
+			OnMouseDown += MouseDown;
+
 			Palette = Resources.WorldMapTiles.Palette;
 			this.Clear(5);
 

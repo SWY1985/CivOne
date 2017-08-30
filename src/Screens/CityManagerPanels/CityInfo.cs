@@ -178,31 +178,53 @@ namespace CivOne.Screens.CityManagerPanels
 			return true;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
 			if (args.Y < 10)
 			{
-				if (args.X < 34) return GotoInfo();
-				else if (args.X < 66) return GotoHappy();
-				else if (args.X < 99) return GotoMap();
-				else if (args.X < 132) return GotoView();
+				if (args.X < 34)
+				{
+					args.Handled = GotoInfo();
+					return;
+				}
+				
+				if (args.X < 66)
+				{
+					args.Handled = GotoHappy();
+					return;
+				}
+				
+				if (args.X < 99)
+				{
+					args.Handled = GotoMap();
+					return;
+				}
+				
+				if (args.X < 132)
+				{
+					args.Handled = GotoView();
+					return;
+				}
 			}
 			
 			switch (_choice)
 			{
 				case CityInfoChoice.Info:
 					MouseArgsOffset(ref args, 0, 9);
-					return InfoClick(args);
+					args.Handled = InfoClick(args);
+					return;
 				case CityInfoChoice.Happy:
 				case CityInfoChoice.Map:
 					break;
 			}
-			return true;
+			args.Handled = true;
 		}
 
 		public CityInfo(City city) : base(133, 92)
 		{
 			_city = city;
+
+			OnMouseDown += MouseDown;
 		}
 	}
 }

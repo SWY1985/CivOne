@@ -296,11 +296,9 @@ namespace CivOne.Screens
 			return _done;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
-			if (_difficulty > -1 && _competition > -1 && _tribe > -1 && !_done)
-				_done = true;
-			return _done;
+			args.Handled = (_done = (_difficulty > -1 && _competition > -1 && _tribe > -1 && !_done));
 		}
 
 		private void Resize(object sender, ResizeEventArgs args)
@@ -320,6 +318,7 @@ namespace CivOne.Screens
 		
 		public NewGame() : base(MouseCursor.Pointer)
 		{
+			OnMouseDown += MouseDown;
 			OnResize += Resize;
 			
 			if (Runtime.Settings.Free || !Resources.Exists("DIFFS"))

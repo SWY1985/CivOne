@@ -104,14 +104,16 @@ namespace CivOne.Screens.Reports
 			return true;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
+			args.Handled = true;
 			Destroy();
-			return true;
 		}
 
 		public Demographics()
 		{
+			OnMouseDown += MouseDown;
+
 			Palette = Common.DefaultPalette;
 
 			_normalText = new TextSettings() { Colour = 15 };

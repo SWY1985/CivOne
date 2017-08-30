@@ -261,25 +261,26 @@ namespace CivOne.Screens
 			return SkipIntro();
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
-			if (_done && _overlay != null)
-				return _overlay.MouseDown(args);
-			return SkipIntro();
+			if (_done && _overlay == null)
+			{
+				args.Handled = _overlay.MouseDown(args);
+				return;
+			}
+			args.Handled = SkipIntro();
 		}
 		
-		public override bool MouseUp(ScreenEventArgs args)
+		private void MouseUp(object sender, ScreenEventArgs args)
 		{
-			if (_done && _overlay != null)
-				return _overlay.MouseUp(args);
-			return false;
+			if (!_done || _overlay == null) return;
+			args.Handled = _overlay.MouseUp(args);
 		}
 		
-		public override bool MouseDrag(ScreenEventArgs args)
+		private void MouseDrag(object sender, ScreenEventArgs args)
 		{
-			if (_done && _overlay != null)
-				return _overlay.MouseDrag(args);
-			return false;
+			if (!_done || _overlay == null) return;
+			args.Handled = _overlay.MouseDrag(args);
 		}
 		
 		public override MouseCursor Cursor
@@ -304,6 +305,9 @@ namespace CivOne.Screens
 		
 		public Credits()
 		{
+			OnMouseDown += MouseDown;
+			OnMouseUp += MouseUp;
+			OnMouseDrag += MouseDrag;
 			OnResize += Resize;
 
 			_introText = TextFile.Instance.LoadArray("CREDITS");

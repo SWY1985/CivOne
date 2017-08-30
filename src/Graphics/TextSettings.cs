@@ -7,16 +7,71 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using CivOne.Enums;
 
 namespace CivOne.Graphics
 {
 	public class TextSettings
 	{
-		public TextAlign Alignment { get; set; }
-		public VerticalAlign VerticalAlignment { get; set; }
-		public int FontId { get; set; }
-		public byte Colour { get; set; }
+		public event EventHandler Changed;
+
+		private TextAlign _alignment;
+		private VerticalAlign _verticalAlignment;
+		private int _fontId;
+		private byte _colour;
+
+		public TextAlign Alignment
+		{
+			get
+			{
+				return _alignment;
+			}
+			set
+			{
+				_alignment = value;
+				if (Changed != null) Changed(this, EventArgs.Empty);
+			}
+		}
+
+		public VerticalAlign VerticalAlignment
+		{
+			get
+			{
+				return _verticalAlignment;
+			}
+			set
+			{
+				_verticalAlignment = value;
+				if (Changed != null) Changed(this, EventArgs.Empty);
+			}
+		}
+
+		public int FontId
+		{
+			get
+			{
+				return _fontId;
+			}
+			set
+			{
+				_fontId = value;
+				if (Changed != null) Changed(this, EventArgs.Empty);
+			}
+		}
+
+		public byte Colour
+		{
+			get
+			{
+				return _colour;
+			}
+			set
+			{
+				_colour = value;
+				if (Changed != null) Changed(this, EventArgs.Empty);
+			}
+		}
 		public byte FirstLetterColour { get; private set; }
 		public byte TopColour { get; private set; }
 		public byte BottomColour { get; private set; }
