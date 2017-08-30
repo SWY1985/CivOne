@@ -51,12 +51,6 @@ namespace CivOne.Screens
 		
 		protected override bool HasUpdate(uint gameTick)
 		{
-			if (Common.Screens.Count(x => x is CityManager) > 1)
-			{
-				Destroy();
-				return false;
-			}
-
 			if (_cityHeader.Update(gameTick)) _update = true;
 			if (_cityResources.Update(gameTick)) _update = true;
 			if (_cityUnits.Update(gameTick)) _update = true;
