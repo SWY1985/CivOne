@@ -84,7 +84,7 @@ namespace CivOne.Screens
 			{
 				this.AddLayer(borders[4], x, 0)
 					.AddLayer(borders[6], x, Height - 8);
-	}
+			}
 			for (int y = 8; y < Height - 8; y += 8)
 			{
 				this.AddLayer(borders[7], 0, y)

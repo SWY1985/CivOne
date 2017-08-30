@@ -30,8 +30,6 @@ namespace CivOne.Screens
 		private readonly CityFoodStorage _cityFoodStorage;
 		private readonly CityInfo _cityInfo;
 		private readonly CityProduction _cityProduction;
-
-		private readonly Button _rename;
 		
 		private bool _update = true;
 		private bool _redraw = false;
@@ -74,8 +72,6 @@ namespace CivOne.Screens
 				DrawLayer(_cityInfo, gameTick, 95, 106);
 				DrawLayer(_cityProduction, gameTick, 230, 99);
 
-				DrawButton("Exit", 12, 4, 284, 190, 33);
-
 				_update = false;
 				return true;
 			}
@@ -96,6 +92,8 @@ namespace CivOne.Screens
 			name.Accept += CityRename;
 			Common.AddScreen(name);
 		}
+
+		private void ExitClick(object sender, EventArgs args) => CloseScreen();
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
@@ -191,9 +189,10 @@ namespace CivOne.Screens
 			_city = city;
 			_city.UpdateResources();
 
-			_rename = new Button("Rename", 231, 190, 42);
-			_rename.Clicked += RenameClick;
-			Elements.Add(_rename);
+			Elements.AddRange(new [] {
+				Button.Blue("Rename", 231, 190, 42, click: RenameClick),
+				Button.Red("Exit", 284, 190, 33, click: ExitClick)
+			});
 			
 			Palette = Common.DefaultPalette;
 

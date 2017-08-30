@@ -115,12 +115,25 @@ namespace CivOne.UserInterface
 			Clicked(this, EventArgs.Empty);
 		}
 
-		public Button(string text, int left, int top, int width, int height = -1)
+		private static Button ColourTemplate(string text, int left, int top, int width, int height, byte colour, byte colourDark, EventHandler click = null)
+		{
+			Button output = new Button(text, left, top, width, height);
+			output._colour = colour;
+			output._colourDark = colourDark;
+			output._textSettings.Colour = colourDark;
+			output.Draw();
+			output.Clicked += click;
+			return output;
+		}
+
+		public static Button Blue(string text, int left, int top, int width, int height = -1, EventHandler click = null) => ColourTemplate(text, left, top, width, height, 9, 1, click);
+		public static Button Green(string text, int left, int top, int width, int height = -1, EventHandler click = null) => ColourTemplate(text, left, top, width, height, 10, 2, click);
+		public static Button Red(string text, int left, int top, int width, int height = -1, EventHandler click = null) => ColourTemplate(text, left, top, width, height, 12, 4, click);
+		
+		private Button(string text, int left, int top, int width, int height = -1)
 		{
 			_text = text;
-			_colour = 9;
 			_colourLight = 7;
-			_colourDark = 1;
 
 			if (height == -1) height = Resources.Instance.GetFontHeight(1) + 3;
 
@@ -131,12 +144,9 @@ namespace CivOne.UserInterface
 			_textSettings = new TextSettings()
 			{
 				FontId = 1,
-				Colour = ColourDark,
 				Alignment = TextAlign.Center
 			};
 			_textSettings.Changed += Draw;
-
-			Draw();
 		}
 
 		public void Dispose()

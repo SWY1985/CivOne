@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using System.Drawing;
 using System.Linq;
 using CivOne.Enums;
@@ -14,12 +15,14 @@ using CivOne.Events;
 using CivOne.Graphics;
 using CivOne.Graphics.Sprites;
 using CivOne.Units;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens.CityManagerPanels
 {
 	internal class CityInfo : BaseScreen
 	{
 		private readonly City _city;
+		private readonly Button _info, _happy, _map;
 		
 		private CityInfoChoice _choice = CityInfoChoice.Info;
 		private bool _update = true;
@@ -92,10 +95,9 @@ namespace CivOne.Screens.CityManagerPanels
 				this.Tile(Pattern.PanelBlue)
 					.DrawRectangle(colour: 1);
 				
-				DrawButton("Info", (byte)((_choice == CityInfoChoice.Info) ? 15 : 9), 1, 0, 0, 34);
-				DrawButton("Happy", (byte)((_choice == CityInfoChoice.Happy) ? 15 : 9), 1, 34, 0, 32);
-				DrawButton("Map", (byte)((_choice == CityInfoChoice.Map) ? 15 : 9), 1, 66, 0, 33);
-				DrawButton("View", 9, 1, 99, 0, 33);
+				_info.Colour = (byte)((_choice == CityInfoChoice.Info) ? 15 : 9);
+				_happy.Colour = (byte)((_choice == CityInfoChoice.Happy) ? 15 : 9);
+				_map.Colour = (byte)((_choice == CityInfoChoice.Map) ? 15 : 9);
 
 				switch (_choice)
 				{
@@ -143,6 +145,14 @@ namespace CivOne.Screens.CityManagerPanels
 			Common.AddScreen(new CityView(_city));
 			return true;
 		}
+
+		private void InfoClick(object sender, EventArgs args) => GotoInfo();
+
+		private void HappyClick(object sender, EventArgs args) => GotoHappy();
+
+		private void MapClick(object sender, EventArgs args) => GotoMap();
+
+		private void ViewClick(object sender, EventArgs args) => GotoView();
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
@@ -180,32 +190,7 @@ namespace CivOne.Screens.CityManagerPanels
 		
 		private void MouseDown(object sender, ScreenEventArgs args)
 		{
-			if (args.Y < 10)
-			{
-				if (args.X < 34)
-				{
-					args.Handled = GotoInfo();
-					return;
-				}
-				
-				if (args.X < 66)
-				{
-					args.Handled = GotoHappy();
-					return;
-				}
-				
-				if (args.X < 99)
-				{
-					args.Handled = GotoMap();
-					return;
-				}
-				
-				if (args.X < 132)
-				{
-					args.Handled = GotoView();
-					return;
-				}
-			}
+			if (args.Y < 10) return;
 			
 			switch (_choice)
 			{
@@ -225,6 +210,13 @@ namespace CivOne.Screens.CityManagerPanels
 			_city = city;
 
 			OnMouseDown += MouseDown;
+
+			Elements.AddRange(new [] {
+				_info = Button.Blue("Info", 0, 0, 34, click: InfoClick),
+				_happy = Button.Blue("Happy", 34, 0, 32, click: HappyClick),
+				_map = Button.Blue("Map", 66, 0, 33, click: MapClick),
+				Button.Blue("View", 99, 0, 33, click: ViewClick)
+			});
 		}
 	}
 }

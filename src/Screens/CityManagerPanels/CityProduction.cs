@@ -25,7 +25,7 @@ namespace CivOne.Screens.CityManagerPanels
 		private const int SHIELD_HEIGHT = 8;
 
 		private readonly City _city;
-		private readonly Button _change, _buy;
+		private readonly Button _change;
 		
 		private bool _update = true;
 
@@ -176,13 +176,10 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			_city = city;
 			
-			_change = new Button("Change", 1, 7, 33);
-			_change.Clicked += ChangeClick;
-			Elements.Add(_change);
-			
-			_buy = new Button("Buy", 64, 7, 18);
-			_buy.Clicked += BuyClick;
-			Elements.Add(_buy);
+			Elements.AddRange(new [] {
+				_change = Button.Blue("Change", 1, 7, 33, click: ChangeClick),
+				Button.Blue("Buy", 64, 7, 18, click: BuyClick)
+			});
 		}
 	}
 }
