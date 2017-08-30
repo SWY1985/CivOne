@@ -109,11 +109,7 @@ namespace CivOne.UserInterface
 			}
 		}
 
-		public void Click()
-		{
-			if (Clicked == null) return;
-			Clicked(this, EventArgs.Empty);
-		}
+		public void Click() => Clicked?.Invoke(this, EventArgs.Empty);
 
 		private static Button ColourTemplate(string text, int left, int top, int width, int height, byte colour, byte colourDark, EventHandler click = null)
 		{

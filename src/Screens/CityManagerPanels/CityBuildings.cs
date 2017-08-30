@@ -15,6 +15,7 @@ using CivOne.Events;
 using CivOne.Graphics;
 using CivOne.Screens.Dialogs;
 using CivOne.Graphics.Sprites;
+using CivOne.UserInterface;
 using CivOne.Wonders;
 
 namespace CivOne.Screens.CityManagerPanels
@@ -93,11 +94,6 @@ namespace CivOne.Screens.CityManagerPanels
 					continue;
 				}
 
-				if (_improvements.Length > 14)
-				{
-					DrawButton("More", 9, 1, 76, 87, 29);
-				}
-
 				this.DrawRectangle(colour: 1);
 				
 				_update = false;
@@ -117,38 +113,39 @@ namespace CivOne.Screens.CityManagerPanels
 
 		private void MouseDown(object sender, ScreenEventArgs args)
 		{
-			if (!_city.BuildingSold && args.X > 97 && args.X < 105)
+			if (_city.BuildingSold || args.X <= 97 || args.X >= 105) return;
+			
+			int yy = 2;
+			for (int i = (_page * 14); i < _improvements.Length && i < ((_page + 1) * 14); i++)
 			{
-				int yy = 2;
-				for (int i = (_page * 14); i < _improvements.Length && i < ((_page + 1) * 14); i++)
+				if (args.Y >= yy && args.Y < yy + 8 && _improvements[i] is IBuilding)
 				{
-					if (args.Y >= yy && args.Y < yy + 8 && _improvements[i] is IBuilding)
-					{
-						ConfirmSell confirmSell = new ConfirmSell(_improvements[i] as IBuilding);
-						confirmSell.Sell += SellBuilding;
-						Common.AddScreen(confirmSell);
-						args.Handled = true;
-						return;
-					}
-					yy += 6;
+					ConfirmSell confirmSell = new ConfirmSell(_improvements[i] as IBuilding);
+					confirmSell.Sell += SellBuilding;
+					Common.AddScreen(confirmSell);
+					args.Handled = true;
+					return;
 				}
+				yy += 6;
 			}
+		}
 
-			if (args.X > 75 && args.X < 105 && args.Y > 86 && args.Y < 96)
-			{
-				_page++;
-				if ((_page * 14) > _improvements.Length) _page = 0;
-				_update = true;
-				args.Handled = true;
-			}
+		private void MoreClick(object sender, EventArgs args)
+		{
+			_page++;
+			if ((_page * 14) > _improvements.Length) _page = 0;
+			_update = true;
 		}
 
 		public CityBuildings(City city) : base(108, 97)
 		{
+			OnMouseDown += MouseDown;
+			
 			_city = city;
 			_improvements = GetImprovements.ToArray();
-
-			OnMouseDown += MouseDown;
+			
+			if (_improvements.Length <= 14) return;
+			Elements.Add(Button.Blue("More", 76, 87, 29, click: MoreClick));
 		}
 	}
 }
