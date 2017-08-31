@@ -31,6 +31,7 @@ namespace CivOne.Screens
 		protected readonly List<Element> Elements = new List<Element>();
 
 		protected event ResizeEventHandler OnResize;
+		protected event KeyboardEventHandler OnKeyDown, OnKeyUp;
 		protected event ScreenEventHandler OnMouseDown, OnMouseUp, OnMouseDrag, OnMouseMove;
 
 		protected void MouseArgsOffset(ref ScreenEventArgs args, int offsetX, int offsetY)
@@ -78,7 +79,19 @@ namespace CivOne.Screens
 			}
 			return UpdateDraw(gameTick);
 		}
-		public virtual bool KeyDown(KeyboardEventArgs args) => false;
+		
+		public bool KeyUp(KeyboardEventArgs args)
+		{
+			OnKeyUp?.Invoke(this, args);
+			return args.Handled;
+		}
+
+		public bool KeyDown(KeyboardEventArgs args)
+		{
+			OnKeyDown?.Invoke(this, args);
+			return args.Handled;
+		}
+
 		public bool MouseDown(ScreenEventArgs args)
 		{
 			foreach (Element element in Elements)

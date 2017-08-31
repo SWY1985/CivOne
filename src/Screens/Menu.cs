@@ -96,22 +96,25 @@ namespace CivOne.Screens
 			return false;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
 			switch (args.Key)
 			{
 				case Key.NumPad8:
 				case Key.Up:
 					ActiveItem--;
-					return true;
+					args.Handled = true;
+					break;
 				case Key.NumPad2:
 				case Key.Down:
 					ActiveItem++;
-					return true;
+					args.Handled = true;
+					break;
 				case Key.Enter:
-					if (!Items[_activeItem].Enabled) return false;
+					if (!Items[_activeItem].Enabled) break;
 					Items[_activeItem].Select();
-					return true;
+					args.Handled = true;
+					break;
 				case Key.Escape:
 					if (Cancel != null)
 					{
@@ -122,7 +125,6 @@ namespace CivOne.Screens
 					}
 					break;
 			}
-			return false;
 		}
 		
 		private int MouseOverItem(ScreenEventArgs args)
@@ -209,6 +211,7 @@ namespace CivOne.Screens
 		
 		public Menu(string menuId, Palette palette, IBitmap background = null) : base(MouseCursor.Pointer)
 		{
+			OnKeyDown += KeyDown;
 			OnMouseDown += MouseDown;
 			OnMouseUp += MouseUp;
 			OnMouseDrag += MouseDrag;

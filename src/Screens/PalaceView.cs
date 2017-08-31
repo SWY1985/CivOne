@@ -208,7 +208,7 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
 			Player.PalaceData palace = Human.Palace;
 
@@ -271,7 +271,7 @@ namespace CivOne.Screens
 					Destroy();
 					break;
 			}
-			return true;
+			args.Handled = true;
 		}
 		
 		private void MouseDown(object sender, ScreenEventArgs args)
@@ -296,6 +296,7 @@ namespace CivOne.Screens
 		
 		public PalaceView(bool build = false)
 		{
+			OnKeyDown += KeyDown;
 			OnMouseDown += MouseDown;
 
 			_noiseMap = new byte[320, 200];

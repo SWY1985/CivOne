@@ -162,9 +162,9 @@ namespace CivOne.Screens
 			return Cancel;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
-			if (Cancel) return false;
+			if (Cancel) return;
 			
 			char c = Char.ToUpper(args.KeyChar);
 			if (args.Key == Key.Escape)
@@ -172,11 +172,11 @@ namespace CivOne.Screens
 				Log("Cancel");
 				Cancel = true;
 				_update = true;
-				return true;
+				args.Handled = true;
 			}
 			else if (_menu != null)
 			{
-				return _menu.KeyDown(args);
+				args.Handled = _menu.KeyDown(args);
 			}
 			else if (args.Key == Key.Enter)
 			{
@@ -205,9 +205,8 @@ namespace CivOne.Screens
 			{
 				_driveLetter = c;
 				_update = true;
-				return true;
+				args.Handled = true;
 			}
-			return false;
 		}
 		
 		private void MouseDown(object sender, ScreenEventArgs args)
@@ -232,6 +231,7 @@ namespace CivOne.Screens
 		{
 			Palette = palette;
 
+			OnKeyDown += KeyDown;
 			OnMouseDown += MouseDown;
 			OnMouseUp += MouseUp;
 			OnMouseDrag += MouseDrag;

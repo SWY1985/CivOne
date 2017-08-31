@@ -142,15 +142,12 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
-			if (_closing) return false;
-			if (_singlePage != null && NextPage())
-			{
-				return true;
-			}
-			_closing = true;
-			return true;
+			if (_closing) return;
+
+			args.Handled = true;
+			_closing = !(_singlePage != null && NextPage());
 		}
 		
 		private void MouseDown(object sender, ScreenEventArgs args)
@@ -336,6 +333,7 @@ namespace CivOne.Screens
 		
 		public Civilopedia(ICivilopedia page, bool discovered = false, bool icon = true)
 		{
+			OnKeyDown += KeyDown;
 			OnMouseDown += MouseDown;
 
 			_discovered = discovered;

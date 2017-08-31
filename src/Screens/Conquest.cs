@@ -122,18 +122,20 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
 			if (_step < 1)
 			{
 				_timer = NOISE_COUNT;
 				_step = 1;
 			}
-			return true;
+			args.Handled = true;
 		}
 		
 		public Conquest()
 		{
+			OnKeyDown += KeyDown;
+
 			_background = Resources["SLAM1"];
 			
 			Palette = _background.Palette;

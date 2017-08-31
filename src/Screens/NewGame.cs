@@ -279,7 +279,7 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
 			if (_tribe != -1 && _leaderName == null)
 			{
@@ -287,13 +287,13 @@ namespace CivOne.Screens
 				{
 					ICivilization civ = _tribesAvailable[_tribe];
 					_leaderName = civ.Leader.Name;
-					return true;
+					args.Handled = true;
 				}
-				return false;
+				return;
 			}
 			if (_difficulty > -1 && _competition > -1 && _tribe > -1 && !_done)
 				_done = true;
-			return _done;
+			args.Handled = _done;
 		}
 		
 		private void MouseDown(object sender, ScreenEventArgs args)
@@ -318,6 +318,7 @@ namespace CivOne.Screens
 		
 		public NewGame() : base(MouseCursor.Pointer)
 		{
+			OnKeyDown += KeyDown;
 			OnMouseDown += MouseDown;
 			OnResize += Resize;
 			

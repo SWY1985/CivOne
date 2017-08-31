@@ -154,20 +154,23 @@ namespace CivOne.Screens.CityManagerPanels
 
 		private void ViewClick(object sender, EventArgs args) => GotoView();
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
 			switch (args.KeyChar)
 			{
 				case 'I':
-					return GotoInfo();
+					args.Handled = GotoInfo();
+					break;
 				case 'H':
-					return GotoHappy();
+					args.Handled = GotoHappy();
+					break;
 				case 'M':
-					return GotoMap();
+					args.Handled = GotoMap();
+					break;
 				case 'V':
-					return GotoView();
+					args.Handled = GotoView();
+					break;
 			}
-			return false;
 		}
 
 		private bool InfoClick(ScreenEventArgs args)
@@ -209,6 +212,7 @@ namespace CivOne.Screens.CityManagerPanels
 		{
 			_city = city;
 
+			OnKeyDown += KeyDown;
 			OnMouseDown += MouseDown;
 
 			Elements.AddRange(new [] {

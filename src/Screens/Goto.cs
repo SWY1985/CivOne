@@ -33,10 +33,10 @@ namespace CivOne.Screens
 			return false;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
+			args.Handled = true;
 			Destroy();
-			return true;
 		}
 		
 		private void MouseDown(object sender, ScreenEventArgs args)
@@ -69,6 +69,7 @@ namespace CivOne.Screens
 			
 			Palette = Common.TopScreen.Palette;
 
+			OnKeyDown += KeyDown;
 			OnMouseDown += MouseDown;
 		}
 	}

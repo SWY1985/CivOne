@@ -156,9 +156,9 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
-			return SkipAction();
+			args.Handled = SkipAction();
 		}
 		
 		private void MouseDown(object sender, ScreenEventArgs args)
@@ -710,6 +710,7 @@ namespace CivOne.Screens
 			Palette = _background.Palette;
 			_overlay = new Picture(_background);
 
+			OnKeyDown += KeyDown;
 			OnMouseDown += MouseDown;
 			
 			if (founded) return;

@@ -424,27 +424,30 @@ namespace CivOne.Screens.GamePlayPanels
 			return false;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
 			if (Game.CurrentPlayer != Human)
 			{
 				// Ignore all keypresses if the current player is not human
-				return false;
+				return;
 			}
 			
 			switch (args.KeyChar)
 			{
 				case 'G':
 					GameTask.Enqueue(Show.Goto);
-					return true;
+					args.Handled = true;
+					return;
 				case 'T':
 					GameTask.Enqueue(Show.Terrain);
-					return true;
+					args.Handled = true;
+					return;
 			}
 
 			if (Game.ActiveUnit != null)
 			{
-				return KeyDownActiveUnit(args);
+				args.Handled = KeyDownActiveUnit(args);
+				return;
 			}
 			
 			switch (args.Key)
@@ -452,9 +455,9 @@ namespace CivOne.Screens.GamePlayPanels
 				case Key.Space:
 				case Key.Enter:
 					GameTask.Enqueue(Turn.End());
-					return true;
+					args.Handled = true;
+					return;
 			}
-			return false;
 		}
 		
 		private void MouseDown(object sender, ScreenEventArgs args)
@@ -527,6 +530,7 @@ namespace CivOne.Screens.GamePlayPanels
 		
 		public GameMap()
 		{
+			OnKeyDown += KeyDown;
 			OnMouseDown += MouseDown;
 
 			GameTask.Started += TaskStarted;

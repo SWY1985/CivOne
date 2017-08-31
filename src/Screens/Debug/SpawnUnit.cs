@@ -178,15 +178,15 @@ namespace CivOne.Screens.Debug
 				.DrawText("Cancel", 1, 15, xx + 8, 192);
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
 			switch (args.Key)
 			{
 				case Key.Escape:
 					Destroy();
-					return true;
+					args.Handled = true;
+					break;
 			}
-			return false;
 		}
 		
 		private void MouseDown(object sender, ScreenEventArgs args)
@@ -277,6 +277,7 @@ namespace CivOne.Screens.Debug
 		{
 			Palette = Common.DefaultPalette;
 
+			OnKeyDown += KeyDown;
 			OnMouseDown += MouseDown;
 			OnMouseMove += MouseMove;
 

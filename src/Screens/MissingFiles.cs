@@ -117,15 +117,17 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
+			args.Handled = true;
 			Runtime.Quit();
 			Destroy();
-			return true;
 		}
 		
 		public MissingFiles()
 		{
+			OnKeyDown += KeyDown;
+
 			Palette = Common.GetPalette256;
 			this.Clear(8)
 				.FillRectangle(40, 50, 240, 100, 15)

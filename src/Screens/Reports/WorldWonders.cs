@@ -58,13 +58,13 @@ namespace CivOne.Screens.Reports
 			return true;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
 			if ((++_page * 7) > _wonders.Length)
 				Destroy();
 			else
 				_update = true;
-			return true;
+			args.Handled = true;
 		}
 		
 		private void MouseDown(object sender, ScreenEventArgs args)
@@ -78,6 +78,7 @@ namespace CivOne.Screens.Reports
 		
 		public WorldWonders()
 		{
+			OnKeyDown += KeyDown;
 			OnMouseDown += MouseDown;
 
 			Palette = Common.DefaultPalette;

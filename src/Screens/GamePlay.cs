@@ -196,12 +196,19 @@ namespace CivOne.Screens
 			return false;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
-			if (GameTask.Any()) return true;
+			if (GameTask.Any())
+			{
+				args.Handled = true;
+				return;
+			}
 
 			if (CheckShift56(args))
-				return true;
+			{
+				args.Handled = true;
+				return;
+			}
 			
 			if (_gameMenu != null)
 			{
@@ -210,62 +217,77 @@ namespace CivOne.Screens
 					_gameMenu = null;
 					_redraw = true;
 				}
-				return true;
+				args.Handled = true;
+				return;
 			}
 
 			if (_menuBar.KeyDown(args) && _gameMenu != null)
 			{
 				_gameMenu.KeepOpen = true;
-				return true;
+				args.Handled = true;
+				return;
 			}
 
 			switch (args.Key)
 			{
 				case Key.F1:
 					Common.AddScreen(new CityStatus());
-					return true;
+					args.Handled = true;
+					return;
 				case Key.F2:
 					Common.AddScreen(new MilitaryLosses());
 					Common.AddScreen(new MilitaryStatus());
-					return true;
+					args.Handled = true;
+					return;
 				case Key.F3:
 					Common.AddScreen(new IntelligenceReport());
-					return true;
+					args.Handled = true;
+					return;
 				case Key.F4:
 					Common.AddScreen(new AttitudeSurvey());
-					return true;
+					args.Handled = true;
+					return;
 				case Key.F5:
 					Common.AddScreen(new TradeReport());
-					return true;
+					args.Handled = true;
+					return;
 				case Key.F6:
 					Common.AddScreen(new ScienceReport());
-					return true;
+					args.Handled = true;
+					return;
 				case Key.F7:
 					if (Game.BuiltWonders.Length == 0)
 						GameTask.Enqueue(Show.Empty);
 					else
 						Common.AddScreen(new WorldWonders());
-					return true;
+					args.Handled = true;
+					return;
 				case Key.F8:
 					Common.AddScreen(new TopCities());
-					return true;
+					args.Handled = true;
+					return;
 				case Key.F9:
 					Common.AddScreen(new CivilizationScore());
-					return true;
+					args.Handled = true;
+					return;
 				case Key.F10:
 					Common.AddScreen(new WorldMap());
-					return true;
+					args.Handled = true;
+					return;
 				case Key.Plus:
 					GameTask.Enqueue(Show.TaxRate);
-					return true;
+					args.Handled = true;
+					return;
 				case Key.Minus:
 					GameTask.Enqueue(Show.LuxuryRate);
-					return true;
+					args.Handled = true;
+					return;
 				case Key.Slash:
 					GameTask.Enqueue(Show.Search);
-					return true;
+					args.Handled = true;
+					return;
 			}
-			return _gameMap.KeyDown(args);
+			args.Handled = _gameMap.KeyDown(args);
 		}
 		
 		private void MouseDown(object sender, ScreenEventArgs args)
@@ -371,6 +393,7 @@ namespace CivOne.Screens
 		{
 			Palette = Resources["SP257"].Palette;
 			
+			OnKeyDown += KeyDown;
 			OnMouseDown += MouseDown;
 			OnMouseUp += MouseUp;
 			OnMouseDrag += MouseDrag;

@@ -160,20 +160,23 @@ namespace CivOne.Screens.CityManagerPanels
 
 		private void BuyClick(object sender, EventArgs args) => Buy();
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
 			switch (args.KeyChar)
 			{
 				case 'C':
-					return Change();
+					args.Handled = Change();
+					break;
 				case 'B':
-					return Buy();
+					args.Handled = Buy();
+					break;
 			}
-			return false;
 		}
 
 		public CityProduction(City city) : base(88, 99)
 		{
+			OnKeyDown += KeyDown;
+
 			_city = city;
 			
 			Elements.AddRange(new [] {

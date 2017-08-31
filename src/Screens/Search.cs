@@ -32,10 +32,10 @@ namespace CivOne.Screens
 
 		public event EventHandler Accept, Cancel;
 
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
+			args.Handled = true;
 			Close();
-			return true;
 		}
 
 		private void MouseDown(object sender, ScreenEventArgs args)
@@ -46,8 +46,6 @@ namespace CivOne.Screens
 
 		private void Search_Accept(object sender, EventArgs args)
 		{
-			OnMouseDown += MouseDown;
-
 			City = Game.GetCities().FirstOrDefault(x => x.Name.ToLower().StartsWith(_input.Text.ToLower()) && Human.Visible(x.X, x.Y));
 			_done = true;
 			if (City == null)
@@ -86,6 +84,9 @@ namespace CivOne.Screens
 		public Search()
 		{
 			Palette = Common.Screens.Last().OriginalColours;
+			
+			OnKeyDown += KeyDown;
+			OnMouseDown += MouseDown;
 
 			this.FillRectangle(64, 78, 225, 25, 5)
 				.FillRectangle(65, 79, 223, 23, 15)

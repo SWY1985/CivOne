@@ -95,15 +95,15 @@ namespace CivOne.Screens
 
 		private void ExitClick(object sender, EventArgs args) => CloseScreen();
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
 			foreach (IScreen screen in _subScreens)
 			{
 				if (!screen.KeyDown(args)) continue;
-				return true;
+				return;
 			}
+			args.Handled = true;
 			CloseScreen();
-			return true;
 		}
 		
 		private void MouseDown(object sender, ScreenEventArgs args)
@@ -196,6 +196,7 @@ namespace CivOne.Screens
 			
 			Palette = Common.DefaultPalette;
 
+			OnKeyDown += KeyDown;
 			OnMouseDown += MouseDown;
 			OnMouseUp += MouseUp;
 

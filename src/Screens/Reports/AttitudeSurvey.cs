@@ -116,9 +116,9 @@ namespace CivOne.Screens.Reports
 			return true;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		protected override void KeyDown(object sender, KeyboardEventArgs args)
 		{
-			return NextPage();
+			args.Handled = NextPage();
 		}
 		
 		protected override void MouseDown(object sender, ScreenEventArgs args)

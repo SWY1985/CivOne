@@ -94,7 +94,7 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
 			switch (args.Key)
 			{
@@ -105,7 +105,7 @@ namespace CivOne.Screens
 						_activeItem--;
 						_update = true;
 					}
-					return true;
+					break;
 				case Key.NumPad2:
 				case Key.Down:
 					if (_activeItem <= (Items.Count - 1))
@@ -113,16 +113,16 @@ namespace CivOne.Screens
 						_activeItem++;
 						_update = true;
 					}
-					return true;
+					break;
 				case Key.Escape:
 					KeepOpen = false;
-					return false;
+					return;
 				case Key.Enter:
 					if (_activeItem >= 0)
 						Items[_activeItem].Select();
-					return false;
+					return;
 			}
-			return true;
+			args.Handled = true;
 		}
 		
 		private int MouseOverItem(ScreenEventArgs args)
@@ -181,6 +181,7 @@ namespace CivOne.Screens
 			
 			Palette = palette.Copy();
 
+			OnKeyDown += KeyDown;
 			OnMouseDown += MouseDown;
 			OnMouseUp += MouseUp;
 			OnMouseDrag += MouseDrag;

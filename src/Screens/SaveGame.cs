@@ -174,12 +174,13 @@ namespace CivOne.Screens
 			return false;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
 			if (_saving)
 			{
 				Destroy();
-				return true;
+				args.Handled = true;
+				return;
 			}
 			
 			char c = Char.ToUpper(args.KeyChar);
@@ -187,11 +188,11 @@ namespace CivOne.Screens
 			{
 				Log("Cancel");
 				Destroy();
-				return true;
+				args.Handled = true;
 			}
 			else if (_menu != null)
 			{
-				return _menu.KeyDown(args);
+				args.Handled = _menu.KeyDown(args);
 			}
 			else if (args.Key == Key.Enter)
 			{
@@ -201,7 +202,8 @@ namespace CivOne.Screens
 					Game.Save(file.SveFile, file.MapFile);
 					_saving = true;
 					_update = true;
-					return true;
+					args.Handled = true;
+					return;
 				}
 
 				_menu = new Menu(Palette)
@@ -230,9 +232,8 @@ namespace CivOne.Screens
 			{
 				_driveLetter = c;
 				_update = true;
-				return true;
+				args.Handled = true;
 			}
-			return false;
 		}
 		
 		private void MouseDown(object sender, ScreenEventArgs args)
@@ -261,6 +262,7 @@ namespace CivOne.Screens
 		{
 			Palette = Resources["SP257"].Palette;
 			
+			OnKeyDown += KeyDown;
 			OnMouseDown += MouseDown;
 			OnMouseUp += MouseUp;
 			OnMouseDrag += MouseDrag;

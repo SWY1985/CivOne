@@ -49,9 +49,9 @@ namespace CivOne.Screens.GamePlayPanels
 			return false;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
-			if (!args.Alt) return false;
+			if (!args.Alt) return;
 			
 			switch (args.KeyChar)
 			{
@@ -71,10 +71,10 @@ namespace CivOne.Screens.GamePlayPanels
 					CivilopediaSelected?.Invoke(this, null);
 					break;
 				default:
-					return false;
+					return;
 			}
 			MenuDrag = false;
-			return true;
+			args.Handled = true;
 		}
 		
 		private void MouseDown(object sender, ScreenEventArgs args)
@@ -103,6 +103,7 @@ namespace CivOne.Screens.GamePlayPanels
 		{
 			Palette = palette.Copy();
 
+			OnKeyDown += KeyDown;
 			OnMouseDown += MouseDown;
 			OnMouseUp += MouseUp;
 

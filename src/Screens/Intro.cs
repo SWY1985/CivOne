@@ -186,14 +186,14 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
 			if (args.Shift)
 			{
-				if (_fadeStep < 1.0F) return false;
+				if (_fadeStep < 1.0F) return;
 				if (args.Key == Key.Left)
 				{
-					if (_introLine <= 1) return false;
+					if (_introLine <= 1) return;
 					
 					Log("Intro: <<");
 					
@@ -208,11 +208,12 @@ namespace CivOne.Screens
 					{
 						LogIntroText();
 					}
-					return true;
+					args.Handled = true;
+					return;
 				}
 				if (args.Key == Key.Right)
 				{
-					if (_introLine >= _introText.Length - 1) return false;
+					if (_introLine >= _introText.Length - 1) return;
 					
 					Log("Intro: >>");
 					
@@ -227,16 +228,16 @@ namespace CivOne.Screens
 					{
 						LogIntroText();	
 					}
-					return true;
+					args.Handled = true;
+					return;
 				}
 			}
 			if (args.Key == Key.Space || args.Key == Key.Enter)
 			{
 				Destroy();
 				Common.AddScreen(new NewGame());
-				return true;
+				args.Handled = true;
 			}
-			return false;
 		}
 
 		public void Resize(object sender, ResizeEventArgs args)
@@ -247,6 +248,7 @@ namespace CivOne.Screens
 		
 		public Intro()
 		{
+			OnKeyDown += KeyDown;
 			OnResize += Resize;
 			
 			_introText = TextFile.Instance.LoadArray("STORY");

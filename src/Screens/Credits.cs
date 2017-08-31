@@ -254,11 +254,14 @@ namespace CivOne.Screens
 			Common.AddScreen(new CustomizeWorld());
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
 			if (_done && _overlay != null)
-				return _overlay.KeyDown(args);
-			return SkipIntro();
+			{
+				args.Handled = _overlay.KeyDown(args);
+				return;
+			}
+			args.Handled = SkipIntro();
 		}
 		
 		private void MouseDown(object sender, ScreenEventArgs args)
@@ -305,6 +308,7 @@ namespace CivOne.Screens
 		
 		public Credits()
 		{
+			OnKeyDown += KeyDown;
 			OnMouseDown += MouseDown;
 			OnMouseUp += MouseUp;
 			OnMouseDrag += MouseDrag;
