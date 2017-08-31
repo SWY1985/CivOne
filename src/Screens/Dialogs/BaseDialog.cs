@@ -26,21 +26,9 @@ namespace CivOne.Screens.Dialogs
 		
 		protected Picture[] TextLines { get; private set; }
 
-		protected int TextWidth
-		{
-			get
-			{
-				return TextLines.Max(x => x.Width);
-			}
-		}
+		protected int TextWidth => TextLines.Max(x => x.Width);
 
-		protected int TextHeight
-		{
-			get
-			{
-				return TextLines.Sum(x => x.Height);
-			}
-		}
+		protected int TextHeight => TextLines.Sum(x => x.Height);
 		
 		protected IBitmap Selection(int left, int top, int width, int height)
 		{
@@ -71,13 +59,13 @@ namespace CivOne.Screens.Dialogs
 			return false;
 		}
 		
-		private void KeyDown(object sender, KeyboardEventArgs args)
+		protected virtual void KeyDown(object sender, KeyboardEventArgs args)
 		{
 			args.Handled = true;
 			Cancel();
 		}
 		
-		private void MouseDown(object sender, ScreenEventArgs args)
+		protected virtual void MouseDown(object sender, ScreenEventArgs args)
 		{
 			args.Handled = true;
 			Cancel();
@@ -102,6 +90,9 @@ namespace CivOne.Screens.Dialogs
 
 		public BaseDialog(int left, int top, int marginWidth, int marginHeight, string[] message) : base(MouseCursor.Pointer)
 		{
+			OnKeyDown += KeyDown;
+			OnMouseDown += MouseDown;
+
 			_left = left;
 			_top = top;
 			TextLines = new Picture[message.Length];
