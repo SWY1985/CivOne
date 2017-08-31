@@ -15,10 +15,8 @@ using CivOne.IO;
 
 namespace CivOne.UserInterface
 {
-	public class Button : IElement
+	public class Button : Element
 	{
-		public Bytemap Bitmap { get; private set; }
-
 		private readonly TextSettings _textSettings;
 
 		private int FontHeight => Resources.Instance.GetFontHeight(_textSettings.FontId);
@@ -32,8 +30,6 @@ namespace CivOne.UserInterface
 		public Point Location => new Point(Left, Top);
 		public Size Size => new Size(Width, Height);
 
-		public int Left { get; private set; }
-		public int Top { get; private set; }
 		public int Width => Bitmap.Width;
 		public int Height => Bitmap.Height;
 
@@ -109,13 +105,15 @@ namespace CivOne.UserInterface
 			}
 		}
 
-		public void Click() => Clicked?.Invoke(this, EventArgs.Empty);
+		public void Click(int left, int top) => Clicked?.Invoke(this, EventArgs.Empty);
 
 		private static Button ColourTemplate(string text, int left, int top, int width, int height, byte colour, byte colourDark, EventHandler click = null)
 		{
-			Button output = new Button(text, left, top, width, height);
-			output._colour = colour;
-			output._colourDark = colourDark;
+			Button output = new Button(text, left, top, width, height)
+			{
+				_colour = colour,
+				_colourDark = colourDark
+			};
 			output._textSettings.Colour = colourDark;
 			output.Draw();
 			output.Clicked += click;
@@ -143,11 +141,6 @@ namespace CivOne.UserInterface
 				Alignment = TextAlign.Center
 			};
 			_textSettings.Changed += Draw;
-		}
-
-		public void Dispose()
-		{
-			Bitmap.Dispose();
 		}
 	}
 }

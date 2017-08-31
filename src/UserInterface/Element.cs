@@ -8,15 +8,19 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using CivOne.Events;
 using CivOne.IO;
 
 namespace CivOne.UserInterface
 {
-	public interface IElement : IDisposable
+	public abstract class Element : IDisposable
 	{
-		int Left { get; }
-		int Top { get; }
-		Bytemap Bitmap { get; }
-		void Click();
+		public int Left { get; protected set; }
+		public int Top { get; protected set; }
+		public Bytemap Bitmap { get; protected set; }
+		public void Dispose()
+		{
+			Bitmap?.Dispose();
+		}
 	}
 }

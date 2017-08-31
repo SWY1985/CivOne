@@ -28,7 +28,7 @@ namespace CivOne.Screens
 		
 		private bool _forceUpdate = false;
 
-		protected readonly List<IElement> Elements = new List<IElement>();
+		protected readonly List<Element> Elements = new List<Element>();
 
 		protected event ResizeEventHandler OnResize;
 		protected event ScreenEventHandler OnMouseDown, OnMouseUp, OnMouseDrag, OnMouseMove;
@@ -61,7 +61,7 @@ namespace CivOne.Screens
 		{
 			bool result = HasUpdate(gameTick);
 			if (_forceUpdate) result = true;
-			foreach (IElement element in Elements)
+			foreach (Element element in Elements)
 			{
 				if (element.Bitmap == null) continue;
 				this.AddLayer(element.Bitmap, element.Left, element.Top);
@@ -81,15 +81,16 @@ namespace CivOne.Screens
 		public virtual bool KeyDown(KeyboardEventArgs args) => false;
 		public bool MouseDown(ScreenEventArgs args)
 		{
-			foreach (IElement element in Elements)
+			foreach (Element element in Elements)
 			{
+				int x = args.X - element.Left, y = args.Y - element.Top;
 				switch (element)
 				{
 					case Button button:
 						if (button.Bounds.Contains(args.Location))
 						{
 							_forceUpdate = true;
-							button.Click();
+							button.Click(x, y);
 							return (args.Handled = true);
 						}
 						break;
