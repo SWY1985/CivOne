@@ -18,15 +18,15 @@ using CivOne.Graphics.Sprites;
 using CivOne.Tasks;
 using CivOne.Tiles;
 using CivOne.Units;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens.GamePlayPanels
 {
-	internal class SideBar : BaseScreen
+	internal class SideBar : Panel
 	{
-		private bool _update = true;
-		
 		private readonly Picture _miniMap, _demographics;
 		private Picture _gameInfo;
+		private uint _gameTick;
 		
 		private void DrawMiniMap(uint gameTick = 0)
 		{
@@ -181,26 +181,26 @@ namespace CivOne.Screens.GamePlayPanels
 				_gameInfo.DrawText($"to continue", 0, 5, 4, 50, TextAlign.Left);
 			}
 		}
-		
+
 		protected override bool HasUpdate(uint gameTick)
 		{
-			if (_update || (gameTick % 2 == 0))
-			{
-				if (!(Common.TopScreen is GamePlay))
-					gameTick = 0;
+			_gameTick = gameTick;
+			return (base.HasUpdate(gameTick) || (gameTick % 2 == 0));
+		}
 
-				DrawMiniMap(gameTick);
-				DrawDemographics();
-				DrawGameInfo(gameTick);
-				
-				this.AddLayer(_miniMap, 0, 0)
-					.AddLayer(_demographics, 0, 50)
-					.AddLayer(_gameInfo, 0, 89);
-				
-				_update = false;
-				return true;
-			}
-			return false;
+		private void Draw(object sender, EventArgs args)
+		{
+			uint gameTick = (Common.TopScreen is GamePlay) ? _gameTick : 0;
+
+			DrawMiniMap(gameTick);
+			DrawDemographics();
+			DrawGameInfo(gameTick);
+			
+			Bitmap.AddLayer(new Picture(Width, Height)
+				.AddLayer(_miniMap, 0, 0)
+				.AddLayer(_demographics, 0, 50)
+				.AddLayer(_gameInfo, 0, 89)
+				.Bitmap);
 		}
 		
 		private void MouseDown(object sender, ScreenEventArgs args)
@@ -239,36 +239,23 @@ namespace CivOne.Screens.GamePlayPanels
 		
 		public void Resize(int height)
 		{
-			Bitmap = new Bytemap(80, height);
+			Left = Settings.RightSideBar ? (Width - 80) : 0;
+
 			_gameInfo?.Dispose();
-			_gameInfo = new Picture(80, (height - 89), Palette);
-			_update = true;
+			_gameInfo = new Picture(80, (height - _miniMap.Height - _demographics.Height));
+
+			base.Resize(80, height);
 		}
 
-		public SideBar(Palette palette) : base(80, 192)
+		public SideBar() : base(0, 8)
 		{
-			_miniMap = new Picture(80, 50, palette);
-			_demographics = new Picture(80, 39, palette);
-			_gameInfo = new Picture(80, 103, palette);
-			
-			DrawMiniMap();
-			DrawDemographics();
-			DrawGameInfo();
-			
-			Palette = palette.Copy();
-			this.AddLayer(_miniMap, 0, 0)
-				.AddLayer(_demographics, 0, 50)
-				.AddLayer(_gameInfo, 0, 89);
-		}
-
-		public override void Dispose()
-		{
+			OnDraw += Draw;
 			OnMouseDown += MouseDown;
 
-			_miniMap.Dispose();
-			_demographics.Dispose();
-			_gameInfo.Dispose();
-			base.Dispose();
+			_miniMap = new Picture(80, 50);
+			_demographics = new Picture(80, 39);
+
+			Resize(192);
 		}
 	}
 }

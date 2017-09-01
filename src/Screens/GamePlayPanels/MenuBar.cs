@@ -9,78 +9,42 @@
 
 using System;
 using System.Drawing;
-using CivOne.Enums;
 using CivOne.Events;
+using CivOne.IO;
 using CivOne.Graphics;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens.GamePlayPanels
 {
-	internal class MenuBar : BaseScreen
+	internal class MenuBar : Panel
 	{
 		private const int FONT_ID = 0;
+
+		private readonly TextSettings _textSettings;
 		
 		public event EventHandler GameSelected;
 		public event EventHandler OrdersSelected;
 		public event EventHandler AdvisorsSelected;
 		public event EventHandler WorldSelected;
 		public event EventHandler CivilopediaSelected;
+		
+		private readonly Rectangle[] _rectMenus = new Rectangle[5];
 
-		public bool MenuDrag { get; private set; }
-		
-		private readonly Rectangle[] _rectMenus;
-		
-		private bool _update = true;
-		private int _mouseX, _mouseY;
-		
-		protected override bool HasUpdate(uint gameTick)
+		private void Draw(object sender, EventArgs args)
 		{
-			if (_update)
-			{
-				this.Clear(5)
-					.DrawText("GAME", 8, 1)
-					.DrawText("ORDERS", 64, 1)
-					.DrawText("ADVISORS", 128, 1)
-					.DrawText("WORLD", 192, 1)
-					.DrawText("CIVILOPEDIA", 240, 1);
+			Bitmap.AddLayer(new Picture(Width, Height)
+				.Clear(5)
+				.DrawText("GAME", 8, 1, _textSettings)
+				.DrawText("ORDERS", 64, 1, _textSettings)
+				.DrawText("ADVISORS", 128, 1, _textSettings)
+				.DrawText("WORLD", 192, 1, _textSettings)
+				.DrawText("CIVILOPEDIA", 240, 1, _textSettings)
+				.Bitmap);
+		}
 
-				_update = false;
-				return true;
-			}
-			return false;
-		}
-		
-		private void KeyDown(object sender, KeyboardEventArgs args)
-		{
-			if (!args.Alt) return;
-			
-			switch (args.KeyChar)
-			{
-				case 'G':
-					GameSelected?.Invoke(this, null);
-					break;
-				case 'O':
-					OrdersSelected?.Invoke(this, null);
-					break;
-				case 'A':
-					AdvisorsSelected?.Invoke(this, null);
-					break;
-				case 'W':
-					WorldSelected?.Invoke(this, null);
-					break;
-				case 'C':
-					CivilopediaSelected?.Invoke(this, null);
-					break;
-				default:
-					return;
-			}
-			MenuDrag = false;
-			args.Handled = true;
-		}
-		
 		private void MouseDown(object sender, ScreenEventArgs args)
 		{
-			_mouseX = args.X;
-			_mouseY = args.Y;
+			args.Handled = true;
 
 			if (_rectMenus[0].Contains(args.Location) && GameSelected != null) GameSelected(this, null);
 			if (_rectMenus[1].Contains(args.Location) && OrdersSelected != null) OrdersSelected(this, null);
@@ -88,36 +52,23 @@ namespace CivOne.Screens.GamePlayPanels
 			if (_rectMenus[3].Contains(args.Location) && WorldSelected != null) WorldSelected(this, null);
 			if (_rectMenus[4].Contains(args.Location) && CivilopediaSelected != null) CivilopediaSelected(this, null);
 		}
-		
-		private void MouseUp(object sender, ScreenEventArgs args)
-		{
-			MenuDrag = !(args.X == _mouseX && args.Y == _mouseY);
-		}
 
-		public void Resize()
-		{
-			_update = true;
-		}
-		
-		public MenuBar(Palette palette) : base(320, 8)
-		{
-			Palette = palette.Copy();
+		public void Resize(int width) => base.Resize(width, 8);
 
-			OnKeyDown += KeyDown;
+		public MenuBar() : base(0, 0)
+		{
+			OnDraw += Draw;
 			OnMouseDown += MouseDown;
-			OnMouseUp += MouseUp;
 
-			this.Clear(5);
-			_update = true;
-
-			DefaultTextSettings = TextSettings.DifferentFirstLetter(15, 7);
+			_textSettings = TextSettings.DifferentFirstLetter(15, 7);
 			
-			_rectMenus = new Rectangle[5];
 			_rectMenus[0] = new Rectangle(0, 0, 56, 8);
 			_rectMenus[1] = new Rectangle(56, 0, 64, 8);
 			_rectMenus[2] = new Rectangle(120, 0, 64, 8);
 			_rectMenus[3] = new Rectangle(184, 0, 48, 8);
 			_rectMenus[4] = new Rectangle(232, 0, 88, 8);
+
+			Resize(320);
 		}
 	}
 }

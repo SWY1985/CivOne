@@ -15,7 +15,7 @@ using CivOne.IO;
 
 namespace CivOne.UserInterface
 {
-	public class Button : Element
+	public class Button : Element, IMouseElement
 	{
 		private readonly TextSettings _textSettings;
 
@@ -25,13 +25,6 @@ namespace CivOne.UserInterface
 		private string _text;
 
 		public event EventHandler Clicked;
-
-		public Rectangle Bounds => new Rectangle(Left, Top, Width, Height);
-		public Point Location => new Point(Left, Top);
-		public Size Size => new Size(Width, Height);
-
-		public int Width => Bitmap.Width;
-		public int Height => Bitmap.Height;
 
 		public TextSettings TextSettings => _textSettings;
 
@@ -105,7 +98,20 @@ namespace CivOne.UserInterface
 			}
 		}
 
-		public void Click(int left, int top) => Clicked?.Invoke(this, EventArgs.Empty);
+		public bool MouseDown(int left, int top)
+		{
+			if (Clicked != null)
+			{
+				Clicked.Invoke(this, EventArgs.Empty);
+				return true;
+			}
+			return false;
+		}
+
+		public bool MouseUp(int left, int top)
+		{
+			return (Clicked != null);
+		}
 
 		private static Button ColourTemplate(string text, int left, int top, int width, int height, byte colour, byte colourDark, EventHandler click = null)
 		{

@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
@@ -28,11 +29,14 @@ namespace CivOne.Screens
 		
 		private bool _forceUpdate = false;
 
-		protected readonly List<Element> Elements = new List<Element>();
-
 		protected event ResizeEventHandler OnResize;
 		protected event KeyboardEventHandler OnKeyDown, OnKeyUp;
 		protected event ScreenEventHandler OnMouseDown, OnMouseUp, OnMouseDrag, OnMouseMove;
+
+		protected readonly List<Element> Elements = new List<Element>();
+
+		protected IEnumerable<IMouseElement> MouseElements => Elements.Where(x => x is IMouseElement).Reverse().Select(x => (x as IMouseElement));
+		protected IEnumerable<IUpdateElement> UpdateElements => Elements.Where(x => x is IUpdateElement).Select(x => (x as IUpdateElement));
 
 		protected void MouseArgsOffset(ref ScreenEventArgs args, int offsetX, int offsetY)
 		{
@@ -72,6 +76,12 @@ namespace CivOne.Screens
 
 		public bool Update(uint gameTick)
 		{
+			foreach (IUpdateElement element in UpdateElements)
+			{
+				if (!element.Update(gameTick)) continue;
+				_forceUpdate = true;
+			}
+
 			if (CanExpand && SizeChanged)
 			{
 				Resize(Runtime.CanvasWidth, Runtime.CanvasHeight);
@@ -94,19 +104,21 @@ namespace CivOne.Screens
 
 		public bool MouseDown(ScreenEventArgs args)
 		{
-			foreach (Element element in Elements)
+			foreach (IMouseElement element in MouseElements)
 			{
-				int x = args.X - element.Left, y = args.Y - element.Top;
-				switch (element)
+				if (!element.Bounds.Contains(args.Location))
 				{
-					case Button button:
-						if (button.Bounds.Contains(args.Location))
-						{
-							_forceUpdate = true;
-							button.Click(x, y);
-							return (args.Handled = true);
-						}
-						break;
+					if (Common.HasAttribute<OverlayPanel>(element))
+					{
+						Elements.RemoveAll(x => x == element);
+						return true;
+					}
+					continue;
+				}
+				if (args.Handled = element.MouseDown(args.X, args.Y))
+				{
+					_forceUpdate = true;
+					return true;
 				}
 			}
 
@@ -116,6 +128,24 @@ namespace CivOne.Screens
 
 		public bool MouseUp(ScreenEventArgs args)
 		{
+			foreach (IMouseElement element in MouseElements)
+			{
+				if (!element.Bounds.Contains(args.Location))
+				{
+					if (Common.HasAttribute<OverlayPanel>(element))
+					{
+						Elements.RemoveAll(x => x == element);
+						return true;
+					}
+					continue;
+				}
+				if (args.Handled = element.MouseUp(args.X, args.Y))
+				{
+					_forceUpdate = true;
+					return true;
+				}
+			}
+
 			OnMouseUp?.Invoke(this, args);
 			return args.Handled;
 		}
