@@ -17,5 +17,6 @@ namespace CivOne.UserInterface
 		Rectangle Bounds { get; }
 		bool MouseDown(int left, int top);
 		bool MouseUp(int left, int top);
+		bool MouseDrag(int left, int top);
 	}
 }

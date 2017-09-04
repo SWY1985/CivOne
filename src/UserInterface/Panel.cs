@@ -17,7 +17,7 @@ namespace CivOne.UserInterface
 	{
 		private bool _hasUpdate;
 
-		protected event ScreenEventHandler OnMouseDown, OnMouseUp;
+		protected event ScreenEventHandler OnMouseDown, OnMouseUp, OnMouseDrag;
 		protected event EventHandler OnDraw;
 
 		private void Draw()
@@ -54,6 +54,13 @@ namespace CivOne.UserInterface
 		{
 			ScreenEventArgs args = new ScreenEventArgs(left - Left, top - Top);
 			OnMouseUp?.Invoke(this, args);
+			return args.Handled;
+		}
+
+		public bool MouseDrag(int left, int top)
+		{
+			ScreenEventArgs args = new ScreenEventArgs(left - Left, top - Top);
+			OnMouseDrag?.Invoke(this, args);
 			return args.Handled;
 		}
 

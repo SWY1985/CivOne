@@ -152,6 +152,15 @@ namespace CivOne.Screens
 
 		public bool MouseDrag(ScreenEventArgs args)
 		{
+			foreach (IMouseElement element in MouseElements)
+			{
+				if (args.Handled = element.MouseDrag(args.X, args.Y))
+				{
+					_forceUpdate = true;
+					return true;
+				}
+			}
+
 			OnMouseDrag?.Invoke(this, args);
 			return args.Handled;
 		}

@@ -108,10 +108,9 @@ namespace CivOne.UserInterface
 			return false;
 		}
 
-		public bool MouseUp(int left, int top)
-		{
-			return (Clicked != null);
-		}
+		public bool MouseUp(int left, int top) => (Clicked != null);
+
+		public bool MouseDrag(int left, int top) => false;
 
 		private static Button ColourTemplate(string text, int left, int top, int width, int height, byte colour, byte colourDark, EventHandler click = null)
 		{

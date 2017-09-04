@@ -30,7 +30,6 @@ namespace CivOne.Screens
 		private bool Busy => (Game.MovingUnit != null || Human != Game.CurrentPlayer || GameTask.Any());
 		
 		private GameMenu _gameMenu = null;
-		// private int _menuX, _menuY;
 		private uint _lastGameTick;
 		private bool _update = true;
 		private bool _redraw = false;
@@ -281,13 +280,6 @@ namespace CivOne.Screens
 				args.Handled = true;
 				return;
 			}
-			if (_gameMenu != null && _gameMenu.KeepOpen)
-			{
-				// MouseArgsOffset(ref args, _menuX, _menuY);
-				// _update |= _gameMenu.MouseDown(args);
-				// args.Handled = _update;
-				return;
-			}
 
 			if (_rightSideBar)
 			{
@@ -303,17 +295,14 @@ namespace CivOne.Screens
 		
 		private void MouseUp(object sender, ScreenEventArgs args)
 		{
+			Elements.RemoveAll(x => x == _gameMenu);
+			_gameMenu?.Dispose();
+			_gameMenu = null;
+
 			if (Cursor == MouseCursor.None)
 			{
 				args.Handled = true;
-				return;
 			}
-			if (_gameMenu == null) return;
-			
-			// _gameMenu.MouseUp(args);
-			// _gameMenu = null;
-			// _redraw = true;
-			// args.Handled = true;
 		}
 		
 		private void MouseDrag(object sender, ScreenEventArgs args)
@@ -321,13 +310,7 @@ namespace CivOne.Screens
 			if (Cursor == MouseCursor.None)
 			{
 				args.Handled = true;
-				return;
 			}
-			if (_gameMenu == null) return;
-			
-			// MouseArgsOffset(ref args, _menuX, _menuY);
-			// _update |= _gameMenu.MouseDrag(args);
-			// args.Handled = _update;
 		}
 		
 		private void Resize(object sender, ResizeEventArgs args)

@@ -55,24 +55,21 @@ namespace CivOne.Screens.GamePlayPanels
 
 		private int MaxItemWidth => _items.Select(x => ItemWidth(x)).Max();
 
-		private void MenuItemDraw(MenuItem<int> menuItem, int x, int y)
+		private void MenuItemDraw(Picture picture, MenuItem<int> menuItem, int x, int y)
 		{
 			if (menuItem == null || menuItem.Text == null) return;
-			using (Picture picture = new Picture(Width, Height))
+			picture.DrawText(menuItem.Text, 0, (byte)(menuItem.Enabled ? 5 : 3), x, y, TextAlign.Left);
+			if (menuItem.Shortcut != null)
 			{
-				picture.DrawText(menuItem.Text, 0, (byte)(menuItem.Enabled ? 5 : 3), x, y, TextAlign.Left);
-				if (menuItem.Shortcut != null)
-				{
-					int textWidth = Resources.GetTextSize(0, menuItem.Text).Width;
-					picture.DrawText(menuItem.Shortcut, 0, 15, x + textWidth + 8, y, TextAlign.Left);
-				}
-				Bitmap.AddLayer(picture.Bitmap);
+				int textWidth = Resources.GetTextSize(0, menuItem.Text).Width;
+				picture.DrawText(menuItem.Shortcut, 0, 15, x + textWidth + 8, y, TextAlign.Left);
 			}
+			Bitmap.AddLayer(picture.Bitmap);
 		}
 		
-		// protected override bool HasUpdate(uint gameTick)
+		protected override bool HasUpdate(uint gameTick) => _update;
 		// {
-		// 	if (!_update) return true;
+			// if (!_update) return true;
 			
 		// 	int ww = MaxItemWidth + 17;
 		// 	int hh = (Resources.GetFontHeight(0) * Items.Count) + 9;
@@ -170,7 +167,7 @@ namespace CivOne.Screens.GamePlayPanels
 						picture.ColourReplace(7, 11, 3, yy - 1, MaxItemWidth + 11, Resources.GetFontHeight(0))
 							.ColourReplace(22, 3, 3, yy - 1, MaxItemWidth + 11, Resources.GetFontHeight(0));
 					}
-					MenuItemDraw(menuItem, 11, yy);
+					MenuItemDraw(picture, menuItem, 11, yy);
 					yy += Resources.GetFontHeight(0);
 					i++;
 				}
@@ -201,20 +198,21 @@ namespace CivOne.Screens.GamePlayPanels
 				return;
 			}
 			_items[_activeItem]?.Select();
+			_keepOpen = false;
 			args.Handled = true;
 		}
 		
-		// private void MouseDrag(object sender, ScreenEventArgs args)
-		// {
-		// 	if (KeepOpen) return;
-		// 	int index = MouseOverItem(args);
-		// 	if (index == _activeItem) return;
+		private void MouseDrag(object sender, ScreenEventArgs args)
+		{
+			if (KeepOpen) return;
+			int index = MouseOverItem(args);
+			if (index == _activeItem) return;
 						
-		// 	_activeItem = index;
+			_activeItem = index;
 			
-		// 	_update = true;
-		// 	args.Handled = true;
-		// }
+			_update = true;
+			args.Handled = true;
+		}
 
 		private void Redraw(object sender, EventArgs args)
 		{
@@ -240,7 +238,7 @@ namespace CivOne.Screens.GamePlayPanels
 			OnDraw += Draw;
 			OnMouseDown += MouseDown;
 			OnMouseUp += MouseUp;
-			// OnMouseDrag += MouseDrag;
+			OnMouseDrag += MouseDrag;
 		}
 	}
 }
