@@ -351,6 +351,23 @@ namespace CivOne.Screens
 			_update = true;
 			HasUpdate(0);
 		}
+
+	    private (int, int) getStartingViewCenter()
+	    {
+            foreach (var unit in Game.GetUnits().OrderByDescending(u => u.MovesLeft))
+	        {
+	            if (unit.Owner == Game.PlayerNumber(Game.HumanPlayer))
+	                return (unit.X, unit.Y);
+	        }
+
+	        foreach (var city in Game.GetCities())
+	        {
+	            if (city.Owner == Game.PlayerNumber(Game.HumanPlayer))
+	                return (city.X, city.Y);
+	        }
+
+            return (Game.HumanPlayer.StartX, 1);
+	    }
 		
 		public GamePlay()
 		{
@@ -378,6 +395,9 @@ namespace CivOne.Screens
 			_menuBar.AdvisorsSelected += MenuBarAdvisors;
 			_menuBar.WorldSelected += MenuBarWorld;
 			_menuBar.CivilopediaSelected += MenuBarCivilopedia;
+
+            var viewCenter = getStartingViewCenter();
+            _gameMap.CenterOnPoint(viewCenter.Item1, viewCenter.Item2);
 
 			while (Game.CurrentPlayer != Game.HumanPlayer)
 			{
