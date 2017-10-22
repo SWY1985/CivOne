@@ -19,7 +19,7 @@ namespace CivOne
 		protected static Player Human => Game.Instance.HumanPlayer;
 		protected static Resources Resources => Resources.Instance;
 		protected static IRuntime Runtime => RuntimeHandler.Runtime;
-		protected static Settings Settings => Settings.Instance;
+		protected internal static Settings Settings => Settings.Instance;
 
 		protected static void Log(string text, params object[] parameters) => Runtime.Log(text, parameters);
 

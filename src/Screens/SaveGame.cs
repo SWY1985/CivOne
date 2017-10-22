@@ -15,6 +15,7 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GameSave;
 using CivOne.Graphics;
+using CivOne.src.GameSave;
 using CivOne.UserInterface;
 
 namespace CivOne.Screens
@@ -52,7 +53,10 @@ namespace CivOne.Screens
 			_update = true;
 
 			SaveGameFile file = GetSaveGames().ToArray()[item];
-			Game.Save(file.SveFile, file.MapFile);
+
+		    var originalGameSaver = new OriginalGameFileSaver();
+
+			originalGameSaver.Save(file.SveFile, file.MapFile);
 		}
 		
 		private void DrawDriveQuestion()
@@ -140,7 +144,10 @@ namespace CivOne.Screens
 				if (_gameId >= 0)
 				{
 					SaveGameFile file = GetSaveGames().ToArray()[_gameId];
-					Game.Save(file.SveFile, file.MapFile);
+
+                    var originalGameSaver = new OriginalGameFileSaver();
+
+					originalGameSaver.Save(file.SveFile, file.MapFile);
 					_saving = true;
 					_update = true;
 					return true;

@@ -51,8 +51,10 @@ namespace CivOne.Screens
 			Log("Load game: {0}", file.Name);
 			
 			Destroy();
-			
-			Game.LoadGame(file.SveFile, file.MapFile);
+
+		    var originalGameLoader = new OriginalGameFileLoader();
+
+			originalGameLoader.LoadGame(file.SveFile, file.MapFile);
 			Common.AddScreen(new GamePlay());
 		}
 		
@@ -106,7 +108,8 @@ namespace CivOne.Screens
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
-			if (Cancel) return false;
+			if (Cancel)
+                return false;
 			
 			char c = Char.ToUpper(args.KeyChar);
 			if (args.Key == Key.Escape)
@@ -116,11 +119,13 @@ namespace CivOne.Screens
 				_update = true;
 				return true;
 			}
-			else if (_menu != null)
+
+            if (_menu != null)
 			{
 				return _menu.KeyDown(args);
 			}
-			else if (args.Key == Key.Enter)
+
+			if (args.Key == Key.Enter)
 			{
 				_menu = new Menu(Palette)
 				{
@@ -149,6 +154,7 @@ namespace CivOne.Screens
 				_update = true;
 				return true;
 			}
+
 			return false;
 		}
 		
