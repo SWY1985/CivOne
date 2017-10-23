@@ -14,10 +14,9 @@ using System.Linq;
 using CivOne.Advances;
 using CivOne.Buildings;
 using CivOne.Enums;
-using CivOne.src.Units;
 using CivOne.Units;
 
-namespace CivOne.src.GameSave
+namespace CivOne.GameSave
 {
     class OriginalGameFileSaver
     {

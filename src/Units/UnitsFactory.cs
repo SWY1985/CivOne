@@ -8,9 +8,8 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using CivOne.Enums;
-using CivOne.Units;
 
-namespace CivOne.src.Units
+namespace CivOne.Units
 {
     static class UnitsFactory
     {

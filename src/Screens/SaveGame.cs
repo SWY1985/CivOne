@@ -15,7 +15,6 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.GameSave;
 using CivOne.Graphics;
-using CivOne.src.GameSave;
 using CivOne.UserInterface;
 
 namespace CivOne.Screens
