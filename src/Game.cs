@@ -15,7 +15,6 @@ using CivOne.Advances;
 using CivOne.Buildings;
 using CivOne.Civilizations;
 using CivOne.Enums;
-using CivOne.src.Units;
 using CivOne.Screens;
 using CivOne.Tasks;
 using CivOne.Tiles;

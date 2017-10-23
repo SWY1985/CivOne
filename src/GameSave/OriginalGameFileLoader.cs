@@ -14,7 +14,6 @@ using System.Linq;
 using CivOne.Advances;
 using CivOne.Civilizations;
 using CivOne.Enums;
-using CivOne.src.Units;
 using CivOne.Units;
 using CivOne.Wonders;
 
