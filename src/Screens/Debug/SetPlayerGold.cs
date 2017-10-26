@@ -39,7 +39,7 @@ namespace CivOne.Screens.Debug
 				.FillRectangle(88, 95, 105, 14, 5)
 				.FillRectangle(89, 96, 103, 12, 15);
 
-			_selectedPlayer = Game.GetPlayer((byte)_civSelect.ActiveItem);
+			_selectedPlayer = Game.GameState.GetPlayer((byte)_civSelect.ActiveItem);
 
 			_input = new Input(Palette, _selectedPlayer.Gold.ToString(), 0, 5, 11, 90, 97, 101, 10, 5);
 			_input.Accept += PlayerGold_Accept;
@@ -133,7 +133,7 @@ namespace CivOne.Screens.Debug
 
 			_civSelect.Cancel += PlayerGold_Cancel;
 			_civSelect.MissClick += PlayerGold_Cancel;
-			_civSelect.ActiveItem = Game.PlayerNumber(Human);
+			_civSelect.ActiveItem = Game.GameState.PlayerNumber(Human);
 		}
 	}
 }

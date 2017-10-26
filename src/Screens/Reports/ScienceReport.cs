@@ -46,7 +46,7 @@ namespace CivOne.Screens.Reports
 			int c = 0;
 			foreach (IAdvance advance in Human.Advances.OrderBy(a => a.Id))
 			{
-				bool first = Game.GetAdvanceOrigin(advance, Human);
+				bool first = Game.GameState.GetAdvanceOrigin(advance, Human);
 				int xx = 8 + ((c % 3) * 100);
 				int yy = 42 + (((c - (c % 3)) / 3) * 7);
 				this.DrawText(advance.Name, 0, (byte)(first ? 15 : 11), xx, yy);

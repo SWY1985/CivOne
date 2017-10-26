@@ -38,7 +38,7 @@ namespace CivOne.Screens.CityManagerPanels
 					if (!(units[i] is Diplomat) && !(units[i] is Caravan))
 					{
 						int shields = 0, food = 0;
-						IGovernment government = Game.GetPlayer(_city.Owner).Government;
+						IGovernment government = Game.GameState.GetPlayer(_city.Owner).Government;
 						if (government is Anarchy || government is Despotism)
 						{
 							if (i >= _city.Size)

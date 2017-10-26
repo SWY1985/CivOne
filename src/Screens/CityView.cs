@@ -119,7 +119,7 @@ namespace CivOne.Screens
 			if (_founded && (gameTick % 3 == 0))
 			{
 				this.AddLayer(_background)
-					.DrawText($"{_city.Name} founded: {Game.GameYear}.", 5, 5, 161, 3, TextAlign.Center);
+					.DrawText($"{_city.Name} founded: {Game.GameState.GameYear}.", 5, 5, 161, 3, TextAlign.Center);
 
 				int frame = (_x % 4);
 				this.AddLayer(Resources["SETTLERS"][1, 1 + (16 * frame), 48, 15], _x, 120)
@@ -215,7 +215,7 @@ namespace CivOne.Screens
 		{
 			if (_buildingFile == null)
 			{
-				_buildingFile = Game.GetPlayer(_city.Owner).HasAdvance<Invention>() ? "CITYPIX3" : "CITYPIX2";
+				_buildingFile = Game.GameState.GetPlayer(_city.Owner).HasAdvance<Invention>() ? "CITYPIX3" : "CITYPIX2";
 			}
 
 			if (picture == null) picture = _background;
@@ -467,7 +467,7 @@ namespace CivOne.Screens
 					DrawBuilding<Aqueduct>(_overlay);
 			}
 
-			int stage = (int)Math.Floor((double)(Game.GetPlayer(_city.Owner).Advances.Count() - 9) / 2);
+			int stage = (int)Math.Floor((double)(Game.GameState.GetPlayer(_city.Owner).Advances.Count() - 9) / 2);
 			for (int xx = 0; xx < 18; xx++)
 			for (int yy = 10; yy >= 0; yy--)
 			{
@@ -614,7 +614,7 @@ namespace CivOne.Screens
 						if (sx == 0) continue;
 						if (sx > 7) sy += 8;
 						sx = (sx % 8) * 24;
-						if (Game.GetPlayer(_city.Owner).HasAdvance<Automobile>()) sy += 16;
+						if (Game.GameState.GetPlayer(_city.Owner).HasAdvance<Automobile>()) sy += 16;
 						building = Resources["CITYPIX1"][sx, sy, 24, 8];
 						dx -= 5;
 						dy += 24;
@@ -719,11 +719,11 @@ namespace CivOne.Screens
 			{
 				Picture invaders;
 				int xx = 0, yy = 2, ww = 78, hh = 60;
-				if (Game.CurrentPlayer.HasAdvance<Conscription>())
+				if (Game.GameState.CurrentPlayer.HasAdvance<Conscription>())
 				{
 					invaders = Resources["INVADERS"];
 				}
-				else if (Game.CurrentPlayer.HasAdvance<Gunpowder>())
+				else if (Game.GameState.CurrentPlayer.HasAdvance<Gunpowder>())
 				{
 					invaders = Resources["INVADER2"];
 				}
@@ -746,16 +746,16 @@ namespace CivOne.Screens
 				}
 				_x = 0;
 
-				int totalLuxuries = Game.GetPlayer(_city.Owner).Cities.Sum(x => x.Luxuries);
-				int totalGold = Game.GetPlayer(_city.Owner).Gold;
+				int totalLuxuries = Game.GameState.GetPlayer(_city.Owner).Cities.Sum(x => x.Luxuries);
+				int totalGold = Game.GameState.GetPlayer(_city.Owner).Gold;
 				int cityLuxuries = _city.Luxuries;
 				if (cityLuxuries == 0) cityLuxuries = 1;
 				int captureGold = (int)Math.Floor(((float)totalGold / totalLuxuries) * cityLuxuries);
 
-				Game.GetPlayer(_city.Owner).Gold -= (short)captureGold;
-				Game.CurrentPlayer.Gold += (short)captureGold;
+				Game.GameState.GetPlayer(_city.Owner).Gold -= (short)captureGold;
+				Game.GameState.CurrentPlayer.Gold += (short)captureGold;
 				
-				string[] lines =  new [] { $"{Game.CurrentPlayer.TribeNamePlural} capture", $"{city.Name}. {captureGold} gold", "pieces plundered." };
+				string[] lines =  new [] { $"{Game.GameState.CurrentPlayer.TribeNamePlural} capture", $"{city.Name}. {captureGold} gold", "pieces plundered." };
 				int width = lines.Max(l => Resources.GetTextSize(5, l).Width) + 12;
 				Picture dialog = new Picture(width, 54)
 					.Tile(Pattern.PanelGrey, 1, 1)
@@ -799,8 +799,8 @@ namespace CivOne.Screens
 			
 			this.DrawText(_city.Name, 5, 5, 161, 3, TextAlign.Center)
 				.DrawText(_city.Name, 5, 15, 160, 2, TextAlign.Center)
-				.DrawText(Game.GameYear, 5, 5, 161, 16, TextAlign.Center)
-				.DrawText(Game.GameYear, 5, 15, 160, 15, TextAlign.Center);
+				.DrawText(Game.GameState.GameYear, 5, 5, 161, 16, TextAlign.Center)
+				.DrawText(Game.GameState.GameYear, 5, 15, 160, 15, TextAlign.Center);
 			
 			if (firstView)
 			{

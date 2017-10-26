@@ -59,7 +59,7 @@ namespace CivOne
 
 		internal static void Move(IUnit unit)
 		{
-			Player player = Game.GetPlayer(unit.Owner);
+			Player player = Game.GameState.GetPlayer(unit.Owner);
 
 			if (unit.Owner == 0)
 			{
@@ -79,15 +79,24 @@ namespace CivOne
 				int nearestCity = 255;
 				int nearestOwnCity = 255;
 				
-				if (Game.GetCities().Any()) nearestCity = Game.GetCities().Min(x => Common.DistanceToTile(x.X, x.Y, tile.X, tile.Y));
-				if (Game.GetCities().Any(x => x.Owner == unit.Owner)) nearestOwnCity = Game.GetCities().Where(x => x.Owner == unit.Owner).Min(x => Common.DistanceToTile(x.X, x.Y, tile.X, tile.Y));
-				
-				if (validCity && nearestCity > 3)
+				if (Game.GameState._cities.Any())
+                    nearestCity = Game.GameState._cities.Min(x => Common.DistanceToTile(x.X, x.Y, tile.X, tile.Y));
+
+			    if (Game.GameState._cities.Any(x => x.Owner == unit.Owner))
+			    {
+			        nearestOwnCity = 
+                        Game.GameState._cities
+			            .Where(x => x.Owner == unit.Owner)
+                        .Min(x => Common.DistanceToTile(x.X, x.Y, tile.X, tile.Y));
+			    }
+
+			    if (validCity && nearestCity > 3)
 				{
 					GameTask.Enqueue(Orders.FoundCity(unit as Settlers));
 					return;
 				}
-				else if (nearestOwnCity < 3)
+
+                if (nearestOwnCity < 3)
 				{
 					switch (Common.Random.Next(5 * nearestOwnCity))
 					{
@@ -240,14 +249,14 @@ namespace CivOne
 
 			player.CurrentResearch = advances[Common.Random.Next(0, advances.Length)];
 
-			Log($"AI: {player.LeaderName} of the {player.TribeNamePlural} starts researching {player.CurrentResearch.Name}.");
+			Logger.Log($"AI: {player.LeaderName} of the {player.TribeNamePlural} starts researching {player.CurrentResearch.Name}.");
 		}
 
 		internal static void CityProduction(City city)
 		{
 			if (city == null || city.Size == 0 || city.Tile == null) return;
 
-			Player player = Game.GetPlayer(city.Owner);
+			Player player = Game.GameState.GetPlayer(city.Owner);
 			IProduction production = null;
 
 			// Create 2 defensive units per city

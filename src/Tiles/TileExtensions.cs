@@ -214,15 +214,21 @@ namespace CivOne.Tiles
 			if (settings.Cities && tile.City != null)
 			{
 				output.AddLayer(Icons.City(tile.City, smallFont: settings.CitySmallFonts));
-				if (settings.ActiveUnit && tile.Units.Any(u => u == Game.ActiveUnit && u.Owner != Game.PlayerNumber(player)))
+				if (
+                    settings.ActiveUnit 
+                    && tile.Units.Any(u => u == Game.GameState.ActiveUnit && u.Owner != Game.GameState.PlayerNumber(player))
+                )
 				{
 					output.AddLayer(tile.UnitsToPicture(), -1, -1, dispose: true);
 				}
 			}
 			
-			if ((settings.EnemyUnits || settings.Units) && (tile.City == null || tile.Units.Any(u => u == Game.ActiveUnit)))
+			if (
+                (settings.EnemyUnits || settings.Units) 
+                && (tile.City == null || tile.Units.Any(u => u == Game.GameState.ActiveUnit))
+            )
 			{
-				int unitCount = tile.Units.Count(u => settings.Units || player == null || u.Owner != Game.PlayerNumber(player));
+				int unitCount = tile.Units.Count(u => settings.Units || player == null || u.Owner != Game.GameState.PlayerNumber(player));
 				if (unitCount > 0)
 				{
 					output.AddLayer(tile.UnitsToPicture(), dispose: true);

@@ -111,8 +111,14 @@ namespace CivOne.Units
 		{
 			base.NewTurn();
 
-			Player player = Game.GetPlayer(Owner);
-			if (player.HasWonder<MagellansExpedition>() || (!Game.WonderObsolete<Lighthouse>() && player.HasWonder<Lighthouse>())) MovesLeft++;
+			Player player = Game.GameState.GetPlayer(Owner);
+		    if (
+		        player.HasWonder<MagellansExpedition>()
+		        || (!Game.WonderObsolete<Lighthouse>() && player.HasWonder<Lighthouse>())
+		    )
+		    {
+		        MovesLeft++;
+            }  
 		}
 		
 		protected BaseUnitSea(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1, int range = 1) : base(price, attack, defense, move)

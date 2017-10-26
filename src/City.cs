@@ -121,7 +121,7 @@ namespace CivOne
 		{
 			get
 			{
-				IGovernment government = Game.GetPlayer(_owner).Government;
+				IGovernment government = Game.GameState.GetPlayer(_owner).Government;
 				if (government is Anarchy || government is Despotism)
 				{
 					int costs = 0;
@@ -149,7 +149,7 @@ namespace CivOne
 			get
 			{
 				int costs = (_size * 2);
-				IGovernment government = Game.GetPlayer(_owner).Government;
+				IGovernment government = Game.GameState.GetPlayer(_owner).Government;
 				if (government is Anarchy || government is Despotism)
 				{
 					costs += Units.Count(u => (u is Settlers));
@@ -372,7 +372,7 @@ namespace CivOne
 
 		internal bool InvalidTile(ITile tile)
 		{
-			return (tile.City != null || Game.GetCities().Any(c => c.ResourceTiles.Any(t => t.X == tile.X && t.Y == tile.Y)) || tile.Units.Any(u => u.Owner != Owner));
+			return (tile.City != null || Game.GameState._cities.Any(c => c.ResourceTiles.Any(t => t.X == tile.X && t.Y == tile.Y)) || tile.Units.Any(u => u.Owner != Owner));
 		}
 
 		private void UpdateSpecialists()
@@ -445,7 +445,7 @@ namespace CivOne
 		{
 			if (gameData.Length != 6)
 			{
-				Log($"Invalid Resource game data for {Name}");
+				Logger.Log($"Invalid Resource game data for {Name}");
 				return;
 			}
 
@@ -510,7 +510,7 @@ namespace CivOne
 		{
 			get
 			{
-				return Game.Instance.GetPlayer(Owner);
+				return Game.Instance.GameState.GetPlayer(Owner);
 			}
 		}
 
@@ -546,7 +546,7 @@ namespace CivOne
 			IProduction production = Reflect.GetProduction().FirstOrDefault(p => p.ProductionId == productionId);
 			if (production == null)
 			{
-				Log($"Invalid production ID for {Name}: {productionId}");
+				Logger.Log($"Invalid production ID for {Name}: {productionId}");
 				return;
 			}
 			CurrentProduction = production;
@@ -573,9 +573,9 @@ namespace CivOne
 
 		public bool Buy()
 		{
-			if (Game.CurrentPlayer.Gold < BuyPrice) return false;
+			if (Game.GameState.CurrentPlayer.Gold < BuyPrice) return false;
 
-			Game.CurrentPlayer.Gold -= BuyPrice;
+			Game.GameState.CurrentPlayer.Gold -= BuyPrice;
 			Shields = (int)CurrentProduction.Price * 10;
 			return true;
 		}
@@ -606,7 +606,7 @@ namespace CivOne
 				if (Player.HasWonder<HangingGardens>() && !Game.WonderObsolete<HangingGardens>()) happyCount++;
 				if (Player.HasWonder<CureForCancer>()) happyCount++;
 
-				int unhappyCount = Size - (6 - Game.Difficulty) - happyCount;
+				int unhappyCount = Size - (6 - Game.GameState._difficulty) - happyCount;
 				if (HasWonder<ShakespearesTheatre>() && !Game.WonderObsolete<ShakespearesTheatre>())
 				{
 					unhappyCount = 0;
@@ -679,7 +679,7 @@ namespace CivOne
 		{
 			get
 			{
-				Player player = Game.Instance.GetPlayer(Owner);
+				Player player = Game.Instance.GameState.GetPlayer(Owner);
 				ITile[,] tiles = Map[X - 2, Y - 2, 5, 5];
 				for (int xx = 0; xx < 5; xx++)
 				for (int yy = 0; yy < 5; yy++)
@@ -697,7 +697,7 @@ namespace CivOne
 		{
 			get
 			{
-				return Game.Instance.GetUnits().Where(u => u.Home == this).ToArray();
+				return Game.Instance.GameState.GetUnits().Where(u => u.Home == this).ToArray();
 			}
 		}
 
@@ -719,7 +719,7 @@ namespace CivOne
 		public void SellBuilding(IBuilding building)
 		{
 			RemoveBuilding(building);
-			Game.CurrentPlayer.Gold += building.SellPrice;
+			Game.GameState.CurrentPlayer.Gold += building.SellPrice;
 			BuildingSold = true;
 		}
 
@@ -746,7 +746,7 @@ namespace CivOne
 					(wonder is MagellansExpedition && !Game.WonderObsolete<MagellansExpedition>()))
 				{
 					// Apply Lighthouse/Magellan's Expedition wonder effects in the first turn
-					foreach (IUnit unit in Game.GetUnits().Where(x => x.Owner == Owner && x.Class ==  UnitClass.Water && x.MovesLeft == x.Move))
+					foreach (IUnit unit in Game.GameState.GetUnits().Where(x => x.Owner == Owner && x.Class ==  UnitClass.Water && x.MovesLeft == x.Move))
 					{
 						unit.MovesLeft++;
 					}
@@ -823,7 +823,7 @@ namespace CivOne
 
 			if (Shields >= (int)CurrentProduction.Price * 10)
 			{
-				if (CurrentProduction is Settlers && Size == 1 && Game.Difficulty == 0)
+				if (CurrentProduction is Settlers && Size == 1 && Game.GameState._difficulty == 0)
 				{
 					// On Chieftain level, it's not possible to create a Settlers in a city of size 1
 				}
@@ -863,7 +863,7 @@ namespace CivOne
 					}
 					else if (CurrentProduction is Palace)
 					{
-						foreach (City city in Game.Instance.GetCities().Where(c => c.Owner == Owner))
+						foreach (City city in Game.Instance.GameState._cities.Where(c => c.Owner == Owner))
 						{
 							// Remove palace from all cites.
 							city.RemoveBuilding<Palace>();

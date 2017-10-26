@@ -34,7 +34,7 @@ namespace CivOne.Screens.GamePlayPanels
 			
 			if (GamePlay != null)
 			{
-				IUnit activeUnit = Game.ActiveUnit;
+				IUnit activeUnit = Game.GameState.ActiveUnit;
 				ITile[,] tiles = Map[GamePlay.X - 30, GamePlay.Y - 18, 78, 48];
 				for (int yy = 0; yy < 48; yy++)
 				for (int xx = 0; xx < 78; xx++)
@@ -106,9 +106,9 @@ namespace CivOne.Screens.GamePlayPanels
 				string population = Common.NumberSeperator(Human.Population);
 				_demographics.DrawText($"{population}#", 0, 5, 2, 15, TextAlign.Left);
 			}
-			_demographics.DrawText(Game.GameYear, 0, 5, 2, 23, TextAlign.Left);
+			_demographics.DrawText(Game.GameState.GameYear, 0, 5, 2, 23, TextAlign.Left);
 
-			int width = Resources.GetTextSize(0, Game.GameYear).Width;
+			int width = Resources.GetTextSize(0, Game.GameState.GameYear).Width;
 			int stage = (int)Math.Floor(((double)Human.Science / Human.ScienceCost) * 4);
 			_demographics.AddLayer(Icons.Lamp(stage), 4 + width, 22);
 
@@ -117,12 +117,12 @@ namespace CivOne.Screens.GamePlayPanels
 		
 		private void DrawGameInfo(uint gameTick = 0)
 		{
-			IUnit unit = Game.ActiveUnit;
+			IUnit unit = Game.GameState.ActiveUnit;
 			
 			_gameInfo.Tile(Pattern.PanelGrey)
 				.DrawRectangle3D();
 			
-			if (Game.CurrentPlayer != Human || (unit != null && Human != unit.Owner) || (GameTask.Any() && !GameTask.Is<Show>() && !GameTask.Is<Message>()))
+			if (Game.GameState.CurrentPlayer != Human || (unit != null && Human != unit.Owner) || (GameTask.Any() && !GameTask.Is<Show>() && !GameTask.Is<Message>()))
 			{
 				_gameInfo.FillRectangle(2, _gameInfo.Height - 8, 6, 6, (byte)((gameTick % 4 < 2) ? 15 : 8));
 				return;
@@ -216,12 +216,12 @@ namespace CivOne.Screens.GamePlayPanels
 			}
 			if (args.Y > 50 && args.Y < 62)
 			{
-				Log("Sidebar: Palace View");
+				Logger.Log("Sidebar: Palace View");
 				Common.AddScreen(new PalaceView());
 			}
 			else if (args.Y >= 62)
 			{
-				if (Game.CurrentPlayer == Human && Game.ActiveUnit == null)
+				if (Game.GameState.CurrentPlayer == Human && Game.GameState.ActiveUnit == null)
 				{
 					GameTask.Enqueue(Turn.End());
 				}

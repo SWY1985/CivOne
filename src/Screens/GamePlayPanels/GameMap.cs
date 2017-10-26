@@ -23,7 +23,7 @@ namespace CivOne.Screens.GamePlayPanels
 {
 	internal class GameMap : BaseScreen
 	{
-		private IUnit ActiveUnit => Game.ActiveUnit;
+		private IUnit ActiveUnit => Game.GameState.ActiveUnit;
 		
 		private readonly Palette _palette;
 		private Point _helperDirection = new Point(0, 0);
@@ -110,7 +110,7 @@ namespace CivOne.Screens.GamePlayPanels
 		{
 			IUnit unit = ActiveUnit;
 
-			if ((gameTick % 2) == 0 && (_lastTurn != Game.GameTurn || _lastUnit != unit))
+			if ((gameTick % 2) == 0 && (_lastTurn != Game.GameState._gameTurn || _lastUnit != unit))
 			{
 				if (_lastUnit != unit && unit != null && Game.Human == unit.Owner && ShouldCenter())
 				{
@@ -119,7 +119,7 @@ namespace CivOne.Screens.GamePlayPanels
 				_fullRedraw = true;
 				_update = true;
 				_lastUnit = unit;
-				_lastTurn = Game.GameTurn;
+				_lastTurn = Game.GameState._gameTurn;
 			}
 
 			// Check if the active unit is on the screen and the blink status has changed.
@@ -186,7 +186,7 @@ namespace CivOne.Screens.GamePlayPanels
 					.AddLayer(Tiles.ToBitmap(player: renderPlayer), dispose: true);
 			}
 
-			if (activeUnit != null && Game.CurrentPlayer == Human && !GameTask.Any())
+			if (activeUnit != null && Game.GameState.CurrentPlayer == Human && !GameTask.Any())
 			{
 				ITile tile = activeUnit.Tile;
 				int dx = GetX(tile);
@@ -225,13 +225,13 @@ namespace CivOne.Screens.GamePlayPanels
 		
 		private void CenterOnUnit()
 		{
-			if (Game.ActiveUnit == null) return;
-			CenterOnPoint(Game.ActiveUnit.X, Game.ActiveUnit.Y);
+			if (Game.GameState.ActiveUnit == null) return;
+			CenterOnPoint(Game.GameState.ActiveUnit.X, Game.GameState.ActiveUnit.Y);
 		}
 
 		private bool ShouldCenter(int relX = 0, int relY = 0)
 		{
-			IUnit unit = Game.ActiveUnit;
+			IUnit unit = Game.GameState.ActiveUnit;
 			if (unit == null) return false;
 			int viewRange = 1;
 			if (unit.Class == UnitClass.Water)
@@ -249,10 +249,10 @@ namespace CivOne.Screens.GamePlayPanels
 		{
 			_helperDirection = new Point(0, 0);
 			
-			if (Game.ActiveUnit == null)
+			if (Game.GameState.ActiveUnit == null)
 				return false;
 			
-			return Game.ActiveUnit.MoveTo(relX, relY);
+			return Game.GameState.ActiveUnit.MoveTo(relX, relY);
 		}
 
 		private void TaskStarted(object sender, TaskEventArgs args)
@@ -277,12 +277,12 @@ namespace CivOne.Screens.GamePlayPanels
 
 		private bool KeyDownActiveUnit(KeyboardEventArgs args)
 		{
-			if (Game.ActiveUnit == null || Game.ActiveUnit.Moving)
+			if (Game.GameState.ActiveUnit == null || Game.GameState.ActiveUnit.Moving)
 				return false;
 			
 			if (args.Key == Key.Space)
 			{
-				Game.ActiveUnit.SkipTurn();
+				Game.GameState.ActiveUnit.SkipTurn();
 				return true;
 			}
 			else if (Settings.ArrowHelper)
@@ -378,47 +378,47 @@ namespace CivOne.Screens.GamePlayPanels
 			switch (args.KeyChar)
 			{
 				case 'B':
-					GameTask.Enqueue(Orders.FoundCity(Game.ActiveUnit));
+					GameTask.Enqueue(Orders.FoundCity(Game.GameState.ActiveUnit));
 					return true;
 				case 'C':
-					if (Game.ActiveUnit == null) break;
+					if (Game.GameState.ActiveUnit == null) break;
 					CenterOnUnit();
 					return true;
 				case 'D':
 					if (!args.Shift) break;
-					Game.DisbandUnit(Game.ActiveUnit);
+					Game.DisbandUnit(Game.GameState.ActiveUnit);
 					return true;
 				case 'H':
-					Game.ActiveUnit.SetHome();
+					Game.GameState.ActiveUnit.SetHome();
 					return true;
 				case 'I':
-					GameTask.Enqueue(Orders.BuildIrrigation(Game.ActiveUnit));
+					GameTask.Enqueue(Orders.BuildIrrigation(Game.GameState.ActiveUnit));
 					return true;
 				case 'M':
-					GameTask.Enqueue(Orders.BuildMines(Game.ActiveUnit));
+					GameTask.Enqueue(Orders.BuildMines(Game.GameState.ActiveUnit));
 					break;
 				case 'R':
-					GameTask.Enqueue(Orders.BuildRoad(Game.ActiveUnit));
+					GameTask.Enqueue(Orders.BuildRoad(Game.GameState.ActiveUnit));
 					break;
 				case 'S':
-					Game.ActiveUnit.Sentry = true;
+					Game.GameState.ActiveUnit.Sentry = true;
 					break;
 				case 'F':
-					if (Game.ActiveUnit is Settlers)
+					if (Game.GameState.ActiveUnit is Settlers)
 					{
-						GameTask.Enqueue(Orders.BuildFortress(Game.ActiveUnit));
+						GameTask.Enqueue(Orders.BuildFortress(Game.GameState.ActiveUnit));
 						break;
 					}
-					Game.ActiveUnit.Fortify = true;
+					Game.GameState.ActiveUnit.Fortify = true;
 					break;
 				case 'U':
-					if (Game.ActiveUnit is IBoardable)
+					if (Game.GameState.ActiveUnit is IBoardable)
 					{
-						return (Game.ActiveUnit as BaseUnitSea).Unload();;
+						return (Game.GameState.ActiveUnit as BaseUnitSea).Unload();;
 					}
 					break;
 				case 'W':
-					GameTask.Enqueue(Orders.Wait(Game.ActiveUnit));
+					GameTask.Enqueue(Orders.Wait(Game.GameState.ActiveUnit));
 					break;
 			}
 
@@ -427,7 +427,7 @@ namespace CivOne.Screens.GamePlayPanels
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
-			if (Game.CurrentPlayer != Human)
+			if (Game.GameState.CurrentPlayer != Human)
 			{
 				// Ignore all keypresses if the current player is not human
 				return false;
@@ -443,7 +443,7 @@ namespace CivOne.Screens.GamePlayPanels
 					return true;
 			}
 
-			if (Game.ActiveUnit != null)
+			if (Game.GameState.ActiveUnit != null)
 			{
 				return KeyDownActiveUnit(args);
 			}
@@ -472,10 +472,10 @@ namespace CivOne.Screens.GamePlayPanels
 			
 			if ((args.Buttons & MouseButton.Right) > 0)
 			{
-				if (Game.ActiveUnit != null && (Game.ActiveUnit as BaseUnit).MoveTargets.Any(t => t.X == xx && t.Y == yy))
+				if (Game.GameState.ActiveUnit != null && (Game.GameState.ActiveUnit as BaseUnit).MoveTargets.Any(t => t.X == xx && t.Y == yy))
 				{
-					int relX = xx - Game.ActiveUnit.X;
-					int relY = yy - Game.ActiveUnit.Y;
+					int relX = xx - Game.GameState.ActiveUnit.X;
+					int relY = yy - Game.GameState.ActiveUnit.Y;
 					if (relX < -1) relX = 1;
 					if (relY > 1) relY = -1; 
 

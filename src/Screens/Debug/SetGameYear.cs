@@ -34,8 +34,8 @@ namespace CivOne.Screens.Debug
 			}
 			else
 			{
-				Game.GameTurn = Common.YearToTurn(gameYear);
-				GameTask.Enqueue(Message.General($"Game year set to {Game.GameYear}."));
+				Game.GameState._gameTurn = Common.YearToTurn(gameYear);
+				GameTask.Enqueue(Message.General($"Game year set to {Game.GameState.GameYear}."));
 			}
 
 			if (Accept != null)
@@ -73,7 +73,7 @@ namespace CivOne.Screens.Debug
 				.FillRectangle(88, 95, 105, 14, 5)
 				.FillRectangle(89, 96, 103, 12, 15);
 
-			_input = new Input(Palette, Common.TurnToYear(Game.GameTurn).ToString(), 0, 5, 11, 90, 97, 101, 10, 5);
+			_input = new Input(Palette, Common.TurnToYear(Game.GameState._gameTurn).ToString(), 0, 5, 11, 90, 97, 101, 10, 5);
 			_input.Accept += GameYear_Accept;
 			_input.Cancel += GameYear_Cancel;
 		}

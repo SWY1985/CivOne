@@ -98,14 +98,14 @@ namespace CivOne.Screens
 		{
 			_difficulty = args.Value;
 			CloseMenus();
-			Log("Difficulty: {0}", _menuItemsDifficulty[_difficulty]);
+			Logger.Log("Difficulty: {0}", _menuItemsDifficulty[_difficulty]);
 		}
 		
 		private void SetCompetition(object sender, MenuItemEventArgs<int> args)
 		{
 			_competition = (7 - args.Value);
 			CloseMenus();
-			Log("Competition: {0} Civilizations", _competition);
+			Logger.Log("Competition: {0} Civilizations", _competition);
 			
 			_tribesAvailable = Common.Civilizations.Where(c => c.PreferredPlayerNumber > 0 && c.PreferredPlayerNumber <= _competition).ToArray();
 			_menuItemsTribes = _tribesAvailable.Select(c => c.Name).ToArray();
@@ -119,7 +119,7 @@ namespace CivOne.Screens
 			_tribeName = civ.Name;
 			_tribeNamePlural = civ.NamePlural;
 			CloseMenus();
-			Log("Tribe: {0}", _menuItemsTribes[_tribe]);
+			Logger.Log($"Tribe: {_menuItemsTribes[_tribe]}");
 		}
 		
 		private void SetTribe_Cancel(object sender, EventArgs args)
@@ -202,7 +202,7 @@ namespace CivOne.Screens
 					string line = textLine.Replace("$RPLC1", Human.LeaderName).Replace("$US", Human.TribeNamePlural).Replace("^", "");
 					this.DrawText(line, 0, 5, OffsetX + 88, yy);
 					yy += 8;
-					Log(line);
+					Logger.Log(line);
 				}
 				StringBuilder sb = new StringBuilder();
 				int i = 0;
@@ -217,7 +217,7 @@ namespace CivOne.Screens
 				foreach (string line in sb.ToString().Split('|'))
 				{
 					this.DrawText(line, 0, 5, OffsetX + 88, yy);
-					Log(line);
+				    Logger.Log(line);
 					yy += 8;
 				}
 
@@ -236,10 +236,10 @@ namespace CivOne.Screens
 
 				GamePlay gamePlay = new GamePlay();
 				Common.AddScreen(gamePlay);
-				IUnit startUnit = Game.GetUnits().First(x => Game.Human == x.Owner);
+				IUnit startUnit = Game.GameState.GetUnits().First(x => Game.Human == x.Owner);
 				gamePlay.CenterOnPoint(startUnit.X, startUnit.Y);
 				
-				if (Game.Difficulty == 0)
+				if (Game.GameState._difficulty == 0)
 				{
 					GameTask.Enqueue(Show.InterfaceHelp);
 					GameTask.Enqueue(Message.Help("--- Civilization Note ---", TextFile.Instance.GetGameText("HELP/FIRSTMOVE")));

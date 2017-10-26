@@ -69,7 +69,7 @@ namespace CivOne.Screens
 			
 			string newsflash = TextFile.Instance.GetGameText($"KING/NEWS{(char)Common.Random.Next((int)'A', (int)'O')}")[0];
 			string shout = (Common.Random.Next(0, 2) == 0) ? "FLASH" : "EXTRA!";
-			string date = $"January 1, {Common.YearString(Game.GameTurn)}";
+			string date = $"January 1, {Common.YearString(Game.GameState._gameTurn)}";
 			string name = "NONE";
 			if (city != null)
 				name = city.Name;

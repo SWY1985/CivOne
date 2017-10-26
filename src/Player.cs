@@ -234,17 +234,17 @@ namespace CivOne
 
 		public void Revolt()
 		{
-			_anarchy = (short)((HasWonder<Pyramids>() && !Game.WonderObsolete<Pyramids>()) ? 0 : 4 - (Game.GameTurn % 4) - 1);
+			_anarchy = (short)((HasWonder<Pyramids>() && !Game.WonderObsolete<Pyramids>()) ? 0 : 4 - (Game.GameState._gameTurn % 4) - 1);
 			Government = new Anarchy();
 			if (!IsHuman) return;
-			GameTask.Enqueue(Message.Newspaper(null, $"The {Game.Instance.HumanPlayer.TribeNamePlural} are", "revolting! Citizens", "demand new govt."));
+			GameTask.Enqueue(Message.Newspaper(null, $"The {Game.Instance.GameState.HumanPlayer.TribeNamePlural} are", "revolting! Citizens", "demand new govt."));
 		}
 
 		public bool IsHuman
 		{
 			get
 			{
-				return (Game.Instance.HumanPlayer == this);
+				return (Game.Instance.GameState.HumanPlayer == this);
 			}
 		}
 
@@ -252,7 +252,7 @@ namespace CivOne
 		{
 			get
 			{
-				return Game.Instance.GetCities().Where(c => this == c.Owner && c.Size > 0).ToArray();
+				return Game.Instance.GameState._cities.Where(c => this == c.Owner && c.Size > 0).ToArray();
 			}
 		}
 
@@ -287,7 +287,7 @@ namespace CivOne
 		{
 			get
 			{
-				short cost = (short)((Game.Instance.Difficulty + 3) * 2 * (_advances.Count() + 1) * (Common.TurnToYear(Game.Instance.GameTurn) > 0 ? 2 : 1));
+				short cost = (short)((Game.Instance.GameState._difficulty + 3) * 2 * (_advances.Count() + 1) * (Common.TurnToYear(Game.Instance.GameState._gameTurn) > 0 ? 2 : 1));
 				if (cost < 12)
 					return 12;
 				return cost;
@@ -298,11 +298,11 @@ namespace CivOne
 
 		public void AddAdvance(IAdvance advance, bool setOrigin = true)
 		{
-			if (Game.Started && Game.CurrentPlayer.CurrentResearch?.Id == advance.Id)
-				GameTask.Enqueue(new TechSelect(Game.CurrentPlayer));
+			if (Game.Started && Game.GameState.CurrentPlayer.CurrentResearch?.Id == advance.Id)
+				GameTask.Enqueue(new TechSelect(Game.GameState.CurrentPlayer));
 			_advances.Add(advance.Id);
 			if (!setOrigin) return;
-			Game.Instance.SetAdvanceOrigin(advance, this);
+			Game.Instance.GameState.SetAdvanceOrigin(advance, this);
 		}
 
 		public void DeleteAdvance(IAdvance advance)
@@ -460,15 +460,18 @@ namespace CivOne
 			{
 				if (this == 0) return false;
 				if (_destroyTurn != -1) return true;
-				if (Cities.Length == 0 && !Game.GetUnits().Any(x => this == x.Owner && (x is Settlers && x.Home == null)))
+				if (
+                    Cities.Length == 0 
+                    && !Game.GameState.GetUnits().Any(x => this == x.Owner && (x is Settlers && x.Home == null))
+                )
 				{
 					while (true)
 					{
-						IUnit unit = Game.GetUnits().FirstOrDefault(x => this == x.Owner);
+						IUnit unit = Game.GameState.GetUnits().FirstOrDefault(x => this == x.Owner);
 						if (unit == null) break;
 						Game.DisbandUnit(unit);
 					}
-					_destroyTurn = Game.GameTurn;
+					_destroyTurn = Game.GameState._gameTurn;
 					return true;
 				}
 				return false;
@@ -514,7 +517,7 @@ namespace CivOne
 
 		public void NewTurn()
 		{
-			if (!Game.GetCities().Any(x => this == x.Owner) && !Game.Instance.GetUnits().Any(x => this == x.Owner))
+			if (Game.GameState._cities.All(x => this != x.Owner) && Game.Instance.GameState.GetUnits().All(x => this != x.Owner))
 			{
 				GameTask.Enqueue(Turn.GameOver(this));
 			}
@@ -529,35 +532,35 @@ namespace CivOne
 		public override bool Equals (object obj)
 		{
 			if (obj is byte)
-				return Game.PlayerNumber(this) == (byte)obj;
+				return Game.GameState.PlayerNumber(this) == (byte)obj;
 			if (obj is Player)
-				return Game.PlayerNumber(this) == Game.PlayerNumber(obj as Player);
+				return Game.GameState.PlayerNumber(this) == Game.GameState.PlayerNumber(obj as Player);
 			return false;
 		}
 		
 		public override int GetHashCode()
 		{
-			return Game.PlayerNumber(this);
+			return Game.GameState.PlayerNumber(this);
 		}
 
 		public static explicit operator Player(byte playerNumber)
 		{
-			return Game.GetPlayer(playerNumber);
+			return Game.GameState.GetPlayer(playerNumber);
 		}
 
 		public static explicit operator byte(Player player)
 		{
-			return Game.PlayerNumber(player);
+			return Game.GameState.PlayerNumber(player);
 		}
 
 		public static bool operator ==(Player p1, byte p2)
 		{
-			return Game.PlayerNumber(p1) == p2;
+			return Game.GameState.PlayerNumber(p1) == p2;
 		}
 
 		public static bool operator !=(Player p1, byte p2)
 		{
-			return Game.PlayerNumber(p1) != p2;
+			return Game.GameState.PlayerNumber(p1) != p2;
 		}
 		
 		public Player(ICivilization civilization, string customLeaderName = null, string customTribeName = null, string customTribeNamePlural = null)

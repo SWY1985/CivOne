@@ -38,7 +38,7 @@ namespace CivOne.Screens.Reports
 				int ww = 304;
 				int hh = 26;
 
-				Player owner = Game.GetPlayer(city.Owner);
+				Player owner = Game.GameState.GetPlayer(city.Owner);
 
 				this.FillRectangle(xx, yy, ww, hh, colour)
 					.FillRectangle(xx + 1, yy + 1, ww - 2, hh - 2, 3);
@@ -88,8 +88,8 @@ namespace CivOne.Screens.Reports
 			Palette = Common.DefaultPalette;
 
 			// I'm not sure about the order of top 5 cities, but this is pretty close
-			_cities = Game.GetCities()
-							.Where(c => c.Size > 0)
+			_cities = Game.GameState._cities
+                            .Where(c => c.Size > 0)
 							.OrderByDescending(c => c.Wonders.Length)
 							.ThenByDescending(c => c.Size)
 							.ThenByDescending(c => c.Citizens.Count(x => x == Citizen.HappyMale || x == Citizen.HappyFemale))

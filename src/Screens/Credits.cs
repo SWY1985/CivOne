@@ -51,7 +51,7 @@ namespace CivOne.Screens
 			{
 				_showIntroLine = true;
 				_introLine++;
-				Log(@"Credits: ""{0}""", _introText[_introLine]);
+				Logger.Log($"Credits: \"{_introText[_introLine]}\"");
 			}
 			else if (HIDE_INTRO_LINE.Contains(_introLeft))
 			{
@@ -226,7 +226,7 @@ namespace CivOne.Screens
 		
 		private void StartNewGame(object sender, EventArgs args)
 		{
-			Log("Main Menu: Start a New Game");
+			Logger.Log("Main Menu: Start a New Game");
 			Map.Generate();
 			StartIntro();
 		}
@@ -234,7 +234,7 @@ namespace CivOne.Screens
 		private void LoadSavedGame(object sender, EventArgs args)
 		{
 			_overlay = null;
-			Log("Main Menu: Load a Saved Game");
+		    Logger.Log("Main Menu: Load a Saved Game");
 			CloseMenus();
 			
 			_overlay = new LoadGame(this.Palette);
@@ -242,14 +242,14 @@ namespace CivOne.Screens
 		
 		private void Earth(object sender, EventArgs args)
 		{
-			Log("Main Menu: EARTH");
+		    Logger.Log("Main Menu: EARTH");
 			Map.LoadMap();
 			StartIntro();
 		}
 		
 		private void CustomizeWorld(object sender, EventArgs args)
 		{
-			Log("Main Menu: Customize World");
+		    Logger.Log("Main Menu: Customize World");
 			Destroy();
 			Common.AddScreen(new CustomizeWorld());
 		}

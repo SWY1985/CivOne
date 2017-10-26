@@ -72,7 +72,8 @@ Try 'civone-opentk --help' for more information.
 			using (Runtime runtime = new Runtime(settings))
 			using (Window window = new Window(runtime))
 			{
-				runtime.Log("Game started");
+			    Logger.SetLogger(runtime.Log);
+                runtime.Log("Game started");
 				window.Run();
 				runtime.Log("Game stopped");
 			}

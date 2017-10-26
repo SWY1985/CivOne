@@ -27,7 +27,11 @@ namespace CivOne.Screens
 		private readonly SideBar _sideBar;
 		private readonly GameMap _gameMap;
 
-		private bool Busy => (Game.MovingUnit != null || Human != Game.CurrentPlayer || GameTask.Any());
+		private bool Busy => (
+            Game.MovingUnit != null 
+            || Human != Game.GameState.CurrentPlayer
+            || GameTask.Any()
+        );
 		
 		private GameMenu _gameMenu = null;
 		private int _menuX, _menuY;
@@ -56,7 +60,7 @@ namespace CivOne.Screens
 			_gameMenu.Items.Add("Luxuries Rate").OnSelect((s, a) => GameTask.Enqueue(Show.LuxuryRate));
 			_gameMenu.Items.Add("FindCity").OnSelect((s, a) => GameTask.Enqueue(Show.Search));
 			_gameMenu.Items.Add("Options").OnSelect((s, a) => GameTask.Enqueue(Show.Screen<GameOptions>()));
-			_gameMenu.Items.Add("Save Game").SetEnabled(Game.GameTurn > 0).OnSelect((s, a) => GameTask.Enqueue(Show.Screen<SaveGame>()));
+			_gameMenu.Items.Add("Save Game").SetEnabled(Game.GameState._gameTurn > 0).OnSelect((s, a) => GameTask.Enqueue(Show.Screen<SaveGame>()));
 			_gameMenu.Items.Add("REVOLUTION!").OnSelect((s, a) => GameTask.Enqueue(Show.Screen<Revolution>()));
 			_gameMenu.Items.Add(null);
 			if (Settings.DebugMenu)
@@ -75,10 +79,10 @@ namespace CivOne.Screens
 		
 		private void MenuBarOrders(object sender, EventArgs args)
 		{
-			if (Game.ActiveUnit == null) return;
+			if (Game.GameState.ActiveUnit == null) return;
 
 			_gameMenu = new GameMenu("MenuBarOrders", Palette);
-			_gameMenu.Items.AddRange(Game.ActiveUnit.MenuItems);
+			_gameMenu.Items.AddRange(Game.GameState.ActiveUnit.MenuItems);
 			
 			_menuX = 72;
 			_menuY = 8;
@@ -354,19 +358,19 @@ namespace CivOne.Screens
 
 	    private (int, int) getStartingViewCenter()
 	    {
-            foreach (var unit in Game.GetUnits().OrderByDescending(u => u.MovesLeft))
+            foreach (var unit in Game.GameState.GetUnits().OrderByDescending(u => u.MovesLeft))
 	        {
-	            if (unit.Owner == Game.PlayerNumber(Game.HumanPlayer))
+	            if (unit.Owner == Game.GameState.PlayerNumber(Game.GameState.HumanPlayer))
 	                return (unit.X, unit.Y);
 	        }
 
-	        foreach (var city in Game.GetCities())
+	        foreach (var city in Game.GameState._cities)
 	        {
-	            if (city.Owner == Game.PlayerNumber(Game.HumanPlayer))
+	            if (city.Owner == Game.GameState.PlayerNumber(Game.GameState.HumanPlayer))
 	                return (city.X, city.Y);
 	        }
 
-            return (Game.HumanPlayer.StartX, 1);
+            return (Game.GameState.HumanPlayer.StartX, 1);
 	    }
 		
 		public GamePlay()
@@ -399,7 +403,7 @@ namespace CivOne.Screens
             var viewCenter = getStartingViewCenter();
             _gameMap.CenterOnPoint(viewCenter.Item1, viewCenter.Item2);
 
-			while (Game.CurrentPlayer != Game.HumanPlayer)
+			while (Game.GameState.CurrentPlayer != Game.GameState.HumanPlayer)
 			{
 				Game.Instance.Update();
 				GameTask.Update();

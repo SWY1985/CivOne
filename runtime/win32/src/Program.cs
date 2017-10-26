@@ -16,11 +16,16 @@ namespace CivOne
 	{
 		private static void Main(params string[] args)
 		{
-			using (Runtime runtime = new Runtime())
-			using (Window window = new Window(runtime))
-			{
-				Application.Run(window);
-			}
+		    using (Runtime runtime = new Runtime())
+		    {
+		        Logger.SetLogger(runtime.Log);
+
+                using (Window window = new Window(runtime))
+		        {
+		     
+		            Application.Run(window);
+		        }
+		    }
 		}
 	}
 }

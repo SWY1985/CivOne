@@ -41,7 +41,12 @@ namespace CivOne.Screens.Reports
 			if (Human.Population > 0) value = Common.NumberSeperator(Human.Population);
 			
 			int rank = 1;
-			Player[] players = Game.Players.Where(x => !(x.Civilization is Barbarian)).OrderByDescending(x => x.Population).ThenBy(x => Game.PlayerNumber(x)).ToArray();
+			Player[] players = Game.Players
+                .Where(x => !(x.Civilization is Barbarian))
+                .OrderByDescending(x => x.Population)
+                .ThenBy(x => Game.GameState.PlayerNumber(x))
+                .ToArray();
+
 			for (int i = 0; i < players.Length; i++)
 			{
 				if (Human != players[i]) continue;

@@ -23,11 +23,11 @@ namespace CivOne.Screens.Reports
 				if (player.DestroyTurn >= 0) continue;
 				this.FillRectangle(4, yy, 314, 1, 9);
 
-				byte id = Game.PlayerNumber(player);
+				byte id = Game.GameState.PlayerNumber(player);
 				byte colour = Common.ColourLight[id];
 				if (player.IsHuman)
 				{
-					int unitCount = Game.GetUnits().Count(u => u.Owner == id && u.Home != null);
+					int unitCount = Game.GameState.GetUnits().Count(u => u.Owner == id && u.Home != null);
 
 					this.DrawText($"{player.TribeNamePlural}: {player.LeaderName}", 0, 5, 8, yy + 3)
 						.DrawText($"{player.TribeNamePlural}: {player.LeaderName}", 0, colour, 8, yy + 2)

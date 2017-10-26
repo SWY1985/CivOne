@@ -102,8 +102,8 @@ namespace CivOne.Units
 			get
 			{
 				int output = 0;
-				if (Game.Instance.GetCities().Any())
-					output = Game.Instance.GetCities().Select(c => Common.DistanceToTile(_x, _y, c.X, c.Y)).Min();
+				if (Game.Instance.GameState._cities.Any())
+					output = Game.Instance.GameState._cities.Select(c => Common.DistanceToTile(_x, _y, c.X, c.Y)).Min();
 				return output;
 			}
 		}
@@ -130,12 +130,14 @@ namespace CivOne.Units
 				case HutResult.AncientScrolls:
 					TribalHutMessage((s, e) => {
 						// This seems curious but this is how it actually probably happens in the original game
-						IAdvance[] available = Game.Instance.CurrentPlayer.AvailableResearch.ToArray();
+						IAdvance[] available = Game.Instance.GameState.CurrentPlayer.AvailableResearch.ToArray();
 						int advanceId = Common.Random.Next(0, 72);
 						for (int i = 0; i < 1000; i++)
 						{
-							if (!available.Any(a => a.Id == (advanceId + i) % 72)) continue;
-							GameTask.Enqueue(new GetAdvance(Game.Instance.CurrentPlayer, available.First(a => a.Id == (advanceId + i) % 72)));
+						    if (!available.Any(a => a.Id == (advanceId + i) % 72))
+						        continue;
+
+							GameTask.Enqueue(new GetAdvance(Game.Instance.GameState.CurrentPlayer, available.First(a => a.Id == (advanceId + i) % 72)));
 							break;
 						}
 					}, "You have discovered", "scrolls of ancient wisdom.");
@@ -149,9 +151,15 @@ namespace CivOne.Units
 						{
 							foreach (ITile tile in Map[X, Y].GetBorderTiles())
 							{
-								if (tile.City != null || tile.Units.Length > 0) continue;
-								if (Common.Random.Next(0, 10) < 6) continue;
-								if (tile.IsOcean) continue;
+								if (tile.City != null || tile.Units.Length > 0)
+                                    continue;
+
+								if (Common.Random.Next(0, 10) < 6)
+                                    continue;
+
+								if (tile.IsOcean)
+                                    continue;
+
 								Game.Instance.CreateUnit(Common.Random.Next(0, 100) < 50 ? UnitType.Cavalry : UnitType.Legion, tile.X, tile.Y, 0, true);
 								count++;
 							}
@@ -178,7 +186,10 @@ namespace CivOne.Units
 					TribalHut(HutResult.FriendlyTribe);
 					break;
 				case 1:
-					if (Game.Instance.GameTurn == 0 || Common.TurnToYear(Game.Instance.GameTurn) >= 1000)
+					if (
+                        Game.Instance.GameState._gameTurn == 0 
+                        || Common.TurnToYear(Game.Instance.GameState._gameTurn) >= 1000
+                    )
 					{
 						TribalHut(HutResult.MetalDeposits);
 						break;
@@ -189,7 +200,7 @@ namespace CivOne.Units
 					TribalHut(HutResult.MetalDeposits);
 					break;
 				case 3:
-					if (NearestCity < 4 || !Game.Instance.GetCities().Any(c => Player == c.Owner))
+					if (NearestCity < 4 || Game.Instance.GameState._cities.All(c => Player != c.Owner))
 					{
 						TribalHut(HutResult.FriendlyTribe);
 						break;

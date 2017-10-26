@@ -109,7 +109,7 @@ namespace CivOne.Screens
 		
 		private void LogIntroText()
 		{
-			Log(@"Intro: ""{0}""", _introText[_introLine]);
+			Logger.Log(@"Intro: ""{0}""", _introText[_introLine]);
 		}
 		
 		private byte TextColour
@@ -195,7 +195,7 @@ namespace CivOne.Screens
 				{
 					if (_introLine <= 1) return false;
 					
-					Log("Intro: <<");
+					Logger.Log("Intro: <<");
 					
 					_introLine--;
 					if (_introText[_introLine] == "_")
@@ -214,7 +214,7 @@ namespace CivOne.Screens
 				{
 					if (_introLine >= _introText.Length - 1) return false;
 					
-					Log("Intro: >>");
+					Logger.Log("Intro: >>");
 					
 					_introLine++;
 					if (_introText[_introLine] == "_")

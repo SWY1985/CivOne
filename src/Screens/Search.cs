@@ -46,7 +46,7 @@ namespace CivOne.Screens
 
 		private void Search_Accept(object sender, EventArgs args)
 		{
-			City = Game.GetCities().FirstOrDefault(x => x.Name.ToLower().StartsWith(_input.Text.ToLower()) && Human.Visible(x.X, x.Y));
+			City = Game.GameState._cities.FirstOrDefault(x => x.Name.ToLower().StartsWith(_input.Text.ToLower()) && Human.Visible(x.X, x.Y));
 			_done = true;
 			if (City == null)
 			{

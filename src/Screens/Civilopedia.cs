@@ -189,7 +189,7 @@ namespace CivOne.Screens
 				if (args.X > xx + columnWidth) { i += 25; xx += columnWidth; continue; }
 				if (args.Y >= yy && args.Y <= yy + 7)
 				{
-					Log("Opening Civilopedia page: {0}", _pages[i].Name);
+					Logger.Log("Opening Civilopedia page: {0}", _pages[i].Name);
 					Common.AddScreen(new Civilopedia(_pages[i]));
 					return true;
 				}

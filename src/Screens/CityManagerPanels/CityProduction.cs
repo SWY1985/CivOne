@@ -141,7 +141,7 @@ namespace CivOne.Screens.CityManagerPanels
 		private bool Buy()
 		{
 			string name = (_city.CurrentProduction as ICivilopedia).Name;
-			short playerGold = Game.CurrentPlayer.Gold;
+			short playerGold = Game.GameState.CurrentPlayer.Gold;
 			short buyPrice = _city.BuyPrice;
 			if (playerGold < buyPrice)
 			{

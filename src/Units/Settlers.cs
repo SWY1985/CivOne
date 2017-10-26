@@ -59,14 +59,14 @@ namespace CivOne.Units
 			}
 			if (!tile.IsOcean && !tile.Road && tile.City == null)
 			{
-				if ((tile is River) && !Game.CurrentPlayer.HasAdvance<BridgeBuilding>())
+				if ((tile is River) && !Game.GameState.CurrentPlayer.HasAdvance<BridgeBuilding>())
 					return false;
 				BuildingRoad = 2;
 				MovesLeft = 0;
 				PartMoves = 0;
 				return true;
 			}
-			else if (Game.CurrentPlayer.HasAdvance<RailRoad>() && !tile.IsOcean && tile.Road && !tile.RailRoad && tile.City == null)
+			else if (Game.GameState.CurrentPlayer.HasAdvance<RailRoad>() && !tile.IsOcean && tile.Road && !tile.RailRoad && tile.City == null)
 			{
 				BuildingRoad = 3;
 				MovesLeft = 0;
@@ -134,7 +134,7 @@ namespace CivOne.Units
 
 		public bool BuildFortress()
 		{
-			if (!Game.CurrentPlayer.HasAdvance<Construction>())
+			if (!Game.GameState.CurrentPlayer.HasAdvance<Construction>())
 				return false;
 			
 			ITile tile = Map[X, Y];
@@ -263,7 +263,7 @@ namespace CivOne.Units
 		private MenuItem<int> MenuBuildFortress() => MenuItem<int>
 			.Create("Build fortress")
 			.SetShortcut("f")
-			.SetEnabled(Game.CurrentPlayer.HasAdvance<Construction>())
+			.SetEnabled(Game.GameState.CurrentPlayer.HasAdvance<Construction>())
 			.OnSelect((s, a) => GameTask.Enqueue(Orders.BuildFortress(this)));
 		
 		public override IEnumerable<MenuItem<int>> MenuItems

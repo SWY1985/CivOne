@@ -64,10 +64,16 @@ namespace CivOne.Tasks
 				Goto gotoScreen = new Goto(gamePlay.X, gamePlay.Y);
 				gotoScreen.Closed += (s, a) =>
 				{
-					if (Human != Game.CurrentPlayer) return;
-					if (Game.ActiveUnit == null) return;
-					if (gotoScreen.X == -1 || gotoScreen.Y == -1) return;
-					Game.ActiveUnit.Goto = new Point(gotoScreen.X, gotoScreen.Y);
+					if (Human != Game.GameState.CurrentPlayer)
+                        return;
+
+					if (Game.GameState.ActiveUnit == null)
+                        return;
+
+					if (gotoScreen.X == -1 || gotoScreen.Y == -1)
+                        return;
+
+					Game.GameState.ActiveUnit.Goto = new Point(gotoScreen.X, gotoScreen.Y);
 				};
 				return new Show(gotoScreen);
 			}
@@ -93,8 +99,11 @@ namespace CivOne.Tasks
 		{
 			get
 			{
-				if (Game.GameTurn % 50 != 0) return null;
-				int gameId = ((Game.GameTurn / 50) % 6) + 4;
+				if (Game.GameState._gameTurn % 50 != 0)
+                    return null;
+
+				int gameId = ((Game.GameState._gameTurn / 50) % 6) + 4;
+
 				return new Show(new SaveGame(gameId));
 			}
 		}

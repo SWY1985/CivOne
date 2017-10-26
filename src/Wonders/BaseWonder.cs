@@ -32,7 +32,7 @@ namespace CivOne.Wonders
 					text = Resources.GetCivilopediaText("BLURB1/" + Name.ToUpper() + "2");
 					break;
 				default:
-					Log("Invalid page number: {0}", pageNumber);
+					Logger.Log("Invalid page number: {0}", pageNumber);
 					break;
 			}
 			
@@ -41,7 +41,7 @@ namespace CivOne.Wonders
 			int yy = 76;
 			foreach (string line in text)
 			{
-				Log(line);
+				Logger.Log(line);
 				output.DrawText(line, 6, 1, 12, yy);
 				yy += 9;
 			}
@@ -87,7 +87,7 @@ namespace CivOne.Wonders
 			string name = Id < 8 ? $"The {Name}" : Name;
 			string preposition = Id < 7 ? "of" : "in";
 			if (city != null && city.Size > 0)
-				return $"{name} {preposition} {city.Name}. ({Game.Instance.GetPlayer(city.Owner).Civilization.NamePlural})";
+				return $"{name} {preposition} {city.Name}. ({Game.Instance.GameState.GetPlayer(city.Owner).Civilization.NamePlural})";
 			return $"{name} (Destroyed)";
 		}
 		

@@ -88,7 +88,7 @@ namespace CivOne.Screens.Debug
 
 		private void CivSelect_Accept(object sender, EventArgs args)
 		{
-			_selectedPlayer = Game.GetPlayer((byte)_civSelect.ActiveItem);
+			_selectedPlayer = Game.GameState.GetPlayer((byte)_civSelect.ActiveItem);
 
 			CloseMenus();
 		}
@@ -173,7 +173,7 @@ namespace CivOne.Screens.Debug
 
 			_civSelect.Cancel += PlayerAdvances_Cancel;
 			_civSelect.MissClick += PlayerAdvances_Cancel;
-			_civSelect.ActiveItem = Game.PlayerNumber(Human);
+			_civSelect.ActiveItem = Game.GameState.PlayerNumber(Human);
 		}
 	}
 }

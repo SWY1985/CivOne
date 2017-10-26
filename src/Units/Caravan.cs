@@ -39,8 +39,8 @@ namespace CivOne.Units
 			float multiplier = 1;
 			if (Home != null && Home.Tile.ContinentId == targetCity.Tile.ContinentId) multiplier *= 0.5F;
 			if (Owner == targetCity.Owner) multiplier *= 0.5F;
-			if (Game.GetPlayer(Owner).HasAdvance<RailRoad>() && Game.GetPlayer(targetCity.Owner).HasAdvance<RailRoad>()) multiplier *= 0.66F;
-			if (Game.GetPlayer(Owner).HasAdvance<Flight>() && Game.GetPlayer(targetCity.Owner).HasAdvance<Flight>()) multiplier *= 0.66F;
+			if (Game.GameState.GetPlayer(Owner).HasAdvance<RailRoad>() && Game.GameState.GetPlayer(targetCity.Owner).HasAdvance<RailRoad>()) multiplier *= 0.66F;
+			if (Game.GameState.GetPlayer(Owner).HasAdvance<Flight>() && Game.GameState.GetPlayer(targetCity.Owner).HasAdvance<Flight>()) multiplier *= 0.66F;
 
 			return (int)(multiplier * (float)((distance + 10) * (tradeHome + tradeTarget) / 24));
 		}
@@ -64,7 +64,7 @@ namespace CivOne.Units
 				$"arrives in {city.Name}",
 				"Trade route established",
 				$"Revenue: ${revenue}."));
-			Game.GetPlayer(Owner).Gold += (short)revenue;
+			Game.GameState.GetPlayer(Owner).Gold += (short)revenue;
 			Game.DisbandUnit(this);
 		}
 

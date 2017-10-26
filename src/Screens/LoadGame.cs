@@ -48,19 +48,20 @@ namespace CivOne.Screens
 
 			SaveGame.SelectedGame = (item > 3 ? 3 : item);
 			
-			Log("Load game: {0}", file.Name);
+			Logger.Log("Load game: {0}", file.Name);
 			
 			Destroy();
 
 		    var originalGameLoader = new OriginalGameFileLoader();
 
-			originalGameLoader.LoadGame(file.SveFile, file.MapFile);
+			var gameState = originalGameLoader.LoadGame(file.SveFile, file.MapFile);
+		    Game.CreateGame(gameState);
 			Common.AddScreen(new GamePlay());
 		}
 		
 		private void LoadEmptyFile(object sender, MenuItemEventArgs<int> args)
 		{
-			Log("Empty save file, cancel");
+			Logger.Log("Empty save file, cancel");
 			Cancel = true;
 			_update = true;
 		}
@@ -114,7 +115,7 @@ namespace CivOne.Screens
 			char c = Char.ToUpper(args.KeyChar);
 			if (args.Key == Key.Escape)
 			{
-				Log("Cancel");
+				Logger.Log("Cancel");
 				Cancel = true;
 				_update = true;
 				return true;

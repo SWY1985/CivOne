@@ -68,7 +68,7 @@ namespace CivOne.Advances
 					yy = 76;
 					foreach (string line in text)
 					{
-						Log(line);
+						Logger.Log(line);
 						output.DrawText(line, 6, 1, 12, yy);
 						yy += 9;
 					}
@@ -101,7 +101,7 @@ namespace CivOne.Advances
 						yy += 4;
 						foreach (IUnit unit in Reflect.GetUnits().Where(u => u.RequiredTech != null && u.RequiredTech.Id == Id))
 						{
-							output.AddLayer(unit.ToBitmap(Game.PlayerNumber(Human)), 40, yy - 5);
+							output.AddLayer(unit.ToBitmap(Game.GameState.PlayerNumber(Human)), 40, yy - 5);
 							output.DrawText(string.Format("{0} unit", unit.Name), 6, 12, 60, yy); yy += 12;
 						}
 						foreach (IBuilding building in Reflect.GetBuildings().Where(b => b.RequiredTech != null && b.RequiredTech.Id == Id))
@@ -119,7 +119,7 @@ namespace CivOne.Advances
 					}
 					break;
 				default:
-					Log("Invalid page number: {0}", pageNumber);
+					Logger.Log("Invalid page number: {0}", pageNumber);
 					break;
 			}
 			

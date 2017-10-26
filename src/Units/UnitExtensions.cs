@@ -16,7 +16,7 @@ namespace CivOne.Units
 {
 	public static class UnitExtensions
 	{
-		private static Player Human => Game.Instance.HumanPlayer;
+		private static Player Human => Game.Instance.GameState.HumanPlayer;
 
 		public static Bytemap ToBitmap(this IUnit unit, bool showState = true) => ToBitmap(unit, unit.Owner, showState);
 		public static Bytemap ToBitmap(this IUnit unit, byte colour, bool showState = true)

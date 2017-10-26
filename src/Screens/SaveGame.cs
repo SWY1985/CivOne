@@ -53,9 +53,9 @@ namespace CivOne.Screens
 
 			SaveGameFile file = GetSaveGames().ToArray()[item];
 
-		    var originalGameSaver = new OriginalGameFileSaver();
+		    var originalGameSaver = new OriginalGameFileSaver(file.SveFile, file.MapFile);
 
-			originalGameSaver.Save(file.SveFile, file.MapFile);
+			originalGameSaver.Save(Game.Instance.GameState);
 		}
 		
 		private void DrawDriveQuestion()
@@ -91,8 +91,8 @@ namespace CivOne.Screens
 
 				DrawPanel(64, 86, 124, 41);
 				this.DrawText($"{char.ToLower(_driveLetter)}:CIVIL{_gameId}.SVE", 0, 5, 75, 91)
-					.DrawText($"{Common.DifficultyName(Game.Difficulty)} {Game.HumanPlayer.LeaderName}", 0, 5, 75, 99)
-					.DrawText($"{Game.HumanPlayer.TribeNamePlural}/{Game.GameYear}", 0, 5, 75, 107)
+					.DrawText($"{Common.DifficultyName(Game.GameState._difficulty)} {Game.GameState.HumanPlayer.LeaderName}", 0, 5, 75, 99)
+					.DrawText($"{Game.GameState.HumanPlayer.TribeNamePlural}/{Game.GameState.GameYear}", 0, 5, 75, 107)
 					.DrawText("... save in progress.", 0, 5, 75, 115);
 				
 				this.DrawText("Game has been saved.", 0, 5, 75, 132)
@@ -130,7 +130,7 @@ namespace CivOne.Screens
 			char c = Char.ToUpper(args.KeyChar);
 			if (args.Key == Key.Escape)
 			{
-				Log("Cancel");
+				Logger.Log("Cancel");
 				Destroy();
 				return true;
 			}
@@ -144,9 +144,9 @@ namespace CivOne.Screens
 				{
 					SaveGameFile file = GetSaveGames().ToArray()[_gameId];
 
-                    var originalGameSaver = new OriginalGameFileSaver();
+                    var originalGameSaver = new OriginalGameFileSaver(file.SveFile, file.MapFile);
 
-					originalGameSaver.Save(file.SveFile, file.MapFile);
+					originalGameSaver.Save(Game.Instance.GameState);
 					_saving = true;
 					_update = true;
 					return true;

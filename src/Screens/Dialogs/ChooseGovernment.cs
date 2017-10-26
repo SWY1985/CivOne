@@ -51,13 +51,13 @@ namespace CivOne.Screens.Dialogs
 		{
 			get
 			{
-				return (Game.HumanPlayer.AvailableGovernments.Count() * Resources.GetFontHeight(0)) + 23;
+				return (Game.GameState.HumanPlayer.AvailableGovernments.Count() * Resources.GetFontHeight(0)) + 23;
 			}
 		}
 
 		public ChooseGovernment() : base(100, 64, 86, DialogHeight)
 		{
-			_availableGovernments = Game.HumanPlayer.AvailableGovernments.ToArray();
+			_availableGovernments = Game.GameState.HumanPlayer.AvailableGovernments.ToArray();
 
 			DialogBox.DrawText("Select type of", 0, 15, 5, 5);
 			DialogBox.DrawText("Government...", 0, 15, 5, 13);

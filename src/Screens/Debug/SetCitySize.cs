@@ -19,7 +19,7 @@ namespace CivOne.Screens.Debug
 {
 	internal class SetCitySize : BaseScreen
 	{
-		private readonly City[] _cities = Game.GetCities().OrderBy(x => x.Name).ToArray();
+		private readonly City[] _cities = Game.GameState._cities.OrderBy(x => x.Name).ToArray();
 
 		private Menu _citySelect;
 
@@ -72,7 +72,7 @@ namespace CivOne.Screens.Debug
 
 			foreach (City city in cities)
 			{
-				_citySelect.Items.Add($"{city.Name} ({Game.GetPlayer(city.Owner).TribeName})").OnSelect(CitySize_Accept);
+				_citySelect.Items.Add($"{city.Name} ({Game.GameState.GetPlayer(city.Owner).TribeName})").OnSelect(CitySize_Accept);
 			}
 
 			if (more)

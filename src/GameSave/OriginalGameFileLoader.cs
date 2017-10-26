@@ -19,17 +19,11 @@ using CivOne.Wonders;
 
 namespace CivOne.GameSave
 {
-    public class OriginalGameFileLoader : BaseInstance
+    public class OriginalGameFileLoader
     {
-
-        public void LoadGame(string sveFile, string mapFile)
+        public GameState LoadGame(string sveFile, string mapFile)
         {
-            if (Game._instance != null)
-            {
-                Log("ERROR: Game instance already exists");
-                return;
-            }
-
+            GameState gs;
             // TODO: Implement full save file configuration
             // - http://forums.civfanatics.com/showthread.php?p=12422448
             // - http://forums.civfanatics.com/showthread.php?t=493581
@@ -134,13 +128,13 @@ namespace CivOne.GameSave
 
                 // Game Settings
                 ushort settings = Common.BinaryReadUShort(br, 35492);
-                Settings.InstantAdvice = (settings & (0x01 << 0)) > 0;
-                Settings.AutoSave = (settings & (0x01 << 1)) > 0;
-                Settings.EndOfTurn = (settings & (0x01 << 2)) > 0;
-                Settings.Animations = (settings & (0x01 << 3)) > 0;
-                Settings.Sound = (settings & (0x01 << 4)) > 0;
+                Settings.Instance.InstantAdvice = (settings & (0x01 << 0)) > 0;
+                Settings.Instance.AutoSave = (settings & (0x01 << 1)) > 0;
+                Settings.Instance.EndOfTurn = (settings & (0x01 << 2)) > 0;
+                Settings.Instance.Animations = (settings & (0x01 << 3)) > 0;
+                Settings.Instance.Sound = (settings & (0x01 << 4)) > 0;
                 // Settings.EnemyMoves = (settings & (0x01 << 5)) > 0;
-                Settings.CivilopediaText = (settings & (0x01 << 6)) > 0;
+                Settings.Instance.CivilopediaText = (settings & (0x01 << 6)) > 0;
                 // Settings.Palace = (settings & (0x01 << 7)) > 0;
 
                 ushort anthologyTurn = Common.BinaryReadUShort(br, 35778);
@@ -148,8 +142,8 @@ namespace CivOne.GameSave
                 ushort competition = (ushort)(Common.BinaryReadUShort(br, 37820) + 1);
                 ushort civIdentity = Common.BinaryReadUShort(br, 37854);
 
-                Game._instance = new Game(difficulty, competition);
-                Log("Game instance loaded (difficulty: {0}, competition: {1})", difficulty, competition);
+                gs = new GameState(difficulty, competition);
+                Logger.Log("Game instance loaded (difficulty: {0}, competition: {1})", difficulty, competition);
 
                 // Load map visibility
                 byte[] visibility = Common.BinaryReadBytes(br, 22208, 4000);
@@ -159,7 +153,7 @@ namespace CivOne.GameSave
                     int identity = ((civIdentity >> i) & 0x1);
                     ICivilization[] civs = Common.Civilizations.Where(c => c.PreferredPlayerNumber == i).ToArray();
                     ICivilization civ = civs[identity];
-                    Player player = (Game._instance._players[i] = new Player(civ, leaderNames[i], tribeNames[i], tribeNamesPlural[i]));
+                    Player player = (gs._players[i] = new Player(civ, leaderNames[i], tribeNames[i], tribeNamesPlural[i]));
                     player.Gold = (short)Common.BinaryReadUShort(br, 312 + (i * 2));
                     player.Science = (short)Common.BinaryReadUShort(br, 328 + (i * 2));
                     player.Government = Reflect.GetGovernments().FirstOrDefault(x => x.Id == Common.BinaryReadUShort(br, 1336 + (i * 2)));
@@ -198,55 +192,58 @@ namespace CivOne.GameSave
 
                             int originId = Common.BinaryReadUShort(br, 26720 + (advance.Id * 2));
                             if (originId == player.Civilization.Id)
-                                Game._instance.SetAdvanceOrigin(advance, player);
+                                Game._instance.GameState.SetAdvanceOrigin(advance, player);
                         }
                     }
 
-                    Log("- Player {0} is {1} of the {2}{3}", i, player.LeaderName, Game._instance._players[i].TribeNamePlural, (i == humanPlayer) ? " (human)" : "");
+                    Logger.Log($"- Player {i} is {player.LeaderName} of the {gs._players[i].TribeNamePlural}" + ((i == humanPlayer) ? " (human)" : ""));
                 }
-                Game._instance.GameTurn = Common.BinaryReadUShort(br, 0);
-                Game._instance.HumanPlayer = Game._instance._players[humanPlayer];
-                Game._instance.HumanPlayer.CurrentResearch = Common.Advances.FirstOrDefault(a => a.Id == Common.BinaryReadUShort(br, 14));
 
-                Game._instance._anthologyTurn = anthologyTurn;
+                gs._gameTurn = Common.BinaryReadUShort(br, 0);
+                gs.HumanPlayer = gs._players[humanPlayer];
+                gs.HumanPlayer.CurrentResearch = Common.Advances.FirstOrDefault(a => a.Id == Common.BinaryReadUShort(br, 14));
+
+                gs._anthologyTurn = anthologyTurn;
 
                 for (int i = 0; i < 8; i++)
                 {
-                    if (Game._instance._players.GetUpperBound(0) <= i)
+                    if (gs._players.GetUpperBound(0) <= i)
                         break;
 
-                    Game._instance._players[i].StartX = (short)Common.BinaryReadUShort(br, 1896 + (i * 2));
+                    gs._players[i].StartX = (short)Common.BinaryReadUShort(br, 1896 + (i * 2));
                 }
 
                 foreach (City city in cities)
                 {
-                    Game._instance._cities.Add(city);
+                    gs._cities.Add(city);
                 }
                 foreach (IUnit unit in units)
                 {
-                    Game._instance._units.Add(unit);
+                    gs._units.Add(unit);
                 }
 
-                for (int i = 0; i < Game._instance._cityNames.Length; i++)
+                for (int i = 0; i < gs._cityNames.Length; i++)
                 {
-                    if (!cities.Any(x => x.Name == Game._instance._cityNames[i]))
+                    if (!cities.Any(x => x.Name == gs._cityNames[i]))
                         continue;
 
-                    Game._instance._cityNameUsed[i] = true;
+                    gs._cityNameUsed[i] = true;
                 }
 
-                Game._instance._currentPlayer = humanPlayer;
-                for (int i = 0; i < Game._instance._units.Count(); i++)
+                gs._currentPlayer = humanPlayer;
+                for (int i = 0; i < gs._units.Count(); i++)
                 {
-                    if (Game._instance._units[i].Owner != humanPlayer)
+                    if (gs._units[i].Owner != humanPlayer)
                         continue;
 
-                    Game._instance._activeUnit = i;
+                    gs._activeUnit = i;
 
-                    if (Game._instance._units[i].MovesLeft > 0)
+                    if (gs._units[i].MovesLeft > 0)
                         break;
                 }
             }
+
+            return gs;
         }
     }
 }

@@ -200,7 +200,7 @@ namespace CivOne.Tiles
 		// This method is used to calculate whether a river or grassland tile is special.
 		protected bool AlternateSpecial() => ((X + Y) % 4 == 0) || ((X + Y) % 4 == 3);
 		public City City => Game?.GetCity(X, Y);
-		public IUnit[] Units => Game?.GetUnits(X, Y);
+		public IUnit[] Units => Game?.GameState.GetUnits(X, Y);
 
 		public ITile this[int relativeX, int relativeY] => Map[X + relativeX, Y + relativeY];
 		

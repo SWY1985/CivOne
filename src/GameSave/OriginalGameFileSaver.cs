@@ -20,41 +20,43 @@ namespace CivOne.GameSave
 {
     class OriginalGameFileSaver
     {
-        public OriginalGameFileSaver()
+
+        public OriginalGameFileSaver(string sveFile, string mapFile)
         {
-            _instance = Game.Instance;
+            _sveFile = sveFile;
+            _mapFile = mapFile;
         }
 
-        public void Save(string sveFile, string mapFile)
+        public void Save(GameState gs)
         {
             // TODO: Implement full save file configuration
             // - http://forums.civfanatics.com/showthread.php?p=12422448
             // - http://forums.civfanatics.com/showthread.php?t=493581
-            using (FileStream fs = new FileStream(sveFile, FileMode.Create, FileAccess.Write))
+            using (FileStream fs = new FileStream(_sveFile, FileMode.Create, FileAccess.Write))
             using (BinaryWriter bw = new BinaryWriter(fs))
             {
-                ushort randomSeed = Map.Instance.SaveMap(mapFile);
+                ushort randomSeed = Map.Instance.SaveMap(_mapFile);
                 ushort activeCivilizations = 1;
-                for (int i = 1; i < _instance._players.Length; i++)
-                    if (_instance._players[i].Cities.Any() || _instance.GetUnits().Any(x => x.Owner == i))
+                for (int i = 1; i < gs._players.Length; i++)
+                    if (gs._players[i].Cities.Any() || gs.GetUnits().Any(x => x.Owner == i))
                         activeCivilizations |= (ushort)(0x01 << i);
 
-                bw.Write(_instance.GameTurn);
-                bw.Write((ushort)_instance.PlayerNumber(_instance.HumanPlayer));
-                bw.Write((ushort)(0x01 << _instance.PlayerNumber(_instance.HumanPlayer)));
+                bw.Write(gs._gameTurn);
+                bw.Write((ushort)gs.PlayerNumber(gs.HumanPlayer));
+                bw.Write((ushort)(0x01 << gs.PlayerNumber(gs.HumanPlayer)));
                 bw.Write(randomSeed);
-                bw.Write((short)Common.TurnToYear(_instance.GameTurn));
-                bw.Write((ushort)_instance.Difficulty);
+                bw.Write((short)Common.TurnToYear(gs._gameTurn));
+                bw.Write((ushort)gs._difficulty);
                 bw.Write(activeCivilizations);
-                if (_instance.HumanPlayer.CurrentResearch == null)
+                if (gs.HumanPlayer.CurrentResearch == null)
                     bw.Write((ushort)0x00);
                 else
-                    bw.Write((ushort)_instance.HumanPlayer.CurrentResearch.Id);
+                    bw.Write((ushort)gs.HumanPlayer.CurrentResearch.Id);
 
                 // Leader names
                 for (int i = 0; i < 8; i++)
                 {
-                    if (_instance._players.GetUpperBound(0) < i)
+                    if (gs._players.GetUpperBound(0) < i)
                     {
                         for (int x = 0; x < 14; x++)
                         {
@@ -62,11 +64,11 @@ namespace CivOne.GameSave
                         }
                         continue;
                     }
-                    bw.Write(_instance._players[i].LeaderName.PadRight(14, (char)0x00).Select(x => (byte)x).ToArray());
+                    bw.Write(gs._players[i].LeaderName.PadRight(14, (char)0x00).Select(x => (byte)x).ToArray());
                 }
                 for (int i = 0; i < 8; i++)
                 {
-                    if (_instance._players.GetUpperBound(0) < i)
+                    if (gs._players.GetUpperBound(0) < i)
                     {
                         for (int x = 0; x < 12; x++)
                         {
@@ -74,11 +76,11 @@ namespace CivOne.GameSave
                         }
                         continue;
                     }
-                    bw.Write(_instance._players[i].Civilization.NamePlural.PadRight(12, (char)0x00).Select(x => (byte)x).ToArray());
+                    bw.Write(gs._players[i].Civilization.NamePlural.PadRight(12, (char)0x00).Select(x => (byte)x).ToArray());
                 }
                 for (int i = 0; i < 8; i++)
                 {
-                    if (_instance._players.GetUpperBound(0) < i)
+                    if (gs._players.GetUpperBound(0) < i)
                     {
                         for (int x = 0; x < 11; x++)
                         {
@@ -86,41 +88,41 @@ namespace CivOne.GameSave
                         }
                         continue;
                     }
-                    bw.Write(_instance._players[i].Civilization.Name.PadRight(11, (char)0x00).Select(x => (byte)x).ToArray());
+                    bw.Write(gs._players[i].Civilization.Name.PadRight(11, (char)0x00).Select(x => (byte)x).ToArray());
                 }
 
                 // Player gold
                 for (int i = 0; i < 8; i++)
                 {
-                    if (_instance._players.GetUpperBound(0) < i)
+                    if (gs._players.GetUpperBound(0) < i)
                     {
                         bw.Write((short)0);
                         continue;
                     }
-                    bw.Write(_instance._players[i].Gold);
+                    bw.Write(gs._players[i].Gold);
                 }
 
                 // Research progress
                 for (int i = 0; i < 8; i++)
                 {
-                    if (_instance._players.GetUpperBound(0) < i)
+                    if (gs._players.GetUpperBound(0) < i)
                     {
                         bw.Write((short)0);
                         continue;
                     }
-                    bw.Write(_instance._players[i].Science);
+                    bw.Write(gs._players[i].Science);
                 }
 
                 // Units active
                 for (int i = 0; i < 8; i++)
                     for (byte unitId = 0; unitId < 28; unitId++)
                     {
-                        if (_instance._players.GetUpperBound(0) < i)
+                        if (gs._players.GetUpperBound(0) < i)
                         {
                             bw.Write((short)0);
                             continue;
                         }
-                        bw.Write((short)_instance.GetUnits().Where(x => x.Owner == i).Count(x =>
+                        bw.Write((short)gs.GetUnits().Where(x => x.Owner == i).Count(x =>
                             x.ProductionId == unitId));
                     }
 
@@ -128,12 +130,12 @@ namespace CivOne.GameSave
                 for (int i = 0; i < 8; i++)
                     for (byte unitId = 0; unitId < 28; unitId++)
                     {
-                        if (_instance._players.GetUpperBound(0) < i)
+                        if (gs._players.GetUpperBound(0) < i)
                         {
                             bw.Write((short)0);
                             continue;
                         }
-                        bw.Write((short)_instance._players[i].Cities.Count(x =>
+                        bw.Write((short)gs._players[i].Cities.Count(x =>
                             x.CurrentProduction is IUnit &&
                             (x.CurrentProduction as IUnit).ProductionId == unitId));
                     }
@@ -141,18 +143,18 @@ namespace CivOne.GameSave
                 // Discovered Advances Count
                 for (int i = 0; i < 8; i++)
                 {
-                    if (_instance._players.GetUpperBound(0) < i)
+                    if (gs._players.GetUpperBound(0) < i)
                     {
                         bw.Write((short)0);
                         continue;
                     }
-                    bw.Write((short)_instance._players[i].Advances.Count());
+                    bw.Write((short)gs._players[i].Advances.Count());
                 }
 
                 // Set civilization advances
                 for (int i = 0; i < 8; i++)
                 {
-                    if (_instance._players.GetUpperBound(0) < i)
+                    if (gs._players.GetUpperBound(0) < i)
                     {
                         bw.Write(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
                         continue;
@@ -160,7 +162,7 @@ namespace CivOne.GameSave
                     for (int techGroup = 0; techGroup < 5; techGroup++)
                     {
                         ushort techFlag = 0;
-                        foreach (IAdvance advance in _instance._players[i].Advances.Where(x => ((x.Id - (x.Id % 16)) / 16) == techGroup))
+                        foreach (IAdvance advance in gs._players[i].Advances.Where(x => ((x.Id - (x.Id % 16)) / 16) == techGroup))
                         {
                             techFlag |= (ushort)(0x01 << (advance.Id % 16));
                         }
@@ -171,12 +173,12 @@ namespace CivOne.GameSave
                 // Civilization Governments
                 for (int i = 0; i < 8; i++)
                 {
-                    if (_instance._players.GetUpperBound(0) < i)
+                    if (gs._players.GetUpperBound(0) < i)
                     {
                         bw.Write((short)0);
                         continue;
                     }
-                    bw.Write((short)_instance._players[i].Government.Id);
+                    bw.Write((short)gs._players[i].Government.Id);
                 }
 
                 // TODO: Civ AI strategy
@@ -194,13 +196,13 @@ namespace CivOne.GameSave
                 // City counts
                 for (int i = 0; i < 8; i++)
                 {
-                    bw.Write((short)_instance.GetCities().Count(x => x.Owner == i));
+                    bw.Write((short)gs._cities.Count(x => x.Owner == i));
                 }
 
                 // Unit counts
                 for (int i = 0; i < 8; i++)
                 {
-                    bw.Write((short)_instance.GetUnits().Count(x => x.Owner == i));
+                    bw.Write((short)gs.GetUnits().Count(x => x.Owner == i));
                 }
 
                 // TODO: Land counts
@@ -212,19 +214,19 @@ namespace CivOne.GameSave
                 // Settler counts
                 for (int i = 0; i < 8; i++)
                 {
-                    bw.Write((short)(_instance.GetUnits().Count(x => (x is Settlers) && x.Owner == i) + 1));
+                    bw.Write((short)(gs.GetUnits().Count(x => (x is Settlers) && x.Owner == i) + 1));
                 }
 
                 // Total Civ size
                 for (int i = 0; i < 8; i++)
                 {
-                    bw.Write((short)_instance.GetCities().Where(x => x.Owner == i).Sum(x => x.Size));
+                    bw.Write((short)gs._cities.Where(x => x.Owner == i).Sum(x => x.Size));
                 }
 
                 // Military power
                 for (int i = 0; i < 8; i++)
                 {
-                    bw.Write((short)_instance.GetUnits().Where(x => x.Owner == i).Sum(x => x.Attack + x.Defense));
+                    bw.Write((short)gs.GetUnits().Where(x => x.Owner == i).Sum(x => x.Attack + x.Defense));
                 }
 
                 // TODO: Civ Rankings
@@ -236,12 +238,12 @@ namespace CivOne.GameSave
                 // Tax rate
                 for (int i = 0; i < 8; i++)
                 {
-                    if (_instance._players.GetUpperBound(0) < i)
+                    if (gs._players.GetUpperBound(0) < i)
                     {
                         bw.Write((short)0);
                         continue;
                     }
-                    bw.Write((short)_instance._players[i].TaxesRate);
+                    bw.Write((short)gs._players[i].TaxesRate);
                 }
 
                 // TODO: Civ score
@@ -259,23 +261,23 @@ namespace CivOne.GameSave
                 // Starting position X coordinate
                 for (int i = 0; i < 8; i++)
                 {
-                    if (_instance._players.GetUpperBound(0) < i)
+                    if (gs._players.GetUpperBound(0) < i)
                     {
                         bw.Write((short)0xFF);
                         continue;
                     }
-                    bw.Write((short)_instance._players[i].StartX);
+                    bw.Write((short)gs._players[i].StartX);
                 }
 
                 // Leader graphics
                 for (int i = 0; i < 8; i++)
                 {
-                    if (_instance._players.GetUpperBound(0) < i)
+                    if (gs._players.GetUpperBound(0) < i)
                     {
                         bw.Write((short)0);
                         continue;
                     }
-                    bw.Write((short)_instance._players[i].Civilization.Id);
+                    bw.Write((short)gs._players[i].Civilization.Id);
                 }
 
                 // TODO: Per-continent Civ defense
@@ -335,7 +337,7 @@ namespace CivOne.GameSave
                 Dictionary<byte, City> cityList = new Dictionary<byte, City>();
                 for (int i = 0; i < 128; i++)
                 {
-                    if (_instance._cities.Count - 1 < i)
+                    if (gs._cities.Count - 1 < i)
                     {
                         for (int b = 0; b < 28; b++)
                         {
@@ -343,7 +345,7 @@ namespace CivOne.GameSave
                         }
                         continue;
                     }
-                    City city = _instance._cities[i];
+                    City city = gs._cities[i];
                     cityList.Add((byte)cityList.Count, city);
                     for (int buildingGroup = 0; buildingGroup < 4; buildingGroup++)
                     {
@@ -418,7 +420,7 @@ namespace CivOne.GameSave
 
                 for (int i = 0; i < 8; i++)
                 {
-                    if (_instance._players.GetUpperBound(0) < i)
+                    if (gs._players.GetUpperBound(0) < i)
                     {
                         for (int x = 0; x < (12 * 128); x++)
                         {
@@ -426,8 +428,8 @@ namespace CivOne.GameSave
                         }
                         continue;
                     }
-                    Player player = _instance._players[i];
-                    IUnit[] units = _instance._units.Where(x => x.Owner == i).ToArray();
+                    Player player = gs._players[i];
+                    IUnit[] units = gs._units.Where(x => x.Owner == i).ToArray();
                     for (int playerUnit = 0; playerUnit < 128; playerUnit++)
                     {
                         if (units.GetUpperBound(0) < playerUnit)
@@ -460,12 +462,12 @@ namespace CivOne.GameSave
                         byte visibility = 0;
                         for (int p = 0; p < 8; p++)
                         {
-                            if (_instance._players.GetUpperBound(0) < p) continue;
-                            if (!_instance._players[p].Visible(unit.X, unit.Y)) continue;
+                            if (gs._players.GetUpperBound(0) < p) continue;
+                            if (!gs._players[p].Visible(unit.X, unit.Y)) continue;
                             visibility |= (byte)(0x01 << p);
                         }
                         byte stack = (byte)i;
-                        if (_instance.GetUnits(unit.X, unit.Y).Count() > 0)
+                        if (gs.GetUnits(unit.X, unit.Y).Count() > 0)
                         {
                             for (int u = stack + 1; u < stack + 128; u++)
                             {
@@ -502,8 +504,8 @@ namespace CivOne.GameSave
                         byte visibility = 0;
                         for (int i = 0; i < 8; i++)
                         {
-                            if (_instance._players.GetUpperBound(0) < i) continue;
-                            if (!_instance._players[i].Visible(xx, yy)) continue;
+                            if (gs._players.GetUpperBound(0) < i) continue;
+                            if (!gs._players[i].Visible(xx, yy)) continue;
                             visibility |= (byte)(0x01 << i);
                         }
                         bw.Write(visibility);
@@ -536,12 +538,12 @@ namespace CivOne.GameSave
                 // Tech origins
                 for (byte i = 0; i < 72; i++)
                 {
-                    if (_instance._advanceOrigin == null || !_instance._advanceOrigin.ContainsKey(i))
+                    if (gs._advanceOrigin == null || !gs._advanceOrigin.ContainsKey(i))
                     {
                         bw.Write((ushort)0);
                         continue;
                     }
-                    bw.Write((ushort)_instance._advanceOrigin[i]);
+                    bw.Write((ushort)gs._advanceOrigin[i]);
                 }
 
                 // TODO: Civ-to-Civ destroyed unit counts
@@ -553,12 +555,12 @@ namespace CivOne.GameSave
                 // City names
                 for (int i = 0; i < 256; i++)
                 {
-                    if (_instance._cities.Count() - 1 < i)
+                    if (gs._cities.Count() - 1 < i)
                     {
-                        bw.Write(_instance._cityNames[i].PadRight(13, (char)0x00).Select(x => (byte)x).ToArray());
+                        bw.Write(gs._cityNames[i].PadRight(13, (char)0x00).Select(x => (byte)x).ToArray());
                         continue;
                     }
-                    bw.Write(_instance._cities[i].Name.PadRight(13, (char)0x00).Select(x => (byte)x).ToArray());
+                    bw.Write(gs._cities[i].Name.PadRight(13, (char)0x00).Select(x => (byte)x).ToArray());
                 }
 
                 // TODO: Replay data
@@ -629,7 +631,7 @@ namespace CivOne.GameSave
                 // Max tech count
                 for (int i = 0; i < 2; i++)
                 {
-                    bw.Write((byte)_instance._players.Max(x => x.Advances.Count()));
+                    bw.Write((byte)gs._players.Max(x => x.Advances.Count()));
                 }
 
                 // TODO: Player future techs
@@ -647,16 +649,16 @@ namespace CivOne.GameSave
                 // Science rates
                 for (int i = 0; i < 8; i++)
                 {
-                    if (_instance._players.GetUpperBound(0) < i)
+                    if (gs._players.GetUpperBound(0) < i)
                     {
                         bw.Write((short)0);
                         continue;
                     }
-                    bw.Write((short)_instance._players[i].ScienceRate);
+                    bw.Write((short)gs._players[i].ScienceRate);
                 }
 
                 // Next anthology turn
-                bw.Write(_instance._anthologyTurn);
+                bw.Write(gs._anthologyTurn);
 
                 // TODO: Cumulative Epic Rankings
                 for (int i = 0; i < 16; i++)
@@ -679,23 +681,23 @@ namespace CivOne.GameSave
                 // City X coordinates
                 for (int i = 0; i < 256; i++)
                 {
-                    if (_instance._cities.Count - 1 < i)
+                    if (gs._cities.Count - 1 < i)
                     {
                         bw.Write((byte)0xFF);
                         continue;
                     }
-                    bw.Write(_instance._cities[i].X);
+                    bw.Write(gs._cities[i].X);
                 }
 
                 // City Y coordinates
                 for (int i = 0; i < 256; i++)
                 {
-                    if (_instance._cities.Count - 1 < i)
+                    if (gs._cities.Count - 1 < i)
                     {
                         bw.Write((byte)0xFF);
                         continue;
                     }
-                    bw.Write(_instance._cities[i].Y);
+                    bw.Write(gs._cities[i].Y);
                 }
 
                 // TODO: Palace level
@@ -711,7 +713,7 @@ namespace CivOne.GameSave
                 }
 
                 // TODO: AI opponents
-                bw.Write((ushort)(_instance._players.Length - 2));
+                bw.Write((ushort)(gs._players.Length - 2));
 
                 // TODO: Spaceship population
                 for (int i = 0; i < 16; i++)
@@ -729,13 +731,15 @@ namespace CivOne.GameSave
                 ushort identity = 0;
                 for (int i = 1; i < 8; i++)
                 {
-                    if (_instance._players.GetUpperBound(0) < i) continue;
-                    if (_instance._players[i].Civilization.Id > 7) identity |= (ushort)(0x01 << i);
+                    if (gs._players.GetUpperBound(0) < i) continue;
+                    if (gs._players[i].Civilization.Id > 7) identity |= (ushort)(0x01 << i);
                 }
                 bw.Write(identity);
             }
         }
 
-        private Game _instance;
+        private readonly string _sveFile;
+        private readonly string _mapFile;
     }
+
 }

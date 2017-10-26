@@ -93,7 +93,7 @@ namespace CivOne.Units
 				// Step 2: If the attacking unit is a Barbarian unit and the defending unit is player-controlled, multiply the attack strength by the Difficulty Modifier, then divide it by 4.
 				if (Human == defendUnit.Owner)
 				{
-					attackStrength *= (Game.Difficulty + 1);
+					attackStrength *= (Game.GameState._difficulty + 1);
 					attackStrength /= 4;
 				}
 
@@ -105,7 +105,7 @@ namespace CivOne.Units
 
 				// Step 4: If the attacking unit is a Barbarian unit and the defending unit is inside a city and the defending civilization does not control any other cities, set the attack strength to zero.
 				// This actually makes the defending unit invincible in this special case. Might well save you from being obliterated by that unlucky hut at 3600BC.
-				if (defendUnit.Tile.City != null && Game.GetPlayer(defendUnit.Owner).Cities.Length == 1)
+				if (defendUnit.Tile.City != null && Game.GameState.GetPlayer(defendUnit.Owner).Cities.Length == 1)
 				{
 					attackStrength = 0;
 				}
@@ -133,7 +133,7 @@ namespace CivOne.Units
 			// Step 8: If the attacking unit is a Barbarian unit and the defending unit is player-controlled, check the difficulty level. On Chieftain and Warlord levels, divide the attack strength by 2.
 			if (Owner == 0 && Human == defendUnit.Owner)
 			{
-				if (Game.Difficulty < 2)
+				if (Game.GameState._difficulty < 2)
 				{
 					attackStrength /= 2;
 				}
@@ -141,7 +141,7 @@ namespace CivOne.Units
 
 			// Step 9: If the attacking unit is player-controlled, check the difficulty level. On Chieftain level, multiply the attack strength by 2.
 			// So on Chieftain difficulty, it is often better to attack than be attacked, even with a defensive unit.
-			if (Human == Owner && Game.Difficulty == 0)
+			if (Human == Owner && Game.GameState._difficulty == 0)
 			{
 				attackStrength *= 2;
 			}
@@ -259,7 +259,7 @@ namespace CivOne.Units
 					Show captureCity = Show.CaptureCity(capturedCity);
 					captureCity.Done += (s1, a1) =>
 					{
-						Player previousOwner = Game.GetPlayer(capturedCity.Owner);
+						Player previousOwner = Game.GameState.GetPlayer(capturedCity.Owner);
 
 						if (capturedCity.HasBuilding<Palace>())
 							capturedCity.RemoveBuilding<Palace>();
@@ -268,11 +268,22 @@ namespace CivOne.Units
 						while (capturedCity.Units.Length > 0)
 							Game.DisbandUnit(capturedCity.Units[0]);
 						capturedCity.Owner = Owner;
-						
-						if (previousOwner.IsDestroyed)
-							GameTask.Enqueue(Message.Advisor(Advisor.Defense, false, previousOwner.Civilization.Name, "civilization", "destroyed", $"by {Game.GetPlayer(Owner).Civilization.NamePlural}!"));
-						
-						if (capturedCity.Size == 0) return;
+
+					    if (previousOwner.IsDestroyed)
+					    {
+					        GameTask.Enqueue(
+					            Message.Advisor(
+					                Advisor.Defense
+					                , false
+					                , previousOwner.Civilization.Name
+					                , "civilization"
+					                , "destroyed"
+					                , $"by {Game.GameState.GetPlayer(Owner).Civilization.NamePlural}!"
+					            )
+					        );
+					    }
+
+					    if (capturedCity.Size == 0) return;
 						GameTask.Insert(Show.CityManager(capturedCity));
 					};
 					GameTask.Insert(captureCity);
@@ -464,7 +475,7 @@ namespace CivOne.Units
 					text = Resources.GetCivilopediaText("BLURB2/" + Name.ToUpper() + "2");
 					break;
 				default:
-					Log("Invalid page number: {0}", pageNumber);
+					Logger.Log("Invalid page number: {0}", pageNumber);
 					break;
 			}
 			
@@ -475,7 +486,7 @@ namespace CivOne.Units
 			int yy = 76;
 			foreach (string line in text)
 			{
-				Log(line);
+			    Logger.Log(line);
 				output.DrawText(line, 6, 1, 12, yy);
 				yy += 9;
 			}
@@ -568,7 +579,7 @@ namespace CivOne.Units
 			}
 		}
 
-		public Player Player => Game.GetPlayer(Owner);
+		public Player Player => Game.GameState.GetPlayer(Owner);
 		public byte Status
 		{
 			get
@@ -661,7 +672,7 @@ namespace CivOne.Units
 		protected void Explore(int range, bool sea = false)
 		{
 			if (Game == null) return;
-			Player player = Game.GetPlayer(Owner);
+			Player player = Game.GameState.GetPlayer(Owner);
 			if (player == null) return;
 			player.Explore(X, Y, range, sea);
 		}

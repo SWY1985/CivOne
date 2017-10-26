@@ -36,7 +36,7 @@ namespace CivOne.Buildings
 					text = Resources.GetCivilopediaText("BLURB1/" + Name.ToUpper() + "2");
 					break;
 				default:
-					Log("Invalid page number: {0}", pageNumber);
+					Logger.Log("Invalid page number: {0}", pageNumber);
 					break;
 			}
 			
@@ -45,7 +45,7 @@ namespace CivOne.Buildings
 			int yy = 76;
 			foreach (string line in text)
 			{
-				Log(line);
+				Logger.Log(line);
 				output.DrawText(line, 6, 1, 12, yy);
 				yy += 9;
 			}

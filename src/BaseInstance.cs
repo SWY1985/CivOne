@@ -16,12 +16,10 @@ namespace CivOne
 	{
 		protected static Game Game => Game.Instance;
 		protected static Map Map => Map.Instance;
-		protected static Player Human => Game.Instance.HumanPlayer;
+		protected static Player Human => Game.Instance.GameState.HumanPlayer;
 		protected static Resources Resources => Resources.Instance;
 		protected static IRuntime Runtime => RuntimeHandler.Runtime;
 		protected internal static Settings Settings => Settings.Instance;
-
-		protected static void Log(string text, params object[] parameters) => Runtime.Log(text, parameters);
 
 		protected bool GFX256 => (Settings.GraphicsMode == GraphicsMode.Graphics256);
 	}

@@ -195,7 +195,7 @@ namespace CivOne.Tasks
 				EndTask();
 				return;
 			}
-			if (Game.GetPlayer(_unit.Owner).HasAdvance<Construction>())
+			if (Game.GameState.GetPlayer(_unit.Owner).HasAdvance<Construction>())
 			{
 				(_unit as Settlers).BuildFortress();
 			}

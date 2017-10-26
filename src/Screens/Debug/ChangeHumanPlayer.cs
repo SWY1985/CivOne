@@ -31,9 +31,9 @@ namespace CivOne.Screens.Debug
 		{
 			_selectedPlayer = args.Value;
 
-			if (_selectedPlayer != Game.HumanPlayer)
+			if (_selectedPlayer != Game.GameState.HumanPlayer)
 			{
-				Game.HumanPlayer = _selectedPlayer;
+				Game.GameState.HumanPlayer = _selectedPlayer;
 				Game.EndTurn();
 			}
 
@@ -99,7 +99,7 @@ namespace CivOne.Screens.Debug
 
 			_civSelect.Cancel += ChangePlayer_Cancel;
 			_civSelect.MissClick += ChangePlayer_Cancel;
-			_civSelect.ActiveItem = Game.PlayerNumber(Human);
+			_civSelect.ActiveItem = Game.GameState.PlayerNumber(Human);
 		}
 	}
 }

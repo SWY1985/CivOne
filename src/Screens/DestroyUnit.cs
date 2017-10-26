@@ -168,7 +168,7 @@ namespace CivOne.Screens
 
 					if (t.Tile.City != null) continue;
 					
-					if (_unit != Game.ActiveUnit && t.Tile.Units.Any(x => x == _unit))
+					if (_unit != Game.GameState.ActiveUnit && t.Tile.Units.Any(x => x == _unit))
 					{
 						// Unit is attacked, it is not in a city or fortress, destroy them all
 						if (t.Tile.City == null && !t.Tile.Fortress) continue;

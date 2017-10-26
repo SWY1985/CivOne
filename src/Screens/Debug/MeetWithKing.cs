@@ -32,7 +32,7 @@ namespace CivOne.Screens.Debug
 		{
 			_selectedPlayer = _players[_civSelect.ActiveItem];
 
-			if (_selectedPlayer != Game.HumanPlayer)
+			if (_selectedPlayer != Game.GameState.HumanPlayer)
 			{
 				Common.AddScreen(new King(_selectedPlayer));
 			}
@@ -102,7 +102,7 @@ namespace CivOne.Screens.Debug
 
 			_civSelect.Cancel += MeetKing_Cancel;
 			_civSelect.MissClick += MeetKing_Cancel;
-			_civSelect.ActiveItem = Game.PlayerNumber(Human);
+			_civSelect.ActiveItem = Game.GameState.PlayerNumber(Human);
 		}
 	}
 }

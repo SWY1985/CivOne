@@ -13,7 +13,7 @@ using System.IO;
 
 namespace CivOne.GameSave
 {
-    public class SaveGameFile : BaseInstance
+    public class SaveGameFile
     {
         public bool ValidFile { get; private set; }
         public string SveFile { get; private set; }
@@ -66,7 +66,7 @@ namespace CivOne.GameSave
             }
             catch (Exception ex)
             {
-                Log($"Could not open .SVE file: {ex.InnerException}");
+                Logger.Log($"Could not open .SVE file: {ex.InnerException}");
                 Name = "(COULD NOT READ SAVE FILE HEADER)";
             }
         }

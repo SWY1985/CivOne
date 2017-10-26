@@ -32,7 +32,7 @@ namespace CivOne.Tasks
 		{
 			if (Human != _city.Owner)
 			{
-				Log($"{_city.Name} builds {(_improvement as ICivilopedia).Name}.");
+				Logger.Log($"{_city.Name} builds {(_improvement as ICivilopedia).Name}.");
 				EndTask();
 				return;
 			}

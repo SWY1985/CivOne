@@ -112,7 +112,7 @@ namespace CivOne.Screens.Debug
 
 		private void CivSelect_Accept(object sender, EventArgs args)
 		{
-			_selectedPlayer = Game.GetPlayer((byte)_civSelect.ActiveItem);
+			_selectedPlayer = Game.GameState.GetPlayer((byte)_civSelect.ActiveItem);
 			Palette = Common.Screens.Last().OriginalColours;
 			CloseMenus();
 		}
@@ -195,10 +195,10 @@ namespace CivOne.Screens.Debug
 
 			if (ValidTile)
 			{
-				IUnit unit = Game.CreateUnit(_selectedUnit.Type, UnitX, UnitY, Game.PlayerNumber(_selectedPlayer), false);
+				IUnit unit = Game.CreateUnit(_selectedUnit.Type, UnitX, UnitY, Game.GameState.PlayerNumber(_selectedPlayer), false);
 				if (unit.Class == UnitClass.Land && Map[UnitX, UnitY].Type == Terrain.Ocean) unit.Sentry = true;
 
-				if (Game.PlayerNumber(_selectedPlayer) < Game.PlayerNumber(Game.CurrentPlayer))
+				if (Game.GameState.PlayerNumber(_selectedPlayer) < Game.GameState.PlayerNumber(Game.GameState.CurrentPlayer))
 				{
 					unit.MovesLeft = 0;
 				}
@@ -265,7 +265,7 @@ namespace CivOne.Screens.Debug
 				SidebarHint();
 				_cursor = ValidTile ? MouseCursor.Goto : MouseCursor.Pointer;
 				if (!ValidTile) return _hasUpdate;
-				this.AddLayer(_selectedUnit.ToBitmap(Game.PlayerNumber(_selectedPlayer), false), xx, yy);
+				this.AddLayer(_selectedUnit.ToBitmap(Game.GameState.PlayerNumber(_selectedPlayer), false), xx, yy);
 				
 				return _hasUpdate;
 			}
@@ -312,7 +312,7 @@ namespace CivOne.Screens.Debug
 
 			_civSelect.Cancel += SpawnUnit_Cancel;
 			_civSelect.MissClick += SpawnUnit_Cancel;
-			_civSelect.ActiveItem = Game.PlayerNumber(Human);
+			_civSelect.ActiveItem = Game.GameState.PlayerNumber(Human);
 		}
 	}
 }

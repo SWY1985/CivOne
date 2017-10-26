@@ -83,7 +83,7 @@ namespace CivOne.Screens.Reports
 			_wonders = Game.BuiltWonders.OrderBy(w => w.Id).Select(w => new CityWonders()
 			{
 				Wonder = w,
-				City = Game.GetCities().First(c => c.HasWonder(w))
+				City = Game.GameState._cities.First(c => c.HasWonder(w))
 			}).ToArray();
 			
 			this.Clear(3)

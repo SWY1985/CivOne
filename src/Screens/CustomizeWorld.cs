@@ -57,28 +57,28 @@ namespace CivOne.Screens
 		
 		private void SetLandMass(object sender, MenuItemEventArgs<int> args)
 		{
-			Log("Customize World - Land Mass: {0}", _landMass);
+		    Logger.Log("Customize World - Land Mass: {0}", _landMass);
 			_landMass = args.Value;
 			_hasUpdate = true;
 		}
 		
 		private void SetTemperature(object sender, MenuItemEventArgs<int> args)
 		{
-			Log("Customize World - Temperature: {0}", _temperature);
+		    Logger.Log("Customize World - Temperature: {0}", _temperature);
 			_temperature = args.Value;
 			_hasUpdate = true;
 		}
 		
 		private void SetClimate(object sender, MenuItemEventArgs<int> args)
 		{
-			Log("Customize World - Climate: {0}", _climate);
+		    Logger.Log("Customize World - Climate: {0}", _climate);
 			_climate = args.Value;
 			_hasUpdate = true;
 		}
 		
 		private void SetAge(object sender, MenuItemEventArgs<int> args)
 		{
-			Log("Customize World - Age: {0}", _age);
+		    Logger.Log("Customize World - Age: {0}", _age);
 			_age = args.Value;
 			_hasUpdate = true;
 		}
