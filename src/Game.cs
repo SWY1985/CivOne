@@ -32,17 +32,18 @@ namespace CivOne
 		{
 			get
 			{
-				foreach (Player player in _gs._players)
+				foreach (Player player in _gs.Players)
 					yield return player;
 			}
 		}
 
 		public void EndTurn()
 		{
-			if (++_gs._currentPlayer >= _gs._players.Length)
+			if (++_gs.CurrentPlayerId >= _gs.Players.Length)
 			{
-				_gs._currentPlayer = 0;
+				_gs.CurrentPlayerId = 0;
 				_gs._gameTurn++;
+
 				if (_gs._gameTurn % 50 == 0 && Settings.AutoSave)
 				{
 					GameTask.Enqueue(Show.AutoSave);
@@ -54,7 +55,7 @@ namespace CivOne
 				GameTask.Enqueue(Message.Advisor(Advisor.Defense, false, _gs.CurrentPlayer.Civilization.Name, "civilization", "destroyed", $"by {_gs.GetPlayer(0).Civilization.NamePlural}!"));
 			}
 
-			if (!_gs._players.Any(x => _gs.PlayerNumber(x) != 0 && x != Human && !x.IsDestroyed))
+			if (!_gs.Players.Any(x => _gs.PlayerNumber(x) != 0 && x != Human && !x.IsDestroyed))
 			{
 				GameTask conquest;
 				GameTask.Enqueue(Message.Newspaper(null, "Your civilization", "has conquered", "the entire planet!"));
@@ -62,17 +63,17 @@ namespace CivOne
 				conquest.Done += (s, a) => Runtime.Quit();
 			}
 
-			foreach (IUnit unit in _gs._units.Where(u => u.Owner == _gs._currentPlayer))
+			foreach (IUnit unit in _gs.Units.Where(u => u.Owner == _gs.CurrentPlayerId))
 			{
 				GameTask.Enqueue(Turn.New(unit));
 			}
-			foreach (City city in _gs._cities.Where(c => c.Owner == _gs._currentPlayer).ToArray())
+
+			foreach (City city in _gs.Cities.Where(c => c.Owner == _gs.CurrentPlayerId).ToArray())
 			{
 				GameTask.Enqueue(Turn.New(city));
 			}
-			GameTask.Enqueue(Turn.New(_gs.CurrentPlayer));
 
-			if (_gs.CurrentPlayer == _gs.HumanPlayer) return;
+			GameTask.Enqueue(Turn.New(_gs.CurrentPlayer));
 		}
 
         public void Update()
@@ -119,26 +120,26 @@ namespace CivOne
 		{
 			// TODO: This should be a lot easier... let me think about it...
 
-			int indexFrom = Array.IndexOf(_gs._cityNames, civilization.CityNames[0]); //_cityNames.IndexOf(civilization.CityNames[0]);
+			int indexFrom = Array.IndexOf(_gs.CityNames, civilization.CityNames[0]); //CityNames.IndexOf(civilization.CityNames[0]);
 			int indexTo = civilization.CityNames.Length + indexFrom;
 			for (int i = indexFrom; i < indexTo; i++)
 			{
-				if (_gs._cityNameUsed[i]) continue;
+				if (_gs.CityNameUsed[i]) continue;
 				return i;
 			}
 			
-			civilization = _gs._players[0].Civilization;
-			indexFrom = Array.IndexOf(_gs._cityNames, civilization.CityNames[0]);
+			civilization = _gs.Players[0].Civilization;
+			indexFrom = Array.IndexOf(_gs.CityNames, civilization.CityNames[0]);
 			indexTo = civilization.CityNames.Length + indexFrom;
 			for (int i = indexFrom; i < indexTo; i++)
 			{
-				if (_gs._cityNameUsed[i]) continue;
+				if (_gs.CityNameUsed[i]) continue;
 				return i;
 			}
 
-			for (int i = 0; i < _gs._cityNames.Length; i++)
+			for (int i = 0; i < _gs.CityNames.Length; i++)
 			{
-				if (_gs._cityNameUsed[i]) continue;
+				if (_gs.CityNameUsed[i]) continue;
 				return i;
 			}
 
@@ -149,13 +150,13 @@ namespace CivOne
 		{
 			ICivilization civilization = player.Civilization;
 			int index = GetCityIndex(civilization);
-			_gs._cityNameUsed[index] = true;
-			return _gs._cityNames[index];
+			_gs.CityNameUsed[index] = true;
+			return _gs.CityNames[index];
 		}
 
 		internal City AddCity(Player player, string name, int x, int y)
 		{
-			if (_gs._cities.Any(c => c.X == x && c.Y == y))
+			if (_gs.Cities.Any(c => c.X == x && c.Y == y))
 				return null;
 
 			City city = new City(_gs.PlayerNumber(player))
@@ -165,7 +166,7 @@ namespace CivOne
 				Name = name,
 				Size = 1
 			};
-			if (!_gs._cities.Any(c => c.Size > 0 && c.Owner == city.Owner))
+			if (!_gs.Cities.Any(c => c.Size > 0 && c.Owner == city.Owner))
 			{
 				Palace palace = new Palace();
 				palace.SetFree();
@@ -179,15 +180,15 @@ namespace CivOne
 			{
 				Map[x, y].Road = true;
 			}
-			_gs._cities.Add(city);
+			_gs.Cities.Add(city);
 			Game.UpdateResources(city.Tile);
 			return city;
 		}
 
 		public void DestroyCity(City city)
 		{
-			foreach (IUnit unit in _gs._units.Where(u => u.Home == city).ToArray())
-				_gs._units.Remove(unit);
+			foreach (IUnit unit in _gs.Units.Where(u => u.Home == city).ToArray())
+				_gs.Units.Remove(unit);
 			city.X = 255;
 			city.Y = 255;
 			city.Owner = 0;
@@ -205,7 +206,7 @@ namespace CivOne
 			if (y >= Map.HEIGHT)
                 return null;
 
-			return _gs._cities.FirstOrDefault(c => c.X == x && c.Y == y && c.Size > 0);
+			return _gs.Cities.FirstOrDefault(c => c.X == x && c.Y == y && c.Size > 0);
 		}
 
 		public IUnit CreateUnit(UnitType type, int x, int y, byte owner, bool endTurn = false)
@@ -228,7 +229,7 @@ namespace CivOne
             if (endTurn)
 				unit.SkipTurn();
 
-            _instance._gs._units.Add(unit);
+            _instance._gs.Units.Add(unit);
 
             return unit;
 		}
@@ -252,7 +253,7 @@ namespace CivOne
 		{
 			get
 			{
-				return _gs._cities.SelectMany(c => c.Wonders).ToArray();
+				return _gs.Cities.SelectMany(c => c.Wonders).ToArray();
 			}
 		}
 
@@ -273,7 +274,7 @@ namespace CivOne
 
 		public bool WonderObsolete(IWonder wonder)
 		{
-			return (wonder.ObsoleteTech != null && _gs._players.Any(x => x.HasAdvance(wonder.ObsoleteTech)));
+			return (wonder.ObsoleteTech != null && _gs.Players.Any(x => x.HasAdvance(wonder.ObsoleteTech)));
 		}
 		
 		public void DisbandUnit(IUnit unit)
@@ -281,7 +282,7 @@ namespace CivOne
 			IUnit activeUnit = _gs.ActiveUnit;
 
 			if (unit == null) return;
-			if (!_gs._units.Contains(unit)) return;
+			if (!_gs.Units.Contains(unit)) return;
 			if (unit.Tile is Ocean && unit is IBoardable)
 			{
 				int totalCargo = unit.Tile.Units.Where(u => u is IBoardable).Sum(u => (u as IBoardable).Cargo) - (unit as IBoardable).Cargo;
@@ -290,35 +291,30 @@ namespace CivOne
 					IUnit subUnit = unit.Tile.Units.First(u => u.Class != UnitClass.Water);
 					subUnit.X = 255;
 					subUnit.Y = 255;
-					_gs._units.Remove(subUnit);
+					_gs.Units.Remove(subUnit);
 				} 
 			}
 			unit.X = 255;
 			unit.Y = 255;
-			_gs._units.Remove(unit);
+			_gs.Units.Remove(unit);
 
-			if (_gs._units.Contains(activeUnit))
+			if (_gs.Units.Contains(activeUnit))
 			{
-				_gs._activeUnit = _gs._units.IndexOf(activeUnit);
+				_gs.ActiveUnitId = _gs.Units.IndexOf(activeUnit);
 			}
 		}
 
 		public void UnitWait()
 		{
-			_gs._activeUnit++;
+			_gs.ActiveUnitId++;
 		}
 
 		public IUnit MovingUnit
 		{
 			get
 			{
-				return _gs._units.FirstOrDefault(u => u.Moving);
+				return _gs.Units.FirstOrDefault(u => u.Moving);
 			}
-		}
-
-        public static void CreateGame(int difficulty, int competition, ICivilization tribe, string leaderName = null, string tribeName = null, string tribeNamePlural = null)
-		{
-            Game.CreateGame(new GameState(difficulty, competition, tribe, leaderName, tribeName, tribeNamePlural));
 		}
 
 	    public static void CreateGame(GameState gameState)
@@ -331,7 +327,7 @@ namespace CivOne
 
 	        _instance = new Game(gameState);
 
-            foreach (IUnit unit in _instance._gs._units)
+            foreach (IUnit unit in _instance._gs.Units)
 	        {
 	            unit.Explore();
 	        }
@@ -359,7 +355,7 @@ namespace CivOne
 			}
 		}
 
-	    public Game(GameState gameState)
+	    private Game(GameState gameState)
 	    {
 	        _gs = gameState;
 	    }        

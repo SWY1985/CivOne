@@ -88,7 +88,7 @@ namespace CivOne.Screens.Reports
 			Palette = Common.DefaultPalette;
 
 			// I'm not sure about the order of top 5 cities, but this is pretty close
-			_cities = Game.GameState._cities
+			_cities = Game.GameState.Cities
                             .Where(c => c.Size > 0)
 							.OrderByDescending(c => c.Wonders.Length)
 							.ThenByDescending(c => c.Size)

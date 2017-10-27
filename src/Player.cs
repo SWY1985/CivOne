@@ -252,7 +252,7 @@ namespace CivOne
 		{
 			get
 			{
-				return Game.Instance.GameState._cities.Where(c => this == c.Owner && c.Size > 0).ToArray();
+				return Game.Instance.GameState.Cities.Where(c => this == c.Owner && c.Size > 0).ToArray();
 			}
 		}
 
@@ -287,7 +287,7 @@ namespace CivOne
 		{
 			get
 			{
-				short cost = (short)((Game.Instance.GameState._difficulty + 3) * 2 * (_advances.Count() + 1) * (Common.TurnToYear(Game.Instance.GameState._gameTurn) > 0 ? 2 : 1));
+				short cost = (short)((Game.Instance.GameState.Difficulty + 3) * 2 * (_advances.Count() + 1) * (Common.TurnToYear(Game.Instance.GameState._gameTurn) > 0 ? 2 : 1));
 				if (cost < 12)
 					return 12;
 				return cost;
@@ -517,7 +517,7 @@ namespace CivOne
 
 		public void NewTurn()
 		{
-			if (Game.GameState._cities.All(x => this != x.Owner) && Game.Instance.GameState.GetUnits().All(x => this != x.Owner))
+			if (Game.GameState.Cities.All(x => this != x.Owner) && Game.Instance.GameState.GetUnits().All(x => this != x.Owner))
 			{
 				GameTask.Enqueue(Turn.GameOver(this));
 			}

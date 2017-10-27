@@ -102,8 +102,8 @@ namespace CivOne.Units
 			get
 			{
 				int output = 0;
-				if (Game.Instance.GameState._cities.Any())
-					output = Game.Instance.GameState._cities.Select(c => Common.DistanceToTile(_x, _y, c.X, c.Y)).Min();
+				if (Game.Instance.GameState.Cities.Any())
+					output = Game.Instance.GameState.Cities.Select(c => Common.DistanceToTile(_x, _y, c.X, c.Y)).Min();
 				return output;
 			}
 		}
@@ -200,7 +200,7 @@ namespace CivOne.Units
 					TribalHut(HutResult.MetalDeposits);
 					break;
 				case 3:
-					if (NearestCity < 4 || Game.Instance.GameState._cities.All(c => Player != c.Owner))
+					if (NearestCity < 4 || Game.Instance.GameState.Cities.All(c => Player != c.Owner))
 					{
 						TribalHut(HutResult.FriendlyTribe);
 						break;

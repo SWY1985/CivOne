@@ -79,13 +79,13 @@ namespace CivOne
 				int nearestCity = 255;
 				int nearestOwnCity = 255;
 				
-				if (Game.GameState._cities.Any())
-                    nearestCity = Game.GameState._cities.Min(x => Common.DistanceToTile(x.X, x.Y, tile.X, tile.Y));
+				if (Game.GameState.Cities.Any())
+                    nearestCity = Game.GameState.Cities.Min(x => Common.DistanceToTile(x.X, x.Y, tile.X, tile.Y));
 
-			    if (Game.GameState._cities.Any(x => x.Owner == unit.Owner))
+			    if (Game.GameState.Cities.Any(x => x.Owner == unit.Owner))
 			    {
 			        nearestOwnCity = 
-                        Game.GameState._cities
+                        Game.GameState.Cities
 			            .Where(x => x.Owner == unit.Owner)
                         .Min(x => Common.DistanceToTile(x.X, x.Y, tile.X, tile.Y));
 			    }

@@ -372,7 +372,7 @@ namespace CivOne
 
 		internal bool InvalidTile(ITile tile)
 		{
-			return (tile.City != null || Game.GameState._cities.Any(c => c.ResourceTiles.Any(t => t.X == tile.X && t.Y == tile.Y)) || tile.Units.Any(u => u.Owner != Owner));
+			return (tile.City != null || Game.GameState.Cities.Any(c => c.ResourceTiles.Any(t => t.X == tile.X && t.Y == tile.Y)) || tile.Units.Any(u => u.Owner != Owner));
 		}
 
 		private void UpdateSpecialists()
@@ -606,7 +606,7 @@ namespace CivOne
 				if (Player.HasWonder<HangingGardens>() && !Game.WonderObsolete<HangingGardens>()) happyCount++;
 				if (Player.HasWonder<CureForCancer>()) happyCount++;
 
-				int unhappyCount = Size - (6 - Game.GameState._difficulty) - happyCount;
+				int unhappyCount = Size - (6 - Game.GameState.Difficulty) - happyCount;
 				if (HasWonder<ShakespearesTheatre>() && !Game.WonderObsolete<ShakespearesTheatre>())
 				{
 					unhappyCount = 0;
@@ -823,7 +823,7 @@ namespace CivOne
 
 			if (Shields >= (int)CurrentProduction.Price * 10)
 			{
-				if (CurrentProduction is Settlers && Size == 1 && Game.GameState._difficulty == 0)
+				if (CurrentProduction is Settlers && Size == 1 && Game.GameState.Difficulty == 0)
 				{
 					// On Chieftain level, it's not possible to create a Settlers in a city of size 1
 				}
@@ -863,7 +863,7 @@ namespace CivOne
 					}
 					else if (CurrentProduction is Palace)
 					{
-						foreach (City city in Game.Instance.GameState._cities.Where(c => c.Owner == Owner))
+						foreach (City city in Game.Instance.GameState.Cities.Where(c => c.Owner == Owner))
 						{
 							// Remove palace from all cites.
 							city.RemoveBuilding<Palace>();

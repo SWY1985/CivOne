@@ -20,7 +20,7 @@ namespace CivOne.Screens.Reports
 		{
 			byte player = Game.GameState.PlayerNumber(Human);
 			IUnit[] units = Game.GameState.GetUnits().Where(u => u.Owner == player && u.Home != null).ToArray();
-			IUnit[] production = Game.GameState._cities.Where(c => c.Owner == player).Where(c => (c.CurrentProduction is IUnit)).Select(c => (c.CurrentProduction as IUnit)).ToArray();
+			IUnit[] production = Game.GameState.Cities.Where(c => c.Owner == player).Where(c => (c.CurrentProduction is IUnit)).Select(c => (c.CurrentProduction as IUnit)).ToArray();
 
 			int i = 0;
 			foreach (IUnit unit in Reflect.GetUnits())

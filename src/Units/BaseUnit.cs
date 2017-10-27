@@ -93,7 +93,7 @@ namespace CivOne.Units
 				// Step 2: If the attacking unit is a Barbarian unit and the defending unit is player-controlled, multiply the attack strength by the Difficulty Modifier, then divide it by 4.
 				if (Human == defendUnit.Owner)
 				{
-					attackStrength *= (Game.GameState._difficulty + 1);
+					attackStrength *= (Game.GameState.Difficulty + 1);
 					attackStrength /= 4;
 				}
 
@@ -133,7 +133,7 @@ namespace CivOne.Units
 			// Step 8: If the attacking unit is a Barbarian unit and the defending unit is player-controlled, check the difficulty level. On Chieftain and Warlord levels, divide the attack strength by 2.
 			if (Owner == 0 && Human == defendUnit.Owner)
 			{
-				if (Game.GameState._difficulty < 2)
+				if (Game.GameState.Difficulty < 2)
 				{
 					attackStrength /= 2;
 				}
@@ -141,7 +141,7 @@ namespace CivOne.Units
 
 			// Step 9: If the attacking unit is player-controlled, check the difficulty level. On Chieftain level, multiply the attack strength by 2.
 			// So on Chieftain difficulty, it is often better to attack than be attacked, even with a defensive unit.
-			if (Human == Owner && Game.GameState._difficulty == 0)
+			if (Human == Owner && Game.GameState.Difficulty == 0)
 			{
 				attackStrength *= 2;
 			}

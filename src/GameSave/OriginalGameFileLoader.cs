@@ -153,7 +153,7 @@ namespace CivOne.GameSave
                     int identity = ((civIdentity >> i) & 0x1);
                     ICivilization[] civs = Common.Civilizations.Where(c => c.PreferredPlayerNumber == i).ToArray();
                     ICivilization civ = civs[identity];
-                    Player player = (gs._players[i] = new Player(civ, leaderNames[i], tribeNames[i], tribeNamesPlural[i]));
+                    Player player = (gs.Players[i] = new Player(civ, leaderNames[i], tribeNames[i], tribeNamesPlural[i]));
                     player.Gold = (short)Common.BinaryReadUShort(br, 312 + (i * 2));
                     player.Science = (short)Common.BinaryReadUShort(br, 328 + (i * 2));
                     player.Government = Reflect.GetGovernments().FirstOrDefault(x => x.Id == Common.BinaryReadUShort(br, 1336 + (i * 2)));
@@ -196,49 +196,49 @@ namespace CivOne.GameSave
                         }
                     }
 
-                    Logger.Log($"- Player {i} is {player.LeaderName} of the {gs._players[i].TribeNamePlural}" + ((i == humanPlayer) ? " (human)" : ""));
+                    Logger.Log($"- Player {i} is {player.LeaderName} of the {gs.Players[i].TribeNamePlural}" + ((i == humanPlayer) ? " (human)" : ""));
                 }
 
                 gs._gameTurn = Common.BinaryReadUShort(br, 0);
-                gs.HumanPlayer = gs._players[humanPlayer];
+                gs.HumanPlayer = gs.Players[humanPlayer];
                 gs.HumanPlayer.CurrentResearch = Common.Advances.FirstOrDefault(a => a.Id == Common.BinaryReadUShort(br, 14));
 
-                gs._anthologyTurn = anthologyTurn;
+                gs.AnthologyTurn = anthologyTurn;
 
                 for (int i = 0; i < 8; i++)
                 {
-                    if (gs._players.GetUpperBound(0) <= i)
+                    if (gs.Players.GetUpperBound(0) <= i)
                         break;
 
-                    gs._players[i].StartX = (short)Common.BinaryReadUShort(br, 1896 + (i * 2));
+                    gs.Players[i].StartX = (short)Common.BinaryReadUShort(br, 1896 + (i * 2));
                 }
 
                 foreach (City city in cities)
                 {
-                    gs._cities.Add(city);
+                    gs.Cities.Add(city);
                 }
                 foreach (IUnit unit in units)
                 {
-                    gs._units.Add(unit);
+                    gs.Units.Add(unit);
                 }
 
-                for (int i = 0; i < gs._cityNames.Length; i++)
+                for (int i = 0; i < gs.CityNames.Length; i++)
                 {
-                    if (!cities.Any(x => x.Name == gs._cityNames[i]))
+                    if (!cities.Any(x => x.Name == gs.CityNames[i]))
                         continue;
 
-                    gs._cityNameUsed[i] = true;
+                    gs.CityNameUsed[i] = true;
                 }
 
-                gs._currentPlayer = humanPlayer;
-                for (int i = 0; i < gs._units.Count(); i++)
+                gs.CurrentPlayerId = humanPlayer;
+                for (int i = 0; i < gs.Units.Count(); i++)
                 {
-                    if (gs._units[i].Owner != humanPlayer)
+                    if (gs.Units[i].Owner != humanPlayer)
                         continue;
 
-                    gs._activeUnit = i;
+                    gs.ActiveUnitId = i;
 
-                    if (gs._units[i].MovesLeft > 0)
+                    if (gs.Units[i].MovesLeft > 0)
                         break;
                 }
             }

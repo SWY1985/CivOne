@@ -19,7 +19,7 @@ namespace CivOne.Screens.Debug
 {
 	internal class SetCitySize : BaseScreen
 	{
-		private readonly City[] _cities = Game.GameState._cities.OrderBy(x => x.Name).ToArray();
+		private readonly City[] _cities = Game.GameState.Cities.OrderBy(x => x.Name).ToArray();
 
 		private Menu _citySelect;
 

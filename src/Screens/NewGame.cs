@@ -189,7 +189,7 @@ namespace CivOne.Screens
 				if (_showIntroText) return false;
 				
 				ICivilization civ = _tribesAvailable[_tribe];
-				Game.CreateGame(_difficulty, _competition, civ, _leaderName, _tribeName, _tribeNamePlural);
+				Game.CreateGame(new GameState(_difficulty, _competition, civ, _leaderName, _tribeName, _tribeNamePlural));
 				
 				this.Clear(15);
 				DrawBorder(Common.Random.Next(2));
@@ -239,7 +239,7 @@ namespace CivOne.Screens
 				IUnit startUnit = Game.GameState.GetUnits().First(x => Game.Human == x.Owner);
 				gamePlay.CenterOnPoint(startUnit.X, startUnit.Y);
 				
-				if (Game.GameState._difficulty == 0)
+				if (Game.GameState.Difficulty == 0)
 				{
 					GameTask.Enqueue(Show.InterfaceHelp);
 					GameTask.Enqueue(Message.Help("--- Civilization Note ---", TextFile.Instance.GetGameText("HELP/FIRSTMOVE")));

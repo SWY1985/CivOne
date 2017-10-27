@@ -123,7 +123,7 @@ namespace CivOne.Screens.Reports
 
 		public TradeReport() : base("TRADE REPORT", 2)
 		{
-			_cities = Game.GameState._cities.Where(c => Human == c.Owner && c.Size > 0).ToArray();
+			_cities = Game.GameState.Cities.Where(c => Human == c.Owner && c.Size > 0).ToArray();
 		}
 	}
 }

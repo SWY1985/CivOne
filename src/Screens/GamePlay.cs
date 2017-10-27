@@ -364,7 +364,7 @@ namespace CivOne.Screens
 	                return (unit.X, unit.Y);
 	        }
 
-	        foreach (var city in Game.GameState._cities)
+	        foreach (var city in Game.GameState.Cities)
 	        {
 	            if (city.Owner == Game.GameState.PlayerNumber(Game.GameState.HumanPlayer))
 	                return (city.X, city.Y);

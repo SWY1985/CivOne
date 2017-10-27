@@ -13,27 +13,27 @@ namespace CivOne
     public class GameState
     {
         public Settings Settings { get; set; }
-        public readonly string[] _cityNames;
-        public readonly bool[] _cityNameUsed;
-        public readonly int _difficulty;
-        public readonly int _competition;
-        public readonly Player[] _players;
-        public readonly List<City> _cities;
-        public readonly List<IUnit> _units;
-        public int _currentPlayer = 0;
-        public int _activeUnit;
-        public ushort _anthologyTurn = 0;
-        public Dictionary<byte, byte> _advanceOrigin;
+        public readonly string[] CityNames;
+        public readonly bool[] CityNameUsed;
+        public readonly int Difficulty;
+        public readonly int Competition;
+        public readonly Player[] Players;
+        public readonly List<City> Cities;
+        public readonly List<IUnit> Units;
+        public int CurrentPlayerId = 0;
+        public int ActiveUnitId;
+        public ushort AnthologyTurn;
+        public Dictionary<byte, byte> AdvanceOrigin;
         public Player HumanPlayer { get; set; }
         public Map Map;
 
         public GameState()
         {
-            _cityNames = Common.AllCityNames.ToArray();
-            _cityNameUsed = new bool[Common.AllCityNames.Count()];
-            _advanceOrigin = new Dictionary<byte, byte>();
-            _cities = new List<City>();
-            _units = new List<IUnit>();
+            CityNames = Common.AllCityNames.ToArray();
+            CityNameUsed = new bool[Common.AllCityNames.Count()];
+            AdvanceOrigin = new Dictionary<byte, byte>();
+            Cities = new List<City>();
+            Units = new List<IUnit>();
             Settings = Settings.Instance;
             Map = Map.Instance;
         }
@@ -43,9 +43,9 @@ namespace CivOne
             , int competition
         ) : this()
         {
-            _difficulty = difficulty;
-            _competition = competition;
-            _players = new Player[competition + 1];
+            Difficulty = difficulty;
+            Competition = competition;
+            Players = new Player[competition + 1];
         }
 
         public GameState(
@@ -57,7 +57,7 @@ namespace CivOne
             , string tribeNamePlural
         ) : this(difficulty, competition)
         {
-            Logger.Log("Game instance created (difficulty: {0}, competition: {1})", _difficulty, _competition);
+            Logger.Log("Game instance created (difficulty: {0}, competition: {1})", Difficulty, Competition);
 
             Settings.Animations = true;
             Settings.CivilopediaText = true;
@@ -68,24 +68,24 @@ namespace CivOne
             {
                 if (i == tribe.PreferredPlayerNumber)
                 {
-                    _players[i] = new Player(tribe, leaderName, tribeName, tribeNamePlural);
-                    HumanPlayer = _players[i];
+                    Players[i] = new Player(tribe, leaderName, tribeName, tribeNamePlural);
+                    HumanPlayer = Players[i];
                     if (difficulty == 0)
                     {
                         // Chieftain starts with 50 Gold
                         HumanPlayer.Gold = 50;
                         Settings.InstantAdvice = true;
                     }
-                    Logger.Log($"- Player {i} is {_players[i].LeaderName} of the {_players[i].TribeNamePlural} (human)");
+                    Logger.Log($"- Player {i} is {Players[i].LeaderName} of the {Players[i].TribeNamePlural} (human)");
                     continue;
                 }
 
                 ICivilization[] civs = Common.Civilizations.Where(civ => civ.PreferredPlayerNumber == i).ToArray();
                 int r = Common.Random.Next(civs.Length);
 
-                _players[i] = new Player(civs[r]);
+                Players[i] = new Player(civs[r]);
 
-                Logger.Log($"- Player {i} is {_players[i].LeaderName} of the {_players[i].TribeNamePlural}");
+                Logger.Log($"- Player {i} is {Players[i].LeaderName} of the {Players[i].TribeNamePlural}");
             }
 
             Logger.Log("Adding starting units...");
@@ -109,7 +109,7 @@ namespace CivOne
             // Number of turns to next antholoy needs to be checked
 
 
-            _anthologyTurn = (ushort)Common.Random.Next(1, 128);
+            AnthologyTurn = (ushort)Common.Random.Next(1, 128);
         }
 
         public ushort __gameTurn;
@@ -123,11 +123,11 @@ namespace CivOne
             {
                 __gameTurn = value;
                 Logger.Log($"Turn {__gameTurn}: {GameYear}");
-                if (_anthologyTurn >= __gameTurn)
+                if (AnthologyTurn >= __gameTurn)
                 {
                     //TODO: Show anthology
-                    _anthologyTurn = (ushort)(__gameTurn + 20 + Common.Random.Next(40));
-                    Logger.Log($"New anthology turn is ${_anthologyTurn}");
+                    AnthologyTurn = (ushort)(__gameTurn + 20 + Common.Random.Next(40));
+                    Logger.Log($"New anthology turn is ${AnthologyTurn}");
                 }
             }
         }
@@ -144,7 +144,7 @@ namespace CivOne
         {
             get
             {
-                return _players[_currentPlayer];
+                return Players[CurrentPlayerId];
 
             }
         }
@@ -152,7 +152,7 @@ namespace CivOne
         internal byte PlayerNumber(Player player)
         {
             byte i = 0;
-            foreach (Player p in _players)
+            foreach (Player p in Players)
             {
                 if (p == player)
                     return i;
@@ -163,7 +163,7 @@ namespace CivOne
 
         public void SetAdvanceOrigin(IAdvance advance, Player player)
         {
-            if (_advanceOrigin.ContainsKey(advance.Id))
+            if (AdvanceOrigin.ContainsKey(advance.Id))
                 return;
 
             byte playerNumber = 0;
@@ -171,22 +171,22 @@ namespace CivOne
             if (player != null)
                 playerNumber = PlayerNumber(player);
 
-            _advanceOrigin.Add(advance.Id, playerNumber);
+            AdvanceOrigin.Add(advance.Id, playerNumber);
         }
 
         public bool GetAdvanceOrigin(IAdvance advance, Player player)
         {
-            if (_advanceOrigin.ContainsKey(advance.Id))
-                return (_advanceOrigin[advance.Id] == PlayerNumber(player));
+            if (AdvanceOrigin.ContainsKey(advance.Id))
+                return (AdvanceOrigin[advance.Id] == PlayerNumber(player));
 
             return false;
         }
 
         public Player GetPlayer(byte number)
         {
-            if (_players.Length < number)
+            if (Players.Length < number)
                 return null;
-            return _players[number];
+            return Players[number];
         }
 
         internal IUnit[] GetUnits(int x, int y)
@@ -199,40 +199,40 @@ namespace CivOne
             if (y < 0) return null;
             if (y >= Map.HEIGHT) return null;
 
-            return _units.Where(u => u.X == x && u.Y == y).OrderBy(u => (u == ActiveUnit) ? 0 : (u.Fortify || u.FortifyActive ? 1 : 2)).ToArray();
+            return Units.Where(u => u.X == x && u.Y == y).OrderBy(u => (u == ActiveUnit) ? 0 : (u.Fortify || u.FortifyActive ? 1 : 2)).ToArray();
         }
 
         internal IUnit[] GetUnits()
         {
-            return _units.ToArray();
+            return Units.ToArray();
         }
 
         public IUnit ActiveUnit
         {
             get
             {
-                if (_units.Count(u => u.Owner == _currentPlayer && !u.Busy) == 0)
+                if (Units.Count(u => u.Owner == CurrentPlayerId && !u.Busy) == 0)
                     return null;
 
                 // If the unit counter is too high, return to 0
-                if (_activeUnit >= _units.Count)
-                    _activeUnit = 0;
+                if (ActiveUnitId >= Units.Count)
+                    ActiveUnitId = 0;
 
                 // Does the current unit still have moves left?
-                if (_units[_activeUnit].Owner == _currentPlayer
-                    && (_units[_activeUnit].MovesLeft > 0 || _units[_activeUnit].PartMoves > 0)
-                    && !_units[_activeUnit].Sentry && !_units[_activeUnit].Fortify
+                if (Units[ActiveUnitId].Owner == CurrentPlayerId
+                    && (Units[ActiveUnitId].MovesLeft > 0 || Units[ActiveUnitId].PartMoves > 0)
+                    && !Units[ActiveUnitId].Sentry && !Units[ActiveUnitId].Fortify
                 )
                 {
-                    return _units[_activeUnit];
+                    return Units[ActiveUnitId];
                 }
 
                 // Task busy, don't change the active unit
                 if (GameTask.Any())
-                    return _units[_activeUnit];
+                    return Units[ActiveUnitId];
 
                 // Check if any units are still available for this player
-                if (!_units.Any(u => u.Owner == _currentPlayer && (u.MovesLeft > 0 || u.PartMoves > 0) && !u.Busy))
+                if (!Units.Any(u => u.Owner == CurrentPlayerId && (u.MovesLeft > 0 || u.PartMoves > 0) && !u.Busy))
                 {
                     if (CurrentPlayer == HumanPlayer && !Settings.Instance.EndOfTurn && !GameTask.Any() && (Common.TopScreen is GamePlay))
                     {
@@ -243,15 +243,15 @@ namespace CivOne
 
                 // Loop through units
                 while (
-                    _units[_activeUnit].Owner != _currentPlayer 
-                    || (_units[_activeUnit].MovesLeft == 0 && _units[_activeUnit].PartMoves == 0) 
-                    || (_units[_activeUnit].Sentry || _units[_activeUnit].Fortify))
+                    Units[ActiveUnitId].Owner != CurrentPlayerId 
+                    || (Units[ActiveUnitId].MovesLeft == 0 && Units[ActiveUnitId].PartMoves == 0) 
+                    || (Units[ActiveUnitId].Sentry || Units[ActiveUnitId].Fortify))
                 {
-                    ++_activeUnit;
-                    if (_activeUnit >= _units.Count)
-                        _activeUnit = 0;
+                    ++ActiveUnitId;
+                    if (ActiveUnitId >= Units.Count)
+                        ActiveUnitId = 0;
                 }
-                return _units[_activeUnit];
+                return Units[ActiveUnitId];
             }
 
             internal set
@@ -260,7 +260,7 @@ namespace CivOne
                     return;
                 value.Sentry = false;
                 value.Fortify = false;
-                _activeUnit = _units.IndexOf(value);
+                ActiveUnitId = Units.IndexOf(value);
             }
         }
 
@@ -278,8 +278,8 @@ namespace CivOne
                 if (Map.FixedStartPositions && _gameTurn == 0)
                 {
                     // Map position is fixed, don't check anything
-                    x = _players[player].Civilization.StartX;
-                    y = _players[player].Civilization.StartY;
+                    x = Players[player].Civilization.StartX;
+                    y = Players[player].Civilization.StartY;
                     if (Map[x, y].Hut)
                         Map[x, y].Hut = false;
                 }
@@ -294,7 +294,7 @@ namespace CivOne
                         continue;
 
                     // Is there already a unit on this tile?
-                    if (_units.Any(u => u.X == x || u.Y == y)) 
+                    if (Units.Any(u => u.X == x || u.Y == y)) 
                         continue;
 
                     // Is the land value high enough?
@@ -302,11 +302,11 @@ namespace CivOne
                         continue;
 
                     // Distance to other cities
-                    if (_cities.Any(c => Common.DistanceToTile(x, y, c.X, c.Y) < (10 - (loopCounter / 64)))) 
+                    if (Cities.Any(c => Common.DistanceToTile(x, y, c.X, c.Y) < (10 - (loopCounter / 64)))) 
                         continue;
 
                     // Distance to other settlers
-                    if (_units.Any(u => (u is Settlers) && Common.DistanceToTile(x, y, u.X, u.Y) < (10 - (loopCounter / 64))))
+                    if (Units.Any(u => (u is Settlers) && Common.DistanceToTile(x, y, u.X, u.Y) < (10 - (loopCounter / 64))))
                         continue;
 
                     // Check buildable tiles on continent
@@ -323,9 +323,9 @@ namespace CivOne
                 // Starting position found, add Settlers
                 IUnit unit = UnitsFactory.CreateUnit(UnitType.Settlers, x, y);
                 unit.Owner = player;
-                _units.Add(unit);
+                Units.Add(unit);
 
-                _players[player].StartX = (short)x;
+                Players[player].StartX = (short)x;
 
                 return;
             }
@@ -338,12 +338,12 @@ namespace CivOne
 
             // All Handicap values start from 0.
             byte handicap = 0;
-            IUnit startUnit = _units.FirstOrDefault(u => u.Owner == player);
+            IUnit startUnit = Units.FirstOrDefault(u => u.Owner == player);
             if (startUnit == null) return;
             int x = startUnit.X, y = startUnit.Y;
 
             ITile[] continent = Map.ContinentTiles(Map[x, y].ContinentId).ToArray();
-            IUnit[] unitsOnContinent = _units.Where(u => continent.Any(c => (c.X == u.X && c.Y == u.Y))).ToArray();
+            IUnit[] unitsOnContinent = Units.Where(u => continent.Any(c => (c.X == u.X && c.Y == u.Y))).ToArray();
 
             if (unitsOnContinent.Count() == 0)
             {
@@ -384,13 +384,13 @@ namespace CivOne
                 handicap += 1;
             }
 
-            _players[player].Handicap = handicap;
+            Players[player].Handicap = handicap;
         }
 
         private void ApplyBonus(byte player)
         {
-            byte bonus = (byte)(_players.Max(p => p.Handicap) - _players[player].Handicap);
-            IUnit startUnit = _units.Where(u => u.Owner == player).FirstOrDefault();
+            byte bonus = (byte)(Players.Max(p => p.Handicap) - Players[player].Handicap);
+            IUnit startUnit = Units.Where(u => u.Owner == player).FirstOrDefault();
             if (startUnit == null) return;
             int x = startUnit.X, y = startUnit.Y;
 
@@ -400,7 +400,7 @@ namespace CivOne
                 // In this case, the Bonus value is reduced by 3 afterwards.
                 IUnit unit = UnitsFactory.CreateUnit(UnitType.Settlers, x, y);
                 unit.Owner = player;
-                _units.Add(unit);
+                Units.Add(unit);
 
                 bonus -= 3;
             }
@@ -408,7 +408,7 @@ namespace CivOne
             // If the Bonus value is (still) greater than zero, then the civ gains a number of technologies equal to the Bonus value.
             while (bonus > 0)
             {
-                IAdvance[] available = _players[player].AvailableResearch.ToArray();
+                IAdvance[] available = Players[player].AvailableResearch.ToArray();
                 int advanceId = Common.Random.Next(0, 72);
                 for (int i = 0; i < 1000; ++i)
                 {
@@ -417,7 +417,7 @@ namespace CivOne
 
                     IAdvance advance = available.First(a => a.Id == (advanceId + i) % 72);
                     SetAdvanceOrigin(advance, null);
-                    _players[player].AddAdvance(advance, false);
+                    Players[player].AddAdvance(advance, false);
 
                     break;
                 }
