@@ -15,7 +15,7 @@ namespace CivOne
 {
 	internal static partial class SDL
 	{
-		private const string DLL_SDL = "SDL2.dll";
+		private const string DLL_SDL = "SDL2";
 
 		[DllImportAttribute(DLL_SDL)]
 		private static extern IntPtr SDL_CreateRenderer(IntPtr window, int index, SDL_RENDERER_FLAGS flags);
@@ -47,7 +47,7 @@ namespace CivOne
 		private static extern int SDL_RenderClear(IntPtr renderer);
 
 		[DllImportAttribute(DLL_SDL)]
-		private static extern int SDL_RenderDrawRect(IntPtr renderer, SDL_Rect dstrect);
+		private static extern int SDL_RenderFillRect(IntPtr renderer, SDL_Rect dstrect);
 
 		[DllImportAttribute(DLL_SDL)]
 		private static extern void SDL_RenderPresent(IntPtr renderer);

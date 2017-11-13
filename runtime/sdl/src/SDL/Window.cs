@@ -25,10 +25,10 @@ namespace CivOne
 
 			protected readonly int[,] Canvas = new int[320, 200];
 
-			protected void DrawRectangle(Rectangle rectangle, Color color)
+			protected void FillRectangle(Rectangle rectangle, Color color)
 			{
 				SDL_SetRenderDrawColor(_renderer, color.R, color.G, color.B, color.A);
-				SDL_RenderDrawRect(_renderer, new SDL_Rect() { X = rectangle.X, Y = rectangle.Y, W = rectangle.Width, H = rectangle.Height });
+				SDL_RenderFillRect(_renderer, new SDL_Rect() { X = rectangle.X, Y = rectangle.Y, W = rectangle.Width, H = rectangle.Height });
 			}
 
 			private void HandleEvent(SDL_Event sdlEvent)

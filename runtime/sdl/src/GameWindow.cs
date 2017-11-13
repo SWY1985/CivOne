@@ -37,7 +37,7 @@ namespace CivOne
 				Rectangle rect = new Rectangle(x * 2, y * 2, 2, 2);
 				Color color = Color.FromArgb(255, c.R, c.G, c.B);
 
-				DrawRectangle(rect, color);
+				FillRectangle(rect, color);
 			}
 		}
 
