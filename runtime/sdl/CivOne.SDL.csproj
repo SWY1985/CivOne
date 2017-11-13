@@ -14,4 +14,7 @@
 		<Compile Remove="**" />
 		<Compile Include="src/**" />
 	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Resources/**" />
+	</ItemGroup>
 </Project>
