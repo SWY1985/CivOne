@@ -39,6 +39,15 @@
 				"/t:Rebuild"
 			],
 			"problemMatcher": "$msCompile"
+		},
+		{
+			"taskName": "build-sdl",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"${workspaceRoot}//runtime/sdl/CivOne.SDL.csproj"
+			],
+			"problemMatcher": "$msCompile"
 		}
 	]
 }

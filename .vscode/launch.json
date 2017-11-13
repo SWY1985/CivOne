@@ -61,6 +61,18 @@
 			"cwd": "${workspaceRoot}",
 			"console": "internalConsole",
 			"internalConsoleOptions": "openOnFirstSessionStart"
+		},
+		{
+			"name": "Launch SDL",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "build-sdl",
+			"program": "${workspaceRoot}/runtime/sdl/bin/Debug/netcoreapp2.0/CivOne.SDL.dll",
+			"args": [],
+			"cwd": "${workspaceRoot}",
+			"stopAtEntry": false,
+			"console": "internalConsole",
+			"internalConsoleOptions": "openOnFirstSessionStart"
 		}
 	]
 }
