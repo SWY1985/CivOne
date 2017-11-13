@@ -47,7 +47,7 @@ namespace CivOne
 		private static extern int SDL_RenderClear(IntPtr renderer);
 
 		[DllImportAttribute(DLL_SDL)]
-		private static extern int SDL_RenderFillRect(IntPtr renderer, SDL_Rect dstrect);
+		private static extern int SDL_RenderFillRect(IntPtr renderer, ref SDL_Rect dstrect);
 
 		[DllImportAttribute(DLL_SDL)]
 		private static extern void SDL_RenderPresent(IntPtr renderer);

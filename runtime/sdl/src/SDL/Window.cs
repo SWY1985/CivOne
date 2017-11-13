@@ -27,8 +27,10 @@ namespace CivOne
 
 			protected void FillRectangle(Rectangle rectangle, Color color)
 			{
+				SDL_Rect rect = new SDL_Rect() { X = rectangle.X, Y = rectangle.Y, W = rectangle.Width, H = rectangle.Height };
+
 				SDL_SetRenderDrawColor(_renderer, color.R, color.G, color.B, color.A);
-				SDL_RenderFillRect(_renderer, new SDL_Rect() { X = rectangle.X, Y = rectangle.Y, W = rectangle.Width, H = rectangle.Height });
+				SDL_RenderFillRect(_renderer, ref rect);
 			}
 
 			private void HandleEvent(SDL_Event sdlEvent)
