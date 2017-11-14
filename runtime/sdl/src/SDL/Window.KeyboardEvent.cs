@@ -113,7 +113,6 @@ namespace CivOne
 
 			private void HandleEventKeyboard(SDL_KeyboardEvent keyboardEvent)
 			{
-				if (keyboardEvent.Repeat > 0) return;
 				KeyboardEventArgs args = ConvertKeyEvent(keyboardEvent);
 				if (args == null) return;
 
