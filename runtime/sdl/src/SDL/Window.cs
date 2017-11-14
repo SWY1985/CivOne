@@ -20,10 +20,12 @@ namespace CivOne
 		{
 			private readonly IntPtr _handle, _renderer;
 
-			private bool _running = true;
+			private bool _running = true, _redraw = false;
 
 			protected void FillRectangle(Rectangle rectangle, Color color)
 			{
+				_redraw = true;
+
 				SDL_Rect rect = new SDL_Rect() { X = rectangle.X, Y = rectangle.Y, W = rectangle.Width, H = rectangle.Height };
 
 				SDL_SetRenderDrawColor(_renderer, color.R, color.G, color.B, color.A);
@@ -60,8 +62,14 @@ namespace CivOne
 					OnUpdate?.Invoke(this, EventArgs.Empty);
 					OnDraw?.Invoke(this, EventArgs.Empty);
 
+					if (!_redraw)
+					{
+						Wait(1);
+						continue;
+					}
+
 					SDL_RenderPresent(_renderer);
-					Wait(1);
+					_redraw = false;
 				}
 			}
 
