@@ -19,11 +19,8 @@ namespace CivOne
 		internal abstract partial class Window : IDisposable
 		{
 			private readonly IntPtr _handle, _renderer;
-			private SDL_Event _event;
 
 			private bool _running = true;
-
-			protected readonly int[,] Canvas = new int[320, 200];
 
 			protected void FillRectangle(Rectangle rectangle, Color color)
 			{
@@ -35,24 +32,29 @@ namespace CivOne
 
 			private void HandleEvent(SDL_Event sdlEvent)
 			{
-				if (sdlEvent.SDL_WindowEvent.Event != SDL_WindowEventID.SDL_WINDOWEVENT_NONE) HandleEventWindow(sdlEvent.SDL_WindowEvent);
+				switch (sdlEvent.SDL_EventType)
+				{
+					case SDL_EventType.SDL_WINDOWEVENT:
+						HandleEventWindow(sdlEvent.SDL_WindowEvent);
+						break;
+					case SDL_EventType.SDL_KEYDOWN:
+					case SDL_EventType.SDL_KEYUP:
+						HandleEventKeyboard(sdlEvent.SDL_KeyboardEvent);
+						break;
+				}
 			}
 
 			public void Run()
 			{
 				OnLoad?.Invoke(this, EventArgs.Empty);
 
-				int i = 0;
+				SDL_Event sdlEvent = new SDL_Event();
 				while (_running)
 				{
-					switch (SDL_PollEvent(ref _event))
+					
+					if (SDL_PollEvent(ref sdlEvent) == 1)
 					{
-						case 1:
-							HandleEvent(_event);
-							break;
-						default:
-							// Nothing is happening
-							break;
+						HandleEvent(sdlEvent);
 					}
 
 					OnUpdate?.Invoke(this, EventArgs.Empty);
@@ -88,8 +90,6 @@ namespace CivOne
 
 				_handle = SDL_CreateWindow(title, 100, 100, 640, 400, 0);
 				_renderer = SDL_CreateRenderer(_handle, -1, SDL_RENDERER_FLAGS.SDL_RENDERER_ACCELERATED);
-
-				_event = new SDL_Event();
 
 				if (_handle == null)
 				{

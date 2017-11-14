@@ -11,13 +11,10 @@ namespace CivOne
 {
 	internal static partial class SDL
 	{
-		private struct SDL_WindowEvent
+		internal enum SDL_KeyState : byte
 		{
-			public uint Timestamp;
-			public uint WindowId;
-			public SDL_WindowEventID Event;
-			public int Data1;
-			public int Data2;
+			SDL_RELEASED = 0,
+			SDL_PRESSED = 1,
 		}
 	}
 }
