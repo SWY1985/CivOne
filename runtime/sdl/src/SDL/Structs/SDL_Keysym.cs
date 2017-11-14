@@ -15,7 +15,7 @@ namespace CivOne
 		{
 			public SDL_Scancode Scancode;
 			public SDL_Keycode Keycode;
-			public ushort Modifier;
+			public SDL_KMOD Modifier;
 			public uint Unicode;
 		}
 	}
