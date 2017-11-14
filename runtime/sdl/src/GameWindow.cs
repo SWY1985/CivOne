@@ -46,51 +46,9 @@ namespace CivOne
 			}
 		}
 
-		private KeyboardEventArgs ConvertSdlKeyArgs(SdlKeyEventArgs args)
-		{
-			Key key = Key.None;
-			switch(args.ScanCode)
-			{
-				case SDL.SDL_Scancode.SDL_SCANCODE_RETURN:
-				case SDL.SDL_Scancode.SDL_SCANCODE_KP_ENTER:
-					key = Key.Enter;
-					break;
-				case SDL.SDL_Scancode.SDL_SCANCODE_UP:
-					key = Key.Up;
-					break;
-				case SDL.SDL_Scancode.SDL_SCANCODE_DOWN:
-					key = Key.Down;
-					break;
-				case SDL.SDL_Scancode.SDL_SCANCODE_LEFT:
-					key = Key.Left;
-					break;
-				case SDL.SDL_Scancode.SDL_SCANCODE_RIGHT:
-					key = Key.Right;
-					break;
-				case SDL.SDL_Scancode.SDL_SCANCODE_SPACE:
-					key = Key.Space;
-					break;
-				default:
-					return null;
-			}
-			return new KeyboardEventArgs(key, KeyModifier.None);
-		}
+		private void KeyDown(object sender, KeyboardEventArgs args) => _runtime.InvokeKeyboardDown(args);
 
-		private void KeyDown(object sender, SdlKeyEventArgs args)
-		{
-			if (args.Repeat) return;
-			KeyboardEventArgs keyArgs = ConvertSdlKeyArgs(args);
-			if (keyArgs == null) return;
-			_runtime.InvokeKeyboardDown(keyArgs);
-		}
-
-		private void KeyUp(object sender, SdlKeyEventArgs args)
-		{
-			if (args.Repeat) return;
-			KeyboardEventArgs keyArgs = ConvertSdlKeyArgs(args);
-			if (keyArgs == null) return;
-			_runtime.InvokeKeyboardUp(keyArgs);
-		}
+		private void KeyUp(object sender, KeyboardEventArgs args) => _runtime.InvokeKeyboardUp(args);
 
 		public GameWindow(Runtime runtime) : base("CivOne")
 		{

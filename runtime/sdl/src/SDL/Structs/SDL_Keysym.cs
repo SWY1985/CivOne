@@ -11,7 +11,7 @@ namespace CivOne
 {
 	internal static partial class SDL
 	{
-		internal struct SDL_Keysym
+		private struct SDL_Keysym
 		{
 			public SDL_Scancode Scancode;
 			public SDL_Keycode Keycode;

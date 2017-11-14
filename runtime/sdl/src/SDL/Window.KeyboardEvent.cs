@@ -8,7 +8,8 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using static CivOne.SDL.SDL_KeyState;
+using CivOne.Enums;
+using CivOne.Events;
 
 namespace CivOne
 {
@@ -16,34 +17,46 @@ namespace CivOne
 	{
 		internal abstract partial class Window
 		{
-			protected class SdlKeyEventArgs : EventArgs
+			protected event KeyboardEventHandler OnKeyDown, OnKeyUp;
+
+			private Key ConvertKey(SDL_Scancode scanCode)
 			{
-				internal SDL_Keycode KeyCode { get; private set; }
-				internal SDL_Scancode ScanCode { get; private set; }
-				internal char Character { get; private set; }
-				internal bool Repeat { get; private set; }
-
-				internal SdlKeyEventArgs(SDL_KeyboardEvent keyboardEvent)
+				switch (scanCode)
 				{
-					KeyCode = keyboardEvent.KeySym.Keycode;
-					ScanCode = keyboardEvent.KeySym.Scancode;
-					Character = (char)keyboardEvent.KeySym.Keycode;
-					Repeat = (keyboardEvent.Repeat > 0);
+					case SDL_Scancode.SDL_SCANCODE_RETURN:
+					case SDL_Scancode.SDL_SCANCODE_KP_ENTER:
+						return Key.Enter;
+					case SDL_Scancode.SDL_SCANCODE_UP:
+						return Key.Up;
+					case SDL_Scancode.SDL_SCANCODE_DOWN:
+						return Key.Down;
+					case SDL_Scancode.SDL_SCANCODE_LEFT:
+						return Key.Left;
+					case SDL_Scancode.SDL_SCANCODE_RIGHT:
+						return Key.Right;
+					case SDL_Scancode.SDL_SCANCODE_SPACE:
+						return Key.Space;
 				}
+				return Key.None;
 			}
-
-			protected event EventHandler<SdlKeyEventArgs> OnKeyDown, OnKeyUp;
 
 			private void HandleEventKeyboard(SDL_KeyboardEvent keyboardEvent)
 			{
+				if (keyboardEvent.Repeat > 0) return;
+
+				Key key = ConvertKey(keyboardEvent.KeySym.Scancode);
+				if (key == Key.None) return;
+
+				KeyboardEventArgs args = new KeyboardEventArgs(key, KeyModifier.None);
+
 				switch (keyboardEvent.State)
 				{
-					case SDL_PRESSED:
-						OnKeyDown?.Invoke(this, new SdlKeyEventArgs(keyboardEvent));
-						break;
-					case SDL_RELEASED:
-						OnKeyUp?.Invoke(this, new SdlKeyEventArgs(keyboardEvent));
-						break;
+					case SDL_KeyState.SDL_PRESSED:
+						OnKeyDown?.Invoke(this, args);
+						return;
+					case SDL_KeyState.SDL_RELEASED:
+						OnKeyUp?.Invoke(this, args);
+						return;
 				}
 			}
 		}

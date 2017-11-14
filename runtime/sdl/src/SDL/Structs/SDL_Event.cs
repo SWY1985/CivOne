@@ -58,7 +58,7 @@ namespace CivOne
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
-		internal struct SDL_KeyboardEvent
+		private struct SDL_KeyboardEvent
 		{
 			public SDL_EventType Type;
 			public uint Timestamp;

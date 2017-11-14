@@ -11,7 +11,7 @@ namespace CivOne
 {
 	internal static partial class SDL
 	{
-		internal enum SDL_EventType : uint
+		private enum SDL_EventType : uint
 		{
 			//
 			SDL_MIN = 0,

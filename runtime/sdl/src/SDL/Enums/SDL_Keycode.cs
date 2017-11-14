@@ -11,7 +11,7 @@ namespace CivOne
 {
 	internal static partial class SDL
 	{
-		internal enum SDL_Keycode : int
+		private enum SDL_Keycode : int
 		{
 			SDLK_UNKNOWN = 0,
 		}

@@ -11,7 +11,7 @@ namespace CivOne
 {
 	internal static partial class SDL
 	{
-		internal enum SDL_KeyState : byte
+		private enum SDL_KeyState : byte
 		{
 			SDL_RELEASED = 0,
 			SDL_PRESSED = 1,

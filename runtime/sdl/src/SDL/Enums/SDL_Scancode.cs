@@ -11,7 +11,7 @@ namespace CivOne
 {
 	internal static partial class SDL
 	{
-		internal enum SDL_Scancode : uint
+		private enum SDL_Scancode : uint
 		{
 			SDL_SCANCODE_UNKNOWN = 0,
 			SDL_SCANCODE_RETURN = 40,
