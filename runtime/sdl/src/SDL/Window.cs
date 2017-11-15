@@ -32,16 +32,23 @@ namespace CivOne
 				SDL_RenderFillRect(_renderer, ref rect);
 			}
 
+			private T CastToStruct<T>(object source) where T : struct
+			{
+				IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(source.GetType()));
+				Marshal.StructureToPtr(source, ptr, false);
+				return Marshal.PtrToStructure<T>(ptr);
+			}
+			
 			private void HandleEvent(SDL_Event sdlEvent)
 			{
 				switch (sdlEvent.SDL_EventType)
 				{
 					case SDL_EventType.SDL_WINDOWEVENT:
-						HandleEventWindow(sdlEvent.SDL_WindowEvent);
+						HandleEventWindow(CastToStruct<SDL_WindowEvent>(sdlEvent));
 						break;
 					case SDL_EventType.SDL_KEYDOWN:
 					case SDL_EventType.SDL_KEYUP:
-						HandleEventKeyboard(sdlEvent.SDL_KeyboardEvent);
+						HandleEventKeyboard(CastToStruct<SDL_KeyboardEvent>(sdlEvent));
 						break;
 				}
 			}
@@ -49,12 +56,10 @@ namespace CivOne
 			public void Run()
 			{
 				OnLoad?.Invoke(this, EventArgs.Empty);
-
-				SDL_Event sdlEvent = new SDL_Event();
+				
 				while (_running)
 				{
-					
-					if (SDL_PollEvent(ref sdlEvent) == 1)
+					if (SDL_PollEvent(out SDL_Event sdlEvent) == 1)
 					{
 						HandleEvent(sdlEvent);
 					}

@@ -41,7 +41,7 @@ namespace CivOne
 		private static extern IntPtr SDL_Init(SDL_INIT flags);
 
 		[DllImportAttribute(DLL_SDL)]
-		private static extern int SDL_PollEvent(ref SDL_Event sdlEvent);
+		private static extern int SDL_PollEvent(out SDL_Event sdlEvent);
 
 		[DllImportAttribute(DLL_SDL)]
 		private static extern void SDL_Quit();
