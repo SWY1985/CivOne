@@ -23,6 +23,7 @@ namespace CivOne
 		Platform CurrentPlatform { get; }
 		string StorageFolder { get; }
 		RuntimeSettings Settings { get; }
+		MouseCursor CurrentCursor { set; }
 		IBitmap Bitmap { get; set; }
 		IBitmap Cursor { set; }
 		int CanvasWidth { get; }

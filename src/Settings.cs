@@ -205,7 +205,7 @@ namespace CivOne
 			}
 		}
 		
-		internal CursorType CursorType
+		public CursorType CursorType
 		{
 			get
 			{
@@ -213,14 +213,13 @@ namespace CivOne
 					return CursorType.Builtin;
 				return _cursorType;
 			}
-			set
+			internal set
 			{
 				_cursorType = value;
 				string saveValue = ((int)_cursorType).ToString();
 				SetSetting("CursorType", saveValue);
 				Cursor.ClearCache();
 				Common.ReloadSettings = true;
-
 			}
 		}
 
