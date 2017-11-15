@@ -36,7 +36,7 @@ namespace CivOne
 		public event KeyboardEventHandler KeyboardUp, KeyboardDown;
 		public event ScreenEventHandler MouseUp, MouseDown, MouseMove;
 		
-		public RuntimeSettings Settings => new RuntimeSettings() { Demo = true, Setup = true };
+		public RuntimeSettings Settings { get; private set; }
 		public MouseCursor CurrentCursor { internal get; set; }
 		public IBitmap Bitmap { get; set; }
 		public IBitmap Cursor { internal get; set; }
@@ -52,8 +52,9 @@ namespace CivOne
 		void IRuntime.StopSound() => Console.WriteLine("STOP SOUND NOT IMPLEMENTED");
 		void IRuntime.Quit() => SignalQuit = true;
 
-		public Runtime()
+		public Runtime(RuntimeSettings settings)
 		{
+			Settings = settings;
 			RuntimeHandler.Register(this);
 		}
 
