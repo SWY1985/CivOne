@@ -59,6 +59,12 @@ namespace CivOne
 					case SDL_Scancode.SDL_SCANCODE_RETURN:
 					case SDL_Scancode.SDL_SCANCODE_KP_ENTER:
 						return Key.Enter;
+					case SDL_Scancode.SDL_SCANCODE_ESCAPE:
+						return Key.Escape;
+					case SDL_Scancode.SDL_SCANCODE_BACKSPACE:
+						return Key.Backspace;
+					case SDL_Scancode.SDL_SCANCODE_DELETE:
+						return Key.Delete;
 					case SDL_Scancode.SDL_SCANCODE_UP:
 						return Key.Up;
 					case SDL_Scancode.SDL_SCANCODE_DOWN:
