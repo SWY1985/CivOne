@@ -17,19 +17,20 @@ using CivOne.IO;
 
 namespace CivOne
 {
-	internal class GameWindow : SDL.Window
+	internal partial class GameWindow : SDL.Window
 	{
 		private readonly Runtime _runtime;
 
-		private Settings Settings => Settings.Instance;
+		private static Settings Settings => Settings.Instance;
 
-		private int _mouseX = 10, _mouseY = 10;
+		private int _mouseX = -1, _mouseY = -1;
 
 		private bool _mouseCursorVisible = true;
 		private bool _hasUpdate = true;
 
 		private void Load(object sender, EventArgs args)
 		{
+			Runtime.CanvasSize = SetCanvasSize();
 			_runtime.InvokeInitialize();
 		}
 
@@ -40,6 +41,7 @@ namespace CivOne
 			_hasUpdate = (_hasUpdate || updateArgs.HasUpdate);
 
 			CursorVisible = !(Settings.CursorType != CursorType.Native || _runtime.CurrentCursor == MouseCursor.None);
+			Runtime.CanvasSize = SetCanvasSize();
 		}
 
 		private void Draw(object sender, EventArgs args)
@@ -49,17 +51,19 @@ namespace CivOne
 			_hasUpdate = false;
 
 			Clear(Color.Black);
-			DrawBitmap(_runtime.Bitmap, 0, 0, 2, 2);
-			DrawBitmap(_runtime.Cursor, _mouseX * 2, _mouseY * 2, 2, 2);
+			GetBorders(out int offsetX, out int offsetY, out _, out _);
+			DrawBitmap(_runtime.Bitmap, offsetX, offsetY, ScaleX, ScaleY);
+			DrawBitmap(_runtime.Cursor, offsetX + (_mouseX * ScaleX), offsetY + (_mouseY * ScaleY), ScaleX, ScaleY);
 		}
 
 		private ScreenEventArgs Transform(ScreenEventArgs args)
 		{
-			int x = args.X - (args.X % 2);
-			int y = args.Y - (args.Y % 2);
+			GetBorders(out int offsetX, out int offsetY, out _, out _);
+			int x = args.X - offsetX - (args.X % ScaleX);
+			int y = args.Y - offsetY - (args.Y % ScaleY);
 			if (args.Buttons == MouseButton.None)
-				return new ScreenEventArgs(x / 2, y / 2);
-			return new ScreenEventArgs(x / 2, y / 2, args.Buttons);
+				return new ScreenEventArgs(x / ScaleX, y / ScaleY);
+			return new ScreenEventArgs(x / ScaleX, y / ScaleY, args.Buttons);
 		}
 
 		private void KeyDown(object sender, KeyboardEventArgs args) => _runtime.InvokeKeyboardDown(args);
@@ -79,7 +83,7 @@ namespace CivOne
 		private void MouseDown(object sender, ScreenEventArgs args) => _runtime.InvokeMouseDown(Transform(args));
 		private void MouseUp(object sender, ScreenEventArgs args) => _runtime.InvokeMouseUp(Transform(args));
 
-		public GameWindow(Runtime runtime) : base("CivOne")
+		public GameWindow(Runtime runtime) : base("CivOne", InitialWidth, InitialHeight)
 		{
 			_runtime = runtime;
 

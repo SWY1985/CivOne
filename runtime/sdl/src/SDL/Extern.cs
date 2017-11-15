@@ -26,6 +26,9 @@ namespace CivOne
 		private static IntPtr SDL_CreateWindow(string title, int x, int y, int w, int h, SDL_WINDOW flags) => SDL_CreateWindow(Encoding.UTF8.GetBytes($"{title}{'\0'}"), x, y, w, h, flags);
 
 		[DllImportAttribute(DLL_SDL)]
+		private static extern void SDL_GetWindowSize(IntPtr window, out int width, out int height);
+
+		[DllImportAttribute(DLL_SDL)]
 		private static extern void SDL_Delay(uint ms);
 
 		[DllImportAttribute(DLL_SDL)]

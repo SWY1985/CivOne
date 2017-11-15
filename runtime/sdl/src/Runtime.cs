@@ -18,7 +18,7 @@ namespace CivOne
 {
 	internal class Runtime : IRuntime, IDisposable
 	{
-		internal static Size CanvasSize => new Size(320, 200);
+		internal static Size CanvasSize { get; set; }
 
 		internal bool SignalQuit { get; private set; }
 

@@ -131,11 +131,29 @@ namespace CivOne
 			
 			private static readonly uint SDL_PIXELFORMAT_RGBA8888 = DefinePixelformat(SDL_PixelType.SDL_PIXELTYPE_PACKED32, SDL_PixelOrder.SDL_PACKEDORDER_RGBA, SDL_PixelLayout.SDL_PACKEDLAYOUT_8888, 32, 4);
 
-			public Window(string title)
+			protected int Width
+			{
+				get
+				{
+					SDL_GetWindowSize(_handle, out int width, out _);
+					return width;
+				}
+			}
+
+			protected int Height
+			{
+				get
+				{
+					SDL_GetWindowSize(_handle, out _, out int width);
+					return width;
+				}
+			}
+
+			public Window(string title, int width = 640, int height = 400)
 			{
 				SDL_Init(SDL_INIT.VIDEO);
 
-				_handle = SDL_CreateWindow(title, 100, 100, 640, 400, 0);
+				_handle = SDL_CreateWindow(title, 100, 100, width, height, SDL_WINDOW.RESIZABLE);
 				_renderer = SDL_CreateRenderer(_handle, -1, SDL_RENDERER_FLAGS.SDL_RENDERER_ACCELERATED);
 
 				if (_handle == null)
