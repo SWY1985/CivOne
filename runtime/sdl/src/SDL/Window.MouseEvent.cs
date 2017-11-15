@@ -13,14 +13,16 @@ namespace CivOne
 	{
 		internal abstract partial class Window
 		{
-			protected void MouseCursorHide()
+			private bool _cursorVisible = false;
+			protected bool CursorVisible
 			{
-				SDL_ShowCursor(0);
-			}
-
-			protected void MouseCursorShow()
-			{
-				SDL_ShowCursor(1);
+				get => _cursorVisible;
+				set
+				{
+					if (value == _cursorVisible) return;
+					_cursorVisible = value;
+					SDL_ShowCursor(_cursorVisible ? 1 : 0);
+				}
 			}
 		}
 	}
