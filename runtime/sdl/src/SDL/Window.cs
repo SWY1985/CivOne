@@ -36,7 +36,9 @@ namespace CivOne
 			{
 				IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(source.GetType()));
 				Marshal.StructureToPtr(source, ptr, false);
-				return Marshal.PtrToStructure<T>(ptr);
+				T output = Marshal.PtrToStructure<T>(ptr);
+				Marshal.FreeHGlobal(ptr);
+				return output;
 			}
 			
 			private void HandleEvent(SDL_Event sdlEvent)
