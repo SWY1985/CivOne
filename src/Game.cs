@@ -1529,7 +1529,7 @@ namespace CivOne
 				// Add +2 if the civ starts on a continent that covers at least 200 map squares.
 				handicap += 2;
 			}
-			else if (continent.Count() >= 200)
+			else if (continent.Count() >= 100)
 			{
 				// If that is not the case, then add +1 if the civ starts on a continent that covers at least 100 map squares.
 				handicap += 1;
