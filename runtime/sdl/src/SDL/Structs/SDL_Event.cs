@@ -17,7 +17,7 @@ namespace CivOne
 		private unsafe struct SDL_Event
 		{
 			public SDL_EventType SDL_EventType;
-			private fixed byte _nil[28];
+			private fixed byte _nil[49 - sizeof(SDL_EventType)];
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
