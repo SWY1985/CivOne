@@ -13,7 +13,7 @@ namespace CivOne
 	{
 		internal abstract partial class Window
 		{
-			private bool _cursorVisible = false;
+			private bool _cursorVisible = true;
 			protected bool CursorVisible
 			{
 				get => _cursorVisible;

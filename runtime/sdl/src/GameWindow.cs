@@ -23,6 +23,8 @@ namespace CivOne
 
 		private Settings Settings => Settings.Instance;
 
+		private int _mouseX = 10, _mouseY = 10;
+
 		private bool _mouseCursorVisible = true;
 		private bool _hasUpdate = true;
 
@@ -46,19 +48,9 @@ namespace CivOne
 			_runtime.InvokeDraw();
 			_hasUpdate = false;
 
-			if (_runtime.Bitmap == null) return;
-			Bytemap bitmap = _runtime.Bitmap.Bitmap;
-			Colour[] palette = _runtime.Bitmap.Palette.Entries.ToArray();
-			for (int y = 0; y < 200; y++)
-			for (int x = 0; x < 320; x++)
-			{
-				int entry = bitmap[x, y];
-				Colour c = entry == 0 ? Colour.Black : palette[entry];
-				Rectangle rect = new Rectangle(x * 2, y * 2, 2, 2);
-				Color color = Color.FromArgb(255, c.R, c.G, c.B);
-
-				FillRectangle(rect, color);
-			}
+			Clear(Color.Black);
+			DrawBitmap(_runtime.Bitmap, 0, 0, 2, 2);
+			DrawBitmap(_runtime.Cursor, 10, 10, 2, 2);
 		}
 
 		private void KeyDown(object sender, KeyboardEventArgs args) => _runtime.InvokeKeyboardDown(args);
