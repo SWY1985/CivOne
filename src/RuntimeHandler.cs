@@ -116,7 +116,15 @@ namespace CivOne
 			{
 				_currentCursor = Common.MouseCursor;
 				_cursorType = Settings.Instance.CursorType;
-				Runtime.Cursor = Cursor.Current.ToBitmap();
+				Runtime.CurrentCursor = _currentCursor;
+				if (Cursor.Current?.Bitmap != null)
+				{
+					Runtime.Cursor = Cursor.Current.ToBitmap();
+				}
+				else
+				{
+					Runtime.Cursor = null;
+				}
 			}
 		}
 
