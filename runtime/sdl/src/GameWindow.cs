@@ -40,13 +40,6 @@ namespace CivOne
 			_hasUpdate = (_hasUpdate || updateArgs.HasUpdate);
 
 			CursorVisible = !(Settings.CursorType != CursorType.Native || _runtime.CurrentCursor == MouseCursor.None);
-			if (_mouseX != MouseX - (MouseX % 2) || _mouseY != MouseY - (MouseY % 2))
-			{
-				_hasUpdate = true;
-				_mouseX = MouseX - (MouseX % 2);
-				_mouseY = MouseY - (MouseY % 2);
-				_runtime.InvokeMouseMove(new ScreenEventArgs(_mouseX / 2, _mouseY / 2));
-			}
 		}
 
 		private void Draw(object sender, EventArgs args)
@@ -57,12 +50,34 @@ namespace CivOne
 
 			Clear(Color.Black);
 			DrawBitmap(_runtime.Bitmap, 0, 0, 2, 2);
-			DrawBitmap(_runtime.Cursor, MouseX - (MouseX % 2), MouseY - (MouseY % 2), 2, 2);
+			DrawBitmap(_runtime.Cursor, _mouseX * 2, _mouseY * 2, 2, 2);
+		}
+
+		private ScreenEventArgs Transform(ScreenEventArgs args)
+		{
+			int x = args.X - (args.X % 2);
+			int y = args.Y - (args.Y % 2);
+			if (args.Buttons == MouseButton.None)
+				return new ScreenEventArgs(x / 2, y / 2);
+			return new ScreenEventArgs(x / 2, y / 2, args.Buttons);
 		}
 
 		private void KeyDown(object sender, KeyboardEventArgs args) => _runtime.InvokeKeyboardDown(args);
 
 		private void KeyUp(object sender, KeyboardEventArgs args) => _runtime.InvokeKeyboardUp(args);
+
+		private void MouseMove(object sender, ScreenEventArgs args)
+		{
+			args = Transform(args);
+			if (args.X == _mouseX && args.Y == _mouseY) return;
+			_hasUpdate = true;
+			_mouseX = args.X;
+			_mouseY = args.Y;
+			_runtime.InvokeMouseMove(args);
+		}
+
+		private void MouseDown(object sender, ScreenEventArgs args) => _runtime.InvokeMouseDown(Transform(args));
+		private void MouseUp(object sender, ScreenEventArgs args) => _runtime.InvokeMouseUp(Transform(args));
 
 		public GameWindow(Runtime runtime) : base("CivOne")
 		{
@@ -73,6 +88,9 @@ namespace CivOne
 			OnDraw += Draw;
 			OnKeyDown += KeyDown;
 			OnKeyUp += KeyUp;
+			OnMouseMove += MouseMove;
+			OnMouseDown += MouseDown;
+			OnMouseUp += MouseUp;
 		}
 	}
 }
