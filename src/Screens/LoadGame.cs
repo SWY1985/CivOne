@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
+using CivOne.GameSave;
 using CivOne.Graphics;
 using CivOne.UserInterface;
 
@@ -20,65 +21,6 @@ namespace CivOne.Screens
 {
 	internal class LoadGame : BaseScreen
 	{
-		private class SaveGameFile
-		{
-			public bool ValidFile { get; private set; }
-			public string SveFile { get; private set; }
-			public string MapFile { get; private set; }
-			public int Difficulty { get; private set; }
-			
-			public string Name { get; private set; }
-			
-			private ushort ReadUShort(BinaryReader reader, int position)
-			{
-				return Common.BinaryReadUShort(reader, position);
-			}
-			
-			private string[] ReadStrings(BinaryReader reader, int position, int length, int itemLength)
-			{
-				return Common.BinaryReadStrings(reader, position, length, itemLength);
-			}
-			
-			public SaveGameFile(string filename)
-			{
-				ValidFile = false;
-				Name = "(EMPTY)";
-				SveFile = string.Format("{0}.SVE", filename);
-				MapFile = string.Format("{0}.MAP", filename);
-				if (!File.Exists(SveFile) || !File.Exists(MapFile)) return;
-				
-				try
-				{
-					using (FileStream fs = new FileStream(SveFile, FileMode.Open))
-					using (BinaryReader br = new BinaryReader(fs))
-					{
-						if (fs.Length != 37856)
-						{
-							Name = "(INCORRECT FILE SIZE)";
-							return;
-						}
-						
-						string turn = Common.YearString(ReadUShort(br, 0));
-						ushort humanPlayer = ReadUShort(br, 2);
-						ushort difficultyLevel = ReadUShort(br, 10);
-						string leaderName = ReadStrings(br, 16, 112, 14)[humanPlayer];
-						string civName = ReadStrings(br, 128, 96, 12)[humanPlayer];
-						string tribeName = ReadStrings(br, 224, 88, 11)[humanPlayer];
-						string title = Common.DifficultyName(difficultyLevel);
-						
-						Name = string.Format("{0} {1}, {2}/{3}", title, leaderName, civName, turn);
-						Difficulty = (int)difficultyLevel;
-					}
-					ValidFile = true;
-				}
-				catch(Exception ex)
-				{
-					Log($"Could not open .SVE file: {ex.InnerException}");
-					Name = "(COULD NOT READ SAVE FILE HEADER)";
-				}
-			}
-		}
-
 		private MouseCursor _cursor = MouseCursor.None;
 		public override MouseCursor Cursor => _cursor;
 		
@@ -109,8 +51,10 @@ namespace CivOne.Screens
 			Log("Load game: {0}", file.Name);
 			
 			Destroy();
-			
-			Game.LoadGame(file.SveFile, file.MapFile);
+
+		    var originalGameLoader = new OriginalGameFileLoader();
+
+			originalGameLoader.LoadGame(file.SveFile, file.MapFile);
 			Common.AddScreen(new GamePlay());
 		}
 		
@@ -164,7 +108,8 @@ namespace CivOne.Screens
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
-			if (Cancel) return false;
+			if (Cancel)
+                return false;
 			
 			char c = Char.ToUpper(args.KeyChar);
 			if (args.Key == Key.Escape)
@@ -174,11 +119,13 @@ namespace CivOne.Screens
 				_update = true;
 				return true;
 			}
-			else if (_menu != null)
+
+            if (_menu != null)
 			{
 				return _menu.KeyDown(args);
 			}
-			else if (args.Key == Key.Enter)
+
+			if (args.Key == Key.Enter)
 			{
 				_menu = new Menu(Palette)
 				{
@@ -207,6 +154,7 @@ namespace CivOne.Screens
 				_update = true;
 				return true;
 			}
+
 			return false;
 		}
 		

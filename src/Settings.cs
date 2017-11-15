@@ -10,6 +10,7 @@
 using System;
 using System.IO;
 using CivOne.Enums;
+using CivOne.GameSave;
 using CivOne.Graphics.Sprites;
 
 namespace CivOne
@@ -31,15 +32,25 @@ namespace CivOne
 		private bool _deityEnabled = false;
 		private bool _arrowHelper = false;
 		private CursorType _cursorType = CursorType.Default;
-
 		private DestroyAnimation _destroyAnimation = DestroyAnimation.Sprites;
 		
 		internal string StorageDirectory => Directory.GetCurrentDirectory();
 		internal string CaptureDirectory => Path.Combine(StorageDirectory, "capture");
 		internal string DataDirectory => Path.Combine(StorageDirectory, "data");
 		internal string PluginsDirectory => Path.Combine(StorageDirectory, "plugins");
-		internal string SavesDirectory => Path.Combine(StorageDirectory, "saves");
-		private string SettingsDirectory => Path.Combine(StorageDirectory, "settings");
+
+		internal string SavesDirectory
+		{
+		    get
+		    {
+		        if (GameSavesMode == GameSavesMode.ORIGINAL)
+		            return Path.Combine(StorageDirectory, "saves", "original");
+
+		        return Path.Combine(StorageDirectory, "saves", "json");
+            }
+		}
+
+	    private string SettingsDirectory => Path.Combine(StorageDirectory, "settings");
 		internal string SoundsDirectory => Path.Combine(StorageDirectory, "sounds");
 
 		// Settings
@@ -58,7 +69,9 @@ namespace CivOne
 				Common.ReloadSettings = true;
 			}
 		}
-		
+
+	    public GameSavesMode GameSavesMode { get; set; }
+
 		public bool FullScreen
 		{
 			get
