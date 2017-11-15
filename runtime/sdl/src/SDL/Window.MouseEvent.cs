@@ -24,6 +24,13 @@ namespace CivOne
 					SDL_ShowCursor(_cursorVisible ? 1 : 0);
 				}
 			}
+
+			private void HandleMouse()
+			{
+				uint buttonMask = SDL_GetMouseState(out int x, out int y);
+				MouseX = x;
+				MouseY = y;
+			}
 		}
 	}
 }

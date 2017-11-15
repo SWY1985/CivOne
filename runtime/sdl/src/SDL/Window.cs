@@ -35,6 +35,9 @@ namespace CivOne
 				SDL_RenderFillRect(_renderer, ref rect);
 			}
 
+			protected int MouseX { get; private set; }
+			protected int MouseY { get; private set; }
+
 			protected void Clear(Color color)
 			{
 				_redraw = true;
@@ -98,6 +101,8 @@ namespace CivOne
 
 					OnUpdate?.Invoke(this, EventArgs.Empty);
 					OnDraw?.Invoke(this, EventArgs.Empty);
+
+					HandleMouse();
 
 					if (!_redraw)
 					{

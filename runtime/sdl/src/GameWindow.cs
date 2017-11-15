@@ -40,6 +40,13 @@ namespace CivOne
 			_hasUpdate = (_hasUpdate || updateArgs.HasUpdate);
 
 			CursorVisible = !(Settings.CursorType != CursorType.Native || _runtime.CurrentCursor == MouseCursor.None);
+			if (_mouseX != MouseX - (MouseX % 2) || _mouseY != MouseY - (MouseY % 2))
+			{
+				_hasUpdate = true;
+				_mouseX = MouseX - (MouseX % 2);
+				_mouseY = MouseY - (MouseY % 2);
+				_runtime.InvokeMouseMove(new ScreenEventArgs(_mouseX / 2, _mouseY / 2));
+			}
 		}
 
 		private void Draw(object sender, EventArgs args)
@@ -50,7 +57,7 @@ namespace CivOne
 
 			Clear(Color.Black);
 			DrawBitmap(_runtime.Bitmap, 0, 0, 2, 2);
-			DrawBitmap(_runtime.Cursor, 10, 10, 2, 2);
+			DrawBitmap(_runtime.Cursor, MouseX - (MouseX % 2), MouseY - (MouseY % 2), 2, 2);
 		}
 
 		private void KeyDown(object sender, KeyboardEventArgs args) => _runtime.InvokeKeyboardDown(args);

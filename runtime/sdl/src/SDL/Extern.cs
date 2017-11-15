@@ -38,6 +38,9 @@ namespace CivOne
 		private static extern void SDL_ShowCursor(int toggle);
 
 		[DllImportAttribute(DLL_SDL)]
+		private static extern uint SDL_GetMouseState(out int x, out int y);
+
+		[DllImportAttribute(DLL_SDL)]
 		private static extern IntPtr SDL_Init(SDL_INIT flags);
 
 		[DllImportAttribute(DLL_SDL)]
