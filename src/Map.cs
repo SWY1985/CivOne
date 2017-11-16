@@ -7,23 +7,22 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using CivOne.Enums;
 using CivOne.Graphics;
 using CivOne.Graphics.ImageFormats;
 using CivOne.IO;
 using CivOne.Tiles;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CivOne
 {
-	public class Map
+    public class Map
 	{
 		private static Resources Resources = Resources.Instance;
-		private static void Log(string text, params object[] parameters) => RuntimeHandler.Runtime.Log(text, parameters);
 
 		public const int WIDTH = 80;
 		public const int HEIGHT = 50;
@@ -39,29 +38,36 @@ namespace CivOne
 		{
 			ITile[,] area = this[x, y, width, height];
 			for (int yy = 0; yy < height; yy++)
-			for (int xx = 0; xx < width; xx++)
-			{
-				yield return area[xx, yy];
-			}
+            {
+                for (int xx = 0; xx < width; xx++)
+			    {
+				    yield return area[xx, yy];
+			    }
+            }
 		}
 		
 		public IEnumerable<ITile> AllTiles()
 		{
 			for (int y = 0; y < HEIGHT; y++)
-			for (int x = 0; x < WIDTH; x++)
-			{
-				yield return this[x, y];
-			}
+            {
+                for (int x = 0; x < WIDTH; x++)
+			    {
+				    yield return this[x, y];
+			    }
+            }
 		}
 		
 		private bool NearOcean(int x, int y)
 		{
 			for (int relY = -1; relY <= 1; relY++)
-			for (int relX = -1; relX <= 1; relX++)
-			{
-				if (Math.Abs(relX) == Math.Abs(relY)) continue;
-				if (_tiles[x + relX, y + relY] is Ocean) return true;
-			}
+            {
+                for (int relX = -1; relX <= 1; relX++)
+			    {
+				    if (Math.Abs(relX) == Math.Abs(relY)) continue;
+				    if (_tiles[x + relX, y + relY] is Ocean) return true;
+			    }    
+            }
+            
 			return false;
 		}
 		
@@ -141,7 +147,7 @@ namespace CivOne
 		
 		private int[,] GenerateLandMass()
 		{
-			Log("Map: Stage 1 - Generate land mass");
+			Logger.Log("Map: Stage 1 - Generate land mass");
 			
 			int[,] elevation = new int[WIDTH, HEIGHT];
 			int landMassSize = (int)((WIDTH * HEIGHT) / 12.5) * (_landMass + 2);
@@ -159,86 +165,92 @@ namespace CivOne
 			
 			// remove narrow passages
 			for (int y = 0; y < (HEIGHT - 1); y++)
-			for (int x = 0; x < (WIDTH - 1); x++)
-			{
-				if ((elevation[x, y] > 0 && elevation[x + 1, y + 1] > 0) && (elevation[x + 1, y] == 0 && elevation[x, y + 1] == 0))
-				{
-					elevation[x + 1, y]++;
-					elevation[x, y + 1]++;
-				}
-				else if ((elevation[x, y] == 0 && elevation[x + 1, y + 1] == 0) && (elevation[x + 1, y] > 0 && elevation[x, y + 1] > 0))
-				{
-					elevation[x + 1, y + 1]++;
-				}
-			}
+            {
+			    for (int x = 0; x < (WIDTH - 1); x++)
+			    {
+				    if ((elevation[x, y] > 0 && elevation[x + 1, y + 1] > 0) && (elevation[x + 1, y] == 0 && elevation[x, y + 1] == 0))
+				    {
+					    elevation[x + 1, y]++;
+					    elevation[x, y + 1]++;
+				    }
+				    else if ((elevation[x, y] == 0 && elevation[x + 1, y + 1] == 0) && (elevation[x + 1, y] > 0 && elevation[x, y + 1] > 0))
+				    {
+					    elevation[x + 1, y + 1]++;
+				    }
+			    }
+            }
 			
 			return elevation;
 		}
 		
 		private int[,] TemperatureAdjustments()
 		{
-			Log("Map: Stage 2 - Temperature adjustments");
+			Logger.Log("Map: Stage 2 - Temperature adjustments");
 			
 			int[,] latitude = new int[WIDTH, HEIGHT];
 			
 			for (int y = 0; y < HEIGHT; y++)
-			for (int x = 0; x < WIDTH; x++)
-			{
-				int l = (int)(((float)y / HEIGHT) * 50) - 29;
-				l += Common.Random.Next(7);
-				if (l < 0) l = -l;
-				l += 1 - _temperature;
+            {
+			    for (int x = 0; x < WIDTH; x++)
+			    {
+				    int l = (int)(((float)y / HEIGHT) * 50) - 29;
+				    l += Common.Random.Next(7);
+				    if (l < 0) l = -l;
+				    l += 1 - _temperature;
 				
-				l = (l / 6) + 1;
+				    l = (l / 6) + 1;
 				
-				switch (l)
-				{
-					case 0:
-					case 1: latitude[x, y] = 0; break;
-					case 2:
-					case 3: latitude[x, y] = 1; break;
-					case 4:
-					case 5: latitude[x, y] = 2; break;
-					case 6:
-					default: latitude[x, y] = 3; break;
-				}
-			}
+				    switch (l)
+				    {
+					    case 0:
+					    case 1: latitude[x, y] = 0; break;
+					    case 2:
+					    case 3: latitude[x, y] = 1; break;
+					    case 4:
+					    case 5: latitude[x, y] = 2; break;
+					    case 6:
+					    default: latitude[x, y] = 3; break;
+				    }
+			    }
+            }
 			
 			return latitude;
 		}
 		
 		private void MergeElevationAndLatitude(int[,] elevation, int[,] latitude)
 		{
-			Log("Map: Stage 3 - Merge elevation and latitude into the map");
+			Logger.Log("Map: Stage 3 - Merge elevation and latitude into the map");
 			
 			// merge elevation and latitude into the map
 			for (int y = 0; y < HEIGHT; y++)
-			for (int x = 0; x < WIDTH; x++)
-			{
-				bool special = TileIsSpecial(x, y);
-				switch (elevation[x, y])
-				{
-					case 0: _tiles[x, y] = new Ocean(x, y, special); break;
-					case 1:
-						{
-							switch (latitude[x, y])
-							{
-								case 0: _tiles[x, y] = new Desert(x, y, special); break;
-								case 1: _tiles[x, y] = new Plains(x, y, special); break;
-								case 2: _tiles[x, y] = new Tundra(x, y, special); break;
-								case 3: _tiles[x, y] = new Arctic(x, y, special); break;
-							}
-						}
-						break;
-					case 2: _tiles[x, y] = new Hills(x, y, special); break;
-					default: _tiles[x, y] = new Mountains(x, y, special); break;
-				}
-			}
+            {
+			    for (int x = 0; x < WIDTH; x++)
+			    {
+				    bool special = TileIsSpecial(x, y);
+				    switch (elevation[x, y])
+				    {
+					    case 0: _tiles[x, y] = new Ocean(x, y, special); break;
+					    case 1:
+						    {
+							    switch (latitude[x, y])
+							    {
+								    case 0: _tiles[x, y] = new Desert(x, y, special); break;
+								    case 1: _tiles[x, y] = new Plains(x, y, special); break;
+								    case 2: _tiles[x, y] = new Tundra(x, y, special); break;
+								    case 3: _tiles[x, y] = new Arctic(x, y, special); break;
+							    }
+						    }
+						    break;
+					    case 2: _tiles[x, y] = new Hills(x, y, special); break;
+					    default: _tiles[x, y] = new Mountains(x, y, special); break;
+				    }
+			    }
+            }
 		}
 		
 		private void ClimateAdjustments()
 		{
-			Log("Map: Stage 4 - Climate adjustments");
+			Logger.Log("Map: Stage 4 - Climate adjustments");
 			
 			int wetness, latitude;
 			
@@ -312,11 +324,12 @@ namespace CivOne
 		
 		private void AgeAdjustments()
 		{
-			Log("Map: Stage 5 - Age adjustments");
+			Logger.Log("Map: Stage 5 - Age adjustments");
 			
 			int x = 0;
 			int y = 0;
 			int ageRepeat = (int)(((float)800 * (1 + _age) / (80 * 50)) * (WIDTH * HEIGHT));
+
 			for (int i = 0; i < ageRepeat; i++)
 			{
 				if (i % 2 == 0)
@@ -370,7 +383,7 @@ namespace CivOne
 		
 		private void CreateRivers()
 		{
-			Log("Map: Stage 6 - Create rivers");
+			Logger.Log("Map: Stage 6 - Create rivers");
 			
 			int rivers = 0;
 			for (int i = 0; i < 256 && rivers < ((_climate + _landMass) * 2) + 6; i++)
@@ -436,85 +449,94 @@ namespace CivOne
 		private void CalculateContinentSize()
 		{
 			// TODO: This function needs to be been checked against the original function. It does not yet work as intended.
-			Log("Map: Calculate continent and ocean sizes");
+			Logger.Log("Map: Calculate continent and ocean sizes");
 			
 			// Initial continents
 			byte continentId = 0;
-			for (int y = 0; y < HEIGHT; y++)
-			for (int x = 0; x < WIDTH; x++)
-			{
-				ITile tile = this[x, y], north = this[x, y - 1], west = this[x - 1, y];
-				
-				if (north != null && (north.IsOcean == tile.IsOcean) && north.ContinentId > 0)
-				{
-					tile.ContinentId = north.ContinentId;
-				}
-				else if (west != null && (west.IsOcean == tile.IsOcean) && west.ContinentId > 0)
-				{
-					tile.ContinentId = west.ContinentId;
-				}
-				else
-				{
-					tile.ContinentId = ++continentId;
-				}
-				
-				if (north == null || west == null) continue;
-				if (north.IsOcean != west.IsOcean) continue;
-				
-				// Merge continents
-				if (north.ContinentId != west.ContinentId && north.ContinentId > 0 && west.ContinentId > 0)
-				{
-					int northCount = AllTiles().Count(t => t.ContinentId == north.ContinentId);
-					int westCount = AllTiles().Count(t => t.ContinentId == west.ContinentId);
-					if (northCount > westCount)
-					{
-						foreach (ITile westTile in AllTiles().Where(t => t.ContinentId == west.ContinentId))
-						{
-							westTile.ContinentId = north.ContinentId;
-						}
-						continue;
-					}
-					foreach (ITile northTile in AllTiles().Where(t => t.ContinentId == north.ContinentId))
-					{
-						northTile.ContinentId = west.ContinentId;
-					}
-				}
-			}
-			
-			for (int x = 0; x < WIDTH; x++)
-			for (int y = 0; y < HEIGHT; y++)
-			{
-				ITile tile = this[x, y], north = this[x, y - 1], west = this[x - 1, y];
-				
-				if (north == null || west == null) continue;
-				if (north.IsOcean != west.IsOcean) continue;
-				
-				// Merge continents
-				if (north.ContinentId != west.ContinentId && north.ContinentId > 0 && west.ContinentId > 0)
-				{
-					int northCount = AllTiles().Count(t => t.ContinentId == north.ContinentId);
-					int westCount = AllTiles().Count(t => t.ContinentId == west.ContinentId);
-					if (northCount > westCount)
-					{
-						foreach (ITile westTile in AllTiles().Where(t => t.ContinentId == west.ContinentId))
-						{
-							westTile.ContinentId = north.ContinentId;
-						}
-						continue;
-					}
-					foreach (ITile northTile in AllTiles().Where(t => t.ContinentId == north.ContinentId))
-					{
-						northTile.ContinentId = west.ContinentId;
-					}
-				}
-			}
-			
-			List<ITile[]> continents = new List<ITile[]>();
+		    for (int y = 0; y < HEIGHT; y++)
+		    {
+		        for (int x = 0; x < WIDTH; x++)
+		        {
+		            ITile tile = this[x, y], north = this[x, y - 1], west = this[x - 1, y];
+
+		            if (north != null && (north.IsOcean == tile.IsOcean) && north.ContinentId > 0)
+		            {
+		                tile.ContinentId = north.ContinentId;
+		            }
+		            else if (west != null && (west.IsOcean == tile.IsOcean) && west.ContinentId > 0)
+		            {
+		                tile.ContinentId = west.ContinentId;
+		            }
+		            else
+		            {
+		                tile.ContinentId = ++continentId;
+		            }
+
+		            if (north == null || west == null) continue;
+		            if (north.IsOcean != west.IsOcean) continue;
+
+		            // Merge continents
+		            if (north.ContinentId != west.ContinentId && north.ContinentId > 0 && west.ContinentId > 0)
+		            {
+		                int northCount = AllTiles().Count(t => t.ContinentId == north.ContinentId);
+		                int westCount = AllTiles().Count(t => t.ContinentId == west.ContinentId);
+
+		                if (northCount > westCount)
+		                {
+		                    foreach (ITile westTile in AllTiles().Where(t => t.ContinentId == west.ContinentId))
+		                    {
+		                        westTile.ContinentId = north.ContinentId;
+		                    }
+		                    continue;
+		                }
+
+		                foreach (ITile northTile in AllTiles().Where(t => t.ContinentId == north.ContinentId))
+		                {
+		                    northTile.ContinentId = west.ContinentId;
+		                }
+		            }
+		        }
+		    }
+
+		    for (int x = 0; x < WIDTH; x++)
+		    {
+		        for (int y = 0; y < HEIGHT; y++)
+		        {
+		            ITile tile = this[x, y], north = this[x, y - 1], west = this[x - 1, y];
+
+		            if (north == null || west == null) continue;
+		            if (north.IsOcean != west.IsOcean) continue;
+
+		            // Merge continents
+		            if (north.ContinentId != west.ContinentId && north.ContinentId > 0 && west.ContinentId > 0)
+		            {
+		                int northCount = AllTiles().Count(t => t.ContinentId == north.ContinentId);
+		                int westCount = AllTiles().Count(t => t.ContinentId == west.ContinentId);
+		                if (northCount > westCount)
+		                {
+		                    foreach (ITile westTile in AllTiles().Where(t => t.ContinentId == west.ContinentId))
+		                    {
+		                        westTile.ContinentId = north.ContinentId;
+		                    }
+		                    continue;
+		                }
+
+		                foreach (ITile northTile in AllTiles().Where(t => t.ContinentId == north.ContinentId))
+		                {
+		                    northTile.ContinentId = west.ContinentId;
+		                }
+		            }
+		        }
+		    }
+
+		    List<ITile[]> continents = new List<ITile[]>();
+
 			for (int i = 0; i <= 255; i++)
 			{
 				if (!AllTiles().Any(x => x.ContinentId == i)) continue;
 				continents.Add(AllTiles().Where(x => x.ContinentId == i).ToArray());
 			}
+
 			for (byte i = 1; i < 15; i++)
 			{
 				ITile[] continent = continents.OrderByDescending(x => x.Length).FirstOrDefault();
@@ -526,16 +548,17 @@ namespace CivOne
 					tile.ContinentId = i;
 				}
 			}
+
 			foreach (ITile[] continent in continents)
-			foreach (ITile tile in continent)
-			{
-				tile.ContinentId = 15;
-			}
+			    foreach (ITile tile in continent)
+			    {
+				    tile.ContinentId = 15;
+			    }
 		}
 		
 		private void CreatePoles()
 		{
-			Log("Map: Creating poles");
+			Logger.Log("Map: Creating poles");
 			
 			for (int x = 0; x < WIDTH; x++)
 			foreach (int y in new int[] { 0, (HEIGHT - 1) })
@@ -553,7 +576,7 @@ namespace CivOne
 		
 		private void PlaceHuts()
 		{
-			Log("Map: Placing goody huts");
+			Logger.Log("Map: Placing goody huts");
 			
 			for (int y = 0; y < HEIGHT; y++)
 			for (int x = 0; x < WIDTH; x++)
@@ -575,7 +598,7 @@ namespace CivOne
 		
 		private void CalculateLandValue()
 		{
-			Log("Map: Calculating land value");
+			Logger.Log("Map: Calculating land value");
 			
 			// This code is a translation of Darkpanda's forum post here: http://forums.civfanatics.com/showthread.php?t=498532
 			// Comments are pasted from the original forum thread to make the code more readable.
@@ -658,7 +681,7 @@ namespace CivOne
 		
 		private void GenerateThread()
 		{
-			Log("Generating map (Land Mass: {0}, Temperature: {1}, Climate: {2}, Age: {3})", _landMass, _temperature, _climate, _age);
+			Logger.Log("Generating map (Land Mass: {0}, Temperature: {1}, Climate: {2}, Age: {3})", _landMass, _temperature, _climate, _age);
 			
 			_tiles = new ITile[WIDTH, HEIGHT];
 			
@@ -675,7 +698,7 @@ namespace CivOne
 			CalculateLandValue();
 			
 			Ready = true;
-			Log("Map: Ready");
+			Logger.Log("Map: Ready");
 		}
 		
 		private void LoadMap(Bytemap bitmap)
@@ -683,32 +706,34 @@ namespace CivOne
 			_tiles = new ITile[WIDTH, HEIGHT];
 			
 			for (int x = 0; x < WIDTH; x++)
-			for (int y = 0; y < HEIGHT; y++)
-			{
-				ITile tile;
-				bool special = TileIsSpecial(x, y);
-				switch (bitmap[x, y])
-				{
-					case 2: tile = new Forest(x, y, special); break;
-					case 3: tile = new Swamp(x, y, special); break;
-					case 6: tile = new Plains(x, y, special); break;
-					case 7: tile = new Tundra(x, y, special); break;
-					case 9: tile = new River(x, y); break;
-					case 10: tile = new Grassland(x, y); break;
-					case 11: tile = new Jungle(x, y, special); break;
-					case 12: tile = new Hills(x, y, special); break;
-					case 13: tile = new Mountains(x, y, special); break;
-					case 14: tile = new Desert(x, y, special); break;
-					case 15: tile = new Arctic(x, y, special); break;
-					default: tile = new Ocean(x, y, special); break;
-				}
-				_tiles[x, y] = tile;
-			}
+            {
+			    for (int y = 0; y < HEIGHT; y++)
+			    {
+				    ITile tile;
+				    bool special = TileIsSpecial(x, y);
+				    switch (bitmap[x, y])
+				    {
+					    case 2: tile = new Forest(x, y, special); break;
+					    case 3: tile = new Swamp(x, y, special); break;
+					    case 6: tile = new Plains(x, y, special); break;
+					    case 7: tile = new Tundra(x, y, special); break;
+					    case 9: tile = new River(x, y); break;
+					    case 10: tile = new Grassland(x, y); break;
+					    case 11: tile = new Jungle(x, y, special); break;
+					    case 12: tile = new Hills(x, y, special); break;
+					    case 13: tile = new Mountains(x, y, special); break;
+					    case 14: tile = new Desert(x, y, special); break;
+					    case 15: tile = new Arctic(x, y, special); break;
+					    default: tile = new Ocean(x, y, special); break;
+				    }
+				    _tiles[x, y] = tile;
+			    }
+            }
 		}
 		
 		public void LoadMap(string filename, int randomSeed)
 		{
-			Log("Map: Loading {0} - Random seed: {1}", filename, randomSeed);
+			Logger.Log("Map: Loading {0} - Random seed: {1}", filename, randomSeed);
 			_terrainMasterWord = randomSeed;
 			
 			using (Bytemap bitmap = Resources[filename].Bitmap)
@@ -721,108 +746,118 @@ namespace CivOne
 				
 				// Load improvement layer
 				for (int x = 0; x < WIDTH; x++)
-				for (int y = 0; y < HEIGHT; y++)
-				{
-					byte b = bitmap[x, y + (HEIGHT * 2)];
-					// 0x01 = CITY ?
-					_tiles[x, y].Irrigation = (b & 0x02) > 0;
-					_tiles[x, y].Mine = (b & 0x04) > 0;
-					_tiles[x, y].Road = (b & 0x08) > 0;
-				}
+				    for (int y = 0; y < HEIGHT; y++)
+				    {
+					    byte b = bitmap[x, y + (HEIGHT * 2)];
+					    // 0x01 = CITY ?
+					    _tiles[x, y].Irrigation = (b & 0x02) > 0;
+					    _tiles[x, y].Mine = (b & 0x04) > 0;
+					    _tiles[x, y].Road = (b & 0x08) > 0;
+				    }
 				
 				// Load improvement layer 2
 				for (int x = 0; x < WIDTH; x++)
-				for (int y = 0; y < HEIGHT; y++)
-				{
-					byte b = bitmap[x, y + (HEIGHT * 3)];
-					_tiles[x, y].RailRoad = (b & 0x01) > 0;
-				}
+				    for (int y = 0; y < HEIGHT; y++)
+				    {
+					    byte b = bitmap[x, y + (HEIGHT * 3)];
+					    _tiles[x, y].RailRoad = (b & 0x01) > 0;
+				    }
 				
 				// Remove huts
 				for (int x = 0; x < WIDTH; x++)
-				for (int y = 0; y < HEIGHT; y++)
-				{
-					if (!_tiles[x, y].Hut) continue;
-					byte b = bitmap[x + (WIDTH * 2), y];
-					_tiles[x, y].Hut = (b == 0);
-				}
+				    for (int y = 0; y < HEIGHT; y++)
+				    {
+					    if (!_tiles[x, y].Hut) continue;
+					    byte b = bitmap[x + (WIDTH * 2), y];
+					    _tiles[x, y].Hut = (b == 0);
+				    }
 			}
 			
 			Ready = true;
-			Log("Map: Ready");
+			Logger.Log("Map: Ready");
 		}
 
 		public ushort SaveMap(string filename)
 		{
-			Log($"Map: Saving {filename} - Random seed: {_terrainMasterWord}");
+			Logger.Log($"Map: Saving {filename} - Random seed: {_terrainMasterWord}");
 
 			using (Bytemap bitmap = Resources["SP299"].Bitmap)
 			{
 				// Save terrainlayer
 				for (int x = 0; x < WIDTH; x++)
-				for (int y = 0; y < HEIGHT; y++)
-				{
-					byte b;
-					switch (_tiles[x, y].Type)
-					{
-						case Terrain.Forest: b = 2; break;
-						case Terrain.Swamp: b = 3; break;
-						case Terrain.Plains: b = 6; break;
-						case Terrain.Tundra: b = 7; break;
-						case Terrain.River: b = 9; break;
-						case Terrain.Grassland1:
-						case Terrain.Grassland2: b = 10; break;
-						case Terrain.Jungle: b = 11; break;
-						case Terrain.Hills: b = 12; break;
-						case Terrain.Mountains: b = 13; break;
-						case Terrain.Desert: b = 14; break;
-						case Terrain.Arctic: b = 15; break;
-						default: b = 1; break; // Ocean
-					}
-					bitmap[x, y] = b;
-				}
+                {
+				    for (int y = 0; y < HEIGHT; y++)
+				    {
+					    byte b;
+					    switch (_tiles[x, y].Type)
+					    {
+						    case Terrain.Forest: b = 2; break;
+						    case Terrain.Swamp: b = 3; break;
+						    case Terrain.Plains: b = 6; break;
+						    case Terrain.Tundra: b = 7; break;
+						    case Terrain.River: b = 9; break;
+						    case Terrain.Grassland1:
+						    case Terrain.Grassland2: b = 10; break;
+						    case Terrain.Jungle: b = 11; break;
+						    case Terrain.Hills: b = 12; break;
+						    case Terrain.Mountains: b = 13; break;
+						    case Terrain.Desert: b = 14; break;
+						    case Terrain.Arctic: b = 15; break;
+						    default: b = 1; break; // Ocean
+					    }
+					    bitmap[x, y] = b;
+				    }
+                }
 
 				// Save improvement layer
-				for (int x = 0; x < WIDTH; x++)
-				for (int y = 0; y < HEIGHT; y++)
-				{
-					byte b = 0;
-					if (_tiles[x, y].Irrigation) b |= 0x02;
-					if (_tiles[x, y].Mine) b |= 0x04;
-					if (_tiles[x, y].Road) b |= 0x08;
+			    for (int x = 0; x < WIDTH; x++)
+			    {
+				    for (int y = 0; y < HEIGHT; y++)
+				    {
+					    byte b = 0;
+					    if (_tiles[x, y].Irrigation) b |= 0x02;
+					    if (_tiles[x, y].Mine) b |= 0x04;
+					    if (_tiles[x, y].Road) b |= 0x08;
 
-					bitmap[x, y + (HEIGHT * 2)] = b;
-					bitmap[x + (WIDTH * 2), y + (HEIGHT * 2)] = b; // Visibility layer
-				}
+					    bitmap[x, y + (HEIGHT * 2)] = b;
+					    bitmap[x + (WIDTH * 2), y + (HEIGHT * 2)] = b; // Visibility layer
+				    }
+			    }
 
-				// Save improvement layer 2
-				for (int x = 0; x < WIDTH; x++)
-				for (int y = 0; y < HEIGHT; y++)
-				{
-					byte b = 0;
-					if (_tiles[x, y].RailRoad) b |= 0x01;
+                // Save improvement layer 2
+                for (int x = 0; x < WIDTH; x++)
+			    {
+			        for (int y = 0; y < HEIGHT; y++)
+			        {
+			            byte b = 0;
+			            if (_tiles[x, y].RailRoad) b |= 0x01;
 
-					bitmap[x, y + (HEIGHT * 3)] = b;
-					bitmap[x + (WIDTH * 2), y + (HEIGHT * 3)] = b; // Visibility layer
-				}
+			            bitmap[x, y + (HEIGHT * 3)] = b;
+			            bitmap[x + (WIDTH * 2), y + (HEIGHT * 3)] = b; // Visibility layer
+			        }
+			    }
 
-				// Save explored layer
-				for (int x = 0; x < WIDTH; x++)
-				for (int y = 0; y < HEIGHT; y++)
-				{
-					bitmap[x + (WIDTH * 2), y] = _tiles[x, y].Visited;
-				}
+			    // Save explored layer
+			    for (int x = 0; x < WIDTH; x++)
+			    {
+			        for (int y = 0; y < HEIGHT; y++)
+			        {
+			            bitmap[x + (WIDTH * 2), y] = _tiles[x, y].Visited;
+			        }
+			    }
 
-				using (Picture picture = new Picture(bitmap, Resources["SP299"].Palette))
+			    using (Picture picture = new Picture(bitmap, Resources["SP299"].Palette))
 				{
 					PicFile picFile = new PicFile(picture)
 					{
 						HasPalette256 = false
 					};
+
 					using (BinaryWriter bw = new BinaryWriter(File.Open(filename, FileMode.Create)))
 					{
 						bw.Write(picFile.GetBytes());
 					}
+
 					return (ushort)_terrainMasterWord;
 				}
 			}
@@ -830,7 +865,7 @@ namespace CivOne
 		
 		private void LoadMapThread()
 		{
-			Log("Map: Loading MAP.PIC");
+			Logger.Log("Map: Loading MAP.PIC");
 			
 			using (Bytemap bitmap = Resources["MAP"].Bitmap)
 			{
@@ -842,14 +877,14 @@ namespace CivOne
 			CalculateLandValue();
 			
 			Ready = true;
-			Log("Map: Ready");
+			Logger.Log("Map: Ready");
 		}
 		
 		public void Generate(int landMass = 1, int temperature = 1, int climate = 1, int age = 1)
 		{
 			if (Ready || _tiles != null)
 			{
-				Log("ERROR: Map is already load{0}/generat{0}", (Ready ? "ed" : "ing"));
+				Logger.Log("ERROR: Map is already load{0}/generat{0}", (Ready ? "ed" : "ing"));
 				return;
 			}
 			
@@ -865,7 +900,7 @@ namespace CivOne
 		{
 			if (Ready || _tiles != null)
 			{
-				Log("ERROR: Map is already load{0}/generat{0}", (Ready ? "ed" : "ing"));
+				Logger.Log("ERROR: Map is already load{0}/generat{0}", (Ready ? "ed" : "ing"));
 				return;
 			}
 			
@@ -943,7 +978,7 @@ namespace CivOne
 			_terrainMasterWord = Common.Random.Next(16);
 			Ready = false;
 			
-			Log("Map instance created");
+			Logger.Log("Map instance created");
 		}
 	}
 }
