@@ -29,6 +29,9 @@ namespace CivOne
 		private static extern void SDL_GetWindowSize(IntPtr window, out int width, out int height);
 
 		[DllImportAttribute(DLL_SDL)]
+		private static extern void SDL_SetWindowFullscreen(IntPtr window, SDL_WINDOW flags);
+
+		[DllImportAttribute(DLL_SDL)]
 		private static extern void SDL_Delay(uint ms);
 
 		[DllImportAttribute(DLL_SDL)]

@@ -149,11 +149,13 @@ namespace CivOne
 				}
 			}
 
-			public Window(string title, int width = 640, int height = 400)
+			public Window(string title, int width, int height, bool fullscreen)
 			{
 				SDL_Init(SDL_INIT.VIDEO);
 
-				_handle = SDL_CreateWindow(title, 100, 100, width, height, SDL_WINDOW.RESIZABLE);
+				SDL_WINDOW flags = SDL_WINDOW.RESIZABLE;
+				if (_fullscreen = fullscreen) flags |= SDL_WINDOW.FULLSCREEN_DESKTOP;
+				_handle = SDL_CreateWindow(title, 100, 100, width, height, flags);
 				_renderer = SDL_CreateRenderer(_handle, -1, SDL_RENDERER_FLAGS.SDL_RENDERER_ACCELERATED);
 
 				if (_handle == null)

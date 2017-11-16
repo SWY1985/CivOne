@@ -27,6 +27,7 @@ namespace CivOne
 
 		private bool _mouseCursorVisible = true;
 		private bool _hasUpdate = true;
+		private bool _settingsFullscreen = Settings.FullScreen;
 
 		private void Load(object sender, EventArgs args)
 		{
@@ -40,6 +41,11 @@ namespace CivOne
 			_runtime.InvokeUpdate(ref updateArgs);
 			_hasUpdate = (_hasUpdate || updateArgs.HasUpdate);
 
+			if (_settingsFullscreen != Settings.FullScreen)
+			{
+				_settingsFullscreen = Settings.FullScreen;
+				Fullscreen = _settingsFullscreen;
+			}
 			CursorVisible = !(Settings.CursorType != CursorType.Native || _runtime.CurrentCursor == MouseCursor.None);
 			Runtime.CanvasSize = SetCanvasSize();
 		}
@@ -66,7 +72,15 @@ namespace CivOne
 			return new ScreenEventArgs(x / ScaleX, y / ScaleY, args.Buttons);
 		}
 
-		private void KeyDown(object sender, KeyboardEventArgs args) => _runtime.InvokeKeyboardDown(args);
+		private void KeyDown(object sender, KeyboardEventArgs args)
+		{
+			if (args.Modifier == KeyModifier.Alt && args.Key == Key.Enter)
+			{
+				Fullscreen = !Fullscreen;
+				return;
+			}
+			_runtime.InvokeKeyboardDown(args);
+		}
 
 		private void KeyUp(object sender, KeyboardEventArgs args) => _runtime.InvokeKeyboardUp(args);
 
@@ -83,7 +97,7 @@ namespace CivOne
 		private void MouseDown(object sender, ScreenEventArgs args) => _runtime.InvokeMouseDown(Transform(args));
 		private void MouseUp(object sender, ScreenEventArgs args) => _runtime.InvokeMouseUp(Transform(args));
 
-		public GameWindow(Runtime runtime) : base("CivOne", InitialWidth, InitialHeight)
+		public GameWindow(Runtime runtime) : base("CivOne", InitialWidth, InitialHeight, Settings.FullScreen)
 		{
 			_runtime = runtime;
 
