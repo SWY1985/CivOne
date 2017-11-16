@@ -48,6 +48,7 @@ namespace CivOne
 			}
 			CursorVisible = !(Settings.CursorType != CursorType.Native || _runtime.CurrentCursor == MouseCursor.None);
 			Runtime.CanvasSize = SetCanvasSize();
+			if (_runtime.SignalQuit) StopRunning();
 		}
 
 		private void Draw(object sender, EventArgs args)

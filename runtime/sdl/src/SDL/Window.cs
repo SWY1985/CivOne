@@ -62,6 +62,11 @@ namespace CivOne
 				}
 			}
 
+			protected void StopRunning()
+			{
+				_running = false;
+			}
+
 			private T CastToStruct<T>(object source) where T : struct
 			{
 				IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(source.GetType()));
