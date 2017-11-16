@@ -19,6 +19,18 @@ namespace CivOne
 
 			public event EventHandler OnClose;
 
+			private bool _fullscreen;
+			protected bool Fullscreen
+			{
+				get => _fullscreen;
+				set
+				{
+					if (value == _fullscreen) return;
+					_fullscreen = value;
+					SDL_SetWindowFullscreen(_handle, _fullscreen ? SDL_WINDOW.FULLSCREEN_DESKTOP : 0);
+				}
+			}
+
 			private void Close()
 			{
 				if (OnClose != null) OnClose(this, EventArgs.Empty);
