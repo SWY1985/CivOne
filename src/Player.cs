@@ -147,37 +147,11 @@ namespace CivOne
 			}
 		}
 
-		public ICivilization Civilization
-		{
-			get
-			{
-				return _civilization;
-			}
-		}
+		public ICivilization Civilization => _civilization;
 		
-		public string LeaderName
-		{
-			get
-			{
-				return _civilization.Leader.Name;
-			}
-		}
-		
-		public string TribeName
-		{
-			get
-			{
-				return _tribeName;
-			}
-		}
-		
-		public string TribeNamePlural
-		{
-			get
-			{
-				return _tribeNamePlural;
-			}
-		}
+		public string LeaderName => _civilization.Leader.Name;
+		public string TribeName => _tribeName;
+		public string TribeNamePlural => _tribeNamePlural;
 
 		public byte Handicap { get; internal set; }
 
@@ -224,13 +198,7 @@ namespace CivOne
 				_scienceRate += diff;
 			}
 		}
-		public int ScienceRate
-		{
-			get
-			{
-				return _scienceRate;
-			}
-		}
+		public int ScienceRate => _scienceRate;
 
 		public void Revolt()
 		{
@@ -240,29 +208,11 @@ namespace CivOne
 			GameTask.Enqueue(Message.Newspaper(null, $"The {Game.Instance.HumanPlayer.TribeNamePlural} are", "revolting! Citizens", "demand new govt."));
 		}
 
-		public bool IsHuman
-		{
-			get
-			{
-				return (Game.Instance.HumanPlayer == this);
-			}
-		}
+		public bool IsHuman => (Game.Instance.HumanPlayer == this);
 
-		public City[] Cities
-		{
-			get
-			{
-				return Game.Instance.GetCities().Where(c => this == c.Owner && c.Size > 0).ToArray();
-			}
-		}
+		public City[] Cities => Game.Instance.GetCities().Where(c => this == c.Owner && c.Size > 0).ToArray();
 
-		public int Population
-		{
-			get
-			{
-				return Cities.Sum(c => c.Population);
-			}
-		}
+		public int Population => Cities.Sum(c => c.Population);
 		
 		public short Gold
 		{
@@ -430,10 +380,7 @@ namespace CivOne
 			return false;
 		}
 		
-		public bool HasWonder<T>() where T : IWonder
-		{
-			return Cities.Any(c => c.HasWonder<T>());
-		}
+		public bool HasWonder<T>() where T : IWonder => Cities.Any(c => c.HasWonder<T>());
 
 		public bool ProductionAvailable(IProduction production)
 		{
@@ -446,13 +393,7 @@ namespace CivOne
 			return true;
 		}
 
-		public int DestroyTurn
-		{
-			get
-			{
-				return _destroyTurn;
-			}
-		}
+		public int DestroyTurn => _destroyTurn;
 
 		public bool IsDestroyed
 		{
@@ -535,30 +476,13 @@ namespace CivOne
 			return false;
 		}
 		
-		public override int GetHashCode()
-		{
-			return Game.PlayerNumber(this);
-		}
+		public override int GetHashCode() => Game.PlayerNumber(this);
 
-		public static explicit operator Player(byte playerNumber)
-		{
-			return Game.GetPlayer(playerNumber);
-		}
-
-		public static explicit operator byte(Player player)
-		{
-			return Game.PlayerNumber(player);
-		}
-
-		public static bool operator ==(Player p1, byte p2)
-		{
-			return Game.PlayerNumber(p1) == p2;
-		}
-
-		public static bool operator !=(Player p1, byte p2)
-		{
-			return Game.PlayerNumber(p1) != p2;
-		}
+		public static explicit operator Player(byte playerNumber) => Game.GetPlayer(playerNumber);
+		public static explicit operator byte(Player player) => Game.PlayerNumber(player);
+		
+		public static bool operator ==(Player p1, byte p2) => Game.PlayerNumber(p1) == p2;
+		public static bool operator !=(Player p1, byte p2) => Game.PlayerNumber(p1) != p2;
 		
 		public Player(ICivilization civilization, string customLeaderName = null, string customTribeName = null, string customTribeNamePlural = null)
 		{

@@ -71,51 +71,16 @@ namespace CivOne
 		private List<IBuilding> _buildings = new List<IBuilding>();
 		private List<IWonder> _wonders = new List<IWonder>();
 
-		public IBuilding[] Buildings
-		{
-			get
-			{
-				return _buildings.OrderBy(b => b.Id).ToArray();
-			}
-		}
+		public IBuilding[] Buildings => _buildings.OrderBy(b => b.Id).ToArray();
+		public IWonder[] Wonders => _wonders.OrderBy(b => b.Id).ToArray();
 
-		public IWonder[] Wonders
-		{
-			get
-			{
-				return _wonders.OrderBy(b => b.Id).ToArray();
-			}
-		}
+		public bool HasBuilding(IBuilding building) => _buildings.Any(b => b.Id == building.Id);
+		public bool HasBuilding(Type type) => _buildings.Any(b => b.GetType() == type);
+		public bool HasBuilding<T>() where T : IBuilding => _buildings.Any(b => b is T);
 
-		public bool HasBuilding(IBuilding building)
-		{
-			return _buildings.Any(b => b.Id == building.Id);
-		}
-
-		public bool HasBuilding(Type type)
-		{
-			return _buildings.Any(b => b.GetType() == type);
-		}
-
-		public bool HasBuilding<T>() where T : IBuilding
-		{
-			return _buildings.Any(b => b is T);
-		}
-
-		public bool HasWonder(IWonder wonder)
-		{
-			return _wonders.Any(w => w.Id == wonder.Id);
-		}
-
-		public bool HasWonder(Type type)
-		{
-			return _wonders.Any(w => w.GetType() == type);
-		}
-
-		public bool HasWonder<T>() where T : IWonder
-		{
-			return _wonders.Any(w => w is T);
-		}
+		public bool HasWonder(IWonder wonder) => _wonders.Any(w => w.Id == wonder.Id);
+		public bool HasWonder(Type type) => _wonders.Any(w => w.GetType() == type);
+		public bool HasWonder<T>() where T : IWonder => _wonders.Any(w => w is T);
 
 		internal int ShieldCosts
 		{
@@ -136,13 +101,7 @@ namespace CivOne
 			}
 		}
 
-		internal int ShieldIncome
-		{
-			get
-			{
-				return ShieldTotal - ShieldCosts;
-			}
-		}
+		internal int ShieldIncome => ShieldTotal - ShieldCosts;
 		
 		internal int FoodCosts
 		{
@@ -162,21 +121,9 @@ namespace CivOne
 			}
 		}
 
-		internal int FoodIncome
-		{
-			get
-			{
-				return ResourceTiles.Sum(t => FoodValue(t)) - FoodCosts;
-			}
-		}
-
-		internal int FoodRequired
-		{
-			get
-			{
-				return (int)(Size + 1) * 10;
-			}
-		}
+		internal int FoodIncome => ResourceTiles.Sum(t => FoodValue(t)) - FoodCosts;
+		internal int FoodRequired => (int)(Size + 1) * 10;
+		internal int FoodTotal => ResourceTiles.Sum(t => FoodValue(t));
 
 		internal int FoodValue(ITile tile)
 		{
@@ -197,14 +144,6 @@ namespace CivOne
 			}
 			if (tile.RailRoad) output = (int)Math.Floor((double)output * 1.5);
 			return output;
-		}
-
-		internal int FoodTotal
-		{
-			get
-			{
-				return ResourceTiles.Sum(t => FoodValue(t));
-			}
 		}
 
 		internal int ShieldValue(ITile tile)
@@ -264,37 +203,10 @@ namespace CivOne
 			return output;
 		}
 
-		internal int TradeTotal
-		{
-			get
-			{
-				return ResourceTiles.Sum(t => TradeValue(t));
-			}
-		}
-
-		private short TradeScience
-		{
-			get
-			{
-				return (short)(TradeTotal - TradeLuxuries - TradeTaxes);
-			}
-		}
-
-		private short TradeLuxuries
-		{
-			get
-			{
-				return (short)Math.Round(((double)(TradeTotal - TradeTaxes) / (10 - Player.TaxesRate)) * Player.LuxuriesRate, MidpointRounding.AwayFromZero);
-			}
-		}
-
-		private short TradeTaxes
-		{
-			get
-			{
-				return (short)Math.Round(((double)TradeTotal / 10) * Player.TaxesRate, MidpointRounding.AwayFromZero);
-			}
-		}
+		internal int TradeTotal => ResourceTiles.Sum(t => TradeValue(t));
+		private short TradeScience => (short)(TradeTotal - TradeLuxuries - TradeTaxes);
+		private short TradeLuxuries => (short)Math.Round(((double)(TradeTotal - TradeTaxes) / (10 - Player.TaxesRate)) * Player.LuxuriesRate, MidpointRounding.AwayFromZero);
+		private short TradeTaxes => (short)Math.Round(((double)TradeTotal / 10) * Player.TaxesRate, MidpointRounding.AwayFromZero);
 
 		internal short Luxuries
 		{
@@ -334,13 +246,7 @@ namespace CivOne
 			}
 		}
 
-		internal short TotalMaintenance
-		{
-			get
-			{
-				return (short)_buildings.Sum(b => b.Maintenance);
-			}
-		}
+		internal short TotalMaintenance => (short)_buildings.Sum(b => b.Maintenance);
 
 		internal byte Status
 		{
@@ -355,13 +261,7 @@ namespace CivOne
 			}
 		}
 
-		internal IEnumerable<ITile> ResourceTiles
-		{
-			get
-			{
-				return CityTiles.Where(t => (t.X == X && t.Y == Y) || _resourceTiles.Contains(t));
-			}
-		}
+		internal IEnumerable<ITile> ResourceTiles => CityTiles.Where(t => (t.X == X && t.Y == Y) || _resourceTiles.Contains(t));
 
 		internal bool OccupiedTile(ITile tile)
 		{
@@ -506,13 +406,7 @@ namespace CivOne
 			UpdateSpecialists();
 		}
 
-		private Player Player
-		{
-			get
-			{
-				return Game.Instance.GetPlayer(Owner);
-			}
-		}
+		private Player Player => Game.Instance.GetPlayer(Owner);
 
 		public IEnumerable<IProduction> AvailableProduction
 		{
@@ -536,10 +430,7 @@ namespace CivOne
 			}
 		}
 
-		public void SetProduction(IProduction production)
-		{
-			CurrentProduction = production;
-		}
+		public void SetProduction(IProduction production) => CurrentProduction = production;
 
 		internal void SetProduction(byte productionId)
 		{
@@ -693,28 +584,13 @@ namespace CivOne
 			}
 		}
 
-		public IUnit[] Units
-		{
-			get
-			{
-				return Game.Instance.GetUnits().Where(u => u.Home == this).ToArray();
-			}
-		}
+		public IUnit[] Units => Game.Instance.GetUnits().Where(u => u.Home == this).ToArray();
 
-		public ITile Tile
-		{
-			get
-			{
-				return Map[X, Y];
-			}
-		}
+		public ITile Tile => Map[X, Y];
 
 		public bool BuildingSold { get; private set; }
 
-		public void AddBuilding(IBuilding building)
-		{
-			_buildings.Add(building);
-		}
+		public void AddBuilding(IBuilding building) => _buildings.Add(building);
 
 		public void SellBuilding(IBuilding building)
 		{
@@ -723,15 +599,8 @@ namespace CivOne
 			BuildingSold = true;
 		}
 
-		private void RemoveBuilding(IBuilding building)
-		{
-			_buildings.RemoveAll(b => b.Id == building.Id);
-		}
-
-		public void RemoveBuilding<T>() where T : IBuilding
-		{
-			_buildings.RemoveAll(b => b is T);
-		}
+		private void RemoveBuilding(IBuilding building) => _buildings.RemoveAll(b => b.Id == building.Id);
+		public void RemoveBuilding<T>() where T : IBuilding => _buildings.RemoveAll(b => b is T);
 
 		public void AddWonder(IWonder wonder)
 		{
