@@ -94,7 +94,7 @@ namespace CivOne
 			{
 				SDL_Delay(time);
 			}
-
+			
 			protected int Width
 			{
 				get
