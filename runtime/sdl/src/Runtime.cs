@@ -46,8 +46,8 @@ namespace CivOne
 		string IRuntime.StorageFolder => Directory.GetCurrentDirectory();
 		int IRuntime.CanvasWidth => CanvasSize.Width;
 		int IRuntime.CanvasHeight => CanvasSize.Height;
-
-		string IRuntime.BrowseFolder(string caption) => null;
+		
+		string IRuntime.BrowseFolder(string caption) => Native.FolderBrowser(caption);
 		void IRuntime.PlaySound(string filename) => Console.WriteLine("PLAY SOUND NOT IMPLEMENTED");
 		void IRuntime.StopSound() => Console.WriteLine("STOP SOUND NOT IMPLEMENTED");
 		void IRuntime.Quit() => SignalQuit = true;
