@@ -59,13 +59,28 @@ namespace CivOne
 		private static extern int SDL_RenderClear(IntPtr renderer);
 
 		[DllImportAttribute(DLL_SDL)]
-		private static extern int SDL_RenderFillRect(IntPtr renderer, ref SDL_Rect dstrect);
+		private static extern int SDL_RenderCopy(IntPtr renderer, IntPtr texture, ref SDL_Rect srcrect, ref SDL_Rect dstrect);
 
 		[DllImportAttribute(DLL_SDL)]
 		private static extern void SDL_RenderPresent(IntPtr renderer);
 
 		[DllImportAttribute(DLL_SDL)]
 		private static extern int SDL_SetRenderDrawColor(IntPtr renderer, byte r, byte g, byte b, byte a);
+		
+		[DllImportAttribute(DLL_SDL)]
+		private static extern IntPtr SDL_CreateTexture(IntPtr renderer, uint format, SDL_TextureAccess access, int width, int height);
+
+		[DllImportAttribute(DLL_SDL)]
+		private static extern void SDL_DestroyTexture(IntPtr texture);
+
+		[DllImportAttribute(DLL_SDL)]
+		private static extern int SDL_SetTextureBlendMode(IntPtr texture, SDL_BlendMode blendMode);
+
+		[DllImportAttribute(DLL_SDL)]
+		private static extern int SDL_LockTexture(IntPtr texture, ref SDL_Rect rect, out IntPtr pixels, out int pitch);
+
+		[DllImportAttribute(DLL_SDL)]
+		private static extern void SDL_UnlockTexture(IntPtr texture);
 
 		[DllImportAttribute(DLL_SDL)]
 		private static extern IntPtr SDL_Window();

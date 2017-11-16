@@ -25,15 +25,7 @@ namespace CivOne
 
 			private bool _running = true, _redraw = false;
 
-			private void FillRectangle(Rectangle rectangle, Color color)
-			{
-				_redraw = true;
-
-				SDL_Rect rect = new SDL_Rect() { X = rectangle.X, Y = rectangle.Y, W = rectangle.Width, H = rectangle.Height };
-
-				SDL_SetRenderDrawColor(_renderer, color.R, color.G, color.B, color.A);
-				SDL_RenderFillRect(_renderer, ref rect);
-			}
+			protected Texture CreateTexture(IBitmap bitmap) => new Texture(_renderer, bitmap);
 
 			protected void Clear(Color color)
 			{
@@ -41,25 +33,6 @@ namespace CivOne
 
 				SDL_SetRenderDrawColor(_renderer, color.R, color.G, color.B, color.A);
 				SDL_RenderClear(_renderer);
-			}
-
-			protected void DrawBitmap(IBitmap bitmap, int x, int y, int pixelWidth, int pixelHeight)
-			{
-				if (bitmap == null) return;
-				Bytemap bytemap = bitmap.Bitmap;
-				Colour[] palette = bitmap.Palette.Entries.ToArray();
-
-				for (int yy = 0; yy < bytemap.Height; yy++)
-				for (int xx = 0; xx < bytemap.Width; xx++)
-				{
-					byte entry = bytemap[xx, yy];
-					if (entry == 0) continue;
-					Colour c = palette[entry];
-					Rectangle rect = new Rectangle(x + (xx * pixelWidth), y + (yy * pixelHeight), pixelWidth, pixelHeight);
-					Color color = Color.FromArgb(255, c.R, c.G, c.B);
-
-					FillRectangle(rect, color);
-				}
 			}
 
 			protected void StopRunning()
@@ -121,20 +94,6 @@ namespace CivOne
 			{
 				SDL_Delay(time);
 			}
-
-			private static uint DefinePixelformat(SDL_PixelType type, SDL_PixelOrder order, SDL_PixelLayout layout, byte bits, byte bytes)
-			{
-				return (uint) (
-					(1 << 28) |
-					(((byte) type) << 24) |
-					(((byte) order) << 20) |
-					(((byte) layout) << 16) |
-					(bits << 8) |
-					(bytes)
-				);
-			}
-			
-			private static readonly uint SDL_PIXELFORMAT_RGBA8888 = DefinePixelformat(SDL_PixelType.SDL_PIXELTYPE_PACKED32, SDL_PixelOrder.SDL_PACKEDORDER_RGBA, SDL_PixelLayout.SDL_PACKEDLAYOUT_8888, 32, 4);
 
 			protected int Width
 			{

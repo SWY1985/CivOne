@@ -56,11 +56,8 @@ namespace CivOne
 			if (!_hasUpdate) return;
 			_runtime.InvokeDraw();
 			_hasUpdate = false;
-
-			Clear(Color.Black);
-			GetBorders(out int offsetX, out int offsetY, out _, out _);
-			DrawBitmap(_runtime.Bitmap, offsetX, offsetY, ScaleX, ScaleY);
-			DrawBitmap(_runtime.Cursor, offsetX + (_mouseX * ScaleX), offsetY + (_mouseY * ScaleY), ScaleX, ScaleY);
+			
+			Render();
 		}
 
 		private ScreenEventArgs Transform(ScreenEventArgs args)
