@@ -102,7 +102,7 @@ namespace CivOne
 		private void MouseDown(object sender, ScreenEventArgs args) => _runtime.InvokeMouseDown(Transform(args));
 		private void MouseUp(object sender, ScreenEventArgs args) => _runtime.InvokeMouseUp(Transform(args));
 
-		public GameWindow(Runtime runtime) : base("CivOne", InitialWidth, InitialHeight, Settings.FullScreen)
+		public GameWindow(Runtime runtime, bool softwareRender) : base("CivOne", InitialWidth, InitialHeight, Settings.FullScreen, softwareRender)
 		{
 			_runtime = runtime;
 			_runtime.CursorChanged += CursorChanged;
