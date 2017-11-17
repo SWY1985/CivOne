@@ -17,7 +17,7 @@ namespace CivOne
 	internal class Program
 	{
 		private static string HelpText => @"CivOne - An open source implementation of Sid Meier's Civilization
-Usage: civone-opentk [argument|runtime-options]
+Usage: civone-sdl [argument|runtime-options]
 
 arguments:
   -h|--help             Show this documentation.
@@ -34,7 +34,7 @@ runtime-options:
 ";
 
 		private static string ErrorText => @"civone-opentk: Invalid options: '{0}'
-Try 'civone-opentk --help' for more information.
+Try 'civone-sdl --help' for more information.
 ";
 
 		private static bool WriteSdlStub()
