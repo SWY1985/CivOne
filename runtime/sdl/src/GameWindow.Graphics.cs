@@ -15,6 +15,8 @@ namespace CivOne
 {
 	internal partial class GameWindow
 	{
+		private SDL.Texture CursorTexture = null;
+
 		private static Size DefaultCanvasSize
 		{
 			get
@@ -30,10 +32,9 @@ namespace CivOne
 			Clear(Color.Black);
 			GetBorders(out int x1, out int y1, out int x2, out int y2);
 			using (SDL.Texture canvas = CreateTexture(_runtime.Bitmap))
-			using (SDL.Texture cursor = CreateTexture(_runtime.Cursor))
 			{
-				if (!canvas.IsEmpty) canvas.Draw(x1, y1, (x2 - x1), (y2 - y1));
-				if (!cursor.IsEmpty) cursor.Draw(x1 + (_mouseX * ScaleX), y1 + (_mouseY * ScaleY), cursor.Width * ScaleX, cursor.Height *ScaleY);
+				canvas.Draw(x1, y1, (x2 - x1), (y2 - y1));
+				CursorTexture?.Draw(x1 + (_mouseX * ScaleX), y1 + (_mouseY * ScaleY), CursorTexture.Width * ScaleX, CursorTexture.Height * ScaleY);
 			}
 		}
 
