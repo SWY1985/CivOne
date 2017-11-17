@@ -89,7 +89,7 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
 			StringBuilder sb;
 			switch (args.Key)
@@ -104,16 +104,19 @@ namespace CivOne.Screens
 				case Key.NumPad7:
 				case Key.NumPad8:
 				case Key.NumPad9:
-					return AppendCharacter((char)('0' + (args.Key - Key.NumPad0)));
+					args.Handled = AppendCharacter((char)('0' + (args.Key - Key.NumPad0)));
+					break;
 				case Key.Left:
 					if (_cursorPosition > 0) _cursorPosition--;
 					else _cursorPosition = 0;
-					return true;
+					args.Handled = true;
+					break;
 				case Key.Right:
 					if (_cursorPosition < 0) _cursorPosition = 0;
 					if (_cursorPosition < _text.Length) _cursorPosition++;
 					else _cursorPosition = _text.Length;
-					return true;
+					args.Handled = true;
+					break;
 				case Key.Escape:
 					if (Cancel != null)
 						Cancel(this, null);
@@ -132,23 +135,26 @@ namespace CivOne.Screens
 							sb.Append(_text[i]);
 						}
 						_text = sb.ToString();
-						return true;
+						args.Handled = true;
 					}
-					return false;
+					break;
 				case Key.Home:
 					_cursorPosition = 0;
-					return true;
+					args.Handled = true;
+					break;
 				case Key.End:
 					_cursorPosition = _text.Length;
-					return true;
+					args.Handled = true;
+					break;
 				case Key.Backspace:
-					if (_cursorPosition <= 0) return false;
+					if (_cursorPosition <= 0) break;
 					
 					sb = new StringBuilder(_text);
 					sb.Remove(--_cursorPosition, 1);
 					_text = sb.ToString();
 					
-					return true;
+					args.Handled = true;
+					break;
 				default:
 					char c = args.KeyChar;
 					if (!args.Shift) c = Char.ToLower(c);
@@ -165,9 +171,9 @@ namespace CivOne.Screens
 							default: c -= (char)16; break;
 						}
 					}
-					return AppendCharacter(c);
+					args.Handled = AppendCharacter(c);
+					break;
 			}
-			return false;
 		}
 		
 		public void Close()
@@ -182,6 +188,7 @@ namespace CivOne.Screens
 		
 		public Input(Palette palette, string text, int fontId, byte textColour, byte cursorColour, int x, int y, int width, int height, int maxLength)
 		{
+			OnKeyDown += KeyDown;
 			OnResize += Resize;
 
 			Palette = palette.Copy();
@@ -198,6 +205,7 @@ namespace CivOne.Screens
 		
 		public Input(Palette palette, int fontId, byte textColour, byte cursorColour, int x, int y, int width, int height, int maxLength)
 		{
+			OnKeyDown += KeyDown;
 			OnResize += Resize;
 
 			Palette = palette.Copy();

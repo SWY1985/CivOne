@@ -16,7 +16,7 @@ namespace CivOne
 	internal partial class GameWindow
 	{
 		private SDL.Texture CursorTexture = null;
-
+    
 		private static Size DefaultCanvasSize
 		{
 			get

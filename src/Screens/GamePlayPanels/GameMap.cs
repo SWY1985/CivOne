@@ -25,7 +25,6 @@ namespace CivOne.Screens.GamePlayPanels
 	{
 		private IUnit ActiveUnit => Game.ActiveUnit;
 		
-		private readonly Palette _palette;
 		private Point _helperDirection = new Point(0, 0);
 		private bool _update = true;
 		private bool _fullRedraw = false;
@@ -425,27 +424,30 @@ namespace CivOne.Screens.GamePlayPanels
 			return false;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
 			if (Game.CurrentPlayer != Human)
 			{
 				// Ignore all keypresses if the current player is not human
-				return false;
+				return;
 			}
 			
 			switch (args.KeyChar)
 			{
 				case 'G':
 					GameTask.Enqueue(Show.Goto);
-					return true;
+					args.Handled = true;
+					return;
 				case 'T':
 					GameTask.Enqueue(Show.Terrain);
-					return true;
+					args.Handled = true;
+					return;
 			}
 
 			if (Game.ActiveUnit != null)
 			{
-				return KeyDownActiveUnit(args);
+				args.Handled = KeyDownActiveUnit(args);
+				return;
 			}
 			
 			switch (args.Key)
@@ -453,12 +455,12 @@ namespace CivOne.Screens.GamePlayPanels
 				case Key.Space:
 				case Key.Enter:
 					GameTask.Enqueue(Turn.End());
-					return true;
+					args.Handled = true;
+					return;
 			}
-			return false;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
 			int x = (int)Math.Floor((float)args.X / 16);
 			int y = (int)Math.Floor((float)args.Y / 16);
@@ -481,11 +483,13 @@ namespace CivOne.Screens.GamePlayPanels
 
 					MoveTo(relX, relY);
 					_update = true;
-					return true;
+					args.Handled = true;
+					return;
 				}
 
 				Common.AddScreen(new Civilopedia(Map[_x + x, _y + y]));
-				return _update;
+				args.Handled = _update;
+				return;
 			}
 			if ((args.Buttons & MouseButton.Left) > 0)
 			{
@@ -509,7 +513,7 @@ namespace CivOne.Screens.GamePlayPanels
 					_fullRedraw = true;
 				}
 			}
-			return _update;
+			args.Handled = _update;
 		}
 
 		public void Resize(int width, int height)
@@ -526,6 +530,9 @@ namespace CivOne.Screens.GamePlayPanels
 		
 		public GameMap()
 		{
+			OnKeyDown += KeyDown;
+			OnMouseDown += MouseDown;
+
 			GameTask.Started += TaskStarted;
 
 			_x = 0;

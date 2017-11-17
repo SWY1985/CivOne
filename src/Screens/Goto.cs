@@ -33,13 +33,13 @@ namespace CivOne.Screens
 			return false;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
+			args.Handled = true;
 			Destroy();
-			return true;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
 			int offsetX = 80;
 			if (Settings.RightSideBar) offsetX = 0;
@@ -57,7 +57,7 @@ namespace CivOne.Screens
 			}
 
 			Destroy();
-			return true;
+			args.Handled = true;
 		}
 
 		internal Goto(int x, int y) : base(MouseCursor.Goto)
@@ -68,6 +68,9 @@ namespace CivOne.Screens
 			Y = -1;
 			
 			Palette = Common.TopScreen.Palette;
+
+			OnKeyDown += KeyDown;
+			OnMouseDown += MouseDown;
 		}
 	}
 }

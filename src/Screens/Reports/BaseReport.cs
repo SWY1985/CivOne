@@ -29,20 +29,23 @@ namespace CivOne.Screens.Reports
 			return true;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		protected virtual void KeyDown(object sender, KeyboardEventArgs args)
 		{
+			args.Handled = true;
 			Destroy();
-			return true;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		protected virtual void MouseDown(object sender, ScreenEventArgs args)
 		{
+			args.Handled = true;
 			Destroy();
-			return true;
 		}
 		
 		public BaseReport(string title, byte backgroundColour)
 		{
+			OnKeyDown += KeyDown;
+			OnMouseDown += MouseDown;
+
 			bool modernGovernment = Human.HasAdvance<Invention>();
 			for (int i = 0; i < 4; i++)
 			{

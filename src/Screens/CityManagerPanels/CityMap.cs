@@ -95,23 +95,25 @@ namespace CivOne.Screens.CityManagerPanels
 			_update = true;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
-			if (args.X < 1 || args.X > 81 || args.Y < 1 || args.Y > 81) return false;
+			if (args.X < 1 || args.X > 81 || args.Y < 1 || args.Y > 81) return;
 			int tileX = (int)Math.Floor(((double)args.X - 1) / 16);
 			int tileY = (int)Math.Floor(((double)args.Y - 1) / 16);
 
-			if (tileX < 0 || tileY < 0 || tileX > 4 || tileY > 4) return false;
+			if (tileX < 0 || tileY < 0 || tileX > 4 || tileY > 4) return;
 
 			_city.SetResourceTile(_city.CityRadius[tileX, tileY]);
 			_update = true;
 			if (MapUpdate != null) MapUpdate(this, null);
-			return true;
+			args.Handled = true;
 		}
 
 		public CityMap(City city) : base(82, 82)
 		{
 			_city = city;
+
+			OnMouseDown += MouseDown;
 		}
 	}
 }

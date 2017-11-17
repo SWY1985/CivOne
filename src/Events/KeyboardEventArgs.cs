@@ -19,6 +19,8 @@ namespace CivOne.Events
 		public Key Key { get; private set; }
 		public char KeyChar { get; private set; }
 		public KeyModifier Modifier { get; private set; }
+
+		public bool Handled { get; set; }
 		
 		public bool Control => (Modifier & KeyModifier.Control) > 0;
 		public bool Alt => (Modifier & KeyModifier.Alt) > 0;

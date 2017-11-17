@@ -46,7 +46,7 @@ namespace CivOne
 				_settingsFullscreen = Settings.FullScreen;
 				Fullscreen = _settingsFullscreen;
 			}
-			
+      
 			Runtime.CanvasSize = SetCanvasSize();
 			if (_runtime.SignalQuit) StopRunning();
 		}

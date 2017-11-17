@@ -137,26 +137,26 @@ namespace CivOne.Screens
 			return false;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
+			args.Handled = true;
 			if (_interfaceHelp)
 			{
 				_closing = true;
-				return true;
+				return;
 			}
 			Destroy();
-			return true;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
+			args.Handled = true;
 			if (_interfaceHelp)
 			{
 				_closing = true;
-				return true;
+				return;
 			}
 			Destroy();
-			return true;
 		}
 
 		public static Overlay Empty
@@ -189,7 +189,10 @@ namespace CivOne.Screens
 		}
 
 		private Overlay() : base(MouseCursor.Pointer)
-		{	
+		{
+			OnKeyDown += KeyDown;
+			OnMouseDown += MouseDown;
+
 			Palette = Common.TopScreen.Palette.Copy();
 		}
 	}

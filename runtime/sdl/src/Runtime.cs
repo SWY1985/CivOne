@@ -50,6 +50,7 @@ namespace CivOne
 				CursorChanged?.Invoke(this, EventArgs.Empty);
 			}
 		}
+    
 		public void Log(string value, params object[] formatArgs) => Console.WriteLine(value, formatArgs);
 
 		Platform IRuntime.CurrentPlatform => Platform.Windows;
@@ -58,6 +59,7 @@ namespace CivOne
 		int IRuntime.CanvasHeight => CanvasSize.Height;
 		
 		string IRuntime.BrowseFolder(string caption) => Native.FolderBrowser(caption);
+
 		void IRuntime.PlaySound(string filename) => Console.WriteLine("PLAY SOUND NOT IMPLEMENTED");
 		void IRuntime.StopSound() => Console.WriteLine("STOP SOUND NOT IMPLEMENTED");
 		void IRuntime.Quit() => SignalQuit = true;

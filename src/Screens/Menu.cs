@@ -96,22 +96,25 @@ namespace CivOne.Screens
 			return false;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
 			switch (args.Key)
 			{
 				case Key.NumPad8:
 				case Key.Up:
 					ActiveItem--;
-					return true;
+					args.Handled = true;
+					break;
 				case Key.NumPad2:
 				case Key.Down:
 					ActiveItem++;
-					return true;
+					args.Handled = true;
+					break;
 				case Key.Enter:
-					if (!Items[_activeItem].Enabled) return false;
+					if (!Items[_activeItem].Enabled) break;
 					Items[_activeItem].Select();
-					return true;
+					args.Handled = true;
+					break;
 				case Key.Escape:
 					if (Cancel != null)
 					{
@@ -122,7 +125,6 @@ namespace CivOne.Screens
 					}
 					break;
 			}
-			return false;
 		}
 		
 		private int MouseOverItem(ScreenEventArgs args)
@@ -141,7 +143,7 @@ namespace CivOne.Screens
 			return -1;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
 			_mouseDown = true;
 
@@ -149,20 +151,25 @@ namespace CivOne.Screens
 			if (index < 0 && MissClick != null)
 			{
 				MissClick(this, null);
-				return true;
+				args.Handled = true;
+				return;
 			}
-			if (index < 0 || index == _activeItem) return false;
+			if (index < 0 || index == _activeItem) return;
 			ActiveItem = index;
 			_change = true;
-			return true;
+			args.Handled = true;
 		}
 		
-		public override bool MouseUp(ScreenEventArgs args)
+		private void MouseUp(object sender, ScreenEventArgs args)
 		{
-			if (!_mouseDown) return true;
+			if (!_mouseDown)
+			{
+				args.Handled = true;
+				return;
+			}
 
 			int index = MouseOverItem(args);
-			if (index < 0) return false;
+			if (index < 0) return;
 			ActiveItem = index;
 			if (Items[_activeItem].Enabled)
 			{
@@ -177,16 +184,16 @@ namespace CivOne.Screens
 				}
 			}
 			_change = true;
-			return true;
+			args.Handled = true;
 		}
 		
-		public override bool MouseDrag(ScreenEventArgs args)
+		private void MouseDrag(object sender, ScreenEventArgs args)
 		{
 			int index = MouseOverItem(args);
-			if (index < 0 || index == _activeItem) return false;
+			if (index < 0 || index == _activeItem) return;
 			ActiveItem = index;
 			_change = true;
-			return true;
+			args.Handled = true;
 		}
 
 		public void ForceUpdate()
@@ -204,6 +211,10 @@ namespace CivOne.Screens
 		
 		public Menu(string menuId, Palette palette, IBitmap background = null) : base(MouseCursor.Pointer)
 		{
+			OnKeyDown += KeyDown;
+			OnMouseDown += MouseDown;
+			OnMouseUp += MouseUp;
+			OnMouseDrag += MouseDrag;
 			OnResize += Resize;
 
 			Items = new MenuItemCollection<T>(menuId);

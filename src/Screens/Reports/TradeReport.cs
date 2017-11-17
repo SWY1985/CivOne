@@ -111,14 +111,14 @@ namespace CivOne.Screens.Reports
 			return true;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		protected override void KeyDown(object sender, KeyboardEventArgs args)
 		{
-			return NextPage();
+			args.Handled = NextPage();
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		protected override void MouseDown(object sender, ScreenEventArgs args)
 		{
-			return NextPage();
+			args.Handled = NextPage();
 		}
 
 		public TradeReport() : base("TRADE REPORT", 2)

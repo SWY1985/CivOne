@@ -20,20 +20,17 @@ namespace CivOne.Events
 		public int X { get; private set; }
 		public int Y { get; private set; }
 		public MouseButton Buttons { get; private set; }
+
+		public bool Handled { get; set; }
 		
-		public Point Location
-		{
-			get
-			{
-				return new Point(X, Y);
-			}
-		}
+		public Point Location => new Point(X, Y);
 		
 		public ScreenEventArgs(int x, int y)
 		{
 			X = x;
 			Y = y;
 			Buttons = MouseButton.None;
+			Handled = false;
 		}
 		
 		public ScreenEventArgs(int x, int y, MouseButton buttons)
@@ -41,6 +38,7 @@ namespace CivOne.Events
 			X = x;
 			Y = y;
 			Buttons = buttons;
+			Handled = false;
 		}
 	}
 }

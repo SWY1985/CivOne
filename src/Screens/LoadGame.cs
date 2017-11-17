@@ -162,9 +162,9 @@ namespace CivOne.Screens
 			return Cancel;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
-			if (Cancel) return false;
+			if (Cancel) return;
 			
 			char c = Char.ToUpper(args.KeyChar);
 			if (args.Key == Key.Escape)
@@ -172,11 +172,11 @@ namespace CivOne.Screens
 				Log("Cancel");
 				Cancel = true;
 				_update = true;
-				return true;
+				args.Handled = true;
 			}
 			else if (_menu != null)
 			{
-				return _menu.KeyDown(args);
+				args.Handled = _menu.KeyDown(args);
 			}
 			else if (args.Key == Key.Enter)
 			{
@@ -205,35 +205,36 @@ namespace CivOne.Screens
 			{
 				_driveLetter = c;
 				_update = true;
-				return true;
+				args.Handled = true;
 			}
-			return false;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
-			if (_menu != null)
-				return _menu.MouseDown(args);
-			return false;
+			if (_menu == null) return;
+			args.Handled = _menu.MouseDown(args);
 		}
 		
-		public override bool MouseUp(ScreenEventArgs args)
+		private void MouseUp(object sender, ScreenEventArgs args)
 		{
-			if (_menu != null)
-				return _menu.MouseUp(args);
-			return false;
+			if (_menu == null) return;
+			args.Handled = _menu.MouseUp(args);
 		}
 		
-		public override bool MouseDrag(ScreenEventArgs args)
+		private void MouseDrag(object sender, ScreenEventArgs args)
 		{
-			if (_menu != null)
-				return _menu.MouseDrag(args);
-			return false;
+			if (_menu == null) return;
+			args.Handled = _menu.MouseDrag(args);
 		}
 		
 		public LoadGame(Palette palette)
 		{
 			Palette = palette;
+
+			OnKeyDown += KeyDown;
+			OnMouseDown += MouseDown;
+			OnMouseUp += MouseUp;
+			OnMouseDrag += MouseDrag;
 		}
 	}
 }

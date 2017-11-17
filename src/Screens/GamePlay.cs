@@ -30,7 +30,6 @@ namespace CivOne.Screens
 		private bool Busy => (Game.MovingUnit != null || Human != Game.CurrentPlayer || GameTask.Any());
 		
 		private GameMenu _gameMenu = null;
-		private int _menuX, _menuY;
 		private uint _lastGameTick;
 		private bool _update = true;
 		private bool _redraw = false;
@@ -48,95 +47,89 @@ namespace CivOne.Screens
 		internal void RefreshMap() => _gameMap.ForceRefresh();
 
 		internal Palette MainPalette => OriginalColours.Copy();
+
+		private void SetMenuItem(GameMenu gameMenu)
+		{
+			Elements.RemoveAll(x => x is GameMenu);
+			Elements.Add(gameMenu);
+		}
 		
 		private void MenuBarGame(object sender, EventArgs args)
 		{
-			_gameMenu = new GameMenu("MenuBarGame", Palette.Copy());
-			_gameMenu.Items.Add("Tax Rate").OnSelect((s, a) => GameTask.Enqueue(Show.TaxRate));
-			_gameMenu.Items.Add("Luxuries Rate").OnSelect((s, a) => GameTask.Enqueue(Show.LuxuryRate));
-			_gameMenu.Items.Add("FindCity").OnSelect((s, a) => GameTask.Enqueue(Show.Search));
-			_gameMenu.Items.Add("Options").OnSelect((s, a) => GameTask.Enqueue(Show.Screen<GameOptions>()));
-			_gameMenu.Items.Add("Save Game").SetEnabled(Game.GameTurn > 0).OnSelect((s, a) => GameTask.Enqueue(Show.Screen<SaveGame>()));
-			_gameMenu.Items.Add("REVOLUTION!").OnSelect((s, a) => GameTask.Enqueue(Show.Screen<Revolution>()));
-			_gameMenu.Items.Add(null);
+			_gameMenu = new GameMenu("MenuBarGame", 16);
+			_gameMenu.AddItem("Tax Rate").OnSelect((s, a) => GameTask.Enqueue(Show.TaxRate));
+			_gameMenu.AddItem("Luxuries Rate").OnSelect((s, a) => GameTask.Enqueue(Show.LuxuryRate));
+			_gameMenu.AddItem("FindCity").OnSelect((s, a) => GameTask.Enqueue(Show.Search));
+			_gameMenu.AddItem("Options").OnSelect((s, a) => GameTask.Enqueue(Show.Screen<GameOptions>()));
+			_gameMenu.AddItem("Save Game").SetEnabled(Game.GameTurn > 0).OnSelect((s, a) => GameTask.Enqueue(Show.Screen<SaveGame>()));
+			_gameMenu.AddItem("REVOLUTION!").OnSelect((s, a) => GameTask.Enqueue(Show.Screen<Revolution>()));
+			_gameMenu.AddItem(null);
 			if (Settings.DebugMenu)
 			{
-				_gameMenu.Items.Add("Debug Options").OnSelect((s, a) => GameTask.Enqueue(Show.Screen<DebugOptions>()));
-				_gameMenu.Items.Add(null);
+				_gameMenu.AddItem("Debug Options").OnSelect((s, a) => GameTask.Enqueue(Show.Screen<DebugOptions>()));
+				_gameMenu.AddItem(null);
 			}
-			_gameMenu.Items.Add("Retire").Disable();
-			_gameMenu.Items.Add("QUIT to DOS").OnSelect((s, a) => GameTask.Enqueue(Show.Screen<ConfirmQuit>()));
-			
-			_menuX = 16;
-			_menuY = 8;
-			
-			_update = true;
+			_gameMenu.AddItem("Retire").Disable();
+			_gameMenu.AddItem("QUIT to DOS").OnSelect((s, a) => GameTask.Enqueue(Show.Screen<ConfirmQuit>()));
+
+			SetMenuItem(_gameMenu);
 		}
 		
 		private void MenuBarOrders(object sender, EventArgs args)
 		{
 			if (Game.ActiveUnit == null) return;
 
-			_gameMenu = new GameMenu("MenuBarOrders", Palette);
-			_gameMenu.Items.AddRange(Game.ActiveUnit.MenuItems);
+			_gameMenu = new GameMenu("MenuBarOrders", 72);
+			foreach (MenuItem<int> item in Game.ActiveUnit.MenuItems)
+			{
+				_gameMenu.AddItem(item);
+			}
 			
-			_menuX = 72;
-			_menuY = 8;
-			
-			_update = true;
+			SetMenuItem(_gameMenu);
 		}
 		
 		private void MenuBarAdvisors(object sender, EventArgs args)
 		{
-			_gameMenu = new GameMenu("MenuBarAdvisors", Palette);
-			_gameMenu.Items.Add("City Status (F1)").OnSelect((s, a) => Common.AddScreen(new CityStatus()));
-			_gameMenu.Items.Add("Military Advisor (F2)").OnSelect((s, a) => { Common.AddScreen(new MilitaryLosses()); Common.AddScreen(new MilitaryStatus()); });
-			_gameMenu.Items.Add("Intelligence Advisor (F3)").OnSelect((s, a) => Common.AddScreen(new IntelligenceReport()));
-			_gameMenu.Items.Add("Attitude Advisor (F4)").OnSelect((s, a) => Common.AddScreen(new AttitudeSurvey()));
-			_gameMenu.Items.Add("Trade Advisor (F5)").OnSelect((s, a) => Common.AddScreen(new TradeReport()));
-			_gameMenu.Items.Add("Science Advisor (F6)").OnSelect((s, a) => Common.AddScreen(new ScienceReport()));
+			_gameMenu = new GameMenu("MenuBarAdvisors", 112);
+			_gameMenu.AddItem("City Status (F1)").OnSelect((s, a) => Common.AddScreen(new CityStatus()));
+			_gameMenu.AddItem("Military Advisor (F2)").OnSelect((s, a) => { Common.AddScreen(new MilitaryLosses()); Common.AddScreen(new MilitaryStatus()); });
+			_gameMenu.AddItem("Intelligence Advisor (F3)").OnSelect((s, a) => Common.AddScreen(new IntelligenceReport()));
+			_gameMenu.AddItem("Attitude Advisor (F4)").OnSelect((s, a) => Common.AddScreen(new AttitudeSurvey()));
+			_gameMenu.AddItem("Trade Advisor (F5)").OnSelect((s, a) => Common.AddScreen(new TradeReport()));
+			_gameMenu.AddItem("Science Advisor (F6)").OnSelect((s, a) => Common.AddScreen(new ScienceReport()));
 			
-			_menuX = 112;
-			_menuY = 8;
-			
-			_update = true;
+			SetMenuItem(_gameMenu);
 		}
 		
 		private void MenuBarWorld(object sender, EventArgs args)
 		{
-			_gameMenu = new GameMenu("MenuBarWorld", Palette);
-			_gameMenu.Items.Add("Wonders of the World (F7)").OnSelect((s, a) => {
+			_gameMenu = new GameMenu("MenuBarWorld", 144);
+			_gameMenu.AddItem("Wonders of the World (F7)").OnSelect((s, a) => {
 				if (Game.BuiltWonders.Length == 0)
 					GameTask.Enqueue(Show.Empty);
 				else
 					Common.AddScreen(new WorldWonders());
 			});
-			_gameMenu.Items.Add("Top 5 Cities (F8)").OnSelect((s, a) => Common.AddScreen(new TopCities()));;
-			_gameMenu.Items.Add("Civilization Score (F9)").OnSelect((s, a) => Common.AddScreen(new CivilizationScore()));
-			_gameMenu.Items.Add("World Map (F10)").OnSelect((s, a) => Common.AddScreen(new WorldMap()));
-			_gameMenu.Items.Add("Demographics").OnSelect((s, a) => Common.AddScreen(new Demographics()));
-			_gameMenu.Items.Add("SpaceShips").Disable();
+			_gameMenu.AddItem("Top 5 Cities (F8)").OnSelect((s, a) => Common.AddScreen(new TopCities()));;
+			_gameMenu.AddItem("Civilization Score (F9)").OnSelect((s, a) => Common.AddScreen(new CivilizationScore()));
+			_gameMenu.AddItem("World Map (F10)").OnSelect((s, a) => Common.AddScreen(new WorldMap()));
+			_gameMenu.AddItem("Demographics").OnSelect((s, a) => Common.AddScreen(new Demographics()));
+			_gameMenu.AddItem("SpaceShips").Disable();
 			
-			_menuX = 144;
-			_menuY = 8;
-			
-			_update = true;
+			SetMenuItem(_gameMenu);
 		}
 		
 		private void MenuBarCivilopedia(object sender, EventArgs args)
 		{
-			_gameMenu = new GameMenu("MenuBarCivilopedia", Palette);
-			_gameMenu.Items.Add("Complete").OnSelect((s, a) => Common.AddScreen(new Civilopedia(Civilopedia.Complete)));
-			_gameMenu.Items.Add("Civilization Advances").OnSelect((s, a) => Common.AddScreen(new Civilopedia(Civilopedia.Advances)));
-			_gameMenu.Items.Add("City Improvements").OnSelect((s, a) => Common.AddScreen(new Civilopedia(Civilopedia.Improvements)));
-			_gameMenu.Items.Add("Military Units").OnSelect((s, a) => Common.AddScreen(new Civilopedia(Civilopedia.Units)));
-			_gameMenu.Items.Add("Terrain Types").OnSelect((s, a) => Common.AddScreen(new Civilopedia(Civilopedia.TerrainType)));
-			_gameMenu.Items.Add("Miscellaneous").OnSelect((s, a) => Common.AddScreen(new Civilopedia(Civilopedia.Misc)));
+			_gameMenu = new GameMenu("MenuBarCivilopedia", 182);
+			_gameMenu.AddItem("Complete").OnSelect((s, a) => Common.AddScreen(new Civilopedia(Civilopedia.Complete)));
+			_gameMenu.AddItem("Civilization Advances").OnSelect((s, a) => Common.AddScreen(new Civilopedia(Civilopedia.Advances)));
+			_gameMenu.AddItem("City Improvements").OnSelect((s, a) => Common.AddScreen(new Civilopedia(Civilopedia.Improvements)));
+			_gameMenu.AddItem("Military Units").OnSelect((s, a) => Common.AddScreen(new Civilopedia(Civilopedia.Units)));
+			_gameMenu.AddItem("Terrain Types").OnSelect((s, a) => Common.AddScreen(new Civilopedia(Civilopedia.TerrainType)));
+			_gameMenu.AddItem("Miscellaneous").OnSelect((s, a) => Common.AddScreen(new Civilopedia(Civilopedia.Misc)));
 			
-			_menuX = 182;
-			_menuY = 8;
-			
-			_update = true;
+			SetMenuItem(_gameMenu);
 		}
 		
 		private void DrawLayer(IScreen layer, uint gameTick, int x, int y)
@@ -161,14 +154,11 @@ namespace CivOne.Screens
 			}
 
 			if (_gameMap.MustUpdate(gameTick)) _update = true;
-			if (_sideBar.Update(gameTick)) _update = true;
 			if (gameTick % 3 == 0) this.Cycle(96, 103).Cycle(104, 111);
 			if (!_update && !_redraw) return (gameTick % 3 == 0);
 			
-			DrawLayer(_menuBar, gameTick, 0, 0);
-			DrawLayer(_sideBar, gameTick, _rightSideBar ? (Width - 80) : 0, 8);
 			DrawLayer(_gameMap, gameTick, _rightSideBar ? 0 : 80, 8);
-			DrawLayer(_gameMenu, gameTick, _menuX, _menuY);
+			// DrawLayer(_gameMenu, gameTick, _menuX, _menuY);
 			
 			_redraw = false;
 			_update = false;
@@ -196,155 +186,138 @@ namespace CivOne.Screens
 			return false;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
-			if (GameTask.Any()) return true;
+			if (GameTask.Any())
+			{
+				args.Handled = true;
+				return;
+			}
 
 			if (CheckShift56(args))
-				return true;
+			{
+				args.Handled = true;
+				return;
+			}
 			
 			if (_gameMenu != null)
 			{
-				if (!_gameMenu.KeyDown(args))
-				{
-					_gameMenu = null;
-					_redraw = true;
-				}
-				return true;
-			}
-
-			if (_menuBar.KeyDown(args) && _gameMenu != null)
-			{
-				_gameMenu.KeepOpen = true;
-				return true;
+				// if (!_gameMenu.KeyDown(args))
+				// {
+				// 	_gameMenu = null;
+				// 	_redraw = true;
+				// }
+				args.Handled = true;
+				return;
 			}
 
 			switch (args.Key)
 			{
 				case Key.F1:
 					Common.AddScreen(new CityStatus());
-					return true;
+					args.Handled = true;
+					return;
 				case Key.F2:
 					Common.AddScreen(new MilitaryLosses());
 					Common.AddScreen(new MilitaryStatus());
-					return true;
+					args.Handled = true;
+					return;
 				case Key.F3:
 					Common.AddScreen(new IntelligenceReport());
-					return true;
+					args.Handled = true;
+					return;
 				case Key.F4:
 					Common.AddScreen(new AttitudeSurvey());
-					return true;
+					args.Handled = true;
+					return;
 				case Key.F5:
 					Common.AddScreen(new TradeReport());
-					return true;
+					args.Handled = true;
+					return;
 				case Key.F6:
 					Common.AddScreen(new ScienceReport());
-					return true;
+					args.Handled = true;
+					return;
 				case Key.F7:
 					if (Game.BuiltWonders.Length == 0)
 						GameTask.Enqueue(Show.Empty);
 					else
 						Common.AddScreen(new WorldWonders());
-					return true;
+					args.Handled = true;
+					return;
 				case Key.F8:
 					Common.AddScreen(new TopCities());
-					return true;
+					args.Handled = true;
+					return;
 				case Key.F9:
 					Common.AddScreen(new CivilizationScore());
-					return true;
+					args.Handled = true;
+					return;
 				case Key.F10:
 					Common.AddScreen(new WorldMap());
-					return true;
+					args.Handled = true;
+					return;
 				case Key.Plus:
 					GameTask.Enqueue(Show.TaxRate);
-					return true;
+					args.Handled = true;
+					return;
 				case Key.Minus:
 					GameTask.Enqueue(Show.LuxuryRate);
-					return true;
+					args.Handled = true;
+					return;
 				case Key.Slash:
 					GameTask.Enqueue(Show.Search);
-					return true;
+					args.Handled = true;
+					return;
 			}
-			return _gameMap.KeyDown(args);
+			args.Handled = _gameMap.KeyDown(args);
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
-			if (Cursor == MouseCursor.None) return true;
-			if (_gameMenu != null && _gameMenu.KeepOpen)
+			if (Cursor == MouseCursor.None)
 			{
-				MouseArgsOffset(ref args, _menuX, _menuY);
-				_update |= _gameMenu.MouseDown(args);
-				return _update;
+				args.Handled = true;
+				return;
 			}
 
-			if (args.Y < 8)
-			{
-				return _menuBar.MouseDown(args);
-			}
 			if (_rightSideBar)
 			{
-				if (args.X > (Width - 80))
-				{
-					MouseArgsOffset(ref args, (Width - 80), 8);
-					return _sideBar.MouseDown(args);
-				}
-				else
-				{
-					MouseArgsOffset(ref args, 0, 8);
-					return (_update = _gameMap.MouseDown(args));
-				}
+				MouseArgsOffset(ref args, 0, 8);
+				args.Handled = (_update = _gameMap.MouseDown(args));
 			}
 			else
 			{
-				if (args.X < 80)
-				{
-					MouseArgsOffset(ref args, 0, 8);
-					return _sideBar.MouseDown(args);
-				}
-				else
-				{
-					MouseArgsOffset(ref args, 80, 8);
-					return (_update = _gameMap.MouseDown(args));
-				}
+				MouseArgsOffset(ref args, 80, 8);
+				args.Handled = (_update = _gameMap.MouseDown(args));
 			}
 		}
 		
-		public override bool MouseUp(ScreenEventArgs args)
+		private void MouseUp(object sender, ScreenEventArgs args)
 		{
-			if (Cursor == MouseCursor.None) return true;
-			if (_gameMenu == null) return false;
-			if (args.Y < 8)
-			{
-				_menuBar.MouseDown(args);
-				if (!_menuBar.MenuDrag)
-				{
-					_gameMenu.KeepOpen = true;
-					return true;
-				}
-			}
-			
-			_gameMenu.MouseUp(args);
+			Elements.RemoveAll(x => x == _gameMenu);
+			_gameMenu?.Dispose();
 			_gameMenu = null;
-			_redraw = true;
-			return true;
+
+			if (Cursor == MouseCursor.None)
+			{
+				args.Handled = true;
+			}
 		}
 		
-		public override bool MouseDrag(ScreenEventArgs args)
+		private void MouseDrag(object sender, ScreenEventArgs args)
 		{
-			if (Cursor == MouseCursor.None) return true;
-			if (_gameMenu == null) return false;
-			
-			MouseArgsOffset(ref args, _menuX, _menuY);
-			_update |= _gameMenu.MouseDrag(args);
-			return _update;
+			if (Cursor == MouseCursor.None)
+			{
+				args.Handled = true;
+			}
 		}
 		
 		private void Resize(object sender, ResizeEventArgs args)
 		{
 			this.Clear(5);
 
-			_menuBar.Resize();
+			_menuBar.Resize(args.Width);
 			_sideBar.Resize(args.Height - 8);
 			_gameMap.Resize(args.Width - 80, args.Height - 8);
 
@@ -354,14 +327,20 @@ namespace CivOne.Screens
 		
 		public GamePlay()
 		{
-			OnResize += Resize;
-			
 			Palette = Resources["SP257"].Palette;
+			
+			OnKeyDown += KeyDown;
+			OnMouseDown += MouseDown;
+			OnMouseUp += MouseUp;
+			OnMouseDrag += MouseDrag;
+			OnResize += Resize;
 			
 			_rightSideBar = Settings.RightSideBar;
 
-			_menuBar = new MenuBar(Palette);
-			_sideBar = new SideBar(Palette);
+			Elements.AddRange(new Element [] {
+				_menuBar = new MenuBar(),
+				_sideBar = new SideBar()
+			});
 			_gameMap = new GameMap();
 
 			if (Width != 320 || Height != 200)

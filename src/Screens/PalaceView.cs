@@ -208,7 +208,7 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
 			Player.PalaceData palace = Human.Palace;
 
@@ -271,11 +271,13 @@ namespace CivOne.Screens
 					Destroy();
 					break;
 			}
-			return true;
+			args.Handled = true;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
+			args.Handled = true;
+			
 			switch (_currentStage)
 			{
 				case Stage.Message:
@@ -290,11 +292,13 @@ namespace CivOne.Screens
 					Destroy();
 					break;
 			}
-			return true;
 		}
 		
 		public PalaceView(bool build = false)
 		{
+			OnKeyDown += KeyDown;
+			OnMouseDown += MouseDown;
+
 			_noiseMap = new byte[320, 200];
 			for (int x = 0; x < 320; x++)
 			for (int y = 0; y < 200; y++)

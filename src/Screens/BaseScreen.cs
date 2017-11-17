@@ -8,10 +8,13 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
 using CivOne.IO;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens
 {
@@ -23,8 +26,17 @@ namespace CivOne.Screens
 		private int CanvasHeight => RuntimeHandler.Instance.CanvasHeight;
 		private bool CanExpand => Common.HasAttribute<Expand>(this);
 		private bool SizeChanged => (this.Width() != CanvasWidth || this.Height() != CanvasHeight);
+		
+		private bool _forceUpdate = false;
 
 		protected event ResizeEventHandler OnResize;
+		protected event KeyboardEventHandler OnKeyDown, OnKeyUp;
+		protected event ScreenEventHandler OnMouseDown, OnMouseUp, OnMouseDrag, OnMouseMove;
+
+		protected readonly List<Element> Elements = new List<Element>();
+
+		protected IEnumerable<IMouseElement> MouseElements => Elements.Where(x => x is IMouseElement).Reverse().Select(x => (x as IMouseElement));
+		protected IEnumerable<IUpdateElement> UpdateElements => Elements.Where(x => x is IUpdateElement).Select(x => (x as IUpdateElement));
 
 		protected void MouseArgsOffset(ref ScreenEventArgs args, int offsetX, int offsetY)
 		{
@@ -50,21 +62,114 @@ namespace CivOne.Screens
 
 		public virtual MouseCursor Cursor => _cursor;
 
+		private bool UpdateDraw(uint gameTick)
+		{
+			bool result = HasUpdate(gameTick);
+			if (_forceUpdate) result = true;
+			foreach (Element element in Elements)
+			{
+				if (element.Bitmap == null) continue;
+				this.AddLayer(element.Bitmap, element.Left, element.Top);
+			}
+			return result;
+		}
+
 		public bool Update(uint gameTick)
 		{
+			foreach (IUpdateElement element in UpdateElements)
+			{
+				if (!element.Update(gameTick)) continue;
+				_forceUpdate = true;
+			}
+
 			if (CanExpand && SizeChanged)
 			{
 				Resize(Runtime.CanvasWidth, Runtime.CanvasHeight);
-				HasUpdate(gameTick);
-				return true;
+				_forceUpdate = true;
 			}
-			return HasUpdate(gameTick);
+			return UpdateDraw(gameTick);
 		}
-		public virtual bool KeyDown(KeyboardEventArgs args) => false;
-		public virtual bool MouseDown(ScreenEventArgs args) => false;
-		public virtual bool MouseUp(ScreenEventArgs args) => false;
-		public virtual bool MouseDrag(ScreenEventArgs args) => false;
-		public virtual bool MouseMove(ScreenEventArgs args) => false;
+		
+		public bool KeyUp(KeyboardEventArgs args)
+		{
+			OnKeyUp?.Invoke(this, args);
+			return args.Handled;
+		}
+
+		public bool KeyDown(KeyboardEventArgs args)
+		{
+			OnKeyDown?.Invoke(this, args);
+			return args.Handled;
+		}
+
+		public bool MouseDown(ScreenEventArgs args)
+		{
+			foreach (IMouseElement element in MouseElements)
+			{
+				if (!element.Bounds.Contains(args.Location))
+				{
+					if (Common.HasAttribute<OverlayPanel>(element))
+					{
+						Elements.RemoveAll(x => x == element);
+						return true;
+					}
+					continue;
+				}
+				if (args.Handled = element.MouseDown(args.X, args.Y))
+				{
+					_forceUpdate = true;
+					return true;
+				}
+			}
+
+			OnMouseDown?.Invoke(this, args);
+			return args.Handled;
+		}
+
+		public bool MouseUp(ScreenEventArgs args)
+		{
+			foreach (IMouseElement element in MouseElements)
+			{
+				if (!element.Bounds.Contains(args.Location))
+				{
+					if (Common.HasAttribute<OverlayPanel>(element))
+					{
+						Elements.RemoveAll(x => x == element);
+						return true;
+					}
+					continue;
+				}
+				if (args.Handled = element.MouseUp(args.X, args.Y))
+				{
+					_forceUpdate = true;
+					return true;
+				}
+			}
+
+			OnMouseUp?.Invoke(this, args);
+			return args.Handled;
+		}
+
+		public bool MouseDrag(ScreenEventArgs args)
+		{
+			foreach (IMouseElement element in MouseElements)
+			{
+				if (args.Handled = element.MouseDrag(args.X, args.Y))
+				{
+					_forceUpdate = true;
+					return true;
+				}
+			}
+
+			OnMouseDrag?.Invoke(this, args);
+			return args.Handled;
+		}
+
+		public bool MouseMove(ScreenEventArgs args)
+		{
+			OnMouseMove?.Invoke(this, args);
+			return args.Handled;
+		}
 
 		protected void Destroy()
 		{

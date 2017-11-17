@@ -32,16 +32,16 @@ namespace CivOne.Screens
 
 		public event EventHandler Accept, Cancel;
 
-		public override bool MouseDown(ScreenEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
+			args.Handled = true;
 			Close();
-			return true;
 		}
 
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
 			Close();
-			return true;
+			args.Handled = true;
 		}
 
 		private void Search_Accept(object sender, EventArgs args)
@@ -84,6 +84,9 @@ namespace CivOne.Screens
 		public Search()
 		{
 			Palette = Common.Screens.Last().OriginalColours;
+			
+			OnKeyDown += KeyDown;
+			OnMouseDown += MouseDown;
 
 			this.FillRectangle(64, 78, 225, 25, 5)
 				.FillRectangle(65, 79, 223, 23, 15)

@@ -178,20 +178,20 @@ namespace CivOne.Screens.Debug
 				.DrawText("Cancel", 1, 15, xx + 8, 192);
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
 			switch (args.Key)
 			{
 				case Key.Escape:
 					Destroy();
-					return true;
+					args.Handled = true;
+					break;
 			}
-			return false;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
-			if (_selectedUnit == null) return false;
+			if (_selectedUnit == null) return;
 
 			if (ValidTile)
 			{
@@ -221,25 +221,26 @@ namespace CivOne.Screens.Debug
 			{
 				Destroy();
 			}
-			return true;
+			args.Handled = true;
 		}
 
-		public override bool MouseMove(ScreenEventArgs args)
+		private void MouseMove(object sender, ScreenEventArgs args)
 		{
-			if (_selectedUnit == null) return false;
+			if (_selectedUnit == null) return;
 
 			if (args.Y < 8 || (Settings.RightSideBar && args.X > 240) || (!Settings.RightSideBar && args.X < 80))
 			{
 				_unitX = -1;
 				_unitY = -1;
 				_hasUpdate = true;
-				return true;
+				args.Handled = true;
+				return;
 			}
 
 			_unitX = (int)Math.Floor(((double)args.X - (Settings.RightSideBar ? 0 : 80)) / 16);
 			_unitY = (int)Math.Floor(((double)args.Y - 8) / 16);
 			_hasUpdate = true;
-			return true;
+			args.Handled = true;
 		}
 
 		protected override bool HasUpdate(uint gameTick)
@@ -275,6 +276,10 @@ namespace CivOne.Screens.Debug
 		public SpawnUnit()
 		{
 			Palette = Common.DefaultPalette;
+
+			OnKeyDown += KeyDown;
+			OnMouseDown += MouseDown;
+			OnMouseMove += MouseMove;
 
 			int fontHeight = Resources.GetFontHeight(0);
 			int hh = (fontHeight * (Game.Players.Count() + 1)) + 5;

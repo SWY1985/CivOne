@@ -35,21 +35,23 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
+			args.Handled = true;
 			Close();
-			return true;
 		}
 		
-		public override bool MouseDown(ScreenEventArgs args)
+		private void MouseDown(object sender, ScreenEventArgs args)
 		{
 			Close();
-			return true;
+			args.Handled = true;
 		}
 
-		//public Newspaper(bool showGovernment, City city = null, params string[] message)
 		public Newspaper(City city, string[] message, bool showGovernment = false)
 		{
+			OnKeyDown += KeyDown;
+			OnMouseDown += MouseDown;
+			
 			bool modernGovernment = Human.HasAdvance<Invention>();
 			Palette palette = Common.DefaultPalette;
 

@@ -128,16 +128,6 @@ namespace CivOne.Screens
 
 			return true;
 		}
-		
-		public override bool KeyDown(KeyboardEventArgs args)
-		{
-			return false;
-		}
-		
-		public override bool MouseDown(ScreenEventArgs args)
-		{
-			return false;
-		}
 
 		private Picture GameMap
 		{

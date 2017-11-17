@@ -84,7 +84,7 @@ namespace CivOne.Screens
 			{
 				this.AddLayer(borders[4], x, 0)
 					.AddLayer(borders[6], x, Height - 8);
-	}
+			}
 			for (int y = 8; y < Height - 8; y += 8)
 			{
 				this.AddLayer(borders[7], 0, y)
@@ -94,16 +94,6 @@ namespace CivOne.Screens
 				.AddLayer(borders[1], Width - 8, 0)
 				.AddLayer(borders[2], 0, Height - 8)
 				.AddLayer(borders[3], Width - 8, Height - 8);
-		}
-
-		protected void DrawButton(string text, byte colour, byte colourDark, int x, int y, int width)
-		{
-			this.FillRectangle(x, y, width, 1, 7)
-				.FillRectangle(x, y + 1, 1, 8, 7)
-				.FillRectangle(x + 1, y + 8, width - 1, 1, colourDark)
-				.FillRectangle(x + width - 1, y, 1, 8, colourDark)
-				.FillRectangle(x + 1, y + 1, width - 2, 7, colour)
-				.DrawText(text, 1, colourDark, x + (int)Math.Ceiling((double)width / 2), y + 2, TextAlign.Center);
 		}
 
 		//

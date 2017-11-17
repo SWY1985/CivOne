@@ -15,6 +15,7 @@ using CivOne.Graphics;
 using CivOne.Screens.Dialogs;
 using CivOne.Graphics.Sprites;
 using CivOne.Units;
+using CivOne.UserInterface;
 using CivOne.Wonders;
 
 namespace CivOne.Screens.CityManagerPanels
@@ -24,6 +25,7 @@ namespace CivOne.Screens.CityManagerPanels
 		private const int SHIELD_HEIGHT = 8;
 
 		private readonly City _city;
+		private readonly Button _change;
 		
 		private bool _update = true;
 
@@ -100,8 +102,7 @@ namespace CivOne.Screens.CityManagerPanels
 				}
 				bool blink = ProductionInvalid && (gameTick % 4 > 1);
 				if (!(Common.TopScreen is CityManager)) blink = ProductionInvalid;
-				DrawButton("Change", (byte)(blink ? 14 : 9), 1, 1, 7, 33);
-				DrawButton("Buy", 9, 1, 64, 7, 18);
+				_change.Colour = (byte)(blink ? 14 : 9);
 
 				DrawShields();
 
@@ -154,38 +155,34 @@ namespace CivOne.Screens.CityManagerPanels
 			Common.AddScreen(confirmBuy);
 			return true;
 		}
+
+		private void ChangeClick(object sender, EventArgs args) => Change();
+
+		private void BuyClick(object sender, EventArgs args) => Buy();
 		
-		public override bool KeyDown(KeyboardEventArgs args)
+		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
 			switch (args.KeyChar)
 			{
 				case 'C':
-					return Change();
+					args.Handled = Change();
+					break;
 				case 'B':
-					return Buy();
+					args.Handled = Buy();
+					break;
 			}
-			return false;
-		}
-
-		public override bool MouseDown(ScreenEventArgs args)
-		{
-			if (args.Y < 7 || args.Y > 15) return false;
-			if (args.X < 34) return true;
-			if (args.X > 63 && args.X < 82) return true;
-			return false;
-		}
-
-		public override bool MouseUp(ScreenEventArgs args)
-		{
-			if (args.Y < 7 || args.Y > 15) return false;
-			if (args.X < 34) return Change();
-			if (args.X > 63 && args.X < 82) return Buy();
-			return false;
 		}
 
 		public CityProduction(City city) : base(88, 99)
 		{
+			OnKeyDown += KeyDown;
+
 			_city = city;
+			
+			Elements.AddRange(new [] {
+				_change = Button.Blue("Change", 1, 7, 33, click: ChangeClick),
+				Button.Blue("Buy", 64, 7, 18, click: BuyClick)
+			});
 		}
 	}
 }
