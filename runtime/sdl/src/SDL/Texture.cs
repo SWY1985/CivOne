@@ -82,7 +82,7 @@ namespace CivOne
 				}
 			}
 
-			void IDisposable.Dispose()
+			public void Dispose()
 			{
 				if (IsEmpty) return;
 				SDL_DestroyTexture(_handle);

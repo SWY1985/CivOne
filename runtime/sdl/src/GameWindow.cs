@@ -46,7 +46,7 @@ namespace CivOne
 				_settingsFullscreen = Settings.FullScreen;
 				Fullscreen = _settingsFullscreen;
 			}
-			CursorVisible = !(Settings.CursorType != CursorType.Native || _runtime.CurrentCursor == MouseCursor.None);
+			
 			Runtime.CanvasSize = SetCanvasSize();
 			if (_runtime.SignalQuit) StopRunning();
 		}
@@ -58,6 +58,13 @@ namespace CivOne
 			_hasUpdate = false;
 			
 			Render();
+		}
+
+		private void CursorChanged(object sender, EventArgs args)
+		{
+			CursorVisible = !(Settings.CursorType != CursorType.Native || _runtime.CurrentCursor == MouseCursor.None);
+			CursorTexture?.Dispose();
+			CursorTexture = CreateTexture(_runtime.Cursor);
 		}
 
 		private ScreenEventArgs Transform(ScreenEventArgs args)
@@ -98,6 +105,7 @@ namespace CivOne
 		public GameWindow(Runtime runtime) : base("CivOne", InitialWidth, InitialHeight, Settings.FullScreen)
 		{
 			_runtime = runtime;
+			_runtime.CursorChanged += CursorChanged;
 
 			OnLoad += Load;
 			OnUpdate += Update;
