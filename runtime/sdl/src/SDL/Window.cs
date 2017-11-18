@@ -131,6 +131,9 @@ namespace CivOne
 					Console.WriteLine("Something is wrong");
 					return;
 				}
+
+				// Run OS native functions for initialization
+				Native.Init(_handle);
 			}
 
 			public void Dispose()
