@@ -121,6 +121,7 @@ namespace CivOne
 					int relY = Common.Random.Next(-1, 2);
 					if (relX == 0 && relY == 0) continue;
 					if (unit.Tile[relX, relY] is Ocean) continue;
+					if (unit.Tile[relX, relY].Units.Any(x => x.Owner != unit.Owner)) continue;
 					unit.MoveTo(relX, relY);
 					return;
 				}
