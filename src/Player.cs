@@ -117,35 +117,11 @@ namespace CivOne
 
 		internal short StartX { get; set; }
 		
-		internal bool AnarchyDespotism
-		{
-			get
-			{
-				if (!Game.Started)
-					return false;
-				return (Government is Anarchy || Government is Despotism);
-			}
-		}
+		internal bool AnarchyDespotism => Game.Started && (Government is Anarchy || Government is Despotism);
 
-		internal bool MonarchyCommunist
-		{
-			get
-			{
-				if (!Game.Started)
-					return false;
-				return (Government is Gov.Monarchy || Government is Gov.Communism);
-			}
-		}
+		internal bool MonarchyCommunist => Game.Started && (Government is Gov.Monarchy || Government is Gov.Communism);
 
-		internal bool RepublicDemocratic
-		{
-			get
-			{
-				if (!Game.Started)
-					return false;
-				return (Government is Republic || Government is Gov.Democracy);
-			}
-		}
+		internal bool RepublicDemocratic => Game.Started && (Government is Republic || Government is Gov.Democracy);
 
 		public ICivilization Civilization => _civilization;
 		
@@ -270,23 +246,11 @@ namespace CivOne
 			}
 		}
 
-		public IAdvance[] Advances
-		{
-			get
-			{
-				return _advances.Select(a => Common.Advances.First(x => x.Id == a)).ToArray();
-			}
-		}
+		public IAdvance[] Advances => _advances.Select(a => Common.Advances.First(x => x.Id == a)).ToArray();
 		
-		public bool HasAdvance<T>() where T : IAdvance
-		{
-			return Advances.Any(a => a is T);
-		}
+		public bool HasAdvance<T>() where T : IAdvance => Advances.Any(a => a is T);
 
-		public bool HasAdvance(IAdvance advance)
-		{
-			return (advance == null || Advances.Any(a => a.Id == advance.Id));
-		}
+		public bool HasAdvance(IAdvance advance) => (advance == null || Advances.Any(a => a.Id == advance.Id));
 
 		public IAdvance CurrentResearch
 		{
