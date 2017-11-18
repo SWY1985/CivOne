@@ -250,14 +250,9 @@ namespace CivOne.Units
 				}
 
 				City capturedCity = moveTarget.City;
-				if (!capturedCity.HasBuilding<CityWalls>())
-				{
-					capturedCity.Size--;
-				}
 				Movement.Done += (s, a) =>
 				{
-					Show captureCity = Show.CaptureCity(capturedCity);
-					captureCity.Done += (s1, a1) =>
+					Action changeOwner = delegate()
 					{
 						Player previousOwner = Game.GetPlayer(capturedCity.Owner);
 
@@ -268,14 +263,32 @@ namespace CivOne.Units
 						while (capturedCity.Units.Length > 0)
 							Game.DisbandUnit(capturedCity.Units[0]);
 						capturedCity.Owner = Owner;
-						
+
+						if (!capturedCity.HasBuilding<CityWalls>())
+						{
+							capturedCity.Size--;
+						}
+
 						if (previousOwner.IsDestroyed)
 							GameTask.Enqueue(Message.Advisor(Advisor.Defense, false, previousOwner.Civilization.Name, "civilization", "destroyed", $"by {Game.GetPlayer(Owner).Civilization.NamePlural}!"));
-						
-						if (capturedCity.Size == 0) return;
-						GameTask.Insert(Show.CityManager(capturedCity));
 					};
-					GameTask.Insert(captureCity);
+
+					if (Human == capturedCity.Owner || Human == Owner)
+					{
+						Show captureCity = Show.CaptureCity(capturedCity);
+						captureCity.Done += (s1, a1) =>
+						{
+							changeOwner();
+							
+							if (capturedCity.Size == 0 || Human != Owner) return;
+							GameTask.Insert(Show.CityManager(capturedCity));
+						};
+						GameTask.Insert(captureCity);
+					}
+					else
+					{
+						changeOwner();
+					}
 					MoveEnd(s, a);
 				};
 			}
