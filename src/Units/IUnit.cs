@@ -49,6 +49,7 @@ namespace CivOne.Units
 		byte MovesLeft { get; set; }
 		byte PartMoves { get; set; }
 		void SkipTurn();
+		IEnumerable<ITile> MoveTargets { get; }
 		void Explore();
 		void SetHome();
 		void SetHome(City city);

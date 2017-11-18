@@ -650,13 +650,7 @@ namespace CivOne.Units
 
 		protected abstract bool ValidMoveTarget(ITile tile);
 
-		public IEnumerable<ITile> MoveTargets
-		{
-			get
-			{
-				return Map[X, Y].GetBorderTiles().Where(t => ValidMoveTarget(t));
-			}
-		}
+		public IEnumerable<ITile> MoveTargets => Map[X, Y].GetBorderTiles().Where(t => ValidMoveTarget(t));
 
 		protected void Explore(int range, bool sea = false)
 		{
@@ -666,10 +660,7 @@ namespace CivOne.Units
 			player.Explore(X, Y, range, sea);
 		}
 
-		public virtual void Explore()
-		{
-			Explore(1);
-		}
+		public virtual void Explore() => Explore(1);
 		
 		protected BaseUnit(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1)
 		{

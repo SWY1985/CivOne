@@ -162,7 +162,7 @@ namespace CivOne
 					if (!unit.Goto.IsEmpty)
 					{
 						int distance = unit.Tile.DistanceTo(unit.Goto);
-						ITile[] tiles = (unit as BaseUnit).MoveTargets.OrderBy(x => x.DistanceTo(unit.Goto)).ThenBy(x => x.Movement).ToArray();
+						ITile[] tiles = unit.MoveTargets.OrderBy(x => x.DistanceTo(unit.Goto)).ThenBy(x => x.Movement).ToArray();
 						if (tiles.Length == 0 || tiles[0].DistanceTo(unit.Goto) > distance)
 						{
 							// No valid tile to move to, cancel goto
