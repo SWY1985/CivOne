@@ -671,6 +671,7 @@ namespace CivOne.Units
 			Player player = Game.GetPlayer(Owner);
 			if (player == null) return;
 			player.Explore(X, Y, range, sea);
+			if (player.IsHuman) Common.GamePlay?.RefreshMap();
 		}
 
 		public virtual void Explore() => Explore(1);
