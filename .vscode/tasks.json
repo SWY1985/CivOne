@@ -9,7 +9,7 @@
 		{
 			"taskName": "build",
 			"args": [
-				"${workspaceRoot}//runtime/opentk/CivOne.OpenTK.csproj"
+				"${workspaceRoot}//runtime/sdl/CivOne.SDL.csproj"
 			],
 			"isBuildCommand": true,
 			"problemMatcher": "$msCompile"
@@ -37,6 +37,15 @@
 			"args": [
 				"${workspaceRoot}//runtime/win32/CivOne.Win32.csproj",
 				"/t:Rebuild"
+			],
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"taskName": "build-opentk",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"${workspaceRoot}//runtime/opentk/CivOne.OpenTK.csproj"
 			],
 			"problemMatcher": "$msCompile"
 		}
