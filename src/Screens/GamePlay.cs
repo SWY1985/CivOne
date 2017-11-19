@@ -382,7 +382,7 @@ namespace CivOne.Screens
 			while (Game.CurrentPlayer != Game.HumanPlayer)
 			{
 				Game.Instance.Update();
-				GameTask.Update();
+				while (GameTask.Update());
 			}
 		}
 	}
