@@ -52,9 +52,9 @@ namespace CivOne.Screens
 			
 			Destroy();
 
-		    var originalGameLoader = new OriginalGameFileLoader();
+		    OriginalGameFileLoader originalGameLoader = new OriginalGameFileLoader();
 
-			var gameState = originalGameLoader.LoadGame(file.SveFile, file.MapFile);
+			GameState gameState = originalGameLoader.LoadGame(file.SveFile, file.MapFile);
 		    Game.CreateGame(gameState);
 			Common.AddScreen(new GamePlay());
 		}

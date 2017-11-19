@@ -53,7 +53,7 @@ namespace CivOne.Screens
 
 			SaveGameFile file = GetSaveGames().ToArray()[item];
 
-		    var originalGameSaver = new OriginalGameFileSaver(file.SveFile, file.MapFile);
+		    OriginalGameFileSaver originalGameSaver = new OriginalGameFileSaver(file.SveFile, file.MapFile);
 
 			originalGameSaver.Save(Game.Instance.GameState);
 		}
@@ -144,7 +144,7 @@ namespace CivOne.Screens
 				{
 					SaveGameFile file = GetSaveGames().ToArray()[_gameId];
 
-                    var originalGameSaver = new OriginalGameFileSaver(file.SveFile, file.MapFile);
+                    OriginalGameFileSaver originalGameSaver = new OriginalGameFileSaver(file.SveFile, file.MapFile);
 
 					originalGameSaver.Save(Game.Instance.GameState);
 					_saving = true;

@@ -16,6 +16,7 @@ using CivOne.Screens.Dialogs;
 using CivOne.Screens.GamePlayPanels;
 using CivOne.Screens.Reports;
 using CivOne.Tasks;
+using CivOne.Units;
 using CivOne.UserInterface;
 
 namespace CivOne.Screens
@@ -358,13 +359,13 @@ namespace CivOne.Screens
 
 	    private (int, int) getStartingViewCenter()
 	    {
-            foreach (var unit in Game.GameState.GetUnits().OrderByDescending(u => u.MovesLeft))
+            foreach (IUnit unit in Game.GameState.GetUnits().OrderByDescending(u => u.MovesLeft))
 	        {
 	            if (unit.Owner == Game.GameState.PlayerNumber(Game.GameState.HumanPlayer))
 	                return (unit.X, unit.Y);
 	        }
 
-	        foreach (var city in Game.GameState.Cities)
+	        foreach (City city in Game.GameState.Cities)
 	        {
 	            if (city.Owner == Game.GameState.PlayerNumber(Game.GameState.HumanPlayer))
 	                return (city.X, city.Y);
@@ -400,7 +401,7 @@ namespace CivOne.Screens
 			_menuBar.WorldSelected += MenuBarWorld;
 			_menuBar.CivilopediaSelected += MenuBarCivilopedia;
 
-            var viewCenter = getStartingViewCenter();
+            (int, int) viewCenter = getStartingViewCenter();
             _gameMap.CenterOnPoint(viewCenter.Item1, viewCenter.Item2);
 
 			while (Game.GameState.CurrentPlayer != Game.GameState.HumanPlayer)

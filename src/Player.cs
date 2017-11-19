@@ -147,37 +147,11 @@ namespace CivOne
 			}
 		}
 
-		public ICivilization Civilization
-		{
-			get
-			{
-				return _civilization;
-			}
-		}
+		public ICivilization Civilization => _civilization;
 		
-		public string LeaderName
-		{
-			get
-			{
-				return _civilization.Leader.Name;
-			}
-		}
-		
-		public string TribeName
-		{
-			get
-			{
-				return _tribeName;
-			}
-		}
-		
-		public string TribeNamePlural
-		{
-			get
-			{
-				return _tribeNamePlural;
-			}
-		}
+		public string LeaderName => _civilization.Leader.Name;
+		public string TribeName => _tribeName;
+		public string TribeNamePlural => _tribeNamePlural;
 
 		public byte Handicap { get; internal set; }
 
@@ -224,13 +198,7 @@ namespace CivOne
 				_scienceRate += diff;
 			}
 		}
-		public int ScienceRate
-		{
-			get
-			{
-				return _scienceRate;
-			}
-		}
+		public int ScienceRate => _scienceRate;
 
 		public void Revolt()
 		{
@@ -256,13 +224,7 @@ namespace CivOne
 			}
 		}
 
-		public int Population
-		{
-			get
-			{
-				return Cities.Sum(c => c.Population);
-			}
-		}
+		public int Population => Cities.Sum(c => c.Population);
 		
 		public short Gold
 		{
@@ -430,10 +392,7 @@ namespace CivOne
 			return false;
 		}
 		
-		public bool HasWonder<T>() where T : IWonder
-		{
-			return Cities.Any(c => c.HasWonder<T>());
-		}
+		public bool HasWonder<T>() where T : IWonder => Cities.Any(c => c.HasWonder<T>());
 
 		public bool ProductionAvailable(IProduction production)
 		{
@@ -446,13 +405,7 @@ namespace CivOne
 			return true;
 		}
 
-		public int DestroyTurn
-		{
-			get
-			{
-				return _destroyTurn;
-			}
-		}
+		public int DestroyTurn => _destroyTurn;
 
 		public bool IsDestroyed
 		{

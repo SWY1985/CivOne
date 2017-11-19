@@ -18,8 +18,6 @@ namespace CivOne
 {
 	internal class Runtime : IRuntime, IDisposable
 	{
-		private readonly Sounds _sounds;
-
 		internal static Size CanvasSize { get; set; }
 
 		internal bool SignalQuit { get; private set; }
@@ -37,33 +35,32 @@ namespace CivOne
 		public event UpdateEventHandler Update;
 		public event KeyboardEventHandler KeyboardUp, KeyboardDown;
 		public event ScreenEventHandler MouseUp, MouseDown, MouseMove;
-
+		
 		public RuntimeSettings Settings { get; private set; }
 		public MouseCursor CurrentCursor { internal get; set; }
 		public IBitmap Bitmap { get; set; }
 		public IBitmap Cursor { internal get; set; }
 		public void Log(string value, params object[] formatArgs) => Console.WriteLine(value, formatArgs);
 
-		Platform IRuntime.CurrentPlatform => Native.Platform;
+		Platform IRuntime.CurrentPlatform => Platform.Windows;
 		string IRuntime.StorageFolder => Directory.GetCurrentDirectory();
 		int IRuntime.CanvasWidth => CanvasSize.Width;
 		int IRuntime.CanvasHeight => CanvasSize.Height;
+		
 		string IRuntime.BrowseFolder(string caption) => Native.FolderBrowser(caption);
-		void IRuntime.PlaySound(string filename) => _sounds.PlaySound(filename);
-		void IRuntime.StopSound() => _sounds.StopSound();
+		void IRuntime.PlaySound(string filename) => Console.WriteLine("PLAY SOUND NOT IMPLEMENTED");
+		void IRuntime.StopSound() => Console.WriteLine("STOP SOUND NOT IMPLEMENTED");
 		void IRuntime.Quit() => SignalQuit = true;
 
 		public Runtime(RuntimeSettings settings)
 		{
 			Settings = settings;
 			RuntimeHandler.Register(this);
-
-			_sounds = new Sounds(this);
 		}
-		
+
 		public void Dispose()
 		{
-			_sounds.Dispose();
+
 		}
 	}
 }

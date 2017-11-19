@@ -332,7 +332,7 @@ namespace CivOne
 	            unit.Explore();
 	        }
 	    }
-
+        
         public static bool Started
 		{
 			get
