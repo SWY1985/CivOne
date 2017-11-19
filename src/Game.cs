@@ -632,7 +632,7 @@ namespace CivOne
 				Settings.EndOfTurn = (settings & (0x01 << 2)) > 0;
 				Settings.Animations = (settings & (0x01 << 3)) > 0;
 				Settings.Sound = (settings & (0x01 << 4)) > 0;
-				// Settings.EnemyMoves = (settings & (0x01 << 5)) > 0;
+				Settings.EnemyMoves = (settings & (0x01 << 5)) > 0;
 				Settings.CivilopediaText = (settings & (0x01 << 6)) > 0;
 				// Settings.Palace = (settings & (0x01 << 7)) > 0;
 				
@@ -1316,7 +1316,7 @@ namespace CivOne
 				if (Settings.EndOfTurn) settings |= (0x01 << 2);
 				if (Settings.Animations) settings |= (0x01 << 3);
 				if (Settings.Sound) settings |= (0x01 << 4);
-				// if (Settings.EnemyMoves) settings |= (0x01 << 5);
+				if (Settings.EnemyMoves) settings |= (0x01 << 5);
 				if (Settings.CivilopediaText) settings |= (0x01 << 6);
 				// if (Settings.Palace) settings |= (0x01 << 7);
 				bw.Write(settings);
