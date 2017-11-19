@@ -1311,14 +1311,14 @@ namespace CivOne
 
 				// Game Settings
 				ushort settings = 0;
-				if (Settings.InstantAdvice) settings &= (0x01 << 0);
-				if (Settings.AutoSave) settings &= (0x01 << 1);
-				if (Settings.EndOfTurn) settings &= (0x01 << 2);
-				if (Settings.Animations) settings &= (0x01 << 3);
-				if (Settings.Sound) settings &= (0x01 << 4);
-				// if (Settings.EnemyMoves) settings &= (0x01 << 5);
-				if (Settings.CivilopediaText) settings &= (0x01 << 6);
-				// if (Settings.Palace) settings &= (0x01 << 7);
+				if (Settings.InstantAdvice) settings |= (0x01 << 0);
+				if (Settings.AutoSave) settings |= (0x01 << 1);
+				if (Settings.EndOfTurn) settings |= (0x01 << 2);
+				if (Settings.Animations) settings |= (0x01 << 3);
+				if (Settings.Sound) settings |= (0x01 << 4);
+				// if (Settings.EnemyMoves) settings |= (0x01 << 5);
+				if (Settings.CivilopediaText) settings |= (0x01 << 6);
+				// if (Settings.Palace) settings |= (0x01 << 7);
 				bw.Write(settings);
 
 				// TODO: Land pathfinding
@@ -1658,7 +1658,7 @@ namespace CivOne
 			{
 				ApplyBonus(i);
 			}
-			
+
 			GameTurn = 0;
 
 			// Number of turns to next antholoy needs to be checked
