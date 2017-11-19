@@ -79,6 +79,7 @@ namespace CivOne
 
 		private void KeyDown(object sender, KeyboardEventArgs args)
 		{
+			if (args.Key == Key.None) return;
 			if (args.Modifier == KeyModifier.Alt && args.Key == Key.Enter)
 			{
 				Fullscreen = !Fullscreen;
@@ -87,7 +88,11 @@ namespace CivOne
 			_runtime.InvokeKeyboardDown(args);
 		}
 
-		private void KeyUp(object sender, KeyboardEventArgs args) => _runtime.InvokeKeyboardUp(args);
+		private void KeyUp(object sender, KeyboardEventArgs args)
+		{
+			if (args.Key == Key.None) return;
+			_runtime.InvokeKeyboardUp(args);
+		}
 
 		private void MouseMove(object sender, ScreenEventArgs args)
 		{
