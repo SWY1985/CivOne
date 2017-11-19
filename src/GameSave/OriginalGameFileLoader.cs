@@ -133,7 +133,7 @@ namespace CivOne.GameSave
                 Settings.Instance.EndOfTurn = (settings & (0x01 << 2)) > 0;
                 Settings.Instance.Animations = (settings & (0x01 << 3)) > 0;
                 Settings.Instance.Sound = (settings & (0x01 << 4)) > 0;
-                // Settings.EnemyMoves = (settings & (0x01 << 5)) > 0;
+                Settings.Instance.EnemyMoves = (settings & (0x01 << 5)) > 0;
                 Settings.Instance.CivilopediaText = (settings & (0x01 << 6)) > 0;
                 // Settings.Palace = (settings & (0x01 << 7)) > 0;
 

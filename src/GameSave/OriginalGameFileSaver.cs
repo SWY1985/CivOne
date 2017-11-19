@@ -612,14 +612,14 @@ namespace CivOne.GameSave
 
                 // Game Settings
                 ushort settings = 0;
-                if (Settings.Instance.InstantAdvice) settings &= (0x01 << 0);
-                if (Settings.Instance.AutoSave) settings &= (0x01 << 1);
-                if (Settings.Instance.EndOfTurn) settings &= (0x01 << 2);
-                if (Settings.Instance.Animations) settings &= (0x01 << 3);
-                if (Settings.Instance.Sound) settings &= (0x01 << 4);
-                // if (Settings.EnemyMoves) settings &= (0x01 << 5);
-                if (Settings.Instance.CivilopediaText) settings &= (0x01 << 6);
-                // if (Settings.Palace) settings &= (0x01 << 7);
+                if (Settings.Instance.InstantAdvice) settings |= (0x01 << 0);
+                if (Settings.Instance.AutoSave) settings |= (0x01 << 1);
+                if (Settings.Instance.EndOfTurn) settings |= (0x01 << 2);
+                if (Settings.Instance.Animations) settings |= (0x01 << 3);
+                if (Settings.Instance.Sound) settings |= (0x01 << 4);
+                if (Settings.Instance.EnemyMoves) settings |= (0x01 << 5);
+                if (Settings.Instance.CivilopediaText) settings |= (0x01 << 6);
+                // if (Settings.Instance.Palace) settings |= (0x01 << 7);
                 bw.Write(settings);
 
                 // TODO: Land pathfinding
