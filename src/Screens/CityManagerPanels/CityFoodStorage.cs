@@ -12,6 +12,7 @@ using CivOne.Buildings;
 using CivOne.Enums;
 using CivOne.Graphics;
 using CivOne.Graphics.Sprites;
+using CivOne.IO;
 
 namespace CivOne.Screens.CityManagerPanels
 {
@@ -27,7 +28,7 @@ namespace CivOne.Screens.CityManagerPanels
 			{
 				this.Tile(Pattern.PanelBlue)
 					.DrawRectangle(colour: 1)
-					.FillRectangle(1, 1, 89, 8, 1)
+					.FillRectangle(1, 1, (Width - 2), 8, 1)
 					.DrawText($"Food Storage", 1, 17, 6, 2, TextAlign.Left);
 
 				int foodPerLine = (_city.Size + 1);
@@ -36,12 +37,12 @@ namespace CivOne.Screens.CityManagerPanels
 				// if (_city.Size > 10) foodWidth /= 4;
 				for (int i = 0; i < 7; i++)
 				{
-					if ((_city.Size * foodWidth) <= 80) break;
+					if ((_city.Size * foodWidth) <= (Width - 11)) break;
 					foodWidth--;
 				}
 				int width = 8 + (_city.Size * foodWidth);
-				if (width < 88)
-					this.FillRectangle(2 + width, 9, 88 - width, 82, 1);
+				if (width < (Width - 3))
+					this.FillRectangle(2 + width, 9, (Width - 3) - width, 82, 1);
 				
 				if (_city.Buildings.Any(b => (b is Granary)))
 				{
@@ -62,6 +63,12 @@ namespace CivOne.Screens.CityManagerPanels
 
 		public void Update()
 		{
+			_update = true;
+		}
+
+		internal void Resize(int width)
+		{
+			Bitmap = new Bytemap(width, 92);
 			_update = true;
 		}
 

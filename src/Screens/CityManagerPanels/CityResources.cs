@@ -11,6 +11,7 @@ using System;
 using CivOne.Enums;
 using CivOne.Graphics;
 using CivOne.Graphics.Sprites;
+using CivOne.IO;
 
 namespace CivOne.Screens.CityManagerPanels
 {
@@ -81,7 +82,7 @@ namespace CivOne.Screens.CityManagerPanels
 			int width = 8;
 			for (int i = 0; i < 7; i++)
 			{
-				if ((_city.TradeTotal * width) <= 116) break;
+				if ((_city.TradeTotal * width) <= (Width - 7)) break;
 				width--;
 			}
 			
@@ -93,7 +94,7 @@ namespace CivOne.Screens.CityManagerPanels
 			width = 8;
 			for (int i = 0; i < 7; i++)
 			{
-				if (((_city.Luxuries + _city.Taxes + _city.Science + 8) * width) <= 116) break;
+				if (((_city.Luxuries + _city.Taxes + _city.Science + 8) * width) <= (Width - 7)) break;
 				width--;
 			}
 			
@@ -123,7 +124,7 @@ namespace CivOne.Screens.CityManagerPanels
 			{
 				this.Tile(Pattern.PanelBlue)
 					.DrawRectangle(colour: 1)
-					.FillRectangle(1, 1, 121, 8, 1)
+					.FillRectangle(1, 1, (Width - 2), 8, 1)
 					.DrawText($"City Resources", 1, 17, 6, 2, TextAlign.Left);
 
 				DrawFood();
@@ -137,6 +138,12 @@ namespace CivOne.Screens.CityManagerPanels
 
 		public void Update()
 		{
+			_update = true;
+		}
+
+		internal void Resize(int width)
+		{
+			Bitmap = new Bytemap(width, 43);
 			_update = true;
 		}
 
