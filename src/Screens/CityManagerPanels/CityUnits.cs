@@ -11,6 +11,7 @@ using System.Linq;
 using CivOne.Governments;
 using CivOne.Graphics;
 using CivOne.Graphics.Sprites;
+using CivOne.IO;
 using CivOne.Units;
 
 namespace CivOne.Screens.CityManagerPanels
@@ -69,6 +70,12 @@ namespace CivOne.Screens.CityManagerPanels
 				_update = false;
 			}
 			return true;
+		}
+
+		internal void Resize(int width)
+		{
+			Bitmap = new Bytemap(width, 38);
+			_update = true;
 		}
 
 		public CityUnits(City city) : base(123, 38)
