@@ -50,7 +50,10 @@ namespace CivOne
 			set
 			{
 				if (_customSettings.ContainsKey(customSetting.ToLower()))
+				{
 					_customSettings[customSetting.ToLower()] = value;
+					return;
+				}
 				_customSettings.Add(customSetting.ToLower(), value);
 			}
 		}

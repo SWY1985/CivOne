@@ -16,6 +16,17 @@
 		<PackageId>CivOne.Api</PackageId>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	</PropertyGroup>
+	<PropertyGroup Condition="$(Configuration.StartsWith('Debug'))">
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>portable</DebugType>
+		<DefineConstants>DEBUG</DefineConstants>
+		<Optimize>false</Optimize>
+	</PropertyGroup>
+	<PropertyGroup Condition="$(Configuration.StartsWith('Release'))">
+		<DebugType>none</DebugType>
+		<DefineConstants>RELEASE</DefineConstants>
+		<Optimize>true</Optimize>
+	</PropertyGroup>
 	<ItemGroup>
 		<Compile Remove="**" />
 		<Compile Include="../shared/**" />

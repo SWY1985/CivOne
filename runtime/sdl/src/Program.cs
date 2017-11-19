@@ -17,7 +17,7 @@ namespace CivOne
 	internal class Program
 	{
 		private static string HelpText => @"CivOne - An open source implementation of Sid Meier's Civilization
-Usage: civone-opentk [argument|runtime-options]
+Usage: civone-sdl [argument|runtime-options]
 
 arguments:
   -h|--help             Show this documentation.
@@ -31,10 +31,11 @@ runtime-options:
   --no-sound            Disable ingame sounds
   --skip-credits        Skips the game credits sequence
   --skip-intro          Skips the game intro sequence
+  --software-render     Force the use of SDL software rendererer
 ";
 
 		private static string ErrorText => @"civone-opentk: Invalid options: '{0}'
-Try 'civone-opentk --help' for more information.
+Try 'civone-sdl --help' for more information.
 ";
 
 		private static bool WriteSdlStub()
@@ -67,6 +68,7 @@ Try 'civone-opentk --help' for more information.
 			if (WriteSdlStub()) Console.WriteLine("Written SDL2 library stub...");
 
 			RuntimeSettings settings = new RuntimeSettings();
+			settings["software-render"] = false;
 			for (int i = 0; i < args.Length; i++)
 			{
 				string cmd = args[i].TrimStart('-');
@@ -90,6 +92,7 @@ Try 'civone-opentk --help' for more information.
 					case "no-data-check": settings.DataCheck = false; continue;
 					case "skip-credits": settings.ShowCredits = false; continue;
 					case "skip-intro": settings.ShowIntro = false; continue;
+					case "software-render": settings["software-render"] = true; continue;
 					default: Console.WriteLine(ErrorText); return;
 				}
 			}
@@ -100,7 +103,7 @@ Try 'civone-opentk --help' for more information.
 			}
 
 			using (Runtime runtime = new Runtime(settings))
-			using (GameWindow window = new GameWindow(runtime))
+			using (GameWindow window = new GameWindow(runtime, (bool)settings["software-render"]))
 			{
 				runtime.Log("Game started");
 				window.Run();

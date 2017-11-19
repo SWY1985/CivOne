@@ -56,7 +56,10 @@ namespace CivOne
 				{
 					MouseX = x;
 					MouseY = y;
-					OnMouseMove?.Invoke(null, new ScreenEventArgs(x, y));
+					MouseButton buttons = MouseButton.None;
+					if ((buttonMask & 1) > 0) buttons |= MouseButton.Left;
+					if ((buttonMask & 4) > 0) buttons |= MouseButton.Right;
+					OnMouseMove?.Invoke(null, new ScreenEventArgs(x, y, buttons));
 				}
 				
 				CheckMouseButton(MouseButton.Left, buttonMask, 1);

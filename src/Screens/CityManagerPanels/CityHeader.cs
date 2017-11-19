@@ -13,6 +13,7 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
 using CivOne.Graphics.Sprites;
+using CivOne.IO;
 
 namespace CivOne.Screens.CityManagerPanels
 {
@@ -32,7 +33,7 @@ namespace CivOne.Screens.CityManagerPanels
 
 				this.Tile(Pattern.PanelBlue)
 					.DrawRectangle(colour: 1)
-					.DrawText($"{_city.Name} (Pop:{population})", 1, 17, 104, 1, TextAlign.Center);
+					.DrawText($"{_city.Name} (Pop:{population})", 1, 17, (int)Math.Ceiling((float)Width / 2), 1, TextAlign.Center);
 
 				int xx = 0;
 				int group = -1;
@@ -90,6 +91,12 @@ namespace CivOne.Screens.CityManagerPanels
 		public void Close()
 		{
 			Destroy();
+		}
+
+		internal void Resize(int width)
+		{
+			Bitmap = new Bytemap(width, 21);
+			_update = true;
 		}
 
 		public CityHeader(City city) : base(207, 21)

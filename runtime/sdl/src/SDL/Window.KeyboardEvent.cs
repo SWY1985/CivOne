@@ -113,7 +113,7 @@ namespace CivOne
 				}
 
 				char keyChar = (char)keyboardEvent.KeySym.Keycode;
-				if (keyChar != '.' && keyChar != ',' && !char.IsLetter(keyChar) && (keyChar < '0' && keyChar > '9')) return null;
+				if (keyChar != '.' && keyChar != ',' && (char.ToLower(keyChar) < 'a' || (int)char.ToLower(keyChar) > 'z') && (keyChar < '0' || keyChar > '9')) return null;
 				return new KeyboardEventArgs(char.ToUpper(keyChar), modifier);
 			}
 

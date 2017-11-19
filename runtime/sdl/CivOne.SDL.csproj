@@ -1,12 +1,32 @@
+<!--
+	CivOne
+	
+	To the extent possible under law, the person who associated CC0 with
+	CivOne has waived all copyright and related or neighboring rights
+	to CivOne.
+	
+	You should have received a copy of the CC0 legalcode along with this
+	work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
+-->
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>netcoreapp2.0</TargetFramework>
 		<AssemblyName>CivOne.SDL</AssemblyName>
 		<OutputType>Exe</OutputType>
-		<DebugType>portable</DebugType>
-		<RuntimeIdentifiers>win7-x86;win7-x64;osx.10.10-x64;ubuntu.16.04-x64</RuntimeIdentifiers>
+		<RuntimeIdentifiers>win-x86;win-x64;osx-x64;linux-x64</RuntimeIdentifiers>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
+	<PropertyGroup Condition="$(Configuration.StartsWith('Debug'))">
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>portable</DebugType>
+		<DefineConstants>DEBUG</DefineConstants>
+		<Optimize>false</Optimize>
+	</PropertyGroup>
+	<PropertyGroup Condition="$(Configuration.StartsWith('Release'))">
+		<DebugType>none</DebugType>
+		<DefineConstants>RELEASE</DefineConstants>
+		<Optimize>true</Optimize>
 	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="../../CivOne.csproj" />

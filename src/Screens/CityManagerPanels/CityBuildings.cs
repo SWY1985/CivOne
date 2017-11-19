@@ -16,6 +16,7 @@ using CivOne.Graphics;
 using CivOne.Screens.Dialogs;
 using CivOne.Graphics.Sprites;
 using CivOne.Wonders;
+using CivOne.IO;
 
 namespace CivOne.Screens.CityManagerPanels
 {
@@ -62,7 +63,7 @@ namespace CivOne.Screens.CityManagerPanels
 				name = $"{name.Substring(0, name.Length - 1)}";
 			}
 			this.DrawText(name, 1, 15, 42, 3 + (6 * offset))
-				.AddLayer(Icons.SellButton, 98, 2 + (6 * offset));
+				.AddLayer(Icons.SellButton, Width - 10, 2 + (6 * offset));
 		}
 
 		private IEnumerable<IProduction> GetImprovements
@@ -117,7 +118,7 @@ namespace CivOne.Screens.CityManagerPanels
 
 		public override bool MouseDown(ScreenEventArgs args)
 		{
-			if (!_city.BuildingSold && args.X > 97 && args.X < 105)
+			if (!_city.BuildingSold && args.X > Width - 11 && args.X < Width - 3)
 			{
 				int yy = 2;
 				for (int i = (_page * 14); i < _improvements.Length && i < ((_page + 1) * 14); i++)
@@ -141,6 +142,12 @@ namespace CivOne.Screens.CityManagerPanels
 				return true;
 			}
 			return false;
+		}
+
+		public void Resize(int width)
+		{
+			Bitmap = new Bytemap(width, 97);
+			_update = true;
 		}
 
 		public CityBuildings(City city) : base(108, 97)

@@ -113,20 +113,27 @@ namespace CivOne
 				}
 			}
 
-			public Window(string title, int width, int height, bool fullscreen)
+			public Window(string title, int width, int height, bool fullscreen, bool softwareRender = false)
 			{
 				SDL_Init(SDL_INIT.VIDEO);
 
 				SDL_WINDOW flags = SDL_WINDOW.RESIZABLE;
 				if (_fullscreen = fullscreen) flags |= SDL_WINDOW.FULLSCREEN_DESKTOP;
 				_handle = SDL_CreateWindow(title, 100, 100, width, height, flags);
-				_renderer = SDL_CreateRenderer(_handle, -1, SDL_RENDERER_FLAGS.SDL_RENDERER_ACCELERATED);
+				_renderer = softwareRender ? IntPtr.Zero : SDL_CreateRenderer(_handle, -1, SDL_RENDERER_FLAGS.SDL_RENDERER_ACCELERATED);
+				if (_renderer == null || _renderer == IntPtr.Zero)
+				{
+					_renderer = SDL_CreateRenderer(_handle, -1, SDL_RENDERER_FLAGS.SDL_RENDERER_SOFTWARE);
+				}
 
 				if (_handle == null)
 				{
 					Console.WriteLine("Something is wrong");
 					return;
 				}
+
+				// Run OS native functions for initialization
+				Native.Init(_handle);
 			}
 
 			public void Dispose()
