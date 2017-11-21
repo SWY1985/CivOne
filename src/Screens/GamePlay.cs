@@ -364,6 +364,7 @@ namespace CivOne.Screens
 				}
 			}
 
+			// if there is no active unit center on random human player city
 			foreach (City city in Game.GetCities())
 			{
 				if (city.Owner == Game.PlayerNumber(Game.HumanPlayer))
