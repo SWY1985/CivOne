@@ -353,7 +353,7 @@ namespace CivOne.Screens
 			HasUpdate(0);
 		}
 
-		private void centerMapOnActiveHumanPlayerAsset()
+		private void CenterMapOnActiveHumanPlayerAsset()
 		{
 			foreach (IUnit unit in Game.GetUnits().OrderByDescending(u => u.MovesLeft))
 			{
@@ -387,7 +387,7 @@ namespace CivOne.Screens
 			_sideBar = new SideBar(Palette);
 			_gameMap = new GameMap();
 
-			centerMapOnActiveHumanPlayerAsset();
+			CenterMapOnActiveHumanPlayerAsset();
 
 			if (Width != 320 || Height != 200)
 			{
