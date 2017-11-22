@@ -16,6 +16,7 @@ using CivOne.Screens.Dialogs;
 using CivOne.Screens.GamePlayPanels;
 using CivOne.Screens.Reports;
 using CivOne.Tasks;
+using CivOne.Units;
 using CivOne.UserInterface;
 
 namespace CivOne.Screens
@@ -351,7 +352,29 @@ namespace CivOne.Screens
 			_update = true;
 			HasUpdate(0);
 		}
-		
+
+		private void CenterMapOnActiveHumanPlayerAsset()
+		{
+			foreach (IUnit unit in Game.GetUnits().OrderByDescending(u => u.MovesLeft))
+			{
+				if (unit.Owner == Game.PlayerNumber(Game.HumanPlayer))
+				{
+					_gameMap.CenterOnPoint(unit.X, unit.Y);
+					return;
+				}
+			}
+
+			// if there is no active unit center on random human player city
+			foreach (City city in Game.GetCities())
+			{
+				if (city.Owner == Game.PlayerNumber(Game.HumanPlayer))
+				{
+					_gameMap.CenterOnPoint(city.X, city.Y);
+					return;
+				}
+			}
+		}
+
 		public GamePlay()
 		{
 			OnResize += Resize;
@@ -363,6 +386,8 @@ namespace CivOne.Screens
 			_menuBar = new MenuBar(Palette);
 			_sideBar = new SideBar(Palette);
 			_gameMap = new GameMap();
+
+			CenterMapOnActiveHumanPlayerAsset();
 
 			if (Width != 320 || Height != 200)
 			{
