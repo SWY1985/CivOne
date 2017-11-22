@@ -13,6 +13,7 @@ namespace CivOne
 	{
 		public byte Id;
 		public byte NameId;
+		public byte Status;
 		public byte[] Buildings;
 		public byte X, Y;
 		public byte ActualSize;

@@ -13,7 +13,7 @@ using System.Text;
 
 namespace CivOne.IO
 {
-	internal unsafe static class SaveDataExtensions
+	internal unsafe static partial class SaveDataExtensions
 	{
 		private static byte[] GetByteArray(byte* ptr, int length)
 		{
@@ -21,6 +21,12 @@ namespace CivOne.IO
 			for (int i = 0; i < length; i++)
 				output[i] = ptr[i];
 			return output;
+		}
+
+		private static void SetByteArray(byte *ptr, params byte[] values)
+		{
+			for (int i = 0; i < values.Length; i++)
+				ptr[i] = values[i];
 		}
 
 		private static short[] GetShortArray(short* ptr, int length)
@@ -31,12 +37,24 @@ namespace CivOne.IO
 			return output;
 		}
 
+		private static void SetShortArray(short* ptr, params short[] values)
+		{
+			for (int i = 0; i < values.Length; i++)
+				ptr[i * 2] = values[i];
+		}
+
 		private static ushort[] GetUShortArray(ushort* ptr, int length)
 		{
 			ushort[] output = new ushort[length];
 			for (int i = 0; i < length; i++)
 				output[i] = ptr[i];
 			return output;
+		}
+
+		private static void SetUShortArray(ushort* ptr, params ushort[] values)
+		{
+			for (int i = 0; i < values.Length; i++)
+				ptr[i * 2] = values[i];
 		}
 
 		private static IEnumerable<byte> GetBitIds(byte[] bytes, int startIndex, int length)
@@ -47,6 +65,17 @@ namespace CivOne.IO
 			{
 				if ((bytes[i] & (1 << b)) > 0) yield return index;
 				index++;
+			}
+		}
+
+		private static void SetBitIds(ref byte[] bytes, int startIndex, int length, params byte[] values)
+		{
+			foreach (byte value in values)
+			{
+				int bitNo = value % 8;
+				int byteNo = (value - bitNo) / 8;
+				if (length <= byteNo) continue;
+				bytes[startIndex + byteNo] |= (byte)(1 << bitNo);
 			}
 		}
 
@@ -70,110 +99,13 @@ namespace CivOne.IO
 			return output;
 		}
 
-		public static string[] GetLeaderNames(this SaveData saveData) => GetStringArray(&saveData.LeaderNames[0], 8, 14);
-
-		public static string[] GetCivilizationNames(this SaveData saveData) => GetStringArray(&saveData.CivilizationNames[0], 8, 12);
-
-		public static string[] GetCitizenNames(this SaveData saveData) => GetStringArray(&saveData.CitizensName[0], 8, 11);
-
-		public static string[] GetCityNames(this SaveData saveData) => GetStringArray(&saveData.CityNames[0], 256, 13);
-
-		public static short[] GetPlayerGold(this SaveData saveData) => GetShortArray(&saveData.PlayerGold[0], 8);
-
-		public static short[] GetResearchProgress(this SaveData saveData) => GetShortArray(&saveData.ResearchProgress[0], 8);
-
-		public static byte[][] GetDiscoveredAdvanceIDs(this SaveData saveData)
+		private static void SetStringArray(byte *ptr, int itemLength, params string[] values)
 		{
-			byte[] bytes = GetByteArray(&saveData.DiscoveredAdvances[0], 8 * 10);
-			byte[][] output = new byte[8][];
-			for (int i = 0; i < 8; i++)
-				output[i] = GetBitIds(bytes, i * 10, 10).ToArray();
-			return output;
-		}
-
-		public static ushort[] GetGovernment(this SaveData saveData) => GetUShortArray(&saveData.Government[0], 8);
-
-		public static ushort[] GetTaxRate(this SaveData saveData) => GetUShortArray(&saveData.TaxRate[0], 8);
-
-		public static ushort[] GetScienceRate(this SaveData saveData) => GetUShortArray(&saveData.ScienceRate[0], 8);
-
-		public static ushort[] GetStartingPositionX(this SaveData saveData) => GetUShortArray(&saveData.StartingPositionX[0], 8);
-
-		public static CityData[] GetCityData(this SaveData saveData)
-		{
-			List<CityData> output = new List<CityData>();
-			for (byte i = 0; i < 128; i++)
-			{
-				byte[] bytes = GetByteArray(&saveData.Cities[i * 28], 28);
-				if (bytes[6] == 0xFF) continue;
-				
-				output.Add(new CityData()
-				{
-					Id = i,
-					NameId = bytes[22],
-					Buildings = GetBitIds(bytes, 0, 4).ToArray(),
-					X = bytes[4],
-					Y = bytes[5],
-					ActualSize = bytes[7],
-					CurrentProduction = bytes[9],
-					Owner = bytes[11],
-					Food = (ushort)((bytes[13] << 8) + bytes[12]),
-					Shields = (ushort)((bytes[15] << 8) + bytes[14]),
-					ResourceTiles = bytes.Skip(16).Take(6).ToArray()
-				});
-			}
-			return output.ToArray();
-		}
-
-		public static UnitData[][] GetUnitData(this SaveData saveData)
-		{
-			UnitData[][] output = new UnitData[8][];
-			for (int p = 0; p < 8; p++)
-			{
-				List<UnitData> unitList = new List<UnitData>();
-				for (byte u = 0; u < 128; u++)
-				{
-					byte[] bytes = GetByteArray(&saveData.Units[(p * 128 * 12) + (u * 12)], 12);
-					if (bytes[3] == 0xFF) continue;
-					unitList.Add(new UnitData()
-					{
-						Id = u,
-						Status = bytes[0],
-						X = bytes[1],
-						Y = bytes[2],
-						TypeId = bytes[3],
-						RemainingMoves = bytes[4],
-						SpecialMoves = bytes[5],
-						GotoX = bytes[6],
-						GotoY = bytes[7],
-						Visibility = bytes[9],
-						NextUnitId = bytes[10],
-						HomeCityId = bytes[11]
-					});
-				}
-				output[p] = unitList.ToArray();
-			}
-			return output;
-		}
-		
-		public static ushort[] GetWonders(this SaveData saveData) => GetUShortArray(&saveData.Wonders[0], 22);
-
-		public static ushort[] GetAdvanceFirstDiscovery(this SaveData saveData) => GetUShortArray(&saveData.AdvanceFirstDiscovery[0], 72);
-
-		public static bool[][,] GetTileVisibility(this SaveData saveData)
-		{
-			byte[] bytes = GetByteArray(&saveData.MapVisibility[0], (80 * 50));
-			bool[][,] output = new bool[8][,];
-			for (int p = 0; p < 8; p++)
-			{
-				output[p] = new bool[80, 50];
-				for (int i = 0; i < (80 * 50); i++)
-				{
-					int y = (i % 50), x = (i - y) / 50;
-					output[p][x, y] = ((bytes[i] & (1 << p)) > 0);
-				}
-			}
-			return output;
+			byte[] bytes = new byte[itemLength * values.Length];
+			for (int i = 0; i < values.Length; i++)
+			for (int c = 0; c < itemLength; c++)
+				bytes[(i * itemLength) + c] = (c >= values[i].Length) ? (byte)0 : (byte)values[i][c];
+			SetByteArray(ptr, bytes);
 		}
 	}
 }
