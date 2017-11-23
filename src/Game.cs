@@ -775,7 +775,7 @@ namespace CivOne
 
 			ushort[] advanceFirst = gameData.AdvanceFirstDiscovery;
 			bool[][,] visibility = gameData.TileVisibility;
-			for (int i = 0; i < 8; i++)
+			for (int i = 0; i < _players.Length; i++)
 			{
 				ICivilization[] civs = Common.Civilizations.Where(c => c.PreferredPlayerNumber == i).ToArray();
 				ICivilization civ = civs[gameData.CivilizationIdentity[i] % civs.Length];
