@@ -58,13 +58,13 @@ namespace CivOne
 			return output;
 		}
 
-		private string[] GetLeaderNames() => GetArray(nameof(SaveData.LeaderNames), 8, 14);
+		private string[] GetLeaderNames() => GetArray(nameof(SaveData.LeaderNames), 14, 8);
 
-		private string[] GetCivilizationNames() => GetArray(nameof(SaveData.CivilizationNames), 8, 12);
+		private string[] GetCivilizationNames() => GetArray(nameof(SaveData.CivilizationNames), 12, 8);
 
-		private string[] GetCitizenNames() => GetArray(nameof(SaveData.CitizensName), 8, 11);
+		private string[] GetCitizenNames() => GetArray(nameof(SaveData.CitizensName), 11, 8);
 
-		private string[] GetCityNames() => GetArray(nameof(SaveData.CityNames), 256, 13);
+		private string[] GetCityNames() => GetArray(nameof(SaveData.CityNames), 13, 256);
 
 		private short[] GetPlayerGold() => GetArray<short>(nameof(SaveData.PlayerGold), 8);
 
