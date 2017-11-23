@@ -16,7 +16,7 @@ using CivOne.IO;
 
 namespace CivOne
 {
-	internal unsafe class SaveDataAdapter : IGameData
+	internal unsafe partial class SaveDataAdapter : IGameData
 	{
 		private CityData[] DefaultCityData => Enumerable.Range(0, 128).Select(x => new CityData() { Status = 0xFF }).ToArray();
 		private UnitData[][] DefaultUnitData => Enumerable.Repeat(Enumerable.Range(0, 128).Select(id => new UnitData() { Id = (byte)id, TypeId = 0xFF }).ToArray(), 8).ToArray();
@@ -102,105 +102,114 @@ namespace CivOne
 		public byte[][] DiscoveredAdvanceIDs
 		{
 			get => _saveData.GetDiscoveredAdvanceIDs();
-			set => _saveData = _saveData.SetDiscoveredAdvanceIDs(value)
-										.SetAdvancesCount(value.Select(x => (ushort)x.Count()).ToArray());
+			set
+			{
+				SetDiscoveredAdvanceIDs(value);
+				SetArray(nameof(SaveData.AdvancesCount), value.Select(x => (ushort)x.Count()).ToArray());
+			}
 		}
 
 		public string[] LeaderNames
 		{
 			get => _saveData.GetLeaderNames();
-			set => _saveData = _saveData.SetLeaderNames(value);
+			set => SetArray(nameof(SaveData.LeaderNames), 14, value);
 		}
 
 		public string[] CivilizationNames
 		{
 			get => _saveData.GetCivilizationNames();
-			set => _saveData =_saveData.SetCivilizationNames(value);
+			set => SetCivilizationNames(value);
 		}
 
 		public string[] CitizenNames
 		{
 			get => _saveData.GetCitizenNames();
-			set => _saveData =_saveData.SetCitizenNames(value);
+			set => SetCitizenNames(value);
 		}
 
 		public string[] CityNames
 		{
 			get => _saveData.GetCityNames();
-			set => _saveData =_saveData.SetCityNames(value);
+			set => SetCityNames(value);
 		}
 
 		public short[] PlayerGold
 		{
 			get => _saveData.GetPlayerGold();
-			set => _saveData = _saveData.SetPlayerGold(value);
+			set => SetPlayerGold(value);
 		}
 
 		public short[] ResearchProgress
 		{
 			get => _saveData.GetResearchProgress();
-			set => _saveData = _saveData.SetResearchProgress(value);
+			set => SetResearchProgress(value);
 		}
 
 		public ushort[] TaxRate
 		{
 			get => _saveData.GetTaxRate();
-			set => _saveData = _saveData.SetTaxRate(value);
+			set => SetTaxRate(value);
 		}
 
 		public ushort[] ScienceRate
 		{
 			get => _saveData.GetScienceRate();
-			set => _saveData = _saveData.SetScienceRate(value);
+			set => SetScienceRate(value);
 		}
 
 		public ushort[] StartingPositionX
 		{
 			get => _saveData.GetStartingPositionX();
-			set => _saveData = _saveData.SetStartingPositionX(value);
+			set => SetStartingPositionX(value);
 		}
 
 		public ushort[] Government
 		{
 			get => _saveData.GetGovernment();
-			set => _saveData = _saveData.SetGovernment(value);
+			set => SetGovernment(value);
 		}
 
 		public CityData[] CityData
 		{
 			get => _saveData.GetCityData();
-			set => _saveData = _saveData.SetCityData(value)
-										.SetCityX(value.Select(c => c.X).ToArray())
-										.SetCityY(value.Select(c => c.Y).ToArray())
-										.SetCityCount(Enumerable.Range(0, 8).Select(i => (ushort)value.Count(c => c.Owner == i)).ToArray())
-										.SetTotalCitySize(Enumerable.Range(0, 8).Select(i => (ushort)value.Sum(c => c.ActualSize)).ToArray());
+			set
+			{
+				SetCityData(value);
+				SetCityX(value.Select(c => c.X).ToArray());
+				SetCityY(value.Select(c => c.Y).ToArray());
+				SetCityCount(Enumerable.Range(0, 8).Select(i => (ushort)value.Count(c => c.Owner == i)).ToArray());
+				SetTotalCitySize(Enumerable.Range(0, 8).Select(i => (ushort)value.Sum(c => c.ActualSize)).ToArray());
+			}
 		}
 
 		public UnitData[][] UnitData
 		{
 			get => _saveData.GetUnitData();
-			set => _saveData = _saveData.SetUnitData(value)
-										.SetUnitCount(value.Select(p => (ushort)p.Count()).ToArray())
-										.SetUnitsActive(value)
-										.SetSettlerCount(value.Select(p => (ushort)p.Count(u => u.TypeId == (byte)UnitType.Settlers)).ToArray());
+			set
+			{
+				SetUnitData(value);
+				SetUnitCount(value.Select(p => (ushort)p.Count()).ToArray());
+				SetUnitsActive(value);
+				SetSettlerCount(value.Select(p => (ushort)p.Count(u => u.TypeId == (byte)UnitType.Settlers)).ToArray());
+			}
 		}
 
 		public ushort[] Wonders
 		{
 			get => _saveData.GetWonders();
-			set => _saveData = _saveData.SetWonders(value);
+			set => SetWonders(value);
 		}
 
 		public bool[][,] TileVisibility
 		{
 			get => _saveData.GetTileVisibility();
-			set => _saveData = _saveData.SetTileVisibility(value);
+			set => SetTileVisibility(value);
 		}
 
 		public ushort[] AdvanceFirstDiscovery
 		{
 			get => _saveData.GetAdvanceFirstDiscovery();
-			set => _saveData = _saveData.SetAdvanceFirstDiscovery(value);
+			set => SetAdvanceFirstDiscovery(value);
 		}
 
 		public bool[] GameOptions
@@ -270,13 +279,13 @@ namespace CivOne
 
 		internal SaveDataAdapter()
 		{
-			_saveData = new SaveData()
-				.SetCityData(DefaultCityData)
-				.SetUnitTypes(DefaultUnitTypes)
-				.SetUnitData(DefaultUnitData)
-				.SetWonders(Enumerable.Repeat(ushort.MaxValue, 22).ToArray())
-				.SetCityX(Enumerable.Repeat((byte)0xFF, 256).ToArray())
-				.SetCityY(Enumerable.Repeat((byte)0xFF, 256).ToArray());
+			_saveData = new SaveData();
+			SetCityData(DefaultCityData);
+			SetUnitTypes(DefaultUnitTypes);
+			SetUnitData(DefaultUnitData);
+			SetWonders(Enumerable.Repeat(ushort.MaxValue, 22).ToArray());
+			SetCityX(Enumerable.Repeat((byte)0xFF, 256).ToArray());
+			SetCityY(Enumerable.Repeat((byte)0xFF, 256).ToArray());
 			ValidData = true;
 		}
 

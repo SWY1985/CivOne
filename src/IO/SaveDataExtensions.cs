@@ -7,8 +7,10 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace CivOne.IO
@@ -23,24 +25,12 @@ namespace CivOne.IO
 			return output;
 		}
 
-		private static void SetByteArray(byte *ptr, params byte[] values)
-		{
-			for (int i = 0; i < values.Length; i++)
-				ptr[i] = values[i];
-		}
-
 		private static short[] GetShortArray(short* ptr, int length)
 		{
 			short[] output = new short[length];
 			for (int i = 0; i < length; i++)
 				output[i] = ptr[i];
 			return output;
-		}
-
-		private static void SetShortArray(short* ptr, params short[] values)
-		{
-			for (int i = 0; i < values.Length; i++)
-				ptr[i * 2] = values[i];
 		}
 
 		private static ushort[] GetUShortArray(ushort* ptr, int length)
@@ -51,12 +41,6 @@ namespace CivOne.IO
 			return output;
 		}
 
-		private static void SetUShortArray(ushort* ptr, params ushort[] values)
-		{
-			for (int i = 0; i < values.Length; i++)
-				ptr[i * 2] = values[i];
-		}
-
 		private static IEnumerable<byte> GetBitIds(byte[] bytes, int startIndex, int length)
 		{
 			byte index = 0;
@@ -65,17 +49,6 @@ namespace CivOne.IO
 			{
 				if ((bytes[i] & (1 << b)) > 0) yield return index;
 				index++;
-			}
-		}
-
-		private static void SetBitIds(ref byte[] bytes, int startIndex, int length, params byte[] values)
-		{
-			foreach (byte value in values)
-			{
-				int bitNo = value % 8;
-				int byteNo = (value - bitNo) / 8;
-				if (length <= byteNo) continue;
-				bytes[startIndex + byteNo] |= (byte)(1 << bitNo);
 			}
 		}
 
@@ -97,15 +70,6 @@ namespace CivOne.IO
 			for (int i = 0; i < itemCount; i++)
 				output[i] = BytesToString(bytes, (i * itemLength), itemLength);
 			return output;
-		}
-
-		private static void SetStringArray(byte *ptr, int itemLength, params string[] values)
-		{
-			byte[] bytes = new byte[itemLength * values.Length];
-			for (int i = 0; i < values.Length; i++)
-			for (int c = 0; c < itemLength; c++)
-				bytes[(i * itemLength) + c] = (c >= values[i].Length) ? (byte)0 : (byte)values[i][c];
-			SetByteArray(ptr, bytes);
 		}
 	}
 }
