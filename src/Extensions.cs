@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text;
 using CivOne.Units;
 
 namespace CivOne
@@ -29,6 +30,40 @@ namespace CivOne
 			for (int i = byteArray.GetUpperBound(0); i >= 0; i--)
 				byteArray[i] = value;
 			return byteArray;
+		}
+
+		public static string ToString(this byte[] bytes, int startIndex, int length)
+		{
+			StringBuilder output = new StringBuilder();
+			for (int i = startIndex; i < startIndex + length; i++)
+			{
+				if (bytes[i] == 0) break;
+				output.Append((char)bytes[i]);
+			}
+			return output.ToString().Trim();
+		}
+
+		public static IEnumerable<byte> FromBitIds(this byte[] bytes, int startIndex, int length)
+		{
+			byte index = 0;
+			for (int i = startIndex; i < startIndex + length; i++)
+			for (int b = 0; b < 8; b++)
+			{
+				if ((bytes[i] & (1 << b)) > 0) yield return index;
+				index++;
+			}
+		}
+
+		public static byte[] ToBitIds(this byte[] bytes, int startIndex, int length, byte[] values)
+		{
+			foreach (byte value in values)
+			{
+				int bitNo = value % 8;
+				int byteNo = (value - bitNo) / 8;
+				if (length <= byteNo) continue;
+				bytes[startIndex + byteNo] |= (byte)(1 << bitNo);
+			}
+			return bytes;
 		}
 
 		private static CityData GetCityData(this City city, byte id)

@@ -101,7 +101,7 @@ namespace CivOne
 
 		public byte[][] DiscoveredAdvanceIDs
 		{
-			get => _saveData.GetDiscoveredAdvanceIDs();
+			get => GetDiscoveredAdvanceIDs();
 			set
 			{
 				SetDiscoveredAdvanceIDs(value);
@@ -111,67 +111,67 @@ namespace CivOne
 
 		public string[] LeaderNames
 		{
-			get => _saveData.GetLeaderNames();
+			get => GetLeaderNames();
 			set => SetArray(nameof(SaveData.LeaderNames), 14, value);
 		}
 
 		public string[] CivilizationNames
 		{
-			get => _saveData.GetCivilizationNames();
+			get => GetCivilizationNames();
 			set => SetCivilizationNames(value);
 		}
 
 		public string[] CitizenNames
 		{
-			get => _saveData.GetCitizenNames();
+			get => GetCitizenNames();
 			set => SetCitizenNames(value);
 		}
 
 		public string[] CityNames
 		{
-			get => _saveData.GetCityNames();
+			get => GetCityNames();
 			set => SetCityNames(value);
 		}
 
 		public short[] PlayerGold
 		{
-			get => _saveData.GetPlayerGold();
+			get => GetPlayerGold();
 			set => SetPlayerGold(value);
 		}
 
 		public short[] ResearchProgress
 		{
-			get => _saveData.GetResearchProgress();
+			get => GetResearchProgress();
 			set => SetResearchProgress(value);
 		}
 
 		public ushort[] TaxRate
 		{
-			get => _saveData.GetTaxRate();
+			get => GetTaxRate();
 			set => SetTaxRate(value);
 		}
 
 		public ushort[] ScienceRate
 		{
-			get => _saveData.GetScienceRate();
+			get => GetScienceRate();
 			set => SetScienceRate(value);
 		}
 
 		public ushort[] StartingPositionX
 		{
-			get => _saveData.GetStartingPositionX();
+			get => GetStartingPositionX();
 			set => SetStartingPositionX(value);
 		}
 
 		public ushort[] Government
 		{
-			get => _saveData.GetGovernment();
+			get => GetGovernment();
 			set => SetGovernment(value);
 		}
 
 		public CityData[] CityData
 		{
-			get => _saveData.GetCityData();
+			get => GetCities();
 			set
 			{
 				SetCityData(value);
@@ -184,7 +184,7 @@ namespace CivOne
 
 		public UnitData[][] UnitData
 		{
-			get => _saveData.GetUnitData();
+			get => GetUnits();
 			set
 			{
 				SetUnitData(value);
@@ -196,19 +196,19 @@ namespace CivOne
 
 		public ushort[] Wonders
 		{
-			get => _saveData.GetWonders();
+			get => GetWonders();
 			set => SetWonders(value);
 		}
 
 		public bool[][,] TileVisibility
 		{
-			get => _saveData.GetTileVisibility();
+			get => GetTileVisibility();
 			set => SetTileVisibility(value);
 		}
 
 		public ushort[] AdvanceFirstDiscovery
 		{
-			get => _saveData.GetAdvanceFirstDiscovery();
+			get => GetAdvanceFirstDiscovery();
 			set => SetAdvanceFirstDiscovery(value);
 		}
 

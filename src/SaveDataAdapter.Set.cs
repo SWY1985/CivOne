@@ -16,33 +16,6 @@ namespace CivOne
 {
 	internal partial class SaveDataAdapter
 	{
-		private static void SetBitIds(ref byte[] bytes, int startIndex, int length, params byte[] values)
-		{
-			foreach (byte value in values)
-			{
-				int bitNo = value % 8;
-				int byteNo = (value - bitNo) / 8;
-				if (length <= byteNo) continue;
-				bytes[startIndex + byteNo] |= (byte)(1 << bitNo);
-			}
-		}
-
-		private void GetByteArray(string fieldName, ref byte[] bytes)
-		{
-			IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf<SaveData>());
-			Marshal.StructureToPtr(_saveData, ptr, false);
-			IntPtr offset = IntPtr.Add(ptr, (int)Marshal.OffsetOf<SaveData>(fieldName));
-			Marshal.Copy(offset, bytes, 0, bytes.Length);
-			Marshal.FreeHGlobal(ptr);
-		}
-
-		private byte[] GetByteArray(string fieldName, int length)
-		{
-			byte[] output = new byte[length];
-			GetByteArray(fieldName, ref output);
-			return output;
-		}
-
 		private void SetArray(string fieldName, params byte[] values)
 		{
 			IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf<SaveData>());
@@ -82,7 +55,7 @@ namespace CivOne
 			for (int p = 0; p < 8; p++)
 			{
 				if (p >= input.Length) continue;
-				SetBitIds(ref bytes, (p * 10), 10, input[p]);
+				bytes = bytes.ToBitIds(p * 10, 10, input[p]);
 			}
 			SetArray(nameof(SaveData.DiscoveredAdvances), bytes);
 		}
@@ -130,14 +103,14 @@ namespace CivOne
 
 		private void SetCityData(CityData[] values)
 		{
-			byte[] bytes = GetByteArray(nameof(SaveData.Cities), 28 * 128);
+			byte[] bytes = GetArray(nameof(SaveData.Cities), 28 * 128);
 			
 			for (int i = 0; i < new[] { values.Length, 128 }.Min(); i++)
 			{
 				int offset = (28 * i);
 				CityData data = values[i];
 				
-				if (data.Buildings != null) SetBitIds(ref bytes, offset, 4, data.Buildings);
+				if (data.Buildings != null) bytes = bytes.ToBitIds(offset, 4, data.Buildings);
 				bytes[offset + 4] = data.X;
 				bytes[offset + 5] = data.Y;
 				bytes[offset + 6] = data.Status;
@@ -165,7 +138,7 @@ namespace CivOne
 
 		private void SetUnitData(UnitData[][] values)
 		{
-			byte[] bytes = GetByteArray(nameof(SaveData.Units), 12 * 8 * 128);
+			byte[] bytes = GetArray(nameof(SaveData.Units), 12 * 8 * 128);
 			
 			for (int p = 0; p < new[] { values.Length, 8 }.Min(); p++)
 			for (int u = 0; u < new[] { values[p].Length, 128 }.Min(); u++)
