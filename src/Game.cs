@@ -24,7 +24,7 @@ using CivOne.Wonders;
 
 namespace CivOne
 {
-	public class Game : BaseInstance
+	internal partial class Game : BaseInstance
 	{
 		private readonly string[] _cityNames = Common.AllCityNames.ToArray();
 		private readonly bool[] _cityNameUsed = new bool[Common.AllCityNames.Count()];
@@ -82,23 +82,11 @@ namespace CivOne
 			}
 		}
 		
-		internal string GameYear
-		{
-			get
-			{
-				return Common.YearString(GameTurn);
-			}
-		}
+		internal string GameYear => Common.YearString(GameTurn);
 		
 		internal Player HumanPlayer { get; set; }
 		
-		internal Player CurrentPlayer
-		{
-			get
-			{
-				return _players[_currentPlayer];
-			}
-		}
+		internal Player CurrentPlayer => _players[_currentPlayer];
 		
 		internal byte PlayerNumber(Player player)
 		{
@@ -119,14 +107,7 @@ namespace CivOne
 			return _players[number];
 		}
 
-		internal IEnumerable<Player> Players
-		{
-			get
-			{
-				foreach (Player player in _players)
-					yield return player;
-			}
-		}
+		internal IEnumerable<Player> Players => _players;
 
 		public void EndTurn()
 		{
@@ -361,10 +342,7 @@ namespace CivOne
 			return _units.Where(u => u.X == x && u.Y == y).OrderBy(u => (u == ActiveUnit) ? 0 : (u.Fortify || u.FortifyActive ? 1 : 2)).ToArray();
 		}
 
-		internal IUnit[] GetUnits()
-		{
-			return _units.ToArray();
-		}
+		internal IUnit[] GetUnits() => _units.ToArray();
 
 		internal void UpdateResources(ITile tile, bool ownerCities = true)
 		{
@@ -379,38 +357,17 @@ namespace CivOne
 			}
 		}
 
-		public City[] GetCities()
-		{
-			return _cities.ToArray();
-		}
+		public City[] GetCities() => _cities.ToArray();
 
-		public IWonder[] BuiltWonders
-		{
-			get
-			{
-				return _cities.SelectMany(c => c.Wonders).ToArray();
-			}
-		}
+		public IWonder[] BuiltWonders => _cities.SelectMany(c => c.Wonders).ToArray();
 
-		public bool WonderBuilt<T>() where T : IWonder
-		{
-			return BuiltWonders.Any(w => w is T);
-		}
+		public bool WonderBuilt<T>() where T : IWonder => BuiltWonders.Any(w => w is T);
 
-		public bool WonderBuilt(IWonder wonder)
-		{
-			return BuiltWonders.Any(w => w.Id == wonder.Id);
-		}
+		public bool WonderBuilt(IWonder wonder) => BuiltWonders.Any(w => w.Id == wonder.Id);
 
-		public bool WonderObsolete<T>() where T : IWonder, new()
-		{
-			return WonderObsolete(new T());
-		}
+		public bool WonderObsolete<T>() where T : IWonder, new() => WonderObsolete(new T());
 
-		public bool WonderObsolete(IWonder wonder)
-		{
-			return (wonder.ObsoleteTech != null && _players.Any(x => x.HasAdvance(wonder.ObsoleteTech)));
-		}
+		public bool WonderObsolete(IWonder wonder) => (wonder.ObsoleteTech != null && _players.Any(x => x.HasAdvance(wonder.ObsoleteTech)));
 		
 		public void DisbandUnit(IUnit unit)
 		{
@@ -439,10 +396,7 @@ namespace CivOne
 			}
 		}
 
-		public void UnitWait()
-		{
-			_activeUnit++;
-		}
+		public void UnitWait() => _activeUnit++;
 		
 		public IUnit ActiveUnit
 		{
@@ -492,263 +446,7 @@ namespace CivOne
 			}
 		}
 
-		public IUnit MovingUnit
-		{
-			get
-			{
-				return _units.FirstOrDefault(u => u.Moving);
-			}
-		}
-		
-		public static void CreateGame(int difficulty, int competition, ICivilization tribe, string leaderName = null, string tribeName = null, string tribeNamePlural = null)
-		{
-			if (_instance != null)
-			{
-				Log("ERROR: Game instance already exists");
-				return;
-			}
-			_instance = new Game(difficulty, competition, tribe, leaderName, tribeName, tribeNamePlural);
-			
-			foreach (IUnit unit in _instance._units)
-			{
-				unit.Explore();
-			}
-		}
-		
-		public static void LoadGame(string sveFile, string mapFile)
-		{
-			if (_instance != null)
-			{
-				Log("ERROR: Game instance already exists");
-				return;
-			}
-
-			using (IGameData adapter = SaveDataAdapter.Load(File.ReadAllBytes(sveFile)))
-			{
-				if (!adapter.ValidData)
-				{
-					Log("SaveDataAdapter failed to load game");
-					return;
-				}
-
-				Map.Instance.LoadMap(mapFile, adapter.RandomSeed);
-				_instance = new Game(adapter);
-				Log($"Game instance loaded (difficulty: {_instance._difficulty}, competition: {_instance._competition}");
-			}
-		}
-
-		public void Save(string sveFile, string mapFile)
-		{
-			using (IGameData gameData = new SaveDataAdapter())
-			{
-				gameData.GameTurn = _gameTurn;
-				gameData.HumanPlayer = (ushort)PlayerNumber(HumanPlayer);
-				gameData.RandomSeed = Map.Instance.SaveMap(mapFile);
-				gameData.Difficulty = (ushort)_difficulty;
-				gameData.ActiveCivilizations = _players.Select(x => (x.Civilization is Barbarian) || (x.Cities.Any(c => c.Size > 0) || GetUnits().Any(u => x == u.Owner))).ToArray();
-				gameData.CivilizationIdentity = _players.Select(x => (byte)(x.Civilization.Id > 7 ? 1 : 0)).ToArray();
-				gameData.CurrentResearch = HumanPlayer.CurrentResearch?.Id ?? 0;
-				byte[][] discoveredAdvanceIDs = new byte[_players.Length][];
-				for (int p = 0; p < _players.Length; p++)
-					discoveredAdvanceIDs[p] = _players[p].Advances.Select(x => x.Id).ToArray();
-				gameData.DiscoveredAdvanceIDs = discoveredAdvanceIDs;
-				gameData.LeaderNames = _players.Select(x => x.LeaderName).ToArray();
-				gameData.CivilizationNames = _players.Select(x => x.TribeNamePlural).ToArray();
-				gameData.CitizenNames = _players.Select(x => x.TribeName).ToArray();
-				string[] cityNames = new string[256];
-				for (int i = 0; i < 256; i++)
-				{
-					if (_cities.Count() - 1 < i)
-					{
-						cityNames[i] = _cityNames[i];
-						continue;
-					}
-					cityNames[i] = _cities[i].Name;
-				}
-				gameData.CityNames = cityNames.ToArray();
-				gameData.PlayerGold = _players.Select(x => x.Gold).ToArray();
-				gameData.ResearchProgress = _players.Select(x => x.Science).ToArray();
-				gameData.TaxRate = _players.Select(x => (ushort)x.TaxesRate).ToArray();
-				gameData.ScienceRate = _players.Select(x => (ushort)(10 - x.ScienceRate - x.TaxesRate)).ToArray();
-				gameData.StartingPositionX = _players.Select(x => (ushort)x.StartX).ToArray();
-				gameData.Government = _players.Select(x => (ushort)x.Government.Id).ToArray();
-				gameData.CityData = _cities.GetCityData().ToArray();
-				gameData.UnitData = _players.Select(p => _units.Where(u => p == u.Owner).GetUnitData().ToArray()).ToArray();
-				ushort[] wonders = Enumerable.Repeat(ushort.MaxValue, 22).ToArray();
-				for (byte i = 0; i < _cities.Count(); i++)
-				foreach (IWonder wonder in _cities[i].Wonders)
-				{
-					wonders[wonder.Id] = i;
-				}
-				gameData.Wonders = wonders;
-				bool[][,] visibility = new bool[_players.Length][,];
-				for (int p = 0; p < visibility.Length; p++)
-				{
-					visibility[p] = new bool[80, 50];
-					for (int xx = 0; xx < 80; xx++)
-					for (int yy = 0; yy < 50; yy++)
-					{
-						if (!_players[p].Visible(xx, yy)) continue;
-						visibility[p][xx, yy] = true;
-					}
-				}
-				gameData.TileVisibility = visibility;
-				ushort[] firstDiscovery = new ushort[72];
-				foreach (byte key in _advanceOrigin.Keys)
-					firstDiscovery[key] = _advanceOrigin[key];
-				gameData.AdvanceFirstDiscovery = firstDiscovery;
-				gameData.GameOptions = new bool[]
-				{
-					Settings.InstantAdvice,
-					Settings.AutoSave,
-					Settings.EndOfTurn,
-					Settings.Animations,
-					Settings.Sound,
-					Settings.EnemyMoves,
-					Settings.CivilopediaText,
-					// Settings.Palace
-				};
-				gameData.NextAnthologyTurn = _anthologyTurn;
-				gameData.OpponentCount = (ushort)(_players.Length - 2);
-				File.WriteAllBytes(sveFile, gameData.GetBytes());
-			}
-		}
-		
-		private void AddStartingUnits(byte player)
-		{
-			// Translated from this post by darkpanda, might contain errors:
-			// http://forums.civfanatics.com/showthread.php?p=12895306&highlight=starting+position#post12895306
-			int loopCounter = 0;
-			while (loopCounter++ < 2000)
-			{
-				// Choose a map square randomly
-				int x = Common.Random.Next(0, Map.WIDTH);
-				int y = Common.Random.Next(2, Map.HEIGHT - 2);
-				if (Map.FixedStartPositions && GameTurn == 0)
-				{
-					// Map position is fixed, don't check anything
-					x = _players[player].Civilization.StartX;
-					y = _players[player].Civilization.StartY;
-					if (Map[x, y].Hut) Map[x, y].Hut = false;
-				}
-				else
-				{
-					ITile tile = Map[x, y];
-					
-					if (tile.IsOcean) continue; // Is it an ocean tile?
-					if (tile.Hut) continue; // Is there a hut on this tile?
-					if (_units.Any(u => u.X == x || u.Y == y)) continue; // Is there already a unit on this tile?
-					if (tile.LandValue < (12 - (loopCounter / 32))) continue; // Is the land value high enough?
-					if (_cities.Any(c => Common.DistanceToTile(x, y, c.X, c.Y) < (10 - (loopCounter / 64)))) continue; // Distance to other cities
-					if (_units.Any(u => (u is Settlers) && Common.DistanceToTile(x, y, u.X, u.Y) < (10 - (loopCounter / 64)))) continue; // Distance to other settlers
-					if (Map.ContinentTiles(tile.ContinentId).Count(t => Map.TileIsType(t, Terrain.Plains, Terrain.Grassland1, Terrain.Grassland2, Terrain.River)) < (32 - (GameTurn / 16))) continue; // Check buildable tiles on continent
-					
-					// After 0 AD, don't spawn a Civilization on a continent that already contains cities.
-					if (Common.TurnToYear(GameTurn) >= 0 && Map.ContinentTiles(tile.ContinentId).Any(t => t.City != null)) continue;
-					
-					Log(loopCounter.ToString());
-				}
-				
-				// Starting position found, add Settlers
-				IUnit unit = CreateUnit(UnitType.Settlers, x, y);
-				unit.Owner = player;
-				_units.Add(unit);
-
-				_players[player].StartX = (short)x;
-				return;
-			}
-		}
-
-		private void CalculateHandicap(byte player)
-		{
-			// Translated drom this post by Gowron:
-			// http://forums.civfanatics.com/showthread.php?t=494994
-			
-			// All Handicap values start from 0.
-			byte handicap = 0;
-			IUnit startUnit = _units.Where(u => u.Owner == player).FirstOrDefault();
-			if (startUnit == null) return;
-			int x = startUnit.X, y = startUnit.Y;
-
-			ITile[] continent = Map.ContinentTiles(Map[x, y].ContinentId).ToArray();
-			IUnit[] unitsOnContinent = _units.Where(u => continent.Any(c => (c.X == u.X && c.Y == u.Y))).ToArray();
-			
-			if (unitsOnContinent.Count() == 0)
-			{
-				// Add +4 if the civ does not share its land mass with any other civs.
-				handicap += 4;
-			}
-			else if (unitsOnContinent.Select(u => Common.DistanceToTile(x, y, u.X, u.Y)).Min() >= 20)
-			{
-				// If that is not the case, then add +2 if the nearest civ on the same continent is 20 or more squares away.
-				handicap += 2;
-			}
-			else if (unitsOnContinent.Select(u => Common.DistanceToTile(x, y, u.X, u.Y)).Min() >= 10)
-			{
-				// Add +1 instead if the nearest civ on the same continent is 10-19 squares away.
-				handicap += 1;
-			}
-
-			// Check the terrain of the starting position and the 8 adjacent map squares.
-			if (Map[x, y].GetBorderTiles().Count(t => (t is River)) >= 1)
-			{
-				// Add +2 if there's at least one river square among them.
-				handicap += 2;
-			}
-			else if (Map[x, y].GetBorderTiles().Count(t => (t is Grassland)) >= 3)
-			{
-				// If that is not the case, then add +1 if there are 3 or more grassland squares among them.
-				handicap += 1;
-			}
-
-			if (continent.Count() >= 200)
-			{
-				// Add +2 if the civ starts on a continent that covers at least 200 map squares.
-				handicap += 2;
-			}
-			else if (continent.Count() >= 100)
-			{
-				// If that is not the case, then add +1 if the civ starts on a continent that covers at least 100 map squares.
-				handicap += 1;
-			}
-
-			_players[player].Handicap = handicap;
-		}
-
-		private void ApplyBonus(byte player)
-		{
-			byte bonus = (byte)(_players.Max(p => p.Handicap) - _players[player].Handicap);
-			IUnit startUnit = _units.Where(u => u.Owner == player).FirstOrDefault();
-			if (startUnit == null) return;
-			int x = startUnit.X, y = startUnit.Y;
-
-			if (bonus >= 4)
-			{
-				// If the Bonus value of the civ is 4 or higher, then the civ is granted an extra Settlers unit, for a total of two Settlers units.
-				// In this case, the Bonus value is reduced by 3 afterwards.
-				IUnit unit = CreateUnit(UnitType.Settlers, x, y);
-				unit.Owner = player;
-				_units.Add(unit);
-
-				bonus -= 3;
-			}
-
-			// If the Bonus value is (still) greater than zero, then the civ gains a number of technologies equal to the Bonus value.
-			while (bonus > 0)
-			{
-				IAdvance[] available = _players[player].AvailableResearch.ToArray();
-				int advanceId = Common.Random.Next(0, 72);
-				for (int i = 0; i < 1000; i++)
-				{
-					if (!available.Any(a => a.Id == (advanceId + i) % 72)) continue;
-					IAdvance advance = available.First(a => a.Id == (advanceId + i) % 72);
-					SetAdvanceOrigin(advance, null);
-					_players[player].AddAdvance(advance, false);
-					break;
-				}
-				bonus--;
-			}
-		}
+		public IUnit MovingUnit => _units.FirstOrDefault(u => u.Moving);
 
 		public static bool Started => (_instance != null);
 		
@@ -763,197 +461,6 @@ namespace CivOne
 				}
 				return _instance;
 			}
-		}
-
-		private Game(IGameData gameData)
-		{
-			_difficulty = gameData.Difficulty;
-			_competition = (gameData.OpponentCount + 1);
-			_players = new Player[_competition + 1];
-			_cities = new List<City>();
-			_units = new List<IUnit>();
-
-			ushort[] advanceFirst = gameData.AdvanceFirstDiscovery;
-			bool[][,] visibility = gameData.TileVisibility;
-			for (int i = 0; i < _players.Length; i++)
-			{
-				ICivilization[] civs = Common.Civilizations.Where(c => c.PreferredPlayerNumber == i).ToArray();
-				ICivilization civ = civs[gameData.CivilizationIdentity[i] % civs.Length];
-				Player player = (_players[i] = new Player(civ, gameData.LeaderNames[i], gameData.CitizenNames[i], gameData.CivilizationNames[i]));
-				player.Gold = gameData.PlayerGold[i];
-				player.Science = gameData.ResearchProgress[i];
-				player.Government = Reflect.GetGovernments().FirstOrDefault(x => x.Id == gameData.Government[i]);
-
-				player.TaxesRate = gameData.TaxRate[i];
-				player.LuxuriesRate = 10 - gameData.ScienceRate[i] - player.TaxesRate;
-				player.StartX = (short)gameData.StartingPositionX[i];
-				
-				// Set map visibility
-				for (int xx = 0; xx < 80; xx++)
-				for (int yy = 0; yy < 50; yy++)
-				{
-					if (!visibility[i][xx, yy]) continue;
-					player.Explore(xx, yy, 0);
-				}
-
-				byte[] advanceIds = gameData.DiscoveredAdvanceIDs[i];
-				Common.Advances.Where(x => advanceIds.Any(id => x.Id == id)).ToList().ForEach(x =>
-				{
-					player.AddAdvance(x, false);
-					if (advanceFirst[x.Id] != player.Civilization.Id) return;
-					SetAdvanceOrigin(x, player);
-				});
-			}
-
-			GameTurn = gameData.GameTurn;
-			HumanPlayer = _players[gameData.HumanPlayer];
-			HumanPlayer.CurrentResearch = Common.Advances.FirstOrDefault(a => a.Id == gameData.CurrentResearch);
-		
-			_anthologyTurn = gameData.NextAnthologyTurn;
-
-			Dictionary<byte, City> cityList = new Dictionary<byte, City>();
-			foreach (CityData cityData in gameData.CityData)
-			{
-				City city = new City(cityData.Owner)
-				{
-					X = cityData.X,
-					Y = cityData.Y,
-					Name = gameData.CityNames[cityData.NameId],
-					Size = cityData.ActualSize,
-					Food = cityData.Food,
-					Shields = cityData.Shields
-				};
-				city.SetProduction(cityData.CurrentProduction);
-				city.SetResourceTiles(cityData.ResourceTiles);
-				
-				// Set city buildings
-				foreach (byte buildingId in cityData.Buildings)
-				{
-					city.AddBuilding(Common.Buildings.First(b => b.Id == buildingId));
-				}
-
-				// Set city wonders
-				foreach (IWonder wonder in Common.Wonders)
-				{
-					if (gameData.Wonders[wonder.Id - 1] != cityData.Id) continue;
-					city.AddWonder(wonder);
-				}
-				
-				_cities.Add(city);
-				_cityNameUsed[cityData.NameId] = true;
-
-				cityList.Add(cityData.Id, city);
-			}
-
-			UnitData[][] unitData = gameData.UnitData;
-			for (byte p = 0; p < 8; p++)
-			{
-				if (!gameData.ActiveCivilizations[p]) continue;
-				foreach (UnitData data in unitData[p])
-				{
-					IUnit unit = CreateUnit((UnitType)data.TypeId, data.X, data.Y);
-					if (unit == null) continue;
-					unit.Status = data.Status;
-					unit.Owner = p;
-					unit.PartMoves = (byte)(data.RemainingMoves % 3);
-					unit.MovesLeft = (byte)((data.RemainingMoves - unit.PartMoves) / 3);
-					if (cityList.ContainsKey(data.HomeCityId))
-					{
-						unit.SetHome(cityList[data.HomeCityId]);
-					}
-					_units.Add(unit);
-				}
-			}
-
-			// Game Settings
-			bool[] options = gameData.GameOptions;
-			Settings.InstantAdvice = options[0];
-			Settings.AutoSave = options[1];
-			Settings.EndOfTurn = options[2];
-			Settings.Animations = options[3];
-			Settings.Sound = options[4];
-			Settings.EnemyMoves = options[5];
-			Settings.CivilopediaText = options[6];
-			// Settings.Palace = options[7];
-
-			_currentPlayer = gameData.HumanPlayer;
-			for (int i = 0; i < _units.Count(); i++)
-			{
-				if (_units[i].Owner != gameData.HumanPlayer || _units[i].Busy) continue;
-				_activeUnit = i;
-				if (_units[i].MovesLeft > 0) break;
-			}
-		}
-		
-		private Game(int difficulty, int competition)
-		{
-			_difficulty = difficulty;
-			_competition = competition;
-			_players = new Player[competition + 1];
-			_cities = new List<City>();
-			_units = new List<IUnit>();
-		}
-		
-		private Game(int difficulty, int competition, ICivilization tribe, string leaderName, string tribeName, string tribeNamePlural)
-		{
-			_difficulty = difficulty;
-			_competition = competition;
-			Log("Game instance created (difficulty: {0}, competition: {1})", _difficulty, _competition);
-
-			Settings.Animations = true;
-			Settings.CivilopediaText = true;
-			Settings.Sound = true;
-			Settings.EnemyMoves = true;
-			
-			_cities = new List<City>();
-			_units = new List<IUnit>();
-			_players = new Player[competition + 1];
-			for (int i = 0; i <= competition; i++)
-			{
-				if (i == tribe.PreferredPlayerNumber)
-				{
-					_players[i] = new Player(tribe, leaderName, tribeName, tribeNamePlural);
-					HumanPlayer = _players[i];
-					if (difficulty == 0)
-					{
-						// Chieftain starts with 50 Gold
-						HumanPlayer.Gold = 50;
-						Settings.InstantAdvice = true;
-					}
-					Log("- Player {0} is {1} of the {2} (human)", i, _players[i].LeaderName, _players[i].TribeNamePlural);
-					continue;
-				}
-				
-				ICivilization[] civs = Common.Civilizations.Where(civ => civ.PreferredPlayerNumber == i).ToArray();
-				int r = Common.Random.Next(civs.Length);
-				
-				_players[i] = new Player(civs[r]);
-				
-				Log("- Player {0} is {1} of the {2}", i, _players[i].LeaderName, _players[i].TribeNamePlural);
-			}
-			
-			Log("Adding starting units...");
-			for (byte i = 1; i <= competition; i++)
-			{
-				AddStartingUnits(i);
-			}
-
-			Log("Calculate players handicap...");
-			for (byte i = 1; i <= competition; i++)
-			{
-				CalculateHandicap(i);
-			}
-
-			Log("Apply players bonus...");
-			for (byte i = 1; i <= competition; i++)
-			{
-				ApplyBonus(i);
-			}
-
-			GameTurn = 0;
-
-			// Number of turns to next antholoy needs to be checked
-			_anthologyTurn = (ushort)Common.Random.Next(1, 128);
 		}
 	}
 }
