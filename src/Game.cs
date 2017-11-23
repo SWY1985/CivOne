@@ -23,7 +23,7 @@ using CivOne.Wonders;
 
 namespace CivOne
 {
-	internal partial class Game : BaseInstance
+	public partial class Game : BaseInstance
 	{
 		private readonly string[] _cityNames = Common.AllCityNames.ToArray();
 		private readonly bool[] _cityNameUsed = new bool[Common.AllCityNames.Count()];
