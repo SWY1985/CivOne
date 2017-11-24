@@ -25,6 +25,7 @@ namespace CivOne
 {
 	public class City : BaseInstance, ITurn
 	{
+		internal int NameId { get; set; }
 		internal byte X;
 		internal byte Y;
 		private byte _owner;
@@ -40,7 +41,7 @@ namespace CivOne
 				ResetResourceTiles();
 			}
 		}
-		internal string Name;
+		internal string Name => Game.CityNames[NameId];
 		private byte _size;
 		internal byte Size
 		{

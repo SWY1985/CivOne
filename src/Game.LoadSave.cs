@@ -59,17 +59,7 @@ namespace CivOne
 				gameData.LeaderNames = _players.Select(x => x.LeaderName).ToArray();
 				gameData.CivilizationNames = _players.Select(x => x.TribeNamePlural).ToArray();
 				gameData.CitizenNames = _players.Select(x => x.TribeName).ToArray();
-				string[] cityNames = new string[256];
-				for (int i = 0; i < 256; i++)
-				{
-					if (_cities.Count() - 1 < i)
-					{
-						cityNames[i] = _cityNames[i];
-						continue;
-					}
-					cityNames[i] = _cities[i].Name;
-				}
-				gameData.CityNames = cityNames.ToArray();
+				gameData.CityNames = CityNames;
 				gameData.PlayerGold = _players.Select(x => x.Gold).ToArray();
 				gameData.ResearchProgress = _players.Select(x => x.Science).ToArray();
 				gameData.TaxRate = _players.Select(x => (ushort)x.TaxesRate).ToArray();
@@ -159,6 +149,7 @@ namespace CivOne
 			}
 
 			GameTurn = gameData.GameTurn;
+			CityNames = gameData.CityNames;
 			HumanPlayer = _players[gameData.HumanPlayer];
 			HumanPlayer.CurrentResearch = Common.Advances.FirstOrDefault(a => a.Id == gameData.CurrentResearch);
 		
@@ -171,7 +162,7 @@ namespace CivOne
 				{
 					X = cityData.X,
 					Y = cityData.Y,
-					Name = gameData.CityNames[cityData.NameId],
+					NameId = cityData.NameId,
 					Size = cityData.ActualSize,
 					Food = cityData.Food,
 					Shields = cityData.Shields
@@ -193,7 +184,6 @@ namespace CivOne
 				}
 				
 				_cities.Add(city);
-				_cityNameUsed[cityData.NameId] = true;
 
 				cityList.Add(cityData.Id, city);
 			}

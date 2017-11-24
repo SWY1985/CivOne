@@ -71,8 +71,9 @@ namespace CivOne.Tasks
 
 		private void CityNameAccept(object sender, EventArgs args)
 		{
-			string name = (sender as CityName).Value;
-			CreateCity(name);
+			int nameId = (sender as CityName).NameId;
+			Game.CityNames[nameId] = (sender as CityName).Value;
+			CreateCity(nameId);
 			EndTask();
 		}
 
@@ -81,9 +82,9 @@ namespace CivOne.Tasks
 			EndTask();
 		}
 
-		private void CreateCity(string name)
+		private void CreateCity(int nameId)
 		{
-			_city = Game.AddCity(_player, name, _x, _y); 
+			_city = Game.AddCity(_player, nameId, _x, _y); 
 			if (_city != null)
 			{
 				if (_player.IsHuman)
@@ -105,17 +106,17 @@ namespace CivOne.Tasks
 
 		private void CreateCity(Player player, int x, int y)
 		{
-			string name = Game.CityName(player);
+			int nameId = Game.CityNameId(player);
 			if (player.IsHuman)
 			{
-				CityName cityName = new CityName(name);
+				CityName cityName = new CityName(nameId, Game.CityNames[nameId]);
 				cityName.Accept += CityNameAccept;
 				cityName.Cancel += Cancel;
 				Common.AddScreen(cityName);
 				return;
 			}
 			
-			CreateCity(name);
+			CreateCity(nameId);
 		}
 
 		private void CreateCity()

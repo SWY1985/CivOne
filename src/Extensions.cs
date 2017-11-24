@@ -66,11 +66,22 @@ namespace CivOne
 			return bytes;
 		}
 
+		private static byte GetId(this City city)
+		{
+			if (city != null)
+			{
+				City[] cities = Game.Instance.GetCities();
+				for (byte c = 0; c < cities.Length; c++)
+					if (cities[c] == city) return c;
+			}
+			return 0xFF;
+		}
+
 		private static CityData GetCityData(this City city, byte id)
 		{
 			return new CityData {
-				Id = id,
-				NameId = id,
+				Id = city.GetId(),
+				NameId = (byte)city.NameId,
 				Status = 0,
 				Buildings = city.Buildings.Select(b => b.Id).ToArray(),
 				X = city.X,
@@ -107,7 +118,7 @@ namespace CivOne
 				GotoY = (byte)unit.Goto.Y,
 				Visibility = 0xFF,
 				NextUnitId = id,
-
+				HomeCityId = unit.Home.GetId()
 			};
 		}
 

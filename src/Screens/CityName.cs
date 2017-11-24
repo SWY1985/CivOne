@@ -17,6 +17,8 @@ namespace CivOne.Screens
 	{
 		private readonly Input _input;
 
+		public int NameId { get; private set; }
+
 		public string Value { get; private set; }
 
 		public event EventHandler Accept, Cancel;
@@ -49,8 +51,9 @@ namespace CivOne.Screens
 			return false;
 		}
 
-		public CityName(string cityName)
+		public CityName(int nameId, string cityName)
 		{
+			NameId = nameId;
 			Palette = Common.DefaultPalette;
 
 			this.FillRectangle(80, 80, 161, 33, 11)

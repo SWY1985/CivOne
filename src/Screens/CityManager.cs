@@ -89,7 +89,7 @@ namespace CivOne.Screens
 		{
 			if (!(sender is CityName)) return;
 
-			_city.Name = (sender as CityName).Value;
+			Game.CityNames[_city.NameId] = (sender as CityName).Value;
 			_cityHeader.Update();
 		}
 		
@@ -111,7 +111,7 @@ namespace CivOne.Screens
 			if (new Rectangle(231 + ExtraLeft, (Height - 10), 42, 10).Contains(args.Location))
 			{
 				// Rename button
-				CityName name = new CityName(_city.Name);
+				CityName name = new CityName(_city.NameId, _city.Name);
 				name.Accept += CityRename;
 				Common.AddScreen(name);
 				return true;

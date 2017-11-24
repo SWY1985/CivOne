@@ -174,9 +174,9 @@ namespace CivOne
 			get => GetCities();
 			set
 			{
-				SetCityData(value);
-				SetCityX(value.Select(c => c.X).ToArray());
-				SetCityY(value.Select(c => c.Y).ToArray());
+				SetCities(value);
+				SetCityX(Enumerable.Range(0, 256).Select(i => (byte)(value.Any(x => x.NameId == i) ? value.First(x => x.NameId == i).X : 0xFF)).ToArray());
+				SetCityY(Enumerable.Range(0, 256).Select(i => (byte)(value.Any(x => x.NameId == i) ? value.First(x => x.NameId == i).Y : 0xFF)).ToArray());
 				SetCityCount(Enumerable.Range(0, 8).Select(i => (ushort)value.Count(c => c.Owner == i)).ToArray());
 				SetTotalCitySize(Enumerable.Range(0, 8).Select(i => (ushort)value.Sum(c => c.ActualSize)).ToArray());
 			}
@@ -187,7 +187,7 @@ namespace CivOne
 			get => GetUnits();
 			set
 			{
-				SetUnitData(value);
+				SetUnits(value);
 				SetUnitCount(value.Select(p => (ushort)p.Count()).ToArray());
 				SetUnitsActive(value);
 				SetSettlerCount(value.Select(p => (ushort)p.Count(u => u.TypeId == (byte)UnitType.Settlers)).ToArray());
@@ -280,9 +280,9 @@ namespace CivOne
 		internal SaveDataAdapter()
 		{
 			_saveData = new SaveData();
-			SetCityData(DefaultCityData);
+			SetCities(DefaultCityData);
 			SetUnitTypes(DefaultUnitTypes);
-			SetUnitData(DefaultUnitData);
+			SetUnits(DefaultUnitData);
 			SetWonders(Enumerable.Repeat(ushort.MaxValue, 22).ToArray());
 			SetCityX(Enumerable.Repeat((byte)0xFF, 256).ToArray());
 			SetCityY(Enumerable.Repeat((byte)0xFF, 256).ToArray());

@@ -101,7 +101,7 @@ namespace CivOne
 
 		private void SetTotalCitySize(ushort[] values) => SetArray(nameof(SaveData.TotalCitySize), values);
 
-		private void SetCityData(CityData[] values)
+		private void SetCities(CityData[] values)
 		{
 			byte[] bytes = GetArray(nameof(SaveData.Cities), 28 * 128);
 			
@@ -136,7 +136,7 @@ namespace CivOne
 
 		private void SetUnitTypes(byte[] bytes) => SetArray(nameof(SaveData.UnitTypes), bytes);
 
-		private void SetUnitData(UnitData[][] values)
+		private void SetUnits(UnitData[][] values)
 		{
 			byte[] bytes = GetArray(nameof(SaveData.Units), 12 * 8 * 128);
 			

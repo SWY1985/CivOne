@@ -115,6 +115,8 @@ namespace CivOne
 
 		private int _destroyTurn = -1;
 
+		internal int CityNameCounter = 0;
+
 		internal short StartX { get; set; }
 		
 		internal bool AnarchyDespotism => Game.Started && (Government is Anarchy || Government is Despotism);

@@ -25,12 +25,12 @@ namespace CivOne
 {
 	public partial class Game : BaseInstance
 	{
-		private readonly string[] _cityNames = Common.AllCityNames.ToArray();
-		private readonly bool[] _cityNameUsed = new bool[Common.AllCityNames.Count()];
 		private readonly int _difficulty, _competition;
 		private readonly Player[] _players;
 		private readonly List<City> _cities;
 		private readonly List<IUnit> _units;
+		
+		internal readonly string[] CityNames = Common.AllCityNames.ToArray();
 		
 		private int _currentPlayer = 0;
 		private int _activeUnit;
@@ -184,45 +184,25 @@ namespace CivOne
 			GameTask.Enqueue(Turn.End());
 		}
 
-		private int GetCityIndex(ICivilization civilization)
-		{
-			// TODO: This should be a lot easier... let me think about it...
-
-			int indexFrom = Array.IndexOf(_cityNames, civilization.CityNames[0]); //_cityNames.IndexOf(civilization.CityNames[0]);
-			int indexTo = civilization.CityNames.Length + indexFrom;
-			for (int i = indexFrom; i < indexTo; i++)
-			{
-				if (_cityNameUsed[i]) continue;
-				return i;
-			}
-			
-			civilization = _players[0].Civilization;
-			indexFrom = Array.IndexOf(_cityNames, civilization.CityNames[0]);
-			indexTo = civilization.CityNames.Length + indexFrom;
-			for (int i = indexFrom; i < indexTo; i++)
-			{
-				if (_cityNameUsed[i]) continue;
-				return i;
-			}
-
-			for (int i = 0; i < _cityNames.Length; i++)
-			{
-				if (_cityNameUsed[i]) continue;
-				return i;
-			}
-
-			return 0;
-		}
-
-		internal string CityName(Player player)
+		internal int CityNameId(Player player)
 		{
 			ICivilization civilization = player.Civilization;
-			int index = GetCityIndex(civilization);
-			_cityNameUsed[index] = true;
-			return _cityNames[index];
+			ICivilization[] civilizations = Common.Civilizations;
+			int startIndex = Enumerable.Range(1, civilization.Id - 1).Sum(i => civilizations[i].CityNames.Length);
+			int spareIndex = Enumerable.Range(1, Common.Civilizations.Length - 1).Sum(i => civilizations[i].CityNames.Length);
+			int[] used = _cities.Select(c => c.NameId).ToArray();
+			int[] available = Enumerable.Range(0, CityNames.Length)
+				.Where(i => !used.Contains(i))
+				.OrderBy(i => (i >= startIndex && i < startIndex + civilization.CityNames.Length) ? 0 : 1)
+				.ThenBy(i => (i >= spareIndex) ? 0 : 1)
+				.ThenBy(i => i)
+				.ToArray();
+			if (player.CityNameCounter >= available.Length)
+				return 0;
+			return available[player.CityNameCounter++];
 		}
 
-		internal City AddCity(Player player, string name, int x, int y)
+		internal City AddCity(Player player, int nameId, int x, int y)
 		{
 			if (_cities.Any(c => c.X == x && c.Y == y))
 				return null;
@@ -231,7 +211,7 @@ namespace CivOne
 			{
 				X = (byte)x,
 				Y = (byte)y,
-				Name = name,
+				NameId = nameId,
 				Size = 1
 			};
 			if (!_cities.Any(c => c.Size > 0 && c.Owner == city.Owner))
