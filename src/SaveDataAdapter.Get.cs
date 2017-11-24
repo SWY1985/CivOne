@@ -118,7 +118,7 @@ namespace CivOne
 				
 				for (byte u = 0; u < 128; u++)
 				{
-					int offset = p * 128 * 12;
+					int offset = (p * 128 * 12) + (12 * u);
 					
 					if (bytes[offset + 3] == 0xFF) continue;
 					unitData.Add(new UnitData()
