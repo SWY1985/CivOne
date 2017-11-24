@@ -29,6 +29,7 @@ namespace CivOne
 		private readonly Player[] _players;
 		private readonly List<City> _cities;
 		private readonly List<IUnit> _units;
+		private readonly Dictionary<byte, byte> _advanceOrigin = new Dictionary<byte, byte>();
 		
 		internal readonly string[] CityNames = Common.AllCityNames.ToArray();
 		
@@ -37,11 +38,8 @@ namespace CivOne
 
 		private ushort _anthologyTurn = 0;
 
-		private Dictionary<byte, byte> _advanceOrigin;
 		public void SetAdvanceOrigin(IAdvance advance, Player player)
 		{
-			if (_advanceOrigin == null)
-				_advanceOrigin = new Dictionary<byte, byte>();
 			if (_advanceOrigin.ContainsKey(advance.Id))
 				return;
 			byte playerNumber = 0;
@@ -51,8 +49,6 @@ namespace CivOne
 		}
 		public bool GetAdvanceOrigin(IAdvance advance, Player player)
 		{
-			if (_advanceOrigin == null)
-				_advanceOrigin = new Dictionary<byte, byte>();
 			if (_advanceOrigin.ContainsKey(advance.Id))
 				return (_advanceOrigin[advance.Id] == PlayerNumber(player));
 			return false;
