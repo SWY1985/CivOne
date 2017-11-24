@@ -188,6 +188,11 @@ namespace CivOne
 				cityList.Add(cityData.Id, city);
 			}
 
+			foreach (Player player in _players)
+			{
+				player.CityNameCounter = _cities.Count(c => c.Owner == PlayerNumber(player)) - 1;
+			}
+
 			UnitData[][] unitData = gameData.Units;
 			for (byte p = 0; p < 8; p++)
 			{
