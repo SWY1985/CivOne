@@ -77,8 +77,9 @@ namespace CivOne.Tasks
 			EndTask();
 		}
 
-		private void Cancel(object sender, EventArgs args)
+		private void CityNameCancel(object sender, EventArgs args)
 		{
+			_unit.MovesLeft--;
 			EndTask();
 		}
 
@@ -111,7 +112,7 @@ namespace CivOne.Tasks
 			{
 				CityName cityName = new CityName(nameId, Game.CityNames[nameId]);
 				cityName.Accept += CityNameAccept;
-				cityName.Cancel += Cancel;
+				cityName.Cancel += CityNameCancel;
 				Common.AddScreen(cityName);
 				return;
 			}
