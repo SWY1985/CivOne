@@ -169,7 +169,7 @@ namespace CivOne
 			set => SetGovernment(value);
 		}
 
-		public CityData[] CityData
+		public CityData[] Cities
 		{
 			get => GetCities();
 			set
@@ -182,7 +182,7 @@ namespace CivOne
 			}
 		}
 
-		public UnitData[][] UnitData
+		public UnitData[][] Units
 		{
 			get => GetUnits();
 			set

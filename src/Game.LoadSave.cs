@@ -76,8 +76,8 @@ namespace CivOne
 				gameData.ScienceRate = _players.Select(x => (ushort)(10 - x.ScienceRate - x.TaxesRate)).ToArray();
 				gameData.StartingPositionX = _players.Select(x => (ushort)x.StartX).ToArray();
 				gameData.Government = _players.Select(x => (ushort)x.Government.Id).ToArray();
-				gameData.CityData = _cities.GetCityData().ToArray();
-				gameData.UnitData = _players.Select(p => _units.Where(u => p == u.Owner).GetUnitData().ToArray()).ToArray();
+				gameData.Cities = _cities.GetCityData().ToArray();
+				gameData.Units = _players.Select(p => _units.Where(u => p == u.Owner).GetUnitData().ToArray()).ToArray();
 				ushort[] wonders = Enumerable.Repeat(ushort.MaxValue, 22).ToArray();
 				for (byte i = 0; i < _cities.Count(); i++)
 				foreach (IWonder wonder in _cities[i].Wonders)
@@ -165,7 +165,7 @@ namespace CivOne
 			_anthologyTurn = gameData.NextAnthologyTurn;
 
 			Dictionary<byte, City> cityList = new Dictionary<byte, City>();
-			foreach (CityData cityData in gameData.CityData)
+			foreach (CityData cityData in gameData.Cities)
 			{
 				City city = new City(cityData.Owner)
 				{
@@ -198,7 +198,7 @@ namespace CivOne
 				cityList.Add(cityData.Id, city);
 			}
 
-			UnitData[][] unitData = gameData.UnitData;
+			UnitData[][] unitData = gameData.Units;
 			for (byte p = 0; p < 8; p++)
 			{
 				if (!gameData.ActiveCivilizations[p]) continue;
