@@ -149,6 +149,8 @@ namespace CivOne.Screens
 					_text = sb.ToString();
 					
 					return true;
+				case Key.Slash:
+					return AppendCharacter((char)'/');
 				default:
 					char c = args.KeyChar;
 					if (!args.Shift) c = Char.ToLower(c);
