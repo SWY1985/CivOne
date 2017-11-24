@@ -426,7 +426,14 @@ namespace CivOne
 
 			if (_anarchy == 0 && Government is Anarchy)
 			{
-				GameTask.Enqueue(Show.ChooseGovernment);
+				if (Human == Game.CurrentPlayer)
+				{
+					GameTask.Enqueue(Show.ChooseGovernment);
+				}
+				else
+				{
+					Government = new Despotism();
+				}
 			}
 			if (_anarchy > 0) _anarchy--;
 		}
