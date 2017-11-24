@@ -56,6 +56,9 @@ namespace CivOne
 						return Key.F11;
 					case SDL_Scancode.SDL_SCANCODE_F12:
 						return Key.F12;
+					case SDL_Scancode.SDL_SCANCODE_SLASH:
+					case SDL_Scancode.SDL_SCANCODE_KP_DIVIDE:
+						return Key.Slash;
 					case SDL_Scancode.SDL_SCANCODE_RETURN:
 					case SDL_Scancode.SDL_SCANCODE_KP_ENTER:
 						return Key.Enter;
@@ -63,6 +66,10 @@ namespace CivOne
 						return Key.Escape;
 					case SDL_Scancode.SDL_SCANCODE_BACKSPACE:
 						return Key.Backspace;
+					case SDL_Scancode.SDL_SCANCODE_HOME:
+						return Key.Home;
+					case SDL_Scancode.SDL_SCANCODE_END:
+						return Key.End;
 					case SDL_Scancode.SDL_SCANCODE_DELETE:
 						return Key.Delete;
 					case SDL_Scancode.SDL_SCANCODE_UP:
@@ -99,6 +106,7 @@ namespace CivOne
 						return Key.NumPad8;
 					case SDL_Scancode.SDL_SCANCODE_KP_9:
 						return Key.NumPad9;
+					
 				}
 				return Key.None;
 			}
