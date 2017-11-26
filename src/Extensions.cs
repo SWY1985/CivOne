@@ -124,7 +124,7 @@ namespace CivOne
 				GotoX = gotoX,
 				GotoY = gotoY,
 				Visibility = 0xFF,
-				NextUnitId = id,
+				NextUnitId = 0xFF,
 				HomeCityId = unit.Home.GetId()
 			};
 		}

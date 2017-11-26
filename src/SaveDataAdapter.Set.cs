@@ -57,14 +57,16 @@ namespace CivOne
 			SetArray(fieldName, bytes);
 		}
 
-		private void SetArray(string fieldName, int itemLength, params string[] values)
+		private void SetArray<T>(ref T structure, string fieldName, int itemLength, params string[] values) where T : struct
 		{
 			byte[] bytes = new byte[itemLength * values.Length];
 			for (int i = 0; i < values.Length; i++)
 			for (int c = 0; c < itemLength; c++)
 				bytes[(i * itemLength) + c] = (c >= values[i].Length) ? (byte)0 : (byte)values[i][c];
-			SetArray(fieldName, bytes);
+			SetArray<T>(ref structure, fieldName, bytes);
 		}
+
+		private void SetArray(string fieldName, int itemLength, params string[] values) => SetArray<SaveData>(ref _saveData, fieldName, itemLength, values);
 
 		private void SetDiscoveredAdvanceIDs(byte[][] input)
 		{
@@ -125,7 +127,6 @@ namespace CivOne
 			for (int i = 0; i < new[] { values.Length, 128 }.Min(); i++)
 			{
 				CityData data = values[i];
-				// SetArray<SaveData.City>(ref cities[i], nameof(SaveData.City.Buildings), new byte[4].ToBitIds(0, 4, data.Buildings));
 				SetArray<SaveData.City>(ref cities[i], nameof(SaveData.City.Buildings), new byte[4].ToBitIds(0, 4, data.Buildings));
 				cities[i].X = data.X;
 				cities[i].Y = data.Y;
@@ -143,31 +144,32 @@ namespace CivOne
 			SetArray<SaveData.City>(nameof(SaveData.Cities), cities);
 		}
 
-		private void SetUnitTypes(byte[] bytes) => SetArray(nameof(SaveData.UnitTypes), bytes);
+		private void SetUnitTypes(SaveData.UnitType[] types) => SetArray<SaveData.UnitType>(nameof(SaveData.UnitTypes), types);
 
 		private void SetUnits(UnitData[][] values)
 		{
-			byte[] bytes = GetArray(nameof(SaveData.Units), 12 * 8 * 128);
-			
+			SaveData.Unit[] units = GetArray<SaveData.Unit>(nameof(SaveData.Units), 8 * 128);
+
 			for (int p = 0; p < new[] { values.Length, 8 }.Min(); p++)
 			for (int u = 0; u < new[] { values[p].Length, 128 }.Min(); u++)
 			{
 				UnitData data = values[p][u];
-				int offset = (p * 12 * 128) + (12 * u);
 
-				bytes[offset + 0] = data.Status;
-				bytes[offset + 1] = data.X;
-				bytes[offset + 2] = data.Y;
-				bytes[offset + 3] = data.TypeId;
-				bytes[offset + 4] = data.RemainingMoves;
-				bytes[offset + 5] = data.SpecialMoves;
-				bytes[offset + 6] = data.GotoX;
-				bytes[offset + 7] = data.GotoY;
-				bytes[offset + 9] = data.Visibility;
-				bytes[offset + 10] = data.NextUnitId;
-				bytes[offset + 11] = data.HomeCityId;
+				int i = (p * 128) + u;
+				units[i].Status = data.Status;
+				units[i].X = data.X;
+				units[i].Y = data.Y;
+				units[i].Type = data.TypeId;
+				units[i].RemainingMoves = data.RemainingMoves;
+				units[i].SpecialMoves = data.SpecialMoves;
+				units[i].GotoX = data.GotoX;
+				units[i].GotoY = data.GotoY;
+				units[i].Visibility = data.Visibility;
+				units[i].NextUnitId = data.NextUnitId;
+				units[i].HomeCityId = data.HomeCityId;
 			}
-			SetArray(nameof(SaveData.Units), bytes);
+
+			SetArray(nameof(SaveData.Units), units);
 		}
 
 		private void SetWonders(ushort[] values) => SetArray(nameof(SaveData.Wonders), values);
