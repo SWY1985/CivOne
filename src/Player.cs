@@ -361,6 +361,21 @@ namespace CivOne
 
 		public int DestroyTurn => _destroyTurn;
 
+		public void CheckDestroyed()
+		{
+			if (DestroyTurn != -1 || !IsDestroyed) return;
+			if (IsHuman)
+			{
+				// TODO: Move Game Over code here
+				return;
+			}
+
+			ICivilization destroyCivilization = Game.CurrentPlayer.Civilization;
+			if (destroyCivilization == Civilization) destroyCivilization = Game.GetPlayer(0).Civilization;
+
+			GameTask.Insert(Message.Advisor(Advisor.Defense, false, Civilization.Name, "civilization", "destroyed", $"by {destroyCivilization.NamePlural}!"));
+		}
+
 		public bool IsDestroyed
 		{
 			get

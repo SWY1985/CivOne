@@ -269,8 +269,7 @@ namespace CivOne.Units
 							capturedCity.Size--;
 						}
 
-						if (previousOwner.IsDestroyed)
-							GameTask.Enqueue(Message.Advisor(Advisor.Defense, false, previousOwner.Civilization.Name, "civilization", "destroyed", $"by {Game.GetPlayer(Owner).Civilization.NamePlural}!"));
+						previousOwner.CheckDestroyed();
 					};
 
 					if (Human == capturedCity.Owner || Human == Owner)
