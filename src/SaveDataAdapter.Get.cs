@@ -54,11 +54,11 @@ namespace CivOne
 		private T[] GetArray<T>(string fieldName, int length)
 		{
 			T[] output = new T[length];
+			int itemSize = Marshal.SizeOf<T>();
 			switch (output)
 			{
 				case SaveData.City[] _:
 				case SaveData.Unit[] _:
-					int itemSize = Marshal.SizeOf<T>();
 					byte[] buffer = new byte[length * itemSize];
 					Buffer.BlockCopy(GetArray(fieldName, buffer.Length), 0, buffer, 0, buffer.Length);
 
@@ -71,7 +71,7 @@ namespace CivOne
 					Marshal.FreeHGlobal(ptr);
 					break;
 				default:
-					Buffer.BlockCopy(GetArray(fieldName, length * Marshal.SizeOf<T>()), 0, output, 0, length);
+					Buffer.BlockCopy(GetArray(fieldName, length * itemSize), 0, output, 0, length * itemSize);
 					break;
 			}
 			return output;
