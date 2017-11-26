@@ -13,6 +13,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using CivOne.Enums;
 using CivOne.IO;
+using CivOne.Units;
 
 namespace CivOne
 {
@@ -21,7 +22,43 @@ namespace CivOne
 		private CityData[] DefaultCityData => Enumerable.Range(0, 128).Select(x => new CityData() { Status = 0xFF, Buildings = new byte[4], ResourceTiles = new byte[6] }).ToArray();
 		private UnitData[][] DefaultUnitData => Enumerable.Repeat(Enumerable.Range(0, 128).Select(id => new UnitData() { Id = (byte)id, TypeId = 0xFF }).ToArray(), 8).ToArray();
 
-		private byte[] DefaultUnitTypes => new byte[952]; // TODO
+		private SaveData.UnitType GetUnitType(byte typeId)
+		{
+			IUnit unit = Reflect.GetUnits().FirstOrDefault(u => u.Type == (UnitType)typeId);
+			SaveData.UnitType output = new SaveData.UnitType();
+			if (unit != null)
+			{
+				SetArray<SaveData.UnitType>(ref output, nameof(SaveData.UnitType.Name), 12, new string[] { unit.Name });
+				output.ObsoleteTechId = (ushort)(unit.ObsoleteTech?.Id ?? 0x7F);
+				output.TerrainCategory = (ushort)unit.Class;
+				output.TotalMoves = (ushort)unit.Move;
+				output.Attack = (ushort)unit.Attack;
+				output.Defense = (ushort)unit.Defense;
+				output.Price = (ushort)unit.Price;
+				switch (unit)
+				{
+					case BaseUnitAir airUnit:
+						output.OutsideMoves = (ushort)airUnit.TotalFuel;
+						output.ViewRange = 2;
+						break;
+					case BaseUnitSea seaUnit:
+						output.ViewRange = (ushort)seaUnit.Range;
+						break;
+					default:
+						output.ViewRange = 1;
+						break;
+				}
+				if (unit is IBoardable)
+				{
+					output.TransportCapacity = (ushort)(unit as IBoardable).Cargo;
+				}
+				output.Role = (ushort)unit.Role;
+				output.TechId = (ushort)(unit.RequiredTech?.Id ?? ushort.MaxValue);
+			}
+			return output;
+		}
+
+		private SaveData.UnitType[] DefaultUnitTypes => Enumerable.Range(0, 28).Select(i => GetUnitType((byte)i)).ToArray();
 
 		private SaveData _saveData;
 

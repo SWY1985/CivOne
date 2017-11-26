@@ -37,6 +37,23 @@ namespace CivOne.IO
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
+		internal struct UnitType
+		{
+			public fixed byte Name[12];						// 0:11
+			public ushort ObsoleteTechId;					// 12:13
+			public ushort TerrainCategory;					// 14:15
+			public ushort TotalMoves;						// 16:17
+			public ushort OutsideMoves;						// 18:19
+			public ushort Attack;							// 20:21
+			public ushort Defense;							// 22:23
+			public ushort Price;							// 24:25
+			public ushort ViewRange;						// 26:27
+			public ushort TransportCapacity;				// 28:29
+			public ushort Role;								// 30:31
+			public ushort TechId;							// 32:33
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
 		internal struct Unit
 		{
 			public byte Status;								// 0
