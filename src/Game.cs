@@ -106,6 +106,11 @@ namespace CivOne
 
 		public void EndTurn()
 		{
+			foreach (Player player in _players.Where(x => !(x.Civilization is Barbarian)))
+			{
+				player.CheckDestroyed();
+			}
+
 			if (++_currentPlayer >= _players.Length)
 			{
 				_currentPlayer = 0;
@@ -114,11 +119,6 @@ namespace CivOne
 				{
 					GameTask.Enqueue(Show.AutoSave);
 				}
-			}
-
-			if (CurrentPlayer.DestroyTurn == -1 && CurrentPlayer.IsDestroyed)
-			{
-				GameTask.Enqueue(Message.Advisor(Advisor.Defense, false, CurrentPlayer.Civilization.Name, "civilization", "destroyed", $"by {Game.GetPlayer(0).Civilization.NamePlural}!"));
 			}
 
 			if (!_players.Any(x => Game.PlayerNumber(x) != 0 && x != Human && !x.IsDestroyed))
@@ -364,6 +364,8 @@ namespace CivOne
 			unit.X = 255;
 			unit.Y = 255;
 			_units.Remove(unit);
+
+			GetPlayer(unit.Owner).CheckDestroyed();
 
 			if (_units.Contains(activeUnit))
 			{
