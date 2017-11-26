@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using CivOne.Civilizations;
@@ -188,11 +189,6 @@ namespace CivOne
 				cityList.Add(cityData.Id, city);
 			}
 
-			foreach (Player player in _players)
-			{
-				player.CityNameCounter = _cities.Count(c => c.Owner == PlayerNumber(player)) - 1;
-			}
-
 			UnitData[][] unitData = gameData.Units;
 			for (byte p = 0; p < 8; p++)
 			{
@@ -205,6 +201,7 @@ namespace CivOne
 					unit.Owner = p;
 					unit.PartMoves = (byte)(data.RemainingMoves % 3);
 					unit.MovesLeft = (byte)((data.RemainingMoves - unit.PartMoves) / 3);
+					if (data.GotoX != 0xFF) unit.Goto = new Point(data.GotoX, data.GotoY);
 					if (cityList.ContainsKey(data.HomeCityId))
 					{
 						unit.SetHome(cityList[data.HomeCityId]);

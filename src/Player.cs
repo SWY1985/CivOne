@@ -115,7 +115,7 @@ namespace CivOne
 
 		private int _destroyTurn = -1;
 
-		internal int CityNameCounter = 0;
+		internal int CityNamesSkipped = 0;
 
 		internal short StartX { get; set; }
 		

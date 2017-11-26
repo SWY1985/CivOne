@@ -106,6 +106,13 @@ namespace CivOne
 
 		private static UnitData GetUnitData(this IUnit unit, byte id)
 		{
+			byte gotoX = 0xFF, gotoY = 0;
+			if (!unit.Goto.IsEmpty)
+			{
+				gotoX = (byte)unit.Goto.X;
+				gotoY = (byte)unit.Goto.Y;
+			}
+
 			return new UnitData {
 				Id = id,
 				Status = unit.Status,
@@ -114,8 +121,8 @@ namespace CivOne
 				TypeId = (byte)unit.Type,
 				RemainingMoves = (byte)((unit.MovesLeft * 3) + unit.PartMoves),
 				SpecialMoves = 0,
-				GotoX = (byte)unit.Goto.X,
-				GotoY = (byte)unit.Goto.Y,
+				GotoX = gotoX,
+				GotoY = gotoY,
 				Visibility = 0xFF,
 				NextUnitId = id,
 				HomeCityId = unit.Home.GetId()

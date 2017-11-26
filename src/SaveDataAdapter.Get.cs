@@ -17,13 +17,22 @@ namespace CivOne
 {
 	internal partial class SaveDataAdapter
 	{
-		private void GetByteArray(string fieldName, ref byte[] bytes)
+		private void GetByteArray<T>(T structure, string fieldName, ref byte[] bytes) where T : struct
 		{
-			IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf<SaveData>());
-			Marshal.StructureToPtr(_saveData, ptr, false);
-			IntPtr offset = IntPtr.Add(ptr, (int)Marshal.OffsetOf<SaveData>(fieldName));
+			IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf<T>());
+			Marshal.StructureToPtr(structure, ptr, false);
+			IntPtr offset = IntPtr.Add(ptr, (int)Marshal.OffsetOf<T>(fieldName));
 			Marshal.Copy(offset, bytes, 0, bytes.Length);
 			Marshal.FreeHGlobal(ptr);
+		}
+
+		private void GetByteArray(string fieldName, ref byte[] bytes) => GetByteArray<SaveData>(_saveData, fieldName, ref bytes);
+
+		private byte[] GetBytes<T>(T structure, string fieldName, int length) where T : struct
+		{
+			byte[] output = new byte[length];
+			GetByteArray<T>(structure, fieldName, ref output);
+			return output;
 		}
 
 		private byte[] GetArray(string fieldName, int length)
@@ -45,7 +54,26 @@ namespace CivOne
 		private T[] GetArray<T>(string fieldName, int length)
 		{
 			T[] output = new T[length];
-			Buffer.BlockCopy(GetArray(fieldName, length * Marshal.SizeOf<T>()), 0, output, 0, length);
+			switch (output)
+			{
+				case SaveData.City[] _:
+				case SaveData.Unit[] _:
+					int itemSize = Marshal.SizeOf<T>();
+					byte[] buffer = new byte[length * itemSize];
+					Buffer.BlockCopy(GetArray(fieldName, buffer.Length), 0, buffer, 0, buffer.Length);
+
+					IntPtr ptr = Marshal.AllocHGlobal(itemSize);
+					for (int i = 0; i < output.Length; i++)
+					{
+						Marshal.Copy(buffer, (i * itemSize), ptr, itemSize);
+						output[i] = Marshal.PtrToStructure<T>(ptr);
+					}
+					Marshal.FreeHGlobal(ptr);
+					break;
+				default:
+					Buffer.BlockCopy(GetArray(fieldName, length * Marshal.SizeOf<T>()), 0, output, 0, length);
+					break;
+			}
 			return output;
 		}
 
@@ -80,28 +108,29 @@ namespace CivOne
 
 		private CityData[] GetCities()
 		{
-			byte[] bytes = GetArray(nameof(SaveData.Cities), 28 * 128);
+			SaveData.City[] cities = GetArray<SaveData.City>(nameof(SaveData.Cities), 128);
+
 			List<CityData> output = new List<CityData>();
 
-			for (byte c = 0; c < 128; c++)
+			for (byte c = 0; c < cities.Length; c++)
 			{
-				int offset = 28 * c;
-				if (bytes[offset + 6] == 0xFF) continue;
+				SaveData.City city = cities[c];
+				if (city.Status == 0xFF) continue;
 
 				output.Add(new CityData()
 				{
 					Id = c,
-					NameId = bytes[offset + 22],
-					Buildings = bytes.FromBitIds(offset, 4).ToArray(),
-					X = bytes[offset + 4],
-					Y = bytes[offset + 5],
-					Status = bytes[offset + 6],
-					ActualSize = bytes[offset + 7],
-					CurrentProduction = bytes[offset + 9],
-					Owner = bytes[offset + 11],
-					Food = (ushort)((bytes[offset + 13] << 8) + bytes[offset + 12]),
-					Shields = (ushort)((bytes[offset + 13] << 8) + bytes[offset + 12]),
-					ResourceTiles = bytes.Skip(offset + 16).Take(6).ToArray()
+					NameId = city.NameId,
+					Buildings = GetBytes<SaveData.City>(city, nameof(SaveData.City.Buildings), 4).FromBitIds(0, 4).ToArray(),
+					X = city.X,
+					Y = city.Y,
+					Status = city.Status,
+					ActualSize = city.ActualSize,
+					CurrentProduction = city.CurrentProduction,
+					Owner = city.Owner,
+					Food = city.Food,
+					Shields = city.Shields,
+					ResourceTiles = GetBytes<SaveData.City>(city, nameof(SaveData.City.ResourceTiles), 6)
 				});
 			}
 			return output.ToArray();
@@ -109,32 +138,31 @@ namespace CivOne
 
 		private UnitData[][] GetUnits()
 		{
-			byte[] bytes = GetArray(nameof(SaveData.Units), (8 * 128 * 12));
+			SaveData.Unit[] units = GetArray<SaveData.Unit>(nameof(SaveData.Units), 8 * 128);
 			UnitData[][] output = new UnitData[8][];
 
 			for (int p = 0; p < 8; p++)
 			{
 				List<UnitData> unitData = new List<UnitData>();
-				
 				for (byte u = 0; u < 128; u++)
 				{
-					int offset = (p * 128 * 12) + (12 * u);
+					SaveData.Unit unit = units[(p * 128) + u];
 					
-					if (bytes[offset + 3] == 0xFF) continue;
+					if (unit.Type == 0xFF) continue;
 					unitData.Add(new UnitData()
 					{
 						Id = u,
-						Status = bytes[offset + 0],
-						X = bytes[offset + 1],
-						Y = bytes[offset + 2],
-						TypeId = bytes[offset + 3],
-						RemainingMoves = bytes[offset + 4],
-						SpecialMoves = bytes[offset + 5],
-						GotoX = bytes[offset + 6],
-						GotoY = bytes[offset + 7],
-						Visibility = bytes[offset + 9],
-						NextUnitId = bytes[offset + 10],
-						HomeCityId = bytes[offset + 11]
+						Status = unit.Status,
+						X = unit.X,
+						Y = unit.Y,
+						TypeId = unit.Type,
+						RemainingMoves = unit.RemainingMoves,
+						SpecialMoves = unit.SpecialMoves,
+						GotoX = unit.GotoX,
+						GotoY = unit.GotoY,
+						Visibility = unit.Visibility,
+						NextUnitId = unit.NextUnitId,
+						HomeCityId = unit.HomeCityId
 					});
 				}
 				output[p] = unitData.ToArray();
