@@ -17,7 +17,7 @@ using CivOne.Tiles;
 
 namespace CivOne
 {
-	internal partial class Map
+	public partial class Map
 	{
 		private void LoadMap(Bytemap bitmap)
 		{

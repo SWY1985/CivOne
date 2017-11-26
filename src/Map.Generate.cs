@@ -15,7 +15,7 @@ using CivOne.Tiles;
 
 namespace CivOne
 {
-	internal partial class Map
+	public partial class Map
 	{
 		private bool[,] GenerateLandChunk()
 		{
