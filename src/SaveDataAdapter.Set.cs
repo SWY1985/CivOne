@@ -16,14 +16,31 @@ namespace CivOne
 {
 	internal partial class SaveDataAdapter
 	{
-		private void SetArray(string fieldName, params byte[] values)
+		private void SetArray<T>(ref T structure, string fieldName, params byte[] values) where T : struct
 		{
-			IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf<SaveData>());
-			Marshal.StructureToPtr(_saveData, ptr, false);
-			IntPtr offset = IntPtr.Add(ptr, (int)Marshal.OffsetOf<SaveData>(fieldName));
+			IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf<T>());
+			Marshal.StructureToPtr(structure, ptr, false);
+			IntPtr offset = IntPtr.Add(ptr, (int)Marshal.OffsetOf<T>(fieldName));
 			Marshal.Copy(values, 0, offset, values.Length);
-			_saveData = Marshal.PtrToStructure<SaveData>(ptr);
+			structure = Marshal.PtrToStructure<T>(ptr);
 			Marshal.FreeHGlobal(ptr);
+		}
+
+		private void SetArray(string fieldName, params byte[] values) => SetArray<SaveData>(ref _saveData, fieldName, values);
+
+		private void SetArray<T>(string fieldName, params T[] values) where T : struct
+		{
+			int itemSize = Marshal.SizeOf<T>();
+			byte[] bytes = new byte[values.Length * itemSize];
+			for (int i = 0; i < values.Length; i++)
+			{
+				T value = values[i];
+				IntPtr ptr = Marshal.AllocHGlobal(itemSize);
+				Marshal.StructureToPtr<T>(value, ptr, false);
+				Marshal.Copy(ptr, bytes, (i * itemSize), itemSize);
+				Marshal.FreeHGlobal(ptr);
+			}
+			SetArray(fieldName, bytes);
 		}
 		
 		private void SetArray(string fieldName, params short[] values)
@@ -103,35 +120,27 @@ namespace CivOne
 
 		private void SetCities(CityData[] values)
 		{
-			byte[] bytes = GetArray(nameof(SaveData.Cities), 28 * 128);
+			SaveData.City[] cities = GetArray<SaveData.City>(nameof(SaveData.Cities), 128);
 			
 			for (int i = 0; i < new[] { values.Length, 128 }.Min(); i++)
 			{
-				int offset = (28 * i);
 				CityData data = values[i];
-				
-				if (data.Buildings != null) bytes = bytes.ToBitIds(offset, 4, data.Buildings);
-				bytes[offset + 4] = data.X;
-				bytes[offset + 5] = data.Y;
-				bytes[offset + 6] = data.Status;
-				bytes[offset + 7] = data.ActualSize;
-				bytes[offset + 8] = data.ActualSize;
-				bytes[offset + 9] = data.CurrentProduction;
-				bytes[offset + 11] = data.Owner;
-				bytes[offset + 12] = (byte)(data.Food & 0xFF);
-				bytes[offset + 13] = (byte)((data.Food & 0xFF00) >> 8);
-				bytes[offset + 14] = (byte)(data.Shields & 0xFF);
-				bytes[offset + 15] = (byte)((data.Shields & 0xFF00) >> 8);
-				if (data.ResourceTiles != null)
-				{
-					for (int r = 0; r < data.ResourceTiles.Length; r++)
-					{
-						bytes[offset + 16 + r] = data.ResourceTiles[r];
-					}
-				}
-				bytes[offset + 22] = data.NameId;
+				// SetArray<SaveData.City>(ref cities[i], nameof(SaveData.City.Buildings), new byte[4].ToBitIds(0, 4, data.Buildings));
+				SetArray<SaveData.City>(ref cities[i], nameof(SaveData.City.Buildings), new byte[4].ToBitIds(0, 4, data.Buildings));
+				cities[i].X = data.X;
+				cities[i].Y = data.Y;
+				cities[i].Status = data.Status;
+				cities[i].ActualSize = data.ActualSize;
+				cities[i].VisibleSize = data.ActualSize; // TODO: Implement Visible Size
+				cities[i].CurrentProduction = data.CurrentProduction;
+				cities[i].BaseTrade = 0; // TODO: Implement trade
+				cities[i].Owner = data.Owner;
+				cities[i].Food = data.Food;
+				cities[i].Shields = data.Shields;
+				SetArray<SaveData.City>(ref cities[i], nameof(SaveData.City.ResourceTiles), data.ResourceTiles);
+				cities[i].NameId = data.NameId;
 			}
-			SetArray(nameof(SaveData.Cities), bytes);
+			SetArray<SaveData.City>(nameof(SaveData.Cities), cities);
 		}
 
 		private void SetUnitTypes(byte[] bytes) => SetArray(nameof(SaveData.UnitTypes), bytes);

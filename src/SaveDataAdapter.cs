@@ -18,7 +18,7 @@ namespace CivOne
 {
 	internal unsafe partial class SaveDataAdapter : IGameData
 	{
-		private CityData[] DefaultCityData => Enumerable.Range(0, 128).Select(x => new CityData() { Status = 0xFF }).ToArray();
+		private CityData[] DefaultCityData => Enumerable.Range(0, 128).Select(x => new CityData() { Status = 0xFF, Buildings = new byte[4], ResourceTiles = new byte[6] }).ToArray();
 		private UnitData[][] DefaultUnitData => Enumerable.Repeat(Enumerable.Range(0, 128).Select(id => new UnitData() { Id = (byte)id, TypeId = 0xFF }).ToArray(), 8).ToArray();
 
 		private byte[] DefaultUnitTypes => new byte[952]; // TODO

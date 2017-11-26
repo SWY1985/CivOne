@@ -79,6 +79,7 @@ namespace CivOne.Tasks
 
 		private void CityNameCancel(object sender, EventArgs args)
 		{
+			Human.CityNamesSkipped++;
 			_unit.MovesLeft--;
 			EndTask();
 		}

@@ -193,9 +193,9 @@ namespace CivOne
 				.ThenBy(i => (i >= spareIndex) ? 0 : 1)
 				.ThenBy(i => i)
 				.ToArray();
-			if (player.CityNameCounter >= available.Length)
+			if (player.CityNamesSkipped >= available.Length)
 				return 0;
-			return available[player.CityNameCounter++];
+			return available[player.CityNamesSkipped];
 		}
 
 		internal City AddCity(Player player, int nameId, int x, int y)

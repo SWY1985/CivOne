@@ -17,6 +17,40 @@ namespace CivOne.IO
 	[StructLayout(LayoutKind.Sequential)]
 	internal unsafe struct SaveData
 	{
+		[StructLayout(LayoutKind.Sequential)]
+		internal struct City
+		{
+			public fixed byte Buildings[4];					// 0:3
+			public byte X, Y;								// 4:5
+			public byte Status;								// 6
+			public byte ActualSize;							// 7
+			public byte VisibleSize;						// 8
+			public byte CurrentProduction;					// 9
+			public byte BaseTrade;							// 10
+			public byte Owner;								// 11
+			public ushort Food;								// 12:13
+			public ushort Shields;							// 14:15
+			public fixed byte ResourceTiles[6];				// 16:21
+			public byte NameId;								// 22
+			public fixed byte TradingCities[3];				// 23:25
+			private fixed byte _padding[2];					// 27
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		internal struct Unit
+		{
+			public byte Status;								// 0
+			public byte X, Y;								// 1:2
+			public byte Type;								// 3
+			public byte RemainingMoves;						// 4
+			public byte SpecialMoves;						// 5
+			public byte GotoX, GotoY;						// 6:7
+			private byte _padding1;							// 8
+			public byte Visibility;							// 9
+			public byte NextUnitId;							// 10
+			public byte HomeCityId;							// 11
+		}
+
 		public ushort GameTurn;								// 0:1
 		public ushort HumanPlayer;							// 2:3
 		public ushort HumanPlayerBit;						// 4:5
