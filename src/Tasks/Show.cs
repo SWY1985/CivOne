@@ -20,10 +20,7 @@ namespace CivOne.Tasks
 	{
 		private readonly IScreen _screen;
 
-		public void Closed(object sender, EventArgs args)
-		{
-			EndTask();
-		}
+		public void Closed(object sender, EventArgs args) => EndTask();
 
 		public override void Run()
 		{
@@ -31,21 +28,9 @@ namespace CivOne.Tasks
 			Common.AddScreen(_screen);
 		}
 
-		public static Show Empty
-		{
-			get
-			{
-				return new Show(Overlay.Empty);
-			}
-		}
+		public static Show Empty => new Show(Overlay.Empty);
 
-		public static Show InterfaceHelp
-		{
-			get
-			{
-				return new Show(Overlay.InterfaceHelp);
-			}
-		}
+		public static Show InterfaceHelp => new Show(Overlay.InterfaceHelp);
 
 		public static Show Terrain
 		{
@@ -73,21 +58,9 @@ namespace CivOne.Tasks
 			}
 		}
 
-		public static Show TaxRate
-		{
-			get
-			{
-				return new Show(SetRate.Taxes);
-			}
-		}
+		public static Show TaxRate => new Show(SetRate.Taxes);
 
-		public static Show LuxuryRate
-		{
-			get
-			{
-				return new Show(SetRate.Luxuries);
-			}
-		}
+		public static Show LuxuryRate => new Show(SetRate.Luxuries);
 
 		public static Show AutoSave
 		{
@@ -99,15 +72,9 @@ namespace CivOne.Tasks
 			}
 		}
 
-		public static Show CityManager(City city)
-		{
-			return new Show(new CityManager(city));
-		}
+		public static Show CityManager(City city) => new Show(new CityManager(city));
 
-		public static Show UnitStack(int x, int y)
-		{
-			return new Show(new UnitStack(x, y));
-		}
+		public static Show UnitStack(int x, int y) => new Show(new UnitStack(x, y));
 
 		public static Show Search
 		{
@@ -138,35 +105,17 @@ namespace CivOne.Tasks
 			}
 		}
 
-		public static Show Nuke(int x, int y)
-		{
-			return new Show(new Nuke(x, y));
-		}
+		public static Show Nuke(int x, int y) => new Show(new Nuke(x, y));
 
-		public static Show DestroyUnit(IUnit unit, bool stack)
-		{
-			return new Show(new DestroyUnit(unit, stack));
-		}
+		public static Show DestroyUnit(IUnit unit, bool stack) => new Show(new DestroyUnit(unit, stack));
 
-		public static Show CaptureCity(City city)
-		{
-			return new Show(CityView.Capture(city));
-		}
+		public static Show CaptureCity(City city) => new Show(CityView.Capture(city));
 
-		public static Show BuildPalace()
-		{
-			return new Show(new PalaceView(true));
-		}
+		public static Show BuildPalace() => new Show(new PalaceView(true));
 
-		public static Show CaravanChoice(Caravan unit, City city)
-		{
-			return new Show(new CaravanChoice(unit, city));
-		}
+		public static Show CaravanChoice(Caravan unit, City city) => new Show(new CaravanChoice(unit, city));
 
-		public static Show Screen<T>() where T : IScreen, new()
-		{
-			return new Show(new T());
-		}
+		public static Show Screen<T>() where T : IScreen, new() => new Show(new T());
 
 		private Show(IScreen screen)
 		{
