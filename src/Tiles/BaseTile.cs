@@ -187,7 +187,19 @@ namespace CivOne.Tiles
 		public virtual bool Irrigation { get; set; }
 		public virtual bool Mine { get; set; }
 		public virtual bool Fortress { get; set; }
-		public virtual bool Hut { get; set; }
+		private bool _hut;
+		public virtual bool Hut
+		{
+			get => _hut;
+			set
+			{
+				if (Game.Started && _hut && !value)
+				{
+					Game.GetPlayer(0).Explore(X, Y, 0);
+				}
+				_hut = value;
+			}
+		}
 		public byte Visited { get; private set; }
 		public void Visit(byte owner)
 		{

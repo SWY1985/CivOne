@@ -137,6 +137,7 @@ namespace CivOne
 				for (int yy = 0; yy < 50; yy++)
 				{
 					if (!visibility[i][xx, yy]) continue;
+					if (i == 0 && Map[xx, yy].Hut) Map[xx, yy].Hut = false;
 					player.Explore(xx, yy, 0);
 				}
 
