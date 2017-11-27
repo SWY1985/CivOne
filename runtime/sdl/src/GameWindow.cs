@@ -67,14 +67,42 @@ namespace CivOne
 			CursorTexture = CreateTexture(_runtime.Cursor);
 		}
 
+		private PointF GetScaleF()
+		{
+			GetBorders(out int x1, out int y1, out int x2, out int y2);
+			float scaleX = (float)x2 / CanvasWidth;
+			float scaleY = (float)y2 / CanvasHeight;
+			if (Settings.AspectRatio == AspectRatio.ScaledFixed)
+			{
+				if (scaleX > scaleY) scaleX = scaleY;
+				else scaleY = scaleX;
+			}
+			return new PointF(scaleX, scaleY);
+		}
+
 		private ScreenEventArgs Transform(ScreenEventArgs args)
 		{
 			GetBorders(out int offsetX, out int offsetY, out _, out _);
 			int x = args.X - offsetX - (args.X % ScaleX);
 			int y = args.Y - offsetY - (args.Y % ScaleY);
+
+			switch (Settings.AspectRatio)
+			{
+				case AspectRatio.Scaled:
+				case AspectRatio.ScaledFixed:
+					PointF scaleF = GetScaleF();
+					x = offsetX + (int)((float)args.X / scaleF.X);
+					y = offsetY + (int)((float)args.Y / scaleF.Y);
+					break;
+				default:
+					x /= ScaleX;
+					y /= ScaleY;
+					break;
+			}
+
 			if (args.Buttons == MouseButton.None)
-				return new ScreenEventArgs(x / ScaleX, y / ScaleY);
-			return new ScreenEventArgs(x / ScaleX, y / ScaleY, args.Buttons);
+				return new ScreenEventArgs(x, y);
+			return new ScreenEventArgs(x, y, args.Buttons);
 		}
 
 		private void KeyDown(object sender, KeyboardEventArgs args)

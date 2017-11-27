@@ -63,6 +63,18 @@ namespace CivOne
 				}
 			}
 
+			private bool _pixelScale = false;
+			protected bool PixelScale
+			{
+				get => _pixelScale;
+				set
+				{
+					if (!SDL_SetHint("SDL_RENDER_SCALE_QUALITY", value ? "1" : "0"))
+						return;
+					_pixelScale = value;
+				}
+			}
+
 			public void Run()
 			{
 				OnLoad?.Invoke(this, EventArgs.Empty);
@@ -131,6 +143,9 @@ namespace CivOne
 					Console.WriteLine("Something is wrong");
 					return;
 				}
+
+				// Should be default, just to be sure
+				PixelScale = false;
 
 				// Run OS native functions for initialization
 				Native.Init(_handle);

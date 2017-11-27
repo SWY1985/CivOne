@@ -29,12 +29,34 @@ namespace CivOne
 
 		private void Render()
 		{
+			switch(Settings.AspectRatio)
+			{
+				case AspectRatio.Scaled:
+				case AspectRatio.ScaledFixed:
+					if (!PixelScale) PixelScale = true;
+					break;
+				default:
+					if (PixelScale) PixelScale = false;
+					break;
+			}
+
 			Clear(Color.Black);
 			GetBorders(out int x1, out int y1, out int x2, out int y2);
 			using (SDL.Texture canvas = CreateTexture(_runtime.Bitmap))
 			{
 				canvas.Draw(x1, y1, (x2 - x1), (y2 - y1));
-				CursorTexture?.Draw(x1 + (_mouseX * ScaleX), y1 + (_mouseY * ScaleY), CursorTexture.Width * ScaleX, CursorTexture.Height * ScaleY);
+				
+				switch (Settings.AspectRatio)
+				{
+					case AspectRatio.Scaled:
+					case AspectRatio.ScaledFixed:
+						PointF scaleF = GetScaleF();
+						CursorTexture?.Draw((int)((_mouseX - x1) * scaleF.X), (int)((_mouseY - y1) * scaleF.Y), (int)(CursorTexture.Width * scaleF.X), (int)(CursorTexture.Height * scaleF.Y));
+						break;
+					default:
+						CursorTexture?.Draw(x1 + (_mouseX * ScaleX), y1 + (_mouseY * ScaleY), CursorTexture.Width * ScaleX, CursorTexture.Height * ScaleY);
+						break;
+				}
 			}
 		}
 
