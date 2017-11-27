@@ -66,6 +66,11 @@ namespace CivOne
 
 		[DllImportAttribute(DLL_SDL, CallingConvention = CallingConvention.Cdecl)]
 		private static extern int SDL_SetRenderDrawColor(IntPtr renderer, byte r, byte g, byte b, byte a);
+
+		[DllImportAttribute(DLL_SDL, CallingConvention = CallingConvention.Cdecl)]
+		private static extern int SDL_SetHint(byte[] name, byte[] value);
+
+		private static bool SDL_SetHint(string name, string value) => SDL_SetHint(Encoding.UTF8.GetBytes($"{name}{'\0'}"), Encoding.UTF8.GetBytes($"{value}{'\0'}")) == 1;
 		
 		[DllImportAttribute(DLL_SDL, CallingConvention = CallingConvention.Cdecl)]
 		private static extern IntPtr SDL_CreateTexture(IntPtr renderer, uint format, SDL_TextureAccess access, int width, int height);
