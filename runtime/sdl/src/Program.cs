@@ -60,29 +60,9 @@ Try 'civone-sdl --help' for more information.
 			return File.Exists(binPath);
 		}
 
-		private static bool MakeSdlLink()
-		{
-			string binPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "SDL2");
-			if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) return false;
-			if (File.Exists(binPath)) return false;
-			
-			using (Process process = new Process())
-			{
-				process.StartInfo.CreateNoWindow = true;
-				process.StartInfo.WorkingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-				process.StartInfo.FileName = "ln";
-				process.StartInfo.Arguments = "/Library/Frameworks/SDL2.framework/Versions/Current/SDL2 SDL2";
-				process.Start();
-				process.WaitForExit();
-			}
-
-			return true;
-		}
-
 		static void Main(string[] args)
 		{
 			if (WriteSdlStub()) Console.WriteLine("Written SDL2 library stub...");
-			if (MakeSdlLink()) Console.WriteLine("Created SDL link...");
 
 			RuntimeSettings settings = new RuntimeSettings();
 			settings["software-render"] = false;
