@@ -28,6 +28,10 @@
 		<DefineConstants>RELEASE</DefineConstants>
 		<Optimize>true</Optimize>
 	</PropertyGroup>
+	<PropertyGroup Condition="$(Configuration.EndsWith('MacOS'))">
+		<DefineConstants>MACOS</DefineConstants>
+		<OutputPath>bin/Debug</OutputPath>
+	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="../../CivOne.csproj" />
 	</ItemGroup>

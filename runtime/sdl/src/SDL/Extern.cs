@@ -15,7 +15,11 @@ namespace CivOne
 {
 	internal static partial class SDL
 	{
+		#if MACOS
 		private const string DLL_SDL = "SDL2";
+		#else
+		private const string DLL_SDL = "/Library/Frameworks/SDL2.framework/Versions/Current/SDL2";
+		#endif
 
 		[DllImportAttribute(DLL_SDL, CallingConvention = CallingConvention.Cdecl)]
 		private static extern IntPtr SDL_CreateRenderer(IntPtr window, int index, SDL_RENDERER_FLAGS flags);
