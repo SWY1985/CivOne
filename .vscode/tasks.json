@@ -8,9 +8,23 @@
 	"tasks": [
 		{
 			"taskName": "build",
-			"args": [
-				"${workspaceRoot}//runtime/sdl/CivOne.SDL.csproj"
-			],
+			"windows": {
+				"args": [
+					"${workspaceRoot}//runtime/sdl/CivOne.SDL.csproj"
+				]
+			},
+			"linux": {
+				"args": [
+					"${workspaceRoot}//runtime/sdl/CivOne.SDL.csproj"
+				]
+			},
+			"osx": {
+				"args": [
+					"${workspaceRoot}//runtime/sdl/CivOne.SDL.csproj",
+					"-c",
+					"DebugMacOS"
+				]
+			},
 			"isBuildCommand": true,
 			"problemMatcher": "$msCompile"
 		},
