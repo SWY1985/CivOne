@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -41,12 +42,8 @@ Try 'civone-sdl --help' for more information.
 		private static bool WriteSdlStub()
 		{
 			string binPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "SDL2.so");
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) return false;
+			if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) return false;
 			if (File.Exists(binPath)) return false;
-			foreach (string bla in Assembly.GetExecutingAssembly().GetManifestResourceNames())
-			{
-				Console.WriteLine(bla);
-			}
 			using (Stream resourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("CivOne.SDL.Resources.SDL2.so"))
 			{
 				if (resourceStream == null)
@@ -63,9 +60,29 @@ Try 'civone-sdl --help' for more information.
 			return File.Exists(binPath);
 		}
 
+		private static bool MakeSdlLink()
+		{
+			string binPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "SDL2");
+			if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) return false;
+			if (File.Exists(binPath)) return false;
+			
+			using (Process process = new Process())
+			{
+				process.StartInfo.CreateNoWindow = true;
+				process.StartInfo.WorkingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+				process.StartInfo.FileName = "ln";
+				process.StartInfo.Arguments = "/Library/Frameworks/SDL2.framework/Versions/Current/SDL2 SDL2";
+				process.Start();
+				process.WaitForExit();
+			}
+
+			return true;
+		}
+
 		static void Main(string[] args)
 		{
 			if (WriteSdlStub()) Console.WriteLine("Written SDL2 library stub...");
+			if (MakeSdlLink()) Console.WriteLine("Created SDL link...");
 
 			RuntimeSettings settings = new RuntimeSettings();
 			settings["software-render"] = false;
