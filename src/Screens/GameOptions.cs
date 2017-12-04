@@ -105,7 +105,7 @@ namespace CivOne.Screens
 				menu.Cancel += MenuCancel;
 
 				menu.Items.Add($"{(Settings.InstantAdvice ? '^' : ' ')}Instant Advice").OnSelect(MenuInstantAdvice);
-				menu.Items.Add($"{(Settings.AutoSave ? '^' : ' ')}AutoSave").OnSelect(MenuAutoSave);
+				menu.Items.Add($"{(Settings.AutoSave ? '^' : ' ')}AutoSave").SetEnabled(Common.AllowSaveGame).OnSelect(MenuAutoSave);
 				menu.Items.Add($"{(Settings.EndOfTurn ? '^' : ' ')}End of Turn").OnSelect(MenuEndOfTurn);
 				menu.Items.Add($"{(Settings.Animations ? '^' : ' ')}Animations").OnSelect(MenuAnimations);
 				menu.Items.Add($"{(Settings.Sound ? '^' : ' ')}Sound").OnSelect(MenuSound);

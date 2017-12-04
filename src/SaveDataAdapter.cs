@@ -293,6 +293,8 @@ namespace CivOne
 			return output;
 		}
 
+		public bool ValidMapSize(int width, int height) => (width == 80 && height == 50);
+
 		public static SaveDataAdapter Load(byte[] input) => new SaveDataAdapter(input);
 
 		private SaveDataAdapter(byte[] input)

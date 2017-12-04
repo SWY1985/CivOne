@@ -117,6 +117,8 @@ namespace CivOne.Tasks
 
 		public static Show Screen<T>() where T : IScreen, new() => new Show(new T());
 
+		public static Show Screen(IScreen screen) => new Show(screen);
+
 		private Show(IScreen screen)
 		{
 			_screen = screen;

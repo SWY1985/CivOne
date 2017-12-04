@@ -30,6 +30,7 @@ namespace CivOne
 		private bool _debugMenu = false;
 		private bool _deityEnabled = false;
 		private bool _arrowHelper = false;
+		private bool _customMapSize = false;
 		private CursorType _cursorType = CursorType.Default;
 
 		private DestroyAnimation _destroyAnimation = DestroyAnimation.Sprites;
@@ -204,6 +205,20 @@ namespace CivOne
 				Common.ReloadSettings = true;
 			}
 		}
+
+		internal bool CustomMapSize
+		{
+			get
+			{
+				return _customMapSize;
+			}
+			set
+			{
+				_customMapSize = value;
+				SetSetting("CustomMapSize", _customMapSize ? "1" : "0");
+				Common.ReloadSettings = true;
+			}
+		}
 		
 		public CursorType CursorType
 		{
@@ -340,6 +355,7 @@ namespace CivOne
 			bool debugMenu = false;
 			bool deityEnabled = false;
 			bool arrowHelper = false;
+			bool customMapSize = false;
 			int cursorType = (int)_cursorType;
 			int destroyAnimation = (int)_destroyAnimation;
 			
@@ -355,6 +371,7 @@ namespace CivOne
 			debugMenu = (GetSetting("DebugMenu") == "1");
 			deityEnabled = (GetSetting("DeityEnabled") == "1");
 			arrowHelper = (GetSetting("ArrowHelper") == "1");
+			customMapSize = (GetSetting("CustomMapSize") == "1");
 			Int32.TryParse(GetSetting("CursorType"), out cursorType);
 			Int32.TryParse(GetSetting("DestroyAnimation"), out destroyAnimation);
 			
@@ -379,6 +396,7 @@ namespace CivOne
 			_debugMenu = debugMenu;
 			_deityEnabled = deityEnabled;
 			_arrowHelper = arrowHelper;
+			_customMapSize = customMapSize;
 			_cursorType = (CursorType)cursorType;
 			_destroyAnimation = (DestroyAnimation)destroyAnimation;
 

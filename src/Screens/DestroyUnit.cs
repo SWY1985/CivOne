@@ -83,8 +83,8 @@ namespace CivOne.Screens
 
 				int xx = _unit.X - _x;
 				int yy = _unit.Y - _y;
-				while (xx < 0) xx += 80;
-				while (xx >= 80) xx -= 80;
+				while (xx < 0) xx += Map.WIDTH;
+				while (xx >= Map.WIDTH) xx -= Map.WIDTH;
 
 				_overlay.AddLayer(_unit.ToBitmap(), cx + (xx * 16), cy + (yy * 16));
 				if (_unit.Tile.Units.Length > 1 && !_unit.Tile.Fortress && _unit.Tile.City == null)
