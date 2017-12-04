@@ -13,6 +13,7 @@ namespace CivOne.Governments
 	{
 		public Despotism() : base(1, "Despotism")
 		{
+			CorruptionMultiplier = 8;
 		}
 	}
 }

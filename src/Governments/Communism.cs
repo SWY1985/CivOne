@@ -13,6 +13,7 @@ namespace CivOne.Governments
 	{
 		public Communism() : base(3, "Communism", "Communist", new Advances.Communism())
 		{
+			CorruptionMultiplier = 20;
 		}
 	}
 }

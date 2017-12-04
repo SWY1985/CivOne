@@ -204,10 +204,46 @@ namespace CivOne
 			return output;
 		}
 
-		internal int TradeTotal => ResourceTiles.Sum(t => TradeValue(t));
+		internal int TradeTotal => ResourceTiles.Sum(t => TradeValue(t)) - Corruption;
 		private short TradeScience => (short)(TradeTotal - TradeLuxuries - TradeTaxes);
 		private short TradeLuxuries => (short)Math.Round(((double)(TradeTotal - TradeTaxes) / (10 - Player.TaxesRate)) * Player.LuxuriesRate, MidpointRounding.AwayFromZero);
 		private short TradeTaxes => (short)Math.Round(((double)TradeTotal / 10) * Player.TaxesRate, MidpointRounding.AwayFromZero);
+
+		internal int Corruption
+		{
+			get
+			{
+				IGovernment government = Game.GetPlayer(_owner).Government;
+				if (government.CorruptionMultiplier == 0) return 0;
+
+				int distance;
+				switch (government)
+				{
+					case Governments.Communism _:
+						distance = 10;
+						break;
+					default:
+						if (HasBuilding<Palace>()) return 0;
+						if (Game.GetPlayer(Owner).Cities.Any(x => x.HasBuilding<Palace>()))
+						{
+							City capital = Game.GetPlayer(Owner).Cities.First(x => x.HasBuilding<Palace>());
+							distance = Common.DistanceToTile(X, Y, capital.X, capital.Y);
+						}
+						else
+						{
+							distance = 32;
+						}
+						break;
+				}
+
+				int totalTrade = ResourceTiles.Sum(t => TradeValue(t));
+				int corruption = (int)Math.Round((float)(totalTrade * distance * 3) / (10 * government.CorruptionMultiplier));
+
+				if (HasBuilding<Courthouse>() || (HasBuilding<Palace>() && government is Governments.Communism)) corruption /= 2;
+
+				return corruption;
+			}
+		}
 
 		internal short Luxuries
 		{
