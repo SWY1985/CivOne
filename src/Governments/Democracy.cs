@@ -13,6 +13,7 @@ namespace CivOne.Governments
 	{
 		public Democracy() : base(5, "Democracy", "Democratic", new Advances.Democracy())
 		{
+			CorruptionMultiplier = 0;
 		}
 	}
 }

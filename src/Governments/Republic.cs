@@ -15,6 +15,7 @@ namespace CivOne.Governments
 	{
 		public Republic() : base(4, "Republic", new TheRepublic())
 		{
+			CorruptionMultiplier = 24;
 		}
 	}
 }

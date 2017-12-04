@@ -106,6 +106,19 @@ namespace CivOne.Graphics
 				return _trade;
 			}
 		}
+
+		private static IBitmap _corruption;
+		public static IBitmap Corruption
+		{
+			get
+			{
+				if (_corruption == null)
+				{
+					_corruption = Resources["SP257"][144, 32, 8, 8].ColourReplace((3, 0), (15, 5));
+				}
+				return _corruption;
+			}
+		}
 		
 		private static IBitmap _unhappy;
 		public static IBitmap Unhappy

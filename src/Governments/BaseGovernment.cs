@@ -18,6 +18,7 @@ namespace CivOne.Governments
 		public byte Id { get; private set; }
 		public string NameAdjective { get; private set; }
 		public IAdvance RequiredTech { get; private set; }
+		public int CorruptionMultiplier { get; protected set; }
 
 		internal BaseGovernment(byte id, string name, IAdvance requiredTech = null)
 		{

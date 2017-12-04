@@ -82,6 +82,8 @@ namespace CivOne.Screens.CityManagerPanels
 			int width = 8;
 			for (int i = 0; i < 7; i++)
 			{
+				int measureWidth = (_city.TradeTotal * width);
+				if ((_city.Corruption > 0)) measureWidth += (2 + (_city.Corruption * width));
 				if ((_city.TradeTotal * width) <= (Width - 7)) break;
 				width--;
 			}
@@ -89,6 +91,11 @@ namespace CivOne.Screens.CityManagerPanels
 			for (int i = 0; i < _city.TradeTotal; i++)
 			{
 				this.AddLayer(Icons.Trade, 1 + (width * i), 25);
+			}
+			
+			for (int i = 0; i < _city.Corruption; i++)
+			{
+				this.AddLayer(Icons.Corruption, 3 + (_city.TradeTotal * width) + (width * i), 25);
 			}
 			
 			width = 8;

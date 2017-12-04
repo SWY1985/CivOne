@@ -13,6 +13,7 @@ namespace CivOne.Governments
 	{
 		public Anarchy() : base(0, "Anarchy")
 		{
+			CorruptionMultiplier = 12;
 		}
 	}
 }
