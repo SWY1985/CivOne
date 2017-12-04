@@ -21,8 +21,9 @@ namespace CivOne
 		private static Resources Resources = Resources.Instance;
 		private static void Log(string text, params object[] parameters) => RuntimeHandler.Runtime.Log(text, parameters);
 
-		public const int WIDTH = 80;
-		public const int HEIGHT = 50;
+		private static int _width = 80, _height = 50;
+		public static int WIDTH => _width;
+		public static int HEIGHT => _height;
 		
 		private int _terrainMasterWord;
 		private int _landMass, _temperature, _climate, _age;

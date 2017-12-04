@@ -57,7 +57,7 @@ namespace CivOne.Screens
 			_gameMenu.Items.Add("Luxuries Rate").OnSelect((s, a) => GameTask.Enqueue(Show.LuxuryRate));
 			_gameMenu.Items.Add("FindCity").OnSelect((s, a) => GameTask.Enqueue(Show.Search));
 			_gameMenu.Items.Add("Options").OnSelect((s, a) => GameTask.Enqueue(Show.Screen<GameOptions>()));
-			_gameMenu.Items.Add("Save Game").SetEnabled(Game.GameTurn > 0).OnSelect((s, a) => GameTask.Enqueue(Show.Screen<SaveGame>()));
+			_gameMenu.Items.Add("Save Game").SetEnabled(Game.GameTurn > 0 && Common.AllowSaveGame).OnSelect((s, a) => GameTask.Enqueue(Show.Screen<SaveGame>()));
 			_gameMenu.Items.Add("REVOLUTION!").OnSelect((s, a) => GameTask.Enqueue(Show.Screen<Revolution>()));
 			_gameMenu.Items.Add(null);
 			if (Settings.DebugMenu)
@@ -408,6 +408,12 @@ namespace CivOne.Screens
 			{
 				Game.Instance.Update();
 				while (GameTask.Update());
+			}
+			
+			if (!Common.AllowSaveGame)
+			{
+				GameTask.Insert(Message.General("The selected map size is not", "compatible with the save game format.", "Save game functionality will be disabled!"));
+				Game.Settings.AutoSave = false;
 			}
 		}
 	}

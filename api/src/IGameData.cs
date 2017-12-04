@@ -42,5 +42,6 @@ namespace CivOne
 
 		bool ValidData { get; }
 		byte[] GetBytes();
+		bool ValidMapSize(int width, int height);
 	}
 }

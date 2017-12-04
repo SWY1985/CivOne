@@ -154,7 +154,7 @@ namespace CivOne.Screens
 		
 		private void PatchesMenu(int activeItem = 0)
 		{
-			string revealWorld, sideBar, debugMenu, cursorType, destroyAnimation, deityMenu, arrowHelperMenu;
+			string revealWorld, sideBar, debugMenu, cursorType, destroyAnimation, deityMenu, arrowHelperMenu, customMapSizeMenu;
 			switch (Settings.CursorType)
 			{
 				case CursorType.Builtin: cursorType = "Built-in"; break;
@@ -175,8 +175,9 @@ namespace CivOne.Screens
 			destroyAnimation = $"Destroy animation: {destroyAnimation}";
 			deityMenu = $"Enable Deity difficulty: {(Settings.DeityEnabled ? "yes" : "no")}";
 			arrowHelperMenu = $"Enable (no keypad) arrow helper: {(Settings.ArrowHelper ? "yes" : "no")}";
+			customMapSizeMenu = $"Custom map sizes (experimental): {(Settings.CustomMapSize ? "yes" : "no")}";
 			
-			Menu menu = CreateMenu("PATCHES:", PatchesChoice, revealWorld, sideBar, debugMenu, cursorType, destroyAnimation, deityMenu, arrowHelperMenu, "Back");
+			Menu menu = CreateMenu("PATCHES:", PatchesChoice, revealWorld, sideBar, debugMenu, cursorType, destroyAnimation, deityMenu, arrowHelperMenu, customMapSizeMenu, "Back");
 			menu.ActiveItem = activeItem;
 			AddMenu(menu);
 		}
@@ -232,6 +233,13 @@ namespace CivOne.Screens
 		{
 			Menu menu = CreateMenu("ENABLE (NO KEYPAD) ARROW HELPER:", ArrowHelperChoice, "No", "Yes", "Back");
 			menu.ActiveItem = Settings.ArrowHelper ? 1 : 0;
+			AddMenu(menu);
+		}
+
+		private void CustomMapSizeMenu()
+		{
+			Menu menu = CreateMenu("CUSTOM MAP SIZES (EXPERIMENTAL):", CustomMapSizeChoice, "No", "Yes", "Back");
+			menu.ActiveItem = Settings.CustomMapSize ? 1 : 0;
 			AddMenu(menu);
 		}
 		
@@ -360,7 +368,10 @@ namespace CivOne.Screens
 				case 6: // Enable (no keypad) arrow helper
 					ArrowHelperMenu();
 					break;
-				case 7: // Back
+				case 7: // Custom map sizes (experimental)
+					CustomMapSizeMenu();
+					break;
+				case 8: // Back
 					MainMenu(1);
 					break;
 			}
@@ -472,6 +483,21 @@ namespace CivOne.Screens
 			}
 			CloseMenus();
 			PatchesMenu(6);
+		}
+
+		private void CustomMapSizeChoice(object sender, MenuItemEventArgs<int> args)
+		{
+			switch (args.Value)
+			{
+				case 0: // no
+					Settings.CustomMapSize = false;
+					break;
+				case 1: // yes
+					Settings.CustomMapSize = true;
+					break;
+			}
+			CloseMenus();
+			PatchesMenu(7);
 		}
 
 		private void Resize(object sender, ResizeEventArgs args)

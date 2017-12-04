@@ -9,9 +9,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using CivOne.Enums;
+using CivOne.Screens;
+using CivOne.Tasks;
 using CivOne.Tiles;
 
 namespace CivOne
@@ -585,6 +588,27 @@ namespace CivOne
 			if (Ready || _tiles != null)
 			{
 				Log("ERROR: Map is already load{0}/generat{0}", (Ready ? "ed" : "ing"));
+				return;
+			}
+			
+			if (Settings.Instance.CustomMapSize)
+			{
+				CustomMapSize customMapSize = new CustomMapSize();
+				customMapSize.Closed += (s, a) =>
+				{
+					Size mapSize = (s as CustomMapSize).MapSize;
+					_width = mapSize.Width;
+					_height = mapSize.Height;
+
+					_landMass = landMass;
+					_temperature = temperature;
+					_climate = climate;
+					_age = age;
+					
+					Task.Run(() => GenerateThread());
+				};
+
+				GameTask.Insert(Show.Screen(customMapSize));
 				return;
 			}
 			
