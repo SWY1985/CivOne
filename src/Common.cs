@@ -42,13 +42,7 @@ namespace CivOne
 		internal static IEnumerable<string> AllCityNames => Civilizations.Select(x => x.CityNames).SelectMany(x => x);
 
 		private static List<IScreen> _screens = new List<IScreen>();
-		internal static IScreen[] Screens
-		{
-			get
-			{
-				return _screens.ToArray();
-			}
-		}
+		internal static IScreen[] Screens => _screens.ToArray();
 
 		internal static bool HasAttribute<T>(object checkObject) where T : Attribute
 		{
@@ -112,10 +106,7 @@ namespace CivOne
 			_screens.Remove(screen);
 		}
 		
-		internal static bool HasScreenType<T>() where T : IScreen
-		{
-			return _screens.Any(x => x is T);
-		}
+		internal static bool HasScreenType<T>() where T : IScreen => _screens.Any(x => x is T);
 		
 		internal static string CaptureFilename
 		{
@@ -215,15 +206,9 @@ namespace CivOne
 			return output;
 		}
 		
-		public static bool InCityRange(int x1, int y1, int x2, int y2)
-		{
-			return new Rectangle(x2 - 2, y2 - 2, 5, 5).IntersectsWith(new Rectangle(x1, y1, 1, 1));
-		}
+		public static bool InCityRange(int x1, int y1, int x2, int y2) => new Rectangle(x2 - 2, y2 - 2, 5, 5).IntersectsWith(new Rectangle(x1, y1, 1, 1));
 		
-		public static int DistanceToTile(int x1, int y1, int x2, int y2)
-		{
-			return Math.Max(Math.Abs(x1 - x2), Math.Abs(y1 - y2));
-		}
+		public static int DistanceToTile(int x1, int y1, int x2, int y2) => Math.Max(Math.Abs(x1 - x2), Math.Abs(y1 - y2));
 		
 		public static byte BinaryReadByte(BinaryReader reader, int position)
 		{
