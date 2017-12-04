@@ -51,6 +51,7 @@ namespace CivOne.Screens
 			}
 		}
 		public Palette OriginalColours => _originalColours;
+		public void SetOriginalColours() => _originalColours.MergePalette(_palette);
 		
 		protected void DrawPanel(int x, int y, int width, int height, bool border = true)
 		{
