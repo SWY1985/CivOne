@@ -20,7 +20,7 @@ namespace CivOne.Screens
 	[Expand]
 	internal class Credits : BaseScreen
 	{
-		private const int NOISE_COUNT = 20;
+		private const int NOISE_COUNT = 40;
 		
 		private readonly int[] SHOW_INTRO_LINE = new[] { 312, 279, 254, 221, 196, 171, 146, 121, 96, 71, 46, 21, -4, -37, -62, -95, -120, -145, -170, -195, -220, -245, -270, -295 };
 		private readonly int[] HIDE_INTRO_LINE = new[] { 287, 229, -29, -87, -315 };
@@ -81,7 +81,9 @@ namespace CivOne.Screens
 				return true;
 			}
 
-			if (_done && (_overlay == null || !_overlay.Update(gameTick))) return false;	
+			if (_done && (_overlay == null || !_overlay.Update(gameTick))) return false;
+
+			if ((gameTick % 3) == 0) return false;
 			
 			// Updates
 			if (_introLeft > -320)
