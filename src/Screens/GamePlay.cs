@@ -412,7 +412,7 @@ namespace CivOne.Screens
 			
 			if (!Common.AllowSaveGame)
 			{
-				GameTask.Insert(Message.General("The selected map size is not", "compatible with the save game format.", "Save game functionality will be disabled!"));
+				GameTask.Insert(Message.General("The save game format", "is not compatible with the", "selected map size.", "The game can not be saved!"));
 				Game.Settings.AutoSave = false;
 			}
 		}
