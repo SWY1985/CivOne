@@ -18,6 +18,7 @@ using CivOne.UserInterface;
 
 namespace CivOne.Screens
 {
+	[Modal]
 	internal class LoadGame : BaseScreen
 	{
 		private class SaveGameFile
