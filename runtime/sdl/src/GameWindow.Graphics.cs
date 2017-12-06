@@ -49,9 +49,16 @@ namespace CivOne
 				switch (Settings.AspectRatio)
 				{
 					case AspectRatio.Scaled:
+						{
+							PointF scaleF = GetScaleF();
+							CursorTexture?.Draw((int)(_mouseX * scaleF.X), (int)(_mouseY * scaleF.Y), (int)(CursorTexture.Width * scaleF.X), (int)(CursorTexture.Height * scaleF.Y));
+						}
+						break;
 					case AspectRatio.ScaledFixed:
-						PointF scaleF = GetScaleF();
-						CursorTexture?.Draw((int)((_mouseX - x1) * scaleF.X), (int)((_mouseY - y1) * scaleF.Y), (int)(CursorTexture.Width * scaleF.X), (int)(CursorTexture.Height * scaleF.Y));
+						{
+							PointF scaleF = GetScaleF();
+							CursorTexture?.Draw((int)((_mouseX /*+ x1*/) * scaleF.X), (int)((_mouseY/* + y1*/) * scaleF.Y), (int)(CursorTexture.Width * scaleF.X), (int)(CursorTexture.Height * scaleF.Y));
+						}
 						break;
 					default:
 						CursorTexture?.Draw(x1 + (_mouseX * ScaleX), y1 + (_mouseY * ScaleY), CursorTexture.Width * ScaleX, CursorTexture.Height * ScaleY);
