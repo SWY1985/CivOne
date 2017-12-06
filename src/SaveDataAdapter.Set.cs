@@ -172,7 +172,7 @@ namespace CivOne
 			SetArray(nameof(SaveData.Units), units);
 		}
 
-		private void SetWonders(ushort[] values) => SetArray(nameof(SaveData.Wonders), values);
+		private void SetWonders(ushort[] values) => SetArray<ushort>(nameof(SaveData.Wonders), values);
 
 		private void SetTileVisibility(bool[][,] values)
 		{
