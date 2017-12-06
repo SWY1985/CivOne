@@ -33,7 +33,7 @@ namespace CivOne.IO
 			public fixed byte ResourceTiles[6];				// 16:21
 			public byte NameId;								// 22
 			public fixed byte TradingCities[3];				// 23:25
-			private fixed byte _padding[2];					// 27
+			public fixed byte FortifiedUnits[2];			// 26:27
 		}
 
 		[StructLayout(LayoutKind.Sequential)]

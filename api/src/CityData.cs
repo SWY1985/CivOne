@@ -21,5 +21,6 @@ namespace CivOne
 		public byte Owner;
 		public ushort Food, Shields;
 		public byte[] ResourceTiles;
+		public byte[] FortifiedUnits;
 	}
 }

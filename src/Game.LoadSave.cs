@@ -187,6 +187,15 @@ namespace CivOne
 				
 				_cities.Add(city);
 
+				foreach (byte fortifiedUnit in cityData.FortifiedUnits)
+				{
+					IUnit unit = CreateUnit((UnitType)fortifiedUnit, city.X, city.Y);
+					unit.Status = (byte)(1 << 3);
+					unit.Owner = city.Owner;
+					unit.SetHome(city);
+					_units.Add(unit);
+				}
+
 				cityList.Add(cityData.Id, city);
 			}
 
