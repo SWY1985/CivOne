@@ -79,6 +79,8 @@ namespace CivOne
 
 		private static CityData GetCityData(this City city, byte id)
 		{
+			IUnit[] units = city.Tile.Units.Where(x => x.Home == city && x.Fortify).Take(2).ToArray();
+			
 			return new CityData {
 				Id = city.GetId(),
 				NameId = (byte)city.NameId,
@@ -91,7 +93,8 @@ namespace CivOne
 				Owner = city.Owner,
 				Food = (ushort)city.Food,
 				Shields = (ushort)city.Shields,
-				ResourceTiles = city.GetResourceTiles()
+				ResourceTiles = city.GetResourceTiles(),
+				FortifiedUnits = units.Select(x => (byte)x.Type).ToArray()
 			};
 		}
 
@@ -129,14 +132,31 @@ namespace CivOne
 			};
 		}
 
+		private static IEnumerable<IUnit> FilterUnits(this List<IUnit> unitList)
+		{
+			foreach(City city in Game.Instance.GetCities())
+			{
+				IUnit[] units = unitList.Where(u => u.X == city.X && u.Y == city.Y && u.Home == city).Take(2).ToArray();
+				foreach (IUnit unit in units)
+				{
+					unitList.Remove(unit);
+				}
+			}
+			return unitList;
+		}
+
 		public static IEnumerable<UnitData> GetUnitData(this IEnumerable<IUnit> unitList)
 		{
+			// Remove two fortified units in home city (this data is stored in city data)
+			IEnumerable<IUnit> filteredUnits = unitList.ToList().FilterUnits();
+
 			byte index = 0;
 			List<UnitData> unitDataList = new List<UnitData>();
-			foreach (IUnit unit in unitList)
+			foreach (IUnit unit in filteredUnits)
 			{
 				unitDataList.Add(unit.GetUnitData(index++));
 			}
+
 			UnitData[] units = unitDataList.ToArray();
 			for (int i = 0; i < units.Length; i++)
 			{

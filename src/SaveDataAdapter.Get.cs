@@ -130,7 +130,8 @@ namespace CivOne
 					Owner = city.Owner,
 					Food = city.Food,
 					Shields = city.Shields,
-					ResourceTiles = GetBytes<SaveData.City>(city, nameof(SaveData.City.ResourceTiles), 6)
+					ResourceTiles = GetBytes<SaveData.City>(city, nameof(SaveData.City.ResourceTiles), 6),
+					FortifiedUnits = GetBytes<SaveData.City>(city, nameof(SaveData.City.FortifiedUnits), 2).Where(x => x != 0xFF).ToArray()
 				});
 			}
 			return output.ToArray();
