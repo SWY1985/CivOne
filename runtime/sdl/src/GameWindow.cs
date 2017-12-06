@@ -91,8 +91,8 @@ namespace CivOne
 				case AspectRatio.Scaled:
 				case AspectRatio.ScaledFixed:
 					PointF scaleF = GetScaleF();
-					x = offsetX + (int)((float)args.X / scaleF.X);
-					y = offsetY + (int)((float)args.Y / scaleF.Y);
+					x = (int)((float)args.X / scaleF.X);
+					y = (int)((float)args.Y / scaleF.Y);
 					break;
 				default:
 					x /= ScaleX;
@@ -129,11 +129,37 @@ namespace CivOne
 			_hasUpdate = true;
 			_mouseX = args.X;
 			_mouseY = args.Y;
+			if (Settings.AspectRatio == AspectRatio.ScaledFixed)
+			{
+				PointF scaleF = GetScaleF();
+				GetBorders(out int offsetX, out int offsetY, out _, out _);
+				args = new ScreenEventArgs(args.X - (int)((float)offsetX / scaleF.X), args.Y - (int)((float)offsetY / scaleF.Y), args.Buttons);
+			}
 			_runtime.InvokeMouseMove(args);
 		}
 
-		private void MouseDown(object sender, ScreenEventArgs args) => _runtime.InvokeMouseDown(Transform(args));
-		private void MouseUp(object sender, ScreenEventArgs args) => _runtime.InvokeMouseUp(Transform(args));
+		private void MouseDown(object sender, ScreenEventArgs args)
+		{
+			args = Transform(args);
+			if (Settings.AspectRatio == AspectRatio.ScaledFixed)
+			{
+				PointF scaleF = GetScaleF();
+				GetBorders(out int offsetX, out int offsetY, out _, out _);
+				args = new ScreenEventArgs(args.X - (int)((float)offsetX / scaleF.X), args.Y - (int)((float)offsetY / scaleF.Y), args.Buttons);
+			}
+			_runtime.InvokeMouseDown(args);
+		}
+		private void MouseUp(object sender, ScreenEventArgs args)
+		{
+			args = Transform(args);
+			if (Settings.AspectRatio == AspectRatio.ScaledFixed)
+			{
+				PointF scaleF = GetScaleF();
+				GetBorders(out int offsetX, out int offsetY, out _, out _);
+				args = new ScreenEventArgs(args.X - (int)((float)offsetX / scaleF.X), args.Y - (int)((float)offsetY / scaleF.Y), args.Buttons);
+			}
+			_runtime.InvokeMouseUp(args);
+		}
 
 		public GameWindow(Runtime runtime, bool softwareRender) : base("CivOne", InitialWidth, InitialHeight, Settings.FullScreen, softwareRender)
 		{
