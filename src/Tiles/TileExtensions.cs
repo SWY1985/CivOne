@@ -236,11 +236,13 @@ namespace CivOne.Tiles
 		{
 			if (tile == null || tile.Units.Length == 0 || (tile.Units.Length == 1 && tile.Units[0] == Game.MovingUnit)) return null;
 			
-			IUnit[] units = tile.Units.Where(x => x != Game.MovingUnit).ToArray();
+			IUnit[] units = tile.Units.OrderBy(x => (tile.IsOcean && x.Class == UnitClass.Water) ? 1 : 0).Where(x => x != Game.MovingUnit).ToArray();
 			if (units.Length == 0) return null;
 
 			bool stack = (units.Length > 1);
 			IUnit unit = units.First();
+			if (tile.IsOcean) unit = units.FirstOrDefault(x => !(x.Class == UnitClass.Land && x.Sentry));
+			if (unit == null) return null;
 			
 			IBitmap output = new Picture(16, 16, Palette);
 			Bytemap unitPicture = unit.ToBitmap();
