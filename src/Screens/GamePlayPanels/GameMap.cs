@@ -61,7 +61,6 @@ namespace CivOne.Screens.GamePlayPanels
 		}
 
 		private IEnumerable<ITile> TileList
-				// _lastUnit = unit;
 		{
 			get
 			{
@@ -169,7 +168,8 @@ namespace CivOne.Screens.GamePlayPanels
 					dx *= 16; dy *= 16;
 
 					MoveUnit movement = movingUnit.Movement;
-					this.AddLayer(Map[movingUnit.X - 1, movingUnit.Y - 1, 3, 3].ToBitmap(player: renderPlayer), dx - 16, dy - 16, dispose: true);
+					this.FillRectangle(dx - 16, dy - 16, 48, 48, 5)
+						.AddLayer(Map[movingUnit.X - 1, movingUnit.Y - 1, 3, 3].ToBitmap(player: renderPlayer), dx - 16, dy - 16, dispose: true);
 					Bytemap unitPicture = movingUnit.ToBitmap();
 					this.AddLayer(unitPicture, dx + movement.X, dy + movement.Y);
 					if (movingUnit is IBoardable && tile.Units.Any(u => u.Class == UnitClass.Land && (tile.City == null || (tile.City != null && u.Sentry))))
