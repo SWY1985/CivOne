@@ -147,13 +147,14 @@ namespace CivOne.Screens
 				_noiseMap[x, y] = (byte)Common.Random.Next(1, NOISE_COUNT);
 			}
 
-			_enemies = Game.Players.Where(x => x != 0 && x != Game.Human).OrderBy(x => x.DestroyTurn).Select(x =>
-			new Enemy()
-			{
-				DestroyYear = Common.YearString((ushort)x.DestroyTurn),
-				Leader = x.Civilization.Leader,
-				Civilization = x.Civilization
-			}).ToArray();
+			_enemies = Game.GetReplayData<ReplayData.CivilizationDestroyed>().Where(x => x.DestroyedById == Game.HumanPlayer.Civilization.Id).Select(x =>
+				new Enemy
+				{
+					DestroyYear = Common.YearString((ushort)x.Turn),
+					Leader = Common.Civilizations.First(c => c.Id == x.DestroyedId).Leader,
+					Civilization = Common.Civilizations.First(c => c.Id == x.DestroyedId)
+				}
+			).ToArray();
 
 			SetPalette();
 		}

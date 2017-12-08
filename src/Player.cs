@@ -113,7 +113,7 @@ namespace CivOne
 		private short _gold;
 		private IAdvance _currentResearch = null;
 
-		private int _destroyTurn = -1;
+		public event EventHandler Destroyed;
 
 		internal int CityNamesSkipped = 0;
 
@@ -138,10 +138,7 @@ namespace CivOne
 		private IGovernment _government;
 		public IGovernment Government
 		{
-			get
-			{
-				return _government;
-			}
+			get => _government;
 			internal set
 			{
 				if (value == null) return;
@@ -152,10 +149,7 @@ namespace CivOne
 		private int _luxuriesRate = 0, _taxesRate = 5, _scienceRate = 5;
 		public int LuxuriesRate
 		{
-			get
-			{
-				return _luxuriesRate;
-			}
+			get => _luxuriesRate;
 			set
 			{
 				int diff = _luxuriesRate - value;
@@ -165,10 +159,7 @@ namespace CivOne
 		}
 		public int TaxesRate
 		{
-			get
-			{
-				return _taxesRate;
-			}
+			get => _taxesRate;
 			set
 			{
 				int diff = _taxesRate - value;
@@ -233,10 +224,7 @@ namespace CivOne
 			Game.Instance.SetAdvanceOrigin(advance, this);
 		}
 
-		public void DeleteAdvance(IAdvance advance)
-		{
-			_advances.RemoveAll(x => x == advance.Id);
-		}
+		public void DeleteAdvance(IAdvance advance) => _advances.RemoveAll(x => x == advance.Id);
 		
 		public string LatestAdvance
 		{
@@ -256,14 +244,8 @@ namespace CivOne
 
 		public IAdvance CurrentResearch
 		{
-			get
-			{
-				return _currentResearch;
-			}
-			set
-			{
-				_currentResearch = value;
-			}
+			get => _currentResearch;
+			set => _currentResearch = value;
 		}
 
 		public IEnumerable<IAdvance> AvailableResearch
@@ -359,42 +341,24 @@ namespace CivOne
 			return true;
 		}
 
-		public int DestroyTurn => _destroyTurn;
-
-		public void CheckDestroyed()
+		private bool _destroyed = false;
+		public bool IsDestroyed()
 		{
-			if (DestroyTurn != -1 || !IsDestroyed) return;
-			if (IsHuman)
+			if (this == 0) return false;
+			if (_destroyed) return true;
+			if (Cities.Length == 0 && !Game.GetUnits().Any(x => this == x.Owner && (x is Settlers && x.Home == null)))
 			{
-				// TODO: Move Game Over code here
-				return;
-			}
-
-			ICivilization destroyCivilization = Game.CurrentPlayer.Civilization;
-			if (destroyCivilization == Civilization) destroyCivilization = Game.GetPlayer(0).Civilization;
-
-			GameTask.Insert(Message.Advisor(Advisor.Defense, false, Civilization.Name, "civilization", "destroyed", $"by {destroyCivilization.NamePlural}!"));
-		}
-
-		public bool IsDestroyed
-		{
-			get
-			{
-				if (this == 0) return false;
-				if (_destroyTurn != -1) return true;
-				if (Cities.Length == 0 && !Game.GetUnits().Any(x => this == x.Owner && (x is Settlers && x.Home == null)))
+				while (true)
 				{
-					while (true)
-					{
-						IUnit unit = Game.GetUnits().FirstOrDefault(x => this == x.Owner);
-						if (unit == null) break;
-						Game.DisbandUnit(unit);
-					}
-					_destroyTurn = Game.GameTurn;
-					return true;
+					IUnit unit = Game.GetUnits().FirstOrDefault(x => this == x.Owner);
+					if (unit == null) break;
+					Game.DisbandUnit(unit);
 				}
-				return false;
+				_destroyed = true;
+				Destroyed?.Invoke(this, EventArgs.Empty);
+				return true;
 			}
+			return false;
 		}
 
 		public void Explore(int x, int y, int range = 1, bool sea = false)

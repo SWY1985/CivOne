@@ -269,7 +269,7 @@ namespace CivOne.Units
 							capturedCity.Size--;
 						}
 
-						previousOwner.CheckDestroyed();
+						previousOwner.IsDestroyed();
 					};
 
 					if (Human == capturedCity.Owner || Human == Owner)

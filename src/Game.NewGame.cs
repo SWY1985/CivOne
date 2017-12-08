@@ -189,6 +189,7 @@ namespace CivOne
 				if (i == tribe.PreferredPlayerNumber)
 				{
 					_players[i] = new Player(tribe, leaderName, tribeName, tribeNamePlural);
+					_players[i].Destroyed += PlayerDestroyed;
 					HumanPlayer = _players[i];
 					if (difficulty == 0)
 					{
@@ -204,6 +205,7 @@ namespace CivOne
 				int r = Common.Random.Next(civs.Length);
 				
 				_players[i] = new Player(civs[r]);
+				_players[i].Destroyed += PlayerDestroyed;
 				
 				Log("- Player {0} is {1} of the {2}", i, _players[i].LeaderName, _players[i].TribeNamePlural);
 			}

@@ -18,9 +18,8 @@ namespace CivOne.Screens.Reports
 		public IntelligenceReport() : base("INTELLIGENCE REPORT", 1)
 		{
 			int yy = 30;
-			foreach (Player player in Game.Players.Where(p => p != 0))
+			foreach (Player player in Game.Players.Where(p => p != 0 && !p.IsDestroyed()))
 			{
-				if (player.DestroyTurn >= 0) continue;
 				this.FillRectangle(4, yy, 314, 1, 9);
 
 				byte id = Game.PlayerNumber(player);
