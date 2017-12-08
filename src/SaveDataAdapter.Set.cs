@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using CivOne.IO;
@@ -199,5 +200,31 @@ namespace CivOne
 		private void SetCityX(byte[] values) => SetArray(nameof(SaveData.CityX), values);
 		
 		private void SetCityY(byte[] values) => SetArray(nameof(SaveData.CityY), values);
+
+		private void SetReplayData(ReplayData[] values)
+		{
+			List<byte> output = new List<byte>();
+			foreach (ReplayData value in values)
+			{
+				byte entryId = 0;
+				byte[] data;
+				switch (value)
+				{
+					case ReplayData.CivilizationDestroyed civDestroyed:
+						entryId = 0xD;
+						data = new byte[] { (byte)civDestroyed.DestroyedId, (byte)civDestroyed.DestroyedById };
+						break;
+					default:
+						continue;
+				}
+
+				output.Add((byte)((entryId << 4) + (value.Turn & 0x0F00) >> 8));
+				output.Add((byte)(value.Turn & 0xFF));
+				output.AddRange(data);
+			}
+
+			_saveData.ReplayLength = (ushort)output.Count;
+			SetArray(nameof(SaveData.ReplayData), output.ToArray());
+		}
 	}
 }

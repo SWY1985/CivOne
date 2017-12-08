@@ -279,6 +279,12 @@ namespace CivOne
 			set => _saveData.OpponentCount = value;
 		}
 
+		public ReplayData[] ReplayData
+		{
+			get => GetReplayData().ToArray();
+			set => SetReplayData(value);
+		}
+
 		public bool ValidData { get; private set; }
 
 		public byte[] GetBytes()

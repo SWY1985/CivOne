@@ -190,5 +190,38 @@ namespace CivOne
 			}
 			return output;
 		}
+
+		private IEnumerable<ReplayData> GetReplayData()
+		{
+			ushort replayLength = _saveData.ReplayLength;
+			byte[] bytes = GetArray(nameof(SaveData.ReplayData), 4096);
+
+			List<ReplayData> output = new List<ReplayData>();
+			for (int i = 0; i < replayLength; i++)
+			{
+				byte entryCode = (byte)((bytes[i] & 0xF0) >> 4);
+				int turn = bytes[i + 1] + ((bytes[i] & 0x0F) << 8);
+
+				switch (entryCode)
+				{
+					case 0x1: i += 5; continue; // TODO: City built or destroyed
+					case 0x2: i += 2; continue; // TODO: Declaration of war
+					case 0x3: i += 2; continue; // TODO: Declaration of peace
+					case 0x5: i += 3; continue; // TODO: Advance discovery
+					case 0x6: i += 3; continue; // TODO: Unit first built
+					case 0x8: i += 3; continue; // TODO: Government change
+					case 0x9: i += 5; continue; // TODO: City captured
+					case 0xA: i += 3; continue; // TODO: Wonder built
+					case 0xB: i += 4; continue; // TODO: Replay summary
+					case 0xC: i += 5; continue; // TODO: Civilization ranking
+					case 0xD:
+						yield return new ReplayData.CivilizationDestroyed(turn, bytes[i + 2], bytes[i + 3]);
+						continue;
+					default:
+						// Data not recognized, stop trying
+						yield break;
+				}
+			}
+		}
 	}
 }
