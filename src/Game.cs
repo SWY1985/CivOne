@@ -30,6 +30,7 @@ namespace CivOne
 		private readonly List<City> _cities;
 		private readonly List<IUnit> _units;
 		private readonly Dictionary<byte, byte> _advanceOrigin = new Dictionary<byte, byte>();
+		private readonly List<ReplayData> _replayData = new List<ReplayData>();
 		
 		internal readonly string[] CityNames = Common.AllCityNames.ToArray();
 		
@@ -82,6 +83,28 @@ namespace CivOne
 		internal Player HumanPlayer { get; set; }
 		
 		internal Player CurrentPlayer => _players[_currentPlayer];
+
+		internal ReplayData[] GetReplayData() => _replayData.ToArray();
+		internal T[] GetReplayData<T>() where T : ReplayData => _replayData.Where(x => x is T).Select(x => (x as T)).ToArray();
+
+		private void PlayerDestroyed(object sender, EventArgs args)
+		{
+			Player player = (sender as Player);
+
+			ICivilization destroyed = player.Civilization;
+			ICivilization destroyedBy = Game.CurrentPlayer.Civilization;
+			if (destroyedBy == destroyed) destroyedBy = Game.GetPlayer(0).Civilization;
+
+			_replayData.Add(new ReplayData.CivilizationDestroyed(_gameTurn, destroyed.Id, destroyedBy.Id));
+
+			if (player.IsHuman)
+			{
+				// TODO: Move Game Over code here
+				return;
+			}
+
+			GameTask.Insert(Message.Advisor(Advisor.Defense, false, destroyed.Name, "civilization", "destroyed", $"by {destroyedBy.NamePlural}!"));
+		}
 		
 		internal byte PlayerNumber(Player player)
 		{
@@ -108,7 +131,7 @@ namespace CivOne
 		{
 			foreach (Player player in _players.Where(x => !(x.Civilization is Barbarian)))
 			{
-				player.CheckDestroyed();
+				player.IsDestroyed();
 			}
 
 			if (++_currentPlayer >= _players.Length)
@@ -121,7 +144,7 @@ namespace CivOne
 				}
 			}
 
-			if (!_players.Any(x => Game.PlayerNumber(x) != 0 && x != Human && !x.IsDestroyed))
+			if (!_players.Any(x => Game.PlayerNumber(x) != 0 && x != Human && !x.IsDestroyed()))
 			{
 				GameTask conquest;
 				GameTask.Enqueue(Message.Newspaper(null, "Your civilization", "has conquered", "the entire planet!"));
@@ -365,7 +388,7 @@ namespace CivOne
 			unit.Y = 255;
 			_units.Remove(unit);
 
-			GetPlayer(unit.Owner).CheckDestroyed();
+			GetPlayer(unit.Owner).IsDestroyed();
 
 			if (_units.Contains(activeUnit))
 			{

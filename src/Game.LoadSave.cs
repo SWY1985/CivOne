@@ -124,6 +124,7 @@ namespace CivOne
 				ICivilization[] civs = Common.Civilizations.Where(c => c.PreferredPlayerNumber == i).ToArray();
 				ICivilization civ = civs[gameData.CivilizationIdentity[i] % civs.Length];
 				Player player = (_players[i] = new Player(civ, gameData.LeaderNames[i], gameData.CitizenNames[i], gameData.CivilizationNames[i]));
+				player.Destroyed += PlayerDestroyed;
 				player.Gold = gameData.PlayerGold[i];
 				player.Science = gameData.ResearchProgress[i];
 				player.Government = Reflect.GetGovernments().FirstOrDefault(x => x.Id == gameData.Government[i]);
