@@ -79,7 +79,7 @@ namespace CivOne
 
 		private static CityData GetCityData(this City city, byte id)
 		{
-			IUnit[] units = city.Tile.Units.Where(x => x.Home == city && x.Fortify).Take(2).ToArray();
+			IUnit[] units = city.Tile?.Units.Where(x => x.Home == city && x.Fortify).Take(2).ToArray();
 			
 			return new CityData {
 				Id = city.GetId(),
@@ -94,7 +94,7 @@ namespace CivOne
 				Food = (ushort)city.Food,
 				Shields = (ushort)city.Shields,
 				ResourceTiles = city.GetResourceTiles(),
-				FortifiedUnits = units.Select(x => (byte)x.Type).ToArray()
+				FortifiedUnits = units?.Select(x => (byte)x.Type).ToArray()
 			};
 		}
 
