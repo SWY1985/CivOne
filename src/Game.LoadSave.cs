@@ -105,6 +105,7 @@ namespace CivOne
 				};
 				gameData.NextAnthologyTurn = _anthologyTurn;
 				gameData.OpponentCount = (ushort)(_players.Length - 2);
+				gameData.ReplayData = _replayData.ToArray();
 				File.WriteAllBytes(sveFile, gameData.GetBytes());
 			}
 		}
@@ -220,6 +221,8 @@ namespace CivOne
 					_units.Add(unit);
 				}
 			}
+
+			_replayData.AddRange(gameData.ReplayData);
 
 			// Game Settings
 			bool[] options = gameData.GameOptions;
