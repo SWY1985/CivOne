@@ -53,15 +53,6 @@
 				"/t:Rebuild"
 			],
 			"problemMatcher": "$msCompile"
-		},
-		{
-			"taskName": "build-opentk",
-			"command": "dotnet",
-			"args": [
-				"build",
-				"${workspaceRoot}//runtime/opentk/CivOne.OpenTK.csproj"
-			],
-			"problemMatcher": "$msCompile"
 		}
 	]
 }
