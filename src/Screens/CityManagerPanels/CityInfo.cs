@@ -20,7 +20,8 @@ namespace CivOne.Screens.CityManagerPanels
 	internal class CityInfo : BaseScreen
 	{
 		private readonly City _city;
-		
+		private readonly IUnit[] _units;
+
 		private CityInfoChoice _choice = CityInfoChoice.Info;
 		private bool _update = true;
 
@@ -29,17 +30,16 @@ namespace CivOne.Screens.CityManagerPanels
 			get
 			{
 				Picture output = new Picture(144, 83);
-				IUnit[] units = _city.Tile.Units;
-				for (int i = 0; i < units.Length; i++)
+				for (int i = 0; i < _units.Length; i++)
 				{
 					int xx = 4 + ((i % 6) * 18);
 					int yy = 0 + (((i - (i % 6)) / 6) * 16);
 
-					output.AddLayer(units[i].ToBitmap(), xx, yy);
+					output.AddLayer(_units[i].ToBitmap(), xx, yy);
 					string homeCity = "NON.";
-					if (units[i].Home != null)
+					if (_units[i].Home != null)
 					{
-						homeCity = units[i].Home.Name;
+						homeCity = _units[i].Home.Name;
 						if (homeCity.Length >= 3)
 							homeCity = $"{homeCity.Substring(0, 3)}.";
 					}
@@ -166,15 +166,14 @@ namespace CivOne.Screens.CityManagerPanels
 
 		private bool InfoClick(ScreenEventArgs args)
 		{
-			IUnit[] units = _city.Tile.Units;
-			for (int i = 0; i < units.Length; i++)
+			for (int i = 0; i < _units.Length; i++)
 			{
 				int xx = 4 + ((i % 6) * 18);
 				int yy = 0 + (((i - (i % 6)) / 6) * 16);
 
 				if (new Rectangle(xx, yy, 16, 16).Contains(args.Location))
 				{
-					units[i].Busy = false;
+					_units[i].Busy = false;
 					_update = true;
 					break;
 				}
@@ -207,6 +206,7 @@ namespace CivOne.Screens.CityManagerPanels
 		public CityInfo(City city) : base(133, 92)
 		{
 			_city = city;
+			_units = Game.GetUnits().Where(u => u.X == city.X && u.Y == city.Y).ToArray();
 		}
 	}
 }
