@@ -37,6 +37,14 @@ namespace CivOne.Units
 			GameTask.Insert(Movement);
 			return true;
 		}
+
+		internal void KeepMoving(IUnit unit)
+		{
+			Movement = new MoveUnit(unit.X - X, unit.Y - Y);
+			Movement.Done += MoveEnd;
+			GameTask.Enqueue(Movement);
+		}
+		
 		public Diplomat() : base(3, 0, 0, 2)
 		{
 			Type = UnitType.Diplomat;
