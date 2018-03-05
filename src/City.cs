@@ -443,7 +443,7 @@ namespace CivOne
 			UpdateSpecialists();
 		}
 
-		private Player Player => Game.Instance.GetPlayer(Owner);
+		public Player Player => Game.Instance.GetPlayer(Owner);
 
 		public IEnumerable<IProduction> AvailableProduction
 		{
