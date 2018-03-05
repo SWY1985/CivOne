@@ -117,6 +117,8 @@ namespace CivOne.Tasks
 
 		public static Show DiplomatBribe(BaseUnitLand unitToBribe, Diplomat diplomat) => new Show(new DiplomatBribe(unitToBribe, diplomat));
 
+		public static Show DiplomatCity(City enemyCity, Diplomat diplomat) => new Show(new DiplomatCity(enemyCity, diplomat));
+
 		public static Show Screen<T>() where T : IScreen, new() => new Show(new T());
 
 		public static Show Screen(IScreen screen) => new Show(screen);

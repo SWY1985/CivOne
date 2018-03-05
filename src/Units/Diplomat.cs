@@ -19,6 +19,13 @@ namespace CivOne.Units
 		protected override bool Confront(int relX, int relY)
 		{
 			ITile moveTarget = Map[X, Y][relX, relY];
+
+			if (moveTarget.City != null)
+			{
+					GameTask.Enqueue(Show.DiplomatCity(moveTarget.City, this));
+					return true;
+			}
+
 			IUnit[] units = moveTarget.Units;
 
 			if (units.Length == 1)
