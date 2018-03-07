@@ -183,7 +183,7 @@ namespace CivOne
 				// Set city wonders
 				foreach (IWonder wonder in Common.Wonders)
 				{
-					if (gameData.Wonders[wonder.Id - 1] != cityData.Id) continue;
+					if (gameData.Wonders[wonder.Id] != cityData.Id) continue;
 					city.AddWonder(wonder);
 				}
 				
