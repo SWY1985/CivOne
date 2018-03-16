@@ -39,6 +39,8 @@ namespace CivOne.Screens.Dialogs
 			Game.DisbandUnit(_unitToBribe);
 			_diplomat.KeepMoving(newUnit);
 
+			_diplomat.Player.Gold -= (short)_bribeCost;
+
 			Cancel();
 		}
 

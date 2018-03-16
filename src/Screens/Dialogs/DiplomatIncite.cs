@@ -40,6 +40,8 @@ namespace CivOne.Screens.Dialogs
 			Game.DisbandUnit(_diplomat);
 			_cityToIncite.Owner = _diplomat.Owner;
 
+			_diplomat.Player.Gold -= (short)_inciteCost;
+
 			previousOwner.IsDestroyed();
 
 			if (Human == _cityToIncite.Owner || Human == _diplomat.Owner)
