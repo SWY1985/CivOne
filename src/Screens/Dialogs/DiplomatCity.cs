@@ -59,10 +59,10 @@ namespace CivOne.Screens.Dialogs
 		{
 			int choices = 6;
 
-			Menu menu = new Menu(Palette, Selection(3, 12, 130, ((2 * Resources.GetFontHeight(FONT_ID)) + (choices * Resources.GetFontHeight(FONT_ID)) + 9)))
+			Menu menu = new Menu(Palette, Selection(3, 5 + (2 * Resources.GetFontHeight(FONT_ID)), 130, ((2 * Resources.GetFontHeight(FONT_ID)) + (choices * Resources.GetFontHeight(FONT_ID)) + 9)))
 			{
 				X = 103,
-				Y = 110,
+				Y = 100,
 				MenuWidth = 130,
 				ActiveColour = 11,
 				TextColour = 5,
