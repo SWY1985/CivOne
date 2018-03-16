@@ -636,7 +636,7 @@ namespace CivOne
 			BuildingSold = true;
 		}
 
-		private void RemoveBuilding(IBuilding building) => _buildings.RemoveAll(b => b.Id == building.Id);
+		public void RemoveBuilding(IBuilding building) => _buildings.RemoveAll(b => b.Id == building.Id);
 		public void RemoveBuilding<T>() where T : IBuilding => _buildings.RemoveAll(b => b is T);
 
 		public void AddWonder(IWonder wonder)

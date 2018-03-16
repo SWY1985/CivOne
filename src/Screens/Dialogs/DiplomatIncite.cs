@@ -40,6 +40,12 @@ namespace CivOne.Screens.Dialogs
 			Game.DisbandUnit(_diplomat);
 			_cityToIncite.Owner = _diplomat.Owner;
 
+			// remove half the buildings at random
+			foreach (IBuilding building in _cityToIncite.Buildings.Where(b => Common.Random.Next(0, 1) == 1).ToList())
+			{
+				_cityToIncite.RemoveBuilding(building);
+			}
+
 			_diplomat.Player.Gold -= (short)_inciteCost;
 
 			previousOwner.IsDestroyed();
@@ -52,30 +58,13 @@ namespace CivOne.Screens.Dialogs
 			Cancel();
 		}
 
-		private static int InciteCost(City cityToIncite)
-		{
-			City capital = cityToIncite.Player.Cities.Where(c => c.HasBuilding(new Palace())).FirstOrDefault();
-
-			int distance = capital == null ? 16 : cityToIncite.Tile.DistanceTo(capital);
-			
-			int cost = (cityToIncite.Player.Gold + 1000) / (distance + 3);
-
-			// todo: if city is in disorder need to halve the cost
-			return cost;
-		}
-
-		private static bool CanIncite(City cityToIncice, short gold)
-		{
-			return gold >= InciteCost(cityToIncice);
-		}
-
 		protected override void FirstUpdate()
 		{
 			int choices = _canIncite ? 2 : 0;
 
 			if (_canIncite)
 			{
-				Menu menu = new Menu(Palette, Selection(3, 12, 130, ((2 * Resources.GetFontHeight(FONT_ID)) + (choices * Resources.GetFontHeight(FONT_ID)) + 9)))
+				Menu menu = new Menu(Palette, Selection(45, 5 + (3 * Resources.GetFontHeight(FONT_ID)), 130, ((2 * Resources.GetFontHeight(FONT_ID)) + (choices * Resources.GetFontHeight(FONT_ID)) + 9)))
 				{
 					X = 143,
 					Y = 110,
@@ -86,8 +75,12 @@ namespace CivOne.Screens.Dialogs
 				};
 
 				menu.Items.Add("Forget It.").OnSelect(DontIncite);
-				menu.Items.Add("Incite revolt").OnSelect(Incite);
-				
+
+				if (_canIncite)
+				{
+					menu.Items.Add("Incite revolt").OnSelect(Incite);
+				}
+
 				AddMenu(menu);
 			}
 		}
@@ -108,8 +101,8 @@ namespace CivOne.Screens.Dialogs
 
 			DialogBox.AddLayer(spyPortrait, 2, 2);
 
-			_inciteCost = InciteCost(cityToIncite);
-			_canIncite = CanIncite(cityToIncite, diplomat.Player.Gold);
+			_inciteCost = Diplomat.InciteCost(cityToIncite);
+			_canIncite = Diplomat.CanIncite(cityToIncite, diplomat.Player.Gold);
 
 			DialogBox.DrawText($"Spies Report", 0, 15, 45, 5);
 			DialogBox.DrawText($"Dissidents in {_cityToIncite.Name}", 0, 15, 45, 5 + Resources.GetFontHeight(FONT_ID));
