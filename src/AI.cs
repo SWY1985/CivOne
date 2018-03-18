@@ -92,7 +92,7 @@ namespace CivOne
 					return;
 				case UnitClass.Land:
 					{
-						ITile[] tiles = unit.Tile.GetBorderTiles().Where(t => !t.IsOcean && t.Units.Any(u => u.Owner != 0)).ToArray();
+						ITile[] tiles = unit.Tile.GetBorderTiles().Where(t => !((unit.Tile.IsOcean || unit is Diplomat) && t.City != null) && !t.IsOcean && t.Units.Any(u => u.Owner != 0)).ToArray();
 						if (tiles.Length == 0)
 						{
 							// No adjecent units found
@@ -104,6 +104,8 @@ namespace CivOne
 									int relY = Common.Random.Next(-1, 2);
 									if (relX == 0 && relY == 0) continue;
 									if (unit.Tile[relX, relY] is Ocean) continue;
+									if (unit is Diplomat && unit.Tile[relX, relY].City != null) continue;
+									if (unit.Tile.IsOcean && unit.Tile[relX, relY].City != null) continue;
 									unit.MoveTo(relX, relY);
 									return;
 								}
@@ -118,6 +120,7 @@ namespace CivOne
 							int relY = moveTo.Y - unit.Y;
 							while (relX < -1) relX += 80;
 							while (relX > 1) relX -= 80;
+							if (unit is Diplomat && unit.Tile.City != null) return;
 
 							unit.MoveTo(relX, relY);
 						}
