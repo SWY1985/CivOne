@@ -47,8 +47,8 @@ namespace CivOne.Screens.Dialogs
 
 		private void MeetWithKing(object sender, EventArgs args)
 		{
+			GameTask.Enqueue(Tasks.Show.MeetKing(_enemyCity.Player));
 			Cancel();
-			Common.AddScreen(new King(_enemyCity.Player));
 		}
 
 		private void StealTechnology(object sender, EventArgs args)
