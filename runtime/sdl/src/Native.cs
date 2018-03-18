@@ -18,16 +18,11 @@ namespace CivOne
 	{
 		private static IntPtr _handle = IntPtr.Zero;
 
-		internal static Platform Platform
-		{
-			get
-			{
-				if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) return Platform.Windows;
-				if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) return Platform.Linux;
-				if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) return Platform.macOS;
-				return Platform.Unknown;
-			}
-		}
+		internal static Platform Platform =>
+			RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? Platform.Windows :
+			RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ? Platform.Linux :
+			RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? Platform.macOS :
+			Platform.Unknown;
 
 		internal static string FolderBrowser(string caption = "")
 		{
