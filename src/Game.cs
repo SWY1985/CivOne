@@ -142,6 +142,31 @@ namespace CivOne
 				{
 					GameTask.Enqueue(Show.AutoSave);
 				}
+
+				// TODO: Figure out how barbarians spawn
+				if (Common.TurnToYear(_gameTurn) > -2000)
+				{
+					if (Common.Random.Next(0, 40) == 0)
+					{
+						City[] oceanCities = _cities.Where(x => x.Tile.GetBorderTiles().Any(t => t.IsOcean)).ToArray();
+						if (oceanCities.Any())
+						{
+							City barbarianTarget = oceanCities.OrderBy(x => Common.Random.Next(0, 200)).First();
+							ITile[,] tiles = (barbarianTarget.Tile as BaseTile)[-6, -6, 13, 13];
+							for (int i = 0; i < 1000; i++)
+							{
+								int relX = Common.Random.Next(0, 13);
+								int relY = Common.Random.Next(0, 13);
+								ITile tile = tiles[relX, relY];
+								if (!tile.IsOcean) continue;
+								if (_cities.Min(x => Common.DistanceToTile(x.X, x.Y, tile.X, tile.Y)) < 3) continue;
+								foreach (UnitType unitType in new [] { UnitType.Sail, UnitType.Legion, UnitType.Legion, UnitType.Diplomat })
+									CreateUnit(unitType, tile.X, tile.Y, 0, false);
+								break;
+							}
+						}
+					}
+				}
 			}
 
 			if (!_players.Any(x => Game.PlayerNumber(x) != 0 && x != Human && !x.IsDestroyed()))

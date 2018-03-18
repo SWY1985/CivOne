@@ -215,6 +215,7 @@ namespace CivOne.Tiles
 		public IUnit[] Units => Game?.GetUnits(X, Y);
 
 		public ITile this[int relativeX, int relativeY] => Map[X + relativeX, Y + relativeY];
+		public ITile[,] this[int relativeX, int relativeY, int width, int height] => Map[X + relativeX, Y + relativeY, width, height];
 		
 		protected BaseTile(int x, int y, bool special = false)
 		{
