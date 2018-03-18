@@ -193,6 +193,26 @@ namespace CivOne.Graphics
 			}
 		}
 		
+		private static IBitmap _spy;
+		public static IBitmap Spy
+		{
+			get
+			{
+				if (_spy == null)
+				{
+					if (RuntimeHandler.Runtime.Settings.Free || !Resources.Exists("SP299"))
+					{
+						_spy = new Picture(Free.Instance.PanelGrey, Common.GetPalette256);
+					}
+					else
+					{
+						_spy = Resources["SP299"][160, 142, 40, 52].ColourReplace(3, 0);
+					}
+				}
+				return _spy;
+			}
+		}
+		
 		private static IBitmap _newspaper;
 		public static IBitmap Newspaper
 		{
