@@ -87,19 +87,25 @@ namespace CivOne.Screens
 			Destroy();
 		}
 
+		private void MenuShowPowerGraph(object sender, EventArgs args)
+		{
+			GameTask.Enqueue(Show.Screen<PowerGraph>());
+			Destroy();
+		}
+
 		protected override bool HasUpdate(uint gameTick)
 		{
 			if (_update)
 			{
 				_update = false;
 
-				Picture menuGfx = new Picture(131, 95)
+				Picture menuGfx = new Picture(131, 103)
 					.Tile(Pattern.PanelGrey)
 					.DrawRectangle3D()
 					.DrawText("Debug Options:", 0, 15, 4, 4)
 					.As<Picture>();
 
-				IBitmap menuBackground = menuGfx[2, 11, 128, 80].ColourReplace((7, 11), (22, 3));
+				IBitmap menuBackground = menuGfx[2, 11, 128, 88].ColourReplace((7, 11), (22, 3));
 
 				this.AddLayer(menuGfx, 25, 17);
 
@@ -127,6 +133,7 @@ namespace CivOne.Screens
 				menu.Items.Add("Meet With King").OnSelect(MenuMeetWithKing);
 				menu.Items.Add("Toggle Reveal World").OnSelect(MenuRevealWorld);
 				menu.Items.Add("Build Palace").OnSelect(MenuBuildPalace);
+				menu.Items.Add("Show PowerGraph").OnSelect(MenuShowPowerGraph);
 
 				this.FillRectangle(24, 16, 105, menu.RowHeight * (menu.Items.Count + 1), 5);
 
@@ -139,7 +146,7 @@ namespace CivOne.Screens
 		{
 			Palette = Common.DefaultPalette;
 			this.AddLayer(Common.Screens.Last(), 0, 0)
-				.FillRectangle(24, 16, 133, 97, 5);
+				.FillRectangle(24, 16, 133, 105, 5);
 		}
 	}
 }
