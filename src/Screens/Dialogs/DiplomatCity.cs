@@ -9,11 +9,11 @@
 
 using System;
 using System.Linq;
+using CivOne.Buildings;
 using CivOne.Graphics;
 using CivOne.Tiles;
 using CivOne.Units;
 using CivOne.UserInterface;
-using CivOne.Buildings;
 
 namespace CivOne.Screens.Dialogs
 {
@@ -48,6 +48,7 @@ namespace CivOne.Screens.Dialogs
 		private void MeetWithKing(object sender, EventArgs args)
 		{
 			Cancel();
+			Common.AddScreen(new King(_enemyCity.Player));
 		}
 
 		private void StealTechnology(object sender, EventArgs args)
@@ -66,6 +67,7 @@ namespace CivOne.Screens.Dialogs
 				MenuWidth = 130,
 				ActiveColour = 11,
 				TextColour = 5,
+				DisabledColour = 3,
 				FontId = FONT_ID
 			};
 
@@ -74,7 +76,7 @@ namespace CivOne.Screens.Dialogs
 			menu.Items.Add("Steal Technology").OnSelect(StealTechnology).Disable();
 			menu.Items.Add("Industrial Sabotage").OnSelect(IndustrialSabotage).Disable();
 			menu.Items.Add("Incite a Revolt").OnSelect(InciteRevolt);
-			menu.Items.Add("Meet with King").OnSelect(MeetWithKing).Disable();
+			menu.Items.Add("Meet with King").OnSelect(MeetWithKing).OnSelect(MeetWithKing);
 			
 			AddMenu(menu);
 		}
