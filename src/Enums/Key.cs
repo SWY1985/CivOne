@@ -45,6 +45,8 @@ namespace CivOne.Enums
 		Delete,
 		Home,
 		End,
+		PageUp,
+		PageDown,
 		Backspace,
 		Plus,
 		Minus,

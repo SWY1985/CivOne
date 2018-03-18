@@ -290,10 +290,12 @@ namespace CivOne.Screens.GamePlayPanels
 				switch (args.Key)
 				{
 					case Key.NumPad1:
+					case Key.End:
 						return MoveTo(-1, 1);
 					case Key.NumPad2:
 						return MoveTo(0, 1);
 					case Key.NumPad3:
+					case Key.PageDown:
 						return MoveTo(1, 1);
 					case Key.NumPad4:
 						return MoveTo(-1, 0);
@@ -303,10 +305,12 @@ namespace CivOne.Screens.GamePlayPanels
 					case Key.NumPad6:
 						return MoveTo(1, 0);
 					case Key.NumPad7:
+					case Key.Home:
 						return MoveTo(-1, -1);
 					case Key.NumPad8:
 						return MoveTo(0, -1);
 					case Key.NumPad9:
+					case Key.PageUp:
 						return MoveTo(1, -1);
 					case Key.Escape:
 						_helperDirection = new Point(0, 0);
@@ -350,11 +354,13 @@ namespace CivOne.Screens.GamePlayPanels
 				switch (args.Key)
 				{
 					case Key.NumPad1:
+					case Key.End:
 						return MoveTo(-1, 1);
 					case Key.NumPad2:
 					case Key.Down:
 						return MoveTo(0, 1);
 					case Key.NumPad3:
+					case Key.PageDown:
 						return MoveTo(1, 1);
 					case Key.NumPad4:
 					case Key.Left:
@@ -366,11 +372,13 @@ namespace CivOne.Screens.GamePlayPanels
 					case Key.Right:
 						return MoveTo(1, 0);
 					case Key.NumPad7:
+					case Key.Home:
 						return MoveTo(-1, -1);
 					case Key.NumPad8:
 					case Key.Up:
 						return MoveTo(0, -1);
 					case Key.NumPad9:
+					case Key.PageUp:
 						return MoveTo(1, -1);
 				}
 			}
