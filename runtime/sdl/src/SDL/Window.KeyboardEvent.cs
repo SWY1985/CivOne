@@ -70,6 +70,10 @@ namespace CivOne
 						return Key.Home;
 					case SDL_Scancode.SDL_SCANCODE_END:
 						return Key.End;
+					case SDL_Scancode.SDL_SCANCODE_PAGEUP:
+						return Key.PageUp;
+					case SDL_Scancode.SDL_SCANCODE_PAGEDOWN:
+						return Key.PageDown;
 					case SDL_Scancode.SDL_SCANCODE_DELETE:
 						return Key.Delete;
 					case SDL_Scancode.SDL_SCANCODE_UP:
