@@ -61,18 +61,6 @@
 			"cwd": "${workspaceRoot}",
 			"console": "internalConsole",
 			"internalConsoleOptions": "openOnFirstSessionStart"
-		},
-		{
-			"name": "Launch OpenTK",
-			"type": "coreclr",
-			"request": "launch",
-			"preLaunchTask": "build-opentk",
-			"program": "${workspaceRoot}/runtime/opentk/bin/Debug/netcoreapp2.0/CivOne.OpenTK.dll",
-			"args": [],
-			"cwd": "${workspaceRoot}",
-			"stopAtEntry": false,
-			"console": "internalConsole",
-			"internalConsoleOptions": "openOnFirstSessionStart"
 		}
 	]
 }
