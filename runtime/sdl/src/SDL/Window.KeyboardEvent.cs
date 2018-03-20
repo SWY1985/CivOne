@@ -86,6 +86,7 @@ namespace CivOne
 						return Key.Right;
 					case SDL_Scancode.SDL_SCANCODE_SPACE:
 						return Key.Space;
+					case SDL_Scancode.SDL_SCANCODE_MINUS:
 					case SDL_Scancode.SDL_SCANCODE_KP_MINUS:
 						return Key.Minus;
 					case SDL_Scancode.SDL_SCANCODE_KP_PLUS:
@@ -110,9 +111,9 @@ namespace CivOne
 						return Key.NumPad8;
 					case SDL_Scancode.SDL_SCANCODE_KP_9:
 						return Key.NumPad9;
-					
+					default:
+						return Key.None;
 				}
-				return Key.None;
 			}
 
 			private KeyboardEventArgs ConvertKeyEvent(SDL_KeyboardEvent keyboardEvent)
