@@ -26,28 +26,6 @@ namespace CivOne.Screens.Dialogs
 		private readonly City _enemyCity;
 		private readonly Diplomat _diplomat;
 
-		private string Sabotage()
-		{
-			Game.DisbandUnit(_diplomat);
-
-			IList<IBuilding> buildings = _enemyCity.Buildings.Where(b => (b.GetType() != typeof(Buildings.Palace))).ToList();
-
-			int random = Common.Random.Next(0, buildings.Count);
-
-			if (random == buildings.Count)
-			{
-				_enemyCity.Shields = (ushort)0;
-				string production = (_enemyCity.CurrentProduction as ICivilopedia).Name;
-				return $"{production} production sabotaged";
-			}
-			else
-			{
-				// sabotage a building
-				_enemyCity.RemoveBuilding(buildings[random]);
-				return $"{buildings[random].Name} sabotaged";
-			}
-		}
-
 		internal DiplomatSabotage(City enemyCity, Diplomat diplomat) : base(60, 80, 220, 56)
 		{
 			_enemyCity = enemyCity ?? throw new ArgumentNullException(nameof(enemyCity));
@@ -65,7 +43,7 @@ namespace CivOne.Screens.Dialogs
 			DialogBox.AddLayer(spyPortrait, 2, 2);
 
 			DialogBox.DrawText($"Spies Report", 0, 15, 45, 5);
-			DialogBox.DrawText(Sabotage(), 0, 15, 45, 5 + Resources.GetFontHeight(FONT_ID));
+			DialogBox.DrawText(_diplomat.Sabotage(_enemyCity), 0, 15, 45, 5 + Resources.GetFontHeight(FONT_ID));
 			DialogBox.DrawText($"in {_enemyCity.Name}", 0, 15, 45, 5 + (2 * Resources.GetFontHeight(FONT_ID)));
 		}
 	}
