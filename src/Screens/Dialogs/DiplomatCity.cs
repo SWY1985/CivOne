@@ -42,6 +42,7 @@ namespace CivOne.Screens.Dialogs
 
 		private void IndustrialSabotage(object sender, EventArgs args)
 		{
+			GameTask.Enqueue(Tasks.Show.DiplomatSabotage(_enemyCity, _diplomat));
 			Cancel();
 		}
 
@@ -74,7 +75,7 @@ namespace CivOne.Screens.Dialogs
 			menu.Items.Add("Establish Embassy").OnSelect(EstablishEmbassy).Disable();
 			menu.Items.Add("InvestigateCity").OnSelect(InvestigateCity).Disable();
 			menu.Items.Add("Steal Technology").OnSelect(StealTechnology).Disable();
-			menu.Items.Add("Industrial Sabotage").OnSelect(IndustrialSabotage).Disable();
+			menu.Items.Add("Industrial Sabotage").OnSelect(IndustrialSabotage);
 			MenuItem<int> inciteMenu = menu.Items.Add("Incite a Revolt").OnSelect(InciteRevolt);
 			inciteMenu.Enabled = !_enemyCity.HasBuilding<Palace>();
 			menu.Items.Add("Meet with King").OnSelect(MeetWithKing).OnSelect(MeetWithKing);
