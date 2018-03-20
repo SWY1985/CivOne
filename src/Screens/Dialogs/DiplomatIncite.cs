@@ -14,6 +14,7 @@ using CivOne.Tiles;
 using CivOne.Units;
 using CivOne.UserInterface;
 using CivOne.Buildings;
+using CivOne.Tasks;
 
 namespace CivOne.Screens.Dialogs
 {
@@ -37,22 +38,31 @@ namespace CivOne.Screens.Dialogs
 		{
 			Player previousOwner = Game.GetPlayer(_cityToIncite.Owner);
 
-			Game.DisbandUnit(_diplomat);
-			_cityToIncite.Owner = _diplomat.Owner;
-
-			// remove half the buildings at random
-			foreach (IBuilding building in _cityToIncite.Buildings.Where(b => Common.Random.Next(0, 1) == 1).ToList())
+			Show captureCity = Show.CaptureCity(_cityToIncite);
+			captureCity.Done += (s1, a1) =>
 			{
-				_cityToIncite.RemoveBuilding(building);
-			}
+				Game.DisbandUnit(_diplomat);
+				_cityToIncite.Owner = _diplomat.Owner;
 
-			_diplomat.Player.Gold -= (short)_inciteCost;
+				// remove half the buildings at random
+				foreach (IBuilding building in _cityToIncite.Buildings.Where(b => Common.Random.Next(0, 1) == 1).ToList())
+				{
+					_cityToIncite.RemoveBuilding(building);
+				}
 
-			previousOwner.IsDestroyed();
+				_diplomat.Player.Gold -= (short)_inciteCost;
+
+				previousOwner.IsDestroyed();
+
+				if (Human == _cityToIncite.Owner || Human == _diplomat.Owner)
+				{
+					GameTask.Insert(Tasks.Show.CityManager(_cityToIncite));
+				}
+			};
 
 			if (Human == _cityToIncite.Owner || Human == _diplomat.Owner)
 			{
-				GameTask.Insert(Tasks.Show.CityManager(_cityToIncite));
+				GameTask.Insert(captureCity);
 			}
 
 			Cancel();
