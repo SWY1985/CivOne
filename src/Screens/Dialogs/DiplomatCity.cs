@@ -75,7 +75,8 @@ namespace CivOne.Screens.Dialogs
 			menu.Items.Add("InvestigateCity").OnSelect(InvestigateCity).Disable();
 			menu.Items.Add("Steal Technology").OnSelect(StealTechnology).Disable();
 			menu.Items.Add("Industrial Sabotage").OnSelect(IndustrialSabotage).Disable();
-			menu.Items.Add("Incite a Revolt").OnSelect(InciteRevolt);
+			MenuItem<int> inciteMenu = menu.Items.Add("Incite a Revolt").OnSelect(InciteRevolt);
+			inciteMenu.Enabled = !_enemyCity.HasBuilding<Palace>();
 			menu.Items.Add("Meet with King").OnSelect(MeetWithKing).OnSelect(MeetWithKing);
 			
 			AddMenu(menu);
