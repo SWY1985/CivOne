@@ -176,9 +176,10 @@ namespace CivOne
 			return (turn - 400) + 1850;
 		}
 		
-		public static string YearString(ushort turn)
+		public static string YearString(ushort turn, bool zeroAd = false)
 		{
 			int year = TurnToYear(turn);
+			if (zeroAd && year == 1) year = 0;
 			if (year < 0)
 				return string.Format("{0} BC", -year);
 			return string.Format("{0} AD", year);

@@ -45,8 +45,17 @@ namespace CivOne.Screens
 			this.Clear(8)
 				.DrawText("CIVILIZATION POWERGraph", 0, 5, 100, 3)
 				.DrawText("CIVILIZATION POWERGraph", 0, 15, 100, 2)
-				.DrawRectangle(4, 9, 312, 184)
-				.DrawText("4000BC", 1, 15, 0, 194);
+				.DrawRectangle(4, 9, 312, 184);
+			
+			for (int i = 0; i < 13; i++)
+			{
+				int xx = 4 + (i * 25);
+				ushort turn = (ushort)(i * 50);
+				if (turn > Game.GameTurn) break;
+				this.DrawLine(xx, 9, xx, 192);
+				if (turn % 100 != 0) continue;
+				this.DrawText(Common.YearString(turn).Replace(" ", ""), 1, 15, xx - 4, 194);
+			}
 			
 			Player[] players = Game.Players.Where(x => !(x.Civilization is Barbarian)).ToArray();
 			for (int i = 0; i < players.Length; i++)
