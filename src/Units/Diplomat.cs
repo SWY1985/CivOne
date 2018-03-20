@@ -13,6 +13,7 @@ using CivOne.Tasks;
 using CivOne.Tiles;
 using System.Linq;
 using CivOne.Buildings;
+using System.Collections.Generic;
 
 namespace CivOne.Units
 {
@@ -34,14 +35,49 @@ namespace CivOne.Units
 			// todo: if city is in disorder need to halve the cost
 			return cost;
 		}
+
+		public string Sabotage(City city)
+		{
+			Game.DisbandUnit(this);
+
+			IList<IBuilding> buildings = city.Buildings.Where(b => (b.GetType() != typeof(Buildings.Palace))).ToList();
+
+			int random = Common.Random.Next(0, buildings.Count);
+
+			if (random == buildings.Count)
+			{
+				city.Shields = (ushort)0;
+				string production = (city.CurrentProduction as ICivilopedia).Name;
+				return $"{production} production sabotaged";
+			}
+			else
+			{
+				// sabotage a building
+				city.RemoveBuilding(buildings[random]);
+				return $"{buildings[random].Name} sabotaged";
+			}
+		}
+
 		protected override bool Confront(int relX, int relY)
 		{
 			ITile moveTarget = Map[X, Y][relX, relY];
 
 			if (moveTarget.City != null)
 			{
+				if (Human == Owner)
+				{
 					GameTask.Enqueue(Show.DiplomatCity(moveTarget.City, this));
 					return true;
+				}
+				else
+				{
+					if (moveTarget.City.Player == Human)
+						GameTask.Enqueue(Tasks.Show.DiplomatSabotage(moveTarget.City, this));
+					else
+						Sabotage(moveTarget.City);
+						
+					return true;
+				}
 			}
 
 			IUnit[] units = moveTarget.Units;
