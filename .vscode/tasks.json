@@ -1,58 +1,84 @@
 // These are the settings for editing CivOne in Visual Studio Code.
 // Please do not change them!
 {
-	"version": "0.1.0",
-	"command": "dotnet",
-	"isShellCommand": true,
-	"args": [],
+	"version": "2.0.0",
 	"tasks": [
 		{
-			"taskName": "build",
+			"label": "build",
+			"type": "shell",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"command": "dotnet build",
 			"windows": {
 				"args": [
-					"${workspaceRoot}//runtime/sdl/CivOne.SDL.csproj"
+					"${workspaceRoot}/runtime/sdl/CivOne.SDL.csproj"
 				]
 			},
 			"linux": {
 				"args": [
-					"${workspaceRoot}//runtime/sdl/CivOne.SDL.csproj"
+					"${workspaceRoot}/runtime/sdl/CivOne.SDL.csproj"
 				]
 			},
 			"osx": {
 				"args": [
-					"${workspaceRoot}//runtime/sdl/CivOne.SDL.csproj",
+					"${workspaceRoot}/runtime/sdl/CivOne.SDL.csproj",
 					"-c",
 					"DebugMacOS"
 				]
 			},
-			"isBuildCommand": true,
-			"problemMatcher": "$msCompile"
+			"problemMatcher": "$msCompile",
+			"presentation": {
+				"focus": true,
+				"panel": "dedicated"
+			}
 		},
 		{
-			"taskName": "test",
+			"label": "test",
+			"type": "shell",
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
+			"command": "dotnet test",
 			"args": [
-				"${workspaceRoot}//xunit//CivOne.UnitTests.csproj"
+				"${workspaceRoot}/xunit/CivOne.UnitTests.csproj"
 			],
-			"isTestCommand": true,
-			"problemMatcher": "$msCompile"
+			"problemMatcher": "$msCompile",
+			"presentation": {
+				"focus": true,
+				"panel": "dedicated"
+			}
 		},
 		{
-			"taskName": "build-api",
-			"command": "dotnet",
+			"label": "build-api",
+			"type": "shell",
+			"group": "build",
+			"command": "dotnet build",
 			"args": [
-				"build",
-				"${workspaceRoot}//api/CivOne.Api.csproj"
+				"${workspaceRoot}/api/CivOne.API.csproj"
 			],
-			"problemMatcher": "$msCompile"
+			"problemMatcher": "$msCompile",
+			"presentation": {
+				"focus": true,
+				"panel": "dedicated"
+			}
 		},
 		{
-			"taskName": "build-win32",
+			"label": "build-win32",
+			"type": "shell",
+			"group": "build",
 			"command": "msbuild",
 			"args": [
-				"${workspaceRoot}//runtime/win32/CivOne.Win32.csproj",
+				"${workspaceRoot}/runtime/win32/CivOne.Win32.csproj",
 				"/t:Rebuild"
 			],
-			"problemMatcher": "$msCompile"
+			"problemMatcher": "$msCompile",
+			"presentation": {
+				"focus": true,
+				"panel": "dedicated"
+			}
 		}
 	]
 }
