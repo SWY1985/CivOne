@@ -64,21 +64,6 @@
 				"focus": true,
 				"panel": "dedicated"
 			}
-		},
-		{
-			"label": "build-win32",
-			"type": "shell",
-			"group": "build",
-			"command": "msbuild",
-			"args": [
-				"${workspaceRoot}/runtime/win32/CivOne.Win32.csproj",
-				"/t:Rebuild"
-			],
-			"problemMatcher": "$msCompile",
-			"presentation": {
-				"focus": true,
-				"panel": "dedicated"
-			}
 		}
 	]
 }
