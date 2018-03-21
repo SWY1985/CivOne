@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=CivOne
+Comment=An open source implementation of Sid Meier's Civilization.
+Icon=CivOne
+Exec=CivOne
+Terminal=false
+Categories=Game;
+Actions=Setup;
+
+[Desktop Action Setup]
+Name=Setup
+Exec=launch.sh --setup
