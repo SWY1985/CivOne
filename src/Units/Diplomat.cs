@@ -36,6 +36,16 @@ namespace CivOne.Units
 			return cost;
 		}
 
+		public IAdvance GetAdvanceToSteal(Player victim)
+		{
+			IList<IAdvance> possible = victim.Advances.Where(p => !Player.Advances.Any(p2 => p2.Id == p.Id)).ToList();
+
+			if (!possible.Any())
+				return null;
+
+			return possible[Common.Random.Next(0, possible.Count - 1)];
+		}
+
 		public string Sabotage(City city)
 		{
 			Game.DisbandUnit(this);
