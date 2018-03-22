@@ -7,7 +7,7 @@ namespace CivOne
 {
 	internal class Resources
 	{
-		private static Stream GetInternalResource(string name) => Assembly.GetExecutingAssembly().GetManifestResourceStream($"CivOne.SDL.Resources.{name}");
+		private static Stream GetInternalResource(string name) => Assembly.GetExecutingAssembly().GetManifestResourceStream($"CivOne.Resources.{name}");
 		
 		private static Stream SdlSo => GetInternalResource("SDL2.so");
 
