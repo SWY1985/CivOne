@@ -12,6 +12,8 @@ namespace CivOne
 		private static Stream SdlSo => GetInternalResource("SDL2.so");
 
 		private static Stream CivOneIco => GetInternalResource("CivOne.ico");
+
+		private static Stream HelpTextTxt => GetInternalResource("HelpText.txt");
 		
 		private static bool WriteResourceToFile(Stream resource, string filePath, Func<bool> condition)
 		{
@@ -34,6 +36,19 @@ namespace CivOne
 			return File.Exists(filePath);
 		}
 
+		private static string GetResourceString(Stream resource)
+		{
+			using (Stream resourceStream = resource)
+			{
+				if (resourceStream == null) return null;
+
+				using (StreamReader sr = new StreamReader(resourceStream))
+				{
+					return sr.ReadToEnd();
+				}
+			}
+		}
+
 		public static string BinPath => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
 		public static string WorkingPath => Environment.CurrentDirectory;
@@ -47,5 +62,7 @@ namespace CivOne
 			Resources.CivOneIco,
 			Path.Combine(BinPath, "CivOne.ico"),
 			() => Native.Platform == Platform.Windows);
+		
+		public static string HelpText => GetResourceString(HelpTextTxt);
 	}
 }

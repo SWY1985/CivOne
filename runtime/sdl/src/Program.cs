@@ -14,25 +14,6 @@ namespace CivOne
 {
 	internal class Program
 	{
-		private static string HelpText => @"CivOne - An open source implementation of Sid Meier's Civilization
-Usage: civone-sdl [argument|runtime-options]
-
-arguments:
-  -h|--help             Show this documentation.
-  -D|--desktop-icon     Create an icon on the desktop (windows only)
-
-runtime-options:
-  --demo                Show the Demo screen before launching the game
-  --setup               Show the Setup screen before launching the game
-  --free                Launch the game with free assets. Does not load assets,
-                        disables sound, skips data check, intro and credits
-  --no-data-check       Disables checking for game data files
-  --no-sound            Disable ingame sounds
-  --skip-credits        Skips the game credits sequence
-  --skip-intro          Skips the game intro sequence
-  --software-render     Force the use of SDL software rendererer
-";
-
 		private static string ErrorText => @"civone-sdl: Invalid options: '{0}'
 Try 'civone-sdl --help' for more information.
 ";
@@ -53,7 +34,7 @@ Try 'civone-sdl --help' for more information.
 					{
 						case "help":
 						case "h":
-							Console.WriteLine(HelpText);
+							Console.WriteLine(Resources.HelpText);
 							return;
 						case "desktop-icon":
 						case "D":
