@@ -9,6 +9,7 @@
 
 using System;
 using System.Linq;
+using CivOne.Advances;
 using CivOne.Buildings;
 using CivOne.Graphics;
 using CivOne.Tiles;
@@ -54,6 +55,20 @@ namespace CivOne.Screens.Dialogs
 
 		private void StealTechnology(object sender, EventArgs args)
 		{
+			IAdvance advance = _diplomat.GetAdvanceToSteal(_enemyCity.Player);
+
+			if (advance != null)
+			{
+				GameTask task = new Tasks.GetAdvance(_diplomat.Player, advance);
+
+				task.Done += (s1, a1) =>
+				{
+					Game.DisbandUnit(_diplomat);
+				};
+
+				GameTask.Enqueue(task);
+			}
+
 			Cancel();
 		}
 
@@ -74,7 +89,7 @@ namespace CivOne.Screens.Dialogs
 
 			menu.Items.Add("Establish Embassy").OnSelect(EstablishEmbassy).Disable();
 			menu.Items.Add("InvestigateCity").OnSelect(InvestigateCity).Disable();
-			menu.Items.Add("Steal Technology").OnSelect(StealTechnology).Disable();
+			menu.Items.Add("Steal Technology").OnSelect(StealTechnology);
 			menu.Items.Add("Industrial Sabotage").OnSelect(IndustrialSabotage);
 			MenuItem<int> inciteMenu = menu.Items.Add("Incite a Revolt").OnSelect(InciteRevolt);
 			inciteMenu.Enabled = !_enemyCity.HasBuilding<Palace>();
