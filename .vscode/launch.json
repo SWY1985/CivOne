@@ -13,7 +13,7 @@
 			"cwd": "${workspaceRoot}",
 			"stopAtEntry": false,
 			"console": "internalConsole",
-			"internalConsoleOptions": "openOnFirstSessionStart"
+			"internalConsoleOptions": "openOnSessionStart"
 		},
 		{
 			"name": "Launch Setup",
@@ -25,7 +25,7 @@
 			"cwd": "${workspaceRoot}",
 			"stopAtEntry": false,
 			"console": "internalConsole",
-			"internalConsoleOptions": "openOnFirstSessionStart"
+			"internalConsoleOptions": "openOnSessionStart"
 		},
 		{
 			"name": "Launch Demo",
@@ -37,7 +37,7 @@
 			"cwd": "${workspaceRoot}",
 			"stopAtEntry": false,
 			"console": "internalConsole",
-			"internalConsoleOptions": "openOnFirstSessionStart"
+			"internalConsoleOptions": "openOnSessionStart"
 		},
 		{
 			"name": "Launch Free",
@@ -49,7 +49,7 @@
 			"cwd": "${workspaceRoot}",
 			"stopAtEntry": false,
 			"console": "internalConsole",
-			"internalConsoleOptions": "openOnFirstSessionStart"
+			"internalConsoleOptions": "openOnSessionStart"
 		},
 		{
 			"name": "Show help text",
@@ -61,7 +61,7 @@
 			"cwd": "${workspaceRoot}",
 			"stopAtEntry": false,
 			"console": "internalConsole",
-			"internalConsoleOptions": "openOnFirstSessionStart"
+			"internalConsoleOptions": "openOnSessionStart"
 		},
 		{
 			"name": "Create desktop icon",
@@ -73,7 +73,7 @@
 			"cwd": "${workspaceRoot}",
 			"stopAtEntry": false,
 			"console": "internalConsole",
-			"internalConsoleOptions": "openOnFirstSessionStart"
+			"internalConsoleOptions": "openOnSessionStart"
 		}
 	]
 }
