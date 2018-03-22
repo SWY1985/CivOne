@@ -1,2 +1,1 @@
-@echo off
-..\..\bin\CivOne.exe demo
+@bin\CivOne.exe demo
