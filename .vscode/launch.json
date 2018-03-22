@@ -50,6 +50,30 @@
 			"stopAtEntry": false,
 			"console": "internalConsole",
 			"internalConsoleOptions": "openOnFirstSessionStart"
+		},
+		{
+			"name": "Show help text",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "build",
+			"program": "${workspaceRoot}/runtime/sdl/bin/Debug/netcoreapp2.0/CivOne.SDL.dll",
+			"args": ["--help"],
+			"cwd": "${workspaceRoot}",
+			"stopAtEntry": false,
+			"console": "internalConsole",
+			"internalConsoleOptions": "openOnFirstSessionStart"
+		},
+		{
+			"name": "Create desktop icon",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "build",
+			"program": "${workspaceRoot}/runtime/sdl/bin/Debug/netcoreapp2.0/CivOne.SDL.dll",
+			"args": ["--desktop-icon"],
+			"cwd": "${workspaceRoot}",
+			"stopAtEntry": false,
+			"console": "internalConsole",
+			"internalConsoleOptions": "openOnFirstSessionStart"
 		}
 	]
 }

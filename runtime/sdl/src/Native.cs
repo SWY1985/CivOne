@@ -9,6 +9,8 @@
 
 using System;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using CivOne.Enums;
 
@@ -56,6 +58,25 @@ namespace CivOne
 				case Platform.Windows:
 					ShowCursor(false);
 					break;
+			}
+		}
+
+		internal static bool CreateDesktopIcon(string name, string description, params string[] arguments)
+		{
+			switch (Platform)
+			{
+				case Platform.Windows:
+#if DEBUG
+					string path = "dotnet";
+					arguments = new [] { $@"""{Path.Combine(Resources.BinPath, "CivOne.SDL.dll")}""" }.Union(arguments).ToArray();
+#else
+					if (!File.Exists(Path.Combine(Resources.BinPath, "CivOne.SDL.exe"))) return false;
+					string path = Path.Combine(Resources.BinPath, "CivOne.SDL.exe");
+#endif
+
+					return Win32CreateShortcut(name, description, path, arguments, Environment.CurrentDirectory, Path.Combine(Resources.BinPath, "CivOne.ico"));
+				default:
+					return false;
 			}
 		}
 
