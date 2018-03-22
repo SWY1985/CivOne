@@ -1,2 +1,1 @@
-@echo off
-..\..\bin\CivOne.exe setup
+@bin\CivOne.exe setup
