@@ -4,17 +4,21 @@
 <dict>
 	<key>CFBundleName</key>
 	<string>CivOne</string>
+	<key>CFBundleDisplayName</key>
+	<string>CivOne</string>
+	<key>CFBundleIdentifier</key>
+	<string>org.CivOne.SDL</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>0.1.0.pre-alpha.1</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleSignature</key>
+	<string>civ1</string>
 	<key>CFBundleExecutable</key>
 	<string>civone-mac</string>
 	<key>CFBundleIconFile</key>
 	<string>CivOne.icns</string>
 	<key>LSMinimumSystemVersion</key>
-	<string>10.7</string>
-	<key>NSMainNibFile</key>
-	<string>MainMenu</string>
-	<key>NSPrincipalClass</key>
-	<string>NSApplication</string>
+	<string>10.12</string>
 </dict>
 </plist>
