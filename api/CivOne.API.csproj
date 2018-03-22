@@ -11,7 +11,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
-		<AssemblyName>CivOne.SDL</AssemblyName>
+		<AssemblyName>CivOne.API</AssemblyName>
 		<RootNamespace>CivOne</RootNamespace>
 		<OutputType>Library</OutputType>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
