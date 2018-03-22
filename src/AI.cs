@@ -39,6 +39,15 @@ namespace CivOne
 						{
 							if (unit.Tile.GetBorderTiles().Any(x => !x.IsOcean))
 							{
+								if (Game.GetCities().Any(x => x.Owner != 0))
+								{
+									City nearestCity = Game.GetCities().Where(x => x.Owner != 0).OrderBy(x => Common.DistanceToTile(x.X, x.Y, unit.X, unit.Y)).ThenBy(x => x.Player == Human ? 0 : 1).First();
+									if (nearestCity.Player == Human && Human.Visible(unit.Tile))
+									{
+										GameTask.Insert(Message.Advisor(Advisor.Defense, false, "Barbarian raiding party", $"lands near {nearestCity.Name}!", "Citizens are alarmed."));
+									}
+								}
+
 								foreach (IUnit landUnit in unit.Tile.Units.Where(x => x.Class == UnitClass.Land && x.Sentry))
 								{
 									landUnit.Sentry = false;
