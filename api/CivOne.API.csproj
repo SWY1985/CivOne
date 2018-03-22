@@ -11,10 +11,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
-		<IsPackable>false</IsPackable>
+		<AssemblyName>CivOne.SDL</AssemblyName>
+		<RootNamespace>CivOne</RootNamespace>
 		<OutputType>Library</OutputType>
-		<PackageId>CivOne.Api</PackageId>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+		<LangVersion>7.1</LangVersion>
+		<PackageId>CivOne.Api</PackageId>
 	</PropertyGroup>
 	<PropertyGroup Condition="$(Configuration.StartsWith('Debug'))">
 		<DebugSymbols>true</DebugSymbols>
