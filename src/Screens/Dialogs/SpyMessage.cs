@@ -29,12 +29,10 @@ namespace CivOne.Screens.Dialogs
 
 		private static int DialogWidth(string[] message)
 		{
-			int maxWidth = TextBitmaps(message).Max(b => b.Width) + 52;
-			if (maxWidth < 94) maxWidth = 94;
-			return maxWidth;
+			return TextBitmaps(message).Max(b => b.Width) + 50;
 		}
 
-		public SpyMessage(string[] message) : base(38, 72, DialogWidth(message) + 52, 62)
+		public SpyMessage(string[] message) : base(38, 72, DialogWidth(message), 57)
 		{
 			IBitmap spyPortrait = Icons.Spy;
 
@@ -48,7 +46,7 @@ namespace CivOne.Screens.Dialogs
 			_textLines = TextBitmaps(message);
 			DialogBox.AddLayer(spyPortrait, 2, 2);
 			for (int i = 0; i < _textLines.Length; i++)
-				DialogBox.AddLayer(_textLines[i], 47, (_textLines[i].Height * i) + 13);
+				DialogBox.AddLayer(_textLines[i], 47, (_textLines[i].Height * (i -1)) + 13);
 		}
 	}
 }

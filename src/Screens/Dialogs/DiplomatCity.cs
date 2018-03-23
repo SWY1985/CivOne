@@ -60,7 +60,7 @@ namespace CivOne.Screens.Dialogs
 
 			if (advance == null)
 			{
-				GameTask.Insert(Message.General($"{_enemyCity.Player.TribeName} has no advances to steal"));
+				GameTask.Insert(Message.General($"No new technology found"));
 			}
 			else
 			{
@@ -70,7 +70,7 @@ namespace CivOne.Screens.Dialogs
 				{
 					Game.DisbandUnit(_diplomat);
 					if (_diplomat.Player == Human || _enemyCity.Player == Human)
-						GameTask.Insert(Message.Spy($"{_diplomat.Player.TribeName} steal", $"{advance.Name}"));
+						GameTask.Insert(Message.Spy("Spies report:", $"{_diplomat.Player.TribeName} steal", $"{advance.Name}"));
 				};
 
 				GameTask.Enqueue(task);
