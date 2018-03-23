@@ -20,7 +20,7 @@ namespace CivOne.Screens.Reports
 			int yy = 30;
 			foreach (Player player in Game.Players.Where(p => p != 0 && !p.IsDestroyed()))
 			{
-				this.FillRectangle(4, yy, 314, 1, 9);
+				this.FillRectangle(4, yy, 313, 1, 9);
 
 				byte id = Game.PlayerNumber(player);
 				byte colour = Common.ColourLight[id];
@@ -31,6 +31,11 @@ namespace CivOne.Screens.Reports
 					this.DrawText($"{player.TribeNamePlural}: {player.LeaderName}", 0, 5, 8, yy + 3)
 						.DrawText($"{player.TribeNamePlural}: {player.LeaderName}", 0, 15, 8, yy + 2)
 						.DrawText($"{player.Government.Name}, {player.Gold}$, {unitCount} Units.", 0, colour, 160, yy + 2);
+
+					if (!player.IsHuman)
+					{
+						this.DrawButton($"INFO{id}", 0, colour, Common.ColourDark[id], 281, yy + 14, 38, Resources.GetFontHeight(0) + 2);
+					}
 				}
 				else
 				{
