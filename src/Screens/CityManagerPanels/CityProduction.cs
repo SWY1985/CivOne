@@ -24,6 +24,7 @@ namespace CivOne.Screens.CityManagerPanels
 		private const int SHIELD_HEIGHT = 8;
 
 		private readonly City _city;
+		private readonly bool _viewCity;
 		
 		private bool _update = true;
 
@@ -100,8 +101,11 @@ namespace CivOne.Screens.CityManagerPanels
 				}
 				bool blink = ProductionInvalid && (gameTick % 4 > 1);
 				if (!(Common.TopScreen is CityManager)) blink = ProductionInvalid;
-				DrawButton("Change", (byte)(blink ? 14 : 9), 1, 1, 7, 33);
-				DrawButton("Buy", 9, 1, 64, 7, 18);
+				if (!_viewCity)
+				{
+					DrawButton("Change", (byte)(blink ? 14 : 9), 1, 1, 7, 33);
+					DrawButton("Buy", 9, 1, 64, 7, 18);
+				}
 
 				DrawShields();
 
@@ -183,9 +187,10 @@ namespace CivOne.Screens.CityManagerPanels
 			return false;
 		}
 
-		public CityProduction(City city) : base(88, 99)
+		public CityProduction(City city, bool viewCity) : base(88, 99)
 		{
 			_city = city;
+			_viewCity = viewCity;
 		}
 	}
 }
