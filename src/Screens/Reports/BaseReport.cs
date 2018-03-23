@@ -21,12 +21,21 @@ namespace CivOne.Screens.Reports
 		private bool _update = true;
 
 		protected readonly IBitmap[] Portrait = new Picture[4];
+
+		protected event ScreenEventHandler OnMouseDown;
+		
+		protected byte BackgroundColour { get; }
 		
 		protected override bool HasUpdate(uint gameTick)
 		{
 			if (!_update) return false;
 			_update = false;
 			return true;
+		}
+
+		protected void SetUpdate()
+		{
+			_update = true;
 		}
 		
 		public override bool KeyDown(KeyboardEventArgs args)
@@ -37,12 +46,17 @@ namespace CivOne.Screens.Reports
 		
 		public override bool MouseDown(ScreenEventArgs args)
 		{
+			OnMouseDown?.Invoke(this, args);
+			if (args.Handled) return true;
+
 			Destroy();
 			return true;
 		}
 		
-		public BaseReport(string title, byte backgroundColour)
+		public BaseReport(string title, byte backgroundColour, MouseCursor cursor = MouseCursor.None) : base(cursor)
 		{
+			BackgroundColour = backgroundColour;
+
 			bool modernGovernment = Human.HasAdvance<Invention>();
 			for (int i = 0; i < 4; i++)
 			{
