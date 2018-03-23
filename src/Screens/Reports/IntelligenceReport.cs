@@ -32,6 +32,11 @@ namespace CivOne.Screens.Reports
 						.DrawText($"{player.TribeNamePlural}: {player.LeaderName}", 0, colour, 8, yy + 2)
 						.DrawText($"{player.Government.Name}, {player.Gold}$, {unitCount} Units.", 0, colour, 160, yy + 2);
 				}
+				else if (Human.HasEmbassy(player))
+				{
+					// TODO: Show embassy details
+					this.DrawText("Embassy established.", 0, colour, 160, yy + 2, TextAlign.Center);
+				}
 				else
 				{
 					this.DrawText("No embassy established.", 0, colour, 160, yy + 2, TextAlign.Center);

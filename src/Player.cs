@@ -108,6 +108,7 @@ namespace CivOne
 		private readonly bool[,] _explored = new bool[Map.WIDTH, Map.HEIGHT];
 		private readonly bool[,] _visible = new bool[Map.WIDTH, Map.HEIGHT];
 		private readonly List<byte> _advances = new List<byte>();
+		private readonly List<byte> _embassies = new List<byte>();
 		
 		private short _anarchy = 0;
 		private short _gold;
@@ -241,6 +242,17 @@ namespace CivOne
 		public bool HasAdvance<T>() where T : IAdvance => Advances.Any(a => a is T);
 
 		public bool HasAdvance(IAdvance advance) => (advance == null || Advances.Any(a => a.Id == advance.Id));
+
+		public Player[] Embassies => _embassies.Select(e => Game.Players.FirstOrDefault(p => e == Game.PlayerNumber(p))).Where(p => p != null).ToArray();
+
+		public bool HasEmbassy(Player player) => _embassies.Any(e => e == Game.PlayerNumber(player));
+
+		public void EstablishEmbassy(Player player)
+		{
+			byte playerNumber = Game.PlayerNumber(player);
+			if (_embassies.Contains(playerNumber)) return;
+			_embassies.Add(playerNumber);
+		}
 
 		public IAdvance CurrentResearch
 		{
