@@ -12,10 +12,12 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<AssemblyName>CivOne</AssemblyName>
-		<PackageId>CivOne</PackageId>
+		<RootNamespace>CivOne</RootNamespace>
+		<OutputType>Library</OutputType>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<LangVersion>7.1</LangVersion>
+		<PackageId>CivOne</PackageId>
 	</PropertyGroup>
 	<PropertyGroup Condition="$(Configuration.StartsWith('Debug'))">
 		<DebugSymbols>true</DebugSymbols>

@@ -8,61 +8,20 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
-using System.IO;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using CivOne.Enums;
 
 namespace CivOne
 {
 	internal class Program
 	{
-		private static string HelpText => @"CivOne - An open source implementation of Sid Meier's Civilization
-Usage: civone-sdl [argument|runtime-options]
-
-arguments:
-  -h|--help             Show this documentation.
-
-runtime-options:
-  --demo                Show the Demo screen before launching the game
-  --setup               Show the Setup screen before launching the game
-  --free                Launch the game with free assets. Does not load assets,
-                        disables sound, skips data check, intro and credits
-  --no-data-check       Disables checking for game data files
-  --no-sound            Disable ingame sounds
-  --skip-credits        Skips the game credits sequence
-  --skip-intro          Skips the game intro sequence
-  --software-render     Force the use of SDL software rendererer
-";
-
-		private static string ErrorText => @"civone-opentk: Invalid options: '{0}'
+		private static string ErrorText => @"civone-sdl: Invalid options: '{0}'
 Try 'civone-sdl --help' for more information.
 ";
 
-		private static bool WriteSdlStub()
+		private static void Main(string[] args)
 		{
-			string binPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "SDL2.so");
-			if (Native.Platform != Platform.Linux) return false;
-			if (File.Exists(binPath)) return false;
-			using (Stream resourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("CivOne.SDL.Resources.SDL2.so"))
-			{
-				if (resourceStream == null)
-				{
-					Console.WriteLine("Could not read embedded resource for SDL2.so");
-					return false;
-				}
-				
-				using (FileStream sw = new FileStream(Path.Combine(binPath), FileMode.CreateNew, FileAccess.Write))
-				{
-					resourceStream.CopyTo(sw);
-				}
-			}
-			return File.Exists(binPath);
-		}
-
-		static void Main(string[] args)
-		{
-			if (WriteSdlStub()) Console.WriteLine("Written SDL2 library stub...");
+			if (Resources.WriteSdlStub()) Console.WriteLine("Written SDL2 library stub...");
+			if (Resources.WriteWin32Icon()) Console.WriteLine("Written Win32 icon file...");
 
 			RuntimeSettings settings = new RuntimeSettings();
 			settings["software-render"] = false;
@@ -75,7 +34,20 @@ Try 'civone-sdl --help' for more information.
 					{
 						case "help":
 						case "h":
-							Console.WriteLine(HelpText);
+							Console.WriteLine(Resources.HelpText);
+							return;
+						case "desktop-icon":
+						case "D":
+							switch (Native.Platform)
+							{
+								case Platform.Windows:
+									Console.Write("Creating desktop icon... ");
+									Console.WriteLine(Native.CreateDesktopIcon("CivOne", "An open source implementation of Sid Meier's Civilization") ? "done" : "failed");
+									break;
+								default:
+									Console.WriteLine($"Creating a desktop icon is not implemented on {Native.Platform.Name()}.");
+									break;
+							}
 							return;
 					}
 				}

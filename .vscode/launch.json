@@ -13,7 +13,7 @@
 			"cwd": "${workspaceRoot}",
 			"stopAtEntry": false,
 			"console": "internalConsole",
-			"internalConsoleOptions": "openOnFirstSessionStart"
+			"internalConsoleOptions": "openOnSessionStart"
 		},
 		{
 			"name": "Launch Setup",
@@ -25,7 +25,7 @@
 			"cwd": "${workspaceRoot}",
 			"stopAtEntry": false,
 			"console": "internalConsole",
-			"internalConsoleOptions": "openOnFirstSessionStart"
+			"internalConsoleOptions": "openOnSessionStart"
 		},
 		{
 			"name": "Launch Demo",
@@ -37,7 +37,7 @@
 			"cwd": "${workspaceRoot}",
 			"stopAtEntry": false,
 			"console": "internalConsole",
-			"internalConsoleOptions": "openOnFirstSessionStart"
+			"internalConsoleOptions": "openOnSessionStart"
 		},
 		{
 			"name": "Launch Free",
@@ -49,18 +49,31 @@
 			"cwd": "${workspaceRoot}",
 			"stopAtEntry": false,
 			"console": "internalConsole",
-			"internalConsoleOptions": "openOnFirstSessionStart"
+			"internalConsoleOptions": "openOnSessionStart"
 		},
 		{
-			"name": "Launch Win32",
-			"type": "mono",
+			"name": "Show help text",
+			"type": "coreclr",
 			"request": "launch",
-			"preLaunchTask": "build-win32",
-			"program": "${workspaceRoot}/runtime/win32/bin/CivOne.Win32.exe",
-			"args": [],
+			"preLaunchTask": "build",
+			"program": "${workspaceRoot}/runtime/sdl/bin/Debug/netcoreapp2.0/CivOne.SDL.dll",
+			"args": ["--help"],
 			"cwd": "${workspaceRoot}",
+			"stopAtEntry": false,
 			"console": "internalConsole",
-			"internalConsoleOptions": "openOnFirstSessionStart"
+			"internalConsoleOptions": "openOnSessionStart"
+		},
+		{
+			"name": "Create desktop icon",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "build",
+			"program": "${workspaceRoot}/runtime/sdl/bin/Debug/netcoreapp2.0/CivOne.SDL.dll",
+			"args": ["--desktop-icon"],
+			"cwd": "${workspaceRoot}",
+			"stopAtEntry": false,
+			"console": "internalConsole",
+			"internalConsoleOptions": "openOnSessionStart"
 		}
 	]
 }

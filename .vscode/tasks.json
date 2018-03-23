@@ -28,7 +28,6 @@
 					"DebugMacOS"
 				]
 			},
-			"problemMatcher": "$msCompile",
 			"presentation": {
 				"focus": true,
 				"panel": "dedicated"
@@ -45,7 +44,6 @@
 			"args": [
 				"${workspaceRoot}/xunit/CivOne.UnitTests.csproj"
 			],
-			"problemMatcher": "$msCompile",
 			"presentation": {
 				"focus": true,
 				"panel": "dedicated"
@@ -59,22 +57,6 @@
 			"args": [
 				"${workspaceRoot}/api/CivOne.API.csproj"
 			],
-			"problemMatcher": "$msCompile",
-			"presentation": {
-				"focus": true,
-				"panel": "dedicated"
-			}
-		},
-		{
-			"label": "build-win32",
-			"type": "shell",
-			"group": "build",
-			"command": "msbuild",
-			"args": [
-				"${workspaceRoot}/runtime/win32/CivOne.Win32.csproj",
-				"/t:Rebuild"
-			],
-			"problemMatcher": "$msCompile",
 			"presentation": {
 				"focus": true,
 				"panel": "dedicated"

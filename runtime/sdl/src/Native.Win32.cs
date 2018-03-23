@@ -8,12 +8,46 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
+using System.Text;
 
 namespace CivOne
 {
 	internal partial class Native
 	{
+		[ComImport]
+		[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		[Guid("000214F9-0000-0000-C000-000000000046")]
+		private interface IShellLink
+		{
+			void GetPath([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszFile, int cchMaxPath, out IntPtr pfd, int fFlags);
+			void GetIDList(out IntPtr ppidl);
+			void SetIDList(IntPtr pidl);
+			void GetDescription([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszName, int cchMaxName);
+			void SetDescription([MarshalAs(UnmanagedType.LPWStr)] string pszName);
+			void GetWorkingDirectory([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszDir, int cchMaxPath);
+			void SetWorkingDirectory([MarshalAs(UnmanagedType.LPWStr)] string pszDir);
+			void GetArguments([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszArgs, int cchMaxPath);
+			void SetArguments([MarshalAs(UnmanagedType.LPWStr)] string pszArgs);
+			void GetHotkey(out short pwHotkey);
+			void SetHotkey(short wHotkey);
+			void GetShowCmd(out int piShowCmd);
+			void SetShowCmd(int iShowCmd);
+			void GetIconLocation([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszIconPath, int cchIconPath, out int piIcon);
+			void SetIconLocation([MarshalAs(UnmanagedType.LPWStr)] string pszIconPath, int iIcon);
+			void SetRelativePath([MarshalAs(UnmanagedType.LPWStr)] string pszPathRel, int dwReserved);
+			void Resolve(IntPtr hwnd, int fFlags);
+			void SetPath([MarshalAs(UnmanagedType.LPWStr)] string pszFile);
+		}
+
+		[ComImport]
+		[Guid("00021401-0000-0000-C000-000000000046")]
+		internal class ShellLink
+		{
+		}
+
 		[StructLayout(LayoutKind.Sequential)]
 		private struct BROWSEINFO 
 		{
@@ -63,6 +97,20 @@ namespace CivOne
 			HideCursor();
 			
 			return Marshal.PtrToStringUni(bufferAddress);
+		}
+
+		private static bool Win32CreateShortcut(string name, string description, string path, string[] arguments, string workingDirectory, string icon)
+		{
+			IShellLink shortcut = (IShellLink)new ShellLink();
+			shortcut.SetPath(path);
+			shortcut.SetDescription(description);
+			if (arguments.Length > 0) shortcut.SetArguments(string.Join(" ", arguments));
+			shortcut.SetWorkingDirectory(workingDirectory);
+			shortcut.SetIconLocation(icon, 0);
+
+			string filename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"{name}.lnk");
+			(shortcut as IPersistFile).Save(filename, false);
+			return File.Exists(filename);
 		}
 	}
 }

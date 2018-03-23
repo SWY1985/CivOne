@@ -19,9 +19,11 @@ namespace CivOne.Graphics.Sprites
 		private static Resources Resources => Resources.Instance;
 		private static Settings Settings => Settings.Instance;
 
+		private static CursorType CursorType => (Settings.CursorType == CursorType.Default && !Resources.Exists("SP257")) ? CursorType.Builtin : Settings.CursorType;
+
 		private static Bytemap CursorPointer()
 		{
-			switch(Settings.CursorType)
+			switch(CursorType)
 			{
 				case Default:
 					return Resources["SP257"][113, 33, 15, 15].Bitmap;
@@ -51,7 +53,7 @@ namespace CivOne.Graphics.Sprites
 
 		private static Bytemap CursorGoto()
 		{
-			switch(Settings.CursorType)
+			switch(CursorType)
 			{
 				case Default:
 					return Resources["SP257"][33, 33, 15, 15].Bitmap;
