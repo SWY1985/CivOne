@@ -14,7 +14,6 @@ namespace CivOne.Enums
 		Defense,
 		Domestic,
 		Foreign,
-		Science,
-		Intelligence
+		Science
 	}
 }
