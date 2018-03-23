@@ -74,6 +74,8 @@ namespace CivOne.Tasks
 
 		public static Show CityManager(City city) => new Show(new CityManager(city));
 
+		public static Show ViewCity(City city) => new Show(new CityManager(city, true));
+
 		public static Show UnitStack(int x, int y) => new Show(new UnitStack(x, y));
 
 		public static Show Search

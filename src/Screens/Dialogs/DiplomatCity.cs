@@ -36,6 +36,8 @@ namespace CivOne.Screens.Dialogs
 
 		private void InvestigateCity(object sender, EventArgs args)
 		{
+			GameTask.Enqueue(Show.ViewCity(_enemyCity));
+			Game.DisbandUnit(_diplomat);
 			Cancel();
 		}
 
@@ -98,7 +100,7 @@ namespace CivOne.Screens.Dialogs
 			};
 
 			menu.Items.Add("Establish Embassy").OnSelect(EstablishEmbassy).SetEnabled(!Human.HasEmbassy(_enemyCity.Player));
-			menu.Items.Add("InvestigateCity").OnSelect(InvestigateCity).Disable();
+			menu.Items.Add("Investigate City").OnSelect(InvestigateCity);
 			menu.Items.Add("Steal Technology").OnSelect(StealTechnology);
 			menu.Items.Add("Industrial Sabotage").OnSelect(IndustrialSabotage);
 			menu.Items.Add("Incite a Revolt").OnSelect(InciteRevolt).SetEnabled(!_enemyCity.HasBuilding<Palace>());
