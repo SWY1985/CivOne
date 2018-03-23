@@ -11,6 +11,7 @@ using System;
 using System.Linq;
 using CivOne.Advances;
 using CivOne.Buildings;
+using CivOne.Civilizations;
 using CivOne.Graphics;
 using CivOne.Tasks;
 using CivOne.Tiles;
@@ -28,6 +29,8 @@ namespace CivOne.Screens.Dialogs
 
 		private void EstablishEmbassy(object sender, EventArgs args)
 		{
+			Human.EstablishEmbassy(_enemyCity.Player);
+			Game.DisbandUnit(_diplomat);
 			Cancel();
 		}
 
@@ -94,13 +97,12 @@ namespace CivOne.Screens.Dialogs
 				FontId = FONT_ID
 			};
 
-			menu.Items.Add("Establish Embassy").OnSelect(EstablishEmbassy).Disable();
+			menu.Items.Add("Establish Embassy").OnSelect(EstablishEmbassy).SetEnabled(!Human.HasEmbassy(_enemyCity.Player));
 			menu.Items.Add("InvestigateCity").OnSelect(InvestigateCity).Disable();
 			menu.Items.Add("Steal Technology").OnSelect(StealTechnology);
 			menu.Items.Add("Industrial Sabotage").OnSelect(IndustrialSabotage);
-			MenuItem<int> inciteMenu = menu.Items.Add("Incite a Revolt").OnSelect(InciteRevolt);
-			inciteMenu.Enabled = !_enemyCity.HasBuilding<Palace>();
-			menu.Items.Add("Meet with King").OnSelect(MeetWithKing).OnSelect(MeetWithKing);
+			menu.Items.Add("Incite a Revolt").OnSelect(InciteRevolt).SetEnabled(!_enemyCity.HasBuilding<Palace>());
+			menu.Items.Add("Meet with King").OnSelect(MeetWithKing).SetEnabled(!(_enemyCity.Player.Civilization is Barbarian));
 			
 			AddMenu(menu);
 		}
