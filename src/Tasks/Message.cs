@@ -42,6 +42,11 @@ namespace CivOne.Tasks
 			return new Message(new AdvisorMessage(advisor, message, leftAlign));
 		}
 
+		public static Message Spy(params string[] message)
+		{
+			return new Message(new SpyMessage(message));
+		}
+
 		public static Message DisbandUnit(City city, IUnit unit)
 		{
 			return new Message(new DisbandUnit(city, unit));
