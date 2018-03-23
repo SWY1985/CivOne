@@ -12,6 +12,7 @@ using System.Linq;
 using CivOne.Advances;
 using CivOne.Buildings;
 using CivOne.Graphics;
+using CivOne.Tasks;
 using CivOne.Tiles;
 using CivOne.Units;
 using CivOne.UserInterface;
@@ -57,13 +58,19 @@ namespace CivOne.Screens.Dialogs
 		{
 			IAdvance advance = _diplomat.GetAdvanceToSteal(_enemyCity.Player);
 
-			if (advance != null)
+			if (advance == null)
+			{
+				GameTask.Insert(Message.General($"{_enemyCity.Player.TribeName} has no advances to steal"));
+			}
+			else
 			{
 				GameTask task = new Tasks.GetAdvance(_diplomat.Player, advance);
 
 				task.Done += (s1, a1) =>
 				{
 					Game.DisbandUnit(_diplomat);
+					if (_diplomat.Player == Human || _enemyCity.Player == Human)
+						GameTask.Insert(Message.Spy($"{_diplomat.Player.TribeName} steal", $"{advance.Name}"));
 				};
 
 				GameTask.Enqueue(task);
