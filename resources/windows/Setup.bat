@@ -1,0 +1,1 @@
+@bin\CivOne.exe setup

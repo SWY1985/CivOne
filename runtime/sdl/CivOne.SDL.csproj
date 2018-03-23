@@ -12,25 +12,28 @@
 	<PropertyGroup>
 		<TargetFramework>netcoreapp2.0</TargetFramework>
 		<AssemblyName>CivOne.SDL</AssemblyName>
+		<RootNamespace>CivOne</RootNamespace>
 		<OutputType>Exe</OutputType>
-		<RuntimeIdentifiers>win-x86;win-x64;osx-x64;linux-x64</RuntimeIdentifiers>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<LangVersion>7.1</LangVersion>
+		<RuntimeIdentifiers>win-x86;win-x64;osx-x64;linux-x64</RuntimeIdentifiers>
 	</PropertyGroup>
 	<PropertyGroup Condition="$(Configuration.StartsWith('Debug'))">
 		<DebugSymbols>true</DebugSymbols>
 		<DebugType>portable</DebugType>
 		<DefineConstants>DEBUG</DefineConstants>
+		<OutputPath>bin/Debug</OutputPath>
 		<Optimize>false</Optimize>
 	</PropertyGroup>
 	<PropertyGroup Condition="$(Configuration.StartsWith('Release'))">
 		<DebugType>none</DebugType>
 		<DefineConstants>RELEASE</DefineConstants>
+		<OutputPath>bin/Release</OutputPath>
 		<Optimize>true</Optimize>
 	</PropertyGroup>
 	<PropertyGroup Condition="$(Configuration.EndsWith('MacOS'))">
 		<DefineConstants>MACOS</DefineConstants>
-		<OutputPath>bin/Debug</OutputPath>
 	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="../../CivOne.csproj" />
