@@ -24,18 +24,13 @@ namespace CivOne.Screens.Reports
 
 				byte id = Game.PlayerNumber(player);
 				byte colour = Common.ColourLight[id];
-				if (player.IsHuman)
+				if (player.IsHuman || Human.HasEmbassy(player))
 				{
 					int unitCount = Game.GetUnits().Count(u => u.Owner == id && u.Home != null);
 
 					this.DrawText($"{player.TribeNamePlural}: {player.LeaderName}", 0, 5, 8, yy + 3)
-						.DrawText($"{player.TribeNamePlural}: {player.LeaderName}", 0, colour, 8, yy + 2)
+						.DrawText($"{player.TribeNamePlural}: {player.LeaderName}", 0, 15, 8, yy + 2)
 						.DrawText($"{player.Government.Name}, {player.Gold}$, {unitCount} Units.", 0, colour, 160, yy + 2);
-				}
-				else if (Human.HasEmbassy(player))
-				{
-					// TODO: Show embassy details
-					this.DrawText("Embassy established.", 0, colour, 160, yy + 2, TextAlign.Center);
 				}
 				else
 				{
