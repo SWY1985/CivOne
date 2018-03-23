@@ -131,6 +131,7 @@ namespace CivOne
 		public string LeaderName => _civilization.Leader.Name;
 		public string TribeName => _tribeName;
 		public string TribeNamePlural => _tribeNamePlural;
+		public string Capital => Game.GetCities().FirstOrDefault(x => this == x.Owner && x.HasBuilding<Palace>())?.Name ?? "NONE";
 
 		public byte Handicap { get; internal set; }
 

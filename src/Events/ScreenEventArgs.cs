@@ -17,6 +17,7 @@ namespace CivOne.Events
 
 	public class ScreenEventArgs : EventArgs
 	{
+		public bool Handled { get; set; }
 		public int X { get; private set; }
 		public int Y { get; private set; }
 		public MouseButton Buttons { get; private set; }
