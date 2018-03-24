@@ -93,5 +93,31 @@ namespace CivOne
 
 		[DllImportAttribute(DLL_SDL, CallingConvention = CallingConvention.Cdecl)]
 		private static extern IntPtr SDL_Window();
+
+		[DllImport(DLL_SDL, CallingConvention = CallingConvention.Cdecl)]
+		private static extern IntPtr SDL_RWFromFile(byte[] file, byte[] mode);
+
+		[DllImportAttribute(DLL_SDL, CallingConvention = CallingConvention.Cdecl)]
+		private static extern IntPtr SDL_LoadWAV_RW(IntPtr source, int freeSource, ref SDL_AudioSpec specs, out IntPtr buffer, out uint length);
+		
+		private static IntPtr SDL_LoadWAV_RW(string filename, int freeSource, ref SDL_AudioSpec specs, out IntPtr buffer, out uint length) => SDL_LoadWAV_RW(SDL_RWFromFile(Encoding.UTF8.GetBytes($"{filename}{'\0'}"), Encoding.UTF8.GetBytes($"rb{'\0'}")), freeSource, ref specs, out buffer, out length);
+
+		[DllImport(DLL_SDL, CallingConvention = CallingConvention.Cdecl)]
+		public static extern void SDL_FreeWAV(IntPtr buffer);
+
+		[DllImportAttribute(DLL_SDL, CallingConvention = CallingConvention.Cdecl)]
+		private static extern uint SDL_GetQueuedAudioSize(uint device);
+		
+		[DllImport(DLL_SDL, CallingConvention = CallingConvention.Cdecl)]
+		private static extern int SDL_OpenAudio(ref SDL_AudioSpec desired, out SDL_AudioSpec obtained);
+
+		[DllImportAttribute(DLL_SDL, CallingConvention = CallingConvention.Cdecl)]
+		private static extern int SDL_QueueAudio(uint deviceId, IntPtr data, uint length);
+
+		[DllImport(DLL_SDL, CallingConvention = CallingConvention.Cdecl)]
+		private static extern void SDL_PauseAudio(int pauseOn);
+
+		[DllImport(DLL_SDL, CallingConvention = CallingConvention.Cdecl)]
+		private static extern void SDL_CloseAudio();
 	}
 }

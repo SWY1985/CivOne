@@ -36,6 +36,8 @@ namespace CivOne
 		public event KeyboardEventHandler KeyboardUp, KeyboardDown;
 		public event ScreenEventHandler MouseUp, MouseDown, MouseMove;
 		internal event EventHandler CursorChanged;
+		internal event Action<string> PlaySound;
+		internal event Action StopSound;
 		
 		public RuntimeSettings Settings { get; private set; }
 		public MouseCursor CurrentCursor { internal get; set; }
@@ -58,8 +60,8 @@ namespace CivOne
 		int IRuntime.CanvasHeight => CanvasSize.Height;
 		
 		string IRuntime.BrowseFolder(string caption) => Native.FolderBrowser(caption);
-		void IRuntime.PlaySound(string filename) => Console.WriteLine("PLAY SOUND NOT IMPLEMENTED");
-		void IRuntime.StopSound() => Console.WriteLine("STOP SOUND NOT IMPLEMENTED");
+		void IRuntime.PlaySound(string filename) => PlaySound?.Invoke(filename);
+		void IRuntime.StopSound() => StopSound?.Invoke();
 		void IRuntime.Quit() => SignalQuit = true;
 
 		public Runtime(RuntimeSettings settings)

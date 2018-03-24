@@ -336,7 +336,7 @@ namespace CivOne.Screens
 			
 			Palette = _pictures[2].Palette;
 
-			Runtime.PlaySound("opening");
+			PlaySound("opening");
 
 			if (!Runtime.Settings.ShowCredits) SkipIntro();
 		}

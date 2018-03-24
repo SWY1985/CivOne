@@ -90,6 +90,7 @@ namespace CivOne
 					OnDraw?.Invoke(this, EventArgs.Empty);
 
 					HandleMouse();
+					HandleSound();
 
 					if (!_redraw)
 					{
@@ -127,7 +128,7 @@ namespace CivOne
 
 			public Window(string title, int width, int height, bool fullscreen, bool softwareRender = false)
 			{
-				SDL_Init(SDL_INIT.VIDEO);
+				SDL_Init(SDL_INIT.VIDEO | SDL_INIT.AUDIO);
 
 				SDL_WINDOW flags = SDL_WINDOW.RESIZABLE;
 				if (_fullscreen = fullscreen) flags |= SDL_WINDOW.FULLSCREEN_DESKTOP;
