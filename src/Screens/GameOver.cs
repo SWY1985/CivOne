@@ -47,6 +47,8 @@ namespace CivOne.Screens
 			_background = Resources["ARCH"];
 			Palette = _background.Palette;
 			this.AddLayer(_background);
+
+			PlaySound("lose2");
 			
 			// Load text and replace strings
 			_textLines = TextFile.Instance.GetGameText("KING/ARCH");
