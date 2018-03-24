@@ -296,6 +296,12 @@ namespace CivOne.Units
 				int xx = (X - Common.GamePlay.X + relX) * 16;
 				int yy = (Y - Common.GamePlay.Y + relY) * 16;
 				Show nuke = Show.Nuke(xx, yy);
+
+				if (Map[X, Y][relX, relY].City != null)
+					PlaySound("airnuke");
+				else
+					PlaySound("s_nuke");
+
 				nuke.Done += (s, a) =>
 				{
 					foreach (ITile tile in Map.QueryMapPart(X + relX - 1, Y + relY - 1, 3, 3))
@@ -312,7 +318,18 @@ namespace CivOne.Units
 			{
 				Movement.Done += (s, a) =>
 				{
-					PlaySound("they_die");
+					if (this is Cannon)
+					{
+						PlaySound("cannon");
+					}
+					else if (this is Musketeers || this is Riflemen || this is Armor || this is Artillery || this is MechInf)
+					{
+						PlaySound("s_land");
+					}
+					else
+					{
+						PlaySound("they_die");
+					}
 
 					IUnit unit = Map[X, Y][relX, relY].Units.FirstOrDefault();
 					if (unit != null)
@@ -349,7 +366,18 @@ namespace CivOne.Units
 			{
 				Movement.Done += (s, a) =>
 				{
-					PlaySound("we_die");
+					if (this is Cannon)
+					{
+						PlaySound("cannon");
+					}
+					else if (this is Musketeers || this is Riflemen || this is Armor || this is Artillery || this is MechInf)
+					{
+						PlaySound("s_land");
+					}
+					else
+					{
+						PlaySound("we_die");
+					}
 					GameTask.Insert(Show.DestroyUnit(this, false));
 					Movement = null;
 				};
