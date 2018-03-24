@@ -221,7 +221,7 @@ namespace CivOne.Screens
 					yy += 8;
 				}
 
-				Runtime.PlaySound(Human.Civilization.Tune);
+				PlaySound(Human.Civilization.Tune);
 				
 				_showIntroText = true;
 				return true;

@@ -312,7 +312,7 @@ namespace CivOne.Units
 			{
 				Movement.Done += (s, a) =>
 				{
-					Runtime.PlaySound("they_die");
+					PlaySound("they_die");
 
 					IUnit unit = Map[X, Y][relX, relY].Units.FirstOrDefault();
 					if (unit != null)
@@ -349,7 +349,7 @@ namespace CivOne.Units
 			{
 				Movement.Done += (s, a) =>
 				{
-					Runtime.PlaySound("we_die");
+					PlaySound("we_die");
 					GameTask.Insert(Show.DestroyUnit(this, false));
 					Movement = null;
 				};
