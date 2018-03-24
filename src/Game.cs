@@ -171,6 +171,8 @@ namespace CivOne
 
 			if (!_players.Any(x => Game.PlayerNumber(x) != 0 && x != Human && !x.IsDestroyed()))
 			{
+				PlaySound("wintune");
+
 				GameTask conquest;
 				GameTask.Enqueue(Message.Newspaper(null, "Your civilization", "has conquered", "the entire planet!"));
 				GameTask.Enqueue(conquest = Show.Screen<Conquest>());
