@@ -15,6 +15,11 @@ using CivOne.Graphics;
 using CivOne.IO;
 using CivOne.UserInterface;
 
+using static CivOne.Enums.AspectRatio;
+using static CivOne.Enums.CursorType;
+using static CivOne.Enums.DestroyAnimation;
+using static CivOne.Enums.GraphicsMode;
+
 namespace CivOne.Screens
 {
 	[Break, Expand]
@@ -36,481 +41,159 @@ namespace CivOne.Screens
 			
 			return false;
 		}
-		
-		private int GetMenuWidth(string title, string[] items)
-		{
-			int i = 0;
-			Picture[] texts = new Picture[items.Length + 1];
-			texts[i++] = Resources.GetText(" " + title, MenuFont, 15);
-			foreach (string item in items)
-				texts[i++] = Resources.GetText(" " + item, MenuFont, 5);
-			return (texts.Select(t => t.Width).Max()) + 6;
-		}
-		
-		private int GetMenuHeight(string title, string[] items)
-		{
-			int menuItems = items.Length;
-			if (title != null) menuItems++;
-			return menuItems * Resources.GetFontHeight(MenuFont);
-		}
-		
-		private Menu CreateMenu(string title, MenuItemEventHandler<int> setChoice, params string[] menuTexts)
-		{
-			int width = GetMenuWidth(title, menuTexts);
-			int height = GetMenuHeight(title, menuTexts);
-			Menu menu = new Menu("Setup", Palette)
+
+		private void CreateMenu(string title, int activeItem, MenuItemEventHandler<int> always, params MenuItem<int>[] items) =>
+			AddMenu(new Menu("Setup", Palette)
 			{
-				Title = title,
-				X = (Width - width) / 2,
-				Y = (Height - height) / 2,
-				MenuWidth = width,
+				Title = $"{title.ToUpper()}:",
 				TitleColour = 15,
 				ActiveColour = 11,
 				TextColour = 5,
 				DisabledColour = 8,
 				FontId = MenuFont,
 				IndentTitle = 2
-			};
-			
-			for (int i = 0; i < menuTexts.Length; i++)
-			{
-				menu.Items.Add(menuTexts[i], i).OnSelect(setChoice);
 			}
-			return menu;
-		}
+			.Items(items)
+			.Always(always)
+			.Center(this)
+			.SetActiveItem(activeItem)
+		);
+		private void CreateMenu(string title, MenuItemEventHandler<int> always, params MenuItem<int>[] items) => CreateMenu(title, -1, always, items);
+		private void CreateMenu(string title, int activeItem, params MenuItem<int>[] items) => CreateMenu(title, activeItem, null, items);
+		private void CreateMenu(string title, params MenuItem<int>[] items) => CreateMenu(title, -1, null, items);
 		
-		private void MainMenu(int activeItem = 0)
+		private MenuItemEventHandler<int> GotoMenu(Action<int> action, int selectedItem = 0) => (s, a) =>
 		{
-			Menu menu = CreateMenu("CIVONE SETUP:", MainChoice, "Settings", "Patches", "Mods", "Launch Game", "Quit");
-			menu.Items[2].Enabled = false; // Mods: Not yet implemented
-			menu.ActiveItem = activeItem;
-			AddMenu(menu);
-		}
-		
-		private void SettingsMenu(int activeItem = 0)
-		{
-			string graphicsMode, fullScreen, scale, aspectRatio;
-			switch (Settings.GraphicsMode)
-			{
-				case GraphicsMode.Graphics256: graphicsMode = "256 colors"; break;
-				case GraphicsMode.Graphics16: graphicsMode = "16 colors"; break;
-				default: graphicsMode = "unknown"; break;
-			}
+			CloseMenus();
+			action(selectedItem);
+		};
 
-			switch (Settings.AspectRatio)
-			{
-				case AspectRatio.Fixed: aspectRatio = "Fixed"; break;
-				case AspectRatio.Scaled: aspectRatio = "Scaled (blurry)"; break;
-				case AspectRatio.ScaledFixed: aspectRatio = "Scaled and fixed (blurry)"; break;
-				case AspectRatio.Expand: aspectRatio = "Expand (experimental)"; break;
-				default: aspectRatio = "Automatic"; break;
-			}
-			
-			graphicsMode = string.Format("Graphics Mode: {0}", graphicsMode);
-			fullScreen = string.Format("Full Screen: {0}", Settings.FullScreen ? "yes" : "no");
-			scale = string.Format("Window scale: {0}x", Settings.Scale);
-			aspectRatio = string.Format("Aspect ratio: {0}", aspectRatio);
-			
-			Menu menu = CreateMenu("SETTINGS:", SettingsChoice, graphicsMode, fullScreen, scale, aspectRatio, "Back");
-			menu.ActiveItem = activeItem;
-			AddMenu(menu);
-		}
-		
-		private void GraphicsModeMenu()
+		private MenuItemEventHandler<int> GotoMenu(Action action) => (s, a) =>
 		{
-			Menu menu = CreateMenu("GRAPHICS MODE:", GraphicsModeChoice, "256 colors (default)", "16 colors", "Back");
-			switch (Settings.GraphicsMode)
-			{
-				case GraphicsMode.Graphics256: 
-					menu.ActiveItem = 0;
-					break;
-				case GraphicsMode.Graphics16: 
-					menu.ActiveItem = 1;
-					break;
-			}
-			AddMenu(menu);
-		}
-		
-		private void FullScreenMenu()
-		{
-			Menu menu = CreateMenu("FULL SCREEN:", FullScreenChoice, "No (default)", "Yes", "Back");
-			menu.ActiveItem = Settings.FullScreen ? 1 : 0;
-			AddMenu(menu);
-		}
-		
-		private void WindowScaleMenu()
-		{
-			Menu menu = CreateMenu("WINDOW SCALE:", WindowScaleChoice, "1x", "2x", "3x", "4x", "Back");
-			menu.ActiveItem = Settings.Scale - 1;
-			AddMenu(menu);
-		}
-		
-		private void AspectRatioMenu()
-		{
-			Menu menu = CreateMenu("ASPECT RATIO:", AspectRatioChoice, "Automatic", "Fixed", "Scaled (blurry)", "Scaled and fixed (blurry)", "Expand (experimental)", "Back");
-			menu.ActiveItem = (int)Settings.AspectRatio;
-			AddMenu(menu);
-		}
-		
-		private void PatchesMenu(int activeItem = 0)
-		{
-			string revealWorld, sideBar, debugMenu, cursorType, destroyAnimation, deityMenu, arrowHelperMenu, customMapSizeMenu;
-			switch (Settings.CursorType)
-			{
-				case CursorType.Builtin: cursorType = "Built-in"; break;
-				case CursorType.Native: cursorType = "Native"; break;
-				default: cursorType = "Default"; break;
-			}
+			CloseMenus();
+			action();
+		};
 
-			switch (Settings.DestroyAnimation)
-			{
-				case DestroyAnimation.Noise: destroyAnimation = "Noise"; break;
-				default: destroyAnimation = "Sprites (original)"; break;
-			}
+		private MenuItemEventHandler<int> CloseScreen(Action action = null) => (s, a) =>
+		{
+			Destroy();
+			if (action != null) action();
+		};
+		
+		private void MainMenu(int activeItem = 0) => CreateMenu("CivOne Setup", activeItem,
+			MenuItem.Create("Settings").OnSelect(GotoMenu(SettingsMenu)),
+			MenuItem.Create("Patches").OnSelect(GotoMenu(PatchesMenu)),
+			MenuItem.Create("Plugins").Disable(),
+			MenuItem.Create("Launch Game").OnSelect(CloseScreen()),
+			MenuItem.Create("Quit").OnSelect(CloseScreen(Runtime.Quit))
+		);
 
-			revealWorld = $"Reveal World: {(Settings.RevealWorld ? "yes" : "no")}";
-			sideBar = $"Side bar location: {(Settings.RightSideBar ? "right" : "left")}";
-			debugMenu = $"Show debug menu: {(Settings.DebugMenu ? "yes" : "no")}";
-			cursorType = $"Mouse cursor type: {cursorType}";
-			destroyAnimation = $"Destroy animation: {destroyAnimation}";
-			deityMenu = $"Enable Deity difficulty: {(Settings.DeityEnabled ? "yes" : "no")}";
-			arrowHelperMenu = $"Enable (no keypad) arrow helper: {(Settings.ArrowHelper ? "yes" : "no")}";
-			customMapSizeMenu = $"Custom map sizes (experimental): {(Settings.CustomMapSize ? "yes" : "no")}";
-			
-			Menu menu = CreateMenu("PATCHES:", PatchesChoice, revealWorld, sideBar, debugMenu, cursorType, destroyAnimation, deityMenu, arrowHelperMenu, customMapSizeMenu, "Back");
-			menu.ActiveItem = activeItem;
-			AddMenu(menu);
-		}
-		
-		private void RevealWorldMenu()
-		{
-			Menu menu = CreateMenu("REVEAL WORLD:", RevealWorldChoice, "No (default)", "Yes", "Back");
-			menu.ActiveItem = Settings.RevealWorld ? 1 : 0;
-			AddMenu(menu);
-		}
-		
-		private void SideBarMenu()
-		{
-			Menu menu = CreateMenu("SIDE BAR LOCATION:", SideBarChoice, "Left (default)", "Right", "Back");
-			menu.ActiveItem = Settings.RightSideBar ? 1 : 0;
-			AddMenu(menu);
-		}
-		
-		private void DebugMenuMenu()
-		{
-			Menu menu = CreateMenu("SHOW DEBUG MENU:", DebugMenuChoice, "No (default)", "Yes", "Back");
-			menu.ActiveItem = Settings.DebugMenu ? 1 : 0;
-			AddMenu(menu);
-		}
+		private void SettingsMenu(int activeItem = 0) => CreateMenu("Settings", activeItem,
+			MenuItem.Create($"Graphics Mode: {Settings.GraphicsMode.ToText()}").OnSelect(GotoMenu(GraphicsModeMenu)),
+			MenuItem.Create($"Aspect Ratio: {Settings.AspectRatio.ToText()}").OnSelect(GotoMenu(AspectRatioMenu)),
+			MenuItem.Create($"Full Screen: {Settings.FullScreen.YesNo()}").OnSelect(GotoMenu(FullScreenMenu)),
+			MenuItem.Create($"Window Scale: {Settings.Scale}x").OnSelect(GotoMenu(WindowScaleMenu)),
+			MenuItem.Create($"Aspect Ratio: {Settings.AspectRatio.ToText()}").OnSelect(GotoMenu(AspectRatioMenu)),
+			MenuItem.Create($"Back").OnSelect(GotoMenu(MainMenu, 0))
+		);
 
-		private void CursorTypeMenu()
-		{
-			Menu menu = CreateMenu("MOUSE CURSOR TYPE:", CursorTypeChoice, "Default", "Built-in", "Native", "Back");
-			menu.ActiveItem = (int)Settings.CursorType;
-			if (menu.ActiveItem == (int)CursorType.Default && !FileSystem.DataFilesExist(FileSystem.MouseCursorFiles))
-			{
-				menu.ActiveItem = (int)CursorType.Builtin;
-			}
-			menu.Items[0].Enabled = (FileSystem.DataFilesExist(FileSystem.MouseCursorFiles));
-			AddMenu(menu);
-		}
+		private void GraphicsModeMenu() => CreateMenu("Graphics Mode", GotoMenu(SettingsMenu, 0),
+			MenuItem.Create($"{Graphics256.ToText()} (default)").OnSelect((s, a) => Settings.GraphicsMode = Graphics256).SetActive(() => Settings.GraphicsMode == Graphics256),
+			MenuItem.Create(Graphics16.ToText()).OnSelect((s, a) => Settings.GraphicsMode = Graphics16).SetActive(() => Settings.GraphicsMode == Graphics16),
+			MenuItem.Create("Back")
+		);
 
-		private void DestroyAnimationMenu()
-		{
-			Menu menu = CreateMenu("DESTROY ANIMATION:", DestroyAnimationChoice, "Sprites (original)", "Noise", "Back");
-			menu.ActiveItem = (int)Settings.DestroyAnimation;
-			AddMenu(menu);
-		}
-		
-		private void DeityEnabledMenu()
-		{
-			Menu menu = CreateMenu("ENABLE DEITY DIFFICULTY:", DeityEnabledChoice, "No", "Yes", "Back");
-			menu.ActiveItem = Settings.DeityEnabled ? 1 : 0;
-			AddMenu(menu);
-		}
-		
-		private void ArrowHelperMenu()
-		{
-			Menu menu = CreateMenu("ENABLE (NO KEYPAD) ARROW HELPER:", ArrowHelperChoice, "No", "Yes", "Back");
-			menu.ActiveItem = Settings.ArrowHelper ? 1 : 0;
-			AddMenu(menu);
-		}
+		private void AspectRatioMenu() => CreateMenu("Aspect Ratio", GotoMenu(SettingsMenu, 1),
+			MenuItem.Create($"{Auto.ToText()} (default)").OnSelect((s, a) => Settings.AspectRatio = Auto).SetActive(() => Settings.AspectRatio == Auto),
+			MenuItem.Create(Fixed.ToText()).OnSelect((s, a) => Settings.AspectRatio = Fixed).SetActive(() => Settings.AspectRatio == Fixed),
+			MenuItem.Create(Scaled.ToText()).OnSelect((s, a) => Settings.AspectRatio = Scaled).SetActive(() => Settings.AspectRatio == Scaled),
+			MenuItem.Create(ScaledFixed.ToText()).OnSelect((s, a) => Settings.AspectRatio = ScaledFixed).SetActive(() => Settings.AspectRatio == ScaledFixed),
+			MenuItem.Create(AspectRatio.Expand.ToText()).OnSelect((s, a) => Settings.AspectRatio = AspectRatio.Expand).SetActive(() => Settings.AspectRatio == AspectRatio.Expand),
+			MenuItem.Create("Back")
+		);
 
-		private void CustomMapSizeMenu()
-		{
-			Menu menu = CreateMenu("CUSTOM MAP SIZES (EXPERIMENTAL):", CustomMapSizeChoice, "No", "Yes", "Back");
-			menu.ActiveItem = Settings.CustomMapSize ? 1 : 0;
-			AddMenu(menu);
-		}
-		
-		private void MainChoice(object sender, MenuItemEventArgs<int> args)
-		{
-			switch (args.Value)
-			{
-				case 0: // Settings
-					CloseMenus();
-					SettingsMenu();
-					break;
-				case 1: // Patches
-					CloseMenus();
-					PatchesMenu();
-					return;
-				case 2: // Mods: Not yet implemented
-					return;
-				case 3:
-					Destroy();
-					return;
-				case 4:
-					Destroy();
-					Runtime.Quit();
-					return;
-			}
-		}
-		
-		private void SettingsChoice(object sender, MenuItemEventArgs<int> args)
-		{
-			CloseMenus();
-			switch (args.Value)
-			{
-				case 0: // Graphics Mode
-					GraphicsModeMenu();
-					break;
-				case 1: // Full Screen
-					FullScreenMenu();
-					break;
-				case 2: // Scale
-					WindowScaleMenu();
-					break;
-				case 3: // Aspect Ratio
-					AspectRatioMenu();
-					break;
-				case 4: // Back
-					MainMenu();
-					break;
-			}
-		}
-		
-		private void GraphicsModeChoice(object sender, MenuItemEventArgs<int> args)
-		{
-			CloseMenus();
-			switch (args.Value)
-			{
-				case 0: // 256 colours
-					Settings.GraphicsMode = GraphicsMode.Graphics256;
-					break;
-				case 1: // 16 colours
-					Settings.GraphicsMode = GraphicsMode.Graphics16;
-					break;
-			}
-			SettingsMenu(0);
-		}
-		
-		private void FullScreenChoice(object sender, MenuItemEventArgs<int> args)
-		{
-			switch (args.Value)
-			{
-				case 0: // no
-					Settings.FullScreen = false;
-					break;
-				case 1: // yes
-					Settings.FullScreen = true;
-					break;
-			}
-			CloseMenus();
-			SettingsMenu(1);
-		}
-		
-		private void WindowScaleChoice(object sender, MenuItemEventArgs<int> args)
-		{
-			int choice = args.Value;
-			if (choice < 4)
-			{
-				Settings.Scale = (choice + 1);
-			}
-			CloseMenus();
-			SettingsMenu(2);
-		}
+		private void FullScreenMenu() => CreateMenu("Full Screen", GotoMenu(SettingsMenu, 2),
+			MenuItem.Create($"{false.YesNo()} (default)").OnSelect((s, a) => Settings.FullScreen = false).SetActive(() => !Settings.FullScreen),
+			MenuItem.Create(true.YesNo()).OnSelect((s, a) => Settings.FullScreen = true).SetActive(() => Settings.FullScreen),
+			MenuItem.Create("Back")
+		);
 
-		private void AspectRatioChoice(object sender, MenuItemEventArgs<int> args)
-		{
-			int choice = args.Value;
-			if (choice < 5)
-			{
-				Settings.AspectRatio = (AspectRatio)(choice);
-			}
-			CloseMenus();
-			SettingsMenu(3);
-		}
+		private void WindowScaleMenu() => CreateMenu("Window Scale", GotoMenu(SettingsMenu, 3),
+			MenuItem.Create("1x").OnSelect((s, a) => Settings.Scale = 1).SetActive(() => Settings.Scale == 1),
+			MenuItem.Create("2x (default)").OnSelect((s, a) => Settings.Scale = 2).SetActive(() => Settings.Scale == 2),
+			MenuItem.Create("3x").OnSelect((s, a) => Settings.Scale = 3).SetActive(() => Settings.Scale == 3),
+			MenuItem.Create("4x").OnSelect((s, a) => Settings.Scale = 4).SetActive(() => Settings.Scale == 4),
+			MenuItem.Create("Back")
+		);
 
-		private void PatchesChoice(object sender, MenuItemEventArgs<int> args)
-		{
-			CloseMenus();
-			switch (args.Value)
-			{
-				case 0: // Reveal World
-					RevealWorldMenu();
-					break;
-				case 1: // Side bar
-					SideBarMenu();
-					break;
-				case 2: // Debug Menu
-					DebugMenuMenu();
-					break;
-				case 3: // Cursor Type
-					CursorTypeMenu();
-					break;
-				case 4: // Destroy Animation
-					DestroyAnimationMenu();
-					break;
-				case 5: // Enable Deity difficulty
-					DeityEnabledMenu();
-					break;
-				case 6: // Enable (no keypad) arrow helper
-					ArrowHelperMenu();
-					break;
-				case 7: // Custom map sizes (experimental)
-					CustomMapSizeMenu();
-					break;
-				case 8: // Back
-					MainMenu(1);
-					break;
-			}
-		}
-		
-		private void RevealWorldChoice(object sender, MenuItemEventArgs<int> args)
-		{
-			switch (args.Value)
-			{
-				case 0: // no
-					Settings.RevealWorld = false;
-					break;
-				case 1: // yes
-					Settings.RevealWorld = true;
-					break;
-			}
-			CloseMenus();
-			PatchesMenu(0);
-		}
-		
-		private void SideBarChoice(object sender, MenuItemEventArgs<int> args)
-		{
-			switch (args.Value)
-			{
-				case 0: // left
-					Settings.RightSideBar = false;
-					break;
-				case 1: // right
-					Settings.RightSideBar = true;
-					break;
-			}
-			CloseMenus();
-			PatchesMenu(1);
-		}
-		
-		private void DebugMenuChoice(object sender, MenuItemEventArgs<int> args)
-		{
-			switch (args.Value)
-			{
-				case 0: // no
-					Settings.DebugMenu = false;
-					break;
-				case 1: // yes
-					Settings.DebugMenu = true;
-					break;
-			}
-			CloseMenus();
-			PatchesMenu(2);
-		}
-		
-		private void CursorTypeChoice(object sender, MenuItemEventArgs<int> args)
-		{
-			switch (args.Value)
-			{
-				case 0:
-					Settings.CursorType = CursorType.Default;
-					break;
-				case 1:
-					Settings.CursorType = CursorType.Builtin;
-					break;
-				case 2:
-					Settings.CursorType = CursorType.Native;
-					break;
-			}
-			CloseMenus();
-			PatchesMenu(3);
-		}
+		private void PatchesMenu(int activeItem = 0) => CreateMenu("Patches", activeItem,
+			MenuItem.Create($"Reveal world: {Settings.RevealWorld.YesNo()}").OnSelect(GotoMenu(RevealWorldMenu)),
+			MenuItem.Create($"Side bar location: {(Settings.RightSideBar ? "right" : "left")}").OnSelect(GotoMenu(SideBarMenu)),
+			MenuItem.Create($"Debug menu: {Settings.DebugMenu.YesNo()}").OnSelect(GotoMenu(DebugMenuMenu)),
+			MenuItem.Create($"Cursor type: {Settings.CursorType.ToText()}").OnSelect(GotoMenu(CursorTypeMenu)),
+			MenuItem.Create($"Destroy animation: {Settings.DestroyAnimation.ToText()}").OnSelect(GotoMenu(DestroyAnimationMenu)),
+			MenuItem.Create($"Enable Deity difficulty: {Settings.DeityEnabled.YesNo()}").OnSelect(GotoMenu(DeityEnabledMenu)),
+			MenuItem.Create($"Enable (no keypad) arrow helper: {Settings.ArrowHelper.YesNo()}").OnSelect(GotoMenu(ArrowHelperMenu)),
+			MenuItem.Create($"Custom map sizes (experimental): {Settings.CustomMapSize.YesNo()}").OnSelect(GotoMenu(CustomMapSizeMenu)),
+			MenuItem.Create("Back").OnSelect(GotoMenu(MainMenu, 1))
+		);
 
-		private void DestroyAnimationChoice(object sender, MenuItemEventArgs<int> args)
-		{
-			switch (args.Value)
-			{
-				case 0:
-					Settings.DestroyAnimation = DestroyAnimation.Sprites;
-					break;
-				case 1:
-					Settings.DestroyAnimation = DestroyAnimation.Noise;
-					break;
-			}
-			CloseMenus();
-			PatchesMenu(4);
-		}
-		
-		private void DeityEnabledChoice(object sender, MenuItemEventArgs<int> args)
-		{
-			switch (args.Value)
-			{
-				case 0: // no
-					Settings.DeityEnabled = false;
-					break;
-				case 1: // yes
-					Settings.DeityEnabled = true;
-					break;
-			}
-			CloseMenus();
-			PatchesMenu(5);
-		}
+		private void RevealWorldMenu() => CreateMenu("Reveal world", GotoMenu(PatchesMenu, 0),
+			MenuItem.Create($"{false.YesNo()} (default)").OnSelect((s, a) => Settings.RevealWorld = false).SetActive(() => !Settings.RevealWorld),
+			MenuItem.Create(true.YesNo()).OnSelect((s, a) => Settings.RevealWorld = true).SetActive(() => Settings.RevealWorld),
+			MenuItem.Create("Back")
+		);
 
-		private void ArrowHelperChoice(object sender, MenuItemEventArgs<int> args)
-		{
-			switch (args.Value)
-			{
-				case 0: // no
-					Settings.ArrowHelper = false;
-					break;
-				case 1: // yes
-					Settings.ArrowHelper = true;
-					break;
-			}
-			CloseMenus();
-			PatchesMenu(6);
-		}
+		private void SideBarMenu() => CreateMenu("Side bar location", GotoMenu(PatchesMenu, 1),
+			MenuItem.Create("Left (default)").OnSelect((s, a) => Settings.RightSideBar = false).SetActive(() => !Settings.RightSideBar),
+			MenuItem.Create("Right").OnSelect((s, a) => Settings.RightSideBar = true).SetActive(() => Settings.RightSideBar),
+			MenuItem.Create("Back")
+		);
 
-		private void CustomMapSizeChoice(object sender, MenuItemEventArgs<int> args)
-		{
-			switch (args.Value)
-			{
-				case 0: // no
-					Settings.CustomMapSize = false;
-					break;
-				case 1: // yes
-					Settings.CustomMapSize = true;
-					break;
-			}
-			CloseMenus();
-			PatchesMenu(7);
-		}
+		private void DebugMenuMenu() => CreateMenu("Show debug menu", GotoMenu(PatchesMenu, 2),
+			MenuItem.Create($"{false.YesNo()} (default)").OnSelect((s, a) => Settings.DebugMenu = false).SetActive(() => !Settings.DebugMenu),
+			MenuItem.Create(true.YesNo()).OnSelect((s, a) => Settings.DebugMenu = true).SetActive(() => Settings.DebugMenu),
+			MenuItem.Create("Back")
+		);
+
+		private void CursorTypeMenu() => CreateMenu("Mouse cursor type", GotoMenu(PatchesMenu, 3),
+			MenuItem.Create(Default.ToText()).OnSelect((s, a) => Settings.CursorType = Default).SetActive(() => Settings.CursorType == Default && FileSystem.DataFilesExist(FileSystem.MouseCursorFiles)).SetEnabled(FileSystem.DataFilesExist(FileSystem.MouseCursorFiles)),
+			MenuItem.Create(Builtin.ToText()).OnSelect((s, a) => Settings.CursorType = Builtin).SetActive(() => Settings.CursorType == Builtin || (Settings.CursorType == Default && !FileSystem.DataFilesExist(FileSystem.MouseCursorFiles))),
+			MenuItem.Create(Native.ToText()).OnSelect((s, a) => Settings.CursorType = Native).SetActive(() => Settings.CursorType == Native),
+			MenuItem.Create("Back")
+		);
+
+		private void DestroyAnimationMenu() => CreateMenu("Destroy animation", GotoMenu(PatchesMenu, 4),
+			MenuItem.Create(Sprites.ToText()).OnSelect((s, a) => Settings.DestroyAnimation = Sprites).SetActive(() => Settings.DestroyAnimation == Sprites),
+			MenuItem.Create(Noise.ToText()).OnSelect((s, a) => Settings.DestroyAnimation = Noise).SetActive(() => Settings.DestroyAnimation == Noise),
+			MenuItem.Create("Back")
+		);
+
+		private void DeityEnabledMenu() => CreateMenu("Enable Deity difficulty", GotoMenu(PatchesMenu, 5),
+			MenuItem.Create($"{false.YesNo()} (default)").OnSelect((s, a) => Settings.DeityEnabled = false).SetActive(() => !Settings.DeityEnabled),
+			MenuItem.Create(true.YesNo()).OnSelect((s, a) => Settings.DeityEnabled = true).SetActive(() => Settings.DeityEnabled),
+			MenuItem.Create("Back")
+		);
+
+		private void ArrowHelperMenu() => CreateMenu("Enable (no keypad) arrow helper", GotoMenu(PatchesMenu, 6),
+			MenuItem.Create($"{false.YesNo()} (default)").OnSelect((s, a) => Settings.ArrowHelper = false).SetActive(() => !Settings.ArrowHelper),
+			MenuItem.Create(true.YesNo()).OnSelect((s, a) => Settings.ArrowHelper = true).SetActive(() => Settings.ArrowHelper),
+			MenuItem.Create("Back")
+		);
+
+		private void CustomMapSizeMenu() => CreateMenu("Custom map sizes (experimental)", GotoMenu(PatchesMenu, 7),
+			MenuItem.Create($"{false.YesNo()} (default)").OnSelect((s, a) => Settings.CustomMapSize = false).SetActive(() => !Settings.CustomMapSize),
+			MenuItem.Create(true.YesNo()).OnSelect((s, a) => Settings.CustomMapSize = true).SetActive(() => Settings.CustomMapSize),
+			MenuItem.Create("Back")
+		);
 
 		private void Resize(object sender, ResizeEventArgs args)
 		{
 			this.Clear(3);
 
-			foreach (Menu menu in Common.Screens.Where(x => x is Menu && (x as Menu).Id == "Setup"))
+			foreach (Menu menu in Menus["Setup"])
 			{
-				int menuHeight = GetMenuHeight(menu.Title, menu.Items.Select(x => x.Text).ToArray());
-
-				menu.X = (args.Width - menu.MenuWidth) / 2;
-				menu.Y = (args.Height - menuHeight) / 2;
-				menu.ForceUpdate();
+				menu.Center(this).ForceUpdate();
 			}
 
 			_update = true;

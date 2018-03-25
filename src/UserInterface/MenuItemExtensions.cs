@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using CivOne.Events;
 
 namespace CivOne.UserInterface
@@ -30,6 +31,14 @@ namespace CivOne.UserInterface
 			menuItem.Enabled = enabled;
 			return menuItem;
 		}
+
+		public static MenuItem<T> SetActive<T>(this MenuItem<T> menuItem, Func<bool> selectedCondition)
+		{
+			menuItem.SelectedCondition = selectedCondition;
+			return menuItem;
+		}
+
+		public static MenuItem<T> SetActive<T>(this MenuItem<T> menuItem) => menuItem.SetActive(() => true);
 
 		public static MenuItem<T> SetShortcut<T>(this MenuItem<T> menuItem, string shortcut)
 		{

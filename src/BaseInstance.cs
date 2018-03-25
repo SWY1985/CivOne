@@ -10,6 +10,7 @@
 using System.IO;
 using CivOne.Enums;
 using CivOne.Graphics;
+using CivOne.UserInterface;
 
 namespace CivOne
 {
@@ -21,6 +22,7 @@ namespace CivOne
 		protected static Resources Resources => Resources.Instance;
 		protected static IRuntime Runtime => RuntimeHandler.Runtime;
 		protected static Settings Settings => Settings.Instance;
+		protected static MenuCollection Menus => MenuCollection.Instance;
 
 		protected static void Log(string text, params object[] parameters) => Runtime.Log(text, parameters);
 		protected static void PlaySound(string filename)
