@@ -42,6 +42,18 @@ namespace CivOne.Screens
 			return false;
 		}
 
+		private void BrowseForSoundFiles(object sender, MenuItemEventArgs<int> args)
+		{
+			string path = Runtime.BrowseFolder("Location of Civilization for Windows sound files");
+			if (path == null)
+			{
+				// User pressed cancel
+				return;
+			}
+
+			FileSystem.CopySoundFiles(path);
+		}
+
 		private void CreateMenu(string title, int activeItem, MenuItemEventHandler<int> always, params MenuItem<int>[] items) =>
 			AddMenu(new Menu("Setup", Palette)
 			{
@@ -93,7 +105,7 @@ namespace CivOne.Screens
 			MenuItem.Create($"Aspect Ratio: {Settings.AspectRatio.ToText()}").OnSelect(GotoMenu(AspectRatioMenu)),
 			MenuItem.Create($"Full Screen: {Settings.FullScreen.YesNo()}").OnSelect(GotoMenu(FullScreenMenu)),
 			MenuItem.Create($"Window Scale: {Settings.Scale}x").OnSelect(GotoMenu(WindowScaleMenu)),
-			MenuItem.Create($"Aspect Ratio: {Settings.AspectRatio.ToText()}").OnSelect(GotoMenu(AspectRatioMenu)),
+			MenuItem.Create($"In-game sound: {Settings.GameSound.OnOff()}").OnSelect(GotoMenu(SoundMenu)),
 			MenuItem.Create($"Back").OnSelect(GotoMenu(MainMenu, 0))
 		);
 
@@ -123,6 +135,13 @@ namespace CivOne.Screens
 			MenuItem.Create("2x (default)").OnSelect((s, a) => Settings.Scale = 2).SetActive(() => Settings.Scale == 2),
 			MenuItem.Create("3x").OnSelect((s, a) => Settings.Scale = 3).SetActive(() => Settings.Scale == 3),
 			MenuItem.Create("4x").OnSelect((s, a) => Settings.Scale = 4).SetActive(() => Settings.Scale == 4),
+			MenuItem.Create("Back")
+		);
+
+		private void SoundMenu() => CreateMenu("In-game sound", GotoMenu(SettingsMenu, 4),
+			MenuItem.Create($"{true.OnOff()} (default)").OnSelect((s, a) => Settings.GameSound = true).SetActive(() => Settings.GameSound),
+			MenuItem.Create(false.OnOff()).OnSelect((s, a) => Settings.GameSound = false).SetActive(() => !Settings.GameSound),
+			MenuItem.Create("Browse for files...").OnSelect(BrowseForSoundFiles).SetEnabled(!FileSystem.SoundFilesExist()),
 			MenuItem.Create("Back")
 		);
 
