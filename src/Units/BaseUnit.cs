@@ -490,7 +490,20 @@ namespace CivOne.Units
 		
 		private static IBitmap[] _iconCache = new IBitmap[28];
 		public virtual IBitmap Icon { get; private set; }
-		public string Name { get; protected set; }
+		private string _name;
+		public string Name
+		{
+			get
+			{
+				foreach (UnitModification modification in Modifications)
+				{
+					if (!modification.Name.HasValue) continue;
+					_name = modification.Name.Value;
+				}
+				return _name;
+			}
+			protected set => _name = value;
+		}
 		public byte PageCount => 2;
 		public Picture DrawPage(byte pageNumber)
 		{
@@ -535,15 +548,70 @@ namespace CivOne.Units
 			return output;
 		}
 		
-		public IAdvance RequiredTech { get; protected set; }
+		private IAdvance _requiredTech;
+		public IAdvance RequiredTech
+		{
+			get
+			{
+				foreach (UnitModification modification in Modifications)
+				{
+					if (!modification.Requires.HasValue) continue;
+					_requiredTech = modification.Requires.Value.ToInstance();
+				}
+				return _requiredTech;
+			}
+			protected set => _requiredTech = value;
+		}
+
 		public IWonder RequiredWonder { get; protected set; }
-		public IAdvance ObsoleteTech { get; protected set; }
+
+		private IAdvance _obsoleteTech;
+		public IAdvance ObsoleteTech
+		{
+			get
+			{
+				foreach (UnitModification modification in Modifications)
+				{
+					if (!modification.Obsolete.HasValue) continue;
+					_obsoleteTech = modification.Obsolete.Value.ToInstance();
+				}
+				return _obsoleteTech;
+			}
+			protected set => _obsoleteTech = value;
+		}
+
 		public UnitClass Class { get; protected set; }
 		public UnitType Type { get; protected set; }
 		public City Home { get; protected set; }
-		public short BuyPrice { get; private set; }
+		public short _buyPrice;
+		public short BuyPrice
+		{
+			get
+			{
+				foreach (UnitModification modification in Modifications)
+				{
+					if (!modification.BuyPrice.HasValue) continue;
+					_buyPrice = modification.BuyPrice.Value;
+				}
+				return _buyPrice;
+			}
+			private set => _buyPrice = value;
+		}
 		public byte ProductionId => (byte)Type;
-		public byte Price { get; protected set; }
+		private byte _price;
+		public byte Price
+		{
+			get
+			{
+				foreach (UnitModification modification in Modifications)
+				{
+					if (!modification.Price.HasValue) continue;
+					_price = modification.Price.Value;
+				}
+				return _price;
+			}
+			protected set => _price = value;
+		}
 		public virtual UnitRole Role
 		{
 			get
@@ -561,9 +629,52 @@ namespace CivOne.Units
 				return output;
 			}
 		}
-		public byte Attack { get; protected set; }
-		public byte Defense { get; protected set; }
-		public byte Move { get; protected set; }
+
+		private byte _attack;
+		public byte Attack
+		{
+			get
+			{
+				foreach (UnitModification modification in Modifications)
+				{
+					if (!modification.Attack.HasValue) continue;
+					_attack = modification.Attack.Value;
+				}
+				return _attack;
+			}
+			protected set => _attack = value;
+		}
+		
+		private byte _defense;
+		public byte Defense
+		{
+			get
+			{
+				foreach (UnitModification modification in Modifications)
+				{
+					if (!modification.Defense.HasValue) continue;
+					_defense = modification.Defense.Value;
+				}
+				return _defense;
+			}
+			protected set => _defense = value;
+		}
+
+		private byte _move;
+		public byte Move
+		{
+			get
+			{
+				foreach (UnitModification modification in Modifications)
+				{
+					if (!modification.Moves.HasValue) continue;
+					_move = modification.Moves.Value;
+				}
+				return _move;
+			}
+			protected set => _move = value;
+		}
+
 		public int X
 		{
 			get
@@ -702,6 +813,25 @@ namespace CivOne.Units
 		}
 
 		public virtual void Explore() => Explore(1);
+
+		private static Dictionary<UnitType, List<UnitModification>> _modifications = new Dictionary<UnitType, List<UnitModification>>();
+		internal static void LoadModifications()
+		{
+			UnitModification[] unitModifications = Reflect.GetModifications<UnitModification>().ToArray();
+			if (unitModifications.Length == 0) return;
+
+			Console.Write("Applying unit modifications... ");
+
+			foreach (UnitModification modification in Reflect.GetModifications<UnitModification>())
+			{
+				if (!_modifications.ContainsKey(modification.UnitType))
+					_modifications.Add(modification.UnitType, new List<UnitModification>());
+				_modifications[modification.UnitType].Add(modification);
+			}
+
+			Console.WriteLine("done!");
+		}
+		public IEnumerable<UnitModification> Modifications => _modifications.ContainsKey(Type) ? _modifications[Type].ToArray() : new UnitModification[0];
 		
 		protected BaseUnit(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1)
 		{
@@ -716,7 +846,6 @@ namespace CivOne.Units
 			Owner = 0;
 			Status = 0;
 			RequiredWonder = null;
-			MovesLeft = move;
 		}
 	}
 }

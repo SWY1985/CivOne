@@ -162,6 +162,7 @@ namespace CivOne
 			if (_plugins == null)
 			{
 				LoadPlugins();
+				BaseUnit.LoadModifications();
 			}
 			return _plugins.Keys;
 		}
