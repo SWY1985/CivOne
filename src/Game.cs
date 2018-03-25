@@ -334,6 +334,7 @@ namespace CivOne
 			}
 			unit.X = x;
 			unit.Y = y;
+			unit.MovesLeft = unit.Move;
 			return unit;
 		}
 

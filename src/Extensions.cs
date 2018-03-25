@@ -12,6 +12,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Units;
 
@@ -213,5 +214,7 @@ namespace CivOne
 				default: return null;
 			}
 		}
+
+		public static IAdvance ToInstance(this Advance advance) => Common.Advances.FirstOrDefault(x => x.Id == (byte)advance);
 	}
 }

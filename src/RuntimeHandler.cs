@@ -195,10 +195,8 @@ namespace CivOne
 
 		private RuntimeHandler(IRuntime runtime)
 		{
-			Task.Run(() => Reflect.PreloadCivilopedia());
-
 			Runtime = runtime;
-		
+
 			runtime.Initialize += OnInitialize;
 			runtime.Update += OnUpdate;
 			runtime.Draw += OnDraw;
@@ -212,6 +210,8 @@ namespace CivOne
 			{
 				runtime.Log($"Plugin loaded: {plugin.Name} version {plugin.Version} by {plugin.Author}");
 			}
+
+			Task.Run(() => Reflect.PreloadCivilopedia());
 		}
 	}
 }

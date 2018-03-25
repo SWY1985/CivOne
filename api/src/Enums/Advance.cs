@@ -9,9 +9,10 @@
 
 namespace CivOne.Enums
 {
-	internal enum Advance
+	public enum Advance
 	{
-		Alphabet,
+		None = -1,
+		Alphabet = 0,
 		CodeOfLaws,
 		Currency,
 		AtomicTheory,
