@@ -9,6 +9,7 @@
 
 using System;
 using System.Drawing;
+using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
@@ -56,6 +57,17 @@ namespace CivOne.Screens
 				_activeItem = value;
 				if (_activeItem < 0) _activeItem = 0;
 				if (_activeItem >= Items.Count) _activeItem = (Items.Count - 1);
+			}
+		}
+
+		private void SelectDefault(object sender, EventArgs args)
+		{
+			for (int i = 0; i < Items.Count; i++)
+			{
+				MenuItem<T> item = Items[i];
+				if (item.SelectedCondition == null || !item.SelectedCondition()) continue;
+				ActiveItem = i;
+				return;
 			}
 		}
 		
@@ -207,6 +219,7 @@ namespace CivOne.Screens
 			OnResize += Resize;
 
 			Items = new MenuItemCollection<T>(menuId);
+			Items.ItemsChanged += SelectDefault;
 
 			if (background != null)
 			{

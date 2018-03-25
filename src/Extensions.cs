@@ -12,6 +12,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using CivOne.Enums;
 using CivOne.Units;
 
 namespace CivOne
@@ -164,6 +165,53 @@ namespace CivOne
 				units[i].NextUnitId = units.Where(u => u.Id != units[i].Id && u.X == units[i].X && u.Y == units[i].Y).OrderBy(u => u.Id > units[i].Id ? 0 : 1).ThenBy(u => u.Id).First().Id;
 			}
 			return units;
+		}
+
+		public static string YesNo(this bool value) => value ? "Yes" : "No";
+		public static string OnOff(this bool value) => value ? "On" : "Off";
+
+		public static string ToText(this AspectRatio aspectRatio)
+		{
+			switch (aspectRatio)
+			{
+				case AspectRatio.Auto: return "Automatic";
+				case AspectRatio.Fixed: return "Fixed";
+				case AspectRatio.Scaled: return "Scaled (blurry)";
+				case AspectRatio.ScaledFixed: return "Scaled and fixed (blurry)";
+				case AspectRatio.Expand: return "Expand (experimental)";
+				default: return null;
+			}
+		}
+
+		public static string ToText(this GraphicsMode graphicsMode)
+		{
+			switch (graphicsMode)
+			{
+				case GraphicsMode.Graphics256: return "256 colors";
+				case GraphicsMode.Graphics16: return "16 colors";
+				default: return null;
+			}
+		}
+
+		public static string ToText(this CursorType cursorType)
+		{
+			switch (cursorType)
+			{
+				case CursorType.Default: return "Default";
+				case CursorType.Builtin: return "Built-in";
+				case CursorType.Native: return "Native";
+				default: return null;
+			}
+		}
+
+		public static string ToText(this DestroyAnimation destroyAnimation)
+		{
+			switch (destroyAnimation)
+			{
+				case DestroyAnimation.Sprites: return "Sprites (original)";
+				case DestroyAnimation.Noise: return "Noise";
+				default: return null;
+			}
 		}
 	}
 }
