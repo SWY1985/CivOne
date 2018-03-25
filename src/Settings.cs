@@ -25,6 +25,7 @@ namespace CivOne
 		private bool _rightSideBar = false;
 		private int _scale = 2;
 		private AspectRatio _aspectRatio = AspectRatio.Auto;
+		private bool _sound = true;
 		private int _expandWidth, _expandHeight;
 		private bool _revealWorld = false;
 		private bool _debugMenu = false;
@@ -100,6 +101,20 @@ namespace CivOne
 				_aspectRatio = value;
 				string saveValue = ((int)_aspectRatio).ToString();
 				SetSetting("AspectRatio", saveValue);
+				Common.ReloadSettings = true;
+			}
+		}
+
+		public bool GameSound
+		{
+			get
+			{
+				return _sound;
+			}
+			set
+			{
+				_sound = value;
+				SetSetting("Sound", _sound ? "1" : "0");
 				Common.ReloadSettings = true;
 			}
 		}
