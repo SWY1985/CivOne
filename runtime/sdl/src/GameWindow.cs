@@ -25,7 +25,6 @@ namespace CivOne
 
 		private int _mouseX = -1, _mouseY = -1;
 
-		private bool _mouseCursorVisible = true;
 		private bool _hasUpdate = true;
 		private bool _settingsFullscreen = Settings.FullScreen;
 
