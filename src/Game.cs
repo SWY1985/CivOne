@@ -46,6 +46,7 @@ namespace CivOne
 		public bool InstantAdvice { get; set; }
 		public bool AutoSave { get; set; }
 		public bool EnemyMoves { get; set; }
+		public bool Palace { get; set; }
 
 		public void SetAdvanceOrigin(IAdvance advance, Player player)
 		{
