@@ -25,7 +25,6 @@ namespace CivOne
 		private bool _rightSideBar = false;
 		private int _scale = 2;
 		private AspectRatio _aspectRatio = AspectRatio.Auto;
-		private bool _sound = true;
 		private int _expandWidth, _expandHeight;
 		private bool _revealWorld = false;
 		private bool _debugMenu = false;
@@ -34,6 +33,7 @@ namespace CivOne
 		private bool _customMapSize = false;
 		private CursorType _cursorType = CursorType.Default;
 		private DestroyAnimation _destroyAnimation = DestroyAnimation.Sprites;
+		private GameOption _instantAdvice, _autoSave, _endOfTurn, _animations, _sound, _enemyMoves, _civilopediaText, _palace;
 		
 		internal string StorageDirectory => Directory.GetCurrentDirectory();
 		internal string CaptureDirectory => Path.Combine(StorageDirectory, "capture");
@@ -88,17 +88,6 @@ namespace CivOne
 				_aspectRatio = value;
 				string saveValue = ((int)_aspectRatio).ToString();
 				SetSetting("AspectRatio", saveValue);
-				Common.ReloadSettings = true;
-			}
-		}
-
-		public bool GameSound
-		{
-			get => _sound;
-			set
-			{
-				_sound = value;
-				SetSetting("Sound", _sound ? "1" : "0");
 				Common.ReloadSettings = true;
 			}
 		}
@@ -225,8 +214,104 @@ namespace CivOne
 			}
 		}
 
-		// In game settings
+		// Game options
+		public GameOption GameInstantAdvice
+		{
+			get => _instantAdvice;
+			set
+			{
+				_instantAdvice = value;
+				string saveValue = ((int)_instantAdvice).ToString();
+				SetSetting("GameInstantAdvice", saveValue);
+				Common.ReloadSettings = true;
+			}
+		}
 
+		public GameOption GameAutoSave
+		{
+			get => _autoSave;
+			set
+			{
+				_autoSave = value;
+				string saveValue = ((int)_autoSave).ToString();
+				SetSetting("GameAutoSave", saveValue);
+				Common.ReloadSettings = true;
+			}
+		}
+
+		public GameOption GameEndOfTurn
+		{
+			get => _endOfTurn;
+			set
+			{
+				_endOfTurn = value;
+				string saveValue = ((int)_endOfTurn).ToString();
+				SetSetting("GameEndOfTurn", saveValue);
+				Common.ReloadSettings = true;
+			}
+		}
+
+		public GameOption GameAnimations
+		{
+			get => _animations;
+			set
+			{
+				_animations = value;
+				string saveValue = ((int)_animations).ToString();
+				SetSetting("GameAnimations", saveValue);
+				Common.ReloadSettings = true;
+			}
+		}
+
+		public GameOption GameSound
+		{
+			get => _sound;
+			set
+			{
+				_sound = value;
+				string saveValue = ((int)_sound).ToString();
+				SetSetting("GameSound", saveValue);
+				Common.ReloadSettings = true;
+			}
+		}
+
+		public GameOption GameEnemyMoves
+		{
+			get => _enemyMoves;
+			set
+			{
+				_enemyMoves = value;
+				string saveValue = ((int)_enemyMoves).ToString();
+				SetSetting("GameEnemyMoves", saveValue);
+				Common.ReloadSettings = true;
+			}
+		}
+
+		public GameOption GameCivilopediaText
+		{
+			get => _civilopediaText;
+			set
+			{
+				_civilopediaText = value;
+				string saveValue = ((int)_civilopediaText).ToString();
+				SetSetting("GameCivilopediaText", saveValue);
+				Common.ReloadSettings = true;
+			}
+		}
+
+		public GameOption GamePalace
+		{
+			get => _palace;
+			set
+			{
+				_palace = value;
+				string saveValue = ((int)_palace).ToString();
+				SetSetting("GamePalace", saveValue);
+				Common.ReloadSettings = true;
+			}
+		}
+
+		// Current game options
 		internal bool Animations { get; set; }
 		internal bool Sound { get; set; }
 		internal bool CivilopediaText { get; set; }
@@ -337,11 +422,14 @@ namespace CivOne
 			GetSetting("CustomMapSize", ref _customMapSize);
 			GetSetting<CursorType>("CursorType", ref _cursorType);
 			GetSetting<DestroyAnimation>("DestroyAnimation", ref _destroyAnimation);
-
-			// Set game options
-			Sound = GameSound;
-			EndOfTurn = false;
-			AutoSave = true;
+			GetSetting<GameOption>("GameInstantAdvice", ref _instantAdvice);
+			GetSetting<GameOption>("GameAutoSave", ref _autoSave);
+			GetSetting<GameOption>("GameEndOfTurn", ref _endOfTurn);
+			GetSetting<GameOption>("GameAnimations", ref _animations);
+			GetSetting<GameOption>("GameSound", ref _sound);
+			GetSetting<GameOption>("GameEnemyMoves", ref _enemyMoves);
+			GetSetting<GameOption>("GameCivilopediaText", ref _civilopediaText);
+			GetSetting<GameOption>("GamePalace", ref _palace);
 		}
 	}
 }

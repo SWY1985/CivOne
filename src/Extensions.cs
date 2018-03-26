@@ -215,6 +215,17 @@ namespace CivOne
 			}
 		}
 
+		public static string ToText(this GameOption gameOption)
+		{
+			switch (gameOption)
+			{
+				case GameOption.Default: return "Default";
+				case GameOption.On: return "On";
+				case GameOption.Off: return "Off";
+				default: return null;
+			}
+		}
+
 		public static IAdvance ToInstance(this Advance advance) => Common.Advances.FirstOrDefault(x => x.Id == (byte)advance);
 	}
 }
