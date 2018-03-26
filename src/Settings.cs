@@ -311,15 +311,6 @@ namespace CivOne
 			}
 		}
 
-		// Current game options
-		internal bool Animations { get; set; }
-		internal bool Sound { get; set; }
-		internal bool CivilopediaText { get; set; }
-		internal bool EndOfTurn { get; set; }
-		internal bool InstantAdvice { get; set; }
-		internal bool AutoSave { get; set; }
-		internal bool EnemyMoves { get; set; }
-
 		internal void RevealWorldCheat() => _revealWorld = !_revealWorld;
 		
 		internal int ScaleX => _scale;
