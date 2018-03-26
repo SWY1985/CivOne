@@ -67,6 +67,12 @@ namespace CivOne.Screens
 			Update();
 		}
 
+		private void MenuPalace(object sender, EventArgs args)
+		{
+			Game.Palace = !Game.Palace;
+			Update();
+		}
+
 		private void Update()
 		{
 			CloseMenus();
@@ -111,7 +117,7 @@ namespace CivOne.Screens
 				menu.Items.Add($"{(Game.Sound ? '^' : ' ')}Sound").OnSelect(MenuSound);
 				menu.Items.Add($"{(Game.EnemyMoves ? '^' : ' ')}Enemy Moves").OnSelect(MenuEnemyMoves);
 				menu.Items.Add($"{(Game.CivilopediaText ? '^' : ' ')}Civilopedia Text").OnSelect(MenuCivilopediaText);
-				menu.Items.Add(" Palace").Disable();
+				menu.Items.Add($"{(Game.Palace ? '^' : ' ')}Palace").OnSelect(MenuPalace);
 
 				AddMenu(menu);
 			}

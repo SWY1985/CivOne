@@ -101,7 +101,7 @@ namespace CivOne
 					Sound,
 					EnemyMoves,
 					CivilopediaText,
-					// Palace
+					Palace
 				};
 				gameData.NextAnthologyTurn = _anthologyTurn;
 				gameData.OpponentCount = (ushort)(_players.Length - 2);
@@ -232,7 +232,7 @@ namespace CivOne
 			Sound = (Settings.Sound != GameOption.Off);
 			EnemyMoves = (Settings.EnemyMoves != GameOption.Off);
 			CivilopediaText = (Settings.CivilopediaText != GameOption.Off);
-			// TODO: Settings.Palace
+			Palace = (Settings.Palace != GameOption.Off);
 
 			bool[] options = gameData.GameOptions;
 			if (Settings.InstantAdvice == GameOption.Default) InstantAdvice = options[0];
@@ -242,7 +242,7 @@ namespace CivOne
 			if (Settings.Sound == GameOption.Default) Sound = options[4];
 			if (Settings.EnemyMoves == GameOption.Default) EnemyMoves = options[5];
 			if (Settings.CivilopediaText == GameOption.Default) CivilopediaText = options[6];
-			// Settings.Palace = options[7];
+			if (Settings.Palace == GameOption.Default) Palace = options[7];
 
 			_currentPlayer = gameData.HumanPlayer;
 			for (int i = 0; i < _units.Count(); i++)
