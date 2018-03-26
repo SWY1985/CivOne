@@ -215,7 +215,7 @@ namespace CivOne
 		}
 
 		// Game options
-		public GameOption GameInstantAdvice
+		public GameOption InstantAdvice
 		{
 			get => _instantAdvice;
 			set
@@ -227,7 +227,7 @@ namespace CivOne
 			}
 		}
 
-		public GameOption GameAutoSave
+		public GameOption AutoSave
 		{
 			get => _autoSave;
 			set
@@ -239,7 +239,7 @@ namespace CivOne
 			}
 		}
 
-		public GameOption GameEndOfTurn
+		public GameOption EndOfTurn
 		{
 			get => _endOfTurn;
 			set
@@ -251,7 +251,7 @@ namespace CivOne
 			}
 		}
 
-		public GameOption GameAnimations
+		public GameOption Animations
 		{
 			get => _animations;
 			set
@@ -263,7 +263,7 @@ namespace CivOne
 			}
 		}
 
-		public GameOption GameSound
+		public GameOption Sound
 		{
 			get => _sound;
 			set
@@ -275,7 +275,7 @@ namespace CivOne
 			}
 		}
 
-		public GameOption GameEnemyMoves
+		public GameOption EnemyMoves
 		{
 			get => _enemyMoves;
 			set
@@ -287,7 +287,7 @@ namespace CivOne
 			}
 		}
 
-		public GameOption GameCivilopediaText
+		public GameOption CivilopediaText
 		{
 			get => _civilopediaText;
 			set
@@ -299,7 +299,7 @@ namespace CivOne
 			}
 		}
 
-		public GameOption GamePalace
+		public GameOption Palace
 		{
 			get => _palace;
 			set
