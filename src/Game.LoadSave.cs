@@ -94,14 +94,14 @@ namespace CivOne
 				gameData.AdvanceFirstDiscovery = firstDiscovery;
 				gameData.GameOptions = new bool[]
 				{
-					Settings.InstantAdvice,
-					Settings.AutoSave,
-					Settings.EndOfTurn,
-					Settings.Animations,
-					Settings.Sound,
-					Settings.EnemyMoves,
-					Settings.CivilopediaText,
-					// Settings.Palace
+					InstantAdvice,
+					AutoSave,
+					EndOfTurn,
+					Animations,
+					Sound,
+					EnemyMoves,
+					CivilopediaText,
+					// Palace
 				};
 				gameData.NextAnthologyTurn = _anthologyTurn;
 				gameData.OpponentCount = (ushort)(_players.Length - 2);
@@ -225,23 +225,23 @@ namespace CivOne
 			_replayData.AddRange(gameData.ReplayData);
 
 			// Game Settings
-			Settings.InstantAdvice = (Settings.GameInstantAdvice == GameOption.On);
-			Settings.AutoSave = (Settings.GameAutoSave != GameOption.Off);
-			Settings.EndOfTurn = (Settings.GameEndOfTurn == GameOption.On);
-			Settings.Animations = (Settings.GameAnimations != GameOption.Off);
-			Settings.Sound = (Settings.GameSound != GameOption.Off);
-			Settings.EnemyMoves = (Settings.GameEnemyMoves != GameOption.Off);
-			Settings.CivilopediaText = (Settings.GameCivilopediaText != GameOption.Off);
+			InstantAdvice = (Settings.GameInstantAdvice == GameOption.On);
+			AutoSave = (Settings.GameAutoSave != GameOption.Off);
+			EndOfTurn = (Settings.GameEndOfTurn == GameOption.On);
+			Animations = (Settings.GameAnimations != GameOption.Off);
+			Sound = (Settings.GameSound != GameOption.Off);
+			EnemyMoves = (Settings.GameEnemyMoves != GameOption.Off);
+			CivilopediaText = (Settings.GameCivilopediaText != GameOption.Off);
 			// TODO: Settings.Palace
 
 			bool[] options = gameData.GameOptions;
-			if (Settings.GameInstantAdvice == GameOption.Default) Settings.InstantAdvice = options[0];
-			if (Settings.GameAutoSave == GameOption.Default) Settings.AutoSave = options[1];
-			if (Settings.GameEndOfTurn == GameOption.Default) Settings.EndOfTurn = options[2];
-			if (Settings.GameAnimations == GameOption.Default) Settings.Animations = options[3];
-			if (Settings.GameSound == GameOption.Default) Settings.Sound = options[4];
-			if (Settings.GameEnemyMoves == GameOption.Default) Settings.EnemyMoves = options[5];
-			if (Settings.GameCivilopediaText == GameOption.Default) Settings.CivilopediaText = options[6];
+			if (Settings.GameInstantAdvice == GameOption.Default) InstantAdvice = options[0];
+			if (Settings.GameAutoSave == GameOption.Default) AutoSave = options[1];
+			if (Settings.GameEndOfTurn == GameOption.Default) EndOfTurn = options[2];
+			if (Settings.GameAnimations == GameOption.Default) Animations = options[3];
+			if (Settings.GameSound == GameOption.Default) Sound = options[4];
+			if (Settings.GameEnemyMoves == GameOption.Default) EnemyMoves = options[5];
+			if (Settings.GameCivilopediaText == GameOption.Default) CivilopediaText = options[6];
 			// Settings.Palace = options[7];
 
 			_currentPlayer = gameData.HumanPlayer;

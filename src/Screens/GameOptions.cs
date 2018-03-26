@@ -27,43 +27,43 @@ namespace CivOne.Screens
 
 		private void MenuAnimations(object sender, EventArgs args)
 		{
-			Settings.Animations = !Settings.Animations;
+			Game.Animations = !Game.Animations;
 			Update();
 		}
 
 		private void MenuSound(object sender, EventArgs args)
 		{
-			Settings.Sound = !Settings.Sound;
+			Game.Sound = !Game.Sound;
 			Update();
 		}
 
 		private void MenuEnemyMoves(object sender, EventArgs args)
 		{
-			Settings.EnemyMoves = !Settings.EnemyMoves;
+			Game.EnemyMoves = !Game.EnemyMoves;
 			Update();
 		}
 
 		private void MenuCivilopediaText(object sender, EventArgs args)
 		{
-			Settings.CivilopediaText = !Settings.CivilopediaText;
+			Game.CivilopediaText = !Game.CivilopediaText;
 			Update();
 		}
 
 		private void MenuInstantAdvice(object sender, EventArgs args)
 		{
-			Settings.InstantAdvice = !Settings.InstantAdvice;
+			Game.InstantAdvice = !Game.InstantAdvice;
 			Update();
 		}
 
 		private void MenuAutoSave(object sender, EventArgs args)
 		{
-			Settings.AutoSave = !Settings.AutoSave;
+			Game.AutoSave = !Game.AutoSave;
 			Update();
 		}
 
 		private void MenuEndOfTurn(object sender, EventArgs args)
 		{
-			Settings.EndOfTurn = !Settings.EndOfTurn;
+			Game.EndOfTurn = !Game.EndOfTurn;
 			Update();
 		}
 
@@ -104,13 +104,13 @@ namespace CivOne.Screens
 				menu.MissClick += MenuCancel;
 				menu.Cancel += MenuCancel;
 
-				menu.Items.Add($"{(Settings.InstantAdvice ? '^' : ' ')}Instant Advice").OnSelect(MenuInstantAdvice);
-				menu.Items.Add($"{(Settings.AutoSave ? '^' : ' ')}AutoSave").SetEnabled(Common.AllowSaveGame).OnSelect(MenuAutoSave);
-				menu.Items.Add($"{(Settings.EndOfTurn ? '^' : ' ')}End of Turn").OnSelect(MenuEndOfTurn);
-				menu.Items.Add($"{(Settings.Animations ? '^' : ' ')}Animations").OnSelect(MenuAnimations);
-				menu.Items.Add($"{(Settings.Sound ? '^' : ' ')}Sound").OnSelect(MenuSound);
-				menu.Items.Add($"{(Settings.EnemyMoves ? '^' : ' ')}Enemy Moves").OnSelect(MenuEnemyMoves);
-				menu.Items.Add($"{(Settings.CivilopediaText ? '^' : ' ')}Civilopedia Text").OnSelect(MenuCivilopediaText);
+				menu.Items.Add($"{(Game.InstantAdvice ? '^' : ' ')}Instant Advice").OnSelect(MenuInstantAdvice);
+				menu.Items.Add($"{(Game.AutoSave ? '^' : ' ')}AutoSave").SetEnabled(Common.AllowSaveGame).OnSelect(MenuAutoSave);
+				menu.Items.Add($"{(Game.EndOfTurn ? '^' : ' ')}End of Turn").OnSelect(MenuEndOfTurn);
+				menu.Items.Add($"{(Game.Animations ? '^' : ' ')}Animations").OnSelect(MenuAnimations);
+				menu.Items.Add($"{(Game.Sound ? '^' : ' ')}Sound").OnSelect(MenuSound);
+				menu.Items.Add($"{(Game.EnemyMoves ? '^' : ' ')}Enemy Moves").OnSelect(MenuEnemyMoves);
+				menu.Items.Add($"{(Game.CivilopediaText ? '^' : ' ')}Civilopedia Text").OnSelect(MenuCivilopediaText);
 				menu.Items.Add(" Palace").Disable();
 
 				AddMenu(menu);

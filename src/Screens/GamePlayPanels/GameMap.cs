@@ -25,7 +25,6 @@ namespace CivOne.Screens.GamePlayPanels
 	{
 		private IUnit ActiveUnit => Game.ActiveUnit;
 		
-		private readonly Palette _palette;
 		private Point _helperDirection = new Point(0, 0);
 		private bool _update = true;
 		private bool _fullRedraw = false;
@@ -262,7 +261,7 @@ namespace CivOne.Screens.GamePlayPanels
 			{
 				case MoveUnit moveUnit:
 					IUnit unit = moveUnit.ActiveUnit;
-					if (unit == null || (Human != unit.Owner && !Settings.EnemyMoves) || (!Settings.RevealWorld && Human != unit.Owner && !Human.Visible(unit.X, unit.Y)))
+					if (unit == null || (Human != unit.Owner && !Game.EnemyMoves) || (!Settings.RevealWorld && Human != unit.Owner && !Human.Visible(unit.X, unit.Y)))
 					{
 						args.Abort();
 						return;

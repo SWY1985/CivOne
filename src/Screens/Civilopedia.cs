@@ -345,7 +345,7 @@ namespace CivOne.Screens
 			this.Clear(15);
 			DrawBorder(Common.Random.Next(2));
 
-			if (_singlePage != null && !Settings.CivilopediaText) _pageNumber++;
+			if (_singlePage != null && !Game.CivilopediaText) _pageNumber++;
 			
 			DrawPageTitle();
 			DrawPage(_pageNumber);

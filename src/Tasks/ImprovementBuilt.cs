@@ -38,7 +38,7 @@ namespace CivOne.Tasks
 			}
 
 			IScreen cityView;
-			if (!Settings.Animations)
+			if (!Game.Animations)
 			{
 				cityView = new Newspaper(_city, new string[] { $"{_city.Name} builds", $"{(_improvement as ICivilopedia).Name}." }, showGovernment: false);
 			}

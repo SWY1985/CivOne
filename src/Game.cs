@@ -39,6 +39,14 @@ namespace CivOne
 
 		private ushort _anthologyTurn = 0;
 
+		public bool Animations { get; set; }
+		public bool Sound { get; set; }
+		public bool CivilopediaText { get; set; }
+		public bool EndOfTurn { get; set; }
+		public bool InstantAdvice { get; set; }
+		public bool AutoSave { get; set; }
+		public bool EnemyMoves { get; set; }
+
 		public void SetAdvanceOrigin(IAdvance advance, Player player)
 		{
 			if (_advanceOrigin.ContainsKey(advance.Id))
@@ -138,7 +146,7 @@ namespace CivOne
 			{
 				_currentPlayer = 0;
 				GameTurn++;
-				if (GameTurn % 50 == 0 && Settings.AutoSave)
+				if (GameTurn % 50 == 0 && AutoSave)
 				{
 					GameTask.Enqueue(Show.AutoSave);
 				}
@@ -448,7 +456,7 @@ namespace CivOne
 				// Check if any units are still available for this player
 				if (!_units.Any(u => u.Owner == _currentPlayer && (u.MovesLeft > 0 || u.PartMoves > 0) && !u.Busy))
 				{
-					if (CurrentPlayer == HumanPlayer && !Settings.Instance.EndOfTurn && !GameTask.Any() && (Common.TopScreen is GamePlay))
+					if (CurrentPlayer == HumanPlayer && !EndOfTurn && !GameTask.Any() && (Common.TopScreen is GamePlay))
 					{
 						GameTask.Enqueue(Turn.End());
 					}
