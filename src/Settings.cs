@@ -33,7 +33,6 @@ namespace CivOne
 		private bool _arrowHelper = false;
 		private bool _customMapSize = false;
 		private CursorType _cursorType = CursorType.Default;
-
 		private DestroyAnimation _destroyAnimation = DestroyAnimation.Sprites;
 		
 		internal string StorageDirectory => Directory.GetCurrentDirectory();
@@ -48,10 +47,7 @@ namespace CivOne
 		
 		internal GraphicsMode GraphicsMode
 		{
-			get
-			{
-				return _graphicsMode;
-			}
+			get => _graphicsMode;
 			set
 			{
 				_graphicsMode = value;
@@ -63,10 +59,7 @@ namespace CivOne
 		
 		public bool FullScreen
 		{
-			get
-			{
-				return _fullScreen;
-			}
+			get => _fullScreen;
 			set
 			{
 				_fullScreen = value;
@@ -77,10 +70,7 @@ namespace CivOne
 		
 		public int Scale
 		{
-			get
-			{
-				return _scale;
-			}
+			get => _scale;
 			set
 			{
 				if (value < 1 || value > 4) return;
@@ -92,10 +82,7 @@ namespace CivOne
 
 		public AspectRatio AspectRatio
 		{
-			get
-			{
-				return _aspectRatio;
-			}
+			get => _aspectRatio;
 			set
 			{
 				_aspectRatio = value;
@@ -107,10 +94,7 @@ namespace CivOne
 
 		public bool GameSound
 		{
-			get
-			{
-				return _sound;
-			}
+			get => _sound;
 			set
 			{
 				_sound = value;
@@ -121,10 +105,7 @@ namespace CivOne
 
 		public int ExpandWidth
 		{
-			get
-			{
-				return _expandWidth;
-			}
+			get => _expandWidth;
 			set
 			{
 				_expandWidth = value;
@@ -136,10 +117,7 @@ namespace CivOne
 
 		public int ExpandHeight
 		{
-			get
-			{
-				return _expandHeight;
-			}
+			get => _expandHeight;
 			set
 			{
 				_expandHeight = value;
@@ -153,10 +131,7 @@ namespace CivOne
 		
 		internal bool RevealWorld
 		{
-			get
-			{
-				return _revealWorld;
-			}
+			get => _revealWorld;
 			set
 			{
 				_revealWorld = value;
@@ -167,10 +142,7 @@ namespace CivOne
 		
 		internal bool RightSideBar
 		{
-			get
-			{
-				return _rightSideBar;
-			}
+			get => _rightSideBar;
 			set
 			{
 				_rightSideBar = value;
@@ -181,10 +153,7 @@ namespace CivOne
 		
 		internal bool DebugMenu
 		{
-			get
-			{
-				return _debugMenu;
-			}
+			get => _debugMenu;
 			set
 			{
 				_debugMenu = value;
@@ -195,10 +164,7 @@ namespace CivOne
 		
 		internal bool DeityEnabled
 		{
-			get
-			{
-				return _deityEnabled;
-			}
+			get => _deityEnabled;
 			set
 			{
 				_deityEnabled = value;
@@ -209,10 +175,7 @@ namespace CivOne
 
 		internal bool ArrowHelper
 		{
-			get
-			{
-				return _arrowHelper;
-			}
+			get => _arrowHelper;
 			set
 			{
 				_arrowHelper = value;
@@ -223,10 +186,7 @@ namespace CivOne
 
 		internal bool CustomMapSize
 		{
-			get
-			{
-				return _customMapSize;
-			}
+			get => _customMapSize;
 			set
 			{
 				_customMapSize = value;
@@ -255,10 +215,7 @@ namespace CivOne
 
 		internal DestroyAnimation DestroyAnimation
 		{
-			get
-			{
-				return _destroyAnimation;
-			}
+			get => _destroyAnimation;
 			set
 			{
 				_destroyAnimation = value;
@@ -278,37 +235,10 @@ namespace CivOne
 		internal bool AutoSave { get; set; }
 		internal bool EnemyMoves { get; set; }
 
-		internal void RevealWorldCheat()
-		{
-			_revealWorld = !_revealWorld;
-		}
+		internal void RevealWorldCheat() => _revealWorld = !_revealWorld;
 		
-		internal int ScaleX
-		{
-			get
-			{
-				return _scale;
-			}
-		}
-		
-		internal int ScaleY
-		{
-			get
-			{
-				return _scale;
-			}
-		}
-		
-		private static Settings _instance;
-		public static Settings Instance
-		{
-			get
-			{
-				if (_instance == null)
-					_instance = new Settings();
-				return _instance;
-			}
-		}
+		internal int ScaleX => _scale;
+		internal int ScaleY => _scale;
 		
 		private string GetSetting(string settingName)
 		{
@@ -323,6 +253,24 @@ namespace CivOne
 				
 				return value.Trim();
 			}
+		}
+
+		private bool GetSetting<T>(string settingName, ref T output) where T: struct, IConvertible
+		{
+			if (!Int32.TryParse(GetSetting(settingName), out int value)) return false;
+			if (!Enum.IsDefined(typeof(T), value)) return false;
+			output = (T)Enum.Parse(typeof(T), value.ToString());
+			return true;
+		}
+
+		private void GetSetting(string settingName, ref bool output) => output = (GetSetting(settingName) == "1");
+		
+		private bool GetSetting(string settingName, ref int output, int minValue = int.MinValue, int maxValue = int.MaxValue)
+		{
+			if (!Int32.TryParse(GetSetting(settingName), out int value)) return false;
+			if (value < minValue || value > maxValue) return false;
+			output = value;
+			return true;
 		}
 		
 		private void SetSetting(string settingName, string value)
@@ -355,67 +303,43 @@ namespace CivOne
 			}
 		}
 		
+		private static Settings _instance;
+		public static Settings Instance
+		{
+			get
+			{
+				if (_instance == null)
+					_instance = new Settings();
+				return _instance;
+			}
+		}
+		
 		private Settings()
 		{
 			CreateDirectories();
 			
-			int graphicsMode = (int)_graphicsMode;
-			bool fullScreen = _fullScreen;
-			bool rightSideBar = _rightSideBar;
-			int scale = _scale;
-			int aspectRatio = (int)_aspectRatio;
-			int expandWidth = (int)_expandWidth;
-			int expandHeight = (int)_expandHeight;
-			bool revealWorld = false;
-			bool debugMenu = false;
-			bool deityEnabled = false;
-			bool arrowHelper = false;
-			bool customMapSize = false;
-			int cursorType = (int)_cursorType;
-			int destroyAnimation = (int)_destroyAnimation;
-			
 			// Read settings
-			Int32.TryParse(GetSetting("GraphicsMode"), out graphicsMode);
-			fullScreen = (GetSetting("FullScreen") == "1");
-			rightSideBar = (GetSetting("SideBar") == "1");
-			Int32.TryParse(GetSetting("Scale"), out scale);
-			Int32.TryParse(GetSetting("AspectRatio"), out aspectRatio);
-			Int32.TryParse(GetSetting("ExpandWidth"), out expandWidth);
-			Int32.TryParse(GetSetting("ExpandHeight"), out expandHeight);
-			revealWorld = (GetSetting("RevealWorld") == "1");
-			debugMenu = (GetSetting("DebugMenu") == "1");
-			deityEnabled = (GetSetting("DeityEnabled") == "1");
-			arrowHelper = (GetSetting("ArrowHelper") == "1");
-			customMapSize = (GetSetting("CustomMapSize") == "1");
-			Int32.TryParse(GetSetting("CursorType"), out cursorType);
-			Int32.TryParse(GetSetting("DestroyAnimation"), out destroyAnimation);
-			
-			// Set settings
-			if (graphicsMode > 0 && graphicsMode < 3) _graphicsMode = (GraphicsMode)graphicsMode;
-			_fullScreen = fullScreen;
-			_rightSideBar = rightSideBar;
-			if (scale < 1 || scale > 4) scale = 2;
-			_scale = scale;
-			_aspectRatio = (AspectRatio)aspectRatio;
-			if (expandWidth < 320 || expandWidth > 512 || expandHeight < 200 || expandHeight > 384)
+			GetSetting<GraphicsMode>("GraphicsMode", ref _graphicsMode);
+			GetSetting("FullScreen", ref _fullScreen);
+			GetSetting("SideBar", ref _rightSideBar);
+			GetSetting("Scale", ref _scale, 1, 4);
+			GetSetting<AspectRatio>("AspectRatio", ref _aspectRatio);
+			GetSetting("Sound", ref _sound);
+			if (!GetSetting("ExpandWidth", ref _scale, 320, 512) || !GetSetting("ExpandHeight", ref _scale, 200, 384))
 			{
 				_expandWidth = -1;
 				_expandHeight = -1;
 			}
-			else
-			{
-				_expandWidth = expandWidth;
-				_expandHeight = expandHeight;
-			}
-			_revealWorld = revealWorld;
-			_debugMenu = debugMenu;
-			_deityEnabled = deityEnabled;
-			_arrowHelper = arrowHelper;
-			_customMapSize = customMapSize;
-			_cursorType = (CursorType)cursorType;
-			_destroyAnimation = (DestroyAnimation)destroyAnimation;
+			GetSetting("RevealWorld", ref _revealWorld);
+			GetSetting("DebugMenu", ref _debugMenu);
+			GetSetting("DeityEnabled", ref _deityEnabled);
+			GetSetting("ArrowHelper", ref _arrowHelper);
+			GetSetting("CustomMapSize", ref _customMapSize);
+			GetSetting<CursorType>("CursorType", ref _cursorType);
+			GetSetting<DestroyAnimation>("DestroyAnimation", ref _destroyAnimation);
 
 			// Set game options
+			Sound = GameSound;
 			EndOfTurn = false;
 			AutoSave = true;
 		}
