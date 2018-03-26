@@ -176,13 +176,13 @@ namespace CivOne
 			_competition = competition;
 			Log("Game instance created (difficulty: {0}, competition: {1})", _difficulty, _competition);
 
-			InstantAdvice = (Settings.GameInstantAdvice == GameOption.On || (Settings.GameInstantAdvice == GameOption.Default && difficulty == 0));
-			AutoSave = (Settings.GameAutoSave != GameOption.Off);
-			EndOfTurn = (Settings.GameEndOfTurn == GameOption.On);
-			Animations = (Settings.GameAnimations != GameOption.Off);
-			Sound = (Settings.GameSound != GameOption.Off);
-			EnemyMoves = (Settings.GameEnemyMoves != GameOption.Off);
-			CivilopediaText = (Settings.GameCivilopediaText != GameOption.Off);
+			InstantAdvice = (Settings.InstantAdvice == GameOption.On || (Settings.InstantAdvice == GameOption.Default && difficulty == 0));
+			AutoSave = (Settings.AutoSave != GameOption.Off);
+			EndOfTurn = (Settings.EndOfTurn == GameOption.On);
+			Animations = (Settings.Animations != GameOption.Off);
+			Sound = (Settings.Sound != GameOption.Off);
+			EnemyMoves = (Settings.EnemyMoves != GameOption.Off);
+			CivilopediaText = (Settings.CivilopediaText != GameOption.Off);
 			// TODO: Palace
 
 			_cities = new List<City>();

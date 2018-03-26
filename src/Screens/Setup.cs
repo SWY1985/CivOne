@@ -206,14 +206,14 @@ namespace CivOne.Screens
 		);
 		
 		private void GameOptionsMenu(int activeItem = 0) => CreateMenu("Game Options", activeItem,
-			MenuItem.Create($"Instant Advice: {Settings.GameInstantAdvice.ToText()}").OnSelect(GotoMenu(GameOptionMenu(0, "Instant Advice", () => Settings.GameInstantAdvice, (GameOption option) => Settings.GameInstantAdvice = option))),
-			MenuItem.Create($"AutoSave: {Settings.GameAutoSave.ToText()}").OnSelect(GotoMenu(GameOptionMenu(1, "AutoSave", () => Settings.GameAutoSave, (GameOption option) => Settings.GameAutoSave = option))),
-			MenuItem.Create($"End of Turn: {Settings.GameEndOfTurn.ToText()}").OnSelect(GotoMenu(GameOptionMenu(2, "End of Turn", () => Settings.GameEndOfTurn, (GameOption option) => Settings.GameEndOfTurn = option))),
-			MenuItem.Create($"Animations: {Settings.GameAnimations.ToText()}").OnSelect(GotoMenu(GameOptionMenu(3, "Animations", () => Settings.GameAnimations, (GameOption option) => Settings.GameAnimations = option))),
-			MenuItem.Create($"Sound: {Settings.GameSound.ToText()}").OnSelect(GotoMenu(GameOptionMenu(4, "Sound", () => Settings.GameSound, (GameOption option) => Settings.GameSound = option))),
-			MenuItem.Create($"Enemy Moves: {Settings.GameEnemyMoves.ToText()}").OnSelect(GotoMenu(GameOptionMenu(5, "Enemy Moves", () => Settings.GameEnemyMoves, (GameOption option) => Settings.GameEnemyMoves = option))),
-			MenuItem.Create($"Civilopedia Text: {Settings.GameCivilopediaText.ToText()}").OnSelect(GotoMenu(GameOptionMenu(6, "Civilopedia Text", () => Settings.GameCivilopediaText, (GameOption option) => Settings.GameCivilopediaText = option))),
-			MenuItem.Create($"Palace: {Settings.GamePalace.ToText()}").OnSelect(GotoMenu(GameOptionMenu(7, "Palace", () => Settings.GamePalace, (GameOption option) => Settings.GamePalace = option))).Disable(),
+			MenuItem.Create($"Instant Advice: {Settings.InstantAdvice.ToText()}").OnSelect(GotoMenu(GameOptionMenu(0, "Instant Advice", () => Settings.InstantAdvice, (GameOption option) => Settings.InstantAdvice = option))),
+			MenuItem.Create($"AutoSave: {Settings.AutoSave.ToText()}").OnSelect(GotoMenu(GameOptionMenu(1, "AutoSave", () => Settings.AutoSave, (GameOption option) => Settings.AutoSave = option))),
+			MenuItem.Create($"End of Turn: {Settings.EndOfTurn.ToText()}").OnSelect(GotoMenu(GameOptionMenu(2, "End of Turn", () => Settings.EndOfTurn, (GameOption option) => Settings.EndOfTurn = option))),
+			MenuItem.Create($"Animations: {Settings.Animations.ToText()}").OnSelect(GotoMenu(GameOptionMenu(3, "Animations", () => Settings.Animations, (GameOption option) => Settings.Animations = option))),
+			MenuItem.Create($"Sound: {Settings.Sound.ToText()}").OnSelect(GotoMenu(GameOptionMenu(4, "Sound", () => Settings.Sound, (GameOption option) => Settings.Sound = option))),
+			MenuItem.Create($"Enemy Moves: {Settings.EnemyMoves.ToText()}").OnSelect(GotoMenu(GameOptionMenu(5, "Enemy Moves", () => Settings.EnemyMoves, (GameOption option) => Settings.EnemyMoves = option))),
+			MenuItem.Create($"Civilopedia Text: {Settings.CivilopediaText.ToText()}").OnSelect(GotoMenu(GameOptionMenu(6, "Civilopedia Text", () => Settings.CivilopediaText, (GameOption option) => Settings.CivilopediaText = option))),
+			MenuItem.Create($"Palace: {Settings.Palace.ToText()}").OnSelect(GotoMenu(GameOptionMenu(7, "Palace", () => Settings.Palace, (GameOption option) => Settings.Palace = option))).Disable(),
 			MenuItem.Create("Back").OnSelect(GotoMenu(MainMenu, 3))
 		);
 

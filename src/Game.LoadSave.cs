@@ -225,23 +225,23 @@ namespace CivOne
 			_replayData.AddRange(gameData.ReplayData);
 
 			// Game Settings
-			InstantAdvice = (Settings.GameInstantAdvice == GameOption.On);
-			AutoSave = (Settings.GameAutoSave != GameOption.Off);
-			EndOfTurn = (Settings.GameEndOfTurn == GameOption.On);
-			Animations = (Settings.GameAnimations != GameOption.Off);
-			Sound = (Settings.GameSound != GameOption.Off);
-			EnemyMoves = (Settings.GameEnemyMoves != GameOption.Off);
-			CivilopediaText = (Settings.GameCivilopediaText != GameOption.Off);
+			InstantAdvice = (Settings.InstantAdvice == GameOption.On);
+			AutoSave = (Settings.AutoSave != GameOption.Off);
+			EndOfTurn = (Settings.EndOfTurn == GameOption.On);
+			Animations = (Settings.Animations != GameOption.Off);
+			Sound = (Settings.Sound != GameOption.Off);
+			EnemyMoves = (Settings.EnemyMoves != GameOption.Off);
+			CivilopediaText = (Settings.CivilopediaText != GameOption.Off);
 			// TODO: Settings.Palace
 
 			bool[] options = gameData.GameOptions;
-			if (Settings.GameInstantAdvice == GameOption.Default) InstantAdvice = options[0];
-			if (Settings.GameAutoSave == GameOption.Default) AutoSave = options[1];
-			if (Settings.GameEndOfTurn == GameOption.Default) EndOfTurn = options[2];
-			if (Settings.GameAnimations == GameOption.Default) Animations = options[3];
-			if (Settings.GameSound == GameOption.Default) Sound = options[4];
-			if (Settings.GameEnemyMoves == GameOption.Default) EnemyMoves = options[5];
-			if (Settings.GameCivilopediaText == GameOption.Default) CivilopediaText = options[6];
+			if (Settings.InstantAdvice == GameOption.Default) InstantAdvice = options[0];
+			if (Settings.AutoSave == GameOption.Default) AutoSave = options[1];
+			if (Settings.EndOfTurn == GameOption.Default) EndOfTurn = options[2];
+			if (Settings.Animations == GameOption.Default) Animations = options[3];
+			if (Settings.Sound == GameOption.Default) Sound = options[4];
+			if (Settings.EnemyMoves == GameOption.Default) EnemyMoves = options[5];
+			if (Settings.CivilopediaText == GameOption.Default) CivilopediaText = options[6];
 			// Settings.Palace = options[7];
 
 			_currentPlayer = gameData.HumanPlayer;
