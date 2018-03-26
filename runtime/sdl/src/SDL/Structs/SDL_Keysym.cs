@@ -7,10 +7,13 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System.Runtime.InteropServices;
+
 namespace CivOne
 {
 	internal static partial class SDL
 	{
+		[StructLayout(LayoutKind.Sequential)]
 		private struct SDL_Keysym
 		{
 			public SDL_Scancode Scancode;
