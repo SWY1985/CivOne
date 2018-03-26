@@ -176,10 +176,15 @@ namespace CivOne
 			_competition = competition;
 			Log("Game instance created (difficulty: {0}, competition: {1})", _difficulty, _competition);
 
-			Settings.Animations = true;
-			Settings.CivilopediaText = true;
-			Settings.EnemyMoves = true;
-			
+			Settings.InstantAdvice = (Settings.GameInstantAdvice == GameOption.On || (Settings.GameInstantAdvice == GameOption.Default && difficulty == 0));
+			Settings.AutoSave = (Settings.GameAutoSave != GameOption.Off);
+			Settings.EndOfTurn = (Settings.GameEndOfTurn == GameOption.On);
+			Settings.Animations = (Settings.GameAnimations != GameOption.Off);
+			Settings.Sound = (Settings.GameSound != GameOption.Off);
+			Settings.EnemyMoves = (Settings.GameEnemyMoves != GameOption.Off);
+			Settings.CivilopediaText = (Settings.GameCivilopediaText != GameOption.Off);
+			// TODO: Settings.Palace
+
 			_cities = new List<City>();
 			_units = new List<IUnit>();
 			_players = new Player[competition + 1];
@@ -194,7 +199,6 @@ namespace CivOne
 					{
 						// Chieftain starts with 50 Gold
 						HumanPlayer.Gold = 50;
-						Settings.InstantAdvice = true;
 					}
 					Log("- Player {0} is {1} of the {2} (human)", i, _players[i].LeaderName, _players[i].TribeNamePlural);
 					continue;

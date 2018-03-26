@@ -27,7 +27,7 @@ namespace CivOne
 		protected static void Log(string text, params object[] parameters) => Runtime.Log(text, parameters);
 		protected static void PlaySound(string filename)
 		{
-			if (!Settings.GameSound || !File.Exists(filename = filename.GetSoundFile())) return;
+			if (!(Game.Started && Settings.Sound) || Settings.GameSound == GameOption.Off || !File.Exists(filename = filename.GetSoundFile())) return;
 			Runtime.PlaySound(filename);
 		}
 

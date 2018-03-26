@@ -239,7 +239,7 @@ namespace CivOne.Screens
 				IUnit startUnit = Game.GetUnits().First(x => Game.Human == x.Owner);
 				gamePlay.CenterOnPoint(startUnit.X, startUnit.Y);
 				
-				if (Game.Difficulty == 0)
+				if (Settings.InstantAdvice)
 				{
 					GameTask.Enqueue(Show.InterfaceHelp);
 					GameTask.Enqueue(Message.Help("--- Civilization Note ---", TextFile.Instance.GetGameText("HELP/FIRSTMOVE")));

@@ -96,6 +96,7 @@ namespace CivOne.Screens
 			MenuItem.Create("Settings").OnSelect(GotoMenu(SettingsMenu)),
 			MenuItem.Create("Patches").OnSelect(GotoMenu(PatchesMenu)),
 			MenuItem.Create("Plugins").Disable(),
+			MenuItem.Create("Game Options").OnSelect(GotoMenu(GameOptionsMenu)),
 			MenuItem.Create("Launch Game").OnSelect(CloseScreen()),
 			MenuItem.Create("Quit").OnSelect(CloseScreen(Runtime.Quit))
 		);
@@ -105,7 +106,7 @@ namespace CivOne.Screens
 			MenuItem.Create($"Aspect Ratio: {Settings.AspectRatio.ToText()}").OnSelect(GotoMenu(AspectRatioMenu)),
 			MenuItem.Create($"Full Screen: {Settings.FullScreen.YesNo()}").OnSelect(GotoMenu(FullScreenMenu)),
 			MenuItem.Create($"Window Scale: {Settings.Scale}x").OnSelect(GotoMenu(WindowScaleMenu)),
-			MenuItem.Create($"In-game sound: {Settings.GameSound.OnOff()}").OnSelect(GotoMenu(SoundMenu)),
+			MenuItem.Create("In-game sound").OnSelect(GotoMenu(SoundMenu)),
 			MenuItem.Create($"Back").OnSelect(GotoMenu(MainMenu, 0))
 		);
 
@@ -139,8 +140,6 @@ namespace CivOne.Screens
 		);
 
 		private void SoundMenu() => CreateMenu("In-game sound", GotoMenu(SettingsMenu, 4),
-			MenuItem.Create($"{true.OnOff()} (default)").OnSelect((s, a) => Settings.GameSound = true).SetActive(() => Settings.GameSound),
-			MenuItem.Create(false.OnOff()).OnSelect((s, a) => Settings.GameSound = false).SetActive(() => !Settings.GameSound),
 			MenuItem.Create("Browse for files...").OnSelect(BrowseForSoundFiles).SetEnabled(!FileSystem.SoundFilesExist()),
 			MenuItem.Create("Back")
 		);
@@ -203,6 +202,25 @@ namespace CivOne.Screens
 		private void CustomMapSizeMenu() => CreateMenu("Custom map sizes (experimental)", GotoMenu(PatchesMenu, 7),
 			MenuItem.Create($"{false.YesNo()} (default)").OnSelect((s, a) => Settings.CustomMapSize = false).SetActive(() => !Settings.CustomMapSize),
 			MenuItem.Create(true.YesNo()).OnSelect((s, a) => Settings.CustomMapSize = true).SetActive(() => Settings.CustomMapSize),
+			MenuItem.Create("Back")
+		);
+		
+		private void GameOptionsMenu(int activeItem = 0) => CreateMenu("Game Options", activeItem,
+			MenuItem.Create($"Instant Advice: {Settings.GameInstantAdvice.ToText()}").OnSelect(GotoMenu(GameOptionMenu(0, "Instant Advice", () => Settings.GameInstantAdvice, (GameOption option) => Settings.GameInstantAdvice = option))),
+			MenuItem.Create($"AutoSave: {Settings.GameAutoSave.ToText()}").OnSelect(GotoMenu(GameOptionMenu(1, "AutoSave", () => Settings.GameAutoSave, (GameOption option) => Settings.GameAutoSave = option))),
+			MenuItem.Create($"End of Turn: {Settings.GameEndOfTurn.ToText()}").OnSelect(GotoMenu(GameOptionMenu(2, "End of Turn", () => Settings.GameEndOfTurn, (GameOption option) => Settings.GameEndOfTurn = option))),
+			MenuItem.Create($"Animations: {Settings.GameAnimations.ToText()}").OnSelect(GotoMenu(GameOptionMenu(3, "Animations", () => Settings.GameAnimations, (GameOption option) => Settings.GameAnimations = option))),
+			MenuItem.Create($"Sound: {Settings.GameSound.ToText()}").OnSelect(GotoMenu(GameOptionMenu(4, "Sound", () => Settings.GameSound, (GameOption option) => Settings.GameSound = option))),
+			MenuItem.Create($"Enemy Moves: {Settings.GameEnemyMoves.ToText()}").OnSelect(GotoMenu(GameOptionMenu(5, "Enemy Moves", () => Settings.GameEnemyMoves, (GameOption option) => Settings.GameEnemyMoves = option))),
+			MenuItem.Create($"Civilopedia Text: {Settings.GameCivilopediaText.ToText()}").OnSelect(GotoMenu(GameOptionMenu(6, "Civilopedia Text", () => Settings.GameCivilopediaText, (GameOption option) => Settings.GameCivilopediaText = option))),
+			MenuItem.Create($"Palace: {Settings.GamePalace.ToText()}").OnSelect(GotoMenu(GameOptionMenu(7, "Palace", () => Settings.GamePalace, (GameOption option) => Settings.GamePalace = option))).Disable(),
+			MenuItem.Create("Back").OnSelect(GotoMenu(MainMenu, 3))
+		);
+
+		private Action GameOptionMenu(int item, string title, Func<GameOption> getOption, Action<GameOption> setOption) => () => CreateMenu(title, GotoMenu(GameOptionsMenu, item),
+			MenuItem.Create(GameOption.Default.ToText()).OnSelect((s, a) => setOption(GameOption.Default)).SetActive(() => getOption() == GameOption.Default),
+			MenuItem.Create(GameOption.On.ToText()).OnSelect((s, a) => setOption(GameOption.On)).SetActive(() => getOption() == GameOption.On),
+			MenuItem.Create(GameOption.Off.ToText()).OnSelect((s, a) => setOption(GameOption.Off)).SetActive(() => getOption() == GameOption.Off),
 			MenuItem.Create("Back")
 		);
 
