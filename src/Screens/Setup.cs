@@ -95,7 +95,7 @@ namespace CivOne.Screens
 		private void MainMenu(int activeItem = 0) => CreateMenu("CivOne Setup", activeItem,
 			MenuItem.Create("Settings").OnSelect(GotoMenu(SettingsMenu)),
 			MenuItem.Create("Patches").OnSelect(GotoMenu(PatchesMenu)),
-			MenuItem.Create("Plugins").Disable(),
+			MenuItem.Create("Plugins").OnSelect(GotoMenu(PluginsMenu)),
 			MenuItem.Create("Game Options").OnSelect(GotoMenu(GameOptionsMenu)),
 			MenuItem.Create("Launch Game").OnSelect(CloseScreen()),
 			MenuItem.Create("Quit").OnSelect(CloseScreen(Runtime.Quit))
@@ -203,6 +203,12 @@ namespace CivOne.Screens
 			MenuItem.Create($"{false.YesNo()} (default)").OnSelect((s, a) => Settings.CustomMapSize = false).SetActive(() => !Settings.CustomMapSize),
 			MenuItem.Create(true.YesNo()).OnSelect((s, a) => Settings.CustomMapSize = true).SetActive(() => Settings.CustomMapSize),
 			MenuItem.Create("Back")
+		);
+
+		private void PluginsMenu(int activeItem = 0) => CreateMenu("Plugins", activeItem,
+			Reflect.Plugins().Select(x => MenuItem.Create(x.Name).Disable())
+				.Concat(new [] { MenuItem.Create("Back").OnSelect(GotoMenu(MainMenu, 2)) })
+				.ToArray()
 		);
 		
 		private void GameOptionsMenu(int activeItem = 0) => CreateMenu("Game Options", activeItem,
