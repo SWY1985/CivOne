@@ -206,9 +206,16 @@ namespace CivOne.Screens
 		);
 
 		private void PluginsMenu(int activeItem = 0) => CreateMenu("Plugins", activeItem,
-			Reflect.Plugins().Select(x => MenuItem.Create(x.Name).Disable())
+			Reflect.Plugins().Select(x => MenuItem.Create(x.Name).OnSelect(GotoMenu(PluginMenu(x.Id, x))))
 				.Concat(new [] { MenuItem.Create("Back").OnSelect(GotoMenu(MainMenu, 2)) })
 				.ToArray()
+		);
+
+		private Action PluginMenu(int item, Plugin plugin) => () => CreateMenu(plugin.Name, 0,
+			MenuItem.Create($"Version: {plugin.Version}").Disable(),
+			MenuItem.Create($"Author: {plugin.Author}").Disable(),
+			MenuItem.Create($"Status: {plugin.Enabled.EnabledDisabled()}").Disable(),
+			MenuItem.Create("Back").OnSelect(GotoMenu(PluginsMenu, item))
 		);
 		
 		private void GameOptionsMenu(int activeItem = 0) => CreateMenu("Game Options", activeItem,
