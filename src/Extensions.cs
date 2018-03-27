@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using CivOne.Advances;
 using CivOne.Enums;
@@ -227,5 +228,7 @@ namespace CivOne
 		}
 
 		public static IAdvance ToInstance(this Advance advance) => Common.Advances.FirstOrDefault(x => x.Id == (byte)advance);
+
+		public static void Add(this List<Plugin> list, IPlugin plugin, Assembly assembly) => list.Add(new Plugin(plugin, assembly));
 	}
 }
