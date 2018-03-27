@@ -29,10 +29,14 @@ namespace CivOne
 			get => !File.Exists(DisabledFile);
 			set
 			{
-				if (value && !File.Exists(DisabledFile))
+				if (value && File.Exists(DisabledFile))
+					File.Delete(DisabledFile);
+				else if (!value && !File.Exists(DisabledFile))
 					File.Open(DisabledFile, FileMode.Create).Close();
 				else
-					File.Delete(DisabledFile);
+					return;
+
+				Reflect.ApplyPlugins();
 			}
 		}
 
