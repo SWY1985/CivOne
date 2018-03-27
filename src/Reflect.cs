@@ -28,10 +28,10 @@ namespace CivOne
 	{
 		private static void Log(string text, params object[] parameters) => RuntimeHandler.Runtime.Log(text, parameters);
 
-		private static Dictionary<IPlugin, Assembly> _plugins;
+		private static Plugin[] _plugins;
 		private static void LoadPlugins()
 		{
-			_plugins = new Dictionary<IPlugin, Assembly>();
+			List<Plugin> plugins = new List<Plugin>();
 			foreach(string filename in Directory.GetFiles(Settings.Instance.PluginsDirectory, "*.dll"))
 			{
 				try
@@ -45,7 +45,7 @@ namespace CivOne
 					}
 					
 					IPlugin plugin = (IPlugin)Activator.CreateInstance(types[0]);
-					_plugins.Add(plugin, assembly);
+					plugins.Add(plugin, assembly);
 				}
 				catch (Exception ex)
 				{
@@ -53,6 +53,7 @@ namespace CivOne
 					Log($"   - {ex.Message}");
 				}
 			}
+			_plugins = plugins.ToArray();
 		}
 
 		private static IEnumerable<Assembly> GetAssemblies
@@ -157,14 +158,14 @@ namespace CivOne
 			return GetTypes<ITile>();
 		}
 
-		internal static IEnumerable<IPlugin> Plugins()
+		internal static IEnumerable<Plugin> Plugins()
 		{
 			if (_plugins == null)
 			{
 				LoadPlugins();
 				BaseUnit.LoadModifications();
 			}
-			return _plugins.Keys;
+			return _plugins;
 		}
 
 		private static IEnumerable<Type> PluginModifications
@@ -172,7 +173,7 @@ namespace CivOne
 			get
 			{
 				if (_plugins == null) yield break;
-				foreach (Assembly assembly in _plugins.Values)
+				foreach (Assembly assembly in _plugins.Select(x => x.Assembly))
 				foreach (Type type in assembly.GetTypes().Where(x => x.IsClass && !x.IsAbstract && x.GetInterfaces().Contains(typeof(IModification))))
 				{
 					yield return type;
