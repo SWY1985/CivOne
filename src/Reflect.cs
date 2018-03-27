@@ -31,29 +31,8 @@ namespace CivOne
 		private static Plugin[] _plugins;
 		private static void LoadPlugins()
 		{
-			List<Plugin> plugins = new List<Plugin>();
-			foreach(string filename in Directory.GetFiles(Settings.Instance.PluginsDirectory, "*.dll"))
-			{
-				try
-				{
-					Assembly assembly = Assembly.LoadFile(filename);
-					Type[] types = assembly.GetTypes().Where(x => x.Namespace == "CivOne" && x.Name == "Plugin" && x.GetInterfaces().Contains(typeof(IPlugin))).ToArray();
-					if (types.Count() != 1)
-					{
-						Log($" - Invalid plugin format: {filename}");
-						continue;
-					}
-					
-					IPlugin plugin = (IPlugin)Activator.CreateInstance(types[0]);
-					plugins.Add(plugin, assembly);
-				}
-				catch (Exception ex)
-				{
-					Log($" - Loading plugin failed: {filename}");
-					Log($"   - {ex.Message}");
-				}
-			}
-			_plugins = plugins.ToArray();
+			if (_plugins != null) return;
+			_plugins = Directory.GetFiles(Settings.Instance.PluginsDirectory, "*.dll").Select(x => Plugin.Load(x)).Where(x => x != null).ToArray();
 		}
 
 		private static IEnumerable<Assembly> GetAssemblies

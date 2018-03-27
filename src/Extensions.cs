@@ -171,6 +171,7 @@ namespace CivOne
 
 		public static string YesNo(this bool value) => value ? "Yes" : "No";
 		public static string OnOff(this bool value) => value ? "On" : "Off";
+		public static string EnabledDisabled(this bool value) => value ? "Enabled" : "Disabled";
 
 		public static string ToText(this AspectRatio aspectRatio)
 		{
@@ -228,7 +229,5 @@ namespace CivOne
 		}
 
 		public static IAdvance ToInstance(this Advance advance) => Common.Advances.FirstOrDefault(x => x.Id == (byte)advance);
-
-		public static void Add(this List<Plugin> list, IPlugin plugin, Assembly assembly) => list.Add(new Plugin(plugin, assembly));
 	}
 }
