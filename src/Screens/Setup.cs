@@ -206,7 +206,7 @@ namespace CivOne.Screens
 		);
 
 		private void PluginsMenu(int activeItem = 0) => CreateMenu("Plugins", activeItem,
-			Reflect.Plugins().Select(x => MenuItem.Create(x.Name).OnSelect(GotoMenu(PluginMenu(x.Id, x))))
+			Reflect.Plugins().Select(x => MenuItem.Create($"{x.Name}{(x.Enabled ? "" : $" ({false.EnabledDisabled()})")}").OnSelect(GotoMenu(PluginMenu(x.Id, x))))
 				.Concat(new [] { MenuItem.Create("Back").OnSelect(GotoMenu(MainMenu, 2)) })
 				.ToArray()
 		);
@@ -214,8 +214,14 @@ namespace CivOne.Screens
 		private Action PluginMenu(int item, Plugin plugin) => () => CreateMenu(plugin.Name, 0,
 			MenuItem.Create($"Version: {plugin.Version}").Disable(),
 			MenuItem.Create($"Author: {plugin.Author}").Disable(),
-			MenuItem.Create($"Status: {plugin.Enabled.EnabledDisabled()}").Disable(),
+			MenuItem.Create($"Status: {plugin.Enabled.EnabledDisabled()}").OnSelect(GotoMenu(PluginStatusMenu(item, plugin))),
 			MenuItem.Create("Back").OnSelect(GotoMenu(PluginsMenu, item))
+		);
+
+		private Action PluginStatusMenu(int item, Plugin plugin) => () => CreateMenu($"{plugin.Name} Status", (plugin.Enabled ? 1 : 0), GotoMenu(PluginMenu(item, plugin)),
+			MenuItem.Create(false.EnabledDisabled()).OnSelect((s, a) => plugin.Enabled = false),
+			MenuItem.Create(true.EnabledDisabled()).OnSelect((s, a) => plugin.Enabled = true),
+			MenuItem.Create("Back")
 		);
 		
 		private void GameOptionsMenu(int activeItem = 0) => CreateMenu("Game Options", activeItem,

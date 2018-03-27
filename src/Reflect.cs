@@ -137,12 +137,17 @@ namespace CivOne
 			return GetTypes<ITile>();
 		}
 
+		internal static void ApplyPlugins()
+		{
+			BaseUnit.LoadModifications();
+		}
+
 		internal static IEnumerable<Plugin> Plugins()
 		{
 			if (_plugins == null)
 			{
 				LoadPlugins();
-				BaseUnit.LoadModifications();
+				ApplyPlugins();
 			}
 			return _plugins;
 		}
@@ -152,7 +157,7 @@ namespace CivOne
 			get
 			{
 				if (_plugins == null) yield break;
-				foreach (Assembly assembly in _plugins.Select(x => x.Assembly))
+				foreach (Assembly assembly in _plugins.Where(x => x.Enabled).Select(x => x.Assembly))
 				foreach (Type type in assembly.GetTypes().Where(x => x.IsClass && !x.IsAbstract && x.GetInterfaces().Contains(typeof(IModification))))
 				{
 					yield return type;

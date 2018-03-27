@@ -817,6 +817,8 @@ namespace CivOne.Units
 		private static Dictionary<UnitType, List<UnitModification>> _modifications = new Dictionary<UnitType, List<UnitModification>>();
 		internal static void LoadModifications()
 		{
+			_modifications.Clear();
+
 			UnitModification[] unitModifications = Reflect.GetModifications<UnitModification>().ToArray();
 			if (unitModifications.Length == 0) return;
 
