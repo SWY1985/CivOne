@@ -7,10 +7,14 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using CivOne.Enums;
+
 namespace CivOne.Leaders
 {
 	public class Ramesses : BaseLeader
 	{
+		public override Militarism Militarism => Militarism.Civilized;
+
 		public Ramesses() : base("Ramesses", "KING01", 49, 29)
 		{
 		}

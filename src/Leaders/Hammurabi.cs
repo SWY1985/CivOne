@@ -7,10 +7,16 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using CivOne.Enums;
+
 namespace CivOne.Leaders
 {
 	public class Hammurabi : BaseLeader
 	{
+		public override Aggression Aggression => Aggression.Friendly;
+		public override Development Development => Development.Perfectionist;
+		public override Militarism Militarism => Militarism.Civilized;
+
 		public Hammurabi() : base("Hammurabi", "KING07", 38, 37)
 		{
 		}
