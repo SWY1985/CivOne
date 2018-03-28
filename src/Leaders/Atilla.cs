@@ -12,34 +12,15 @@ using CivOne.Graphics;
 
 namespace CivOne.Leaders
 {
-	public class Atilla : ILeader
+	public class Atilla : BaseLeader
 	{
-		public string Name { get; set; }
+		protected override Civilization Civilization => Civilization.Barbarians;
 
-		public Picture GetPortrait(FaceState state)
+		public Atilla() : base("Atilla")
 		{
-			return new Picture(139, 133, Common.GetPalette256);
-		}
-
-		public Picture PortraitSmall
-		{
-			get
-			{
-				return new Picture(27, 33, Common.GetPalette256);
-			}
-		}
-
-		public Aggression Aggression { get; set; }
-		public Development Development { get; set; }
-		public Militarism Militarism { get; set; }
-
-		public Atilla()
-		{
-			Name = "Atilla";
-
-			Aggression = Aggression.Aggressive;
-			Development = Development.Expansionistic;
-			Militarism = Militarism.Militaristic;
+			Aggression = AggressionLevel.Aggressive;
+			Development = DevelopmentLevel.Expansionistic;
+			Militarism = MilitarismLevel.Militaristic;
 		}
 	}
 }

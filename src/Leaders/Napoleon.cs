@@ -13,11 +13,13 @@ namespace CivOne.Leaders
 {
 	public class Napoleon : BaseLeader
 	{
+		protected override Civilization Civilization => Civilization.French;
+
 		public Napoleon() : base("Napoleon", "KING11", 34, 42)
 		{
-			Aggression = Aggression.Aggressive;
-			Development = Development.Expansionistic;
-			Militarism = Militarism.Civilized;
+			Aggression = AggressionLevel.Aggressive;
+			Development = DevelopmentLevel.Expansionistic;
+			Militarism = MilitarismLevel.Civilized;
 		}
 	}
 }

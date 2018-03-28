@@ -9,11 +9,28 @@
 
 using CivOne.Enums;
 using CivOne.Graphics;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CivOne.Leaders
 {
 	public abstract class BaseLeader : BaseInstance, ILeader
 	{
+		private string _defaultName;
+		private string DefaultName
+		{
+			get
+			{
+				foreach (LeaderModification modification in Modifications)
+				{
+					if (!modification.Name.HasValue) continue;
+					_defaultName = modification.Name.Value;
+				}
+				return _defaultName;
+			}
+			set => _defaultName = value;
+		}
+		
 		public string Name { get; set; }
 
 		private readonly string _picFile = null;
@@ -21,8 +38,12 @@ namespace CivOne.Leaders
 		private readonly int _overlayY;
 		private Picture _picture, _portraitSmall;
 
+		protected abstract Civilization Civilization { get; }
+
 		public Picture GetPortrait(FaceState state = FaceState.Neutral)
 		{
+			if (_picFile == null) return new Picture(139, 133, Common.GetPalette256);
+
 			if (_picture == null)
 			{
 				_picture = Resources[_picFile];
@@ -46,13 +67,76 @@ namespace CivOne.Leaders
 
 		public Picture PortraitSmall => _portraitSmall;
 		
-		public Aggression Aggression { get; set; }
-		public Development Development { get; set; }
-		public Militarism Militarism { get; set; }
-
-		public BaseLeader(string name, string picFile, int overlayX, int overlayY)
+		private AggressionLevel _aggression = AggressionLevel.Normal;
+		public AggressionLevel Aggression
 		{
-			Name = name;
+			get
+			{
+				foreach (LeaderModification modification in Modifications)
+				{
+					if (!modification.Aggression.HasValue) continue;
+					_aggression = modification.Aggression.Value;
+				}
+				return _aggression;
+			}
+			set => _aggression = value;
+		}
+
+		private DevelopmentLevel _development = DevelopmentLevel.Normal;
+		public DevelopmentLevel Development
+		{
+			get
+			{
+				foreach (LeaderModification modification in Modifications)
+				{
+					if (!modification.Development.HasValue) continue;
+					_development = modification.Development.Value;
+				}
+				return _development;
+			}
+			set => _development = value;
+		}
+
+		private MilitarismLevel _militarism = MilitarismLevel.Normal;
+		public MilitarismLevel Militarism
+		{
+			get
+			{
+				foreach (LeaderModification modification in Modifications)
+				{
+					if (!modification.Militarism.HasValue) continue;
+					_militarism = modification.Militarism.Value;
+				}
+				return _militarism;
+			}
+			set => _militarism = value;
+		}
+		
+		private static Dictionary<Civilization, List<LeaderModification>> _modifications = new Dictionary<Civilization, List<LeaderModification>>();
+		internal static void LoadModifications()
+		{
+			_modifications.Clear();
+
+			LeaderModification[] unitModifications = Reflect.GetModifications<LeaderModification>().ToArray();
+			if (unitModifications.Length == 0) return;
+
+			Log("Applying leader modifications");
+
+			foreach (LeaderModification modification in Reflect.GetModifications<LeaderModification>())
+			{
+				if (!_modifications.ContainsKey(modification.Civilization))
+					_modifications.Add(modification.Civilization, new List<LeaderModification>());
+				_modifications[modification.Civilization].Add(modification);
+			}
+
+			Log("Finished applying leader modifications");
+		}
+		public IEnumerable<LeaderModification> Modifications => _modifications.ContainsKey(Civilization) ? _modifications[Civilization].ToArray() : new LeaderModification[0];
+
+		protected BaseLeader(string name, string picFile, int overlayX, int overlayY)
+		{
+			DefaultName = name;
+			Name = DefaultName;
 			_picFile = picFile;
 			_overlayX = overlayX;
 			_overlayY = overlayY;
@@ -70,9 +154,16 @@ namespace CivOne.Leaders
 			}
 			_portraitSmall = new Picture(27, 33, Common.GetPalette256);
 
-			Aggression = Aggression.Normal;
-			Development = Development.Normal;
-			Militarism = Militarism.Normal;
+			Aggression = AggressionLevel.Normal;
+			Development = DevelopmentLevel.Normal;
+			Militarism = MilitarismLevel.Normal;
+		}
+
+		protected BaseLeader(string name)
+		{
+			DefaultName = name;
+			Name = DefaultName;
+			_portraitSmall = new Picture(27, 33, Common.GetPalette256);
 		}
 	}
 }

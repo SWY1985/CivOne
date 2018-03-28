@@ -13,10 +13,12 @@ namespace CivOne.Leaders
 {
 	public class Lincoln : BaseLeader
 	{
+		protected override Civilization Civilization => Civilization.Americans;
+
 		public Lincoln() : base("Abe Lincoln", "KING04", 38, 20)
 		{
-			Aggression = Aggression.Friendly;
-			Militarism = Militarism.Civilized;
+			Aggression = AggressionLevel.Friendly;
+			Militarism = MilitarismLevel.Civilized;
 		}
 	}
 }
