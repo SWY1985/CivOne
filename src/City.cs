@@ -670,8 +670,6 @@ namespace CivOne
 
 		public void NewTurn()
 		{
-			UpdateResources();
-
 			Food += FoodIncome;
 			if (Food < 0)
 			{
@@ -694,6 +692,7 @@ namespace CivOne
 				else
 				{
 					Size++;
+					UpdateResources();
 				}
 
 				if (_buildings.Any(b => (b is Granary)))
