@@ -28,23 +28,30 @@ namespace CivOne.Screens.Reports
 			{
 				if (!infoButton.Value.Contains(args.X, args.Y)) continue;
 
+				int y = 32;
+				int fontHeight = Resources.GetFontHeight(0);
+
 				Player player = infoButton.Key;
 
 				this.FillRectangle(0, 25, 320, 172, BackgroundColour)
-					.DrawText($"Subject: the {player.TribeNamePlural}", 0, 5, 16, 33)
-					.DrawText($"Subject: the {player.TribeNamePlural}", 0, 15, 16, 32)
-					.DrawText("Leader:", 0, 9, 16, 44)
-					.DrawText($"Emperor {player.LeaderName}", 0, 15, 62, 44)
-					.DrawText("Capital:", 0, 9, 16, 80)
-					.DrawText(player.Capital, 0, 15, 63, 80)
-					.DrawText("Government:", 0, 9, 16, 88)
-					.DrawText(player.Government.Name, 0, 15, 83, 88)
-					.DrawText("Treasury:", 0, 9, 16, 96)
-					.DrawText($"{player.Gold}$", 0, 15, 73, 96)
-					.DrawText("Military:", 0, 9, 16, 104)
-					.DrawText($"{Game.GetUnits().Count(x => player == x.Owner)} Units", 0, 15, 67, 104)
-					.DrawText("Foreign Affairs", 0, 9, 16, 116)
-					.DrawText("Technologies:", 0, 9, 16, 136);
+					.DrawText($"Subject: the {player.TribeNamePlural}", 0, 5, 16, (y + 1))
+					.DrawText($"Subject: the {player.TribeNamePlural}", 0, 15, 16, y)
+					.DrawText("Leader:", 0, 9, 16, (y += fontHeight + 4))
+					.DrawText($"Emperor {player.LeaderName}", 0, 15, 62, y);
+				
+				foreach (string line in player.Civilization.Leader.Traits())
+					this.DrawText(line, 0, 7, 24, (y += fontHeight));
+
+				this.DrawText("Capital:", 0, 9, 16, (y += fontHeight + 4))
+					.DrawText(player.Capital, 0, 15, 63, y)
+					.DrawText("Government:", 0, 9, 16, (y += fontHeight))
+					.DrawText(player.Government.Name, 0, 15, 83, y)
+					.DrawText("Treasury:", 0, 9, 16, (y += fontHeight))
+					.DrawText($"{player.Gold}$", 0, 15, 73, y)
+					.DrawText("Military:", 0, 9, 16, (y += fontHeight))
+					.DrawText($"{Game.GetUnits().Count(x => player == x.Owner)} Units", 0, 15, 67, y)
+					.DrawText("Foreign Affairs:", 0, 9, 16, (y += fontHeight + 4))
+					.DrawText("Technologies:", 0, 9, 16, (y += fontHeight + 4));
 
 				args.Handled = true;
 				SetUpdate();

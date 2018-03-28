@@ -15,6 +15,7 @@ using System.Reflection;
 using System.Text;
 using CivOne.Advances;
 using CivOne.Enums;
+using CivOne.Leaders;
 using CivOne.Units;
 
 namespace CivOne
@@ -226,6 +227,48 @@ namespace CivOne
 				case GameOption.Off: return "Off";
 				default: return null;
 			}
+		}
+
+		public static string ToText(this Aggression aggression)
+		{
+			switch (aggression)
+			{
+				case Aggression.Friendly: return "Friendly";
+				case Aggression.Normal: return "Normal";
+				case Aggression.Aggressive: return "Aggressive";
+				default: return null;
+			}
+		}
+
+		public static string ToText(this Development development)
+		{
+			switch (development)
+			{
+				case Development.Perfectionist: return "Perfectionist";
+				case Development.Normal: return "Normal";
+				case Development.Expansionistic: return "Expansionistic";
+				default: return null;
+			}
+		}
+
+		public static string ToText(this Militarism militarism)
+		{
+			switch (militarism)
+			{
+				case Militarism.Civilized: return "Civilized";
+				case Militarism.Normal: return "Normal";
+				case Militarism.Militaristic: return "Militaristic";
+				default: return null;
+			}
+		}
+
+		public static string[] Traits(this ILeader leader)
+		{
+			List<string> output = new List<string>();
+			if (leader.Aggression != Aggression.Normal) output.Add(leader.Aggression.ToText());
+			if (leader.Development != Development.Normal) output.Add(leader.Development.ToString());
+			if (leader.Militarism != Militarism.Normal) output.Add(leader.Militarism.ToString());
+			return output.ToArray();
 		}
 
 		public static IAdvance ToInstance(this Advance advance) => Common.Advances.FirstOrDefault(x => x.Id == (byte)advance);
