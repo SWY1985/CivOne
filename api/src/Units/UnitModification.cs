@@ -25,6 +25,10 @@ namespace CivOne.Units
 		public AttributeValue<Advance> Requires => AttributeValue<Advance>.Set(this.GetAttribute<Requires>());
 		public AttributeValue<Advance> Obsolete => AttributeValue<Advance>.Set(this.GetAttribute<Obsolete>());
 
+		/// <summary>
+		/// Modify an existing unit.
+		/// </summary>
+		/// <param name="unitType">The unit to modify.</param>
 		public UnitModification(UnitType unitType)
 		{
 			UnitType = unitType;
