@@ -18,6 +18,7 @@ using CivOne.Civilizations;
 using CivOne.Concepts;
 using CivOne.Governments;
 using CivOne.Graphics.Sprites;
+using CivOne.Leaders;
 using CivOne.Tiles;
 using CivOne.Units;
 using CivOne.Wonders;
@@ -58,35 +59,17 @@ namespace CivOne
 			}
 		}
 		
-		internal static IEnumerable<IAdvance> GetAdvances()
-		{
-			return GetTypes<IAdvance>().OrderBy(x => x.Id);
-		}
+		internal static IEnumerable<IAdvance> GetAdvances() => GetTypes<IAdvance>().OrderBy(x => x.Id);
 
-		internal static IEnumerable<ICivilization> GetCivilizations()
-		{
-			return GetTypes<ICivilization>().OrderBy(x => (int)x.Id);
-		}
+		internal static IEnumerable<ICivilization> GetCivilizations() => GetTypes<ICivilization>().OrderBy(x => (int)x.Id);
 		
-		internal static IEnumerable<IGovernment> GetGovernments()
-		{
-			return GetTypes<IGovernment>().OrderBy(x => x.Id);
-		}
+		internal static IEnumerable<IGovernment> GetGovernments() => GetTypes<IGovernment>().OrderBy(x => x.Id);
 		
-		internal static IEnumerable<IUnit> GetUnits()
-		{
-			return GetTypes<IUnit>().OrderBy(x => (int)x.Type);
-		}
+		internal static IEnumerable<IUnit> GetUnits() => GetTypes<IUnit>().OrderBy(x => (int)x.Type);
 		
-		internal static IEnumerable<IBuilding> GetBuildings()
-		{
-			return GetTypes<IBuilding>().OrderBy(x => x.Id);
-		}
+		internal static IEnumerable<IBuilding> GetBuildings() => GetTypes<IBuilding>().OrderBy(x => x.Id);
 		
-		internal static IEnumerable<IWonder> GetWonders()
-		{
-			return GetTypes<IWonder>().OrderBy(x => x.Id);
-		}
+		internal static IEnumerable<IWonder> GetWonders() => GetTypes<IWonder>().OrderBy(x => x.Id);
 
 		internal static IEnumerable<IProduction> GetProduction()
 		{
@@ -98,10 +81,7 @@ namespace CivOne
 				yield return production;
 		}
 		
-		internal static IEnumerable<IConcept> GetConcepts()
-		{
-			return GetTypes<IConcept>();
-		}
+		internal static IEnumerable<IConcept> GetConcepts() => GetTypes<IConcept>();
 		
 		internal static IEnumerable<ICivilopedia> GetCivilopediaAll()
 		{
@@ -114,10 +94,7 @@ namespace CivOne
 			}
 		}
 		
-		internal static IEnumerable<ICivilopedia> GetCivilopediaAdvances()
-		{
-			return GetTypes<IAdvance>();
-		}
+		internal static IEnumerable<ICivilopedia> GetCivilopediaAdvances() => GetTypes<IAdvance>();
 		
 		internal static IEnumerable<ICivilopedia> GetCivilopediaCityImprovements()
 		{
@@ -127,18 +104,13 @@ namespace CivOne
 				yield return civilopedia;
 		}
 		
-		internal static IEnumerable<ICivilopedia> GetCivilopediaUnits()
-		{
-			return GetTypes<IUnit>();
-		}
+		internal static IEnumerable<ICivilopedia> GetCivilopediaUnits() => GetTypes<IUnit>();
 		
-		internal static IEnumerable<ICivilopedia> GetCivilopediaTerrainTypes()
-		{
-			return GetTypes<ITile>();
-		}
+		internal static IEnumerable<ICivilopedia> GetCivilopediaTerrainTypes() => GetTypes<ITile>();
 
 		internal static void ApplyPlugins()
 		{
+			BaseLeader.LoadModifications();
 			BaseUnit.LoadModifications();
 		}
 

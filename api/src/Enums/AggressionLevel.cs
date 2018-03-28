@@ -9,10 +9,10 @@
 
 namespace CivOne.Enums
 {
-	public enum Militarism
+	public enum AggressionLevel
 	{
-		Civilized = 0,
+		Friendly = 0,
 		Normal = 1,
-		Militaristic = 2
+		Aggressive = 2
 	}
 }

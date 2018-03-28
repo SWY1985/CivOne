@@ -13,10 +13,12 @@ namespace CivOne.Leaders
 {
 	public class Montezuma : BaseLeader
 	{
+		protected override Civilization Civilization => Civilization.Aztecs;
+
 		public Montezuma() : base("Montezuma", "KING09", 34, 35)
 		{
-			Development = Development.Perfectionist;
-			Militarism = Militarism.Civilized;
+			Development = DevelopmentLevel.Perfectionist;
+			Militarism = MilitarismLevel.Civilized;
 		}
 	}
 }

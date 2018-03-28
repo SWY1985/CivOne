@@ -13,9 +13,11 @@ namespace CivOne.Leaders
 {
 	public class Elizabeth : BaseLeader
 	{
+		protected override Civilization Civilization => Civilization.English;
+
 		public Elizabeth() : base("Elizabeth I", "KING00", 43, 29)
 		{
-			Development = Development.Expansionistic;
+			Development = DevelopmentLevel.Expansionistic;
 		}
 	}
 }

@@ -13,10 +13,12 @@ namespace CivOne.Leaders
 {
 	public class Gandhi : BaseLeader
 	{
+		protected override Civilization Civilization => Civilization.Indians;
+
 		public Gandhi() : base("M.Gandhi", "KING02", 43, 33)
 		{
-			Aggression = Aggression.Friendly;
-			Development = Development.Perfectionist;
+			Aggression = AggressionLevel.Friendly;
+			Development = DevelopmentLevel.Perfectionist;
 		}
 	}
 }

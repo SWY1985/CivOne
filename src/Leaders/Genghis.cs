@@ -13,11 +13,13 @@ namespace CivOne.Leaders
 {
 	public class Genghis : BaseLeader
 	{
+		protected override Civilization Civilization => Civilization.Mongols;
+
 		public Genghis() : base("Genghis Khan", "KING05", 40, 46)
 		{
-			Aggression = Aggression.Aggressive;
-			Development = Development.Expansionistic;
-			Militarism = Militarism.Militaristic;
+			Aggression = AggressionLevel.Aggressive;
+			Development = DevelopmentLevel.Expansionistic;
+			Militarism = MilitarismLevel.Militaristic;
 		}
 	}
 }

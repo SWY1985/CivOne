@@ -8,20 +8,21 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using CivOne.Enums;
 
 namespace CivOne.Leaders
 {
-	public class Name : BaseAttribute
+	public class Militarism : BaseAttribute
 	{
-		private static bool InRange(object value) => (value as string).Length > 0 && (value as string).Length <= 14;
+		private static bool InRange(object value) => Enum.IsDefined(typeof(MilitarismLevel), value);
 
 		public string Value => GetValue<string>();
 
 		/// <summary>
-		/// Modify the leader name.
+		/// Modify the leader militarism level.
 		/// </summary>
-		/// <param name="value">The new name for the leader. Must be between 1 and 14 characters long.</param>
-		public Name(string value) : base(typeof(string), value, InRange)
+		/// <param name="value">The new militarism level for the leader.</param>
+		public Militarism(MilitarismLevel value) : base(typeof(MilitarismLevel), value, InRange)
 		{
 		}
 	}

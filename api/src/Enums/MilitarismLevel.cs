@@ -9,10 +9,10 @@
 
 namespace CivOne.Enums
 {
-	public enum Development
+	public enum MilitarismLevel
 	{
-		Perfectionist = 0,
+		Civilized = 0,
 		Normal = 1,
-		Expansionistic = 2
+		Militaristic = 2
 	}
 }

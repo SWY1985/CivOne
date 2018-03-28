@@ -229,35 +229,35 @@ namespace CivOne
 			}
 		}
 
-		public static string ToText(this Aggression aggression)
+		public static string ToText(this AggressionLevel aggression)
 		{
 			switch (aggression)
 			{
-				case Aggression.Friendly: return "Friendly";
-				case Aggression.Normal: return "Normal";
-				case Aggression.Aggressive: return "Aggressive";
+				case AggressionLevel.Friendly: return "Friendly";
+				case AggressionLevel.Normal: return "Normal";
+				case AggressionLevel.Aggressive: return "Aggressive";
 				default: return null;
 			}
 		}
 
-		public static string ToText(this Development development)
+		public static string ToText(this DevelopmentLevel development)
 		{
 			switch (development)
 			{
-				case Development.Perfectionist: return "Perfectionist";
-				case Development.Normal: return "Normal";
-				case Development.Expansionistic: return "Expansionistic";
+				case DevelopmentLevel.Perfectionist: return "Perfectionist";
+				case DevelopmentLevel.Normal: return "Normal";
+				case DevelopmentLevel.Expansionistic: return "Expansionistic";
 				default: return null;
 			}
 		}
 
-		public static string ToText(this Militarism militarism)
+		public static string ToText(this MilitarismLevel militarism)
 		{
 			switch (militarism)
 			{
-				case Militarism.Civilized: return "Civilized";
-				case Militarism.Normal: return "Normal";
-				case Militarism.Militaristic: return "Militaristic";
+				case MilitarismLevel.Civilized: return "Civilized";
+				case MilitarismLevel.Normal: return "Normal";
+				case MilitarismLevel.Militaristic: return "Militaristic";
 				default: return null;
 			}
 		}
@@ -265,9 +265,9 @@ namespace CivOne
 		public static string[] Traits(this ILeader leader)
 		{
 			List<string> output = new List<string>();
-			if (leader.Aggression != Aggression.Normal) output.Add(leader.Aggression.ToText());
-			if (leader.Development != Development.Normal) output.Add(leader.Development.ToString());
-			if (leader.Militarism != Militarism.Normal) output.Add(leader.Militarism.ToString());
+			if (leader.Aggression != AggressionLevel.Normal) output.Add(leader.Aggression.ToText());
+			if (leader.Development != DevelopmentLevel.Normal) output.Add(leader.Development.ToString());
+			if (leader.Militarism != MilitarismLevel.Normal) output.Add(leader.Militarism.ToString());
 			return output.ToArray();
 		}
 

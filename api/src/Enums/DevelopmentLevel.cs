@@ -9,10 +9,10 @@
 
 namespace CivOne.Enums
 {
-	public enum Aggression
+	public enum DevelopmentLevel
 	{
-		Friendly = 0,
+		Perfectionist = 0,
 		Normal = 1,
-		Aggressive = 2
+		Expansionistic = 2
 	}
 }

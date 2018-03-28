@@ -13,9 +13,11 @@ namespace CivOne.Leaders
 {
 	public class Mao : BaseLeader
 	{
+		protected override Civilization Civilization => Civilization.Chinese;
+
 		public Mao() : base("Mao Tse Tung", "KING06", 37, 32)
 		{
-			Militarism = Militarism.Civilized;
+			Militarism = MilitarismLevel.Civilized;
 		}
 	}
 }
