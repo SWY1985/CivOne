@@ -822,7 +822,7 @@ namespace CivOne.Units
 			UnitModification[] unitModifications = Reflect.GetModifications<UnitModification>().ToArray();
 			if (unitModifications.Length == 0) return;
 
-			Console.Write("Applying unit modifications... ");
+			Log("Applying unit modifications");
 
 			foreach (UnitModification modification in Reflect.GetModifications<UnitModification>())
 			{
@@ -831,7 +831,7 @@ namespace CivOne.Units
 				_modifications[modification.UnitType].Add(modification);
 			}
 
-			Console.WriteLine("done!");
+			Log("Finished applying unit modifications");
 		}
 		public IEnumerable<UnitModification> Modifications => _modifications.ContainsKey(Type) ? _modifications[Type].ToArray() : new UnitModification[0];
 		
