@@ -13,12 +13,11 @@ namespace CivOne.Leaders
 {
 	public class Frederick : BaseLeader
 	{
-		public override Aggression Aggression => Aggression.Aggressive;
-		public override Development Development => Development.Perfectionist;
-		public override Militarism Militarism => Militarism.Civilized;
-
 		public Frederick() : base("Frederick", "KING12", 38, 22)
 		{
+			Aggression = Aggression.Aggressive;
+			Development = Development.Perfectionist;
+			Militarism = Militarism.Civilized;
 		}
 	}
 }

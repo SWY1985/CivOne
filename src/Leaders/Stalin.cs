@@ -13,11 +13,10 @@ namespace CivOne.Leaders
 {
 	public class Stalin : BaseLeader
 	{
-		public override Aggression Aggression => Aggression.Aggressive;
-		public override Militarism Militarism => Militarism.Militaristic;
-
 		public Stalin() : base("Stalin", "KING08", 40, 26)
 		{
+			Aggression = Aggression.Aggressive;
+			Militarism = Militarism.Militaristic;
 		}
 	}
 }

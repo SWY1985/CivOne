@@ -13,11 +13,10 @@ namespace CivOne.Leaders
 {
 	public class Gandhi : BaseLeader
 	{
-		public override Aggression Aggression => Aggression.Friendly;
-		public override Development Development => Development.Perfectionist;
-
 		public Gandhi() : base("M.Gandhi", "KING02", 43, 33)
 		{
+			Aggression = Aggression.Friendly;
+			Development = Development.Perfectionist;
 		}
 	}
 }

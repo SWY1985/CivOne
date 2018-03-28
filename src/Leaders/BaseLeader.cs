@@ -46,9 +46,9 @@ namespace CivOne.Leaders
 
 		public Picture PortraitSmall => _portraitSmall;
 		
-		public virtual Aggression Aggression => Aggression.Normal;
-		public virtual Development Development => Development.Normal;
-		public virtual Militarism Militarism => Militarism.Normal;
+		public Aggression Aggression { get; set; }
+		public Development Development { get; set; }
+		public Militarism Militarism { get; set; }
 
 		public BaseLeader(string name, string picFile, int overlayX, int overlayY)
 		{
@@ -69,6 +69,10 @@ namespace CivOne.Leaders
 				}
 			}
 			_portraitSmall = new Picture(27, 33, Common.GetPalette256);
+
+			Aggression = Aggression.Normal;
+			Development = Development.Normal;
+			Militarism = Militarism.Normal;
 		}
 	}
 }

@@ -13,12 +13,11 @@ namespace CivOne.Leaders
 {
 	public class Hammurabi : BaseLeader
 	{
-		public override Aggression Aggression => Aggression.Friendly;
-		public override Development Development => Development.Perfectionist;
-		public override Militarism Militarism => Militarism.Civilized;
-
 		public Hammurabi() : base("Hammurabi", "KING07", 38, 37)
 		{
+			Aggression = Aggression.Friendly;
+			Development = Development.Perfectionist;
+			Militarism = Militarism.Civilized;
 		}
 	}
 }
