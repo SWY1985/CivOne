@@ -29,6 +29,10 @@ namespace CivOne.Leaders
 			}
 		}
 
+		public Aggression Aggression => Aggression.Aggressive;
+		public Development Development => Development.Expansionistic;
+		public Militarism Militarism => Militarism.Militaristic;
+
 		public Atilla()
 		{
 			Name = "Atilla";

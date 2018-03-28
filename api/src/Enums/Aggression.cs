@@ -7,17 +7,12 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using CivOne.Enums;
-
-namespace CivOne.Leaders
+namespace CivOne.Enums
 {
-	public class Alexander : BaseLeader
+	public enum Aggression
 	{
-		public override Development Development => Development.Expansionistic;
-		public override Militarism Militarism => Militarism.Militaristic;
-
-		public Alexander() : base("Alexander", "KING13", 41, 19)
-		{
-		}
+		Friendly = 0,
+		Normal = 1,
+		Aggressive = 2
 	}
 }
