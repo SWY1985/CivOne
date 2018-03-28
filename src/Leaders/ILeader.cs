@@ -17,8 +17,8 @@ namespace CivOne.Leaders
 		string Name { get; set; }
 		Picture GetPortrait(FaceState state = FaceState.Neutral);
 		Picture PortraitSmall { get; }
-		Aggression Aggression { get; }
-		Development Development { get; }
-		Militarism Militarism { get; }
+		Aggression Aggression { get; set; }
+		Development Development { get; set; }
+		Militarism Militarism { get; set; }
 	}
 }

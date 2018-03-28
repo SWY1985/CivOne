@@ -13,10 +13,9 @@ namespace CivOne.Leaders
 {
 	public class Ramesses : BaseLeader
 	{
-		public override Militarism Militarism => Militarism.Civilized;
-
 		public Ramesses() : base("Ramesses", "KING01", 49, 29)
 		{
+			Militarism = Militarism.Civilized;
 		}
 	}
 }

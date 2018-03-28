@@ -13,10 +13,9 @@ namespace CivOne.Leaders
 {
 	public class Shaka : BaseLeader
 	{
-		public override Aggression Aggression => Aggression.Aggressive;
-
 		public Shaka() : base("Shaka", "KING03", 41, 29)
 		{
+			Aggression = Aggression.Aggressive;
 		}
 	}
 }

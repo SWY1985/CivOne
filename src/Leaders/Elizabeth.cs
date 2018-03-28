@@ -13,10 +13,9 @@ namespace CivOne.Leaders
 {
 	public class Elizabeth : BaseLeader
 	{
-		public override Development Development => Development.Expansionistic;
-
 		public Elizabeth() : base("Elizabeth I", "KING00", 43, 29)
 		{
+			Development = Development.Expansionistic;
 		}
 	}
 }

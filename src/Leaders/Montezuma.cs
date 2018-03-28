@@ -13,11 +13,10 @@ namespace CivOne.Leaders
 {
 	public class Montezuma : BaseLeader
 	{
-		public override Development Development => Development.Perfectionist;
-		public override Militarism Militarism => Militarism.Civilized;
-
 		public Montezuma() : base("Montezuma", "KING09", 34, 35)
 		{
+			Development = Development.Perfectionist;
+			Militarism = Militarism.Civilized;
 		}
 	}
 }

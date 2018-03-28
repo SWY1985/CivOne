@@ -13,11 +13,10 @@ namespace CivOne.Leaders
 {
 	public class Alexander : BaseLeader
 	{
-		public override Development Development => Development.Expansionistic;
-		public override Militarism Militarism => Militarism.Militaristic;
-
 		public Alexander() : base("Alexander", "KING13", 41, 19)
 		{
+			Development = Development.Expansionistic;
+			Militarism = Militarism.Militaristic;
 		}
 	}
 }
