@@ -15,6 +15,8 @@ using System.Reflection;
 using System.Text;
 using CivOne.Advances;
 using CivOne.Enums;
+using CivOne.Graphics;
+using CivOne.Graphics.ImageFormats;
 using CivOne.Leaders;
 using CivOne.Units;
 
@@ -272,5 +274,13 @@ namespace CivOne
 		}
 
 		public static IAdvance ToInstance(this Advance advance) => Common.Advances.FirstOrDefault(x => x.Id == (byte)advance);
+
+		public static IBitmap GifToBitmap(this byte[] buffer)
+		{
+			using (GifFile gifFile = new GifFile(buffer))
+			{
+				return gifFile.GetBitmap();
+			}
+		}
 	}
 }
