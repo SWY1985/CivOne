@@ -141,11 +141,6 @@ namespace CivOne.Graphics.ImageFormats
 			for (int i = 0; i < colourCount; i++)
 			{
 				byte r = buffer[index++], g = buffer[index++], b = buffer[index++];
-				if (i == backgroundIndex)
-				{
-					palette[i] = Colour.Transparent;
-					continue;
-				}
 				palette[i] = new Colour(r, g, b);
 			}
 
@@ -167,7 +162,23 @@ namespace CivOne.Graphics.ImageFormats
 						// Graphics Control Extension
 						index++;
 						if (buffer[index++] != 0xF9) return; // Unexpected byte
-						index += buffer[index] + 2;
+						int size = buffer[index++];
+						if (size == 4)
+						{
+							byte packed = buffer[index++];
+							ushort delayTime = BitConverter.ToUInt16(buffer, index);
+							index += 2;
+							byte transparentColour = buffer[index++];
+							if ((packed & 1) == 1)
+							{
+								palette[transparentColour] = Colour.Transparent;
+							}
+							index++;
+						}
+						else
+						{
+							index += size + 1;
+						}
 						break;
 					case 0x3B:
 						// Trailer (end of file)
