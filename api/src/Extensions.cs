@@ -8,6 +8,8 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.IO;
+using System.Reflection;
 
 namespace CivOne
 {
@@ -24,6 +26,15 @@ namespace CivOne
 		{
 			if (!checkObject.HasAttribute<T>()) return null;
 			return (T)Attribute.GetCustomAttribute(checkObject.GetType(), typeof(T));
+		}
+
+		internal static byte[] GetBytes(this Stream stream)
+		{
+			using (MemoryStream ms = new MemoryStream())
+			{
+				stream.CopyTo(ms);
+				return ms.ToArray();
+			}
 		}
 	}
 }
