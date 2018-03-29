@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -17,6 +18,7 @@ using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Graphics;
 using CivOne.Graphics.ImageFormats;
+using CivOne.IO;
 using CivOne.Leaders;
 using CivOne.Units;
 
@@ -281,6 +283,41 @@ namespace CivOne
 			{
 				return gifFile.GetBitmap();
 			}
+		}
+
+		public static Bytemap MatchColours(this IBitmap input, Palette palette, int startIndex, int length)
+		{
+			Dictionary<int, int> matches = new Dictionary<int, int>();
+
+			Colour[] pal = input.Palette.Entries.ToArray();
+			Colour[] cmp = palette.Entries.ToArray();
+			for (int i = 0; i < pal.Length; i++)
+			{
+				if (pal[i].A == 0)
+				{
+					matches.Add(i, 0);
+					continue;
+				}
+
+				int entry = 0;
+				int mx = 768;
+				for (int j = startIndex; j < cmp.Length && j < (startIndex + length); j++)
+				{
+					int total = Math.Abs((int)pal[i].R - cmp[j].R) + Math.Abs((int)pal[i].G - cmp[j].G) + Math.Abs((int)pal[i].B - cmp[j].B);
+					if (total >= mx) continue;
+					entry = j;
+					mx = total;
+				}
+				matches.Add(i, entry);
+			}
+			
+			Bytemap output = new Bytemap(input.Width(), input.Height());
+			for (int yy = 0; yy < input.Height(); yy++)
+			for (int xx = 0; xx < input.Height(); xx++)
+			{
+				output[xx, yy] = (byte)matches[input.Bitmap[xx, yy]];
+			}
+			return output;
 		}
 	}
 }
