@@ -15,6 +15,7 @@ namespace CivOne.Graphics.Sprites
 {
 	public static class Unit
 	{
+		private static IBitmap BaseSprite(UnitType type) => CivOne.Units.BaseUnit.GetBaseSprite(type);
 		private static Free Free => Free.Instance;
 		private static Resources Resources => Resources.Instance;
 		private static Settings Settings => Settings.Instance;
@@ -27,20 +28,28 @@ namespace CivOne.Graphics.Sprites
 			byte colourLight = Common.ColourLight[unit.PlayerNumber];
 			int unitId = (int)unit.Type;
 
-			string resFile = GFX256 ? "SP257" : "SPRITES";
-			int xx = (unitId % 20) * 16;
-			int yy = unitId < 20 ? 160 : 176;
-
+			IBitmap baseSprite = BaseSprite(unit.Type);
 			Bytemap output;
-			if (Resources.Exists(resFile))
+			if (baseSprite != null)
 			{
-				output = Resources[resFile].Bitmap[xx, yy, 16, 16]
-					.FillRectangle(0, 0, 16, 1, 0)
-					.FillRectangle(0, 1, 1, 15, 0);
+				output = baseSprite.MatchColours(Common.DefaultPalette, 1, 15);
 			}
 			else
 			{
-				output = Free.GetUnit(unit.Type);
+				string resFile = GFX256 ? "SP257" : "SPRITES";
+				int xx = (unitId % 20) * 16;
+				int yy = unitId < 20 ? 160 : 176;
+
+				if (Resources.Exists(resFile))
+				{
+					output = Resources[resFile].Bitmap[xx, yy, 16, 16]
+						.FillRectangle(0, 0, 16, 1, 0)
+						.FillRectangle(0, 1, 1, 15, 0);
+				}
+				else
+				{
+					output = Free.GetUnit(unit.Type);
+				}
 			}
 			
 			if (colourLight == 15) output.ColourReplace((15, 11), (10, colourLight), (2, colourDark));
