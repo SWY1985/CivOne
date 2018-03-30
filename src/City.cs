@@ -309,7 +309,7 @@ namespace CivOne
 
 		internal bool InvalidTile(ITile tile)
 		{
-			return (tile.City != null || Game.GetCities().Any(c => c.ResourceTiles.Any(t => t.X == tile.X && t.Y == tile.Y)) || tile.Units.Any(u => u.Owner != Owner));
+			return (Game.GetCities().Where(c => c != this).Any(c => c.ResourceTiles.Any(t => t.X == tile.X && t.Y == tile.Y)) || tile.Units.Any(u => u.Owner != Owner));
 		}
 
 		private void UpdateSpecialists()
@@ -670,6 +670,8 @@ namespace CivOne
 
 		public void NewTurn()
 		{
+			UpdateResources();
+
 			Food += FoodIncome;
 			if (Food < 0)
 			{
@@ -692,7 +694,6 @@ namespace CivOne
 				else
 				{
 					Size++;
-					UpdateResources();
 				}
 
 				if (_buildings.Any(b => (b is Granary)))
