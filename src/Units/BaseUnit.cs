@@ -814,6 +814,12 @@ namespace CivOne.Units
 
 		public virtual void Explore() => Explore(1);
 
+		internal static IBitmap GetBaseSprite(UnitType type)
+		{
+			if (!_modifications.ContainsKey(type)) return null;
+			return _modifications[type].LastOrDefault(x => x.Sprite != null && x.Sprite.GifToBitmap() != null)?.Sprite.GifToBitmap();
+		}
+
 		private static Dictionary<UnitType, List<UnitModification>> _modifications = new Dictionary<UnitType, List<UnitModification>>();
 		internal static void LoadModifications()
 		{
