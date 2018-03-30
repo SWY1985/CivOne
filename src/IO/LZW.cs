@@ -65,18 +65,18 @@ namespace CivOne.IO
 			return output;
 		}
 
-		private static void DecodeDictionary(bool clearEnd, out Dictionary<int, byte[]> dictionary, out List<string> valueList)
+		private static void DecodeDictionary(bool clearEnd, int minBits, out Dictionary<int, byte[]> dictionary, out List<string> valueList)
 		{
-			dictionary = Enumerable.Range(0, 256).ToDictionary(x => x, x => new byte[] { (byte)x });
+			dictionary = Enumerable.Range(0, 1 << minBits).ToDictionary(x => x, x => new byte[] { (byte)x });
 			dictionary.Add(dictionary.Count, new byte[0]);
 			if (clearEnd)
 			{
 				dictionary.Add(dictionary.Count, new byte[0]);
 			}
-			valueList= new List<string>(dictionary.Values.Select(x => string.Join(",", x)));
+			valueList = new List<string>(dictionary.Values.Select(x => string.Join(",", x)));
 		}
 		
-		public static byte[] Decode(byte[] input, bool clearEnd = false, bool flushDictionary = true, int maxBits = 11)
+		public static byte[] Decode(byte[] input, bool clearEnd = false, bool flushDictionary = true, int minBits = 8, int maxBits = 11)
 		{
 			using (MemoryStream ms = new MemoryStream())
 			using (BinaryWriter bw = new BinaryWriter(ms))
@@ -84,7 +84,7 @@ namespace CivOne.IO
 				Dictionary<int, byte[]> dictionary;
 				List<string> values;
 
-				DecodeDictionary(clearEnd, out dictionary, out values);
+				DecodeDictionary(clearEnd, minBits, out dictionary, out values);
 
 				int value = 0;
 				int counter = 0;
@@ -97,6 +97,22 @@ namespace CivOne.IO
 					{
 						value |= ((input[i] >> bit) & 0x01) << counter++;
 						if (counter != codeLength) continue;
+
+						if (clearEnd && value == (1 << minBits))
+						{
+							// Clear code
+							DecodeDictionary(clearEnd, minBits, out dictionary, out values);
+
+							value = 0;
+							counter = 0;
+							entry = new byte[0];
+							continue;
+						}
+
+						if ((!clearEnd && value == (1 << minBits)) || (clearEnd && value == (1 << minBits) + 1))
+						{
+							return ms.ToArray();
+						}
 						
 						if (!dictionary.ContainsKey(value) && (flushDictionary || dictionary.Count < ((0x01 << maxBits) - 1)))
 						{
@@ -121,7 +137,7 @@ namespace CivOne.IO
 						
 						if (flushDictionary && CodeLength(dictionary.Count) > maxBits)
 						{
-							DecodeDictionary(clearEnd, out dictionary, out values);
+							DecodeDictionary(clearEnd, minBits, out dictionary, out values);
 							entry = new byte[0];
 						}
 					}

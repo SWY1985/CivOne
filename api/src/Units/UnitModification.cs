@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.Reflection;
 using CivOne.Enums;
 
 namespace CivOne.Units
@@ -24,6 +25,10 @@ namespace CivOne.Units
 		public AttributeValue<byte> Moves => AttributeValue<byte>.Set(this.GetAttribute<Moves>());
 		public AttributeValue<Advance> Requires => AttributeValue<Advance>.Set(this.GetAttribute<Requires>());
 		public AttributeValue<Advance> Obsolete => AttributeValue<Advance>.Set(this.GetAttribute<Obsolete>());
+
+		public byte[] Sprite { get; private set; }
+
+		public void SetSprite(string assemblyName) => Sprite = Resources.GetInternalResourceBytes(Assembly.GetCallingAssembly(), assemblyName);
 
 		/// <summary>
 		/// Modify an existing unit.
