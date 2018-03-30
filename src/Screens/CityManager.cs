@@ -203,8 +203,6 @@ namespace CivOne.Screens
 			
 			_city = city;
 
-			_city.UpdateResources();
-			
 			Palette = Common.DefaultPalette;
 			this.Clear(5);
 			
