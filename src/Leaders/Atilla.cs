@@ -14,7 +14,7 @@ namespace CivOne.Leaders
 {
 	public class Atilla : BaseLeader
 	{
-		protected override Civilization Civilization => Civilization.Barbarians;
+		protected override Leader Leader => Leader.Atilla;
 
 		public Atilla() : base("Atilla")
 		{

@@ -13,7 +13,7 @@ namespace CivOne.Leaders
 {
 	public class Genghis : BaseLeader
 	{
-		protected override Civilization Civilization => Civilization.Mongols;
+		protected override Leader Leader => Leader.Genghis;
 
 		public Genghis() : base("Genghis Khan", "KING05", 40, 46)
 		{

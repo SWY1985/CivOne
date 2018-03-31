@@ -13,7 +13,7 @@ namespace CivOne.Leaders
 {
 	public class Lincoln : BaseLeader
 	{
-		protected override Civilization Civilization => Civilization.Americans;
+		protected override Leader Leader => Leader.Lincoln;
 
 		public Lincoln() : base("Abe Lincoln", "KING04", 38, 20)
 		{

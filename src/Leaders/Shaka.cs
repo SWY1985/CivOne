@@ -13,7 +13,7 @@ namespace CivOne.Leaders
 {
 	public class Shaka : BaseLeader
 	{
-		protected override Civilization Civilization => Civilization.Zulus;
+		protected override Leader Leader => Leader.Shaka;
 
 		public Shaka() : base("Shaka", "KING03", 41, 29)
 		{

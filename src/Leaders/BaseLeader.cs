@@ -38,7 +38,7 @@ namespace CivOne.Leaders
 		private readonly int _overlayY;
 		private Picture _picture, _portraitSmall;
 
-		protected abstract Civilization Civilization { get; }
+		protected abstract Leader Leader { get; }
 
 		public Picture GetPortrait(FaceState state = FaceState.Neutral)
 		{
@@ -112,7 +112,7 @@ namespace CivOne.Leaders
 			set => _militarism = value;
 		}
 		
-		private static Dictionary<Civilization, List<LeaderModification>> _modifications = new Dictionary<Civilization, List<LeaderModification>>();
+		private static Dictionary<Leader, List<LeaderModification>> _modifications = new Dictionary<Leader, List<LeaderModification>>();
 		internal static void LoadModifications()
 		{
 			_modifications.Clear();
@@ -124,14 +124,14 @@ namespace CivOne.Leaders
 
 			foreach (LeaderModification modification in Reflect.GetModifications<LeaderModification>())
 			{
-				if (!_modifications.ContainsKey(modification.Civilization))
-					_modifications.Add(modification.Civilization, new List<LeaderModification>());
-				_modifications[modification.Civilization].Add(modification);
+				if (!_modifications.ContainsKey(modification.Leader))
+					_modifications.Add(modification.Leader, new List<LeaderModification>());
+				_modifications[modification.Leader].Add(modification);
 			}
 
 			Log("Finished applying leader modifications");
 		}
-		public IEnumerable<LeaderModification> Modifications => _modifications.ContainsKey(Civilization) ? _modifications[Civilization].ToArray() : new LeaderModification[0];
+		public IEnumerable<LeaderModification> Modifications => _modifications.ContainsKey(Leader) ? _modifications[Leader].ToArray() : new LeaderModification[0];
 
 		protected BaseLeader(string name, string picFile, int overlayX, int overlayY)
 		{

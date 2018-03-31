@@ -13,7 +13,7 @@ namespace CivOne.Leaders
 {
 	public class Napoleon : BaseLeader
 	{
-		protected override Civilization Civilization => Civilization.French;
+		protected override Leader Leader => Leader.Napoleon;
 
 		public Napoleon() : base("Napoleon", "KING11", 34, 42)
 		{

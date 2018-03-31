@@ -13,7 +13,7 @@ namespace CivOne.Leaders
 {
 	public abstract class LeaderModification : IModification
 	{
-		public Civilization Civilization { get; }
+		public Leader Leader { get; }
 
 		public AttributeValue<string> Name => AttributeValue<string>.Set(this.GetAttribute<Name>());
 		public AttributeValue<AggressionLevel> Aggression => AttributeValue<AggressionLevel>.Set(this.GetAttribute<Aggression>());
@@ -24,9 +24,9 @@ namespace CivOne.Leaders
 		/// Modify an existing leader.
 		/// </summary>
 		/// <param name="civilizationId">The leader's civilization of the leader to override.</param>
-		public LeaderModification(Civilization civilization)
+		public LeaderModification(Leader leader)
 		{
-			Civilization = civilization;
+			Leader = leader;
 		}
 	}
 }

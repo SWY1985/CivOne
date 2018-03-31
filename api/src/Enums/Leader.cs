@@ -7,18 +7,24 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-using CivOne.Enums;
-
-namespace CivOne.Leaders
+namespace CivOne.Enums
 {
-	public class Gandhi : BaseLeader
+	public enum Leader : byte
 	{
-		protected override Leader Leader => Leader.Gandhi;
-
-		public Gandhi() : base("M.Gandhi", "KING02", 43, 33)
-		{
-			Aggression = AggressionLevel.Friendly;
-			Development = DevelopmentLevel.Perfectionist;
-		}
+		Atilla,
+		Caesar,
+		Hammurabi,
+		Frederick,
+		Ramesses,
+		Lincoln,
+		Alexander,
+		Gandhi,
+		Stalin,
+		Shaka,
+		Napoleon,
+		Montezuma,
+		Mao,
+		Elizabeth,
+		Genghis
 	}
 }
