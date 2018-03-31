@@ -13,7 +13,7 @@ namespace CivOne.Leaders
 {
 	public class Hammurabi : BaseLeader
 	{
-		protected override Civilization Civilization => Civilization.Babylonians;
+		protected override Leader Leader => Leader.Hammurabi;
 
 		public Hammurabi() : base("Hammurabi", "KING07", 38, 37)
 		{

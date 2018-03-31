@@ -13,7 +13,7 @@ namespace CivOne.Leaders
 {
 	public class Montezuma : BaseLeader
 	{
-		protected override Civilization Civilization => Civilization.Aztecs;
+		protected override Leader Leader => Leader.Montezuma;
 
 		public Montezuma() : base("Montezuma", "KING09", 34, 35)
 		{

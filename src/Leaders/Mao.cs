@@ -13,7 +13,7 @@ namespace CivOne.Leaders
 {
 	public class Mao : BaseLeader
 	{
-		protected override Civilization Civilization => Civilization.Chinese;
+		protected override Leader Leader => Leader.Mao;
 
 		public Mao() : base("Mao Tse Tung", "KING06", 37, 32)
 		{
