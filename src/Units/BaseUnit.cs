@@ -493,15 +493,7 @@ namespace CivOne.Units
 		private string _name;
 		public string Name
 		{
-			get
-			{
-				foreach (UnitModification modification in Modifications)
-				{
-					if (!modification.Name.HasValue) continue;
-					_name = modification.Name.Value;
-				}
-				return _name;
-			}
+			get => Modifications.LastOrDefault(x => x.Name.HasValue)?.Name.Value ?? _name;
 			protected set => _name = value;
 		}
 		public byte PageCount => 2;
@@ -551,15 +543,7 @@ namespace CivOne.Units
 		private IAdvance _requiredTech;
 		public IAdvance RequiredTech
 		{
-			get
-			{
-				foreach (UnitModification modification in Modifications)
-				{
-					if (!modification.Requires.HasValue) continue;
-					_requiredTech = modification.Requires.Value.ToInstance();
-				}
-				return _requiredTech;
-			}
+			get => Modifications.LastOrDefault(x => x.Requires.HasValue)?.Requires.Value.ToInstance() ?? _requiredTech;
 			protected set => _requiredTech = value;
 		}
 
@@ -568,15 +552,7 @@ namespace CivOne.Units
 		private IAdvance _obsoleteTech;
 		public IAdvance ObsoleteTech
 		{
-			get
-			{
-				foreach (UnitModification modification in Modifications)
-				{
-					if (!modification.Obsolete.HasValue) continue;
-					_obsoleteTech = modification.Obsolete.Value.ToInstance();
-				}
-				return _obsoleteTech;
-			}
+			get => Modifications.LastOrDefault(x => x.Obsolete.HasValue)?.Obsolete.Value.ToInstance() ?? _obsoleteTech;
 			protected set => _obsoleteTech = value;
 		}
 
@@ -586,30 +562,14 @@ namespace CivOne.Units
 		public short _buyPrice;
 		public short BuyPrice
 		{
-			get
-			{
-				foreach (UnitModification modification in Modifications)
-				{
-					if (!modification.BuyPrice.HasValue) continue;
-					_buyPrice = modification.BuyPrice.Value;
-				}
-				return _buyPrice;
-			}
+			get => Modifications.LastOrDefault(x => x.BuyPrice.HasValue)?.BuyPrice.Value ?? _buyPrice;
 			private set => _buyPrice = value;
 		}
 		public byte ProductionId => (byte)Type;
 		private byte _price;
 		public byte Price
 		{
-			get
-			{
-				foreach (UnitModification modification in Modifications)
-				{
-					if (!modification.Price.HasValue) continue;
-					_price = modification.Price.Value;
-				}
-				return _price;
-			}
+			get => Modifications.LastOrDefault(x => x.Price.HasValue)?.Price.Value ?? _price;
 			protected set => _price = value;
 		}
 		public virtual UnitRole Role
@@ -633,45 +593,21 @@ namespace CivOne.Units
 		private byte _attack;
 		public byte Attack
 		{
-			get
-			{
-				foreach (UnitModification modification in Modifications)
-				{
-					if (!modification.Attack.HasValue) continue;
-					_attack = modification.Attack.Value;
-				}
-				return _attack;
-			}
+			get => Modifications.LastOrDefault(x => x.Attack.HasValue)?.Attack.Value ?? _attack;
 			protected set => _attack = value;
 		}
 		
 		private byte _defense;
 		public byte Defense
 		{
-			get
-			{
-				foreach (UnitModification modification in Modifications)
-				{
-					if (!modification.Defense.HasValue) continue;
-					_defense = modification.Defense.Value;
-				}
-				return _defense;
-			}
+			get => Modifications.LastOrDefault(x => x.Defense.HasValue)?.Defense.Value ?? _defense;
 			protected set => _defense = value;
 		}
 
 		private byte _move;
 		public byte Move
 		{
-			get
-			{
-				foreach (UnitModification modification in Modifications)
-				{
-					if (!modification.Moves.HasValue) continue;
-					_move = modification.Moves.Value;
-				}
-				return _move;
-			}
+			get => Modifications.LastOrDefault(x => x.Moves.HasValue)?.Moves.Value ?? _move;
 			protected set => _move = value;
 		}
 
@@ -686,7 +622,7 @@ namespace CivOne.Units
 				int val = value;
 				while (val < 0) val += Map.WIDTH;
 				while (val >= Map.WIDTH) val -= Map.WIDTH;
-				if (_x == -1 && _y != -1 && value != -1) Explore();
+				if (_x == -1 && _y != -1) Explore();
 				_x = val;
 			}
 		}
@@ -703,15 +639,15 @@ namespace CivOne.Units
 				_y = value;
 			}
 		}
+
 		public Point Goto { get; set; }
+		
 		public ITile Tile => Map[_x, _y];
+
 		private byte _owner;
 		public byte Owner
 		{
-			get
-			{
-				return _owner;
-			}
+			get => _owner;
 			set
 			{
 				_owner = value;
@@ -720,6 +656,7 @@ namespace CivOne.Units
 		}
 
 		public Player Player => Game.GetPlayer(Owner);
+
 		public byte Status
 		{
 			get
