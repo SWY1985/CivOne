@@ -40,8 +40,22 @@ namespace CivOne.Leaders
 
 		protected abstract Leader Leader { get; }
 
+		private IBitmap _modifiedPicture, _modifiedPortraitSmall;
 		public Picture GetPortrait(FaceState state = FaceState.Neutral)
 		{
+			if (_modifications.ContainsKey(Leader))
+			{
+				if (_modifiedPicture == null)
+				{
+					_modifiedPicture = _modifications[Leader].LastOrDefault(x => x.Portrait != null && x.Portrait.GifToBitmap() != null)?.Portrait.GifToBitmap();
+				}
+
+				if (_modifiedPicture != null && _modifiedPicture.Width() == 139 && _modifiedPicture.Height() == 133)
+				{
+					return _modifiedPicture.MakePalette(64, 16);
+				}
+			}
+
 			if (_picFile == null) return new Picture(139, 133, Common.GetPalette256);
 
 			if (_picture == null)
@@ -65,7 +79,25 @@ namespace CivOne.Leaders
 			return output;
 		}
 
-		public Picture PortraitSmall => _portraitSmall;
+		public Picture PortraitSmall
+		{
+			get
+			{
+				if (_modifications.ContainsKey(Leader))
+				{
+					if (_modifiedPortraitSmall == null)
+					{
+						_modifiedPortraitSmall = _modifications[Leader].LastOrDefault(x => x.PortraitSmall != null && x.PortraitSmall.GifToBitmap() != null)?.PortraitSmall.GifToBitmap();
+					}
+
+					if (_modifiedPortraitSmall != null && _modifiedPortraitSmall.Width() == 27 && _modifiedPortraitSmall.Height() == 33)
+					{
+						return new Picture(_modifiedPortraitSmall.MatchColours(Resources["SLAM2"].Palette, 1, 255), Resources["SLAM2"].Palette);
+					}
+				}
+				return _portraitSmall;
+			}
+		}
 		
 		private AggressionLevel _aggression = AggressionLevel.Normal;
 		public AggressionLevel Aggression
@@ -117,12 +149,12 @@ namespace CivOne.Leaders
 		{
 			_modifications.Clear();
 
-			LeaderModification[] unitModifications = Reflect.GetModifications<LeaderModification>().ToArray();
-			if (unitModifications.Length == 0) return;
+			LeaderModification[] modifications = Reflect.GetModifications<LeaderModification>().ToArray();
+			if (modifications.Length == 0) return;
 
 			Log("Applying leader modifications");
 
-			foreach (LeaderModification modification in Reflect.GetModifications<LeaderModification>())
+			foreach (LeaderModification modification in modifications)
 			{
 				if (!_modifications.ContainsKey(modification.Leader))
 					_modifications.Add(modification.Leader, new List<LeaderModification>());

@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System.Reflection;
 using CivOne.Enums;
 
 namespace CivOne.Leaders
@@ -19,14 +20,20 @@ namespace CivOne.Leaders
 		public AttributeValue<AggressionLevel> Aggression => AttributeValue<AggressionLevel>.Set(this.GetAttribute<Aggression>());
 		public AttributeValue<DevelopmentLevel> Development => AttributeValue<DevelopmentLevel>.Set(this.GetAttribute<Development>());
 		public AttributeValue<MilitarismLevel> Militarism => AttributeValue<MilitarismLevel>.Set(this.GetAttribute<Militarism>());
+		
+		public byte[] Portrait { get; private set; }
+		public byte[] PortraitSmall { get; private set; }
+
+		public void SetPortrait(string assemblyName) => Portrait = Resources.GetInternalResourceBytes(Assembly.GetCallingAssembly(), assemblyName);
+		public void SetPortraitSmall(string assemblyName) => PortraitSmall = Resources.GetInternalResourceBytes(Assembly.GetCallingAssembly(), assemblyName);
 
 		/// <summary>
 		/// Modify an existing leader.
 		/// </summary>
-		/// <param name="civilizationId">The leader's civilization of the leader to override.</param>
-		public LeaderModification(Leader leader)
+		/// <param name="leaderId">The leader to override.</param>
+		public LeaderModification(Leader leaderId)
 		{
-			Leader = leader;
+			Leader = leaderId;
 		}
 	}
 }
