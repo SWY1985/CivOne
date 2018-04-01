@@ -319,5 +319,28 @@ namespace CivOne
 			}
 			return output;
 		}
+
+		public static Picture MakePalette(this IBitmap bitmap, int startIndex, int colourLength)
+		{
+			Dictionary<byte, int> colourCount = new Dictionary<byte, int>();
+			foreach (byte colourIndex in bitmap.Bitmap.ToByteArray())
+			{
+				if (bitmap.Palette[colourIndex].A == 0) continue; // Do not count transparent
+				if (colourCount.ContainsKey(colourIndex))
+				{
+					colourCount[colourIndex]++;
+					continue;
+				}
+				colourCount.Add(colourIndex, 1);
+			}
+
+			Colour[] colours = colourCount.OrderByDescending(x => x.Value).Select(x => bitmap.Palette[x.Key]).Take(16).ToArray();
+			Colour[] palette = new Colour[256];
+			palette[0] = Colour.Transparent;
+			Array.Copy(colours, 0, palette, startIndex, Math.Min(colourLength, colours.Length));
+			
+			Bytemap bytemap = bitmap.MatchColours(palette, startIndex, colourLength);
+			return new Picture(bytemap, palette);
+		}
 	}
 }
