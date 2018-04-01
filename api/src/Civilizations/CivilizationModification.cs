@@ -16,6 +16,7 @@ namespace CivOne.Civilizations
 		public Civilization Civilization { get; }
 
 		public AttributeValue<CivilizationName> Name => AttributeValue<CivilizationName>.Set(this.GetAttribute<Name>());
+		public AttributeValue<string[]> CityNames => AttributeValue<string[]>.Set(this.GetAttribute<CityNames>());
 
 		/// <summary>
 		/// Modifiy an existing civilization.
