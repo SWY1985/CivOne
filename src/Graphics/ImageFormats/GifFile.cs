@@ -119,7 +119,7 @@ namespace CivOne.Graphics.ImageFormats
 		public GifFile(byte[] buffer)
 		{
 			// Check for valid GIF-file header
-			if (Encoding.UTF8.GetString(buffer, 0, 6) != "GIF89a") return;
+			if (Encoding.UTF8.GetString(buffer, 0, 6) != "GIF87a" && Encoding.UTF8.GetString(buffer, 0, 6) != "GIF89a") return;
 
 			int width = BitConverter.ToUInt16(buffer, 6);
 			int height = BitConverter.ToUInt16(buffer, 8);
@@ -134,7 +134,7 @@ namespace CivOne.Graphics.ImageFormats
 
 			if (aspectRatio != 0) return; // Can not handle this file
 			if (!hasGct) return; // Can not handle this file
-			if (colourResolution != 8) return; // Can not handle this file
+			//if (colourResolution != 8) return; // Can not handle this file
 
 			int index = 13;
 			Colour[] palette = new Colour[256];
@@ -159,25 +159,42 @@ namespace CivOne.Graphics.ImageFormats
 						if (buffer[index++] != 0) return; // Can not handle this file
 						break;
 					case 0x21:
-						// Graphics Control Extension
+						// Graphics Control Extension/Comment Extension Block
 						index++;
-						if (buffer[index++] != 0xF9) return; // Unexpected byte
-						int size = buffer[index++];
-						if (size == 4)
+						switch (buffer[index++])
 						{
-							byte packed = buffer[index++];
-							ushort delayTime = BitConverter.ToUInt16(buffer, index);
-							index += 2;
-							byte transparentColour = buffer[index++];
-							if ((packed & 1) == 1)
-							{
-								palette[transparentColour] = Colour.Transparent;
-							}
-							index++;
-						}
-						else
-						{
-							index += size + 1;
+							case 0xF9:
+								// Graphics Control Extension
+								{
+									int size = buffer[index++];
+									if (size == 4)
+									{
+										byte packed = buffer[index++];
+										ushort delayTime = BitConverter.ToUInt16(buffer, index);
+										index += 2;
+										byte transparentColour = buffer[index++];
+										if ((packed & 1) == 1)
+										{
+											palette[transparentColour] = Colour.Transparent;
+										}
+										index++;
+									}
+									else
+									{
+										index += size + 1;
+									}
+								}
+								break;
+							case 0xFE:
+								// Comment Extension Block
+								{
+									int size = buffer[index++];
+									index += size + 1;
+								}
+								break;
+							default:
+								// Unexpected byte
+								return;
 						}
 						break;
 					case 0x3B:
