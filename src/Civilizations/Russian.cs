@@ -7,12 +7,15 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using CivOne.Enums;
 using CivOne.Leaders;
 
 namespace CivOne.Civilizations
 {
 	internal class Russian : BaseCivilization<Stalin>
 	{
+		protected override Civilization Civilization => Civilization.Russians;
+		
 		public Russian() : base(8, 1, "Russian", "Russians", "stal")
 		{
 			StartX = 44;

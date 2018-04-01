@@ -7,12 +7,15 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using CivOne.Enums;
 using CivOne.Leaders;
 
 namespace CivOne.Civilizations
 {
 	internal class Chinese : BaseCivilization<Mao>
 	{
+		protected override Civilization Civilization => Civilization.Chinese;
+		
 		public Chinese() : base(12, 5, "Chinese", "Chinese", "mao")
 		{
 			StartX = 66;

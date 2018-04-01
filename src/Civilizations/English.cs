@@ -7,12 +7,15 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using CivOne.Enums;
 using CivOne.Leaders;
 
 namespace CivOne.Civilizations
 {
 	internal class English : BaseCivilization<Elizabeth>
 	{
+		protected override Civilization Civilization => Civilization.English;
+		
 		public English() : base(13, 6, "English", "English", "eliz")
 		{
 			StartX = 31;
