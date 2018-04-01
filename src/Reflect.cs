@@ -110,6 +110,7 @@ namespace CivOne
 
 		internal static void ApplyPlugins()
 		{
+			BaseCivilization.LoadModifications();
 			BaseLeader.LoadModifications();
 			BaseUnit.LoadModifications();
 		}
