@@ -40,7 +40,12 @@ namespace CivOne.Civilizations
 
 		public byte StartY { get; protected set; }
 
-		public string[] CityNames { get; protected set; }
+		private string[] _cityNames;
+		public string[] CityNames
+		{
+			get => Modifications.LastOrDefault(x => x.CityNames.HasValue)?.CityNames.Value ?? _cityNames;
+			protected set => _cityNames = value;
+		}
 
 		public string Tune { get; private set; }
 
