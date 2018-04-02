@@ -276,6 +276,28 @@ namespace CivOne
 		}
 
 		public static IAdvance ToInstance(this Advance advance) => Common.Advances.FirstOrDefault(x => x.Id == (byte)advance);
+		public static ILeader ToInstance(this Leader leader)
+		{
+			switch (leader)
+			{
+				case Leader.Atilla: return new Atilla();
+				case Leader.Caesar: return new Caesar();
+				case Leader.Hammurabi: return new Hammurabi();
+				case Leader.Frederick: return new Frederick();
+				case Leader.Ramesses: return new Ramesses();
+				case Leader.Lincoln: return new Lincoln();
+				case Leader.Alexander: return new Alexander();
+				case Leader.Gandhi: return new Gandhi();
+				case Leader.Stalin: return new Stalin();
+				case Leader.Shaka: return new Shaka();
+				case Leader.Napoleon: return new Napoleon();
+				case Leader.Montezuma: return new Montezuma();
+				case Leader.Mao: return new Mao();
+				case Leader.Elizabeth: return new Elizabeth();
+				case Leader.Genghis: return new Genghis();
+				default: return null;
+			}
+		}
 
 		public static IBitmap GifToBitmap(this byte[] buffer)
 		{
