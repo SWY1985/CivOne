@@ -9,5 +9,5 @@
 
 using System.Reflection;
 
-[assembly: AssemblyVersion("0.1.0.1151")]
+[assembly: AssemblyVersion("0.1.0.1417")]
 [assembly: AssemblyCopyright("CC0 - Creative Commons")]
