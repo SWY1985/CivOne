@@ -31,6 +31,9 @@
 		<Optimize>true</Optimize>
 	</PropertyGroup>
 	<ItemGroup>
+		<PackageReference Include="FSharp.Core" Version="4.3.4" />
+	</ItemGroup>
+	<ItemGroup>
 		<ProjectReference Include="api/CivOne.API.csproj" />
 	</ItemGroup>
 	<ItemGroup>
