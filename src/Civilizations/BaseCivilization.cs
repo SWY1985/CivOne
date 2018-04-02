@@ -32,7 +32,12 @@ namespace CivOne.Civilizations
 			private set => _namePlural = value;
 		}
 
-		public ILeader Leader { get; private set; }
+		private ILeader _leader;
+		public ILeader Leader
+		{
+			get => Modifications.LastOrDefault(x => x.LeaderId.HasValue)?.LeaderId.Value.ToInstance() ?? _leader;
+			private set => _leader = value;
+		}
 		
 		public byte PreferredPlayerNumber { get; private set; }
 
