@@ -32,13 +32,28 @@ namespace CivOne.Civilizations
 			private set => _namePlural = value;
 		}
 
-		public ILeader Leader { get; private set; }
+		private ILeader _leader;
+		public ILeader Leader
+		{
+			get => Modifications.LastOrDefault(x => x.LeaderId.HasValue)?.LeaderId.Value.ToInstance() ?? _leader;
+			private set => _leader = value;
+		}
 		
 		public byte PreferredPlayerNumber { get; private set; }
 
-		public byte StartX { get; protected set; }
+		private byte _startX;
+		public byte StartX
+		{
+			get => (byte)(Modifications.LastOrDefault(x => x.StartingPosition.HasValue)?.StartingPosition.Value.X ?? _startX);
+			protected set => _startX = value;
+		}
 
-		public byte StartY { get; protected set; }
+		private byte _startY;
+		public byte StartY
+		{
+			get => (byte)(Modifications.LastOrDefault(x => x.StartingPosition.HasValue)?.StartingPosition.Value.Y ?? _startY);
+			protected set => _startY = value;
+		}
 
 		private string[] _cityNames;
 		public string[] CityNames
