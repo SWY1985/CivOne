@@ -310,6 +310,12 @@ namespace CivOne
 			}
 		}
 
+		public string[] DisabledPlugins
+		{
+			get => GetSetting("DisabledPlugins")?.Split(';') ?? new string[0];
+			set => SetSetting("DisabledPlugins", string.Join(";", value));
+		}
+
 		internal void RevealWorldCheat() => _revealWorld = !_revealWorld;
 		
 		internal int ScaleX => _scale;

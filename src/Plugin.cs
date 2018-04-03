@@ -17,24 +17,22 @@ namespace CivOne
 	internal class Plugin
 	{
 		private static void Log(string text, params object[] parameters) => RuntimeHandler.Runtime.Log(text, parameters);
+		private static Settings Settings => Settings.Instance;
 		private static int _seed = 0;
 		
 		private readonly IPlugin _plugin;
 		private readonly string _filePath;
-
-		private string DisabledFile => $"{_filePath}.disabled";
+		private readonly string _fileName;
 
 		public bool Enabled
 		{
-			get => !File.Exists(DisabledFile);
+			get => !Settings.DisabledPlugins.Any(x => x == _fileName);
 			set
 			{
-				if (value && File.Exists(DisabledFile))
-					File.Delete(DisabledFile);
-				else if (!value && !File.Exists(DisabledFile))
-					File.Open(DisabledFile, FileMode.Create).Close();
+				if (value)
+					Settings.DisabledPlugins = Settings.DisabledPlugins.Where(x => x != _fileName).ToArray();
 				else
-					return;
+					Settings.DisabledPlugins = Settings.DisabledPlugins.Concat(new [] { _fileName }).Distinct().ToArray();
 
 				Reflect.ApplyPlugins();
 			}
@@ -68,6 +66,7 @@ namespace CivOne
 			Id = _seed++;
 			Assembly = assembly;
 			_filePath = filePath;
+			_fileName = Path.GetFileName(filePath);
 		}
 	}
 }
