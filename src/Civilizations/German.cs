@@ -14,9 +14,7 @@ namespace CivOne.Civilizations
 {
 	internal class German : BaseCivilization<Frederick>
 	{
-		protected override Civilization Civilization => Civilization.Germans;
-		
-		public German() : base(3, 3, "German", "Germans", "fred")
+		public German() : base(Civilization.Germans, "German", "Germans", "fred")
 		{
 			StartX = 38;
 			StartY = 15;

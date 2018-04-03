@@ -14,9 +14,7 @@ namespace CivOne.Civilizations
 {
 	internal class Roman : BaseCivilization<Caesar>
 	{
-		protected override Civilization Civilization => Civilization.Romans;
-		
-		public Roman() : base(1, 1, "Roman", "Romans", "ceas")
+		public Roman() : base(Civilization.Romans, "Roman", "Romans", "ceas")
 		{
 			StartX = 36;
 			StartY = 19;

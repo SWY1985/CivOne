@@ -14,9 +14,7 @@ namespace CivOne.Civilizations
 {
 	internal class American : BaseCivilization<Lincoln>
 	{
-		protected override Civilization Civilization => Civilization.Americans;
-
-		public American() : base(5, 5, "American", "Americans", "linc")
+		public American() : base(Civilization.Americans, "American", "Americans", "linc")
 		{
 			StartX = 12;
 			StartY = 18;

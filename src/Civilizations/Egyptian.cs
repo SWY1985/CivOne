@@ -14,9 +14,7 @@ namespace CivOne.Civilizations
 {
 	internal class Egyptian : BaseCivilization<Ramesses>
 	{
-		protected override Civilization Civilization => Civilization.Egyptians;
-		
-		public Egyptian() : base(4, 4, "Egyptian", "Egyptians", "rams")
+		public Egyptian() : base(Civilization.Egyptians, "Egyptian", "Egyptians", "rams")
 		{
 			StartX = 41;
 			StartY = 24;

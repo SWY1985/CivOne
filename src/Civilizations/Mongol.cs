@@ -14,9 +14,7 @@ namespace CivOne.Civilizations
 {
 	internal class Mongol : BaseCivilization<Genghis>
 	{
-		protected override Civilization Civilization => Civilization.Mongols;
-		
-		public Mongol() : base(14, 7, "Mongol", "Mongols", "geng")
+		public Mongol() : base(Civilization.Mongols, "Mongol", "Mongols", "geng")
 		{
 			StartX = 49;
 			StartY = 19;
