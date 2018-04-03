@@ -56,6 +56,8 @@ namespace CivOne.UserInterface
 			ItemsChanged?.Invoke(this, EventArgs.Empty);
 		}
 
+		public void AddRange(params MenuItem<T>[] menuItems) => AddRange(menuItems.ToList());
+
 		public MenuItem<T> InsertAt(int index, string text, T value)
 		{
 			if (index < 0) index = 0;

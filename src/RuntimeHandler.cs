@@ -19,6 +19,7 @@ using CivOne.Graphics;
 using CivOne.Graphics.ImageFormats;
 using CivOne.Screens;
 using CivOne.Graphics.Sprites;
+using CivOne.Tasks;
 using CivOne.Tiles;
 
 namespace CivOne
@@ -68,10 +69,10 @@ namespace CivOne
 
 		private void OnInitialize(object sender, EventArgs args)
 		{
-			Common.AddScreen(new Credits());
-			if (Runtime.Settings.Setup) Common.AddScreen(new Setup());
-			if (Runtime.Settings.Demo) Common.AddScreen(new Demo());
-			if (Runtime.Settings.DataCheck && !FileSystem.DataFilesExist()) Common.AddScreen(new MissingFiles());
+			if (Runtime.Settings.DataCheck && !FileSystem.DataFilesExist()) GameTask.Enqueue(Show.Screen<MissingFiles>());
+			if (Runtime.Settings.Demo) GameTask.Enqueue(Show.Screen<Demo>());
+			if (Runtime.Settings.Setup) GameTask.Enqueue(Show.Screen<Setup>());
+			GameTask.Enqueue(CreditsScreen.Show());
 		}
 
 		private void OnUpdate(object sender, UpdateEventArgs args)

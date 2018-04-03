@@ -12,6 +12,8 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
 using CivOne.IO;
+using CivOne.Tasks;
+using CivOne.UserInterface;
 
 namespace CivOne.Screens
 {
@@ -27,6 +29,8 @@ namespace CivOne.Screens
 			"What do you want to do?"
 		};
 		private bool _update = true;
+
+		private bool _success = false;
 
 		private int _y;
 
@@ -51,12 +55,20 @@ namespace CivOne.Screens
 
 			if (FileSystem.CopyDataFiles(path))
 			{
+				_success = true;
+				Resources.ClearInstance();
+				if (GameTask.Any<CreditsScreen>())
+				{
+					GameTask.Remove<CreditsScreen>();
+					GameTask.Enqueue(CreditsScreen.Show());
+				}
+
 				this.FillRectangle(0, 0, 320, 200, 8)
 					.FillRectangle(40, 50, 240, 100, 15);
 
 				this.DrawText("Succes!", 1, 2, 160, 54, TextAlign.Center);
 
-				string[] text = new string[] { "Done copying the data files.", "Please close the window and restart the game.", " ", "Press any key to close the game..." };
+				string[] text = new string[] { "Done copying the data files.", " ", "Press any key to start the game..." };
 
 				for (int i = 0; i < text.Length; i++)
 				{
@@ -99,14 +111,12 @@ namespace CivOne.Screens
 					FontId = 1,
 					Indent = 4
 				};
-				int i = 0;
-				foreach (string choice in new [] { "Continue without data files (not recommended)", "Browse for data files (requires manual restart)", "Quit" })
-				{
-					_menu.Items.Add(choice, i++);
-				}
-				_menu.Items[0].Selected += Menu_Continue;
-				_menu.Items[1].Selected += Menu_Copy;
-				_menu.Items[2].Selected += Menu_Quit;
+
+				_menu.Items.AddRange(
+					MenuItem.Create("Continue without data files (not recommended)").OnSelect(Menu_Continue),
+					MenuItem.Create("Browse for data files").OnSelect(Menu_Copy),
+					MenuItem.Create("Quit").OnSelect(Menu_Quit)
+				);
 				
 				AddMenu(_menu);
 				return true;
@@ -119,7 +129,7 @@ namespace CivOne.Screens
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
-			Runtime.Quit();
+			if (!_success) Runtime.Quit();
 			Destroy();
 			return true;
 		}

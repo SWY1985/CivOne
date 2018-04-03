@@ -55,10 +55,14 @@ namespace CivOne.IO
 				return _instance;
 			}
 		}
+
+		public static void ClearInstance()
+		{
+			_instance = null;
+		}
 		
 		private TextFile()
 		{
-			//foreach (string file in new[] { "BLURB0", "BLURB1", "BLURB2", "BLURB3", "BLURB4", "ERROR", "HELP", "KING", "PRODUCE" })
 			foreach (string file in TEXT_FILES)
 			{
 				string[] textfile = LoadArray(file);
