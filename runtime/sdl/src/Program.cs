@@ -25,6 +25,7 @@ Try 'civone-sdl --help' for more information.
 
 			RuntimeSettings settings = new RuntimeSettings();
 			settings["software-render"] = false;
+			settings["profile-name"] = "default";
 			for (int i = 0; i < args.Length; i++)
 			{
 				string cmd = args[i].TrimStart('-');
@@ -59,6 +60,16 @@ Try 'civone-sdl --help' for more information.
 					case "free": settings.Free = true; continue;
 					case "no-sound": settings["no-sound"] = true; continue;
 					case "no-data-check": settings.DataCheck = false; continue;
+					case "profile":
+						if (args.GetUpperBound(0) == i)
+						{
+							Console.WriteLine("Missing profile name argument");
+							return;
+						}
+						
+						settings["profile-name"] = args[++i];
+						Console.WriteLine($@"Using profile ""{settings["profile-name"]}""");
+						break;
 					case "skip-credits": settings.ShowCredits = false; continue;
 					case "skip-intro": settings.ShowIntro = false; continue;
 					case "software-render": settings["software-render"] = true; continue;

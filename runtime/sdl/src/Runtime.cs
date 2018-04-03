@@ -71,7 +71,7 @@ namespace CivOne
 		public Runtime(RuntimeSettings settings)
 		{	
 			Settings = settings;
-			Profile = Profile.Get(this);
+			Profile = Profile.Get(this, settings.Get<string>("profile-name"));
 			RuntimeHandler.Register(this);
 		}
 
