@@ -16,7 +16,7 @@ namespace CivOne.Civilizations
 {
 	public abstract class BaseCivilization<T> : BaseCivilization, ICivilization where T : ILeader, new()
 	{
-		public int Id { get; private set; }
+		public int Id { get; }
 
 		private string _name;
 		public string Name
@@ -39,7 +39,7 @@ namespace CivOne.Civilizations
 			private set => _leader = value;
 		}
 		
-		public byte PreferredPlayerNumber { get; private set; }
+		public byte PreferredPlayerNumber { get; }
 
 		private byte _startX;
 		public byte StartX
@@ -64,10 +64,10 @@ namespace CivOne.Civilizations
 
 		public string Tune { get; private set; }
 
-		public BaseCivilization(int id, byte preferredPlayerNumber, string name, string namePlural, string tune = null)
+		public BaseCivilization(Civilization civilization, string name, string namePlural, string tune = null) : base(civilization)
 		{
-			Id = id;
-			PreferredPlayerNumber = preferredPlayerNumber;
+			Id = (Civilization == Civilization.Barbarians ? 15 : (int)Civilization);
+			PreferredPlayerNumber = (byte)(Civilization == Civilization.Barbarians ? 0 : ((int)Civilization - 1) % 7 + 1);
 			Name = name;
 			NamePlural = namePlural;
 			Leader = new T();
@@ -77,7 +77,7 @@ namespace CivOne.Civilizations
 
 	public abstract class BaseCivilization : BaseInstance
 	{
-		protected abstract Civilization Civilization { get; }
+		protected Civilization Civilization { get; }
 
 		private static Dictionary<Civilization, List<CivilizationModification>> _modifications = new Dictionary<Civilization, List<CivilizationModification>>();
 		internal static void LoadModifications()
@@ -99,5 +99,10 @@ namespace CivOne.Civilizations
 			Log("Finished applying civilization modifications");
 		}
 		public IEnumerable<CivilizationModification> Modifications => _modifications.ContainsKey(Civilization) ? _modifications[Civilization].ToArray() : new CivilizationModification[0];
+
+		protected BaseCivilization(Civilization civilization)
+		{
+			Civilization = civilization;
+		}
 	}
 }

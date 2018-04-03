@@ -14,9 +14,7 @@ namespace CivOne.Civilizations
 {
 	internal class English : BaseCivilization<Elizabeth>
 	{
-		protected override Civilization Civilization => Civilization.English;
-		
-		public English() : base(13, 6, "English", "English", "eliz")
+		public English() : base(Civilization.English, "English", "English", "eliz")
 		{
 			StartX = 31;
 			StartY = 14;

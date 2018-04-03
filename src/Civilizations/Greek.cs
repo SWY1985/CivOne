@@ -14,9 +14,7 @@ namespace CivOne.Civilizations
 {
 	internal class Greek : BaseCivilization<Alexander>
 	{
-		protected override Civilization Civilization => Civilization.Greeks;
-		
-		public Greek() : base(6, 6, "Greek", "Greeks", "alex")
+		public Greek() : base(Civilization.Greeks, "Greek", "Greeks", "alex")
 		{
 			StartX = 39;
 			StartY = 18;

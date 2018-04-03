@@ -14,9 +14,7 @@ namespace CivOne.Civilizations
 {
 	internal class Russian : BaseCivilization<Stalin>
 	{
-		protected override Civilization Civilization => Civilization.Russians;
-		
-		public Russian() : base(8, 1, "Russian", "Russians", "stal")
+		public Russian() : base(Civilization.Russians, "Russian", "Russians", "stal")
 		{
 			StartX = 44;
 			StartY = 12;

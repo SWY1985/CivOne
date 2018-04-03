@@ -14,9 +14,7 @@ namespace CivOne.Civilizations
 {
 	internal class French : BaseCivilization<Napoleon>
 	{
-		protected override Civilization Civilization => Civilization.French;
-		
-		public French() : base(10, 3, "French", "French", "napo")
+		public French() : base(Civilization.French, "French", "French", "napo")
 		{
 			StartX = 33;
 			StartY = 16;

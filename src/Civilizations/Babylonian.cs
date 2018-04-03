@@ -14,9 +14,7 @@ namespace CivOne.Civilizations
 {
 	internal class Babylonian : BaseCivilization<Hammurabi>
 	{
-		protected override Civilization Civilization => Civilization.Babylonians;
-		
-		public Babylonian() : base(2, 2, "Babylonian", "Babylonians", "hama")
+		public Babylonian() : base(Civilization.Babylonians, "Babylonian", "Babylonians", "hama")
 		{
 			StartX = 45;
 			StartY = 22;

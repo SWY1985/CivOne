@@ -14,9 +14,7 @@ namespace CivOne.Civilizations
 {
 	internal class Barbarian : BaseCivilization<Atilla>
 	{
-		protected override Civilization Civilization => Civilization.Barbarians;
-		
-		public Barbarian() : base(15, 0, "Barbarian", "Barbarians")
+		public Barbarian() : base(Civilization.Barbarians, "Barbarian", "Barbarians")
 		{
 			StartX = 255;
 			StartY = 255;

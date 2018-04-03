@@ -14,9 +14,7 @@ namespace CivOne.Civilizations
 {
 	internal class Zulu : BaseCivilization<Shaka>
 	{
-		protected override Civilization Civilization => Civilization.Zulus;
-		
-		public Zulu() : base(9, 2, "Zulu", "Zulus", "shak")
+		public Zulu() : base(Civilization.Zulus, "Zulu", "Zulus", "shak")
 		{
 			StartX = 42;
 			StartY = 42;

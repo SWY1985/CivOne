@@ -14,9 +14,7 @@ namespace CivOne.Civilizations
 {
 	internal class Aztec : BaseCivilization<Montezuma>
 	{
-		protected override Civilization Civilization => Civilization.Aztecs;
-
-		public Aztec() : base(11, 4, "Aztec", "Aztecs", "mont")
+		public Aztec() : base(Civilization.Aztecs, "Aztec", "Aztecs", "mont")
 		{
 			StartX = 5;
 			StartY = 23;

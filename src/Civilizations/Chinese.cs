@@ -14,9 +14,7 @@ namespace CivOne.Civilizations
 {
 	internal class Chinese : BaseCivilization<Mao>
 	{
-		protected override Civilization Civilization => Civilization.Chinese;
-		
-		public Chinese() : base(12, 5, "Chinese", "Chinese", "mao")
+		public Chinese() : base(Civilization.Chinese, "Chinese", "Chinese", "mao")
 		{
 			StartX = 66;
 			StartY = 19;
