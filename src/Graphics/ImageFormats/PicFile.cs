@@ -282,6 +282,8 @@ namespace CivOne.Graphics.ImageFormats
 			HasPalette256 = true;
 			HasPicture256 = true;
 		}
+
+		internal static void ClearCache() => _cache.Clear();
 		
 		public PicFile(string filename)
 		{
