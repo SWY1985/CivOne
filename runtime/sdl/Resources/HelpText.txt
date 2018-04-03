@@ -12,6 +12,7 @@ runtime-options:
                         disables sound, skips data check, intro and credits
   --no-data-check       Disables checking for game data files
   --no-sound            Disable ingame sounds
+  --profile <name>      Start CivOne using the profile specified
   --skip-credits        Skips the game credits sequence
   --skip-intro          Skips the game intro sequence
   --software-render     Force the use of SDL software rendererer
