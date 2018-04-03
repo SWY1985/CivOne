@@ -272,6 +272,8 @@ namespace CivOne.Units
 						previousOwner.IsDestroyed();
 					};
 
+					IList<IAdvance> advancesToSteal = GetAdvancesToSteal(capturedCity.Player);
+
 					if (Human == capturedCity.Owner || Human == Owner)
 					{
 						Show captureCity = Show.CaptureCity(capturedCity);
@@ -283,10 +285,15 @@ namespace CivOne.Units
 							GameTask.Insert(Show.CityManager(capturedCity));
 						};
 						GameTask.Insert(captureCity);
+
+						if (advancesToSteal.Any())
+							GameTask.Enqueue(Tasks.Show.SelectAdvanceAfterCityCapture(Player, advancesToSteal));
 					}
 					else
 					{
 						changeOwner();
+						if (advancesToSteal.Any())
+							Player.AddAdvance(advancesToSteal.First());
 					}
 					MoveEnd(s, a);
 				};
@@ -386,6 +393,15 @@ namespace CivOne.Units
 			return false;
 		}
 		
+		private IList<IAdvance> GetAdvancesToSteal(Player victim)
+		{
+			return victim.Advances
+			.Where(p => !Player.Advances.Any(p2 => p2.Id == p.Id))
+			.OrderBy(a => Common.Random.Next(0, 1000))
+			.Take(3)
+			.ToList();
+		}
+
 		public virtual bool MoveTo(int relX, int relY)
 		{
 			if (Movement != null) return false;
