@@ -35,7 +35,7 @@ namespace CivOne
 		private DestroyAnimation _destroyAnimation = DestroyAnimation.Sprites;
 		private GameOption _instantAdvice, _autoSave, _endOfTurn, _animations, _sound, _enemyMoves, _civilopediaText, _palace;
 		
-		internal string StorageDirectory => Directory.GetCurrentDirectory();
+		internal string StorageDirectory => RuntimeHandler.Runtime.StorageDirectory;
 		internal string CaptureDirectory => Path.Combine(StorageDirectory, "capture");
 		internal string DataDirectory => Path.Combine(StorageDirectory, "data");
 		internal string PluginsDirectory => Path.Combine(StorageDirectory, "plugins");
@@ -363,7 +363,7 @@ namespace CivOne
 		
 		private void CreateDirectories()
 		{
-			foreach (string dir in new[] { CaptureDirectory, DataDirectory, PluginsDirectory, SavesDirectory, SettingsDirectory, SoundsDirectory })
+			foreach (string dir in new[] { StorageDirectory, CaptureDirectory, DataDirectory, PluginsDirectory, SavesDirectory, SettingsDirectory, SoundsDirectory })
 			if (!Directory.Exists(dir))
 			{
 				Directory.CreateDirectory(dir);
