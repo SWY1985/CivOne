@@ -35,12 +35,11 @@ namespace CivOne
 		private DestroyAnimation _destroyAnimation = DestroyAnimation.Sprites;
 		private GameOption _instantAdvice, _autoSave, _endOfTurn, _animations, _sound, _enemyMoves, _civilopediaText, _palace;
 		
-		internal string StorageDirectory => RuntimeHandler.Runtime.StorageDirectory;
+		internal string StorageDirectory => Runtime.StorageDirectory;
 		internal string CaptureDirectory => Path.Combine(StorageDirectory, "capture");
 		internal string DataDirectory => Path.Combine(StorageDirectory, "data");
 		internal string PluginsDirectory => Path.Combine(StorageDirectory, "plugins");
 		internal string SavesDirectory => Path.Combine(StorageDirectory, "saves");
-		private string SettingsDirectory => Path.Combine(StorageDirectory, "settings");
 		internal string SoundsDirectory => Path.Combine(StorageDirectory, "sounds");
 
 		// Settings
@@ -316,20 +315,7 @@ namespace CivOne
 		internal int ScaleX => _scale;
 		internal int ScaleY => _scale;
 		
-		private string GetSetting(string settingName)
-		{
-			string filename = Path.Combine(SettingsDirectory, settingName);
-			if (!File.Exists(filename)) return null;
-			using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
-			using (StreamReader sr = new StreamReader(fs))
-			{
-				string value = sr.ReadToEnd();
-				
-				Log("Setting Loaded - {0}: {1}", settingName, value);
-				
-				return value.Trim();
-			}
-		}
+		private string GetSetting(string settingName) => Runtime.GetSetting(settingName);
 
 		private bool GetSetting<T>(string settingName, ref T output) where T: struct, IConvertible
 		{
@@ -349,21 +335,11 @@ namespace CivOne
 			return true;
 		}
 		
-		private void SetSetting(string settingName, string value)
-		{
-			string filename = Path.Combine(SettingsDirectory, settingName);
-			using (FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write))
-			using (StreamWriter sw = new StreamWriter(fs))
-			{
-				sw.Write(value);
-				
-				Log("Setting Saved - {0}: {1}", settingName, value);
-			}
-		}
+		private void SetSetting(string settingName, string value) => Runtime.SetSetting(settingName, value);
 		
 		private void CreateDirectories()
 		{
-			foreach (string dir in new[] { StorageDirectory, CaptureDirectory, DataDirectory, PluginsDirectory, SavesDirectory, SettingsDirectory, SoundsDirectory })
+			foreach (string dir in new[] { StorageDirectory, CaptureDirectory, DataDirectory, PluginsDirectory, SavesDirectory, SoundsDirectory })
 			if (!Directory.Exists(dir))
 			{
 				Directory.CreateDirectory(dir);

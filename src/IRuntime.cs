@@ -22,6 +22,8 @@ namespace CivOne
 		event ScreenEventHandler MouseUp, MouseDown, MouseMove;
 		Platform CurrentPlatform { get; }
 		string StorageDirectory { get; }
+		string GetSetting(string key);
+		void SetSetting(string key, string value);
 		RuntimeSettings Settings { get; }
 		MouseCursor CurrentCursor { set; }
 		IBitmap Bitmap { get; set; }
