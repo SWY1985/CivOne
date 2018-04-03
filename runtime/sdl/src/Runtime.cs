@@ -18,6 +18,8 @@ namespace CivOne
 {
 	internal class Runtime : IRuntime, IDisposable
 	{
+		public Profile Profile { get; }
+		
 		internal static Size CanvasSize { get; set; }
 
 		internal bool SignalQuit { get; private set; }
@@ -56,6 +58,8 @@ namespace CivOne
 
 		Platform IRuntime.CurrentPlatform => Platform.Windows;
 		string IRuntime.StorageDirectory => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CivOne");
+		string IRuntime.GetSetting(string key) => Profile.GetSetting(key);
+		void IRuntime.SetSetting(string key, string value) => Profile.SetSetting(key, value);
 		int IRuntime.CanvasWidth => CanvasSize.Width;
 		int IRuntime.CanvasHeight => CanvasSize.Height;
 		
@@ -65,8 +69,9 @@ namespace CivOne
 		void IRuntime.Quit() => SignalQuit = true;
 
 		public Runtime(RuntimeSettings settings)
-		{
+		{	
 			Settings = settings;
+			Profile = Profile.Get(this);
 			RuntimeHandler.Register(this);
 		}
 
