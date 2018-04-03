@@ -21,7 +21,7 @@ namespace CivOne
 		event KeyboardEventHandler KeyboardUp, KeyboardDown;
 		event ScreenEventHandler MouseUp, MouseDown, MouseMove;
 		Platform CurrentPlatform { get; }
-		string StorageFolder { get; }
+		string StorageDirectory { get; }
 		RuntimeSettings Settings { get; }
 		MouseCursor CurrentCursor { set; }
 		IBitmap Bitmap { get; set; }

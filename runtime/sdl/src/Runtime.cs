@@ -55,7 +55,7 @@ namespace CivOne
 		public void Log(string value, params object[] formatArgs) => Console.WriteLine(value, formatArgs);
 
 		Platform IRuntime.CurrentPlatform => Platform.Windows;
-		string IRuntime.StorageFolder => Directory.GetCurrentDirectory();
+		string IRuntime.StorageDirectory => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CivOne");
 		int IRuntime.CanvasWidth => CanvasSize.Width;
 		int IRuntime.CanvasHeight => CanvasSize.Height;
 		
