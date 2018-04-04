@@ -13,6 +13,7 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
 using CivOne.IO;
+using CivOne.Tasks;
 using CivOne.UserInterface;
 
 namespace CivOne.Screens
@@ -258,6 +259,13 @@ namespace CivOne.Screens
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
+			if (args.Shift && args.Key == Key.F1)
+			{
+				GameTask.Enqueue(Show.Screens(typeof(Setup), typeof(Credits)));
+				Destroy();
+				return true;
+			}
+
 			if (_done && _overlay != null)
 				return _overlay.KeyDown(args);
 			return SkipIntro();
@@ -306,7 +314,10 @@ namespace CivOne.Screens
 		
 		public Credits()
 		{
+			Runtime.WindowTitle = "CivOne (press SHIFT+F1 to enter Setup)";
+
 			OnResize += Resize;
+			Closed += (s, a) => Runtime.WindowTitle = "CivOne";
 
 			_introText = TextFile.Instance.LoadArray("CREDITS");
 			if (_introText.Length == 0) _introText = new string[25];
