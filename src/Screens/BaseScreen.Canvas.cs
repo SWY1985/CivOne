@@ -109,10 +109,9 @@ namespace CivOne.Screens
 
 		protected void DrawButton(string text, byte colour, byte colourDark, int x, int y, int width) => DrawButton(text, 1, colour, colourDark, x, y, width, Resources.GetFontHeight(1) + 3);
 
-		//
 		public void ResetPalette()
 		{
-			for (int i = 0; i < 256; i++)
+			for (int i = 0; i < Palette.Length && i < OriginalColours.Length && i < 256; i++)
 				Palette[i] = OriginalColours[i];
 		}
 
@@ -121,7 +120,6 @@ namespace CivOne.Screens
 			for (int i = 1; i < palette.Length && i < 256; i++)
 				Palette[i] = palette[i];
 		}
-		//
 
 		public virtual void Dispose()
 		{
