@@ -47,7 +47,7 @@ namespace CivOne.Graphics
 		{
 			if (startIndex == -1) startIndex = 0;
 			if (count == -1) count = Length - startIndex;
-			for (int i = startIndex; i < startIndex + count; i++)
+			for (int i = startIndex; i < startIndex + count && i < Length && i < source.Length; i++)
 			{
 				WriteInt(i * 4, source.ToInt(i));
 			}

@@ -255,6 +255,9 @@ namespace CivOne.Graphics
 		// Palette functions
 		public static IBitmap Cycle(this IBitmap bitmap, int start, int end)
 		{
+			if (Settings.Instance.GraphicsMode != GraphicsMode.Graphics256) return bitmap;
+			if (bitmap.Palette.Length < start || bitmap.Palette.Length < end) return bitmap;
+
 			Colour reserve;
 			if (start > end)
 			{
