@@ -11,6 +11,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 
 namespace CivOne
 {
@@ -24,11 +25,14 @@ namespace CivOne
 		private readonly string _filePath;
 		private readonly string _fileName;
 
+		public bool Deleted => !File.Exists(_filePath);
+
 		public bool Enabled
 		{
-			get => !Settings.DisabledPlugins.Any(x => x == _fileName);
+			get => !Deleted && !Settings.DisabledPlugins.Any(x => x == _fileName);
 			set
 			{
+				if (Deleted) return;
 				if (value)
 					Settings.DisabledPlugins = Settings.DisabledPlugins.Where(x => x != _fileName).ToArray();
 				else
@@ -47,17 +51,30 @@ namespace CivOne
 
 		public static Plugin Load(string filePath)
 		{
-			Assembly assembly = Assembly.LoadFile(filePath);
-			Type[] types = assembly.GetTypes().Where(x => x.Namespace == "CivOne" && x.Name == "Plugin" && x.GetInterfaces().Contains(typeof(IPlugin))).ToArray();
-			if (types.Count() != 1)
+			using (MemoryStream ms = new MemoryStream(File.ReadAllBytes(filePath)))
 			{
-				Log($" - Invalid plugin format: {filePath}");
-				return null;
-			}
-			
-			IPlugin plugin = (IPlugin)Activator.CreateInstance(types[0]);
+				Assembly assembly = Assembly.Load(ms.ToArray());
+				Type[] types = assembly.GetTypes().Where(x => x.Namespace == "CivOne" && x.Name == "Plugin" && x.GetInterfaces().Contains(typeof(IPlugin))).ToArray();
+				if (types.Count() != 1)
+				{
+					Log($" - Invalid plugin format: {filePath}");
+					return null;
+				}
+				
+				IPlugin plugin = (IPlugin)Activator.CreateInstance(types[0]);
 
-			return new Plugin(filePath, plugin, assembly);
+				return new Plugin(filePath, plugin, assembly);
+			}
+		}
+
+		public override string ToString()
+		{
+			StringBuilder output = new StringBuilder(Name);
+			if (Deleted)
+				output.Append(" (deleted)");
+			else if (!Enabled)
+				output.Append($" ({false.EnabledDisabled().ToLower()})");
+			return output.ToString();
 		}
 
 		private Plugin(string filePath, IPlugin plugin, Assembly assembly)
