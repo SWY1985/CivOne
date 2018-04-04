@@ -356,10 +356,18 @@ namespace CivOne
 				colourCount.Add(colourIndex, 1);
 			}
 
-			Colour[] colours = colourCount.OrderByDescending(x => x.Value).Select(x => bitmap.Palette[x.Key]).Take(16).ToArray();
-			Colour[] palette = new Colour[256];
-			palette[0] = Colour.Transparent;
-			Array.Copy(colours, 0, palette, startIndex, Math.Min(colourLength, colours.Length));
+			Colour[] colours = colourCount.OrderByDescending(x => x.Value).Select(x => bitmap.Palette[x.Key]).Take(colourLength).ToArray();
+			Colour[] palette;
+			if (Settings.GraphicsMode == GraphicsMode.Graphics256)
+			{
+				palette = new Colour[256];
+				palette[0] = Colour.Transparent;
+				Array.Copy(colours, 0, palette, startIndex, Math.Min(colourLength, colours.Length));
+			}
+			else
+			{
+				palette = Common.GetPalette16.Entries.ToArray();
+			}
 			
 			Bytemap bytemap = bitmap.MatchColours(palette, startIndex, colourLength);
 			return new Picture(bytemap, palette);

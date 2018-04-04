@@ -52,7 +52,7 @@ namespace CivOne.Leaders
 
 				if (_modifiedPicture != null && _modifiedPicture.Width() == 139 && _modifiedPicture.Height() == 133)
 				{
-					return _modifiedPicture.MakePalette(64, 16);
+					return GFX256 ? _modifiedPicture.MakePalette(64, 16) : _modifiedPicture.MakePalette(1, 15);
 				}
 			}
 
