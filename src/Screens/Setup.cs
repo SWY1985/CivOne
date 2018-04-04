@@ -215,6 +215,7 @@ namespace CivOne.Screens
 			MenuItem.Create($"Version: {plugin.Version}").Disable(),
 			MenuItem.Create($"Author: {plugin.Author}").Disable(),
 			MenuItem.Create($"Status: {plugin.Enabled.EnabledDisabled()}").OnSelect(GotoMenu(PluginStatusMenu(item, plugin))),
+			MenuItem.Create($"Delete plugin").OnSelect(GotoMenu(PluginDeleteMenu(item, plugin))),
 			MenuItem.Create("Back").OnSelect(GotoMenu(PluginsMenu, item))
 		);
 
@@ -222,6 +223,11 @@ namespace CivOne.Screens
 			MenuItem.Create(false.EnabledDisabled()).OnSelect((s, a) => plugin.Enabled = false),
 			MenuItem.Create(true.EnabledDisabled()).OnSelect((s, a) => plugin.Enabled = true),
 			MenuItem.Create("Back")
+		);
+
+		private Action PluginDeleteMenu(int item, Plugin plugin) => () => CreateMenu($"Delete {plugin.Name} from disk?", 0,
+			MenuItem.Create(false.YesNo()).OnSelect(GotoMenu(PluginsMenu, item)),
+			MenuItem.Create(true.YesNo()).OnSelect((s, a) => plugin.Delete()).OnSelect(GotoMenu(PluginsMenu, item))
 		);
 		
 		private void GameOptionsMenu(int activeItem = 0) => CreateMenu("Game Options", activeItem,
