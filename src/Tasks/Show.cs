@@ -154,6 +154,8 @@ namespace CivOne.Tasks
 			return nextTask();
 		}
 
+		public static Show Screens(params Type[] types) => Screens(types.ToList());
+
 		public static Show Screen(IScreen screen) => new Show(screen);
 
 		private Show(IScreen screen)
