@@ -100,11 +100,25 @@ namespace CivOne.Screens
 			action();
 		};
 
+		private MenuItemEventHandler<int> GotoScreen<T>(Action doneAction) where T : IScreen, new() => (s, a) =>
+		{
+			CloseMenus();
+			T screen = new T();
+			screen.Closed += (sender, args) => doneAction();
+			Common.AddScreen(screen);
+		};
+
 		private MenuItemEventHandler<int> CloseScreen(Action action = null) => (s, a) =>
 		{
 			Destroy();
 			if (action != null) action();
 		};
+
+		private void ChangeWindowTitle()
+		{
+			RuntimeHandler.Runtime.WindowTitle = Settings.WindowTitle;
+			SettingsMenu(0);
+		}
 		
 		private void MainMenu(int activeItem = 0) => CreateMenu("CivOne Setup", activeItem,
 			MenuItem.Create("Settings").OnSelect(GotoMenu(SettingsMenu)),
@@ -116,6 +130,7 @@ namespace CivOne.Screens
 		);
 
 		private void SettingsMenu(int activeItem = 0) => CreateMenu("Settings", activeItem,
+			MenuItem.Create($"Window Title: {Settings.WindowTitle}").OnSelect(GotoScreen<WindowTitle>(ChangeWindowTitle)),
 			MenuItem.Create($"Graphics Mode: {Settings.GraphicsMode.ToText()}").OnSelect(GotoMenu(GraphicsModeMenu)),
 			MenuItem.Create($"Aspect Ratio: {Settings.AspectRatio.ToText()}").OnSelect(GotoMenu(AspectRatioMenu)),
 			MenuItem.Create($"Full Screen: {Settings.FullScreen.YesNo()}").OnSelect(GotoMenu(FullScreenMenu)),
@@ -124,13 +139,13 @@ namespace CivOne.Screens
 			MenuItem.Create($"Back").OnSelect(GotoMenu(MainMenu, 0))
 		);
 
-		private void GraphicsModeMenu() => CreateMenu("Graphics Mode", GotoMenu(SettingsMenu, 0),
+		private void GraphicsModeMenu() => CreateMenu("Graphics Mode", GotoMenu(SettingsMenu, 1),
 			MenuItem.Create($"{Graphics256.ToText()} (default)").OnSelect((s, a) => Settings.GraphicsMode = Graphics256).SetActive(() => Settings.GraphicsMode == Graphics256),
 			MenuItem.Create(Graphics16.ToText()).OnSelect((s, a) => Settings.GraphicsMode = Graphics16).SetActive(() => Settings.GraphicsMode == Graphics16),
 			MenuItem.Create("Back")
 		);
 
-		private void AspectRatioMenu() => CreateMenu("Aspect Ratio", GotoMenu(SettingsMenu, 1),
+		private void AspectRatioMenu() => CreateMenu("Aspect Ratio", GotoMenu(SettingsMenu, 2),
 			MenuItem.Create($"{Auto.ToText()} (default)").OnSelect((s, a) => Settings.AspectRatio = Auto).SetActive(() => Settings.AspectRatio == Auto),
 			MenuItem.Create(Fixed.ToText()).OnSelect((s, a) => Settings.AspectRatio = Fixed).SetActive(() => Settings.AspectRatio == Fixed),
 			MenuItem.Create(Scaled.ToText()).OnSelect((s, a) => Settings.AspectRatio = Scaled).SetActive(() => Settings.AspectRatio == Scaled),
@@ -139,13 +154,13 @@ namespace CivOne.Screens
 			MenuItem.Create("Back")
 		);
 
-		private void FullScreenMenu() => CreateMenu("Full Screen", GotoMenu(SettingsMenu, 2),
+		private void FullScreenMenu() => CreateMenu("Full Screen", GotoMenu(SettingsMenu, 3),
 			MenuItem.Create($"{false.YesNo()} (default)").OnSelect((s, a) => Settings.FullScreen = false).SetActive(() => !Settings.FullScreen),
 			MenuItem.Create(true.YesNo()).OnSelect((s, a) => Settings.FullScreen = true).SetActive(() => Settings.FullScreen),
 			MenuItem.Create("Back")
 		);
 
-		private void WindowScaleMenu() => CreateMenu("Window Scale", GotoMenu(SettingsMenu, 3),
+		private void WindowScaleMenu() => CreateMenu("Window Scale", GotoMenu(SettingsMenu, 4),
 			MenuItem.Create("1x").OnSelect((s, a) => Settings.Scale = 1).SetActive(() => Settings.Scale == 1),
 			MenuItem.Create("2x (default)").OnSelect((s, a) => Settings.Scale = 2).SetActive(() => Settings.Scale == 2),
 			MenuItem.Create("3x").OnSelect((s, a) => Settings.Scale = 3).SetActive(() => Settings.Scale == 3),
@@ -153,7 +168,7 @@ namespace CivOne.Screens
 			MenuItem.Create("Back")
 		);
 
-		private void SoundMenu() => CreateMenu("In-game sound", GotoMenu(SettingsMenu, 4),
+		private void SoundMenu() => CreateMenu("In-game sound", GotoMenu(SettingsMenu, 5),
 			MenuItem.Create("Browse for files...").OnSelect(BrowseForSoundFiles).SetEnabled(!FileSystem.SoundFilesExist()),
 			MenuItem.Create("Back")
 		);

@@ -79,7 +79,11 @@ namespace CivOne
 			}
 		}
 
-		private void OnInitialize(object sender, EventArgs args) => GameTask.Enqueue(Show.Screens(StartupScreens));
+		private void OnInitialize(object sender, EventArgs args)
+		{
+			Runtime.WindowTitle = Settings.WindowTitle;
+			GameTask.Enqueue(Show.Screens(StartupScreens));
+		}
 
 		private void OnUpdate(object sender, UpdateEventArgs args)
 		{

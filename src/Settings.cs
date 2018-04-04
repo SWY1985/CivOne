@@ -20,6 +20,7 @@ namespace CivOne
 		private static void Log(string text, params object[] parameters) => RuntimeHandler.Runtime.Log(text, parameters);
 
 		// Set default settings
+		private string _windowTitle = "CivOne";
 		private GraphicsMode _graphicsMode = GraphicsMode.Graphics256;
 		private bool _fullScreen = false;
 		private bool _rightSideBar = false;
@@ -43,6 +44,17 @@ namespace CivOne
 		internal string SoundsDirectory => Path.Combine(StorageDirectory, "sounds");
 
 		// Settings
+
+		internal string WindowTitle
+		{
+			get => _windowTitle;
+			set
+			{
+				_windowTitle = value;
+				SetSetting("WindowTitle", _windowTitle);
+				Common.ReloadSettings = true;
+			}
+		}
 		
 		internal GraphicsMode GraphicsMode
 		{
@@ -331,6 +343,8 @@ namespace CivOne
 			return true;
 		}
 
+		private void GetSetting(string settingName, ref string output) => output = GetSetting(settingName);
+
 		private void GetSetting(string settingName, ref bool output) => output = (GetSetting(settingName) == "1");
 		
 		private bool GetSetting(string settingName, ref int output, int minValue = int.MinValue, int maxValue = int.MaxValue)
@@ -377,6 +391,7 @@ namespace CivOne
 			CreateDirectories();
 			
 			// Read settings
+			GetSetting("WindowTitle", ref _windowTitle);
 			GetSetting<GraphicsMode>("GraphicsMode", ref _graphicsMode);
 			GetSetting("FullScreen", ref _fullScreen);
 			GetSetting("SideBar", ref _rightSideBar);
