@@ -1,1 +1,1 @@
-@bin\CivOne.exe demo
+@bin\CivOne.SDL.exe demo
