@@ -34,6 +34,12 @@ namespace CivOne
 		{
 			if (_plugins != null) return;
 			_plugins = Directory.GetFiles(Settings.Instance.PluginsDirectory, "*.dll").Select(x => Plugin.Load(x)).Where(x => x != null).ToArray();
+
+			string[] disabledPlugins = Settings.Instance.DisabledPlugins.ToArray();
+			if (_plugins.Any(x => !disabledPlugins.Contains(x.Filename)))
+			{
+				Settings.Instance.DisabledPlugins = _plugins.Where(x => !x.Enabled).Select(x => x.Filename).ToArray();
+			}
 		}
 
 		private static IEnumerable<Assembly> GetAssemblies

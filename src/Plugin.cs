@@ -36,7 +36,7 @@ namespace CivOne
 				if (value)
 					Settings.DisabledPlugins = Settings.DisabledPlugins.Where(x => x != _fileName).ToArray();
 				else
-					Settings.DisabledPlugins = Settings.DisabledPlugins.Concat(new [] { _fileName }).Distinct().ToArray();
+					Settings.DisabledPlugins = Settings.DisabledPlugins.Concat(new [] { _fileName }).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct().ToArray();
 
 				Reflect.ApplyPlugins();
 			}
@@ -65,6 +65,12 @@ namespace CivOne
 
 				return new Plugin(filePath, plugin, assembly);
 			}
+		}
+
+		public void Delete()
+		{
+			File.Delete(_filePath);
+			Reflect.ApplyPlugins();
 		}
 
 		public override string ToString()
