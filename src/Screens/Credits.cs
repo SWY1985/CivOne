@@ -194,7 +194,7 @@ namespace CivOne.Screens
 		private void CreateMenu()
 		{
 			_allowEnterSetup = false;
-			Runtime.WindowTitle = "CivOne";
+			Runtime.WindowTitle = Settings.WindowTitle;
 
 			if (HasMenu) return;
 			Menu menu = new Menu("MainMenu", Palette)
@@ -318,10 +318,10 @@ namespace CivOne.Screens
 		
 		public Credits()
 		{
-			Runtime.WindowTitle = "CivOne (press SHIFT+F1 to enter Setup)";
+			Runtime.WindowTitle = $"{Settings.WindowTitle} (press SHIFT+F1 to enter Setup)";
 
 			OnResize += Resize;
-			Closed += (s, a) => Runtime.WindowTitle = "CivOne";
+			Closed += (s, a) => Runtime.WindowTitle = Settings.WindowTitle;
 
 			_introText = TextFile.Instance.LoadArray("CREDITS");
 			if (_introText.Length == 0) _introText = new string[25];
