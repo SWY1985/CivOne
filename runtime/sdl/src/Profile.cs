@@ -98,7 +98,7 @@ namespace CivOne
 			}
 			xElement.Value = value;
 
-			using (FileStream fs = new FileStream(_filename, FileMode.Open, FileAccess.Write))
+			using (FileStream fs = new FileStream(_filename, FileMode.Create, FileAccess.Write))
 			using (XmlWriter xw = CreateXmlWriter(fs))
 			{
 				xDoc.Save(xw);
