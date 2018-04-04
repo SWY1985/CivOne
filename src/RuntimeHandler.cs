@@ -171,15 +171,9 @@ namespace CivOne
 			TopScreen?.KeyDown(args);
 		}
 
-		private void OnMouseUp(object sender, ScreenEventArgs args)
-		{
-			TopScreen?.MouseUp(args);
-		}
+		private void OnMouseUp(object sender, ScreenEventArgs args) => TopScreen?.MouseUp(args);
 
-		private void OnMouseDown(object sender, ScreenEventArgs args)
-		{
-			TopScreen?.MouseDown(args);
-		}
+		private void OnMouseDown(object sender, ScreenEventArgs args) => TopScreen?.MouseDown(args);
 
 		private void OnMouseMove(object sender, ScreenEventArgs args)
 		{

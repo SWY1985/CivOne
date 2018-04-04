@@ -126,6 +126,17 @@ namespace CivOne
 				}
 			}
 
+			private string _title;
+			public string Title
+			{
+				get => _title;
+				set
+				{
+					_title = value;
+					SDL_SetWindowTitle(_handle, _title);
+				}
+			}
+
 			public Window(string title, int width, int height, bool fullscreen, bool softwareRender = false)
 			{
 				SDL_Init(SDL_INIT.VIDEO | SDL_INIT.AUDIO);

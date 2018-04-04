@@ -32,6 +32,7 @@ namespace CivOne
 		int CanvasHeight { get; }
 		void Log(string text, params object[] parameters);
 		string BrowseFolder(string caption = "");
+		string WindowTitle { set; }
 		void PlaySound(string file);
 		void StopSound();
 		void Quit();
