@@ -7,7 +7,10 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
+using System.Collections.Generic;
 using System.IO;
+using CivOne.Screens.Dialogs;
 
 namespace CivOne.IO
 {
@@ -91,6 +94,46 @@ namespace CivOne.IO
 				return false;
 			}
 			Log("- Done, all copied");
+			return true;
+		}
+
+		public static bool CopyPlugins(string folder)
+		{
+			Queue<OverwritePlugin> dialogs = new Queue<OverwritePlugin>();
+
+			Log("Copying plugins...");
+			foreach (string filepath in Directory.GetFiles(folder))
+			{
+				if (!Plugin.Validate(filepath))
+				{
+					Log($"- Invalid plugin file: {filepath}");
+					continue;
+				}
+
+				string filename = Path.GetFileName(filepath);
+				string destinationFile = Path.Combine(Settings.Instance.PluginsDirectory, Path.GetFileName(filename));
+				if (File.Exists(destinationFile))
+				{
+					Log($"- Plugin already exists: {filepath}");
+					dialogs.Enqueue(new OverwritePlugin(filepath, destinationFile));
+					continue;
+				}
+
+				Log($"- Plugin copied: {filepath}");
+				File.Copy(filepath, destinationFile);
+				Reflect.LoadPlugin(destinationFile);
+			}
+
+			Action nextDialog = null;
+			nextDialog = () =>
+			{
+				if (dialogs.Count == 0) return;
+				OverwritePlugin dialog = dialogs.Dequeue();
+				dialog.Closed += (s, a) => nextDialog();
+				Common.AddScreen(dialog);
+			};
+			nextDialog();
+
 			return true;
 		}
 	} 

@@ -49,6 +49,16 @@ namespace CivOne
 		public string Author => _plugin.Author;
 		public string Version => _plugin.Version;
 
+		public static bool Validate(string filePath)
+		{
+			using (MemoryStream ms = new MemoryStream(File.ReadAllBytes(filePath)))
+			{
+				Assembly assembly = Assembly.Load(ms.ToArray());
+				Type[] types = assembly.GetTypes().Where(x => x.Namespace == "CivOne" && x.Name == "Plugin" && x.GetInterfaces().Contains(typeof(IPlugin))).ToArray();
+				return (types.Count() == 1);
+			}
+		}
+
 		public static Plugin Load(string filePath)
 		{
 			using (MemoryStream ms = new MemoryStream(File.ReadAllBytes(filePath)))

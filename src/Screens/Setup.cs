@@ -54,6 +54,20 @@ namespace CivOne.Screens
 			FileSystem.CopySoundFiles(path);
 		}
 
+		private void BrowseForPlugins(object sender, MenuItemEventArgs<int> args)
+		{
+			string path = Runtime.BrowseFolder("Location of CivOne plugin(s)");
+			if (path == null)
+			{
+				// User pressed cancel
+				return;
+			}
+
+			CloseMenus();
+			MainMenu(2);
+			FileSystem.CopyPlugins(path);
+		}
+
 		private void CreateMenu(string title, int activeItem, MenuItemEventHandler<int> always, params MenuItem<int>[] items) =>
 			AddMenu(new Menu("Setup", Palette)
 			{
@@ -206,9 +220,18 @@ namespace CivOne.Screens
 		);
 
 		private void PluginsMenu(int activeItem = 0) => CreateMenu("Plugins", activeItem,
-			Reflect.Plugins().Select(x => MenuItem.Create(x.ToString()).SetEnabled(!x.Deleted).OnSelect(GotoMenu(PluginMenu(x.Id, x))))
-				.Concat(new [] { MenuItem.Create("Back").OnSelect(GotoMenu(MainMenu, 2)) })
-				.ToArray()
+			new MenuItem<int>[0]
+				.Concat(
+					Reflect.Plugins().Any() ?
+						Reflect.Plugins().Select(x => MenuItem.Create(x.ToString()).SetEnabled(!x.Deleted).OnSelect(GotoMenu(PluginMenu(x.Id, x)))) :
+						new [] { MenuItem.Create("No plugins installed").Disable() }
+				)
+				.Concat(new []
+				{
+					MenuItem.Create(null).Disable(),
+					MenuItem.Create("Add plugins").OnSelect(BrowseForPlugins),
+					MenuItem.Create("Back").OnSelect(GotoMenu(MainMenu, 2))
+				}).ToArray()
 		);
 
 		private Action PluginMenu(int item, Plugin plugin) => () => CreateMenu(plugin.Name, 0,

@@ -42,6 +42,23 @@ namespace CivOne
 			}
 		}
 
+		internal static void LoadPlugin(string filename)
+		{
+			if (!Plugin.Validate(filename)) return;
+
+			List<Plugin> plugins = new List<Plugin>(_plugins ?? new Plugin[0]);
+
+			Plugin plugin = Plugin.Load(filename);
+			plugin.Enabled = true;
+
+			plugins.RemoveAll(x => x.Filename == Path.GetFileName(filename));
+			plugins.Add(plugin);
+
+			_plugins = plugins.ToArray();
+
+			ApplyPlugins();
+		}
+
 		private static IEnumerable<Assembly> GetAssemblies
 		{
 			get
