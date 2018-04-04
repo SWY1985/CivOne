@@ -164,6 +164,7 @@ namespace CivOne
 		{
 			_runtime = runtime;
 			_runtime.CursorChanged += CursorChanged;
+			_runtime.SetWindowTitle += (string title) => Title = title;
 
 			OnLoad += Load;
 			OnUpdate += Update;

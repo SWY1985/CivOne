@@ -40,6 +40,7 @@ namespace CivOne
 		internal event EventHandler CursorChanged;
 		internal event Action<string> PlaySound;
 		internal event Action StopSound;
+		internal event Action<string> SetWindowTitle;
 		
 		public RuntimeSettings Settings { get; private set; }
 		public MouseCursor CurrentCursor { internal get; set; }
@@ -64,6 +65,10 @@ namespace CivOne
 		int IRuntime.CanvasHeight => CanvasSize.Height;
 		
 		string IRuntime.BrowseFolder(string caption) => Native.FolderBrowser(caption);
+		string IRuntime.WindowTitle
+		{
+			set => SetWindowTitle?.Invoke(value);
+		}
 		void IRuntime.PlaySound(string filename) => PlaySound?.Invoke(filename);
 		void IRuntime.StopSound() => StopSound?.Invoke();
 		void IRuntime.Quit() => SignalQuit = true;
