@@ -57,11 +57,6 @@ namespace CivOne.Screens
 			{
 				_success = true;
 				Resources.ClearInstance();
-				if (GameTask.Any<CreditsScreen>())
-				{
-					GameTask.Remove<CreditsScreen>();
-					GameTask.Enqueue(CreditsScreen.Show());
-				}
 
 				this.FillRectangle(0, 0, 320, 200, 8)
 					.FillRectangle(40, 50, 240, 100, 15);

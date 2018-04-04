@@ -21,7 +21,6 @@ namespace CivOne
 		private static List<GameTask> _tasks = new List<GameTask>();
 
 		public static bool Any() => (_tasks.Count > 0);
-		public static bool Any<T>() where T : GameTask => _tasks.Any(x => x is T);
 		public static bool Is<T>() where T : GameTask => (_currentTask != null && _currentTask is T);
 		public static bool Fast => Common.HasAttribute<Fast>(_currentTask);
 		public static int Count<T>() where T : GameTask => _tasks.Count(t => t is T);
@@ -50,17 +49,17 @@ namespace CivOne
 
 		public static void Enqueue(GameTask task)
 		{
+			if (task == null) return;
 			task.Done += Finish;
 			_tasks.Add(task);
 		}
 
 		public static void Insert(GameTask task)
 		{
+			if (task == null) return;
 			task.Done += Finish;
 			_tasks.Insert(0, task);
 		}
-
-		public static void Remove<T>() where T : GameTask => _tasks.RemoveAll(x => x is T);
 
 		private static void Finish(object sender, EventArgs args)
 		{

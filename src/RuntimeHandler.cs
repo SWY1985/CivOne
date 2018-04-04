@@ -8,6 +8,7 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -67,13 +68,18 @@ namespace CivOne
 			return update;
 		}
 
-		private void OnInitialize(object sender, EventArgs args)
+		private IEnumerable<Type> StartupScreens
 		{
-			if (Runtime.Settings.DataCheck && !FileSystem.DataFilesExist()) GameTask.Enqueue(Show.Screen<MissingFiles>());
-			if (Runtime.Settings.Demo) GameTask.Enqueue(Show.Screen<Demo>());
-			if (Runtime.Settings.Setup) GameTask.Enqueue(Show.Screen<Setup>());
-			GameTask.Enqueue(CreditsScreen.Show());
+			get
+			{
+				if (Runtime.Settings.DataCheck && !FileSystem.DataFilesExist()) yield return typeof(MissingFiles);
+				if (Runtime.Settings.Demo) yield return typeof(Demo);
+				if (Runtime.Settings.Setup) yield return typeof(Setup);
+				yield return typeof(Credits);
+			}
 		}
+
+		private void OnInitialize(object sender, EventArgs args) => GameTask.Enqueue(Show.Screens(StartupScreens));
 
 		private void OnUpdate(object sender, UpdateEventArgs args)
 		{

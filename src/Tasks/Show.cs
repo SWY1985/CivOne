@@ -133,6 +133,27 @@ namespace CivOne.Tasks
 
 		public static Show Screen<T>() where T : IScreen, new() => new Show(new T());
 
+		public static Show Screen(Type type)
+		{
+			if (!typeof(IScreen).IsAssignableFrom(type)) return null;
+			return new Show((IScreen)Activator.CreateInstance(type));
+		}
+
+		public static Show Screens(IEnumerable<Type> types)
+		{
+			Queue<Type> screenTypeQueue = new Queue<Type>(types.Where(x => typeof(IScreen).IsAssignableFrom(x)));
+			if (screenTypeQueue.Count == 0) return null;
+			Func<Show> nextTask = null;
+			nextTask = () =>
+			{
+				if (screenTypeQueue.Count == 0) return null;
+				Show showScreen = Show.Screen(screenTypeQueue.Dequeue());
+				showScreen.Done += (s, a) => GameTask.Insert(nextTask());
+				return showScreen;
+			};
+			return nextTask();
+		}
+
 		public static Show Screen(IScreen screen) => new Show(screen);
 
 		private Show(IScreen screen)
