@@ -1,1 +1,1 @@
-@bin\CivOne.exe setup
+@bin\CivOne.SDL.exe setup
