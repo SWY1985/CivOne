@@ -36,6 +36,7 @@ namespace CivOne.Screens
 		private int _cycleCounter = 0;
 		private int _noiseCounter = NOISE_COUNT;
 		
+		private bool _allowEnterSetup = true;
 		private bool _done = false;
 		private bool _showIntroLine = false;
 		private bool _introSkipped = false;
@@ -192,6 +193,9 @@ namespace CivOne.Screens
 		
 		private void CreateMenu()
 		{
+			_allowEnterSetup = false;
+			Runtime.WindowTitle = "CivOne";
+
 			if (HasMenu) return;
 			Menu menu = new Menu("MainMenu", Palette)
 			{
@@ -259,7 +263,7 @@ namespace CivOne.Screens
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
-			if (args.Shift && args.Key == Key.F1)
+			if (_allowEnterSetup && args.Shift && args.Key == Key.F1)
 			{
 				GameTask.Enqueue(Show.Screens(typeof(Setup), typeof(Credits)));
 				Destroy();
