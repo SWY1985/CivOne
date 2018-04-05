@@ -83,7 +83,7 @@ namespace CivOne.Screens
 					xx += letterWidth + 1;
 				}
 			}
-			if (_text.Length > 0)
+			if (string.IsNullOrEmpty(_text))
 				this.DrawText(_text, _fontId, _textColour, X, yy);
 			
 			return true;
