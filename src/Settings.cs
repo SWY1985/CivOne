@@ -10,6 +10,7 @@
 using System;
 using System.IO;
 using CivOne.Enums;
+using CivOne.Graphics;
 using CivOne.Graphics.Sprites;
 
 namespace CivOne
@@ -65,6 +66,10 @@ namespace CivOne
 				string saveValue = _graphicsMode == GraphicsMode.Graphics256 ? "1" : "2";
 				SetSetting("GraphicsMode", saveValue);
 				Common.ReloadSettings = true;
+				
+				Resources.ClearInstance();
+				Runtime.Bitmap?.Dispose();
+				Runtime.Bitmap = null;
 			}
 		}
 		
