@@ -343,7 +343,7 @@ namespace CivOne
 			return true;
 		}
 
-		private void GetSetting(string settingName, ref string output) => output = GetSetting(settingName);
+		private void GetSetting(string settingName, ref string output) => output = GetSetting(settingName) ?? output;
 
 		private void GetSetting(string settingName, ref bool output) => output = (GetSetting(settingName) == "1");
 		
