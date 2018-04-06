@@ -10,19 +10,22 @@
 				"kind": "build",
 				"isDefault": true
 			},
-			"command": "dotnet build",
+			"command": "dotnet",
 			"windows": {
 				"args": [
+					"build",
 					"${workspaceRoot}/runtime/sdl/CivOne.SDL.csproj"
 				]
 			},
 			"linux": {
 				"args": [
+					"build",
 					"${workspaceRoot}/runtime/sdl/CivOne.SDL.csproj"
 				]
 			},
 			"osx": {
 				"args": [
+					"build",
 					"${workspaceRoot}/runtime/sdl/CivOne.SDL.csproj",
 					"-c",
 					"DebugMacOS"
@@ -40,8 +43,9 @@
 				"kind": "test",
 				"isDefault": true
 			},
-			"command": "dotnet test",
+			"command": "dotnet",
 			"args": [
+				"test",
 				"${workspaceRoot}/xunit/CivOne.UnitTests.csproj"
 			],
 			"presentation": {
@@ -53,8 +57,9 @@
 			"label": "build-api",
 			"type": "shell",
 			"group": "build",
-			"command": "dotnet build",
+			"command": "dotnet",
 			"args": [
+				"build",
 				"${workspaceRoot}/api/CivOne.API.csproj"
 			],
 			"presentation": {
