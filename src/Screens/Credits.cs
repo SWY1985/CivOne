@@ -245,6 +245,7 @@ namespace CivOne.Screens
 			CloseMenus();
 			
 			_overlay = new LoadGame(this.Palette);
+			_overlay.Closed += (s, a) => Destroy();
 		}
 		
 		private void Earth(object sender, EventArgs args)
