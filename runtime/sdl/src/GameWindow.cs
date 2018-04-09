@@ -162,6 +162,8 @@ namespace CivOne
 
 		public GameWindow(Runtime runtime, bool softwareRender) : base("CivOne", InitialWidth, InitialHeight, Settings.FullScreen, softwareRender)
 		{
+			Icon = Resources.GetWindowIcon();
+
 			_runtime = runtime;
 			_runtime.CursorChanged += CursorChanged;
 			_runtime.SetWindowTitle += (string title) => Title = title;

@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Reflection;
 using CivOne.Enums;
+using CivOne.Graphics;
+using CivOne.Graphics.ImageFormats;
 
 namespace CivOne
 {
@@ -14,6 +16,8 @@ namespace CivOne
 		private static Stream CivOneIco => GetInternalResource("CivOne.ico");
 
 		private static Stream HelpTextTxt => GetInternalResource("HelpText.txt");
+
+		private static Stream WindowIcon => GetInternalResource("WindowIcon.gif");
 		
 		private static bool WriteResourceToFile(Stream resource, string filePath, Func<bool> condition)
 		{
@@ -62,6 +66,19 @@ namespace CivOne
 			Resources.CivOneIco,
 			Path.Combine(BinPath, "CivOne.ico"),
 			() => Native.Platform == Platform.Windows);
+		
+		public static IBitmap GetWindowIcon()
+		{
+			using (Stream resourceStream = WindowIcon)
+			using (MemoryStream ms = new MemoryStream())
+			{
+				resourceStream.CopyTo(ms);
+				using (GifFile gifFile = new GifFile(ms.ToArray()))
+				{
+					return gifFile.GetBitmap();
+				}
+			}
+		}
 		
 		public static string HelpText => GetResourceString(HelpTextTxt);
 	}

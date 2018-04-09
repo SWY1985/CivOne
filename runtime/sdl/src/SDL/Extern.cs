@@ -36,6 +36,9 @@ namespace CivOne
 
 		private static void SDL_SetWindowTitle(IntPtr window, string title) => SDL_SetWindowTitle(window, title.ToBytes());
 
+		[DllImport(DLL_SDL, CallingConvention = CallingConvention.Cdecl)]
+		private static extern void SDL_SetWindowIcon(IntPtr window, IntPtr icon);
+
 		[DllImportAttribute(DLL_SDL, CallingConvention = CallingConvention.Cdecl)]
 		private static extern void SDL_GetWindowSize(IntPtr window, out int width, out int height);
 
@@ -97,6 +100,12 @@ namespace CivOne
 
 		[DllImportAttribute(DLL_SDL, CallingConvention = CallingConvention.Cdecl)]
 		private static extern void SDL_UnlockTexture(IntPtr texture);
+
+		[DllImport(DLL_SDL, CallingConvention = CallingConvention.Cdecl)]
+		public static extern IntPtr SDL_CreateRGBSurfaceFrom(IntPtr pixels, int width, int height, int depth, int pitch, uint Rmask, uint Gmask, uint Bmask, uint Amask);
+
+		[DllImport(DLL_SDL, CallingConvention = CallingConvention.Cdecl)]
+		public static extern void SDL_FreeSurface(IntPtr surface);
 
 		[DllImportAttribute(DLL_SDL, CallingConvention = CallingConvention.Cdecl)]
 		private static extern IntPtr SDL_Window();

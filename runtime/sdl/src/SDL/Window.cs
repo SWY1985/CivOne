@@ -137,6 +137,37 @@ namespace CivOne
 				}
 			}
 
+			public IBitmap Icon
+			{
+				set
+				{
+					int width = value.Width(), height = value.Height();
+					byte[] bytes = new byte[width * height * 4];
+
+					int i = 0;
+					for (int yy = 0; yy < width; yy++)
+					for (int xx = 0; xx < width; xx++)
+					{
+						Colour colour = value.Palette[value.Bitmap[xx, yy]];
+						bytes[i++] = colour.A;
+						bytes[i++] = colour.R;
+						bytes[i++] = colour.G;
+						bytes[i++] = colour.B;
+					}
+
+					IntPtr pixels = Marshal.AllocHGlobal(bytes.Length);
+					Marshal.Copy(bytes, 0, pixels, bytes.Length);
+					
+					IntPtr surface = SDL_CreateRGBSurfaceFrom(pixels, width, height, 32, width * 4, 0x0000ff00, 0x00ff0000, 0xff000000, 0x000000ff);
+
+					SDL_SetWindowIcon(_handle, surface);
+
+					SDL_FreeSurface(surface);
+
+					Marshal.FreeHGlobal(pixels);
+				}
+			}
+
 			public Window(string title, int width, int height, bool fullscreen, bool softwareRender = false)
 			{
 				SDL_Init(SDL_INIT.VIDEO | SDL_INIT.AUDIO);

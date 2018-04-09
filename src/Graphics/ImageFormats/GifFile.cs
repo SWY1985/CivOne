@@ -16,7 +16,7 @@ using CivOne.IO;
 
 namespace CivOne.Graphics.ImageFormats
 {
-	internal class GifFile : IImageFormat, IDisposable
+	public class GifFile : IImageFormat, IDisposable
 	{
 		private Palette _palette;
 		private Bytemap _pixels;
