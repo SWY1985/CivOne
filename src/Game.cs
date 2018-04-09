@@ -158,7 +158,7 @@ namespace CivOne
 				{
 					if (Common.Random.Next(0, 40) == 0)
 					{
-						City[] oceanCities = _cities.Where(x => x.Tile.GetBorderTiles().Any(t => t.IsOcean)).ToArray();
+						City[] oceanCities = oceanCities = _cities.Where(x => x.Tile.GetBorderTiles().Any(t => t != null && t.IsOcean)).ToArray();
 						if (oceanCities.Any())
 						{
 							City barbarianTarget = oceanCities.OrderBy(x => Common.Random.Next(0, 200)).First();
@@ -168,7 +168,7 @@ namespace CivOne
 								int relX = Common.Random.Next(0, 13);
 								int relY = Common.Random.Next(0, 13);
 								ITile tile = tiles[relX, relY];
-								if (!tile.IsOcean) continue;
+								if (tile == null || !tile.IsOcean) continue;
 								if (_cities.Min(x => Common.DistanceToTile(x.X, x.Y, tile.X, tile.Y)) < 3) continue;
 								foreach (UnitType unitType in new [] { UnitType.Sail, UnitType.Legion, UnitType.Legion, UnitType.Diplomat })
 									CreateUnit(unitType, tile.X, tile.Y, 0, false);
