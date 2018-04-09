@@ -412,7 +412,7 @@ namespace CivOne.Units
 			{
 				if (Class == UnitClass.Land && Tile.IsOcean)
 				{
-					GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText($"ERROR/AMPHIB")));
+					if (Human == Owner) GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText($"ERROR/AMPHIB")));
 					return false;
 				}
 				return Confront(relX, relY);
