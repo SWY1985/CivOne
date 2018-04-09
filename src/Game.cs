@@ -115,6 +115,21 @@ namespace CivOne
 
 			GameTask.Insert(Message.Advisor(Advisor.Defense, false, destroyed.Name, "civilization", "destroyed", $"by {destroyedBy.NamePlural}!"));
 		}
+
+		private bool BarbarianSpawnYear
+		{
+			get
+			{
+				if ((_gameTurn % 8) != 0) return false;
+				switch (_difficulty)
+				{
+					case 0: // Chieftain (is this correct?)
+						return _gameTurn >= 152;
+					default:
+						return _gameTurn >= (5 - _difficulty) * 32;
+				}
+			}
+		}
 		
 		internal byte PlayerNumber(Player player)
 		{
@@ -153,27 +168,23 @@ namespace CivOne
 					GameTask.Enqueue(Show.AutoSave);
 				}
 
-				// TODO: Figure out how barbarians spawn
-				if (Common.TurnToYear(_gameTurn) > -2000)
+				if (BarbarianSpawnYear)
 				{
-					if (Common.Random.Next(0, 40) == 0)
+					City[] oceanCities = oceanCities = _cities.Where(x => x.Tile.GetBorderTiles().Any(t => t != null && t.IsOcean)).ToArray();
+					if (oceanCities.Any())
 					{
-						City[] oceanCities = oceanCities = _cities.Where(x => x.Tile.GetBorderTiles().Any(t => t != null && t.IsOcean)).ToArray();
-						if (oceanCities.Any())
+						City barbarianTarget = oceanCities.OrderBy(x => Common.Random.Next(0, 200)).First();
+						ITile[,] tiles = (barbarianTarget.Tile as BaseTile)[-6, -6, 13, 13];
+						for (int i = 0; i < 1000; i++)
 						{
-							City barbarianTarget = oceanCities.OrderBy(x => Common.Random.Next(0, 200)).First();
-							ITile[,] tiles = (barbarianTarget.Tile as BaseTile)[-6, -6, 13, 13];
-							for (int i = 0; i < 1000; i++)
-							{
-								int relX = Common.Random.Next(0, 13);
-								int relY = Common.Random.Next(0, 13);
-								ITile tile = tiles[relX, relY];
-								if (tile == null || !tile.IsOcean) continue;
-								if (_cities.Min(x => Common.DistanceToTile(x.X, x.Y, tile.X, tile.Y)) < 3) continue;
-								foreach (UnitType unitType in new [] { UnitType.Sail, UnitType.Legion, UnitType.Legion, UnitType.Diplomat })
-									CreateUnit(unitType, tile.X, tile.Y, 0, false);
-								break;
-							}
+							int relX = Common.Random.Next(0, 13);
+							int relY = Common.Random.Next(0, 13);
+							ITile tile = tiles[relX, relY];
+							if (tile == null || !tile.IsOcean) continue;
+							if (_cities.Min(x => Common.DistanceToTile(x.X, x.Y, tile.X, tile.Y)) < 3) continue;
+							foreach (UnitType unitType in new [] { UnitType.Sail, UnitType.Legion, UnitType.Legion, UnitType.Diplomat })
+								CreateUnit(unitType, tile.X, tile.Y, 0, false);
+							break;
 						}
 					}
 				}
