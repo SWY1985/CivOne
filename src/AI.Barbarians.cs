@@ -98,8 +98,8 @@ namespace CivOne
 					{
 						unit.Goto = Point.Empty;
 						unit.SkipTurn();
-						return;
 					}
+					return;
 				}
 
 				unit.SkipTurn();
