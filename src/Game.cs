@@ -116,20 +116,7 @@ namespace CivOne
 			GameTask.Insert(Message.Advisor(Advisor.Defense, false, destroyed.Name, "civilization", "destroyed", $"by {destroyedBy.NamePlural}!"));
 		}
 
-		private bool BarbarianSpawnYear
-		{
-			get
-			{
-				if ((_gameTurn % 8) != 0) return false;
-				switch (_difficulty)
-				{
-					case 0: // Chieftain (is this correct?)
-						return _gameTurn >= 152;
-					default:
-						return _gameTurn >= (5 - _difficulty) * 32;
-				}
-			}
-		}
+		private bool BarbarianSpawnYear => (_gameTurn % 8) == 0 && (_gameTurn > 150 || _gameTurn >= (5 - _difficulty) * 32);
 		
 		internal byte PlayerNumber(Player player)
 		{
