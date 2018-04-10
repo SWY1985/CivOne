@@ -470,14 +470,11 @@ namespace CivOne.Units
 				}
 			}
 
-			Movement = new MoveUnit(relX, relY);
-			Movement.Done += MoveEnd;
-			GameTask.Insert(Movement);
-
+			MovementTo(relX, relY);
 			return true;
 		}
 
-		protected void MoveEnd(object sender, EventArgs args)
+		private void MoveEnd(object sender, EventArgs args)
 		{
 			ITile previousTile = Map[_x, _y];
 			X += Movement.RelX;
@@ -490,6 +487,18 @@ namespace CivOne.Units
 			
 			Explore();
 			MovementDone(previousTile);
+		}
+
+		protected void MovementTo(int relX, int relY)
+		{
+			MovementStart(Tile);
+			Movement = new MoveUnit(relX, relY);
+			Movement.Done += MoveEnd;
+			GameTask.Insert(Movement);
+		}
+
+		protected virtual void MovementStart(ITile previousTile)
+		{
 		}
 
 		protected virtual void MovementDone(ITile previousTile)

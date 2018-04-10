@@ -241,7 +241,8 @@ namespace CivOne.Tiles
 
 			bool stack = (units.Length > 1);
 			IUnit unit = units.First();
-			if (tile.IsOcean) unit = units.FirstOrDefault(x => !(x.Class == UnitClass.Land && x.Sentry));
+			if (tile.IsOcean) unit = units.FirstOrDefault(x => x.Class == UnitClass.Water) ?? units.FirstOrDefault(x => !(x.Class == UnitClass.Land && x.Sentry));
+			if (Game.Started && Game.ActiveUnit != null && !Game.ActiveUnit.Moving && Game.ActiveUnit.X == tile.X && Game.ActiveUnit.Y == tile.Y) unit = Game.ActiveUnit;
 			if (unit == null) return null;
 			
 			IBitmap output = new Picture(16, 16, Palette);

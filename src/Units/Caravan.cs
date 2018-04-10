@@ -45,12 +45,7 @@ namespace CivOne.Units
 			return (int)(multiplier * (float)((distance + 10) * (tradeHome + tradeTarget) / 24));
 		}
 
-		internal void KeepMoving(City city)
-		{
-			Movement = new MoveUnit(city.X - X, city.Y - Y);
-			Movement.Done += MoveEnd;
-			GameTask.Enqueue(Movement);
-		}
+		internal void KeepMoving(City city) => MovementTo(city.X - X, city.Y - Y);
 
 		internal void EstablishTradeRoute(City city)
 		{
@@ -81,9 +76,7 @@ namespace CivOne.Units
 
 			if (city == null || city == Home || (city.Owner == Owner && Home != null && moveTarget.DistanceTo(Home) < 10))
 			{
-				Movement = new MoveUnit(relX, relY);
-				Movement.Done += MoveEnd;
-				GameTask.Insert(Movement);
+				MovementTo(relX, relY);
 				return true;
 			}
 
