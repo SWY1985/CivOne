@@ -9,6 +9,7 @@
 
 using System.Drawing;
 using System.Linq;
+using CivOne.Buildings;
 using CivOne.Enums;
 using CivOne.Tasks;
 using CivOne.Tiles;
@@ -65,9 +66,9 @@ namespace CivOne
 
 				if (unit.Goto.IsEmpty)
 				{
-					if (!Game.GetCities().Any(x => x.Owner != 0)) Game.DisbandUnit(unit);
+					if (!Game.GetCities().Any(x => x.Owner != 0 && x.HasBuilding<Palace>())) Game.DisbandUnit(unit);
 					
-					City nearestCity = Game.GetCities().Where(x => x.Owner != 0).OrderBy(x => Common.DistanceToTile(x.X, x.Y, unit.X, unit.Y)).First();
+					City nearestCity = Game.GetCities().Where(x => x.Owner != 0 && x.HasBuilding<Palace>()).OrderBy(x => Common.DistanceToTile(x.X, x.Y, unit.X, unit.Y)).First();
 					if (Common.DistanceToTile(unit.X, unit.Y, nearestCity.X, nearestCity.Y) > 10) Game.DisbandUnit(unit);
 					unit.Goto = new Point(nearestCity.X, nearestCity.Y);
 					continue;
