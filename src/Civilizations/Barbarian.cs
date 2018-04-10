@@ -7,6 +7,9 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System.Collections.Generic;
+using System.Linq;
+using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Leaders;
 
@@ -15,6 +18,21 @@ namespace CivOne.Civilizations
 	internal class Barbarian : BaseCivilization<Atilla>
 	{
 		internal static bool IsSeaSpawnTurn => Game.Started && (Game.GameTurn % 8 == 0) && (Game.GameTurn > 150 || Game.GameTurn >= (5 - Game.Difficulty) * 32);
+
+		internal static IEnumerable<UnitType> SeaSpawnUnits
+		{
+			get
+			{
+				if (!IsSeaSpawnTurn) yield break;
+				yield return (Game.GameTurn < 300) ? UnitType.Sail : UnitType.Frigate;
+				
+				UnitType unitType = (Game.Players.Any(x => x.HasAdvance<Gunpowder>())) ? UnitType.Knights : UnitType.Legion;
+				int unitCount = (Game.GameTurn < 150) ? 1 : (Game.GameTurn < 300) ? 2 : 3;
+				for (int i = 0; i < unitCount; i++)
+					yield return unitType;
+				yield return UnitType.Diplomat;
+			}
+		}
 
 		public Barbarian() : base(Civilization.Barbarians, "Barbarian", "Barbarians")
 		{

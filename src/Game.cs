@@ -167,7 +167,7 @@ namespace CivOne
 							ITile tile = tiles[relX, relY];
 							if (tile == null || !tile.IsOcean) continue;
 							if (_cities.Min(x => Common.DistanceToTile(x.X, x.Y, tile.X, tile.Y)) < 3) continue;
-							foreach (UnitType unitType in new [] { UnitType.Sail, UnitType.Legion, UnitType.Legion, UnitType.Diplomat })
+							foreach (UnitType unitType in Barbarian.SeaSpawnUnits)
 								CreateUnit(unitType, tile.X, tile.Y, 0, false);
 							break;
 						}
