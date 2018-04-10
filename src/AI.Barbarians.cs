@@ -109,11 +109,36 @@ namespace CivOne
 
 		private static void BarbarianMoveLand(IUnit unit)
 		{
+			if (unit is Diplomat)
+			{
+				ITile[] friendlyTiles = unit.Tile.GetBorderTiles().Where(x => !x.IsOcean && x.Units.Any() && x.Units.First().Owner == 0).ToArray(); //Game.GetUnits().Where(x => x.Owner == 0 && x.Class == UnitClass.Land && x.Tile.DistanceTo(unit.Tile) == 1).FirstOrDefault();
+				if (friendlyTiles.Length > 0)
+				{
+					ITile moveTo = friendlyTiles[Common.Random.Next(friendlyTiles.Length)];
+					int relX = moveTo.X - unit.X;
+					int relY = moveTo.Y - unit.Y;
+					unit.MoveTo(relX, relY);
+					return;
+				}
+
+				if (unit.Tile.Units.Any(x => !(x is Diplomat) && x.MovesLeft > 0))
+				{
+					Game.UnitWait();
+					return;
+				}
+
+				if (unit.Tile.Units.Any(x => !(x is Diplomat)))
+				{
+					unit.SkipTurn();
+					return;
+				}
+			}
+
 			ITile[] tiles = unit.Tile.GetBorderTiles().Where(t => !((unit.Tile.IsOcean || unit is Diplomat) && t.City != null) && !t.IsOcean && t.Units.Any(u => u.Owner != 0)).ToArray();
 			if (tiles.Length == 0)
 			{
 				// No adjecent units found
-				if (Common.Random.Next(10) < 7)
+				if (Common.Random.Next(100) < 95)
 				{
 					for (int i = 0; i < 1000; i++)
 					{
