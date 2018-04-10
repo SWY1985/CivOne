@@ -155,22 +155,11 @@ namespace CivOne
 
 				if (Barbarian.IsSeaSpawnTurn)
 				{
-					City[] oceanCities = oceanCities = _cities.Where(x => x.Tile.GetBorderTiles().Any(t => t != null && t.IsOcean)).ToArray();
-					if (oceanCities.Any())
+					ITile tile = Barbarian.SeaSpawnPosition;
+					if (tile != null)
 					{
-						City barbarianTarget = oceanCities.OrderBy(x => Common.Random.Next(0, 200)).First();
-						ITile[,] tiles = (barbarianTarget.Tile as BaseTile)[-6, -6, 13, 13];
-						for (int i = 0; i < 1000; i++)
-						{
-							int relX = Common.Random.Next(0, 13);
-							int relY = Common.Random.Next(0, 13);
-							ITile tile = tiles[relX, relY];
-							if (tile == null || !tile.IsOcean) continue;
-							if (_cities.Min(x => Common.DistanceToTile(x.X, x.Y, tile.X, tile.Y)) < 3) continue;
-							foreach (UnitType unitType in Barbarian.SeaSpawnUnits)
-								CreateUnit(unitType, tile.X, tile.Y, 0, false);
-							break;
-						}
+						foreach (UnitType unitType in Barbarian.SeaSpawnUnits)
+							CreateUnit(unitType, tile.X, tile.Y, 0, false);
 					}
 				}
 			}
