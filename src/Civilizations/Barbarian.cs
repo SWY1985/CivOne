@@ -8,10 +8,12 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Leaders;
+using CivOne.Tiles;
 
 namespace CivOne.Civilizations
 {
@@ -31,6 +33,21 @@ namespace CivOne.Civilizations
 				for (int i = 0; i < unitCount; i++)
 					yield return unitType;
 				yield return UnitType.Diplomat;
+			}
+		}
+
+		internal static ITile SeaSpawnPosition
+		{
+			get
+			{
+				ITile[] tiles = Map.AllTiles().Where(t => t != null && t.IsOcean).ToArray();
+				for (int i = 0; i < 1000; i++)
+				{
+					ITile tile = tiles[Common.Random.Next(tiles.Length)];
+					if (tile == null || !tile.IsOcean || tile.GetBorderTiles().Any(t => t == null || !t.IsOcean)) continue;
+					return tile;
+				}
+				return null;
 			}
 		}
 
