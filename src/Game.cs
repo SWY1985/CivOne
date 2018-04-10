@@ -115,8 +115,6 @@ namespace CivOne
 
 			GameTask.Insert(Message.Advisor(Advisor.Defense, false, destroyed.Name, "civilization", "destroyed", $"by {destroyedBy.NamePlural}!"));
 		}
-
-		private bool BarbarianSpawnYear => (_gameTurn % 8) == 0 && (_gameTurn > 150 || _gameTurn >= (5 - _difficulty) * 32);
 		
 		internal byte PlayerNumber(Player player)
 		{
@@ -155,7 +153,7 @@ namespace CivOne
 					GameTask.Enqueue(Show.AutoSave);
 				}
 
-				if (BarbarianSpawnYear)
+				if (Barbarian.IsSeaSpawnTurn)
 				{
 					City[] oceanCities = oceanCities = _cities.Where(x => x.Tile.GetBorderTiles().Any(t => t != null && t.IsOcean)).ToArray();
 					if (oceanCities.Any())
