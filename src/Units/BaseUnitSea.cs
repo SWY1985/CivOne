@@ -21,29 +21,37 @@ namespace CivOne.Units
 	{
 		private readonly int _range;
 
-		public int Range
+		public int Range => _range;
+
+		private IEnumerable<IUnit> MoveUnits(ITile previousTile)
 		{
-			get
+			if (!(this is IBoardable) || !previousTile.Units.Any(u => u.Class == UnitClass.Land)) yield break;
+
+			IUnit[] moveUnits = previousTile.Units.Where(u => u.Class == UnitClass.Land).ToArray();
+			if (previousTile.City != null)
+				moveUnits = moveUnits.Where(u => u.Sentry).ToArray();
+			moveUnits = moveUnits.Take((this as IBoardable).Cargo).ToArray();
+			foreach (IUnit unit in moveUnits)
 			{
-				return _range;
+				yield return unit;
+			}
+		}
+
+		protected override void MovementStart(ITile previousTile)
+		{
+			foreach (IUnit unit in MoveUnits(previousTile))
+			{
+				unit.Sentry = true;
+				unit.Fortify = false;
 			}
 		}
 
 		protected override void MovementDone(ITile previousTile)
 		{
-			if ((this is IBoardable) && previousTile.Units.Any(u => u.Class == UnitClass.Land))
+			foreach (IUnit unit in MoveUnits(previousTile))
 			{
-				IUnit[] moveUnits = previousTile.Units.Where(u => u.Class == UnitClass.Land).ToArray();
-				if (previousTile.City != null)
-					moveUnits = moveUnits.Where(u => u.Sentry).ToArray();
-				moveUnits = moveUnits.Take((this as IBoardable).Cargo).ToArray();
-				foreach (IUnit unit in moveUnits)
-				{
-					unit.X = X;
-					unit.Y = Y;
-					unit.Sentry = true;
-					unit.Fortify = false;
-				}
+				unit.X = X;
+				unit.Y = Y;
 			}
 
 			base.MovementDone(previousTile);

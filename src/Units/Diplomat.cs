@@ -103,18 +103,11 @@ namespace CivOne.Units
 				}
 			}
 
-			Movement = new MoveUnit(relX, relY);
-			Movement.Done += MoveEnd;
-			GameTask.Insert(Movement);
+			MovementTo(relX, relY);
 			return true;
 		}
 
-		internal void KeepMoving(IUnit unit)
-		{
-			Movement = new MoveUnit(unit.X - X, unit.Y - Y);
-			Movement.Done += MoveEnd;
-			GameTask.Enqueue(Movement);
-		}
+		internal void KeepMoving(IUnit unit) => MovementTo(unit.X - X, unit.Y - Y);
 		
 		public Diplomat() : base(3, 0, 0, 2)
 		{
