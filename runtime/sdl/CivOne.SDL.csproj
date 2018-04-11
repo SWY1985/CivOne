@@ -32,6 +32,11 @@
 		<OutputPath>bin/Release</OutputPath>
 		<Optimize>true</Optimize>
 	</PropertyGroup>
+	<PropertyGroup Condition="$(Configuration.Contains('Embedded'))">
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<OutputType>Library</OutputType>
+		<DefineConstants>$(DefineConstants);EMBEDDED</DefineConstants>
+	</PropertyGroup>
 	<PropertyGroup>
 		<DefineConstants Condition="$(Configuration.EndsWith('Windows'))">$(DefineConstants);WINDOWS</DefineConstants>
 		<DefineConstants Condition="$(Configuration.EndsWith('Linux'))">$(DefineConstants);LINUX</DefineConstants>
