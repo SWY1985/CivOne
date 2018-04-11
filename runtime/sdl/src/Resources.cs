@@ -10,8 +10,6 @@ namespace CivOne
 	internal class Resources
 	{
 		private static Stream GetInternalResource(string name) => Assembly.GetEntryAssembly().GetManifestResourceStream($"CivOne.Resources.{name}");
-		
-		private static Stream SdlSo => GetInternalResource("SDL2.so");
 
 		private static Stream HelpTextTxt => GetInternalResource("HelpText.txt");
 
@@ -52,13 +50,6 @@ namespace CivOne
 		}
 
 		public static string BinPath => Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-
-		public static string WorkingPath => Environment.CurrentDirectory;
-		
-		public static bool WriteSdlStub() => WriteResourceToFile(
-			Resources.SdlSo,
-			Path.Combine(BinPath, "SDL2.so"),
-			() => Native.Platform == Platform.Linux);
 		
 		public static IBitmap GetWindowIcon()
 		{
