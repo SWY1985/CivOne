@@ -163,8 +163,8 @@ namespace CivOne.Screens
 
 			if (_gameMap.MustUpdate(gameTick)) _update = true;
 			if (_sideBar.Update(gameTick)) _update = true;
-			if (gameTick % 3 == 0) this.Cycle(96, 103).Cycle(104, 111);
-			if (!_update && !_redraw) return (gameTick % 3 == 0);
+			if (gameTick % (GameTask.Fast ? 6 : 3) == 0) this.Cycle(96, 103).Cycle(104, 111);
+			if (!_update && !_redraw) return (gameTick % (GameTask.Fast ? 6 : 3) == 0);
 			
 			DrawLayer(_menuBar, gameTick, 0, 0);
 			DrawLayer(_sideBar, gameTick, _rightSideBar ? (Width - 80) : 0, 8);
