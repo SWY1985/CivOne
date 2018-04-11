@@ -15,6 +15,7 @@
 				"args": [
 					"build",
 					"${workspaceRoot}/runtime/sdl/CivOne.SDL.csproj",
+					"-c",
 					"DebugWindows"
 				]
 			},
@@ -22,6 +23,7 @@
 				"args": [
 					"build",
 					"${workspaceRoot}/runtime/sdl/CivOne.SDL.csproj",
+					"-c",
 					"DebugLinux"
 				]
 			},
