@@ -14,13 +14,15 @@
 			"windows": {
 				"args": [
 					"build",
-					"${workspaceRoot}/runtime/sdl/CivOne.SDL.csproj"
+					"${workspaceRoot}/runtime/sdl/CivOne.SDL.csproj",
+					"DebugWindows"
 				]
 			},
 			"linux": {
 				"args": [
 					"build",
-					"${workspaceRoot}/runtime/sdl/CivOne.SDL.csproj"
+					"${workspaceRoot}/runtime/sdl/CivOne.SDL.csproj",
+					"DebugLinux"
 				]
 			},
 			"osx": {
