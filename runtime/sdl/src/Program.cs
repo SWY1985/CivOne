@@ -20,8 +20,6 @@ Try 'civone-sdl --help' for more information.
 
 		private static void Main(string[] args)
 		{
-			if (Resources.WriteSdlStub()) Console.WriteLine("Written SDL2 library stub...");
-
 			RuntimeSettings settings = new RuntimeSettings();
 			settings["software-render"] = false;
 			settings["profile-name"] = "default";
