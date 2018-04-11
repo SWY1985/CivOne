@@ -9,7 +9,7 @@ namespace CivOne
 {
 	internal class Resources
 	{
-		private static Stream GetInternalResource(string name) => Assembly.GetExecutingAssembly().GetManifestResourceStream($"CivOne.Resources.{name}");
+		private static Stream GetInternalResource(string name) => Assembly.GetEntryAssembly().GetManifestResourceStream($"CivOne.Resources.{name}");
 		
 		private static Stream SdlSo => GetInternalResource("SDL2.so");
 
@@ -53,7 +53,7 @@ namespace CivOne
 			}
 		}
 
-		public static string BinPath => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+		public static string BinPath => Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
 		public static string WorkingPath => Environment.CurrentDirectory;
 		
