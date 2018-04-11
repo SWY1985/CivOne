@@ -40,7 +40,7 @@
 	<PropertyGroup>
 		<DefineConstants Condition="$(Configuration.EndsWith('Windows'))">$(DefineConstants);WINDOWS</DefineConstants>
 		<DefineConstants Condition="$(Configuration.EndsWith('Linux'))">$(DefineConstants);LINUX</DefineConstants>
-		<DefineConstants Condition="$(Configuration.EndsWith('MACOS'))">$(DefineConstants);MACOS</DefineConstants>
+		<DefineConstants Condition="$(Configuration.EndsWith('MacOS'))">$(DefineConstants);MACOS</DefineConstants>
 	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="../../CivOne.csproj" />
