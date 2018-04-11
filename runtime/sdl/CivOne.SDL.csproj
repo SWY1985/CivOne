@@ -32,8 +32,10 @@
 		<OutputPath>bin/Release</OutputPath>
 		<Optimize>true</Optimize>
 	</PropertyGroup>
-	<PropertyGroup Condition="$(Configuration.EndsWith('MacOS'))">
-		<DefineConstants>MACOS</DefineConstants>
+	<PropertyGroup>
+		<DefineConstants Condition="$(Configuration.EndsWith('Windows'))">$(DefineConstants);WINDOWS</DefineConstants>
+		<DefineConstants Condition="$(Configuration.EndsWith('Linux'))">$(DefineConstants);LINUX</DefineConstants>
+		<DefineConstants Condition="$(Configuration.EndsWith('MACOS'))">$(DefineConstants);MACOS</DefineConstants>
 	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="../../CivOne.csproj" />
