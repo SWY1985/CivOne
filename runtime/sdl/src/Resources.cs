@@ -13,8 +13,6 @@ namespace CivOne
 		
 		private static Stream SdlSo => GetInternalResource("SDL2.so");
 
-		private static Stream CivOneIco => GetInternalResource("CivOne.ico");
-
 		private static Stream HelpTextTxt => GetInternalResource("HelpText.txt");
 
 		private static Stream WindowIcon => GetInternalResource("WindowIcon.gif");
@@ -61,11 +59,6 @@ namespace CivOne
 			Resources.SdlSo,
 			Path.Combine(BinPath, "SDL2.so"),
 			() => Native.Platform == Platform.Linux);
-
-		public static bool WriteWin32Icon() => WriteResourceToFile(
-			Resources.CivOneIco,
-			Path.Combine(BinPath, "CivOne.ico"),
-			() => Native.Platform == Platform.Windows);
 		
 		public static IBitmap GetWindowIcon()
 		{

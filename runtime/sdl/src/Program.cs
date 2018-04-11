@@ -21,7 +21,6 @@ Try 'civone-sdl --help' for more information.
 		private static void Main(string[] args)
 		{
 			if (Resources.WriteSdlStub()) Console.WriteLine("Written SDL2 library stub...");
-			if (Resources.WriteWin32Icon()) Console.WriteLine("Written Win32 icon file...");
 
 			RuntimeSettings settings = new RuntimeSettings();
 			settings["software-render"] = false;
