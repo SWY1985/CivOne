@@ -814,6 +814,157 @@ namespace CivOne
 			AI.CityProduction(this);
 		}
 
+		public void Disaster()
+		{
+			if (Player.Cities.Length == 1)
+				return;
+
+			if (Size < 5)
+				return;
+
+			switch (Common.Random.Next(0, 9))
+			{
+				case 0: 
+				{
+					// Earthquake
+					bool hillsNearby = CityTiles.Any(t => t.Type == Terrain.Hills);
+					IList<IBuilding> buildingsOtherThanPalace = Buildings.Where(b => !(b is Palace)).ToList();
+					if (!hillsNearby || !buildingsOtherThanPalace.Any())
+						return;
+					
+					IBuilding buildingToDestroy = buildingsOtherThanPalace[Common.Random.Next(0, buildingsOtherThanPalace.Count - 1)];
+					RemoveBuilding(buildingToDestroy);
+
+					break;
+				}
+				case 1:
+				{
+					// Plague
+					bool hasMedicine = Player.HasAdvance<Medicine>();
+					bool hasAqueduct = HasBuilding<Aqueduct>();
+					bool hasConstruction = Player.Advances.Any(a => a is Construction);
+
+					if (!hasMedicine && !hasAqueduct && hasConstruction)
+					{
+						Size = (byte)(Size - Size / 4);
+					}
+					break;
+				}
+				case 2:
+				{
+					// Flooding
+					bool riverNearby = CityTiles.Any(t => t.Type == Terrain.River);
+					bool hasCityWalls = HasBuilding<CityWalls>();
+					bool hasMasonry = Player.HasAdvance<Masonry>();
+
+					if (riverNearby && !hasCityWalls && hasMasonry)
+					{
+						Size = (byte)(Size - Size / 4);
+					}
+					break;
+				}
+				case 3:
+				{
+					// Volcano
+					bool mountainNearby = CityTiles.Any(t => t.Type == Terrain.Mountains);
+					bool hasTemple = HasBuilding<Temple>();
+					bool hasCeremonialBurial = Player.HasAdvance<CeremonialBurial>();
+
+					if (mountainNearby && !hasTemple && hasCeremonialBurial)
+					{
+						Size = (byte)(Size - Size / 3);
+					}
+					break;
+				}
+				case 4:
+				{
+					// Famine
+					bool hasGranary = HasBuilding<Granary>();
+					bool hasPottery = Player.HasAdvance<Pottery>();
+
+					if (!hasGranary && hasPottery)
+					{
+						Size = (byte)(Size - Size / 3);
+					}
+					break;
+				}
+				case 5:
+				{
+					// Fire
+					IList<IBuilding> buildingsOtherThanPalace = Buildings.Where(b => !(b is Palace)).ToList();
+					bool hasAqueduct = HasBuilding<Aqueduct>();
+					bool hasConstruction = Player.HasAdvance<Construction>();
+
+					if (buildingsOtherThanPalace.Any() && !hasAqueduct && hasConstruction)
+					{
+						IBuilding buildingToDestroy = buildingsOtherThanPalace[Common.Random.Next(0, buildingsOtherThanPalace.Count - 1)];
+						RemoveBuilding(buildingToDestroy);
+					}
+					break;
+				}
+				case 6:
+				{
+					// Pirates
+					bool oceanNearby = CityTiles.Any(t => t.Type == Terrain.Ocean);
+					bool hasBarracks = HasBuilding<Barracks>();
+					if (oceanNearby && !hasBarracks)
+					{
+						Food = 0;
+						Shields = 0;
+					}
+					break;
+				}
+				case 7:
+				case 8:
+				case 9:
+					// Riot, scandal, corruption
+					int happy = Citizens.Count(c => c == Citizen.HappyMale || c == Citizen.HappyFemale);
+					int unhappy = Citizens.Count(c => c == Citizen.UnhappyMale || c == Citizen.UnhappyFemale);
+
+					if (happy >= unhappy)
+						return;
+					
+					string demand;
+					if (!HasBuilding<Temple>())
+						demand = nameof(Temple);
+					else if (!HasBuilding<Courthouse>())
+						demand = nameof(Courthouse);
+					else if (!HasBuilding<MarketPlace>())
+						demand = nameof(MarketPlace);
+					else if (!HasBuilding<Cathedral>())
+						demand = nameof(Cathedral);
+					else 
+						demand = "lower taxes";
+
+					Food = 0;
+					Shields = 0;
+
+					if (HasBuilding<Palace>())
+						return;
+					
+					if (Player.Cities.Length < 4)
+						return;
+					
+					/*
+					Third, CIV loops among all Cities that have a lower ID (basically, cities that were built earlier) 
+					up to the first one that does not exist (or, incidentally, that was destroyed, but I believe this to be an 
+					undesired side-effect...), and checks the following:
+
+					Compute the city's appeal with the formula: 
+					appeal = (iterated city's happy - unhappy people) * 32 / (distance from rioting city to iterated city); 
+					I know that Gowron already described the distance formula but I am too lazy to dig it out right now...
+
+					If this appeal is strictly above 4 AND above any other city's appeal, then mark this city as admired
+
+					Fourth and finally: if there is an admired city, and it's owning Civ is different from the rioting city's 
+					owning Civ, then the rioting city subverts to the admired city's Civ: "Residents of <rioting city> 
+					admire the prosperity of <admired city>" -> <admired civ> capture <rioting city>...
+					 */
+
+					break;				
+			}
+		}
+
 		internal City(byte owner)
 		{
 			Owner = owner;
