@@ -25,9 +25,10 @@
 		<DefineConstants>DEBUG</DefineConstants>
 		<Optimize>false</Optimize>
 	</PropertyGroup>
-	<PropertyGroup Condition="$(Configuration.StartsWith('Release'))">
+	<PropertyGroup Condition="$(Configuration.StartsWith('Preview')) OR $(Configuration.StartsWith('Release'))">
 		<DebugType>none</DebugType>
-		<DefineConstants>RELEASE</DefineConstants>
+		<DefineConstants Condition="$(Configuration.StartsWith('Preview'))">PREVIEW</DefineConstants>
+		<DefineConstants Condition="$(Configuration.StartsWith('Release'))">RELEASE</DefineConstants>
 		<Optimize>true</Optimize>
 	</PropertyGroup>
 	<ItemGroup>
