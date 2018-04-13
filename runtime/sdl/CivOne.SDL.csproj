@@ -26,11 +26,17 @@
 		<OutputPath>bin/Debug</OutputPath>
 		<Optimize>false</Optimize>
 	</PropertyGroup>
-	<PropertyGroup Condition="$(Configuration.StartsWith('Release'))">
+	<PropertyGroup Condition="$(Configuration.StartsWith('Preview')) OR $(Configuration.StartsWith('Release'))">
 		<DebugType>none</DebugType>
+		<Optimize>true</Optimize>
+	</PropertyGroup>
+	<PropertyGroup Condition="$(Configuration.StartsWith('Preview'))">
+		<DefineConstants>PREVIEW</DefineConstants>
+		<OutputPath>bin/Preview</OutputPath>
+	</PropertyGroup>
+	<PropertyGroup Condition="$(Configuration.StartsWith('Release'))">
 		<DefineConstants>RELEASE</DefineConstants>
 		<OutputPath>bin/Release</OutputPath>
-		<Optimize>true</Optimize>
 	</PropertyGroup>
 	<PropertyGroup Condition="$(Configuration.Contains('Embedded'))">
 		<TargetFramework>netstandard2.0</TargetFramework>

@@ -25,7 +25,7 @@ namespace CivOne
 			protected void PlaySound(string filename)
 			{
 				if (_currentSound != null) StopSound();
-
+				_currentSound.OnLog += (message) => Log(message);
 				_currentSound = new Wave(filename);
 				_currentSound.Play();
 			}

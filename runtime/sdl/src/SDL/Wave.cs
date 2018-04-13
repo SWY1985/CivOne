@@ -21,6 +21,10 @@ namespace CivOne
 			private uint _length;
 			private IntPtr _buffer;
 
+			private void Log(string message) => OnLog(message);
+
+			public event Action<string> OnLog;
+
 			public string Filename { get; }
 			public bool Playing { get; private set; }
 
@@ -30,11 +34,11 @@ namespace CivOne
 
 				Playing = true;
 
-				Console.WriteLine($"Sound start: {Path.GetFileName(Filename)}");
+				Log($"Sound start: {Path.GetFileName(Filename)}");
 
 				if (SDL_OpenAudio(ref _waveSpec, out _) < 0)
 				{
-					Console.WriteLine("Could not open audio");
+					Log("Could not open audio");
 					return;
 				}
 
@@ -51,7 +55,7 @@ namespace CivOne
 
 			public void Dispose()
 			{
-				Console.WriteLine($"Sound stop: {Path.GetFileName(Filename)}");
+				Log($"Sound stop: {Path.GetFileName(Filename)}");
 
 				SDL_PauseAudio(1);
 				SDL_CloseAudio();

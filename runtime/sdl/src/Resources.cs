@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using CivOne.Enums;
 using CivOne.Graphics;
@@ -9,32 +10,13 @@ namespace CivOne
 {
 	internal class Resources
 	{
-		private static Stream GetInternalResource(string name) => Assembly.GetEntryAssembly().GetManifestResourceStream($"CivOne.Resources.{name}");
+		private static Assembly CurrentAssembly { get; } = AppDomain.CurrentDomain.GetAssemblies().First(x => x.FullName.StartsWith("CivOne.SDL,"));
+
+		private static Stream GetInternalResource(string name) => CurrentAssembly.GetManifestResourceStream($"CivOne.Resources.{name}");
 
 		private static Stream HelpTextTxt => GetInternalResource("HelpText.txt");
 
 		private static Stream WindowIcon => GetInternalResource("WindowIcon.gif");
-		
-		private static bool WriteResourceToFile(Stream resource, string filePath, Func<bool> condition)
-		{
-			if (!condition()) return false;
-			if (File.Exists(filePath)) return false;
-
-			using (Stream resourceStream = resource)
-			{
-				if (resourceStream == null)
-				{
-					Console.WriteLine($"Could not write {Path.GetFileName(filePath)}, embedded resource missing");
-					return false;
-				}
-				
-				using (FileStream sw = new FileStream(Path.Combine(filePath), FileMode.CreateNew, FileAccess.Write))
-				{
-					resourceStream.CopyTo(sw);
-				}
-			}
-			return File.Exists(filePath);
-		}
 
 		private static string GetResourceString(Stream resource)
 		{
