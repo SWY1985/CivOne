@@ -83,6 +83,9 @@ namespace CivOne
 		public bool HasWonder(Type type) => _wonders.Any(w => w.GetType() == type);
 		public bool HasWonder<T>() where T : IWonder => _wonders.Any(w => w is T);
 
+		public int HappyCitizens => Citizens.Count(c => c == Citizen.HappyMale || c == Citizen.HappyFemale);
+		public int UnhappyCitizens => Citizens.Count(c => c == Citizen.UnhappyMale || c == Citizen.UnhappyFemale);
+
 		internal int ShieldCosts
 		{
 			get
@@ -816,6 +819,8 @@ namespace CivOne
 
 		public void Disaster()
 		{
+			List<string> message = new List<string>();
+
 			if (Player.Cities.Length == 1)
 				return;
 
@@ -918,23 +923,20 @@ namespace CivOne
 				case 8:
 				case 9:
 					// Riot, scandal, corruption
-					int happy = Citizens.Count(c => c == Citizen.HappyMale || c == Citizen.HappyFemale);
-					int unhappy = Citizens.Count(c => c == Citizen.UnhappyMale || c == Citizen.UnhappyFemale);
 
-					if (happy >= unhappy)
+					if (HappyCitizens >= UnhappyCitizens)
 						return;
 					
-					string demand;
 					if (!HasBuilding<Temple>())
-						demand = nameof(Temple);
+						message.Add(nameof(Temple));
 					else if (!HasBuilding<Courthouse>())
-						demand = nameof(Courthouse);
+						message.Add(nameof(Courthouse));
 					else if (!HasBuilding<MarketPlace>())
-						demand = nameof(MarketPlace);
+						message.Add(nameof(MarketPlace));
 					else if (!HasBuilding<Cathedral>())
-						demand = nameof(Cathedral);
+						message.Add(nameof(Cathedral));
 					else 
-						demand = "lower taxes";
+						message.Add("lower taxes");
 
 					Food = 0;
 					Shields = 0;
@@ -945,21 +947,48 @@ namespace CivOne
 					if (Player.Cities.Length < 4)
 						return;
 					
-					/*
-					Third, CIV loops among all Cities that have a lower ID (basically, cities that were built earlier) 
-					up to the first one that does not exist (or, incidentally, that was destroyed, but I believe this to be an 
-					undesired side-effect...), and checks the following:
+					City admired = null;
+					int mostAppeal = 0;
 
-					Compute the city's appeal with the formula: 
-					appeal = (iterated city's happy - unhappy people) * 32 / (distance from rioting city to iterated city); 
-					I know that Gowron already described the distance formula but I am too lazy to dig it out right now...
+					foreach (City city in Game.GetCities())
+					{
+						if (city == this)
+							break;
 
-					If this appeal is strictly above 4 AND above any other city's appeal, then mark this city as admired
+						int appeal = ((city.HappyCitizens - city.UnhappyCitizens) * 32) / city.Tile.DistanceTo(this);
+						if (appeal > 4 && appeal > mostAppeal)
+						{
+							admired = city;
+							mostAppeal = appeal;
+						}
+					}
 
-					Fourth and finally: if there is an admired city, and it's owning Civ is different from the rioting city's 
-					owning Civ, then the rioting city subverts to the admired city's Civ: "Residents of <rioting city> 
-					admire the prosperity of <admired city>" -> <admired civ> capture <rioting city>...
-					 */
+					if (admired != null && admired.Owner != this.Owner)
+					{
+						message.Add($"Residents of {Name} admire the prosperity of {admired.Name}");
+						message.Add($"{admired.Name} capture {Name}");
+
+						Player previousOwner = Game.GetPlayer(this.Owner);
+
+						Show captureCity = Show.CaptureCity(this);
+						captureCity.Done += (s1, a1) =>
+						{
+							this.Owner = admired.Owner;
+
+							previousOwner.IsDestroyed();
+
+							if (Human == admired.Owner)
+							{
+								GameTask.Insert(Tasks.Show.CityManager(this));
+							}
+						};
+
+						if (Human == admired.Owner)
+						{
+							GameTask.Insert(captureCity);
+						}
+
+					}
 
 					break;				
 			}
