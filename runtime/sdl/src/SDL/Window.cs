@@ -25,6 +25,10 @@ namespace CivOne
 
 			private bool _running = true, _redraw = false;
 
+			private void Log(string message) => OnLog?.Invoke(message);
+
+			protected event Action<string> OnLog;
+
 			protected Texture CreateTexture(IBitmap bitmap) => new Texture(_renderer, bitmap);
 
 			protected void Clear(Color color)
@@ -132,6 +136,8 @@ namespace CivOne
 				get => _title;
 				set
 				{
+					if (value == _title) return;
+					Log($@"Changing window title changed from ""{_title}"" to ""{value}""");
 					_title = value;
 					SDL_SetWindowTitle(_handle, _title);
 				}
@@ -170,6 +176,8 @@ namespace CivOne
 
 			public Window(string title, int width, int height, bool fullscreen, bool softwareRender = false)
 			{
+				_title = title;
+
 				SDL_Init(SDL_INIT.VIDEO | SDL_INIT.AUDIO);
 
 				SDL_WINDOW flags = SDL_WINDOW.RESIZABLE;
@@ -183,7 +191,7 @@ namespace CivOne
 
 				if (_handle == null)
 				{
-					Console.WriteLine("Something is wrong");
+					Log("Something is wrong");
 					return;
 				}
 
