@@ -139,6 +139,10 @@ namespace CivOne
 
 		public void EndTurn()
 		{
+			IEnumerable<City> disasterCities = _cities.OrderBy(o => Common.Random.Next(0,1000)).Take(2).AsEnumerable();
+			foreach (City city in disasterCities)
+				city.Disaster();
+
 			foreach (Player player in _players.Where(x => !(x.Civilization is Barbarian)))
 			{
 				player.IsDestroyed();
