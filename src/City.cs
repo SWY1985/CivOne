@@ -820,6 +820,7 @@ namespace CivOne
 		public void Disaster()
 		{
 			List<string> message = new List<string>();
+			bool humanGetsCity = false;
 
 			if (Player.Cities.Length == 1)
 				return;
@@ -840,6 +841,9 @@ namespace CivOne
 					IBuilding buildingToDestroy = buildingsOtherThanPalace[Common.Random.Next(0, buildingsOtherThanPalace.Count - 1)];
 					RemoveBuilding(buildingToDestroy);
 
+					message.Add($"Earthquake in {Name}!");
+					message.Add($"{buildingToDestroy} destroyed!");
+
 					break;
 				}
 				case 1:
@@ -852,7 +856,12 @@ namespace CivOne
 					if (!hasMedicine && !hasAqueduct && hasConstruction)
 					{
 						Size = (byte)(Size - Size / 4);
+
+						message.Add($"Plague in {Name}!");
+						message.Add($"Citizens killed!");
+						message.Add($"Citizens demand AQUEDUCT.");
 					}
+
 					break;
 				}
 				case 2:
@@ -865,6 +874,10 @@ namespace CivOne
 					if (riverNearby && !hasCityWalls && hasMasonry)
 					{
 						Size = (byte)(Size - Size / 4);
+
+						message.Add($"Flooing in {Name}!");
+						message.Add($"Citizens killed!");
+						message.Add($"Citizens demand CITY WALLS.");
 					}
 					break;
 				}
@@ -878,7 +891,12 @@ namespace CivOne
 					if (mountainNearby && !hasTemple && hasCeremonialBurial)
 					{
 						Size = (byte)(Size - Size / 3);
+
+						message.Add($"Volcano erupts near {Name}!");
+						message.Add($"Citizens killed!");
+						message.Add($"Citizens demand TEMPLE.");
 					}
+
 					break;
 				}
 				case 4:
@@ -890,7 +908,12 @@ namespace CivOne
 					if (!hasGranary && hasPottery)
 					{
 						Size = (byte)(Size - Size / 3);
+
+						message.Add($"Famine in {Name}!");
+						message.Add($"Citizens killed!");
+						message.Add($"Citizens demand POTTERY.");
 					}
+
 					break;
 				}
 				case 5:
@@ -904,7 +927,12 @@ namespace CivOne
 					{
 						IBuilding buildingToDestroy = buildingsOtherThanPalace[Common.Random.Next(0, buildingsOtherThanPalace.Count - 1)];
 						RemoveBuilding(buildingToDestroy);
+
+						message.Add($"Fire in {Name}!");
+						message.Add($"{buildingToDestroy.Name} destroyed!");
+						message.Add($"Citizens demand AQUEDUCT.");
 					}
+
 					break;
 				}
 				case 6:
@@ -916,7 +944,12 @@ namespace CivOne
 					{
 						Food = 0;
 						Shields = 0;
+
+						message.Add($"Pirates plunder {Name}!");
+						message.Add($"Production halted, Food Stolen.!");
+						message.Add($"Citizens demand BARRACKS.");
 					}
+
 					break;
 				}
 				case 7:
@@ -924,22 +957,29 @@ namespace CivOne
 				case 9:
 					// Riot, scandal, corruption
 
+					string[] disasterTypes = { "Scandal", "Riot", "Corruption" };
+					string disasterType = disasterTypes[Common.Random.Next(0, disasterTypes.Length - 1)];
+					string buildingDemanded = "";
+
 					if (HappyCitizens >= UnhappyCitizens)
 						return;
 					
 					if (!HasBuilding<Temple>())
-						message.Add(nameof(Temple));
+						buildingDemanded = nameof(Temple);
 					else if (!HasBuilding<Courthouse>())
-						message.Add(nameof(Courthouse));
+						buildingDemanded = nameof(Courthouse);
 					else if (!HasBuilding<MarketPlace>())
-						message.Add(nameof(MarketPlace));
+						buildingDemanded = nameof(MarketPlace);
 					else if (!HasBuilding<Cathedral>())
-						message.Add(nameof(Cathedral));
+						buildingDemanded = nameof(Cathedral);
 					else 
-						message.Add("lower taxes");
+						buildingDemanded = "lower taxes";
 
 					Food = 0;
 					Shields = 0;
+
+					message.Add($"{disasterType} in {Name}");
+					message.Add($"Citizens demand {buildingDemanded}");
 
 					if (HasBuilding<Palace>())
 						return;
@@ -965,6 +1005,7 @@ namespace CivOne
 
 					if (admired != null && admired.Owner != this.Owner)
 					{
+						message.Clear();
 						message.Add($"Residents of {Name} admire the prosperity of {admired.Name}");
 						message.Add($"{admired.Name} capture {Name}");
 
@@ -985,12 +1026,18 @@ namespace CivOne
 
 						if (Human == admired.Owner)
 						{
+							humanGetsCity = true;
 							GameTask.Insert(captureCity);
 						}
 
 					}
 
 					break;				
+			}
+
+			if (message.Count > 0 && (Player == Owner || humanGetsCity))
+			{
+				GameTask.Enqueue(Message.Advisor(Advisor.Domestic, false, message.ToArray()));
 			}
 		}
 
