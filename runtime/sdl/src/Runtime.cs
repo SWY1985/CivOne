@@ -55,7 +55,12 @@ namespace CivOne
 				CursorChanged?.Invoke(this, EventArgs.Empty);
 			}
 		}
+
+#if RELEASE
+		public void Log(string value, params object[] formatArgs) { }
+#else
 		public void Log(string value, params object[] formatArgs) => Console.WriteLine(value, formatArgs);
+#endif
 
 		Platform IRuntime.CurrentPlatform => Platform.Windows;
 		string IRuntime.StorageDirectory => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CivOne");
