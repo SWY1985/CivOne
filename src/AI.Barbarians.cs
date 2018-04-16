@@ -47,7 +47,7 @@ namespace CivOne
 			{
 				if (unit.Tile.GetBorderTiles().Any(x => !x.IsOcean))
 				{
-					if (Game.GetCities().Any(x => x.Owner != 0))
+					if (Game.GetCities().Any(x => x.Owner != 0) && unit.Tile.GetBorderTiles().Any(x => !x.IsOcean && !x.Units.Any(u => u.Owner != 0)))
 					{
 						City nearestCity = Game.GetCities().Where(x => x.Owner != 0).OrderBy(x => Common.DistanceToTile(x.X, x.Y, unit.X, unit.Y)).ThenBy(x => x.Player == Human ? 0 : 1).First();
 						if (nearestCity.Player == Human && Human.Visible(unit.Tile))
@@ -60,8 +60,11 @@ namespace CivOne
 					{
 						landUnit.Sentry = false;
 					}
-					unit.SkipTurn();
-					continue;
+					if (unit.Tile.Units.Any(x => x.Class == UnitClass.Land && x.MovesLeft > 0))
+						Game.UnitWait();
+					else
+						unit.SkipTurn();
+					return;
 				}
 
 				if (unit.Goto.IsEmpty)
@@ -109,6 +112,23 @@ namespace CivOne
 
 		private static void BarbarianMoveLand(IUnit unit)
 		{
+			if (unit.Tile.IsOcean && unit.Tile.GetBorderTiles().Where(x => !x.IsOcean).All(x => x.Units.Any(u => u.Owner != 0)))
+			{
+				IUnit ship = unit.Tile.Units.FirstOrDefault(u => u.Class == UnitClass.Water && u.MovesLeft > 0);
+				if (ship != null)
+				{
+					ITile[] landTiles = unit.Tile.GetBorderTiles().Where(x => !x.IsOcean && x.Units.Any(u => u.Owner != 0)).ToArray();
+					if (landTiles.Length > 0)
+					{
+						ITile tile = landTiles[Common.Random.Next(landTiles.Length)];
+						ship.MoveTo(tile.X - unit.X, tile.Y - unit.Y);
+						return;
+					}
+				}
+				unit.SkipTurn();
+				return;
+			}
+
 			if (unit is Diplomat)
 			{
 				ITile[] friendlyTiles = unit.Tile.GetBorderTiles().Where(x => !x.IsOcean && x.Units.Any() && x.Units.First().Owner == 0).ToArray(); //Game.GetUnits().Where(x => x.Owner == 0 && x.Class == UnitClass.Land && x.Tile.DistanceTo(unit.Tile) == 1).FirstOrDefault();
