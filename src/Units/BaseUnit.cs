@@ -727,6 +727,27 @@ namespace CivOne.Units
 
 		public void SetHome(City city) => Home = city;
 		
+		public void Pillage()
+		{
+			if (!(Tile.Irrigation || Tile.Mine || Tile.Road || Tile.RailRoad))
+				return;
+			
+			if (Tile.Irrigation)
+				Tile.Irrigation = false;
+			else if (Tile.Mine)
+				Tile.Mine = false;
+			else if (Tile.Road)
+				Tile.Road = false;
+			else if (Tile.RailRoad)
+			{
+				Tile.RailRoad = false;
+				Tile.Road = true;
+			}
+			
+			MovesLeft = 0;
+			PartMoves = 0;
+		}
+
 		public virtual void SkipTurn()
 		{
 			MovesLeft = 0;
@@ -753,7 +774,7 @@ namespace CivOne.Units
 		
 		protected MenuItem<int> MenuGoTo() => MenuItem<int>.Create("GoTo").OnSelect((s, a) => GameTask.Enqueue(Show.Goto));
 		
-		protected MenuItem<int> MenuPillage() => MenuItem<int>.Create("Pillage").SetShortcut("P").Disable();
+		protected MenuItem<int> MenuPillage() => MenuItem<int>.Create("Pillage").SetShortcut("P").OnSelect((s, a) => Pillage());
 		
 		protected MenuItem<int> MenuHomeCity() => MenuItem<int>.Create("Home City").SetShortcut("h").OnSelect((s, a) => SetHome());
 		
