@@ -55,5 +55,6 @@ namespace CivOne.Units
 		void SetHome(City city);
 		IEnumerable<MenuItem<int>> MenuItems { get; }
 		IEnumerable<UnitModification> Modifications { get; }
+		void Pillage();
 	}
 }

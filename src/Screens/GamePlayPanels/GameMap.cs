@@ -404,6 +404,9 @@ namespace CivOne.Screens.GamePlayPanels
 				case 'M':
 					GameTask.Enqueue(Orders.BuildMines(Game.ActiveUnit));
 					break;
+				case 'P':
+					Game.ActiveUnit.Pillage();
+					break;
 				case 'R':
 					GameTask.Enqueue(Orders.BuildRoad(Game.ActiveUnit));
 					break;
