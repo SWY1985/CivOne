@@ -57,6 +57,12 @@ namespace CivOne.Screens
 			Destroy();
 		}
 
+		private void MenuCityDisaster(object sender, EventArgs args)
+		{
+			GameTask.Enqueue(Show.Screen<CauseDisaster>());
+			Destroy();
+		}
+
 		private void MenuChangeHumanPlayer(object sender, EventArgs args)
 		{
 			GameTask.Enqueue(Show.Screen<ChangeHumanPlayer>());
@@ -99,13 +105,13 @@ namespace CivOne.Screens
 			{
 				_update = false;
 
-				Picture menuGfx = new Picture(131, 103)
+				Picture menuGfx = new Picture(131, 111)
 					.Tile(Pattern.PanelGrey)
 					.DrawRectangle3D()
 					.DrawText("Debug Options:", 0, 15, 4, 4)
 					.As<Picture>();
 
-				IBitmap menuBackground = menuGfx[2, 11, 128, 88].ColourReplace((7, 11), (22, 3));
+				IBitmap menuBackground = menuGfx[2, 11, 136, 88].ColourReplace((7, 11), (22, 3));
 
 				this.AddLayer(menuGfx, 25, 17);
 
@@ -128,6 +134,7 @@ namespace CivOne.Screens
 				menu.Items.Add("Set Player Science").OnSelect(MenuSetPlayerScience);
 				menu.Items.Add("Set Player Advances").OnSelect(MenuSetPlayerAdvances);
 				menu.Items.Add("Set City Size").OnSelect(MenuSetCitySize);
+				menu.Items.Add("Cause City Disaster").OnSelect(MenuCityDisaster);
 				menu.Items.Add("Change Human Player").OnSelect(MenuChangeHumanPlayer);
 				menu.Items.Add("Spawn Unit").OnSelect(MenuSpawnUnit);
 				menu.Items.Add("Meet With King").OnSelect(MenuMeetWithKing);
@@ -146,7 +153,7 @@ namespace CivOne.Screens
 		{
 			Palette = Common.DefaultPalette;
 			this.AddLayer(Common.Screens.Last(), 0, 0)
-				.FillRectangle(24, 16, 133, 105, 5);
+				.FillRectangle(24, 16, 133, 113, 5);
 		}
 	}
 }

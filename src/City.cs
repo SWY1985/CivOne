@@ -83,6 +83,9 @@ namespace CivOne
 		public bool HasWonder(Type type) => _wonders.Any(w => w.GetType() == type);
 		public bool HasWonder<T>() where T : IWonder => _wonders.Any(w => w is T);
 
+		public int HappyCitizens => Citizens.Count(c => c == Citizen.HappyMale || c == Citizen.HappyFemale);
+		public int UnhappyCitizens => Citizens.Count(c => c == Citizen.UnhappyMale || c == Citizen.UnhappyFemale);
+
 		internal int ShieldCosts
 		{
 			get
@@ -812,6 +815,230 @@ namespace CivOne
 			if (Player == Human) return;
 			
 			AI.CityProduction(this);
+		}
+
+		public void Disaster()
+		{
+			List<string> message = new List<string>();
+			bool humanGetsCity = false;
+
+			if (Player.Cities.Length == 1)
+				return;
+
+			if (Size < 5)
+				return;
+
+			switch (Common.Random.Next(0, 9))
+			{
+				case 0: 
+				{
+					// Earthquake
+					bool hillsNearby = CityTiles.Any(t => t.Type == Terrain.Hills);
+					IList<IBuilding> buildingsOtherThanPalace = Buildings.Where(b => !(b is Palace)).ToList();
+					if (!hillsNearby || !buildingsOtherThanPalace.Any())
+						return;
+					
+					IBuilding buildingToDestroy = buildingsOtherThanPalace[Common.Random.Next(0, buildingsOtherThanPalace.Count - 1)];
+					RemoveBuilding(buildingToDestroy);
+
+					message.Add($"Earthquake in {Name}!");
+					message.Add($"{buildingToDestroy} destroyed!");
+
+					break;
+				}
+				case 1:
+				{
+					// Plague
+					bool hasMedicine = Player.HasAdvance<Medicine>();
+					bool hasAqueduct = HasBuilding<Aqueduct>();
+					bool hasConstruction = Player.Advances.Any(a => a is Construction);
+
+					if (!hasMedicine && !hasAqueduct && hasConstruction)
+					{
+						Size = (byte)(Size - Size / 4);
+
+						message.Add($"Plague in {Name}!");
+						message.Add($"Citizens killed!");
+						message.Add($"Citizens demand AQUEDUCT.");
+					}
+
+					break;
+				}
+				case 2:
+				{
+					// Flooding
+					bool riverNearby = CityTiles.Any(t => t.Type == Terrain.River);
+					bool hasCityWalls = HasBuilding<CityWalls>();
+					bool hasMasonry = Player.HasAdvance<Masonry>();
+
+					if (riverNearby && !hasCityWalls && hasMasonry)
+					{
+						Size = (byte)(Size - Size / 4);
+
+						message.Add($"Flooding in {Name}!");
+						message.Add($"Citizens killed!");
+						message.Add($"Citizens demand CITY WALLS.");
+					}
+					break;
+				}
+				case 3:
+				{
+					// Volcano
+					bool mountainNearby = CityTiles.Any(t => t.Type == Terrain.Mountains);
+					bool hasTemple = HasBuilding<Temple>();
+					bool hasCeremonialBurial = Player.HasAdvance<CeremonialBurial>();
+
+					if (mountainNearby && !hasTemple && hasCeremonialBurial)
+					{
+						Size = (byte)(Size - Size / 3);
+
+						message.Add($"Volcano erupts near {Name}!");
+						message.Add($"Citizens killed!");
+						message.Add($"Citizens demand TEMPLE.");
+					}
+
+					break;
+				}
+				case 4:
+				{
+					// Famine
+					bool hasGranary = HasBuilding<Granary>();
+					bool hasPottery = Player.HasAdvance<Pottery>();
+
+					if (!hasGranary && hasPottery)
+					{
+						Size = (byte)(Size - Size / 3);
+
+						message.Add($"Famine in {Name}!");
+						message.Add($"Citizens killed!");
+						message.Add($"Citizens demand POTTERY.");
+					}
+
+					break;
+				}
+				case 5:
+				{
+					// Fire
+					IList<IBuilding> buildingsOtherThanPalace = Buildings.Where(b => !(b is Palace)).ToList();
+					bool hasAqueduct = HasBuilding<Aqueduct>();
+					bool hasConstruction = Player.HasAdvance<Construction>();
+
+					if (buildingsOtherThanPalace.Any() && !hasAqueduct && hasConstruction)
+					{
+						IBuilding buildingToDestroy = buildingsOtherThanPalace[Common.Random.Next(0, buildingsOtherThanPalace.Count - 1)];
+						RemoveBuilding(buildingToDestroy);
+
+						message.Add($"Fire in {Name}!");
+						message.Add($"{buildingToDestroy.Name} destroyed!");
+						message.Add($"Citizens demand AQUEDUCT.");
+					}
+
+					break;
+				}
+				case 6:
+				{
+					// Pirates
+					bool oceanNearby = CityTiles.Any(t => t.Type == Terrain.Ocean);
+					bool hasBarracks = HasBuilding<Barracks>();
+					if (oceanNearby && !hasBarracks)
+					{
+						Food = 0;
+						Shields = 0;
+
+						message.Add($"Pirates plunder {Name}!");
+						message.Add($"Production halted, Food Stolen.!");
+						message.Add($"Citizens demand BARRACKS.");
+					}
+
+					break;
+				}
+				case 7:
+				case 8:
+				case 9:
+					// Riot, scandal, corruption
+
+					string[] disasterTypes = { "Scandal", "Riot", "Corruption" };
+					string disasterType = disasterTypes[Common.Random.Next(0, disasterTypes.Length - 1)];
+					string buildingDemanded = "";
+
+					if (HappyCitizens >= UnhappyCitizens)
+						return;
+					
+					if (!HasBuilding<Temple>())
+						buildingDemanded = nameof(Temple);
+					else if (!HasBuilding<Courthouse>())
+						buildingDemanded = nameof(Courthouse);
+					else if (!HasBuilding<MarketPlace>())
+						buildingDemanded = nameof(MarketPlace);
+					else if (!HasBuilding<Cathedral>())
+						buildingDemanded = nameof(Cathedral);
+					else 
+						buildingDemanded = "lower taxes";
+
+					Food = 0;
+					Shields = 0;
+
+					message.Add($"{disasterType} in {Name}");
+					message.Add($"Citizens demand {buildingDemanded}");
+
+					if (HasBuilding<Palace>())
+						return;
+					
+					if (Player.Cities.Length < 4)
+						return;
+					
+					City admired = null;
+					int mostAppeal = 0;
+
+					foreach (City city in Game.GetCities())
+					{
+						if (city == this)
+							break;
+
+						int appeal = ((city.HappyCitizens - city.UnhappyCitizens) * 32) / city.Tile.DistanceTo(this);
+						if (appeal > 4 && appeal > mostAppeal)
+						{
+							admired = city;
+							mostAppeal = appeal;
+						}
+					}
+
+					if (admired != null && admired.Owner != this.Owner)
+					{
+						message.Clear();
+						message.Add($"Residents of {Name} admire the prosperity of {admired.Name}");
+						message.Add($"{admired.Name} capture {Name}");
+
+						Player previousOwner = Game.GetPlayer(this.Owner);
+
+						Show captureCity = Show.CaptureCity(this);
+						captureCity.Done += (s1, a1) =>
+						{
+							this.Owner = admired.Owner;
+
+							previousOwner.IsDestroyed();
+
+							if (Human == admired.Owner)
+							{
+								GameTask.Insert(Tasks.Show.CityManager(this));
+							}
+						};
+
+						if (Human == admired.Owner)
+						{
+							humanGetsCity = true;
+							GameTask.Insert(captureCity);
+						}
+
+					}
+
+					break;				
+			}
+
+			if (message.Count > 0 && (Player == Owner || humanGetsCity))
+			{
+				GameTask.Enqueue(Message.Advisor(Advisor.Domestic, false, message.ToArray()));
+			}
 		}
 
 		internal City(byte owner)
