@@ -875,7 +875,7 @@ namespace CivOne
 					{
 						Size = (byte)(Size - Size / 4);
 
-						message.Add($"Flooing in {Name}!");
+						message.Add($"Flooding in {Name}!");
 						message.Add($"Citizens killed!");
 						message.Add($"Citizens demand CITY WALLS.");
 					}
