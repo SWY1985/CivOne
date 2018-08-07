@@ -16,7 +16,7 @@ namespace CivOne.Tiles
 		public override byte Movement => 1;
 		public override byte Defense => 2;
 		public override sbyte Food => (sbyte)(1 + (Irrigation ? 1 : 0));
-		public override sbyte Shield => (sbyte)(Special ? 3 : 1);
+		public override sbyte Shield => (sbyte)(Special ? 2 : 1);
 		public override sbyte Trade => (sbyte)((Road || RailRoad) ? 1 : 0);
 		public override sbyte IrrigationFoodBonus => -2;
 		public override byte IrrigationCost => 5;
