@@ -127,7 +127,7 @@ namespace CivOne.Units
 			if (MovesLeft == 0)
 			{
 				attackStrength *= PartMoves;
-				attackStrength /= PartMoves;
+				attackStrength /= 3;
 			}
 
 			// Step 8: If the attacking unit is a Barbarian unit and the defending unit is player-controlled, check the difficulty level. On Chieftain and Warlord levels, divide the attack strength by 2.
