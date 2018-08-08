@@ -68,8 +68,6 @@ namespace CivOne
 				Common.ReloadSettings = true;
 				
 				Resources.ClearInstance();
-				Runtime.Bitmap?.Dispose();
-				Runtime.Bitmap = null;
 			}
 		}
 		

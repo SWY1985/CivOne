@@ -10,6 +10,7 @@
 using System.Drawing;
 using System.Linq;
 using CivOne.Enums;
+using CivOne.IO;
 
 namespace CivOne
 {
@@ -42,7 +43,9 @@ namespace CivOne
 
 			Clear(Color.Black);
 			GetBorders(out int x1, out int y1, out int x2, out int y2);
-			using (SDL.Texture canvas = CreateTexture(_runtime.Bitmap))
+			if (_runtime.Layers == null) return;
+			foreach (Bytemap bytemap in _runtime.Layers)
+			using (SDL.Texture canvas = CreateTexture(_runtime.Palette, bytemap))
 			{
 				canvas.Draw(x1, y1, (x2 - x1), (y2 - y1));
 				

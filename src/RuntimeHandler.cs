@@ -99,28 +99,16 @@ namespace CivOne
 		{
 			if (TopScreen == null) return;
 
-			if (Runtime.Bitmap == null || Runtime.Bitmap.Width() != CanvasWidth || Runtime.Bitmap.Height() != CanvasHeight)
-			{
-				Runtime.Bitmap?.Dispose();
-				Runtime.Bitmap = new Picture(CanvasWidth, CanvasHeight, Common.TopScreen.Palette.Copy());
-				Runtime.Bitmap.Palette[0] = Colour.Black;
-			}
-			else
-			{
-				Runtime.Bitmap.Palette.MergePalette(Common.TopScreen.Palette.Copy(), 1);
-				Runtime.Bitmap.Bitmap.Clear();
-			}
+			Runtime.Palette?.Dispose();
+			Runtime.Palette = Common.TopScreen.Palette.Copy();
 			
 			if (Common.HasAttribute<Modal>(TopScreen))
 			{
-				Runtime.Bitmap.AddLayer(TopScreen);
+				Runtime.Layers = new[] { TopScreen.Bitmap };
 			}
 			else
 			{
-				foreach (IScreen screen in Common.Screens)
-				{
-					Runtime.Bitmap.AddLayer(screen);
-				}
+				Runtime.Layers = Common.Screens.Select(x => x.Bitmap).ToArray();
 			}
 
 			if (_currentCursor != Common.MouseCursor || _cursorType != Settings.Instance.CursorType)
@@ -148,12 +136,26 @@ namespace CivOne
 			if (args[KeyModifier.Control, Key.F5])
 			{
 				string filename = Common.CaptureFilename;
-				using (GifFile file = new GifFile(Runtime.Bitmap))
-				using (FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write))
+				if (Runtime.Layers == null) return;
+				using (IBitmap bitmap = new Picture(CanvasWidth, CanvasHeight, Common.TopScreen.Palette.Copy()))
 				{
-					byte[] output = file.GetBytes();
-					fs.Write(output, 0, output.Length);
-					Runtime.Log($"Screenshot saved: {filename}");
+					bitmap.Palette[0] = Colour.Black;
+					if (Common.HasAttribute<Modal>(TopScreen))
+					{
+						bitmap.AddLayer(TopScreen);
+					}
+					else
+					{
+						Runtime.Layers.ToList().ForEach(x => bitmap.AddLayer(x));
+					}
+
+					using (GifFile file = new GifFile(bitmap))
+					using (FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write))
+					{
+						byte[] output = file.GetBytes();
+						fs.Write(output, 0, output.Length);
+						Runtime.Log($"Screenshot saved: {filename}");
+					}
 				}
 				return;
 			}
