@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using CivOne.Advances;
@@ -23,9 +24,11 @@ namespace CivOne
 {
 	internal partial class AI : BaseInstance
 	{
-		internal static void Move(IUnit unit)
+		private readonly Player _player;
+
+		internal void Move(IUnit unit)
 		{
-			Player player = Game.GetPlayer(unit.Owner);
+			if (_player != unit.Owner) return;
 
 			if (unit.Owner == 0)
 			{
@@ -119,7 +122,7 @@ namespace CivOne
 						int gotoX = Common.Random.Next(-5, 6);
 						int gotoY = Common.Random.Next(-5, 6);
 						if (gotoX == 0 && gotoY == 0) continue;
-						if (!player.Visible(unit.X + gotoX, unit.Y + gotoY)) continue;
+						if (!_player.Visible(unit.X + gotoX, unit.Y + gotoY)) continue;
 
 						unit.Goto = new Point(unit.X + gotoX, unit.Y + gotoY);
 						continue;
@@ -196,41 +199,40 @@ namespace CivOne
 			}
 		}
 
-		internal static void ChooseResearch(Player player)
+		internal void ChooseResearch()
 		{
-			if (player.CurrentResearch != null) return;
+			if (_player.CurrentResearch != null) return;
 			
-			IAdvance[] advances = player.AvailableResearch.ToArray();
+			IAdvance[] advances = _player.AvailableResearch.ToArray();
 			
 			// No further research possible
 			if (advances.Length == 0) return;
 
-			player.CurrentResearch = advances[Common.Random.Next(0, advances.Length)];
+			_player.CurrentResearch = advances[Common.Random.Next(0, advances.Length)];
 
-			Log($"AI: {player.LeaderName} of the {player.TribeNamePlural} starts researching {player.CurrentResearch.Name}.");
+			Log($"AI: {_player.LeaderName} of the {_player.TribeNamePlural} starts researching {_player.CurrentResearch.Name}.");
 		}
 
-		internal static void CityProduction(City city)
+		internal void CityProduction(City city)
 		{
-			if (city == null || city.Size == 0 || city.Tile == null) return;
+			if (city == null || city.Size == 0 || city.Tile == null || _player != city.Owner) return;
 
-			Player player = Game.GetPlayer(city.Owner);
 			IProduction production = null;
 
 			// Create 2 defensive units per city
-			if (player.HasAdvance<LaborUnion>())
+			if (_player.HasAdvance<LaborUnion>())
 			{
 				if (city.Tile.Units.Count(x => x is MechInf) < 2) production = new MechInf();
 			}
-			else if (player.HasAdvance<Conscription>())
+			else if (_player.HasAdvance<Conscription>())
 			{
 				if (city.Tile.Units.Count(x => x is Riflemen) < 2) production = new Riflemen();
 			}
-			else if (player.HasAdvance<Gunpowder>())
+			else if (_player.HasAdvance<Gunpowder>())
 			{
 				if (city.Tile.Units.Count(x => x is Musketeers) < 2) production = new Musketeers();
 			}
-			else if (player.HasAdvance<BronzeWorking>())
+			else if (_player.HasAdvance<BronzeWorking>())
 			{
 				if (city.Tile.Units.Count(x => x is Phalanx) < 2) production = new Phalanx();
 			}
@@ -243,15 +245,15 @@ namespace CivOne
 			if (production == null)
 			{
 				if (!city.HasBuilding<Barracks>()) production = new Barracks();
-				else if (player.HasAdvance<Pottery>() && !city.HasBuilding<Granary>()) production = new Granary();
-				else if (player.HasAdvance<CeremonialBurial>() && !city.HasBuilding<Temple>()) production = new Temple();
-				else if (player.HasAdvance<Masonry>() && !city.HasBuilding<CityWalls>()) production = new CityWalls();
+				else if (_player.HasAdvance<Pottery>() && !city.HasBuilding<Granary>()) production = new Granary();
+				else if (_player.HasAdvance<CeremonialBurial>() && !city.HasBuilding<Temple>()) production = new Temple();
+				else if (_player.HasAdvance<Masonry>() && !city.HasBuilding<CityWalls>()) production = new CityWalls();
 			}
 
 			// Create Settlers
 			if (production == null)
 			{
-				if (city.Size > 3 && !city.Units.Any(x => x is Settlers) && player.Cities.Length < 10) production = new Settlers();
+				if (city.Size > 3 && !city.Units.Any(x => x is Settlers) && _player.Cities.Length < 10) production = new Settlers();
 			}
 
 			// Create some other unit
@@ -259,23 +261,23 @@ namespace CivOne
 			{
 				if (city.Units.Length < 4)
 				{
-					if (player.Government is Republic || player.Government is Democratic)
+					if (_player.Government is Republic || _player.Government is Democratic)
 					{
-						if (player.HasAdvance<Writing>()) production = new Diplomat();
+						if (_player.HasAdvance<Writing>()) production = new Diplomat();
 					}
 					else 
 					{
-						if (player.HasAdvance<Automobile>()) production = new Armor();
-						else if (player.HasAdvance<Metallurgy>()) production = new Cannon();
-						else if (player.HasAdvance<Chivalry>()) production = new Knights();
-						else if (player.HasAdvance<TheWheel>()) production = new Chariot();
-						else if (player.HasAdvance<HorsebackRiding>()) production = new Cavalry();
-						else if (player.HasAdvance<IronWorking>()) production = new Legion();
+						if (_player.HasAdvance<Automobile>()) production = new Armor();
+						else if (_player.HasAdvance<Metallurgy>()) production = new Cannon();
+						else if (_player.HasAdvance<Chivalry>()) production = new Knights();
+						else if (_player.HasAdvance<TheWheel>()) production = new Chariot();
+						else if (_player.HasAdvance<HorsebackRiding>()) production = new Cavalry();
+						else if (_player.HasAdvance<IronWorking>()) production = new Legion();
 					}
 				}
 				else
 				{
-					if (player.HasAdvance<Trade>()) production = new Caravan();
+					if (_player.HasAdvance<Trade>()) production = new Caravan();
 				}
 			}
 
@@ -287,6 +289,20 @@ namespace CivOne
 			}
 
 			city.SetProduction(production);
+		}
+
+		private static Dictionary<Player, AI> _instances = new Dictionary<Player, AI>();
+		internal static AI Instance(Player player)
+		{
+			if (_instances.ContainsKey(player))
+				return _instances[player];
+			_instances.Add(player, new AI(player));
+			return _instances[player];
+		}
+
+		private AI(Player player)
+		{
+			_player = player;
 		}
 	}
 }

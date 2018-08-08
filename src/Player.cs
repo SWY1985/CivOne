@@ -136,6 +136,8 @@ namespace CivOne
 		public byte Handicap { get; internal set; }
 
 		public readonly PalaceData Palace = new PalaceData();
+
+		internal AI AI => !IsHuman ? AI.Instance(this) : null;
 		
 		private IGovernment _government;
 		public IGovernment Government

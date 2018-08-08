@@ -814,7 +814,7 @@ namespace CivOne
 
 			if (Player == Human) return;
 			
-			AI.CityProduction(this);
+			Player.AI.CityProduction(this);
 		}
 
 		public void Disaster()

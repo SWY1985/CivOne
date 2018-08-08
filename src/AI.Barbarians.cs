@@ -19,7 +19,7 @@ namespace CivOne
 {
 	internal partial class AI
 	{
-		private static void BarbarianMove(IUnit unit)
+		private void BarbarianMove(IUnit unit)
 		{
 			switch (unit.Class)
 			{
@@ -35,7 +35,7 @@ namespace CivOne
 			}
 		}
 
-		private static void BarbarianMoveWater(IUnit unit)
+		private void BarbarianMoveWater(IUnit unit)
 		{
 			if (!unit.Tile.Units.Any(x => x.Class == UnitClass.Land))
 			{
@@ -110,7 +110,7 @@ namespace CivOne
 			}
 		}
 
-		private static void BarbarianMoveLand(IUnit unit)
+		private void BarbarianMoveLand(IUnit unit)
 		{
 			if (unit.Tile.IsOcean && unit.Tile.GetBorderTiles().Where(x => !x.IsOcean).All(x => x.Units.Any(u => u.Owner != 0)))
 			{

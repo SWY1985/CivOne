@@ -38,7 +38,7 @@ namespace CivOne.Tasks
 				if (_human)
 					GameTask.Enqueue(new TechSelect(_player));
 				else
-					AI.ChooseResearch(_player);
+					_player.AI.ChooseResearch();
 				EndTask();
 				return;
 			}
@@ -57,7 +57,7 @@ namespace CivOne.Tasks
 			{
 				// This is an AI player, handle everything in the background.
 				_player.CurrentResearch = null;
-				AI.ChooseResearch(_player);
+				_player.AI.ChooseResearch();
 				EndTask();
 				return;
 			}

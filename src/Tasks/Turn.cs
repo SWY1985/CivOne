@@ -29,7 +29,7 @@ namespace CivOne.Tasks
 		{
 			if (_unit != null)
 			{
-				AI.Move(_unit);
+				Game.CurrentPlayer.AI.Move(_unit);
 				EndTask();
 			}
 			if (_endTurn && _step-- <= 0)
