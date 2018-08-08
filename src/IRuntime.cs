@@ -11,6 +11,7 @@ using System;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.IO;
 
 namespace CivOne
 {
@@ -26,7 +27,8 @@ namespace CivOne
 		void SetSetting(string key, string value);
 		RuntimeSettings Settings { get; }
 		MouseCursor CurrentCursor { set; }
-		IBitmap Bitmap { get; set; }
+		Bytemap[] Layers { get; set; }
+		Palette Palette { get; set; }
 		IBitmap Cursor { set; }
 		int CanvasWidth { get; }
 		int CanvasHeight { get; }

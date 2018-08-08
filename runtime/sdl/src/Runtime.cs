@@ -12,6 +12,7 @@ using System.Drawing;
 using System.IO;
 using CivOne.Enums;
 using CivOne.Events;
+using CivOne.IO;
 using CivOne.Graphics;
 
 namespace CivOne
@@ -44,7 +45,8 @@ namespace CivOne
 		
 		public RuntimeSettings Settings { get; private set; }
 		public MouseCursor CurrentCursor { internal get; set; }
-		public IBitmap Bitmap { get; set; }
+		public Bytemap[] Layers { get; set; }
+		public Palette Palette { get; set; }
 		private IBitmap _cursor;
 		public IBitmap Cursor
 		{

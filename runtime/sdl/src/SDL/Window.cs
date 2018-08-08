@@ -29,7 +29,8 @@ namespace CivOne
 
 			protected event Action<string> OnLog;
 
-			protected Texture CreateTexture(IBitmap bitmap) => new Texture(_renderer, bitmap);
+			protected Texture CreateTexture(IBitmap bitmap) => new Texture(_renderer, bitmap?.Palette, bitmap?.Bitmap);
+			protected Texture CreateTexture(Palette palette, Bytemap bytemap) => new Texture(_renderer, palette, bytemap);
 
 			protected void Clear(Color color)
 			{
