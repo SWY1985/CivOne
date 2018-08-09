@@ -13,6 +13,7 @@ using System.Linq;
 using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Leaders;
+using CivOne.Players;
 using CivOne.Tiles;
 
 namespace CivOne.Civilizations

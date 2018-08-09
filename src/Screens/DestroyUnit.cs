@@ -15,6 +15,7 @@ using CivOne.Events;
 using CivOne.Graphics;
 using CivOne.Graphics.Sprites;
 using CivOne.IO;
+using CivOne.Players;
 using CivOne.Tiles;
 using CivOne.Units;
 

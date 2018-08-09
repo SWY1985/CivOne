@@ -13,12 +13,13 @@ using CivOne.Graphics;
 using CivOne.Governments;
 
 using Gov = CivOne.Governments;
+using CivOne.Players;
 
 namespace CivOne.Screens
 {
 	internal class King : BaseScreen
 	{
-		private readonly Player _player;
+		private readonly IPlayer _player;
 
 		private readonly Picture _background;
 
@@ -43,7 +44,7 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public King(Player player)
+		public King(IPlayer player)
 		{
 			_player = player;
 

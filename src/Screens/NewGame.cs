@@ -16,6 +16,7 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
 using CivOne.IO;
+using CivOne.Players;
 using CivOne.Tasks;
 using CivOne.Units;
 using CivOne.UserInterface;
@@ -199,7 +200,7 @@ namespace CivOne.Screens
 				int yy = OffsetY + 81;
 				foreach (string textLine in TextFile.Instance.GetGameText("KING/INIT"))
 				{
-					string line = textLine.Replace("$RPLC1", Human.LeaderName).Replace("$US", Human.TribeNamePlural).Replace("^", "");
+					string line = textLine.Replace("$RPLC1", Human.Leader.Name).Replace("$US", Human.TribeNamePlural).Replace("^", "");
 					this.DrawText(line, 0, 5, OffsetX + 88, yy);
 					yy += 8;
 					Log(line);
@@ -236,7 +237,7 @@ namespace CivOne.Screens
 
 				GamePlay gamePlay = new GamePlay();
 				Common.AddScreen(gamePlay);
-				IUnit startUnit = Game.GetUnits().First(x => Game.Human == x.Owner);
+				IUnit startUnit = Game.GetUnits().First(x => Game.Human.Is(x.Owner));
 				gamePlay.CenterOnPoint(startUnit.X, startUnit.Y);
 				
 				if (Game.InstantAdvice)

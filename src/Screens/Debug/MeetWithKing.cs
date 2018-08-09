@@ -12,6 +12,7 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.Graphics;
 using CivOne.Graphics.Sprites;
+using CivOne.Players;
 using CivOne.UserInterface;
 
 namespace CivOne.Screens.Debug
@@ -20,9 +21,9 @@ namespace CivOne.Screens.Debug
 	{
 		private readonly Menu _civSelect;
 
-		private readonly Player[] _players;
+		private readonly IPlayer[] _players;
 
-		private Player _selectedPlayer = null;
+		private IPlayer _selectedPlayer = null;
 
 		public string Value { get; private set; }
 
@@ -64,7 +65,7 @@ namespace CivOne.Screens.Debug
 		public MeetWithKing() : base(MouseCursor.Pointer)
 		{
 			Palette = Common.Screens.Last().OriginalColours;
-			_players = Game.Players.Where(p => p != 0 && p != Human).ToArray();
+			_players = Game.Players.Where(p => !p.Is(0) && p != Human).ToArray();
 
 			int fontHeight = Resources.GetFontHeight(0);
 			int hh = (fontHeight * (_players.Length + 1)) + 5;
@@ -95,9 +96,9 @@ namespace CivOne.Screens.Debug
 				Indent = 8
 			};
 
-			foreach (Player player in _players)
+			foreach (IPlayer player in _players)
 			{
-				_civSelect.Items.Add($"{player.LeaderName} ({player.TribeName})").OnSelect(MeetKing_Accept);
+				_civSelect.Items.Add($"{player.Leader.Name} ({player.TribeName})").OnSelect(MeetKing_Accept);
 			}
 
 			_civSelect.Cancel += MeetKing_Cancel;

@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System.Linq;
 using CivOne.Enums;
 using CivOne.Graphics;
 using CivOne.IO;
@@ -53,7 +54,7 @@ namespace CivOne.Screens
 			// Load text and replace strings
 			_textLines = TextFile.Instance.GetGameText("KING/ARCH");
 			for (int i = 0; i < _textLines.Length; i++)
-				_textLines[i] = _textLines[i].Replace("$RPLC1", Human.LatestAdvance).Replace("$US", Human.LeaderName.ToUpper()).Replace("^", "");
+				_textLines[i] = _textLines[i].Replace("$RPLC1", Human.Advances.Last()?.Name ?? "Irrigation").Replace("$US", Human.Leader.Name.ToUpper()).Replace("^", "");
 		}
 	}
 }

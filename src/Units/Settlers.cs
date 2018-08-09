@@ -12,6 +12,7 @@ using System.Linq;
 using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.IO;
+using CivOne.Players;
 using CivOne.Screens;
 using CivOne.Tasks;
 using CivOne.Tiles;
@@ -101,7 +102,7 @@ namespace CivOne.Units
 					PartMoves = 0;
 					return true;
 				}
-				if (Human == Owner)
+				if (Human.Is(Owner))
 					GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText("ERROR/NOIRR")));
 				return false;
 			}
@@ -109,11 +110,11 @@ namespace CivOne.Units
 			{
 				if (((tile is Desert) || (tile is Grassland) || (tile is Hills) || (tile is Plains) || (tile is River)) && tile.City == null)
 				{
-					if (Human == Owner)
+					if (Human.Is(Owner))
 						GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText("ERROR/NOWATER")));
 					return true;
 				}
-				if (Human == Owner)
+				if (Human.Is(Owner))
 					GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText("ERROR/NOIRR")));
 			}
 			return false;

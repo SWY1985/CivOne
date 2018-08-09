@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using CivOne.Advances;
+using CivOne.Players;
 using CivOne.Screens;
 using CivOne.Screens.Dialogs;
 using CivOne.Units;
@@ -127,9 +128,9 @@ namespace CivOne.Tasks
 
 		public static Show DiplomatSabotage(City enemyCity, Diplomat diplomat) => new Show(new DiplomatSabotage(enemyCity, diplomat));
 		
-		public static Show SelectAdvanceAfterCityCapture(Player player, IList<IAdvance> advances) => new Show(new SelectAdvanceAfterCityCapture(player, advances));
+		public static Show SelectAdvanceAfterCityCapture(IPlayer player, IList<IAdvance> advances) => new Show(new SelectAdvanceAfterCityCapture(player, advances));
 
-		public static Show MeetKing(Player player) => new Show(new King(player));
+		public static Show MeetKing(IPlayer player) => new Show(new King(player));
 
 		public static Show Screen<T>() where T : IScreen, new() => new Show(new T());
 

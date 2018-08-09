@@ -14,6 +14,7 @@ using CivOne.Enums;
 using CivOne.Graphics;
 using CivOne.Graphics.Sprites;
 using CivOne.IO;
+using CivOne.Players;
 using CivOne.Units;
 
 using static CivOne.Enums.Direction;
@@ -53,6 +54,7 @@ namespace CivOne.Tiles
 
 		public static ITile GetBorderTile(this ITile tile, Direction direction)
 		{
+			if (tile == null) return null;
 			switch (direction)
 			{
 				case North: return tile[0, -1];
@@ -142,7 +144,7 @@ namespace CivOne.Tiles
 			return (tile is Forest || tile is Jungle || tile is Swamp);
 		}
 
-		public static IBitmap ToBitmap(this ITile[,] tiles, TileSettings settings = null, Player player = null)
+		internal static IBitmap ToBitmap(this ITile[,] tiles, TileSettings settings = null, IPlayer player = null)
 		{
 			if (settings == null) settings = TileSettings.Default;
 
@@ -175,7 +177,7 @@ namespace CivOne.Tiles
 			return output;
 		}
 
-		public static IBitmap ToBitmap(this ITile tile, TileSettings settings = null, Player player = null)
+		internal static IBitmap ToBitmap(this ITile tile, TileSettings settings = null, IPlayer player = null)
 		{
 			if (settings == null) settings = TileSettings.Default;
 

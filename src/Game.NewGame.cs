@@ -12,6 +12,7 @@ using System.Linq;
 using CivOne.Advances;
 using CivOne.Civilizations;
 using CivOne.Enums;
+using CivOne.Players;
 using CivOne.Tiles;
 using CivOne.Units;
 
@@ -66,7 +67,7 @@ namespace CivOne
 
 		private void CalculateHandicap(byte player)
 		{
-			// Translated drom this post by Gowron:
+			// Translated from this post by Gowron:
 			// http://forums.civfanatics.com/showthread.php?t=494994
 			
 			// All Handicap values start from 0.
@@ -141,7 +142,7 @@ namespace CivOne
 			// If the Bonus value is (still) greater than zero, then the civ gains a number of technologies equal to the Bonus value.
 			while (bonus > 0)
 			{
-				IAdvance[] available = _players[player].AvailableResearch.ToArray();
+				IAdvance[] available = _players[player].AvailableResearch().ToArray();
 				int advanceId = Common.Random.Next(0, 72);
 				for (int i = 0; i < 1000; i++)
 				{
@@ -187,30 +188,29 @@ namespace CivOne
 
 			_cities = new List<City>();
 			_units = new List<IUnit>();
-			_players = new Player[competition + 1];
+			_players = new IPlayer[competition + 1];
 			for (int i = 0; i <= competition; i++)
 			{
 				if (i == tribe.PreferredPlayerNumber)
 				{
-					_players[i] = new Player(tribe, leaderName, tribeName, tribeNamePlural);
-					_players[i].Destroyed += PlayerDestroyed;
-					HumanPlayer = _players[i];
+					_players[i] = new HumanPlayer(tribe, leaderName, tribeName, tribeNamePlural);
+					_players[i].OnDestroy += PlayerDestroyed;
 					if (difficulty == 0)
 					{
 						// Chieftain starts with 50 Gold
 						HumanPlayer.Gold = 50;
 					}
-					Log("- Player {0} is {1} of the {2} (human)", i, _players[i].LeaderName, _players[i].TribeNamePlural);
+					Log("- Player {0} is {1} of the {2} (human)", i, _players[i].Leader.Name, _players[i].TribeNamePlural);
 					continue;
 				}
 				
 				ICivilization[] civs = Common.Civilizations.Where(civ => civ.PreferredPlayerNumber == i).ToArray();
 				int r = Common.Random.Next(civs.Length);
 				
-				_players[i] = new Player(civs[r]);
-				_players[i].Destroyed += PlayerDestroyed;
+				_players[i] = (i == 0) ? (IPlayer)new BarbarianPlayer() : (IPlayer)new ComputerPlayer(civs[r]);
+				_players[i].OnDestroy += PlayerDestroyed;
 				
-				Log("- Player {0} is {1} of the {2}", i, _players[i].LeaderName, _players[i].TribeNamePlural);
+				Log("- Player {0} is {1} of the {2}", i, _players[i].Leader.Name, _players[i].TribeNamePlural);
 			}
 			
 			Log("Adding starting units...");

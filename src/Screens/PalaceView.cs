@@ -41,7 +41,7 @@ namespace CivOne.Screens
 
 		private Picture DrawPalace()
 		{
-			Player.PalaceData palace = Human.Palace;
+			PalaceData palace = Human.Palace;
 			Picture picture = new Picture(320, 200);
 			picture.AddLayer(_background);
 			switch (palace.GetGardenLevel(1))
@@ -210,7 +210,7 @@ namespace CivOne.Screens
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
-			Player.PalaceData palace = Human.Palace;
+			PalaceData palace = Human.Palace;
 
 			switch (_currentStage)
 			{

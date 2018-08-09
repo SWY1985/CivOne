@@ -16,6 +16,7 @@ using CivOne.Buildings;
 using CivOne.Civilizations;
 using CivOne.Enums;
 using CivOne.IO;
+using CivOne.Players;
 using CivOne.Screens;
 using CivOne.Tasks;
 using CivOne.Tiles;
@@ -27,7 +28,7 @@ namespace CivOne
 	public partial class Game : BaseInstance
 	{
 		private readonly int _difficulty, _competition;
-		private readonly Player[] _players;
+		private readonly IPlayer[] _players;
 		private readonly List<City> _cities;
 		private readonly List<IUnit> _units;
 		private readonly Dictionary<byte, byte> _advanceOrigin = new Dictionary<byte, byte>();
@@ -49,7 +50,7 @@ namespace CivOne
 		public bool EnemyMoves { get; set; }
 		public bool Palace { get; set; }
 
-		public void SetAdvanceOrigin(IAdvance advance, Player player)
+		internal void SetAdvanceOrigin(IAdvance advance, IPlayer player)
 		{
 			if (_advanceOrigin.ContainsKey(advance.Id))
 				return;
@@ -58,7 +59,7 @@ namespace CivOne
 				playerNumber = PlayerNumber(player);
 			_advanceOrigin.Add(advance.Id, playerNumber);
 		}
-		public bool GetAdvanceOrigin(IAdvance advance, Player player)
+		internal bool GetAdvanceOrigin(IAdvance advance, IPlayer player)
 		{
 			if (_advanceOrigin.ContainsKey(advance.Id))
 				return (_advanceOrigin[advance.Id] == PlayerNumber(player));
@@ -87,27 +88,47 @@ namespace CivOne
 				}
 			}
 		}
+
+		internal void SetHumanPlayer(IPlayer player)
+		{
+			int humanId = PlayerNumber(Human);
+			int computerId = PlayerNumber(player);
+
+			if (!(_players[humanId] is HumanPlayer)) return;
+
+			switch (player)
+			{
+				case BarbarianPlayer barbarianPlayer:
+					_players[computerId] = new HumanPlayer(barbarianPlayer);
+					break;
+				case ComputerPlayer computerPlayer:
+					_players[computerId] = new HumanPlayer(computerPlayer);
+					break;
+				default:
+					return;
+			}
+			
+			_players[humanId] = new ComputerPlayer(_players[humanId] as HumanPlayer);
+		}
 		
 		internal string GameYear => Common.YearString(GameTurn);
 		
-		internal Player HumanPlayer { get; set; }
+		internal IPlayer HumanPlayer => _players.First(x => x is HumanPlayer);
 		
-		internal Player CurrentPlayer => _players[_currentPlayer];
+		internal IPlayer CurrentPlayer => _players[_currentPlayer];
 
 		internal ReplayData[] GetReplayData() => _replayData.ToArray();
 		internal T[] GetReplayData<T>() where T : ReplayData => _replayData.Where(x => x is T).Select(x => (x as T)).ToArray();
 
-		private void PlayerDestroyed(object sender, EventArgs args)
+		private void PlayerDestroyed(IPlayer player)
 		{
-			Player player = (sender as Player);
-
 			ICivilization destroyed = player.Civilization;
 			ICivilization destroyedBy = Game.CurrentPlayer.Civilization;
 			if (destroyedBy == destroyed) destroyedBy = Game.GetPlayer(0).Civilization;
 
 			_replayData.Add(new ReplayData.CivilizationDestroyed(_gameTurn, destroyed.Id, destroyedBy.Id));
 
-			if (player.IsHuman)
+			if (player is HumanPlayer)
 			{
 				// TODO: Move Game Over code here
 				return;
@@ -116,10 +137,10 @@ namespace CivOne
 			GameTask.Insert(Message.Advisor(Advisor.Defense, false, destroyed.Name, "civilization", "destroyed", $"by {destroyedBy.NamePlural}!"));
 		}
 		
-		internal byte PlayerNumber(Player player)
+		internal byte PlayerNumber(IPlayer player)
 		{
 			byte i = 0;
-			foreach (Player p in _players)
+			foreach (IPlayer p in _players)
 			{
 				if (p == player)
 					return i;
@@ -128,18 +149,18 @@ namespace CivOne
 			return 0;
 		}
 
-		internal Player GetPlayer(byte number)
+		internal IPlayer GetPlayer(byte number)
 		{
 			if (_players.Length < number)
 				return null;
 			return _players[number];
 		}
 
-		internal IEnumerable<Player> Players => _players;
+		internal IEnumerable<IPlayer> Players => _players;
 
 		public void EndTurn()
 		{
-			foreach (Player player in _players.Where(x => !(x.Civilization is Barbarian)))
+			foreach (IPlayer player in _players.Where(x => !(x.Civilization is Barbarian)))
 			{
 				player.IsDestroyed();
 			}
@@ -234,7 +255,7 @@ namespace CivOne
 			GameTask.Enqueue(Turn.End());
 		}
 
-		internal int CityNameId(Player player)
+		internal int CityNameId(IPlayer player)
 		{
 			ICivilization civilization = player.Civilization;
 			ICivilization[] civilizations = Common.Civilizations;
@@ -252,7 +273,7 @@ namespace CivOne
 			return available[player.CityNamesSkipped];
 		}
 
-		internal City AddCity(Player player, int nameId, int x, int y)
+		internal City AddCity(IPlayer player, int nameId, int x, int y)
 		{
 			if (_cities.Any(c => c.X == x && c.Y == y))
 				return null;
@@ -350,7 +371,7 @@ namespace CivOne
 			unit.Owner = owner;
 			if (unit.Class == UnitClass.Water)
 			{
-				Player player = GetPlayer(owner);
+				IPlayer player = GetPlayer(owner);
 				if ((player.HasWonder<Lighthouse>() && !WonderObsolete<Lighthouse>()) ||
 					(player.HasWonder<MagellansExpedition>() && !WonderObsolete<MagellansExpedition>()))
 				{
@@ -382,7 +403,7 @@ namespace CivOne
 				if (tile[relX, relY] == null) continue;
 				City city = tile[relX, relY].City;
 				if (city == null) continue;
-				if (!ownerCities && CurrentPlayer == city.Owner) continue;
+				if (!ownerCities && CurrentPlayer.Is(city.Owner)) continue;
 				city.UpdateResources();
 			}
 		}

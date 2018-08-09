@@ -12,6 +12,7 @@ using System.Linq;
 using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Graphics;
+using CivOne.Players;
 
 namespace CivOne.Screens.Dialogs
 {

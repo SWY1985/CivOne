@@ -13,6 +13,7 @@ using CivOne.Buildings;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.Players;
 
 namespace CivOne.Screens.Reports
 {
@@ -53,7 +54,7 @@ namespace CivOne.Screens.Reports
 				yy += Resources.GetFontHeight(0);
 				if (totalScience > 0 && yy <= 188)
 				{
-					this.DrawText($"Discoveries: {(int)Math.Ceiling((double)Human.ScienceCost / totalScience)} turns", 0, 10, 8, yy);
+					this.DrawText($"Discoveries: {(int)Math.Ceiling((double)Human.ScienceCost() / totalScience)} turns", 0, 10, 8, yy);
 				}
 			}
 		}
@@ -123,7 +124,7 @@ namespace CivOne.Screens.Reports
 
 		public TradeReport() : base("TRADE REPORT", 2)
 		{
-			_cities = Game.GetCities().Where(c => Human == c.Owner && c.Size > 0).ToArray();
+			_cities = Game.GetCities().Where(c => Human.Is(c.Owner) && c.Size > 0).ToArray();
 		}
 	}
 }

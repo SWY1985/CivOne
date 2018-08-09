@@ -10,6 +10,7 @@
 using System.Linq;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.Players;
 
 namespace CivOne.Screens.Reports
 {
@@ -76,7 +77,7 @@ namespace CivOne.Screens.Reports
 
 		public CityStatus() : base("CITY STATUS", 8)
 		{
-			_cities = Game.GetCities().Where(c => Human == c.Owner && c.Size > 0).ToArray();
+			_cities = Game.GetCities().Where(c => Human.Is(c.Owner) && c.Size > 0).ToArray();
 		}
 	}
 }

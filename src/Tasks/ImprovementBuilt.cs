@@ -9,6 +9,7 @@
 
 using System;
 using CivOne.Buildings;
+using CivOne.Players;
 using CivOne.Screens;
 using CivOne.Wonders;
 
@@ -30,7 +31,7 @@ namespace CivOne.Tasks
 
 		public override void Run()
 		{
-			if (Human != _city.Owner)
+			if (!Human.Is(_city.Owner))
 			{
 				Log($"{_city.Name} builds {(_improvement as ICivilopedia).Name}.");
 				EndTask();

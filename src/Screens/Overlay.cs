@@ -14,6 +14,7 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
 using CivOne.Graphics.Sprites;
+using CivOne.Players;
 using CivOne.Tiles;
 using CivOne.Units;
 
@@ -48,7 +49,7 @@ namespace CivOne.Screens
 		{
 			get
 			{
-				IUnit startUnit = Game.GetUnits().First(x => Game.Human == x.Owner);
+				IUnit startUnit = Game.GetUnits().First(x => Game.Human.Is(x.Owner));
 				IUnit activeUnit = Game.ActiveUnit;
 				((GamePlay)Common.Screens.First(x => x is GamePlay)).Update(0);
 				int offset = 0;

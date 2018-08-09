@@ -13,27 +13,28 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
 using CivOne.Graphics.Sprites;
+using CivOne.Players;
 using CivOne.UserInterface;
 
 namespace CivOne.Screens.Debug
 {
 	internal class ChangeHumanPlayer : BaseScreen
 	{
-		private readonly Menu<Player> _civSelect;
+		private readonly Menu<IPlayer> _civSelect;
 
-		private Player _selectedPlayer = null;
+		private IPlayer _selectedPlayer = null;
 
 		public string Value { get; private set; }
 
 		public event EventHandler Accept, Cancel;
 
-		private void ChangePlayer_Accept(object sender, MenuItemEventArgs<Player> args)
+		private void ChangePlayer_Accept(object sender, MenuItemEventArgs<IPlayer> args)
 		{
 			_selectedPlayer = args.Value;
 
 			if (_selectedPlayer != Game.HumanPlayer)
 			{
-				Game.HumanPlayer = _selectedPlayer;
+				Game.SetHumanPlayer(_selectedPlayer);
 				Game.EndTurn();
 			}
 
@@ -80,7 +81,7 @@ namespace CivOne.Screens.Debug
 				.AddLayer(menuGfx, xx, yy)
 				.DrawText("Change Human Player...", 0, 15, xx + 8, yy + 3);
 
-			_civSelect = new Menu<Player>("ChangeHumanPlayer", Palette, menuBackground)
+			_civSelect = new Menu<IPlayer>("ChangeHumanPlayer", Palette, menuBackground)
 			{
 				X = xx + 2,
 				Y = yy + 11,
@@ -92,7 +93,7 @@ namespace CivOne.Screens.Debug
 				Indent = 8
 			};
 
-			foreach (Player player in Game.Players)
+			foreach (IPlayer player in Game.Players)
 			{
 				_civSelect.Items.Add(player.TribeNamePlural, player).OnSelect(ChangePlayer_Accept);
 			}

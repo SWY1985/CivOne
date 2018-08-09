@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using CivOne.Players;
 using CivOne.Screens;
 using CivOne.Units;
 
@@ -21,7 +22,7 @@ namespace CivOne.Tasks
 		private IUnit _unit = null;
 		private bool _endTurn = false;
 
-		private Player _gameOver = null;
+		private IPlayer _gameOver = null;
 
 		private int _step = 0;
 
@@ -29,7 +30,7 @@ namespace CivOne.Tasks
 		{
 			if (_unit != null)
 			{
-				Game.CurrentPlayer.AI.Move(_unit);
+				AI.Instance(Game.CurrentPlayer).Move(_unit);
 				EndTask();
 			}
 			if (_endTurn && _step-- <= 0)
@@ -52,7 +53,7 @@ namespace CivOne.Tasks
 			}
 			else if (_endTurn)
 			{
-				if (Game.CurrentPlayer.IsHuman)
+				if (Game.CurrentPlayer is HumanPlayer)
 				{
 					_step = TURN_TIME;
 					return;
@@ -63,7 +64,7 @@ namespace CivOne.Tasks
 			}
 			else if (_gameOver != null)
 			{
-				if (_gameOver.IsHuman)
+				if (_gameOver is HumanPlayer)
 				{
 					Common.AddScreen(new GameOver());
 				}
@@ -76,37 +77,25 @@ namespace CivOne.Tasks
 			return;
 		}
 
-		public static Turn New(ITurn turnObject)
+		public static Turn New(ITurn turnObject) => new Turn()
 		{
-			return new Turn()
-			{
-				_turnObject = turnObject
-			};
-		}
+			_turnObject = turnObject
+		};
 
-		public static Turn Move(IUnit unit)
+		public static Turn Move(IUnit unit) => new Turn()
 		{
-			return new Turn()
-			{
-				_unit = unit
-			};
-		}
+			_unit = unit
+		};
 
-		public static Turn End()
+		public static Turn End() => new Turn()
 		{
-			return new Turn()
-			{
-				_endTurn = true
-			};
-		}
+			_endTurn = true
+		};
 
-		public static Turn GameOver(Player player)
+		public static Turn GameOver(IPlayer player) => new Turn()
 		{
-			return new Turn()
-			{
-				_gameOver = player
-			};
-		}
+			_gameOver = player
+		};
 
 		private Turn()
 		{

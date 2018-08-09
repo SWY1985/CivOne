@@ -12,6 +12,7 @@ using System.Linq;
 using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Graphics;
+using CivOne.Players;
 
 namespace CivOne.Screens.Reports
 {
@@ -20,12 +21,12 @@ namespace CivOne.Screens.Reports
 		public ScienceReport() : base("SCIENCE REPORT", 1)
 		{
 			double width = 8;
-			while ((width * Human.ScienceCost) > 200 || width <= 0.1)
+			while ((width * Human.ScienceCost()) > 200 || width <= 0.1)
 			{
 				width -= 0.1;
 			}
 
-			int barWidth = (int)Math.Ceiling(width * Human.ScienceCost);
+			int barWidth = (int)Math.Ceiling(width * Human.ScienceCost());
 			int barX = (320 - barWidth) / 2;
 			this.FillRectangle(barX, 25, barWidth, 16, 9);
 

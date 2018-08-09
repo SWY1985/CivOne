@@ -13,6 +13,7 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
 using CivOne.Graphics.Sprites;
+using CivOne.Players;
 using CivOne.Tiles;
 using CivOne.Units;
 using CivOne.UserInterface;
@@ -29,7 +30,7 @@ namespace CivOne.Screens.Debug
 
 		private int _index = 0;
 
-		private Player _selectedPlayer = null;
+		private IPlayer _selectedPlayer = null;
 
 		private IUnit _selectedUnit = null;
 
@@ -143,10 +144,10 @@ namespace CivOne.Screens.Debug
 			{
 				if (_unitX < 0 || _unitY < 0) return false;
 				ITile tile = Map[UnitX, UnitY];
-				if (tile.Units.Any(x => _selectedPlayer != x.Owner)) return false;
+				if (tile.Units.Any(x => !_selectedPlayer.Is(x.Owner))) return false;
 				if (_selectedUnit.Class == UnitClass.Land && tile.City != null)
 				{
-					return (_selectedPlayer == tile.City.Owner);
+					return (_selectedPlayer.Is(tile.City.Owner));
 				}
 				if (_selectedUnit.Class == UnitClass.Land && tile.Type == Terrain.Ocean)
 				{
@@ -158,7 +159,7 @@ namespace CivOne.Screens.Debug
 				}
 				if (_selectedUnit.Class == UnitClass.Water && tile.Type != Terrain.Ocean)
 				{
-					return (tile.City != null && _selectedPlayer == tile.City.Owner);
+					return (tile.City != null && _selectedPlayer.Is(tile.City.Owner));
 				}
 				return true;
 			}
@@ -305,7 +306,7 @@ namespace CivOne.Screens.Debug
 				Indent = 8
 			};
 
-			foreach (Player player in Game.Players)
+			foreach (IPlayer player in Game.Players)
 			{
 				_civSelect.Items.Add(player.TribeNamePlural).OnSelect(CivSelect_Accept);
 			}

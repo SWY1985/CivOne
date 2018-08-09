@@ -8,13 +8,14 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using CivOne.Players;
 using CivOne.Screens;
 
 namespace CivOne.Tasks
 {
 	internal class ProcessScience : GameTask
 	{
-		private readonly Player _player;
+		private readonly IPlayer _player;
 		private readonly bool _human;
 		
 		private void CivilopediaClosed(object sender, EventArgs args)
@@ -38,26 +39,26 @@ namespace CivOne.Tasks
 				if (_human)
 					GameTask.Enqueue(new TechSelect(_player));
 				else
-					_player.AI.ChooseResearch();
+					AI.Instance(_player).ChooseResearch();
 				EndTask();
 				return;
 			}
 
-			if (_player.Science < _player.ScienceCost)
+			if (_player.Science < _player.ScienceCost())
 			{
 				// Not enough lightbulbs, end the task
 				EndTask();
 				return;
 			}
 
-			_player.Science -= _player.ScienceCost;
+			_player.Science -= _player.ScienceCost();
 			_player.AddAdvance(_player.CurrentResearch);
 
 			if (!_human)
 			{
 				// This is an AI player, handle everything in the background.
 				_player.CurrentResearch = null;
-				_player.AI.ChooseResearch();
+				AI.Instance(_player).ChooseResearch();
 				EndTask();
 				return;
 			}
@@ -75,7 +76,7 @@ namespace CivOne.Tasks
 			Common.AddScreen(discovery);
 		}
 
-		public ProcessScience(Player player)
+		public ProcessScience(IPlayer player)
 		{
 			_player = player;
 			_human = (Human == player);

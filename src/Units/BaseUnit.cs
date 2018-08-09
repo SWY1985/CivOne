@@ -16,6 +16,7 @@ using CivOne.Buildings;
 using CivOne.Enums;
 using CivOne.Graphics;
 using CivOne.IO;
+using CivOne.Players;
 using CivOne.Screens;
 using CivOne.Tasks;
 using CivOne.Tiles;
@@ -91,21 +92,21 @@ namespace CivOne.Units
 			if (Owner == 0)
 			{
 				// Step 2: If the attacking unit is a Barbarian unit and the defending unit is player-controlled, multiply the attack strength by the Difficulty Modifier, then divide it by 4.
-				if (Human == defendUnit.Owner)
+				if (Human.Is(defendUnit.Owner))
 				{
 					attackStrength *= (Game.Difficulty + 1);
 					attackStrength /= 4;
 				}
 
 				// Step 3: If the attacking unit is a Barbarian unit and the defensing unit is AI-controlled, divide the attack strength by 2.
-				if (Human != defendUnit.Owner)
+				if (!Human.Is(defendUnit.Owner))
 				{
 					attackStrength /= 2;
 				}
 
 				// Step 4: If the attacking unit is a Barbarian unit and the defending unit is inside a city and the defending civilization does not control any other cities, set the attack strength to zero.
 				// This actually makes the defending unit invincible in this special case. Might well save you from being obliterated by that unlucky hut at 3600BC.
-				if (defendUnit.Tile.City != null && Game.GetPlayer(defendUnit.Owner).Cities.Length == 1)
+				if (defendUnit.Tile.City != null && Game.GetPlayer(defendUnit.Owner).GetCities().Count() == 1)
 				{
 					attackStrength = 0;
 				}
@@ -131,7 +132,7 @@ namespace CivOne.Units
 			}
 
 			// Step 8: If the attacking unit is a Barbarian unit and the defending unit is player-controlled, check the difficulty level. On Chieftain and Warlord levels, divide the attack strength by 2.
-			if (Owner == 0 && Human == defendUnit.Owner)
+			if (Owner == 0 && Human.Is(defendUnit.Owner))
 			{
 				if (Game.Difficulty < 2)
 				{
@@ -141,7 +142,7 @@ namespace CivOne.Units
 
 			// Step 9: If the attacking unit is player-controlled, check the difficulty level. On Chieftain level, multiply the attack strength by 2.
 			// So on Chieftain difficulty, it is often better to attack than be attacked, even with a defensive unit.
-			if (Human == Owner && Game.Difficulty == 0)
+			if (Human.Is(Owner) && Game.Difficulty == 0)
 			{
 				attackStrength *= 2;
 			}
@@ -254,7 +255,7 @@ namespace CivOne.Units
 				{
 					Action changeOwner = delegate()
 					{
-						Player previousOwner = Game.GetPlayer(capturedCity.Owner);
+						IPlayer previousOwner = Game.GetPlayer(capturedCity.Owner);
 
 						if (capturedCity.HasBuilding<Palace>())
 							capturedCity.RemoveBuilding<Palace>();
@@ -274,14 +275,14 @@ namespace CivOne.Units
 
 					IList<IAdvance> advancesToSteal = GetAdvancesToSteal(capturedCity.Player);
 
-					if (Human == capturedCity.Owner || Human == Owner)
+					if (Human.Is(capturedCity.Owner) || Human.Is(Owner))
 					{
 						Show captureCity = Show.CaptureCity(capturedCity);
 						captureCity.Done += (s1, a1) =>
 						{
 							changeOwner();
 							
-							if (capturedCity.Size == 0 || Human != Owner) return;
+							if (capturedCity.Size == 0 || !Human.Is(Owner)) return;
 							GameTask.Insert(Show.CityManager(capturedCity));
 						};
 						GameTask.Insert(captureCity);
@@ -393,14 +394,11 @@ namespace CivOne.Units
 			return false;
 		}
 		
-		private IList<IAdvance> GetAdvancesToSteal(Player victim)
-		{
-			return victim.Advances
+		private IList<IAdvance> GetAdvancesToSteal(IPlayer victim) => victim.Advances
 			.Where(p => !Player.Advances.Any(p2 => p2.Id == p.Id))
 			.OrderBy(a => Common.Random.Next(0, 1000))
 			.Take(3)
 			.ToList();
-		}
 
 		public virtual bool MoveTo(int relX, int relY)
 		{
@@ -412,7 +410,7 @@ namespace CivOne.Units
 			{
 				if (Class == UnitClass.Land && Tile.IsOcean)
 				{
-					if (Human == Owner) GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText($"ERROR/AMPHIB")));
+					if (Human.Is(Owner)) GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText($"ERROR/AMPHIB")));
 					return false;
 				}
 				return Confront(relX, relY);
@@ -426,7 +424,7 @@ namespace CivOne.Units
 
 					if (borderUnits.Any(u => targetUnits.Any(t => t.X == u.X && t.Y == u.Y))) 
 					{
-						if (Human == Owner)
+						if (Human.Is(Owner))
 							GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText($"ERROR/ZOC")));
 						return false;
 					}
@@ -680,7 +678,7 @@ namespace CivOne.Units
 			}
 		}
 
-		public Player Player => Game.GetPlayer(Owner);
+		public IPlayer Player => Game.GetPlayer(Owner);
 
 		public byte Status
 		{
@@ -789,10 +787,10 @@ namespace CivOne.Units
 		protected void Explore(int range, bool sea = false)
 		{
 			if (Game == null) return;
-			Player player = Game.GetPlayer(Owner);
+			IPlayer player = Game.GetPlayer(Owner);
 			if (player == null) return;
 			player.Explore(X, Y, range, sea);
-			if (player.IsHuman) Common.GamePlay?.RefreshMap();
+			if (player is HumanPlayer) Common.GamePlay?.RefreshMap();
 		}
 
 		public virtual void Explore() => Explore(1);

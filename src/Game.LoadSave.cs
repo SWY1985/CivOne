@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using CivOne.Civilizations;
 using CivOne.Enums;
+using CivOne.Players;
 using CivOne.Units;
 using CivOne.Wonders;
 
@@ -50,14 +51,14 @@ namespace CivOne
 				gameData.HumanPlayer = (ushort)PlayerNumber(HumanPlayer);
 				gameData.RandomSeed = Map.Instance.SaveMap(mapFile);
 				gameData.Difficulty = (ushort)_difficulty;
-				gameData.ActiveCivilizations = _players.Select(x => (x.Civilization is Barbarian) || (x.Cities.Any(c => c.Size > 0) || GetUnits().Any(u => x == u.Owner))).ToArray();
+				gameData.ActiveCivilizations = _players.Select(x => (x.Civilization is Barbarian) || (x.GetCities().Any(c => c.Size > 0) || x.GetUnits().Any())).ToArray();
 				gameData.CivilizationIdentity = _players.Select(x => (byte)(x.Civilization.Id > 7 ? 1 : 0)).ToArray();
 				gameData.CurrentResearch = HumanPlayer.CurrentResearch?.Id ?? 0;
 				byte[][] discoveredAdvanceIDs = new byte[_players.Length][];
 				for (int p = 0; p < _players.Length; p++)
 					discoveredAdvanceIDs[p] = _players[p].Advances.Select(x => x.Id).ToArray();
 				gameData.DiscoveredAdvanceIDs = discoveredAdvanceIDs;
-				gameData.LeaderNames = _players.Select(x => x.LeaderName).ToArray();
+				gameData.LeaderNames = _players.Select(x => x.Leader.Name).ToArray();
 				gameData.CivilizationNames = _players.Select(x => x.TribeNamePlural).ToArray();
 				gameData.CitizenNames = _players.Select(x => x.TribeName).ToArray();
 				gameData.CityNames = CityNames;
@@ -68,7 +69,7 @@ namespace CivOne
 				gameData.StartingPositionX = _players.Select(x => (ushort)x.StartX).ToArray();
 				gameData.Government = _players.Select(x => (ushort)x.Government.Id).ToArray();
 				gameData.Cities = _cities.GetCityData().ToArray();
-				gameData.Units = _players.Select(p => _units.Where(u => p == u.Owner).GetUnitData().ToArray()).ToArray();
+				gameData.Units = _players.Select(p => _units.Where(u => p.Is(u.Owner)).GetUnitData().ToArray()).ToArray();
 				ushort[] wonders = Enumerable.Repeat(ushort.MaxValue, 22).ToArray();
 				for (byte i = 0; i < _cities.Count(); i++)
 				foreach (IWonder wonder in _cities[i].Wonders)
@@ -110,11 +111,20 @@ namespace CivOne
 			}
 		}
 
+		private static IPlayer CreatePlayer(ICivilization civilization, string leaderName, string citizenName, string civilizationName, bool isHuman)
+		{
+			if (isHuman)
+				return new HumanPlayer(civilization, leaderName, civilizationName, citizenName);
+			if (civilization is Barbarian)
+				return new BarbarianPlayer();
+			return new ComputerPlayer(civilization, leaderName, civilizationName, citizenName);
+		}
+
 		private Game(IGameData gameData)
 		{
 			_difficulty = gameData.Difficulty;
 			_competition = (gameData.OpponentCount + 1);
-			_players = new Player[_competition + 1];
+			_players = new IPlayer[_competition + 1];
 			_cities = new List<City>();
 			_units = new List<IUnit>();
 
@@ -124,8 +134,8 @@ namespace CivOne
 			{
 				ICivilization[] civs = Common.Civilizations.Where(c => c.PreferredPlayerNumber == i).ToArray();
 				ICivilization civ = civs[gameData.CivilizationIdentity[i] % civs.Length];
-				Player player = (_players[i] = new Player(civ, gameData.LeaderNames[i], gameData.CitizenNames[i], gameData.CivilizationNames[i]));
-				player.Destroyed += PlayerDestroyed;
+				IPlayer player = (_players[i] = CreatePlayer(civ, gameData.LeaderNames[i], gameData.CitizenNames[i], gameData.CivilizationNames[i], (i == gameData.HumanPlayer)));
+				player.OnDestroy += PlayerDestroyed;
 				player.Gold = gameData.PlayerGold[i];
 				player.Science = gameData.ResearchProgress[i];
 				player.Government = Reflect.GetGovernments().FirstOrDefault(x => x.Id == gameData.Government[i]);
@@ -154,7 +164,6 @@ namespace CivOne
 
 			GameTurn = gameData.GameTurn;
 			CityNames = gameData.CityNames;
-			HumanPlayer = _players[gameData.HumanPlayer];
 			HumanPlayer.CurrentResearch = Common.Advances.FirstOrDefault(a => a.Id == gameData.CurrentResearch);
 		
 			_anthologyTurn = gameData.NextAnthologyTurn;

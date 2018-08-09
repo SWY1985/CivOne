@@ -11,6 +11,7 @@ using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.Players;
 
 namespace CivOne.Screens
 {

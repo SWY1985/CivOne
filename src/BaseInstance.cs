@@ -10,6 +10,7 @@
 using System.IO;
 using CivOne.Enums;
 using CivOne.Graphics;
+using CivOne.Players;
 using CivOne.UserInterface;
 
 namespace CivOne
@@ -18,7 +19,7 @@ namespace CivOne
 	{
 		protected static Game Game => Game.Instance;
 		protected static Map Map => Map.Instance;
-		protected static Player Human => Game.Instance.HumanPlayer;
+		protected static IPlayer Human => Game.Instance.HumanPlayer;
 		protected static Resources Resources => Resources.Instance;
 		protected static IRuntime Runtime => RuntimeHandler.Runtime;
 		protected static Settings Settings => Settings.Instance;

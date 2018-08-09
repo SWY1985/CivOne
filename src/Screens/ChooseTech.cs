@@ -14,6 +14,7 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
 using CivOne.Graphics.Sprites;
+using CivOne.Players;
 using CivOne.UserInterface;
 
 namespace CivOne.Screens
@@ -72,7 +73,7 @@ namespace CivOne.Screens
 			TextSettings DialogText = new TextSettings() { Colour = 15 };
 			TextSettings HelpText = new TextSettings() { FontId = 1, Colour = 10, Alignment = TextAlign.Right, VerticalAlignment = VerticalAlign.Bottom };
 
-			_availableAdvances = Human.AvailableResearch.Take(8).ToArray();
+			_availableAdvances = Human.AvailableResearch().Take(8).ToArray();
 			_menuHeight = Resources.GetFontHeight(0) * _availableAdvances.Count();
 			
 			bool modernGovernment = Human.HasAdvance<Invention>();

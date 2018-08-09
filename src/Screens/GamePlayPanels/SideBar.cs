@@ -18,6 +18,7 @@ using CivOne.Graphics.Sprites;
 using CivOne.Tasks;
 using CivOne.Tiles;
 using CivOne.Units;
+using CivOne.Players;
 
 namespace CivOne.Screens.GamePlayPanels
 {
@@ -43,7 +44,7 @@ namespace CivOne.Screens.GamePlayPanels
 					if (tile == null) continue;
 
 					// Flash active unit
-					if (activeUnit != null && Human == activeUnit.Owner && (tile.X == activeUnit.X && tile.Y == activeUnit.Y))
+					if (activeUnit != null && Human.Is(activeUnit.Owner) && (tile.X == activeUnit.X && tile.Y == activeUnit.Y))
 					{
 						if (gameTick % 4 <= 1)
 						{
@@ -101,15 +102,15 @@ namespace CivOne.Screens.GamePlayPanels
 				.DrawRectangle3D()
 				.FillRectangle(3, 2, 74, 11, 11)
 				.FillRectangle(3, 13, 74, 1, 2);
-			if (Human.Population > 0)
+			if (Human.GetPopulation() > 0)
 			{
-				string population = Common.NumberSeperator(Human.Population);
+				string population = Common.NumberSeperator(Human.GetPopulation());
 				_demographics.DrawText($"{population}#", 0, 5, 2, 15, TextAlign.Left);
 			}
 			_demographics.DrawText(Game.GameYear, 0, 5, 2, 23, TextAlign.Left);
 
 			int width = Resources.GetTextSize(0, Game.GameYear).Width;
-			int stage = (int)Math.Floor(((double)Human.Science / Human.ScienceCost) * 4);
+			int stage = (int)Math.Floor(((double)Human.Science / Human.ScienceCost()) * 4);
 			_demographics.AddLayer(Icons.Lamp(stage), 4 + width, 22);
 
 			_demographics.DrawText($"{Human.Gold}$ {Human.LuxuriesRate}.{Human.TaxesRate}.{Human.ScienceRate}", 0, 5, 2, 31, TextAlign.Left);
@@ -122,7 +123,7 @@ namespace CivOne.Screens.GamePlayPanels
 			_gameInfo.Tile(Pattern.PanelGrey)
 				.DrawRectangle3D();
 			
-			if (Game.CurrentPlayer != Human || (unit != null && Human != unit.Owner) || (GameTask.Any() && !GameTask.Is<Show>() && !GameTask.Is<Message>()))
+			if (Game.CurrentPlayer != Human || (unit != null && !Human.Is(unit.Owner)) || (GameTask.Any() && !GameTask.Is<Show>() && !GameTask.Is<Message>()))
 			{
 				_gameInfo.FillRectangle(2, _gameInfo.Height - 8, 6, 6, (byte)((gameTick % 4 < 2) ? 15 : 8));
 				return;

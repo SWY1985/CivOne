@@ -13,6 +13,7 @@ using CivOne.Events;
 using CivOne.Graphics;
 using CivOne.Governments;
 using CivOne.UserInterface;
+using CivOne.Players;
 
 namespace CivOne.Screens.Dialogs
 {
@@ -47,17 +48,11 @@ namespace CivOne.Screens.Dialogs
 			AddMenu(menu);
 		}
 
-		private static int DialogHeight
-		{
-			get
-			{
-				return (Game.HumanPlayer.AvailableGovernments.Count() * Resources.GetFontHeight(0)) + 23;
-			}
-		}
+		private static int DialogHeight => (Game.HumanPlayer.AvailableGovernments().Count() * Resources.GetFontHeight(0)) + 23;
 
 		public ChooseGovernment() : base(100, 64, 86, DialogHeight)
 		{
-			_availableGovernments = Game.HumanPlayer.AvailableGovernments.ToArray();
+			_availableGovernments = Game.HumanPlayer.AvailableGovernments().ToArray();
 
 			DialogBox.DrawText("Select type of", 0, 15, 5, 5);
 			DialogBox.DrawText("Government...", 0, 15, 5, 13);

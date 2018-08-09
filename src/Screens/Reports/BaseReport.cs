@@ -12,6 +12,7 @@ using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.Players;
 
 namespace CivOne.Screens.Reports
 {
@@ -71,7 +72,7 @@ namespace CivOne.Screens.Reports
 			this.Clear(backgroundColour)
 				.DrawText(title, 0, 15, 160, 2, TextAlign.Center)
 				.DrawText(string.Format("{0} of the {1}", "Empire", Human.TribeNamePlural), 0, 15, 160, 10, TextAlign.Center)
-				.DrawText(string.Format("{0} {1}: {2}", "Emperor", Human.LeaderName, Game.GameYear), 0, 15, 160, 18, TextAlign.Center);
+				.DrawText(string.Format("{0} {1}: {2}", "Emperor", Human.Leader.Name, Game.GameYear), 0, 15, 160, 18, TextAlign.Center);
 		}
 	}
 }

@@ -9,13 +9,14 @@
 
 using System;
 using CivOne.Advances;
+using CivOne.Players;
 
 namespace CivOne.Tasks
 {
 	internal class GetAdvance : GameTask
 	{
 		private readonly IAdvance _advance;
-		private readonly Player _player;
+		private readonly IPlayer _player;
 		private readonly bool _human;
 		
 		private void CivilopediaClosed(object sender, EventArgs args)
@@ -48,7 +49,7 @@ namespace CivOne.Tasks
 			Common.AddScreen(civilopedia);
 		}
 
-		public GetAdvance(Player player, IAdvance advance)
+		public GetAdvance(IPlayer player, IAdvance advance)
 		{
 			_advance = advance;
 			_player = player;

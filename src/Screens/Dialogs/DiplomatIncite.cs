@@ -15,6 +15,7 @@ using CivOne.Units;
 using CivOne.UserInterface;
 using CivOne.Buildings;
 using CivOne.Tasks;
+using CivOne.Players;
 
 namespace CivOne.Screens.Dialogs
 {
@@ -36,7 +37,7 @@ namespace CivOne.Screens.Dialogs
 
 		private void Incite(object sender, EventArgs args)
 		{
-			Player previousOwner = Game.GetPlayer(_cityToIncite.Owner);
+			IPlayer previousOwner = Game.GetPlayer(_cityToIncite.Owner);
 
 			Show captureCity = Show.CaptureCity(_cityToIncite);
 			captureCity.Done += (s1, a1) =>
@@ -54,13 +55,13 @@ namespace CivOne.Screens.Dialogs
 
 				previousOwner.IsDestroyed();
 
-				if (Human == _cityToIncite.Owner || Human == _diplomat.Owner)
+				if (Human.Is(_cityToIncite.Owner) || Human.Is(_diplomat.Owner))
 				{
 					GameTask.Insert(Tasks.Show.CityManager(_cityToIncite));
 				}
 			};
 
-			if (Human == _cityToIncite.Owner || Human == _diplomat.Owner)
+			if (Human.Is(_cityToIncite.Owner) || Human.Is(_diplomat.Owner))
 			{
 				GameTask.Insert(captureCity);
 			}

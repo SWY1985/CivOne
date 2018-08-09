@@ -11,6 +11,7 @@ using System.Linq;
 using CivOne.Advances;
 using CivOne.Enums;
 using CivOne.Graphics;
+using CivOne.Players;
 using CivOne.Units;
 using CivOne.UserInterface;
 

@@ -9,13 +9,14 @@
 
 using System;
 using System.Linq;
+using CivOne.Players;
 using CivOne.Screens;
 
 namespace CivOne.Tasks
 {
 	internal class TechSelect : GameTask
 	{
-		private readonly Player _player;
+		private readonly IPlayer _player;
 		private readonly bool _human;
 
 		private void ClosedChooseTech(object sender, EventArgs args)
@@ -39,14 +40,14 @@ namespace CivOne.Tasks
 				return;
 			}
 
-			if (_player.Science == 0 && _player.Cities.Sum(x => x.Science) == 0)
+			if (_player.Science == 0 && _player.GetCities().Sum(x => x.Science) == 0)
 			{
 				// This task is only for human players
 				EndTask();
 				return;
 			}
 
-			if (!_player.AvailableResearch.Any())
+			if (!_player.AvailableResearch().Any())
 			{
 				// No more research Available
 				//TODO: Implement future techs.
@@ -59,7 +60,7 @@ namespace CivOne.Tasks
 			Common.AddScreen(chooseTech);
 		}
 
-		public TechSelect(Player player)
+		public TechSelect(IPlayer player)
 		{
 			_player = player;
 			_human = (Human == player);

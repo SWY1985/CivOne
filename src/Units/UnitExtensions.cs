@@ -8,15 +8,15 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Drawing;
-// using CivOne.Graphics;
 using CivOne.Graphics.Sprites;
 using CivOne.IO;
+using CivOne.Players;
 
 namespace CivOne.Units
 {
 	public static class UnitExtensions
 	{
-		private static Player Human => Game.Instance.HumanPlayer;
+		private static IPlayer Human => Game.Instance.HumanPlayer;
 
 		public static Bytemap ToBitmap(this IUnit unit, bool showState = true) => ToBitmap(unit, unit.Owner, showState);
 		public static Bytemap ToBitmap(this IUnit unit, byte colour, bool showState = true)
@@ -56,7 +56,7 @@ namespace CivOne.Units
 				{
 					return Unit.Fortify(unit.Type, colour).Bitmap;
 				}
-				else if (Human == unit.Owner && unit.Goto != Point.Empty)
+				else if (Human.Is(unit.Owner) && unit.Goto != Point.Empty)
 				{
 					return Unit.Letter(unit.Type, 'G', colour).Bitmap;
 				}

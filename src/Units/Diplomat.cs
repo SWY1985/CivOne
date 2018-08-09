@@ -14,6 +14,7 @@ using CivOne.Tiles;
 using System.Linq;
 using CivOne.Buildings;
 using System.Collections.Generic;
+using CivOne.Players;
 
 namespace CivOne.Units
 {
@@ -26,7 +27,7 @@ namespace CivOne.Units
 
 		public static int InciteCost(City cityToIncite)
 		{
-			City capital = cityToIncite.Player.Cities.Where(c => c.HasBuilding(new Palace())).FirstOrDefault();
+			City capital = cityToIncite.Player.GetCapital();
 
 			int distance = capital == null ? 16 : cityToIncite.Tile.DistanceTo(capital);
 			
@@ -36,7 +37,7 @@ namespace CivOne.Units
 			return cost;
 		}
 
-		public IAdvance GetAdvanceToSteal(Player victim)
+		public IAdvance GetAdvanceToSteal(IPlayer victim)
 		{
 			IList<IAdvance> possible = victim.Advances.Where(p => !Player.Advances.Any(p2 => p2.Id == p.Id)).ToList();
 
@@ -74,7 +75,7 @@ namespace CivOne.Units
 
 			if (moveTarget.City != null)
 			{
-				if (Human == Owner)
+				if (Human.Is(Owner))
 				{
 					GameTask.Enqueue(Show.DiplomatCity(moveTarget.City, this));
 					return true;
@@ -96,7 +97,7 @@ namespace CivOne.Units
 			{
 				IUnit unit = units[0];
 
-				if (Human == unit.Owner && unit.Owner != Owner && unit is BaseUnitLand)
+				if (Human.Is(unit.Owner) && unit.Owner != Owner && unit is BaseUnitLand)
 				{
 					GameTask.Enqueue(Show.DiplomatBribe(unit as BaseUnitLand, this));
 					return true;

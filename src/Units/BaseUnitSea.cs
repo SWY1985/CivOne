@@ -10,6 +10,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CivOne.Enums;
+using CivOne.Players;
 using CivOne.Screens;
 using CivOne.Tiles;
 using CivOne.UserInterface;
@@ -119,7 +120,7 @@ namespace CivOne.Units
 		{
 			base.NewTurn();
 
-			Player player = Game.GetPlayer(Owner);
+			IPlayer player = Game.GetPlayer(Owner);
 			if (player.HasWonder<MagellansExpedition>() || (!Game.WonderObsolete<Lighthouse>() && player.HasWonder<Lighthouse>())) MovesLeft++;
 		}
 		

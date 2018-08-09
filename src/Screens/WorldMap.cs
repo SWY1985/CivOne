@@ -10,6 +10,7 @@
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.Players;
 using CivOne.Tiles;
 using CivOne.Units;
 
@@ -42,7 +43,7 @@ namespace CivOne.Screens
 		{
 			get
 			{
-				Player player = Game.Human;
+				IPlayer player = Game.Human;
 				for(int yy = 0; yy < Map.HEIGHT; yy++)
 				for(int xx = 0; xx < Map.WIDTH; xx++)
 				{
@@ -56,7 +57,7 @@ namespace CivOne.Screens
 		{
 			get
 			{
-				Player player = Game.Human;
+				IPlayer player = Game.Human;
 				for(int yy = Map.HEIGHT - 1; yy >= 0; yy--)
 				for(int xx = 0; xx < Map.WIDTH; xx++)
 				{

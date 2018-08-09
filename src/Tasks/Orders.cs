@@ -10,6 +10,7 @@
 using System;
 using CivOne.Advances;
 using CivOne.IO;
+using CivOne.Players;
 using CivOne.Screens;
 using CivOne.Units;
 
@@ -34,7 +35,7 @@ namespace CivOne.Tasks
 		}
 
 		private City _city;
-		private Player _player;
+		private IPlayer _player;
 		private IUnit _unit = null;
 		private int _x, _y;
 		private Order _order;
@@ -89,7 +90,7 @@ namespace CivOne.Tasks
 			_city = Game.AddCity(_player, nameId, _x, _y); 
 			if (_city != null)
 			{
-				if (_player.IsHuman)
+				if (_player is HumanPlayer)
 				{
 					CityView cityView = new CityView(_city, founded: true);
 					cityView.Closed += CityFounded;
@@ -106,10 +107,10 @@ namespace CivOne.Tasks
 			EndTask();
 		}
 
-		private void CreateCity(Player player, int x, int y)
+		private void CreateCity(IPlayer player, int x, int y)
 		{
 			int nameId = Game.CityNameId(player);
-			if (player.IsHuman)
+			if (player is HumanPlayer)
 			{
 				CityName cityName = new CityName(nameId, Game.CityNames[nameId]);
 				cityName.Accept += CityNameAccept;
@@ -251,70 +252,49 @@ namespace CivOne.Tasks
 			}
 		}
 
-		public static Orders FoundCity(IUnit unit = null)
+		public static Orders FoundCity(IUnit unit = null) => new Orders()
 		{
-			return new Orders()
-			{
-				_unit = unit,
-				_order = Order.NewCity
-			};
-		}
+			_unit = unit,
+			_order = Order.NewCity
+		};
 
-		public static Orders NewCity(Player player, int x, int y)
+		public static Orders NewCity(IPlayer player, int x, int y) => new Orders()
 		{
-			return new Orders()
-			{
-				_player = player,
-				_order = Order.NewCity,
-				_x = x,
-				_y = y
-			};
-		}
+			_player = player,
+			_order = Order.NewCity,
+			_x = x,
+			_y = y
+		};
 
-		public static Orders BuildIrrigation(IUnit unit)
+		public static Orders BuildIrrigation(IUnit unit) => new Orders()
 		{
-			return new Orders()
-			{
-				_unit = unit,
-				_order = Order.Irrigate
-			};
-		}
+			_unit = unit,
+			_order = Order.Irrigate
+		};
 
-		public static Orders BuildMines(IUnit unit)
+		public static Orders BuildMines(IUnit unit) => new Orders()
 		{
-			return new Orders()
-			{
-				_unit = unit,
-				_order = Order.Mines
-			};
-		}
+			_unit = unit,
+			_order = Order.Mines
+		};
 
-		public static Orders BuildFortress(IUnit unit)
+		public static Orders BuildFortress(IUnit unit) => new Orders()
 		{
-			return new Orders()
-			{
-				_unit = unit,
-				_order = Order.Fortress
-			};
-		}
+			_unit = unit,
+			_order = Order.Fortress
+		};
 
-		public static Orders BuildRoad(IUnit unit)
+		public static Orders BuildRoad(IUnit unit) => new Orders()
 		{
-			return new Orders()
-			{
-				_unit = unit,
-				_order = Order.Road
-			};
-		}
+			_unit = unit,
+			_order = Order.Road
+		};
 
-		public static Orders Wait(IUnit unit)
+		public static Orders Wait(IUnit unit) => new Orders()
 		{
-			return new Orders()
-			{
-				_unit = unit,
-				_order = Order.Wait
-			};
-		}
+			_unit = unit,
+			_order = Order.Wait
+		};
 
 		private Orders()
 		{

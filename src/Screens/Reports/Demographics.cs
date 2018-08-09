@@ -13,6 +13,7 @@ using CivOne.Civilizations;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.Players;
 
 namespace CivOne.Screens.Reports
 {
@@ -38,10 +39,10 @@ namespace CivOne.Screens.Reports
 		private TableRow Population()
 		{
 			string value = "00,000";
-			if (Human.Population > 0) value = Common.NumberSeperator(Human.Population);
+			if (Human.GetPopulation() > 0) value = Common.NumberSeperator(Human.GetPopulation());
 			
 			int rank = 1;
-			Player[] players = Game.Players.Where(x => !(x.Civilization is Barbarian)).OrderByDescending(x => x.Population).ThenBy(x => Game.PlayerNumber(x)).ToArray();
+			IPlayer[] players = Game.Players.Where(x => !(x.Civilization is Barbarian)).OrderByDescending(x => x.GetPopulation()).ThenBy(x => Game.PlayerNumber(x)).ToArray();
 			for (int i = 0; i < players.Length; i++)
 			{
 				if (Human != players[i]) continue;
@@ -118,7 +119,7 @@ namespace CivOne.Screens.Reports
 			_shadowText = TextSettings.ShadowText(15, 5);
 			
 			this.Clear(1)
-				.DrawText($"{Human.TribeName} Demographics", 0, 15, 160, 4, TextAlign.Center);
+				.DrawText($"{Human.TribeNamePlural} Demographics", 0, 15, 160, 4, TextAlign.Center);
 		}
 	}
 }

@@ -12,6 +12,7 @@ using CivOne.Civilizations;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.Players;
 
 namespace CivOne.Screens
 {
@@ -57,7 +58,7 @@ namespace CivOne.Screens
 				this.DrawText(Common.YearString(turn).Replace(" ", ""), 1, 15, xx - 4, 194);
 			}
 			
-			Player[] players = Game.Players.Where(x => !(x.Civilization is Barbarian)).ToArray();
+			IPlayer[] players = Game.Players.Where(x => !(x.Civilization is Barbarian)).ToArray();
 			for (int i = 0; i < players.Length; i++)
 			{
 				this.DrawText(players[i].TribeName, 0, Common.ColourLight[Game.PlayerNumber(players[i])], 8, 12 + (i * 8));

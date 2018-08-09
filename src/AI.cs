@@ -22,17 +22,18 @@ using CivOne.Units;
 using Democratic = CivOne.Governments.Democracy;
 
 using static CivOne.Enums.DevelopmentLevel;
+using CivOne.Players;
 
 namespace CivOne
 {
 	internal partial class AI : BaseInstance
 	{
-		public Player Player { get; }
+		public IPlayer Player { get; }
 		public ILeader Leader => Player.Civilization.Leader;
 
 		internal void Move(IUnit unit)
 		{
-			if (Player != unit.Owner) return;
+			if (Game.PlayerNumber(Player) != unit.Owner) return;
 
 			if (unit.Owner == 0)
 			{
@@ -207,19 +208,19 @@ namespace CivOne
 		{
 			if (Player.CurrentResearch != null) return;
 			
-			IAdvance[] advances = Player.AvailableResearch.ToArray();
+			IAdvance[] advances = Player.AvailableResearch().ToArray();
 			
 			// No further research possible
 			if (advances.Length == 0) return;
 
 			Player.CurrentResearch = advances[Common.Random.Next(0, advances.Length)];
 
-			Log($"AI: {Player.LeaderName} of the {Player.TribeNamePlural} starts researching {Player.CurrentResearch.Name}.");
+			Log($"AI: {Player.Leader.Name} of the {Player.TribeNamePlural} starts researching {Player.CurrentResearch.Name}.");
 		}
 
 		internal void CityProduction(City city)
 		{
-			if (city == null || city.Size == 0 || city.Tile == null || Player != city.Owner) return;
+			if (city == null || city.Size == 0 || city.Tile == null || Game.PlayerNumber(Player) != city.Owner) return;
 
 			IProduction production = null;
 
@@ -259,7 +260,7 @@ namespace CivOne
 			{
 				int minCitySize = Leader.Development == Expansionistic ? 2 : Leader.Development == Normal ? 3 : 4;
 				int maxCities = Leader.Development == Expansionistic ? 13 : Leader.Development == Normal ? 10 : 7;
-				if (city.Size >= minCitySize && !city.Units.Any(x => x is Settlers) && Player.Cities.Length < maxCities) production = new Settlers();
+				if (city.Size >= minCitySize && !city.Units.Any(x => x is Settlers) && Player.GetCities().Count() < maxCities) production = new Settlers();
 			}
 
 			// Create some other unit
@@ -297,8 +298,8 @@ namespace CivOne
 			city.SetProduction(production);
 		}
 
-		private static Dictionary<Player, AI> _instances = new Dictionary<Player, AI>();
-		internal static AI Instance(Player player)
+		private static Dictionary<IPlayer, AI> _instances = new Dictionary<IPlayer, AI>();
+		internal static AI Instance(IPlayer player)
 		{
 			if (_instances.ContainsKey(player))
 				return _instances[player];
@@ -306,7 +307,7 @@ namespace CivOne
 			return _instances[player];
 		}
 
-		private AI(Player player)
+		private AI(IPlayer player)
 		{
 			Player = player;
 		}

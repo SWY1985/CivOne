@@ -13,6 +13,7 @@ using CivOne.Buildings;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.Players;
 
 namespace CivOne.Screens.Reports
 {
@@ -82,9 +83,9 @@ namespace CivOne.Screens.Reports
 			y += 8;
 			if (y <= 190)
 			{
-				Citizen[] citizens = Human.Cities.SelectMany(x => x.Citizens).ToArray();
-				string population = Common.NumberSeperator(Human.Population);
-				if (Human.Population == 0) population = "00,000";
+				Citizen[] citizens = Human.GetCities().SelectMany(x => x.Citizens).ToArray();
+				string population = Common.NumberSeperator(Human.GetPopulation());
+				if (Human.GetPopulation() == 0) population = "00,000";
 				int totalCitizens = citizens.Length;
 				int happyCitizens = citizens.Count(c => c == Citizen.HappyMale || c == Citizen.HappyFemale);
 				int unhappyCitizens = citizens.Count(c => c == Citizen.UnhappyMale || c == Citizen.UnhappyFemale);
@@ -128,7 +129,7 @@ namespace CivOne.Screens.Reports
 
 		public AttitudeSurvey() : base("ATTITUDE SURVEY", 9)
 		{
-			_cities = Game.GetCities().Where(c => Human == c.Owner && c.Size > 0).ToArray();
+			_cities = Game.GetCities().Where(c => Human.Is(c.Owner) && c.Size > 0).ToArray();
 		}
 	}
 }

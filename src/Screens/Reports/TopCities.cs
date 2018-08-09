@@ -11,6 +11,7 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
+using CivOne.Players;
 using CivOne.Wonders;
 
 namespace CivOne.Screens.Reports
@@ -38,7 +39,7 @@ namespace CivOne.Screens.Reports
 				int ww = 304;
 				int hh = 26;
 
-				Player owner = Game.GetPlayer(city.Owner);
+				IPlayer owner = Game.GetPlayer(city.Owner);
 
 				this.FillRectangle(xx, yy, ww, hh, colour)
 					.FillRectangle(xx + 1, yy + 1, ww - 2, hh - 2, 3);

@@ -15,6 +15,7 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
 using CivOne.IO;
+using CivOne.Players;
 using CivOne.Tasks;
 using CivOne.Tiles;
 using CivOne.Units;
@@ -110,7 +111,7 @@ namespace CivOne.Screens.GamePlayPanels
 
 			if ((gameTick % 2) == 0 && (_lastTurn != Game.GameTurn || _lastUnit != unit))
 			{
-				if (_lastUnit != unit && unit != null && Game.Human == unit.Owner && ShouldCenter())
+				if (_lastUnit != unit && unit != null && Game.Human.Is(unit.Owner) && ShouldCenter())
 				{
 					CenterOnUnit();
 				}
@@ -135,7 +136,7 @@ namespace CivOne.Screens.GamePlayPanels
 			{
 				_update = true;
 			}
-			else if (unit != _lastUnit && ShouldCenter() && Human == unit.Owner)
+			else if (unit != _lastUnit && ShouldCenter() && Human.Is(unit.Owner))
 			{
 				CenterOnUnit();
 				_update = true;
@@ -153,7 +154,7 @@ namespace CivOne.Screens.GamePlayPanels
 			if (!(_update || _fullRedraw)) return false;
 			if (Game.MovingUnit == null && (gameTick % 2 == 1)) return false;
 
-			Player renderPlayer = Settings.RevealWorld ? null : Human;
+			IPlayer renderPlayer = Settings.RevealWorld ? null : Human;
 
 			IUnit activeUnit = ActiveUnit;
 			if (Game.MovingUnit != null && !_fullRedraw)
@@ -261,7 +262,7 @@ namespace CivOne.Screens.GamePlayPanels
 			{
 				case MoveUnit moveUnit:
 					IUnit unit = moveUnit.ActiveUnit;
-					if (unit == null || (Human != unit.Owner && !Game.EnemyMoves) || (!Settings.RevealWorld && Human != unit.Owner && !Human.Visible(unit.X, unit.Y)))
+					if (unit == null || (!Human.Is(unit.Owner) && !Game.EnemyMoves) || (!Settings.RevealWorld && !Human.Is(unit.Owner) && !Human.Visible(unit.X, unit.Y)))
 					{
 						args.Abort();
 						return;
@@ -499,11 +500,11 @@ namespace CivOne.Screens.GamePlayPanels
 			}
 			if ((args.Buttons & MouseButton.Left) > 0)
 			{
-				if (city != null && (Human == city.Owner || Settings.RevealWorld))
+				if (city != null && (Human.Is(city.Owner) || Settings.RevealWorld))
 				{
 					Common.AddScreen(new CityManager(city));
 				}
-				else if (Map[xx, yy].Units.Any(u => Human == u.Owner))
+				else if (Map[xx, yy].Units.Any(u => Human.Is(u.Owner)))
 				{
 					GameTask.Enqueue(Show.UnitStack(xx, yy));
 				}

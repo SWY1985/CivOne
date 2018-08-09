@@ -15,6 +15,7 @@ using CivOne.Enums;
 using CivOne.Events;
 using CivOne.Graphics;
 using CivOne.Graphics.Sprites;
+using CivOne.Players;
 using CivOne.Wonders;
 
 using UniversityBuilding = CivOne.Buildings.University;
@@ -746,7 +747,7 @@ namespace CivOne.Screens
 				}
 				_x = 0;
 
-				int totalLuxuries = Game.GetPlayer(_city.Owner).Cities.Sum(x => x.Luxuries);
+				int totalLuxuries = Game.GetPlayer(_city.Owner).GetCities().Sum(x => x.Luxuries);
 				int totalGold = Game.GetPlayer(_city.Owner).Gold;
 				int cityLuxuries = _city.Luxuries;
 				if (cityLuxuries == 0) cityLuxuries = 1;

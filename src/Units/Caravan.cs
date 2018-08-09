@@ -9,6 +9,7 @@
 
 using CivOne.Advances;
 using CivOne.Enums;
+using CivOne.Players;
 using CivOne.Tasks;
 using CivOne.Tiles;
 
@@ -86,7 +87,7 @@ namespace CivOne.Units
 				return true;
 			}
 
-			if (Game.Human == Owner)
+			if (Game.Human.Is(Owner))
 			{
 				GameTask.Enqueue(Show.CaravanChoice(this, city));
 			}

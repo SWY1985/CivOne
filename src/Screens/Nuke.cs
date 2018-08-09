@@ -16,6 +16,7 @@ using CivOne.Events;
 using CivOne.Graphics;
 using CivOne.Graphics.Sprites;
 using CivOne.IO;
+using CivOne.Players;
 using CivOne.Tiles;
 using CivOne.Units;
 
@@ -74,7 +75,7 @@ namespace CivOne.Screens
 
 			Bitmap = new Bytemap(width, height);
 			
-			Player renderPlayer = Settings.RevealWorld ? null : Human;
+			IPlayer renderPlayer = Settings.RevealWorld ? null : Human;
 			_gameMap = Map[_x, _y, _tilesX, _tilesY].ToBitmap(TileSettings.BlinkOff, renderPlayer);
 		}
 
@@ -94,7 +95,7 @@ namespace CivOne.Screens
 				}
 				Palette = palette;
 			}
-			Player renderPlayer = Settings.RevealWorld ? null : Human;
+			IPlayer renderPlayer = Settings.RevealWorld ? null : Human;
 			_gameMap = Map[_x, _y, 15, 12].ToBitmap(TileSettings.BlinkOff, renderPlayer);
 
 			_sprites = new Picture[28];

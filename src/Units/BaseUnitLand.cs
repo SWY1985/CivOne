@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CivOne.Advances;
 using CivOne.Enums;
+using CivOne.Players;
 using CivOne.Screens;
 using CivOne.Tasks;
 using CivOne.Tiles;
@@ -87,7 +88,7 @@ namespace CivOne.Units
 
 		private void TribalHutMessage(EventHandler method, params string[] message)
 		{
-			if (Player.IsHuman)
+			if (Player is HumanPlayer)
 			{
 				Message msgBox = Message.General(message);
 				msgBox.Done += method;
@@ -130,7 +131,7 @@ namespace CivOne.Units
 				case HutResult.AncientScrolls:
 					TribalHutMessage((s, e) => {
 						// This seems curious but this is how it actually probably happens in the original game
-						IAdvance[] available = Game.Instance.CurrentPlayer.AvailableResearch.ToArray();
+						IAdvance[] available = Game.Instance.CurrentPlayer.AvailableResearch().ToArray();
 						int advanceId = Common.Random.Next(0, 72);
 						for (int i = 0; i < 1000; i++)
 						{
@@ -189,7 +190,7 @@ namespace CivOne.Units
 					TribalHut(HutResult.MetalDeposits);
 					break;
 				case 3:
-					if (NearestCity < 4 || !Game.Instance.GetCities().Any(c => Player == c.Owner))
+					if (NearestCity < 4 || !Game.Instance.GetCities().Any(c => Player.Is(c.Owner)))
 					{
 						TribalHut(HutResult.FriendlyTribe);
 						break;

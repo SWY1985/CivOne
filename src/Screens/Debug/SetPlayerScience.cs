@@ -12,6 +12,7 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.Graphics;
 using CivOne.Graphics.Sprites;
+using CivOne.Players;
 using CivOne.Tasks;
 using CivOne.UserInterface;
 
@@ -23,7 +24,7 @@ namespace CivOne.Screens.Debug
 
 		private Input _input;
 
-		private Player _selectedPlayer = null;
+		private IPlayer _selectedPlayer = null;
 
 		public string Value { get; private set; }
 
@@ -59,7 +60,7 @@ namespace CivOne.Screens.Debug
 			}
 			else
 			{
-				if (playerScience > _selectedPlayer.ScienceCost) playerScience = _selectedPlayer.ScienceCost;
+				if (playerScience > _selectedPlayer.ScienceCost()) playerScience = _selectedPlayer.ScienceCost();
 				_selectedPlayer.Science = playerScience;
 				GameTask.Enqueue(Message.General($"{_selectedPlayer.TribeName} science set to {playerScience}~."));
 			}
@@ -127,7 +128,7 @@ namespace CivOne.Screens.Debug
 				Indent = 8
 			};
 
-			foreach (Player player in Game.Players)
+			foreach (IPlayer player in Game.Players)
 			{
 				_civSelect.Items.Add(player.TribeNamePlural).OnSelect(CivSelect_Accept);
 			}

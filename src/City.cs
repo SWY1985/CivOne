@@ -14,6 +14,7 @@ using CivOne.Advances;
 using CivOne.Buildings;
 using CivOne.Enums;
 using CivOne.Governments;
+using CivOne.Players;
 using CivOne.Tasks;
 using CivOne.Tiles;
 using CivOne.Units;
@@ -139,11 +140,11 @@ namespace CivOne
 				case Terrain.Grassland1:
 				case Terrain.Grassland2:
 				case Terrain.River:
-					if (!Player.AnarchyDespotism && tile.Irrigation) output += 1;
+					if (!Player.AnarchyDespotism() && tile.Irrigation) output += 1;
 					break;
 				case Terrain.Ocean:
 				case Terrain.Tundra:
-					if (!Player.AnarchyDespotism && tile.Special) output += 1;
+					if (!Player.AnarchyDespotism() && tile.Special) output += 1;
 					break;
 			}
 			if (tile.RailRoad) output = (int)Math.Floor((double)output * 1.5);
@@ -156,7 +157,7 @@ namespace CivOne
 			switch (tile.Type)
 			{
 				case Terrain.Hills:
-					if (!Player.AnarchyDespotism && tile.Mine) output += 1;
+					if (!Player.AnarchyDespotism() && tile.Mine) output += 1;
 					break;
 			}
 			if (tile.RailRoad) output = (int)Math.Floor((double)output * 1.5);
@@ -186,21 +187,21 @@ namespace CivOne
 				case Terrain.Grassland2:
 				case Terrain.Plains:
 					if (!tile.Road) break;
-					if (Player.RepublicDemocratic) output += 1;
+					if (Player.RepublicDemocratic()) output += 1;
 					break;
 				case Terrain.Ocean:
 				case Terrain.River:
-					if (Player.RepublicDemocratic) output += 1;
+					if (Player.RepublicDemocratic()) output += 1;
 					break;
 				case Terrain.Jungle:
 					if (!tile.Special) break;
-					if (Player.MonarchyCommunist) output += 1;
-					if (Player.RepublicDemocratic) output += 2;
+					if (Player.MonarchyCommunist()) output += 1;
+					if (Player.RepublicDemocratic()) output += 2;
 					break;
 				case Terrain.Mountains:
 					if (!tile.Special) break;
-					if (Player.MonarchyCommunist) output += 1;
-					if (Player.RepublicDemocratic) output += 2;
+					if (Player.MonarchyCommunist()) output += 1;
+					if (Player.RepublicDemocratic()) output += 2;
 					break;
 			}
 			if (output > 0 && HasWonder<Colossus>() && !Game.WonderObsolete<Colossus>()) output += 1;
@@ -227,9 +228,9 @@ namespace CivOne
 						break;
 					default:
 						if (HasBuilding<Palace>()) return 0;
-						if (Game.GetPlayer(Owner).Cities.Any(x => x.HasBuilding<Palace>()))
+						if (Game.GetPlayer(Owner).GetCities().Any(x => x.HasBuilding<Palace>()))
 						{
-							City capital = Game.GetPlayer(Owner).Cities.First(x => x.HasBuilding<Palace>());
+							City capital = Game.GetPlayer(Owner).GetCities().First(x => x.HasBuilding<Palace>());
 							distance = Common.DistanceToTile(X, Y, capital.X, capital.Y);
 						}
 						else
@@ -446,7 +447,7 @@ namespace CivOne
 			UpdateSpecialists();
 		}
 
-		public Player Player => Game.Instance.GetPlayer(Owner);
+		internal IPlayer Player => Game.Instance.GetPlayer(Owner);
 
 		public IEnumerable<IProduction> AvailableProduction
 		{
@@ -610,7 +611,7 @@ namespace CivOne
 		{
 			get
 			{
-				Player player = Game.Instance.GetPlayer(Owner);
+				IPlayer player = Game.Instance.GetPlayer(Owner);
 				ITile[,] tiles = Map[X - 2, Y - 2, 5, 5];
 				for (int xx = 0; xx < 5; xx++)
 				for (int yy = 0; yy < 5; yy++)
@@ -680,7 +681,7 @@ namespace CivOne
 			{
 				Food = 0;
 				Size--;
-				if (Human == Owner)
+				if (Human.Is(Owner))
 				{
 					GameTask.Enqueue(Message.Newspaper(this, "Food storage exhausted", $"in {Name}!", "Famine feared."));
 				}
@@ -712,7 +713,7 @@ namespace CivOne
 			{
 				int maxDistance = Units.Max(u => Common.DistanceToTile(X, Y, u.X, u.Y));
 				IUnit unit = Units.Last(u => Common.DistanceToTile(X, Y, u.X, u.Y) == maxDistance);
-				if (Human == Owner)
+				if (Human.Is(Owner))
 				{
 					Message message = Message.DisbandUnit(this, unit);
 					message.Done += (s, a) => {
@@ -744,14 +745,14 @@ namespace CivOne
 					unit.Veteran = (_buildings.Any(b => (b is Barracks)));
 					if (CurrentProduction is Settlers)
 					{
-						if (Size == 1 && Player.Cities.Length == 1) Size++;
+						if (Size == 1 && Player.GetCities().Count() == 1) Size++;
 						if (Size == 1)
 						{
 							unit.SetHome(null);
 						}
 						Size--;
 					}
-					if (Human == Owner && (unit is Settlers || unit is Diplomat || unit is Caravan))
+					if (Human.Is(Owner) && (unit is Settlers || unit is Diplomat || unit is Caravan))
 					{
 						GameTask advisorMessage = Message.Advisor(Advisor.Defense, true, $"{this.Name} builds {unit.Name}.");
 						advisorMessage.Done += (s, a) => GameTask.Insert(Show.CityManager(this));
@@ -814,7 +815,7 @@ namespace CivOne
 
 			if (Player == Human) return;
 			
-			Player.AI.CityProduction(this);
+			AI.Instance(Player).CityProduction(this);
 		}
 
 		public void Disaster()
@@ -822,7 +823,7 @@ namespace CivOne
 			List<string> message = new List<string>();
 			bool humanGetsCity = false;
 
-			if (Player.Cities.Length == 1)
+			if (Player.GetCities().Count() == 1)
 				return;
 
 			if (Size < 5)
@@ -984,7 +985,7 @@ namespace CivOne
 					if (HasBuilding<Palace>())
 						return;
 					
-					if (Player.Cities.Length < 4)
+					if (Player.GetCities().Count() < 4)
 						return;
 					
 					City admired = null;
@@ -1009,7 +1010,7 @@ namespace CivOne
 						message.Add($"Residents of {Name} admire the prosperity of {admired.Name}");
 						message.Add($"{admired.Name} capture {Name}");
 
-						Player previousOwner = Game.GetPlayer(this.Owner);
+						IPlayer previousOwner = Game.GetPlayer(this.Owner);
 
 						Show captureCity = Show.CaptureCity(this);
 						captureCity.Done += (s1, a1) =>
@@ -1018,13 +1019,13 @@ namespace CivOne
 
 							previousOwner.IsDestroyed();
 
-							if (Human == admired.Owner)
+							if (Human.Is(admired.Owner))
 							{
 								GameTask.Insert(Tasks.Show.CityManager(this));
 							}
 						};
 
-						if (Human == admired.Owner)
+						if (Human.Is(admired.Owner))
 						{
 							humanGetsCity = true;
 							GameTask.Insert(captureCity);
@@ -1035,7 +1036,7 @@ namespace CivOne
 					break;				
 			}
 
-			if (message.Count > 0 && (Player == Owner || humanGetsCity))
+			if (message.Count > 0 && (Player.Is(Owner) || humanGetsCity))
 			{
 				GameTask.Enqueue(Message.Advisor(Advisor.Domestic, false, message.ToArray()));
 			}
