@@ -19,8 +19,6 @@ namespace CivOne.Players
 {
 	public interface IPlayer
 	{
-		event Action<IPlayer> OnDestroy;
-
 		ICivilization Civilization { get; }
 		ILeader Leader { get; }
 		string TribeName { get; }
@@ -35,7 +33,6 @@ namespace CivOne.Players
 		int TaxesRate { get; set; }
 		int ScienceRate { get; }
 
-		bool Destroyed { get; }
 		short Gold { get; set; }
 		short Science { get; set; }
 		short StartX { get; set; }
@@ -45,7 +42,6 @@ namespace CivOne.Players
 		void AddAdvance(IAdvance advance, bool setOrigin = true);
 		void ChooseGovernment();
 		void DeleteAdvance(IAdvance advance);
-		void Destroy();
 		void EstablishEmbassy(IPlayer player);
 		void Explore(int x, int y, int range = 1, bool sea = false);
 		bool Visible(int x, int y);

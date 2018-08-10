@@ -26,8 +26,6 @@ namespace CivOne.Players
 		private readonly List<byte> _advances = new List<byte>();
 		private readonly List<byte> _embassies = new List<byte>();
 
-		public event Action<IPlayer> OnDestroy;
-
 		public ICivilization Civilization { get; }
 		public ILeader Leader => Civilization.Leader;
 		public string TribeName { get; }
@@ -39,8 +37,6 @@ namespace CivOne.Players
 		public IEnumerable<IPlayer> Embassies => _embassies.OrderBy(x => x).Select(e => Game.Instance.GetPlayer(e));
 
 		public IAdvance CurrentResearch { get; set; }
-
-		public bool Destroyed { get; private set; }
 		
 		private int _luxuriesRate = 0, _taxesRate = 5, _scienceRate = 5;
 		public int LuxuriesRate
@@ -101,13 +97,6 @@ namespace CivOne.Players
 		public abstract void ChooseGovernment();
 
 		public void DeleteAdvance(IAdvance advance) => _advances.RemoveAll(x => advance.Id == x);
-
-		public void Destroy()
-		{
-			if (Destroyed) return;
-			OnDestroy?.Invoke(this);
-			Destroyed = true;
-		}
 
 		public void EstablishEmbassy(IPlayer player)
 		{
@@ -175,8 +164,6 @@ namespace CivOne.Players
 			
 			Government = player.Government;
 			Palace = player.Palace;
-
-			Destroyed = player.Destroyed;
 
 			CurrentResearch = player.CurrentResearch;
 

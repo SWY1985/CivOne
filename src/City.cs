@@ -1017,7 +1017,7 @@ namespace CivOne
 						{
 							this.Owner = admired.Owner;
 
-							previousOwner.IsDestroyed();
+							Game.CheckGameOver(previousOwner);
 
 							if (Human.Is(admired.Owner))
 							{

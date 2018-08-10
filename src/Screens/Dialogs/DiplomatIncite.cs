@@ -53,7 +53,7 @@ namespace CivOne.Screens.Dialogs
 
 				_diplomat.Player.Gold -= (short)_inciteCost;
 
-				previousOwner.IsDestroyed();
+				Game.CheckGameOver(previousOwner);
 
 				if (Human.Is(_cityToIncite.Owner) || Human.Is(_diplomat.Owner))
 				{

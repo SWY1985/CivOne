@@ -270,7 +270,7 @@ namespace CivOne.Units
 							capturedCity.Size--;
 						}
 
-						previousOwner.IsDestroyed();
+						Game.CheckGameOver(previousOwner);
 					};
 
 					IList<IAdvance> advancesToSteal = GetAdvancesToSteal(capturedCity.Player);

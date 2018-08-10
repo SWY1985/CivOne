@@ -8,6 +8,8 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System;
+using CivOne.Civilizations;
+using CivOne.Enums;
 using CivOne.Governments;
 using CivOne.Players;
 using CivOne.Screens;
@@ -64,12 +66,19 @@ namespace CivOne.Tasks
 
 		public static Turn GameOver(IPlayer player) => new Turn(() =>
 		{
+			ICivilization destroyed = player.Civilization;
+			ICivilization destroyedBy = Game.CurrentPlayer.Civilization;
+			if (destroyedBy == destroyed) destroyedBy = Game.GetPlayer(0).Civilization;
+
+			Game.AddReplayData(new ReplayData.CivilizationDestroyed(Game.GameTurn, destroyed.Id, destroyedBy.Id));
+
 			switch (player)
 			{
 				case HumanPlayer _:
 					Common.AddScreen(new GameOver());
 					return;
 				default:
+					GameTask.Insert(Message.Advisor(Advisor.Defense, false, destroyed.Name, "civilization", "destroyed", $"by {destroyedBy.NamePlural}!"));
 					// TODO: Respawn civilization
 					return;
 			};

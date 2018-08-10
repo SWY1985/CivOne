@@ -30,6 +30,7 @@ namespace CivOne
 	{
 		private readonly int _difficulty, _competition;
 		private readonly IPlayer[] _players;
+		private readonly bool[] _playersActive = new bool[8];
 		private readonly List<City> _cities;
 		private readonly List<IUnit> _units;
 		private readonly Dictionary<byte, byte> _advanceOrigin = new Dictionary<byte, byte>();
@@ -50,6 +51,18 @@ namespace CivOne
 		public bool AutoSave { get; set; }
 		public bool EnemyMoves { get; set; }
 		public bool Palace { get; set; }
+
+		internal bool CheckGameOver(IPlayer player)
+		{
+			if (player is Barbarian) return false;
+			if (_playersActive[PlayerNumber(player)] && player.IsDestroyed())
+			{
+				_playersActive[PlayerNumber(player)] = false;
+				GameTask.Enqueue(Turn.GameOver(player));
+				return true;
+			}
+			return false;
+		}
 
 		internal void SetAdvanceOrigin(IAdvance advance, IPlayer player)
 		{
@@ -120,23 +133,7 @@ namespace CivOne
 
 		internal ReplayData[] GetReplayData() => _replayData.ToArray();
 		internal T[] GetReplayData<T>() where T : ReplayData => _replayData.Where(x => x is T).Select(x => (x as T)).ToArray();
-
-		private void PlayerDestroyed(IPlayer player)
-		{
-			ICivilization destroyed = player.Civilization;
-			ICivilization destroyedBy = Game.CurrentPlayer.Civilization;
-			if (destroyedBy == destroyed) destroyedBy = Game.GetPlayer(0).Civilization;
-
-			_replayData.Add(new ReplayData.CivilizationDestroyed(_gameTurn, destroyed.Id, destroyedBy.Id));
-
-			if (player is HumanPlayer)
-			{
-				// TODO: Move Game Over code here
-				return;
-			}
-
-			GameTask.Insert(Message.Advisor(Advisor.Defense, false, destroyed.Name, "civilization", "destroyed", $"by {destroyedBy.NamePlural}!"));
-		}
+		internal void AddReplayData(ReplayData data) => _replayData.Add(data);
 		
 		internal byte PlayerNumber(IPlayer player)
 		{
@@ -163,7 +160,7 @@ namespace CivOne
 		{
 			foreach (IPlayer player in _players.Where(x => !(x.Civilization is Barbarian)))
 			{
-				player.IsDestroyed();
+				Game.CheckGameOver(player);
 			}
 
 			if (++_currentPlayer >= _players.Length)
@@ -209,12 +206,7 @@ namespace CivOne
 				GameTask.Enqueue(Turn.New(city));
 			}
 			
-			if (!CurrentPlayer.Destroyed && CurrentPlayer.IsDestroyed())
-			{
-				// Handle game over
-				GameTask.Enqueue(Turn.GameOver(CurrentPlayer));
-			}
-			else
+			if (!CheckGameOver(CurrentPlayer))
 			{
 				GameTask.Enqueue(Turn.HandleAnarchy(CurrentPlayer));
 			}
@@ -451,7 +443,7 @@ namespace CivOne
 			unit.Y = 255;
 			_units.Remove(unit);
 
-			GetPlayer(unit.Owner).IsDestroyed();
+			CheckGameOver(GetPlayer(unit.Owner));
 
 			if (_units.Contains(activeUnit))
 			{

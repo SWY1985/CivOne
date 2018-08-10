@@ -28,7 +28,6 @@ namespace CivOne.Players
 		public static bool IsDestroyed(this IPlayer player)
 		{
 			if (Game.Instance.PlayerNumber(player) == 0) return false;
-			if (player.Destroyed) return true;
 			if (!player.GetCities().Any() && !player.GetUnits().Any(x => (x is Settlers && x.Home == null)))
 			{
 				while (true)
@@ -37,7 +36,6 @@ namespace CivOne.Players
 					if (unit == null) break;
 					Game.Instance.DisbandUnit(unit);
 				}
-				player.Destroy();
 				return true;
 			}
 			return false;

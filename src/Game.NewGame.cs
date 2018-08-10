@@ -194,7 +194,7 @@ namespace CivOne
 				if (i == tribe.PreferredPlayerNumber)
 				{
 					_players[i] = new HumanPlayer(tribe, leaderName, tribeName, tribeNamePlural);
-					_players[i].OnDestroy += PlayerDestroyed;
+					_playersActive[i] = true;
 					if (difficulty == 0)
 					{
 						// Chieftain starts with 50 Gold
@@ -208,7 +208,7 @@ namespace CivOne
 				int r = Common.Random.Next(civs.Length);
 				
 				_players[i] = (i == 0) ? (IPlayer)new BarbarianPlayer() : (IPlayer)new ComputerPlayer(civs[r]);
-				_players[i].OnDestroy += PlayerDestroyed;
+				_playersActive[i] = true;
 				
 				Log("- Player {0} is {1} of the {2}", i, _players[i].Leader.Name, _players[i].TribeNamePlural);
 			}
