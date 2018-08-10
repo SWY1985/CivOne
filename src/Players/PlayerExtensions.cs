@@ -94,36 +94,22 @@ namespace CivOne.Players
 			if ((building is ISpaceShip) && !Game.Instance.WonderBuilt<ApolloProgram>())
 				return false;
 
-			// Determine if the building requires a tech
-			if (building.RequiredTech == null)
-				return true;
-			
-			// Determine if the Player has the required tech
-			if (player.HasAdvance(building.RequiredTech))
-				return true;
-			
-			return false;
+			// Determine if the Player has the required tech (if any)
+			return (building.RequiredTech == null || player.HasAdvance(building.RequiredTech));
 		}
 
 		public static bool UnitAvailable(this IPlayer player, IUnit unit)
 		{
 			// Determine if the unit is obsolete
-			if (player.HasAdvance(unit.ObsoleteTech))
+			if (unit.ObsoleteTech != null && player.HasAdvance(unit.ObsoleteTech))
 				return false;
 			
 			// Require Manhattan Project to be built for Nuclear unit
 			if ((unit is Nuclear) && !Game.Instance.WonderBuilt<ManhattanProject>())
 				return false;
 			
-			// Determine if the unit requires a tech
-			if (unit.RequiredTech == null)
-				return true;
-			
-			// Determine if the Player has the required tech
-			if (player.HasAdvance(unit.RequiredTech))
-				return true;
-			
-			return false;
+			// Determine if the Player has the required tech (if any)
+			return (unit.RequiredTech == null || player.HasAdvance(unit.RequiredTech));
 		}
 
 		public static bool WonderAvailable(this IPlayer player, IWonder wonder)
@@ -132,15 +118,8 @@ namespace CivOne.Players
 			if (Game.Instance.BuiltWonders.Any(w => w.Id == wonder.Id))
 				return false;
 
-			// Determine if the building requires a tech
-			if (wonder.RequiredTech == null)
-				return true;
-			
-			// Determine if the Player has the required tech
-			if (player.HasAdvance(wonder.RequiredTech))
-				return true;
-			
-			return false;
+			// Determine if the Player has the required tech (if any)
+			return (wonder.RequiredTech == null || player.HasAdvance(wonder.RequiredTech));
 		}
 
 		public static bool ProductionAvailable(this IPlayer player, IProduction production)
