@@ -55,7 +55,7 @@ namespace CivOne.Players
 
 		public static IEnumerable<IAdvance> AvailableResearch(this IPlayer player)
 		{
-			foreach (IAdvance advance in Common.Advances.Where(a => player.HasAdvance(a)))
+			foreach (IAdvance advance in Common.Advances.Where(a => !player.HasAdvance(a)))
 			{
 				if (advance.RequiredTechs.Length > 0 && !advance.RequiredTechs.All(a => player.HasAdvance(a))) continue;
 				yield return advance;
