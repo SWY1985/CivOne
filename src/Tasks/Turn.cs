@@ -21,25 +21,13 @@ namespace CivOne.Tasks
 	{
 		private const int TURN_TIME = 10;
 
-		private Action _action = null;
-		private ITurn _turnObject = null;
-		private IUnit _unit = null;
-		private bool _endTurn = false;
-
-		private IPlayer _gameOver = null;
-
-		private int _step = 0;
+		private readonly Action _action = null;
+		private readonly Func<bool> _stepAction = null;
 
 		protected override bool Step()
 		{
-			if (_unit != null)
+			if (_stepAction != null && _stepAction())
 			{
-				AI.Instance(Game.CurrentPlayer).Move(_unit);
-				EndTask();
-			}
-			if (_endTurn && _step-- <= 0)
-			{
-				Game.EndTurn();
 				EndTask();
 			}
 			return true;
@@ -47,63 +35,45 @@ namespace CivOne.Tasks
 
 		public override void Run()
 		{
-			if (_turnObject != null)
-			{
-				_turnObject.NewTurn();
-			}
-			else if (_unit != null)
-			{
-				return;
-			}
-			else if (_endTurn)
-			{
-				if (Game.CurrentPlayer is HumanPlayer)
-				{
-					_step = TURN_TIME;
-					return;
-				}
-				Game.EndTurn();
-				EndTask();
-				return;
-			}
-			else if (_gameOver != null)
-			{
-				if (_gameOver is HumanPlayer)
-				{
-					Common.AddScreen(new GameOver());
-				}
-				else
-				{
-					// TODO: Spawn barbarians or respawn civilization
-				}
-			}
-			else if (_action != null)
+			if (_action != null)
 			{
 				_action();
+				EndTask();
 			}
-			EndTask();
 			return;
 		}
 
-		public static Turn New(ITurn turnObject) => new Turn()
-		{
-			_turnObject = turnObject
-		};
+		public static Turn New(ITurn turnObject) => new Turn(() => turnObject.NewTurn());
 
-		public static Turn Move(IUnit unit) => new Turn()
+		public static Turn Move(IUnit unit) => new Turn(() =>
 		{
-			_unit = unit
-		};
+			AI.Instance(Game.CurrentPlayer).Move(unit);
+			return true;
+		});
 
-		public static Turn End() => new Turn()
+		public static Turn End()
 		{
-			_endTurn = true
-		};
+			int step = (Game.CurrentPlayer is HumanPlayer) ? TURN_TIME : 0;
+			return new Turn(() =>
+			{
+				if (step-- > 0) return false;
+				Game.EndTurn();
+				return true;
+			});
+		}
 
-		public static Turn GameOver(IPlayer player) => new Turn()
+		public static Turn GameOver(IPlayer player) => new Turn(() =>
 		{
-			_gameOver = player
-		};
+			switch (player)
+			{
+				case HumanPlayer _:
+					Common.AddScreen(new GameOver());
+					return;
+				default:
+					// TODO: Respawn civilization
+					return;
+			};
+		});
 
 		public static Turn HandleAnarchy(IPlayer player) => new Turn(() =>
 		{
@@ -114,9 +84,8 @@ namespace CivOne.Tasks
 			player.ChooseGovernment();
 		});
 
-		private Turn(Action action = null)
-		{
-			_action = action;
-		}
+		private Turn(Action action = null) => _action = action;
+
+		private Turn(Func<bool> stepAction) => _stepAction = stepAction;
 	}
 }
