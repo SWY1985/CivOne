@@ -8,11 +8,14 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using CivOne.Civilizations;
+using CivOne.Governments;
 
 namespace CivOne.Players
 {
 	internal class ComputerPlayer : BasePlayer
 	{
+		public override void ChooseGovernment() => Government = new Despotism();
+
 		public ComputerPlayer(ICivilization civilization, string leaderName = null, string civilizationName = null, string citizenName = null) : base(civilization, leaderName, civilizationName, citizenName)
 		{
 		}

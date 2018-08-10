@@ -8,17 +8,34 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using CivOne.Civilizations;
+using CivOne.Governments;
 
 namespace CivOne.Players
 {
 	internal class BarbarianPlayer : BasePlayer
 	{
+		public override IGovernment Government
+		{
+			get => new Anarchy();
+			set
+			{
+				// Do nothing, always Anarchy
+			}
+		}
+
+		public override void ChooseGovernment()
+		{
+			// Do nothing, always Anarchy
+		}
+
 		public BarbarianPlayer() : base(new Barbarian())
 		{
+			Government = new Anarchy();
 		}
 
 		public BarbarianPlayer(HumanPlayer humanPlayer) : base(humanPlayer)
 		{
+			Government = new Anarchy();
 		}
 	}
 }

@@ -17,7 +17,7 @@ using CivOne.Units;
 
 namespace CivOne.Players
 {
-	public interface IPlayer : ITurn
+	public interface IPlayer
 	{
 		event Action<IPlayer> OnDestroy;
 
@@ -43,11 +43,11 @@ namespace CivOne.Players
 		byte Handicap { get; set; }
 
 		void AddAdvance(IAdvance advance, bool setOrigin = true);
+		void ChooseGovernment();
 		void DeleteAdvance(IAdvance advance);
 		void Destroy();
 		void EstablishEmbassy(IPlayer player);
 		void Explore(int x, int y, int range = 1, bool sea = false);
-		void Revolt();
 		bool Visible(int x, int y);
 	}
 }

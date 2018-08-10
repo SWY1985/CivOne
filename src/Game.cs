@@ -15,6 +15,7 @@ using CivOne.Advances;
 using CivOne.Buildings;
 using CivOne.Civilizations;
 using CivOne.Enums;
+using CivOne.Governments;
 using CivOne.IO;
 using CivOne.Players;
 using CivOne.Screens;
@@ -207,7 +208,16 @@ namespace CivOne
 			{
 				GameTask.Enqueue(Turn.New(city));
 			}
-			GameTask.Enqueue(Turn.New(CurrentPlayer));
+			
+			if (!CurrentPlayer.Destroyed && CurrentPlayer.IsDestroyed())
+			{
+				// Handle game over
+				GameTask.Enqueue(Turn.GameOver(CurrentPlayer));
+			}
+			else
+			{
+				GameTask.Enqueue(Turn.HandleAnarchy(CurrentPlayer));
+			}
 
 			if (CurrentPlayer != HumanPlayer) return;
 			

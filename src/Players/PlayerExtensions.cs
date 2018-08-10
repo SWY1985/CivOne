@@ -43,11 +43,11 @@ namespace CivOne.Players
 			return false;
 		}
 
-		public static bool HasWonder<T>(this IPlayer player) where T : IWonder => player.GetCities().Any(c => c.HasWonder<T>());
+		public static bool HasWonder<T>(this IPlayer player, bool checkObsolete = false) where T : IWonder, new() => (!checkObsolete || !Game.Instance.WonderObsolete<T>()) && player.GetCities().Any(c => c.HasWonder<T>());
 
 		public static bool HasAdvance<T>(this IPlayer player) where T : IAdvance => player.Advances.Any(a => a is T);
 
-		public static bool HasAdvance(this IPlayer player, IAdvance advance) => player.Advances.Any(a => a.Id == advance?.Id);
+		public static bool HasAdvance(this IPlayer player, IAdvance advance) => (advance == null || player.Advances.Any(a => a.Id == advance.Id));
 
 		public static bool HasEmbassy(this IPlayer player, IPlayer checkPlayer) => player.Embassies.Any(p => p == checkPlayer);
 
@@ -161,5 +161,7 @@ namespace CivOne.Players
 		public static bool MonarchyCommunist(this IPlayer player) => player.HasGovernment<CivOne.Governments.Monarchy>() || player.HasGovernment<CivOne.Governments.Communism>();
 
 		public static bool RepublicDemocratic(this IPlayer player) => player.HasGovernment<Republic>() || player.HasGovernment<CivOne.Governments.Democracy>();
+
+		public static void Revolt(this IPlayer player) => player.Government = new Anarchy();
 	}
 }

@@ -32,7 +32,7 @@ namespace CivOne.Players
 		public ILeader Leader => Civilization.Leader;
 		public string TribeName { get; }
 		public string TribeNamePlural { get; }
-		public IGovernment Government { get; set; } = new Despotism();
+		public virtual IGovernment Government { get; set; } = new Despotism();
 		public PalaceData Palace { get; } = new PalaceData();
 
 		public IEnumerable<IAdvance> Advances => _advances.Select(a => Common.Advances.First(x => x.Id == a));
@@ -98,6 +98,8 @@ namespace CivOne.Players
 			Game.Instance.SetAdvanceOrigin(advance, this);
 		}
 
+		public abstract void ChooseGovernment();
+
 		public void DeleteAdvance(IAdvance advance) => _advances.RemoveAll(x => advance.Id == x);
 
 		public void Destroy()
@@ -130,13 +132,6 @@ namespace CivOne.Players
 				_visible[xx, yy] = true;
 			}
 		}
-		
-		private short _anarchy = 0;
-		public void Revolt()
-		{
-			_anarchy = (short)((this.HasWonder<Pyramids>() && !Game.WonderObsolete<Pyramids>()) ? 0 : 4 - (Game.GameTurn % 4) - 1);
-			Government = new Anarchy();
-		}
 
 		public bool Visible(int x, int y)
 		{
@@ -144,14 +139,6 @@ namespace CivOne.Players
 			while (x < 0) x += Map.WIDTH;
 			while (x >= Map.WIDTH) x -= Map.WIDTH;
 			return _visible[x, y];
-		}
-
-		public void NewTurn()
-		{
-			if (!Destroyed && this.IsDestroyed())
-			{
-				GameTask.Enqueue(Turn.GameOver(this));
-			}
 		}
 
 		public BasePlayer(ICivilization civilization, string leaderName = null, string civilizationName = null, string citizenName = null)
@@ -203,8 +190,6 @@ namespace CivOne.Players
 			CityNamesSkipped = player.CityNamesSkipped;
 
 			Handicap = player.Handicap;
-
-			_anarchy = player._anarchy;
 		}
 	}
 }
