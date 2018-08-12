@@ -29,8 +29,7 @@ namespace CivOne
 	public partial class Game : BaseInstance
 	{
 		private readonly int _difficulty, _competition;
-		private readonly IPlayer[] _players;
-		private readonly bool[] _playersActive = new bool[8];
+		private readonly PlayerCollection _players = new PlayerCollection();
 		private readonly List<City> _cities;
 		private readonly List<IUnit> _units;
 		private readonly Dictionary<byte, byte> _advanceOrigin = new Dictionary<byte, byte>();
@@ -38,7 +37,6 @@ namespace CivOne
 		
 		internal readonly string[] CityNames = Common.AllCityNames.ToArray();
 		
-		private int _currentPlayer = 0;
 		private int _activeUnit;
 
 		private ushort _anthologyTurn = 0;
@@ -55,9 +53,9 @@ namespace CivOne
 		internal bool CheckGameOver(IPlayer player)
 		{
 			if (player is Barbarian) return false;
-			if (_playersActive[PlayerNumber(player)] && player.IsDestroyed())
+			if (_players.IsActive(player) && player.IsDestroyed())
 			{
-				_playersActive[PlayerNumber(player)] = false;
+				_players.SetInactive(player);
 				GameTask.Enqueue(Turn.GameOver(player));
 				return true;
 			}
@@ -84,24 +82,7 @@ namespace CivOne
 
 		public bool HasUpdate => false;
 		
-		private ushort _gameTurn;
-		internal ushort GameTurn
-		{
-			get
-			{
-				return _gameTurn;
-			}
-			set
-			{
-				_gameTurn = value;
-				Log($"Turn {_gameTurn}: {GameYear}");
-				if (_anthologyTurn >= _gameTurn)
-				{
-					//TODO: Show anthology
-					_anthologyTurn = (ushort)(_gameTurn + 20 + Common.Random.Next(40));
-				}
-			}
-		}
+		internal ushort GameTurn { get; set; }
 
 		internal void SetHumanPlayer(IPlayer player)
 		{
@@ -129,65 +110,53 @@ namespace CivOne
 		
 		internal IPlayer HumanPlayer => _players.First(x => x is HumanPlayer);
 		
-		internal IPlayer CurrentPlayer => _players[_currentPlayer];
+		internal IPlayer CurrentPlayer => _players.CurrentPlayer;
 
 		internal ReplayData[] GetReplayData() => _replayData.ToArray();
 		internal T[] GetReplayData<T>() where T : ReplayData => _replayData.Where(x => x is T).Select(x => (x as T)).ToArray();
 		internal void AddReplayData(ReplayData data) => _replayData.Add(data);
 		
-		internal byte PlayerNumber(IPlayer player)
-		{
-			byte i = 0;
-			foreach (IPlayer p in _players)
-			{
-				if (p == player)
-					return i;
-				i++;
-			}
-			return 0;
-		}
+		internal byte PlayerNumber(IPlayer player) => (byte)_players.GetIndex(player);
 
-		internal IPlayer GetPlayer(byte number)
-		{
-			if (_players.Length < number)
-				return null;
-			return _players[number];
-		}
+		internal IPlayer GetPlayer(byte number) => _players[number];
 
 		internal IEnumerable<IPlayer> Players => _players;
 
-		public void EndTurn()
+		private void NextTurn()
 		{
-			foreach (IPlayer player in _players.Where(x => !(x.Civilization is Barbarian)))
+			GameTurn++;
+
+			Log($"Turn {GameTurn}: {GameYear}");
+
+			if (GameTurn % 50 == 0 && AutoSave)
 			{
-				Game.CheckGameOver(player);
+				GameTask.Enqueue(Show.AutoSave);
 			}
 
-			if (++_currentPlayer >= _players.Length)
+			if (_anthologyTurn >= GameTurn)
 			{
-				_currentPlayer = 0;
-				GameTurn++;
-				if (GameTurn % 50 == 0 && AutoSave)
-				{
-					GameTask.Enqueue(Show.AutoSave);
-				}
-
-				IEnumerable<City> disasterCities = _cities.OrderBy(o => Common.Random.Next(0,1000)).Take(2).AsEnumerable();
-				foreach (City city in disasterCities)
-					city.Disaster();
-
-				if (Barbarian.IsSeaSpawnTurn)
-				{
-					ITile tile = Barbarian.SeaSpawnPosition;
-					if (tile != null)
-					{
-						foreach (UnitType unitType in Barbarian.SeaSpawnUnits)
-							CreateUnit(unitType, tile.X, tile.Y, 0, false);
-					}
-				}
+				//TODO: Show anthology
+				_anthologyTurn = (ushort)(GameTurn + 20 + Common.Random.Next(40));
 			}
 
-			if (!_players.Any(x => Game.PlayerNumber(x) != 0 && x != Human && !x.IsDestroyed()))
+			IEnumerable<City> disasterCities = _cities.OrderBy(o => Common.Random.Next(0,1000)).Take(2).AsEnumerable();
+			foreach (City city in disasterCities)
+				city.Disaster();
+
+			if (Barbarian.IsSeaSpawnTurn)
+			{
+				ITile tile = Barbarian.SeaSpawnPosition;
+				if (tile != null)
+				{
+					foreach (UnitType unitType in Barbarian.SeaSpawnUnits)
+						CreateUnit(unitType, tile.X, tile.Y, 0, false);
+				}
+			}
+		}
+
+		private void NextPlayer(IPlayer player)
+		{
+			if (!_players.Any(x => PlayerNumber(x) >= 0 && x != Human && !x.IsDestroyed()))
 			{
 				PlaySound("wintune");
 
@@ -197,11 +166,11 @@ namespace CivOne
 				conquest.Done += (s, a) => Runtime.Quit();
 			}
 
-			foreach (IUnit unit in _units.Where(u => u.Owner == _currentPlayer))
+			foreach (IUnit unit in _units.Where(u => u.Owner == PlayerNumber(CurrentPlayer)))
 			{
 				GameTask.Enqueue(Turn.New(unit));
 			}
-			foreach (City city in _cities.Where(c => c.Owner == _currentPlayer).ToArray())
+			foreach (City city in _cities.Where(c => c.Owner == PlayerNumber(CurrentPlayer)).ToArray())
 			{
 				GameTask.Enqueue(Turn.New(city));
 			}
@@ -217,6 +186,12 @@ namespace CivOne
 				GameTask.Enqueue(Message.Help("--- Civilization Note ---", TextFile.Instance.GetGameText("HELP/HELP1")));
 			else if (Game.InstantAdvice && (Common.TurnToYear(Game.GameTurn) == -3200 || Common.TurnToYear(Game.GameTurn) == -2400))
 				GameTask.Enqueue(Message.Help("--- Civilization Note ---", TextFile.Instance.GetGameText("HELP/HELP2")));
+		}
+
+		public void EndTurn()
+		{
+			_players.ForEach(p => !(p.Civilization is Barbarian), p => Game.CheckGameOver(p));
+			_players.Next();
 		}
 		
 		public void Update()
@@ -457,7 +432,7 @@ namespace CivOne
 		{
 			get
 			{
-				if (_units.Count(u => u.Owner == _currentPlayer && !u.Busy) == 0)
+				if (_units.Count(u => u.Owner == PlayerNumber(CurrentPlayer) && !u.Busy) == 0)
 					return null;
 				
 				// If the unit counter is too high, return to 0
@@ -465,7 +440,7 @@ namespace CivOne
 					_activeUnit = 0;
 					
 				// Does the current unit still have moves left?
-				if (_units[_activeUnit].Owner == _currentPlayer && (_units[_activeUnit].MovesLeft > 0 || _units[_activeUnit].PartMoves > 0) && !_units[_activeUnit].Sentry && !_units[_activeUnit].Fortify)
+				if (_units[_activeUnit].Owner == PlayerNumber(CurrentPlayer) && (_units[_activeUnit].MovesLeft > 0 || _units[_activeUnit].PartMoves > 0) && !_units[_activeUnit].Sentry && !_units[_activeUnit].Fortify)
 					return _units[_activeUnit];
 
 				// Task busy, don't change the active unit
@@ -473,7 +448,7 @@ namespace CivOne
 					return _units[_activeUnit];
 				
 				// Check if any units are still available for this player
-				if (!_units.Any(u => u.Owner == _currentPlayer && (u.MovesLeft > 0 || u.PartMoves > 0) && !u.Busy))
+				if (!_units.Any(u => u.Owner == PlayerNumber(CurrentPlayer) && (u.MovesLeft > 0 || u.PartMoves > 0) && !u.Busy))
 				{
 					if (CurrentPlayer == HumanPlayer && !EndOfTurn && !GameTask.Any() && (Common.TopScreen is GamePlay))
 					{
@@ -483,7 +458,7 @@ namespace CivOne
 				}
 				
 				// Loop through units
-				while (_units[_activeUnit].Owner != _currentPlayer || (_units[_activeUnit].MovesLeft == 0 && _units[_activeUnit].PartMoves == 0) || (_units[_activeUnit].Sentry || _units[_activeUnit].Fortify))
+				while (_units[_activeUnit].Owner != PlayerNumber(CurrentPlayer) || (_units[_activeUnit].MovesLeft == 0 && _units[_activeUnit].PartMoves == 0) || (_units[_activeUnit].Sentry || _units[_activeUnit].Fortify))
 				{
 					_activeUnit++;
 					if (_activeUnit >= _units.Count)
@@ -516,6 +491,12 @@ namespace CivOne
 				}
 				return _instance;
 			}
+		}
+
+		private Game()
+		{
+			_players.OnNextTurn += NextTurn;
+			_players.OnNextPlayer += NextPlayer;
 		}
 	}
 }

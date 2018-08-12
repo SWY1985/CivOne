@@ -123,7 +123,7 @@ namespace CivOne
 
 		private void ApplyBonus(byte player)
 		{
-			byte bonus = (byte)(_players.Max(p => p.Handicap) - _players[player].Handicap);
+			byte bonus = (byte)(_players.Where(p => _players.IsActive(p)).Max(p => p.Handicap) - _players[player].Handicap);
 			IUnit startUnit = _units.Where(u => u.Owner == player).FirstOrDefault();
 			if (startUnit == null) return;
 			int x = startUnit.X, y = startUnit.Y;
@@ -171,7 +171,7 @@ namespace CivOne
 			}
 		}
 
-		private Game(int difficulty, int competition, ICivilization tribe, string leaderName, string tribeName, string tribeNamePlural)
+		private Game(int difficulty, int competition, ICivilization tribe, string leaderName, string tribeName, string tribeNamePlural) : this()
 		{
 			_difficulty = difficulty;
 			_competition = competition;
@@ -188,13 +188,11 @@ namespace CivOne
 
 			_cities = new List<City>();
 			_units = new List<IUnit>();
-			_players = new IPlayer[competition + 1];
 			for (int i = 0; i <= competition; i++)
 			{
 				if (i == tribe.PreferredPlayerNumber)
 				{
 					_players[i] = new HumanPlayer(tribe, leaderName, tribeName, tribeNamePlural);
-					_playersActive[i] = true;
 					if (difficulty == 0)
 					{
 						// Chieftain starts with 50 Gold
@@ -208,7 +206,6 @@ namespace CivOne
 				int r = Common.Random.Next(civs.Length);
 				
 				_players[i] = (i == 0) ? (IPlayer)new BarbarianPlayer() : (IPlayer)new ComputerPlayer(civs[r]);
-				_playersActive[i] = true;
 				
 				Log("- Player {0} is {1} of the {2}", i, _players[i].Leader.Name, _players[i].Civilization.NamePlural);
 			}

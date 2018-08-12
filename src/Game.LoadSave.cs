@@ -47,7 +47,7 @@ namespace CivOne
 		{
 			using (IGameData gameData = new SaveDataAdapter())
 			{
-				gameData.GameTurn = _gameTurn;
+				gameData.GameTurn = GameTurn;
 				gameData.HumanPlayer = (ushort)PlayerNumber(HumanPlayer);
 				gameData.RandomSeed = Map.Instance.SaveMap(mapFile);
 				gameData.Difficulty = (ushort)_difficulty;
@@ -56,7 +56,7 @@ namespace CivOne
 				gameData.CurrentResearch = HumanPlayer.CurrentResearch?.Id ?? 0;
 				byte[][] discoveredAdvanceIDs = new byte[_players.Length][];
 				for (int p = 0; p < _players.Length; p++)
-					discoveredAdvanceIDs[p] = _players[p].Advances.Select(x => x.Id).ToArray();
+					discoveredAdvanceIDs[p] = _players[p]?.Advances.Select(x => x.Id).ToArray();
 				gameData.DiscoveredAdvanceIDs = discoveredAdvanceIDs;
 				gameData.LeaderNames = _players.Select(x => x.Leader.Name).ToArray();
 				gameData.CivilizationNames = _players.Select(x => x.Civilization.NamePlural).ToArray();
@@ -120,11 +120,10 @@ namespace CivOne
 			return new ComputerPlayer(civilization, leaderName, civilizationName, citizenName);
 		}
 
-		private Game(IGameData gameData)
+		private Game(IGameData gameData) : this()
 		{
 			_difficulty = gameData.Difficulty;
 			_competition = (gameData.OpponentCount + 1);
-			_players = new IPlayer[_competition + 1];
 			_cities = new List<City>();
 			_units = new List<IUnit>();
 
@@ -135,7 +134,6 @@ namespace CivOne
 				ICivilization[] civs = Common.Civilizations.Where(c => c.PreferredPlayerNumber == i).ToArray();
 				ICivilization civ = civs[gameData.CivilizationIdentity[i] % civs.Length];
 				IPlayer player = (_players[i] = CreatePlayer(civ, gameData.LeaderNames[i], gameData.CitizenNames[i], gameData.CivilizationNames[i], (i == gameData.HumanPlayer)));
-				_playersActive[i] = true;
 				player.Gold = gameData.PlayerGold[i];
 				player.Science = gameData.ResearchProgress[i];
 				player.Government = Reflect.GetGovernments().FirstOrDefault(x => x.Id == gameData.Government[i]);
@@ -160,6 +158,8 @@ namespace CivOne
 					if (advanceFirst[x.Id] != player.Civilization.Id) return;
 					SetAdvanceOrigin(x, player);
 				});
+
+				_players[i] = player;
 			}
 
 			GameTurn = gameData.GameTurn;
@@ -253,7 +253,7 @@ namespace CivOne
 			if (Settings.CivilopediaText == GameOption.Default) CivilopediaText = options[6];
 			if (Settings.Palace == GameOption.Default) Palace = options[7];
 
-			_currentPlayer = gameData.HumanPlayer;
+			_players.SetCurrentPlayer(gameData.HumanPlayer);
 			for (int i = 0; i < _units.Count(); i++)
 			{
 				if (_units[i].Owner != gameData.HumanPlayer || _units[i].Busy) continue;
