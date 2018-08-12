@@ -81,8 +81,6 @@ namespace CivOne.Players
 
 		public int CityNamesSkipped { get; set; }
 
-		public byte Handicap { get; set; }
-
 		public void AddAdvance(IAdvance advance, bool setOrigin = true)
 		{
 			if (Game.Started && Game.CurrentPlayer.CurrentResearch?.Id == advance.Id)
@@ -170,8 +168,6 @@ namespace CivOne.Players
 			Science = player.Science;
 			StartX = player.StartX;
 			CityNamesSkipped = player.CityNamesSkipped;
-
-			Handicap = player.Handicap;
 		}
 	}
 }

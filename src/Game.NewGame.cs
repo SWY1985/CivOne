@@ -65,7 +65,7 @@ namespace CivOne
 			}
 		}
 
-		private void CalculateHandicap(byte player)
+		private byte CalculateHandicap(byte player)
 		{
 			// Translated from this post by Gowron:
 			// http://forums.civfanatics.com/showthread.php?t=494994
@@ -73,7 +73,7 @@ namespace CivOne
 			// All Handicap values start from 0.
 			byte handicap = 0;
 			IUnit startUnit = _units.Where(u => u.Owner == player).FirstOrDefault();
-			if (startUnit == null) return;
+			if (startUnit == null) return 0;
 			int x = startUnit.X, y = startUnit.Y;
 
 			ITile[] continent = Map.ContinentTiles(Map[x, y].ContinentId).ToArray();
@@ -118,12 +118,12 @@ namespace CivOne
 				handicap += 1;
 			}
 
-			_players[player].Handicap = handicap;
+			return handicap;
 		}
 
-		private void ApplyBonus(byte player)
+		private void ApplyBonus(byte player, byte[] handicaps)
 		{
-			byte bonus = (byte)(_players.Where(p => _players.IsActive(p)).Max(p => p.Handicap) - _players[player].Handicap);
+			byte bonus = (byte)(handicaps.Max() - handicaps[player - 1]);
 			IUnit startUnit = _units.Where(u => u.Owner == player).FirstOrDefault();
 			if (startUnit == null) return;
 			int x = startUnit.X, y = startUnit.Y;
@@ -217,15 +217,12 @@ namespace CivOne
 			}
 
 			Log("Calculate players handicap...");
-			for (byte i = 1; i <= competition; i++)
-			{
-				CalculateHandicap(i);
-			}
+			byte[] handicaps = Enumerable.Range(1, competition).Select(x => CalculateHandicap((byte)x)).ToArray();
 
 			Log("Apply players bonus...");
 			for (byte i = 1; i <= competition; i++)
 			{
-				ApplyBonus(i);
+				ApplyBonus(i, handicaps);
 			}
 
 			GameTurn = 0;

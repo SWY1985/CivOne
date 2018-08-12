@@ -35,7 +35,6 @@ namespace CivOne.Players
 		short Science { get; set; }
 		short StartX { get; set; }
 		int CityNamesSkipped { get; set; }
-		byte Handicap { get; set; }
 
 		void AddAdvance(IAdvance advance, bool setOrigin = true);
 		void ChooseGovernment();
