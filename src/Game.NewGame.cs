@@ -227,7 +227,7 @@ namespace CivOne
 
 			GameTurn = 0;
 
-			// Number of turns to next antholoy needs to be checked
+			// Number of turns to next anthology needs to be checked
 			_anthologyTurn = (ushort)Common.Random.Next(1, 128);
 		}
 	}
