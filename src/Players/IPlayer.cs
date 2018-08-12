@@ -21,8 +21,6 @@ namespace CivOne.Players
 	{
 		ICivilization Civilization { get; }
 		ILeader Leader { get; }
-		string TribeName { get; }
-		string TribeNamePlural { get; }
 		IGovernment Government { get; set; }
 		IEnumerable<IAdvance> Advances { get; }
 		IEnumerable<IPlayer> Embassies { get; }

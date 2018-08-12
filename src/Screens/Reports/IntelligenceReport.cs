@@ -35,8 +35,8 @@ namespace CivOne.Screens.Reports
 				IPlayer player = infoButton.Key;
 
 				this.FillRectangle(0, 25, 320, 172, BackgroundColour)
-					.DrawText($"Subject: the {player.TribeNamePlural}", 0, 5, 16, (y + 1))
-					.DrawText($"Subject: the {player.TribeNamePlural}", 0, 15, 16, y)
+					.DrawText($"Subject: the {player.Civilization.NamePlural}", 0, 5, 16, (y + 1))
+					.DrawText($"Subject: the {player.Civilization.NamePlural}", 0, 15, 16, y)
 					.DrawText("Leader:", 0, 9, 16, (y += fontHeight + 4))
 					.DrawText($"Emperor {player.Leader.Name}", 0, 15, 62, y);
 				
@@ -76,8 +76,8 @@ namespace CivOne.Screens.Reports
 				{
 					int unitCount = Game.GetUnits().Count(u => u.Owner == id && u.Home != null);
 
-					this.DrawText($"{player.TribeNamePlural}: {player.Leader.Name}", 0, 5, 8, yy + 3)
-						.DrawText($"{player.TribeNamePlural}: {player.Leader.Name}", 0, 15, 8, yy + 2)
+					this.DrawText($"{player.Civilization.NamePlural}: {player.Leader.Name}", 0, 5, 8, yy + 3)
+						.DrawText($"{player.Civilization.NamePlural}: {player.Leader.Name}", 0, 15, 8, yy + 2)
 						.DrawText($"{player.Government.Name}, {player.Gold}$, {unitCount} Units.", 0, colour, 160, yy + 2);
 
 					if (!(player is HumanPlayer))

@@ -215,7 +215,7 @@ namespace CivOne
 
 			Player.CurrentResearch = advances[Common.Random.Next(0, advances.Length)];
 
-			Log($"AI: {Player.Leader.Name} of the {Player.TribeNamePlural} starts researching {Player.CurrentResearch.Name}.");
+			Log($"AI: {Player.Leader.Name} of the {Player.Civilization.NamePlural} starts researching {Player.CurrentResearch.Name}.");
 		}
 
 		internal void CityProduction(City city)

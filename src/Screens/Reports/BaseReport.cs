@@ -71,7 +71,7 @@ namespace CivOne.Screens.Reports
 			
 			this.Clear(backgroundColour)
 				.DrawText(title, 0, 15, 160, 2, TextAlign.Center)
-				.DrawText(string.Format("{0} of the {1}", "Empire", Human.TribeNamePlural), 0, 15, 160, 10, TextAlign.Center)
+				.DrawText(string.Format("{0} of the {1}", "Empire", Human.Civilization.NamePlural), 0, 15, 160, 10, TextAlign.Center)
 				.DrawText(string.Format("{0} {1}: {2}", "Emperor", Human.Leader.Name, Game.GameYear), 0, 15, 160, 18, TextAlign.Center);
 		}
 	}

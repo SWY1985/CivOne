@@ -95,7 +95,7 @@ namespace CivOne.Screens.Debug
 
 			foreach (IPlayer player in Game.Players)
 			{
-				_civSelect.Items.Add(player.TribeNamePlural, player).OnSelect(ChangePlayer_Accept);
+				_civSelect.Items.Add(player.Civilization.NamePlural, player).OnSelect(ChangePlayer_Accept);
 			}
 
 			_civSelect.Cancel += ChangePlayer_Cancel;

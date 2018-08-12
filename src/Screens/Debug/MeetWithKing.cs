@@ -98,7 +98,7 @@ namespace CivOne.Screens.Debug
 
 			foreach (IPlayer player in _players)
 			{
-				_civSelect.Items.Add($"{player.Leader.Name} ({player.TribeName})").OnSelect(MeetKing_Accept);
+				_civSelect.Items.Add($"{player.Leader.Name} ({player.Civilization.Name})").OnSelect(MeetKing_Accept);
 			}
 
 			_civSelect.Cancel += MeetKing_Cancel;

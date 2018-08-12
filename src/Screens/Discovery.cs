@@ -84,7 +84,7 @@ namespace CivOne.Screens
 
 			string[] text = new string[]
 			{
-				$"{Human.TribeName} {scientistName}",
+				$"{Human.Civilization.Name} {scientistName}",
 				"discover the secret",
 				$"of {advance.Name}!"
 			};

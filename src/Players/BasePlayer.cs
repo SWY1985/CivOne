@@ -28,8 +28,6 @@ namespace CivOne.Players
 
 		public ICivilization Civilization { get; }
 		public ILeader Leader => Civilization.Leader;
-		public string TribeName { get; }
-		public string TribeNamePlural { get; }
 		public virtual IGovernment Government { get; set; } = new Despotism();
 		public PalaceData Palace { get; } = new PalaceData();
 
@@ -134,8 +132,8 @@ namespace CivOne.Players
 		{
 			Civilization = civilization;
 			if (leaderName != null) Civilization.Leader.Name = leaderName;
-			TribeName = civilizationName ?? Civilization.Name;
-			TribeNamePlural = citizenName ?? Civilization.NamePlural;
+			if (civilizationName != null) Civilization.Name = civilizationName;
+			if (citizenName != null) Civilization.NamePlural = citizenName;
 			
 			for (int yy = 0; yy < Map.HEIGHT; yy++)
 			for (int xx = 0; xx < Map.WIDTH; xx++)
@@ -148,9 +146,6 @@ namespace CivOne.Players
 		public BasePlayer(BasePlayer player)
 		{
 			Civilization = player.Civilization;
-			Civilization.Leader.Name = player.Leader.Name;
-			TribeName = player.TribeName;
-			TribeNamePlural = player.TribeNamePlural;
 			
 			for (int yy = 0; yy < Map.HEIGHT; yy++)
 			for (int xx = 0; xx < Map.WIDTH; xx++)

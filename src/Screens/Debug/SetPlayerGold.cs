@@ -61,7 +61,7 @@ namespace CivOne.Screens.Debug
 			else
 			{
 				_selectedPlayer.Gold = playerGold;
-				GameTask.Enqueue(Message.General($"{_selectedPlayer.TribeName} gold set to {playerGold}$."));
+				GameTask.Enqueue(Message.General($"{_selectedPlayer.Civilization.Name} gold set to {playerGold}$."));
 			}
 
 			if (Accept != null)
@@ -129,7 +129,7 @@ namespace CivOne.Screens.Debug
 
 			foreach (IPlayer player in Game.Players)
 			{
-				_civSelect.Items.Add(player.TribeNamePlural).OnSelect(CivSelect_Accept);
+				_civSelect.Items.Add(player.Civilization.NamePlural).OnSelect(CivSelect_Accept);
 			}
 
 			_civSelect.Cancel += PlayerGold_Cancel;

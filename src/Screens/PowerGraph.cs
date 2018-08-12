@@ -61,7 +61,7 @@ namespace CivOne.Screens
 			IPlayer[] players = Game.Players.Where(x => !(x.Civilization is Barbarian)).ToArray();
 			for (int i = 0; i < players.Length; i++)
 			{
-				this.DrawText(players[i].TribeName, 0, Common.ColourLight[Game.PlayerNumber(players[i])], 8, 12 + (i * 8));
+				this.DrawText(players[i].Civilization.Name, 0, Common.ColourLight[Game.PlayerNumber(players[i])], 8, 12 + (i * 8));
 			}
 		}
 	}

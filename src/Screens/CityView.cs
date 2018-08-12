@@ -757,7 +757,7 @@ namespace CivOne.Screens
 				Game.GetPlayer(_city.Owner).Gold -= (short)captureGold;
 				Game.CurrentPlayer.Gold += (short)captureGold;
 				
-				string[] lines =  new [] { $"{Game.CurrentPlayer.TribeNamePlural} capture", $"{city.Name}. {captureGold} gold", "pieces plundered." };
+				string[] lines =  new [] { $"{Game.CurrentPlayer.Civilization.NamePlural} capture", $"{city.Name}. {captureGold} gold", "pieces plundered." };
 				int width = lines.Max(l => Resources.GetTextSize(5, l).Width) + 12;
 				Picture dialog = new Picture(width, 54)
 					.Tile(Pattern.PanelGrey, 1, 1)

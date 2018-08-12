@@ -147,7 +147,7 @@ namespace CivOne.Screens
 				DrawPanel(64, 86, 124, 41);
 				this.DrawText($"{char.ToLower(_driveLetter)}:CIVIL{_gameId}.SVE", 0, 5, 75, 91)
 					.DrawText($"{Common.DifficultyName(Game.Difficulty)} {Game.HumanPlayer.Leader.Name}", 0, 5, 75, 99)
-					.DrawText($"{Game.HumanPlayer.TribeNamePlural}/{Game.GameYear}", 0, 5, 75, 107)
+					.DrawText($"{Game.HumanPlayer.Civilization.NamePlural}/{Game.GameYear}", 0, 5, 75, 107)
 					.DrawText("... save in progress.", 0, 5, 75, 115);
 				
 				this.DrawText("Game has been saved.", 0, 5, 75, 132)

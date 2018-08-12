@@ -18,19 +18,9 @@ namespace CivOne.Civilizations
 	{
 		public int Id { get; }
 
-		private string _name;
-		public string Name
-		{
-			get => Modifications.LastOrDefault(x => x.Name.HasValue)?.Name.Value.Name ?? _name;
-			private set => _name = value;
-		}
+		public string Name { get; set; }
 
-		private string _namePlural;
-		public string NamePlural
-		{
-			get => Modifications.LastOrDefault(x => x.Name.HasValue)?.Name.Value.Plural ?? _namePlural;
-			private set => _namePlural = value;
-		}
+		public string NamePlural { get; set; }
 
 		private ILeader _leader;
 		public ILeader Leader
@@ -68,8 +58,8 @@ namespace CivOne.Civilizations
 		{
 			Id = (Civilization == Civilization.Barbarians ? 15 : (int)Civilization);
 			PreferredPlayerNumber = (byte)(Civilization == Civilization.Barbarians ? 0 : ((int)Civilization - 1) % 7 + 1);
-			Name = name;
-			NamePlural = namePlural;
+			Name = Modifications.LastOrDefault(x => x.Name.HasValue)?.Name.Value.Name ?? name;
+			NamePlural = Modifications.LastOrDefault(x => x.Name.HasValue)?.Name.Value.Plural ?? namePlural;
 			Leader = new T();
 			Tune = tune;
 		}

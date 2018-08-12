@@ -200,7 +200,7 @@ namespace CivOne.Screens
 				int yy = OffsetY + 81;
 				foreach (string textLine in TextFile.Instance.GetGameText("KING/INIT"))
 				{
-					string line = textLine.Replace("$RPLC1", Human.Leader.Name).Replace("$US", Human.TribeNamePlural).Replace("^", "");
+					string line = textLine.Replace("$RPLC1", Human.Leader.Name).Replace("$US", Human.Civilization.NamePlural).Replace("^", "");
 					this.DrawText(line, 0, 5, OffsetX + 88, yy);
 					yy += 8;
 					Log(line);

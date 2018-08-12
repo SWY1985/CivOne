@@ -169,7 +169,7 @@ namespace CivOne.Screens.Debug
 
 			foreach (IPlayer player in Game.Players)
 			{
-				_civSelect.Items.Add(player.TribeNamePlural).OnSelect(CivSelect_Accept);
+				_civSelect.Items.Add(player.Civilization.NamePlural).OnSelect(CivSelect_Accept);
 			}
 
 			_civSelect.Cancel += PlayerAdvances_Cancel;

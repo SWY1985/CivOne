@@ -200,7 +200,7 @@ namespace CivOne
 						// Chieftain starts with 50 Gold
 						HumanPlayer.Gold = 50;
 					}
-					Log("- Player {0} is {1} of the {2} (human)", i, _players[i].Leader.Name, _players[i].TribeNamePlural);
+					Log("- Player {0} is {1} of the {2} (human)", i, _players[i].Leader.Name, _players[i].Civilization.NamePlural);
 					continue;
 				}
 				
@@ -210,7 +210,7 @@ namespace CivOne
 				_players[i] = (i == 0) ? (IPlayer)new BarbarianPlayer() : (IPlayer)new ComputerPlayer(civs[r]);
 				_playersActive[i] = true;
 				
-				Log("- Player {0} is {1} of the {2}", i, _players[i].Leader.Name, _players[i].TribeNamePlural);
+				Log("- Player {0} is {1} of the {2}", i, _players[i].Leader.Name, _players[i].Civilization.NamePlural);
 			}
 			
 			Log("Adding starting units...");

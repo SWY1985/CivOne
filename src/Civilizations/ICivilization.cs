@@ -14,8 +14,8 @@ namespace CivOne.Civilizations
 	public interface ICivilization
 	{
 		int Id { get; }
-		string Name { get; }
-		string NamePlural { get; }
+		string Name { get; set; }
+		string NamePlural { get; set; }
 		ILeader Leader { get; }
 		byte PreferredPlayerNumber { get; }
 		byte StartX { get; }

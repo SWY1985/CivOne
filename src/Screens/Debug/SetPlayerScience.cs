@@ -62,7 +62,7 @@ namespace CivOne.Screens.Debug
 			{
 				if (playerScience > _selectedPlayer.ScienceCost()) playerScience = _selectedPlayer.ScienceCost();
 				_selectedPlayer.Science = playerScience;
-				GameTask.Enqueue(Message.General($"{_selectedPlayer.TribeName} science set to {playerScience}~."));
+				GameTask.Enqueue(Message.General($"{_selectedPlayer.Civilization.Name} science set to {playerScience}~."));
 			}
 
 			if (Accept != null)
@@ -130,7 +130,7 @@ namespace CivOne.Screens.Debug
 
 			foreach (IPlayer player in Game.Players)
 			{
-				_civSelect.Items.Add(player.TribeNamePlural).OnSelect(CivSelect_Accept);
+				_civSelect.Items.Add(player.Civilization.NamePlural).OnSelect(CivSelect_Accept);
 			}
 
 			_civSelect.Cancel += PlayerScience_Cancel;

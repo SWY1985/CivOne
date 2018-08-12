@@ -72,7 +72,7 @@ namespace CivOne.Screens.Debug
 
 			foreach (City city in cities)
 			{
-				_citySelect.Items.Add($"{city.Name} ({Game.GetPlayer(city.Owner).TribeName})").OnSelect(CitySize_Accept);
+				_citySelect.Items.Add($"{city.Name} ({Game.GetPlayer(city.Owner).Civilization.Name})").OnSelect(CitySize_Accept);
 			}
 
 			if (more)

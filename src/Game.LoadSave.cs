@@ -59,8 +59,8 @@ namespace CivOne
 					discoveredAdvanceIDs[p] = _players[p].Advances.Select(x => x.Id).ToArray();
 				gameData.DiscoveredAdvanceIDs = discoveredAdvanceIDs;
 				gameData.LeaderNames = _players.Select(x => x.Leader.Name).ToArray();
-				gameData.CivilizationNames = _players.Select(x => x.TribeNamePlural).ToArray();
-				gameData.CitizenNames = _players.Select(x => x.TribeName).ToArray();
+				gameData.CivilizationNames = _players.Select(x => x.Civilization.NamePlural).ToArray();
+				gameData.CitizenNames = _players.Select(x => x.Civilization.Name).ToArray();
 				gameData.CityNames = CityNames;
 				gameData.PlayerGold = _players.Select(x => x.Gold).ToArray();
 				gameData.ResearchProgress = _players.Select(x => x.Science).ToArray();

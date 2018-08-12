@@ -132,7 +132,7 @@ namespace CivOne.Screens.GamePlayPanels
 			if (unit != null)
 			{
 				int yy = 2;
-				_gameInfo.DrawText(Human.TribeName, 0, 5, 4, 2, TextAlign.Left);
+				_gameInfo.DrawText(Human.Civilization.Name, 0, 5, 4, 2, TextAlign.Left);
 				_gameInfo.DrawText(unit.Name, 0, 5, 4, (yy += 8), TextAlign.Left);
 				
 				if (unit.Veteran)

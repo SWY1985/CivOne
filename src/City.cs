@@ -786,7 +786,7 @@ namespace CivOne
 						
 						Message message = Message.Newspaper(this, $"{this.Name} builds", $"{(CurrentProduction as ICivilopedia).Name}.");
 						message.Done += (s, a) => {
-							GameTask advisorMessage = Message.Advisor(Advisor.Foreign, true, $"{Player.TribeName} capital", $"moved to {Name}.");
+							GameTask advisorMessage = Message.Advisor(Advisor.Foreign, true, $"{Player.Civilization.Name} capital", $"moved to {Name}.");
 							advisorMessage.Done += (s1, a1) => GameTask.Insert(Show.CityManager(this));
 							GameTask.Enqueue(advisorMessage);
 						};

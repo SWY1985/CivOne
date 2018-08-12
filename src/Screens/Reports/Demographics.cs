@@ -119,7 +119,7 @@ namespace CivOne.Screens.Reports
 			_shadowText = TextSettings.ShadowText(15, 5);
 			
 			this.Clear(1)
-				.DrawText($"{Human.TribeNamePlural} Demographics", 0, 15, 160, 4, TextAlign.Center);
+				.DrawText($"{Human.Civilization.NamePlural} Demographics", 0, 15, 160, 4, TextAlign.Center);
 		}
 	}
 }

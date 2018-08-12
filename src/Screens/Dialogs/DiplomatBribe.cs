@@ -100,7 +100,7 @@ namespace CivOne.Screens.Dialogs
 			_bribeCost = BribeCost(unitToBribe);
 			_canBribe = CanBribe(unitToBribe, diplomat.Player.Gold);
 
-			DialogBox.DrawText($"{unitToBribe.Player.TribeName} {unitToBribe.Name}", 0, 15, 5, 5);
+			DialogBox.DrawText($"{unitToBribe.Player.Civilization.Name} {unitToBribe.Name}", 0, 15, 5, 5);
 			DialogBox.DrawText($"will desert for ${_bribeCost}", 0, 15, 5, 5 + Resources.GetFontHeight(FONT_ID));
 			DialogBox.DrawText($"Treasury ${diplomat.Player.Gold}", 0, 15, 5, 5 + (2 * Resources.GetFontHeight(FONT_ID)));
 		}

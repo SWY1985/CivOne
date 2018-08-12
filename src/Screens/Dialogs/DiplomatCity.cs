@@ -76,7 +76,7 @@ namespace CivOne.Screens.Dialogs
 				{
 					Game.DisbandUnit(_diplomat);
 					if (_diplomat.Player == Human || _enemyCity.Player == Human)
-						GameTask.Insert(Message.Spy("Spies report:", $"{_diplomat.Player.TribeName} steal", $"{advance.Name}"));
+						GameTask.Insert(Message.Spy("Spies report:", $"{_diplomat.Player.Civilization.Name} steal", $"{advance.Name}"));
 				};
 
 				GameTask.Enqueue(task);
@@ -122,7 +122,7 @@ namespace CivOne.Screens.Dialogs
 			_enemyCity = enemyCity ?? throw new ArgumentNullException(nameof(enemyCity));
 			_diplomat = diplomat ?? throw new ArgumentNullException(nameof(diplomat));
 
-			DialogBox.DrawText($"{_enemyCity.Player.TribeName} diplomat arrives", 0, 15, 5, 5);
+			DialogBox.DrawText($"{_enemyCity.Player.Civilization.Name} diplomat arrives", 0, 15, 5, 5);
 			DialogBox.DrawText($"in {_enemyCity.Name}", 0, 15, 5, 5 + Resources.GetFontHeight(FONT_ID));
 		}
 	}
