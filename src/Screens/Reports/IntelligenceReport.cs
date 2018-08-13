@@ -19,20 +19,20 @@ namespace CivOne.Screens.Reports
 {
 	internal class IntelligenceReport : BaseReport
 	{
-		private readonly Dictionary<IPlayer, Rectangle> _infoButtons = new Dictionary<IPlayer, Rectangle>();
+		private readonly Dictionary<Player, Rectangle> _infoButtons = new Dictionary<Player, Rectangle>();
 
 		private void MouseDown(object sender, ScreenEventArgs args)
 		{
 			if (_infoButtons.Count == 0) return;
 
-			foreach (KeyValuePair<IPlayer, Rectangle> infoButton in _infoButtons)
+			foreach (KeyValuePair<Player, Rectangle> infoButton in _infoButtons)
 			{
 				if (!infoButton.Value.Contains(args.X, args.Y)) continue;
 
 				int y = 32;
 				int fontHeight = Resources.GetFontHeight(0);
 
-				IPlayer player = infoButton.Key;
+				Player player = infoButton.Key;
 
 				this.FillRectangle(0, 25, 320, 172, BackgroundColour)
 					.DrawText($"Subject: the {player.Civilization.NamePlural}", 0, 5, 16, (y + 1))
@@ -66,13 +66,13 @@ namespace CivOne.Screens.Reports
 			OnMouseDown += MouseDown;
 
 			int yy = 30;
-			foreach (IPlayer player in Game.Players.Where(p => !p.Is(0) && !p.IsDestroyed()))
+			foreach (Player player in Game.Players.Where(p => !p.Is(0) && !p.IsDestroyed()))
 			{
 				this.FillRectangle(4, yy, 313, 1, 9);
 
 				byte id = Game.PlayerNumber(player);
 				byte colour = Common.ColourLight[id];
-				if (player is HumanPlayer || Human.HasEmbassy(player))
+				if (player.IsHuman || Human.HasEmbassy(player))
 				{
 					int unitCount = Game.GetUnits().Count(u => u.Owner == id && u.Home != null);
 
@@ -80,7 +80,7 @@ namespace CivOne.Screens.Reports
 						.DrawText($"{player.Civilization.NamePlural}: {player.Leader.Name}", 0, 15, 8, yy + 2)
 						.DrawText($"{player.Government.Name}, {player.Gold}$, {unitCount} Units.", 0, colour, 160, yy + 2);
 
-					if (!(player is HumanPlayer))
+					if (!player.IsHuman)
 					{
 						this.DrawButton($"INFO{id}", 0, colour, Common.ColourDark[id], 281, yy + 14, 38, Resources.GetFontHeight(0) + 2);
 						_infoButtons.Add(player, new Rectangle(281, yy + 14, 38, Resources.GetFontHeight(0) + 2));

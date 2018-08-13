@@ -36,6 +36,8 @@ namespace CivOne
 		private readonly List<IUnit> _units;
 		private readonly Dictionary<byte, byte> _advanceOrigin = new Dictionary<byte, byte>();
 		private readonly List<ReplayData> _replayData = new List<ReplayData>();
+		private readonly short[] _playerGold = new short[MAX_PLAYER_COUNT];
+		private readonly short[] _playerScience = new short[MAX_PLAYER_COUNT];
 		
 		internal readonly string[] CityNames = Common.AllCityNames.ToArray();
 		
@@ -110,9 +112,9 @@ namespace CivOne
 		
 		internal string GameYear => Common.YearString(GameTurn);
 		
-		internal IPlayer HumanPlayer => _players.First(x => x is HumanPlayer);
+		internal Player HumanPlayer => new Player(_players.First(x => x is HumanPlayer));
 		
-		internal IPlayer CurrentPlayer => _players.CurrentPlayer;
+		internal Player CurrentPlayer => new Player(_players.CurrentPlayer);
 
 		internal ReplayData[] GetReplayData() => _replayData.ToArray();
 		internal T[] GetReplayData<T>() where T : ReplayData => _replayData.Where(x => x is T).Select(x => (x as T)).ToArray();
@@ -120,9 +122,9 @@ namespace CivOne
 		
 		internal byte PlayerNumber(IPlayer player) => (byte)_players.GetIndex(player);
 
-		internal IPlayer GetPlayer(byte number) => _players[number];
+		internal Player GetPlayer(byte number) => new Player(_players[number]);
 
-		internal IEnumerable<IPlayer> Players => _players;
+		internal IEnumerable<Player> Players => _players.Select(p => new Player(p));
 
 		private void NextTurn()
 		{
@@ -158,7 +160,8 @@ namespace CivOne
 
 		private void NextPlayer(IPlayer player)
 		{
-			if (!_players.Any(x => PlayerNumber(x) >= 0 && x != Human && !x.IsDestroyed()))
+			if (player is Player) player = (player as Player).InnerPlayer;
+			if (!_players.Any(x => PlayerNumber(x) >= 0 && !(x is HumanPlayer)  && !x.IsDestroyed()))
 			{
 				PlaySound("wintune");
 
@@ -182,7 +185,7 @@ namespace CivOne
 				GameTask.Enqueue(Turn.HandleAnarchy(CurrentPlayer));
 			}
 
-			if (CurrentPlayer != HumanPlayer) return;
+			if (!CurrentPlayer.IsHuman) return;
 			
 			if (Game.InstantAdvice && (Common.TurnToYear(Game.GameTurn) == -3600 || Common.TurnToYear(Game.GameTurn) == -2800))
 				GameTask.Enqueue(Message.Help("--- Civilization Note ---", TextFile.Instance.GetGameText("HELP/HELP1")));
@@ -199,7 +202,7 @@ namespace CivOne
 		public void Update()
 		{
 			IUnit unit = ActiveUnit;
-			if (CurrentPlayer == HumanPlayer)
+			if (CurrentPlayer.IsHuman)
 			{
 				if (unit != null && !unit.Goto.IsEmpty)
 				{
@@ -387,6 +390,36 @@ namespace CivOne
 			}
 		}
 
+		public short GetGold(int playerIndex)
+		{
+			if (playerIndex < _playerGold.GetLowerBound(0) || playerIndex > _playerGold.GetUpperBound(0)) return -1;
+			return _playerGold[playerIndex];
+		}
+
+		public void SetGold(int playerIndex, short value)
+		{
+			if (playerIndex < _playerGold.GetLowerBound(0) || playerIndex > _playerGold.GetUpperBound(0)) return;
+			if (value < 0)
+			{
+				//TODO: Implement sold improvements task
+				value = 0;
+			}
+			if (value > 30000) value = 30000;
+			_playerGold[playerIndex] = value;
+		}
+
+		public short GetScience(int playerIndex)
+		{
+			if (playerIndex < _playerScience.GetLowerBound(0) || playerIndex > _playerScience.GetUpperBound(0)) return -1;
+			return _playerScience[playerIndex];
+		}
+
+		public void SetScience(int playerIndex, short value)
+		{
+			if (playerIndex < _playerScience.GetLowerBound(0) || playerIndex > _playerScience.GetUpperBound(0)) return;
+			_playerScience[playerIndex] = value;
+		}
+
 		public City[] GetCities() => _cities.ToArray();
 
 		public IWonder[] BuiltWonders => _cities.SelectMany(c => c.Wonders).ToArray();
@@ -452,7 +485,7 @@ namespace CivOne
 				// Check if any units are still available for this player
 				if (!_units.Any(u => u.Owner == PlayerNumber(CurrentPlayer) && (u.MovesLeft > 0 || u.PartMoves > 0) && !u.Busy))
 				{
-					if (CurrentPlayer == HumanPlayer && !EndOfTurn && !GameTask.Any() && (Common.TopScreen is GamePlay))
+					if (CurrentPlayer.IsHuman && !EndOfTurn && !GameTask.Any() && (Common.TopScreen is GamePlay))
 					{
 						GameTask.Enqueue(Turn.End());
 					}

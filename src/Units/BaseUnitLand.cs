@@ -88,7 +88,7 @@ namespace CivOne.Units
 
 		private void TribalHutMessage(EventHandler method, params string[] message)
 		{
-			if (Player is HumanPlayer)
+			if (Player.IsHuman)
 			{
 				Message msgBox = Message.General(message);
 				msgBox.Done += method;

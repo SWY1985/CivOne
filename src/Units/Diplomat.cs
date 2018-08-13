@@ -82,7 +82,7 @@ namespace CivOne.Units
 				}
 				else
 				{
-					if (moveTarget.City.Player == Human)
+					if (moveTarget.City.Player.IsHuman)
 						GameTask.Enqueue(Tasks.Show.DiplomatSabotage(moveTarget.City, this));
 					else
 						Sabotage(moveTarget.City);

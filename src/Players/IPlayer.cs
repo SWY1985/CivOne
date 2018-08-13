@@ -31,8 +31,6 @@ namespace CivOne.Players
 		int TaxesRate { get; set; }
 		int ScienceRate { get; }
 
-		short Gold { get; set; }
-		short Science { get; set; }
 		short StartX { get; set; }
 		int CityNamesSkipped { get; set; }
 

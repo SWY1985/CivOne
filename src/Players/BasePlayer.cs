@@ -56,24 +56,6 @@ namespace CivOne.Players
 			}
 		}
 		public int ScienceRate => _scienceRate;
-
-		private short _gold;
-		public short Gold
-		{
-			get => _gold;
-			set
-			{
-				if (value < 0)
-				{
-					//TODO: Implement sold improvements task
-					value = 0;
-				}
-				if (value > 30000)
-					value = 30000;
-				_gold = value;
-			}
-		}
-		public short Science { get; set; }
 		
 		public short StartX { get; set; }
 
@@ -119,12 +101,10 @@ namespace CivOne.Players
 
 			CurrentResearch = player.CurrentResearch;
 
-			_gold = player._gold;
 			_luxuriesRate = player._luxuriesRate;
 			_scienceRate = player._scienceRate;
 			_taxesRate = player._taxesRate;
 
-			Science = player.Science;
 			StartX = player.StartX;
 			CityNamesSkipped = player.CityNamesSkipped;
 		}

@@ -75,7 +75,7 @@ namespace CivOne.Screens.Dialogs
 				task.Done += (s1, a1) =>
 				{
 					Game.DisbandUnit(_diplomat);
-					if (_diplomat.Player == Human || _enemyCity.Player == Human)
+					if (_diplomat.Player.IsHuman || _enemyCity.Player.IsHuman)
 						GameTask.Insert(Message.Spy("Spies report:", $"{_diplomat.Player.Civilization.Name} steal", $"{advance.Name}"));
 				};
 

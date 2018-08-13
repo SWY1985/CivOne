@@ -55,7 +55,7 @@ namespace CivOne.Tasks
 
 		public static Turn End()
 		{
-			int step = (Game.CurrentPlayer is HumanPlayer) ? TURN_TIME : 0;
+			int step = (Game.CurrentPlayer.IsHuman) ? TURN_TIME : 0;
 			return new Turn(() =>
 			{
 				if (step-- > 0) return false;
@@ -66,6 +66,8 @@ namespace CivOne.Tasks
 
 		public static Turn GameOver(IPlayer player) => new Turn(() =>
 		{
+			if (player is Player) player = (player as Player).InnerPlayer;
+
 			ICivilization destroyed = player.Civilization;
 			ICivilization destroyedBy = Game.CurrentPlayer.Civilization;
 			if (destroyedBy == destroyed) destroyedBy = Game.GetPlayer(0).Civilization;

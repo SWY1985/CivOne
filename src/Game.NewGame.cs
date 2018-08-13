@@ -196,7 +196,7 @@ namespace CivOne
 					if (difficulty == 0)
 					{
 						// Chieftain starts with 50 Gold
-						HumanPlayer.Gold = 50;
+						_playerGold[i] = 50;
 					}
 					Log("- Player {0} is {1} of the {2} (human)", i, _players[i].Leader.Name, _players[i].Civilization.NamePlural);
 					continue;

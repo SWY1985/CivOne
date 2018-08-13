@@ -28,7 +28,7 @@ namespace CivOne.Screens
 		private readonly SideBar _sideBar;
 		private readonly GameMap _gameMap;
 
-		private bool Busy => (Game.MovingUnit != null || Human != Game.CurrentPlayer || GameTask.Any());
+		private bool Busy => (Game.MovingUnit != null || !Game.CurrentPlayer.IsHuman || GameTask.Any());
 		
 		private GameMenu _gameMenu = null;
 		private int _menuX, _menuY;
@@ -404,7 +404,7 @@ namespace CivOne.Screens
 			_menuBar.WorldSelected += MenuBarWorld;
 			_menuBar.CivilopediaSelected += MenuBarCivilopedia;
 
-			while (Game.CurrentPlayer != Game.HumanPlayer)
+			while (!Game.CurrentPlayer.IsHuman)
 			{
 				Game.Instance.Update();
 				while (GameTask.Update());

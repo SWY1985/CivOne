@@ -144,5 +144,13 @@ namespace CivOne.Players
 		public static void Explore(this IPlayer player, int x, int y, int range = 1, bool sea = false) => Map.Instance.Explore(Game.Instance.PlayerNumber(player), x, y, range, sea);
 
 		public static bool Visible(this IPlayer player, int x, int y) => Map.Instance.Visible(Game.Instance.PlayerNumber(player), x, y);
+
+		public static short GetGold(this IPlayer player) => Game.Instance.GetGold(Game.Instance.PlayerNumber(player));
+
+		public static void SetGold(this IPlayer player, short value) => Game.Instance.SetGold(Game.Instance.PlayerNumber(player), value);
+		
+		public static short GetScience(this IPlayer player) => Game.Instance.GetScience(Game.Instance.PlayerNumber(player));
+		
+		public static void SetScience(this IPlayer player, short value) => Game.Instance.SetScience(Game.Instance.PlayerNumber(player), value);
 	}
 }

@@ -24,7 +24,7 @@ namespace CivOne.Screens.Debug
 
 		private Input _input;
 
-		private IPlayer _selectedPlayer = null;
+		private Player _selectedPlayer = null;
 
 		public string Value { get; private set; }
 

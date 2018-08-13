@@ -37,7 +37,7 @@ namespace CivOne.Screens.Dialogs
 
 		private void Incite(object sender, EventArgs args)
 		{
-			IPlayer previousOwner = Game.GetPlayer(_cityToIncite.Owner);
+			Player previousOwner = Game.GetPlayer(_cityToIncite.Owner);
 
 			Show captureCity = Show.CaptureCity(_cityToIncite);
 			captureCity.Done += (s1, a1) =>

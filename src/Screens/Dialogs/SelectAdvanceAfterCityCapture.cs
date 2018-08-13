@@ -24,7 +24,7 @@ namespace CivOne.Screens.Dialogs
 	{
 		private const int FONT_ID = 0;
 
-		private readonly IPlayer _player;
+		private readonly Player _player;
 		private readonly IList<IAdvance> _advances;
 
 		private void Steal(IAdvance advance)
@@ -58,7 +58,7 @@ namespace CivOne.Screens.Dialogs
 			return ((choices + 1) * Resources.GetFontHeight(FONT_ID)) + 10;
 		}
 
-		internal SelectAdvanceAfterCityCapture(IPlayer player, IList<IAdvance> advances) : base(100, 80, 135, DialogHeight(advances.Count))
+		internal SelectAdvanceAfterCityCapture(Player player, IList<IAdvance> advances) : base(100, 80, 135, DialogHeight(advances.Count))
 		{
 			_player = player ?? throw new ArgumentNullException(nameof(player));
 			_advances = advances ?? throw new ArgumentNullException(nameof(advances));

@@ -15,7 +15,7 @@ namespace CivOne.Tasks
 {
 	internal class ProcessScience : GameTask
 	{
-		private readonly IPlayer _player;
+		private readonly Player _player;
 		private readonly bool _human;
 		
 		private void CivilopediaClosed(object sender, EventArgs args)
@@ -76,7 +76,7 @@ namespace CivOne.Tasks
 			Common.AddScreen(discovery);
 		}
 
-		public ProcessScience(IPlayer player)
+		public ProcessScience(Player player)
 		{
 			_player = player;
 			_human = (Human == player);

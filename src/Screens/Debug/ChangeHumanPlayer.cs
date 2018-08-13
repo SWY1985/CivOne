@@ -93,9 +93,9 @@ namespace CivOne.Screens.Debug
 				Indent = 8
 			};
 
-			foreach (IPlayer player in Game.Players)
+			foreach (Player player in Game.Players)
 			{
-				_civSelect.Items.Add(player.Civilization.NamePlural, player).OnSelect(ChangePlayer_Accept);
+				_civSelect.Items.Add(player.Civilization.NamePlural, player.InnerPlayer).OnSelect(ChangePlayer_Accept);
 			}
 
 			_civSelect.Cancel += ChangePlayer_Cancel;

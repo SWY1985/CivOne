@@ -447,7 +447,7 @@ namespace CivOne
 			UpdateSpecialists();
 		}
 
-		internal IPlayer Player => Game.Instance.GetPlayer(Owner);
+		internal Player Player => Game.Instance.GetPlayer(Owner);
 
 		public IEnumerable<IProduction> AvailableProduction
 		{
@@ -813,7 +813,7 @@ namespace CivOne
 			BuildingSold = false;
 			GameTask.Enqueue(new ProcessScience(Player));
 
-			if (Player == Human) return;
+			if (Player.IsHuman) return;
 			
 			AI.Instance(Player).CityProduction(this);
 		}

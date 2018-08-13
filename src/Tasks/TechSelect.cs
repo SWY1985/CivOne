@@ -16,7 +16,7 @@ namespace CivOne.Tasks
 {
 	internal class TechSelect : GameTask
 	{
-		private readonly IPlayer _player;
+		private readonly Player _player;
 		private readonly bool _human;
 
 		private void ClosedChooseTech(object sender, EventArgs args)
@@ -60,7 +60,7 @@ namespace CivOne.Tasks
 			Common.AddScreen(chooseTech);
 		}
 
-		public TechSelect(IPlayer player)
+		public TechSelect(Player player)
 		{
 			_player = player;
 			_human = (Human == player);

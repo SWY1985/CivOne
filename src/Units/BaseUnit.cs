@@ -678,7 +678,7 @@ namespace CivOne.Units
 			}
 		}
 
-		public IPlayer Player => Game.GetPlayer(Owner);
+		internal Player Player => Game.GetPlayer(Owner);
 
 		public byte Status
 		{
@@ -787,10 +787,10 @@ namespace CivOne.Units
 		protected void Explore(int range, bool sea = false)
 		{
 			if (Game == null) return;
-			IPlayer player = Game.GetPlayer(Owner);
+			Player player = Game.GetPlayer(Owner);
 			if (player == null) return;
 			player.Explore(X, Y, range, sea);
-			if (player is HumanPlayer) Common.GamePlay?.RefreshMap();
+			if (player.IsHuman) Common.GamePlay?.RefreshMap();
 		}
 
 		public virtual void Explore() => Explore(1);

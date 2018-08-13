@@ -35,7 +35,7 @@ namespace CivOne.Tasks
 		}
 
 		private City _city;
-		private IPlayer _player;
+		private Player _player;
 		private IUnit _unit = null;
 		private int _x, _y;
 		private Order _order;
@@ -90,7 +90,7 @@ namespace CivOne.Tasks
 			_city = Game.AddCity(_player, nameId, _x, _y); 
 			if (_city != null)
 			{
-				if (_player is HumanPlayer)
+				if (_player.IsHuman)
 				{
 					CityView cityView = new CityView(_city, founded: true);
 					cityView.Closed += CityFounded;
@@ -107,10 +107,10 @@ namespace CivOne.Tasks
 			EndTask();
 		}
 
-		private void CreateCity(IPlayer player, int x, int y)
+		private void CreateCity(Player player, int x, int y)
 		{
 			int nameId = Game.CityNameId(player);
-			if (player is HumanPlayer)
+			if (player.IsHuman)
 			{
 				CityName cityName = new CityName(nameId, Game.CityNames[nameId]);
 				cityName.Accept += CityNameAccept;
@@ -258,7 +258,7 @@ namespace CivOne.Tasks
 			_order = Order.NewCity
 		};
 
-		public static Orders NewCity(IPlayer player, int x, int y) => new Orders()
+		public static Orders NewCity(Player player, int x, int y) => new Orders()
 		{
 			_player = player,
 			_order = Order.NewCity,

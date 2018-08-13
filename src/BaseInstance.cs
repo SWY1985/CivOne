@@ -17,21 +17,21 @@ namespace CivOne
 {
 	public abstract class BaseInstance
 	{
-		protected static Game Game => Game.Instance;
-		protected static Map Map => Map.Instance;
-		protected static IPlayer Human => Game.Instance.HumanPlayer;
-		protected static Resources Resources => Resources.Instance;
-		protected static IRuntime Runtime => RuntimeHandler.Runtime;
-		protected static Settings Settings => Settings.Instance;
-		protected static MenuCollection Menus => MenuCollection.Instance;
+		private protected static Game Game => Game.Instance;
+		private protected static Map Map => Map.Instance;
+		private protected static Player Human => Game.Instance.HumanPlayer;
+		private protected static Resources Resources => Resources.Instance;
+		private protected static IRuntime Runtime => RuntimeHandler.Runtime;
+		private protected static Settings Settings => Settings.Instance;
+		private protected static MenuCollection Menus => MenuCollection.Instance;
 
-		protected static void Log(string text, params object[] parameters) => Runtime.Log(text, parameters);
-		protected static void PlaySound(string filename)
+		private protected static void Log(string text, params object[] parameters) => Runtime.Log(text, parameters);
+		private protected static void PlaySound(string filename)
 		{
 			if (!(Game.Started && Game.Sound) || Settings.Sound == GameOption.Off || !File.Exists(filename = filename.GetSoundFile())) return;
 			Runtime.PlaySound(filename);
 		}
 
-		protected bool GFX256 => (Settings.GraphicsMode == GraphicsMode.Graphics256);
+		private protected bool GFX256 => (Settings.GraphicsMode == GraphicsMode.Graphics256);
 	}
 }

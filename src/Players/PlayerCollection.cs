@@ -37,6 +37,7 @@ namespace CivOne.Players
 
 		public int GetIndex(IPlayer player)
 		{
+			if (player is Player) player = (player as Player).InnerPlayer;
 			if (player != null)
 			{
 				for (int i = 0; i < _players.Length; i++)

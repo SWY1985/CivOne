@@ -123,7 +123,7 @@ namespace CivOne.Screens.GamePlayPanels
 			_gameInfo.Tile(Pattern.PanelGrey)
 				.DrawRectangle3D();
 			
-			if (Game.CurrentPlayer != Human || (unit != null && !Human.Is(unit.Owner)) || (GameTask.Any() && !GameTask.Is<Show>() && !GameTask.Is<Message>()))
+			if (!Game.CurrentPlayer.IsHuman || (unit != null && !Human.Is(unit.Owner)) || (GameTask.Any() && !GameTask.Is<Show>() && !GameTask.Is<Message>()))
 			{
 				_gameInfo.FillRectangle(2, _gameInfo.Height - 8, 6, 6, (byte)((gameTick % 4 < 2) ? 15 : 8));
 				return;

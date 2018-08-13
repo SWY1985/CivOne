@@ -186,7 +186,7 @@ namespace CivOne.Screens.GamePlayPanels
 					.AddLayer(Tiles.ToBitmap(player: renderPlayer), dispose: true);
 			}
 
-			if (activeUnit != null && Game.CurrentPlayer == Human && !GameTask.Any())
+			if (activeUnit != null && Game.CurrentPlayer.IsHuman && !GameTask.Any())
 			{
 				ITile tile = activeUnit.Tile;
 				int dx = GetX(tile);
@@ -438,7 +438,7 @@ namespace CivOne.Screens.GamePlayPanels
 		
 		public override bool KeyDown(KeyboardEventArgs args)
 		{
-			if (Game.CurrentPlayer != Human)
+			if (!Game.CurrentPlayer.IsHuman)
 			{
 				// Ignore all keypresses if the current player is not human
 				return false;

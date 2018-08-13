@@ -21,9 +21,9 @@ namespace CivOne.Screens.Debug
 	{
 		private readonly Menu _civSelect;
 
-		private readonly IPlayer[] _players;
+		private readonly Player[] _players;
 
-		private IPlayer _selectedPlayer = null;
+		private Player _selectedPlayer = null;
 
 		public string Value { get; private set; }
 
@@ -33,7 +33,7 @@ namespace CivOne.Screens.Debug
 		{
 			_selectedPlayer = _players[_civSelect.ActiveItem];
 
-			if (_selectedPlayer != Game.HumanPlayer)
+			if (!_selectedPlayer.IsHuman)
 			{
 				Common.AddScreen(new King(_selectedPlayer));
 			}
@@ -65,7 +65,7 @@ namespace CivOne.Screens.Debug
 		public MeetWithKing() : base(MouseCursor.Pointer)
 		{
 			Palette = Common.Screens.Last().OriginalColours;
-			_players = Game.Players.Where(p => !p.Is(0) && p != Human).ToArray();
+			_players = Game.Players.Where(p => !p.Is(0) && !p.IsHuman).ToArray();
 
 			int fontHeight = Resources.GetFontHeight(0);
 			int hh = (fontHeight * (_players.Length + 1)) + 5;

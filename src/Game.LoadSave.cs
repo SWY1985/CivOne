@@ -62,8 +62,8 @@ namespace CivOne
 				gameData.CivilizationNames = _players.Select(x => x.Civilization.NamePlural).ToArray();
 				gameData.CitizenNames = _players.Select(x => x.Civilization.Name).ToArray();
 				gameData.CityNames = CityNames;
-				gameData.PlayerGold = _players.Select(x => x.Gold).ToArray();
-				gameData.ResearchProgress = _players.Select(x => x.Science).ToArray();
+				gameData.PlayerGold = _playerGold.ToArray();
+				gameData.ResearchProgress = _playerScience.ToArray();
 				gameData.TaxRate = _players.Select(x => (ushort)x.TaxesRate).ToArray();
 				gameData.ScienceRate = _players.Select(x => (ushort)(10 - x.ScienceRate - x.TaxesRate)).ToArray();
 				gameData.StartingPositionX = _players.Select(x => (ushort)x.StartX).ToArray();
@@ -134,8 +134,8 @@ namespace CivOne
 				ICivilization[] civs = Common.Civilizations.Where(c => c.PreferredPlayerNumber == i).ToArray();
 				ICivilization civ = civs[gameData.CivilizationIdentity[i] % civs.Length];
 				IPlayer player = (_players[i] = CreatePlayer(civ, gameData.LeaderNames[i], gameData.CitizenNames[i], gameData.CivilizationNames[i], (i == gameData.HumanPlayer)));
-				player.Gold = gameData.PlayerGold[i];
-				player.Science = gameData.ResearchProgress[i];
+				_playerGold[i] = gameData.PlayerGold[i];
+				_playerScience[i] = gameData.ResearchProgress[i];
 				player.Government = Reflect.GetGovernments().FirstOrDefault(x => x.Id == gameData.Government[i]);
 
 				player.TaxesRate = gameData.TaxRate[i];
