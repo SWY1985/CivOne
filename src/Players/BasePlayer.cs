@@ -21,8 +21,6 @@ namespace CivOne.Players
 {
 	internal abstract class BasePlayer : BaseInstance, IPlayer
 	{
-		private readonly bool[,] _explored = new bool[Map.WIDTH, Map.HEIGHT];
-		private readonly bool[,] _visible = new bool[Map.WIDTH, Map.HEIGHT];
 		private readonly List<byte> _advances = new List<byte>();
 		private readonly List<byte> _embassies = new List<byte>();
 
@@ -101,56 +99,17 @@ namespace CivOne.Players
 			_embassies.Add(playerNumber);
 		}
 
-		public void Explore(int x, int y, int range = 1, bool sea = false)
-		{
-			_explored[x, y] = true;
-			for (int relX = -range; relX <= range; relX++)
-			for (int relY = -range; relY <= range; relY++)
-			{
-				int xx = x + relX;
-				int yy = y + relY;
-				if (yy < 0 || yy >= Map.HEIGHT) continue;
-				while (xx < 0) xx += Map.WIDTH;
-				while (xx >= Map.WIDTH) xx -= Map.WIDTH;
-				if (sea && !Map[xx, yy].IsOcean && (Math.Abs(relX) > 1 || Math.Abs(relY) > 1))
-					continue;
-				_visible[xx, yy] = true;
-			}
-		}
-
-		public bool Visible(int x, int y)
-		{
-			if (y < 0 || y >= Map.HEIGHT) return false;
-			while (x < 0) x += Map.WIDTH;
-			while (x >= Map.WIDTH) x -= Map.WIDTH;
-			return _visible[x, y];
-		}
-
 		public BasePlayer(ICivilization civilization, string leaderName = null, string civilizationName = null, string citizenName = null)
 		{
 			Civilization = civilization;
 			if (leaderName != null) Civilization.Leader.Name = leaderName;
 			if (civilizationName != null) Civilization.Name = civilizationName;
 			if (citizenName != null) Civilization.NamePlural = citizenName;
-			
-			for (int yy = 0; yy < Map.HEIGHT; yy++)
-			for (int xx = 0; xx < Map.WIDTH; xx++)
-			{
-				_explored[xx, yy] = false;
-				_visible[xx, yy] = false;
-			}
 		}
 
 		public BasePlayer(BasePlayer player)
 		{
 			Civilization = player.Civilization;
-			
-			for (int yy = 0; yy < Map.HEIGHT; yy++)
-			for (int xx = 0; xx < Map.WIDTH; xx++)
-			{
-				_explored[xx, yy] = player._explored[xx, yy];
-				_visible[xx, yy] = player._visible[xx, yy];
-			}
 
 			_advances.AddRange(player._advances);
 			_embassies.AddRange(player._embassies);

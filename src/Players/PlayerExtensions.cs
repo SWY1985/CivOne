@@ -140,5 +140,9 @@ namespace CivOne.Players
 		public static bool RepublicDemocratic(this IPlayer player) => player.HasGovernment<Republic>() || player.HasGovernment<CivOne.Governments.Democracy>();
 
 		public static void Revolt(this IPlayer player) => player.Government = new Anarchy();
+
+		public static void Explore(this IPlayer player, int x, int y, int range = 1, bool sea = false) => Map.Instance.Explore(Game.Instance.PlayerNumber(player), x, y, range, sea);
+
+		public static bool Visible(this IPlayer player, int x, int y) => Map.Instance.Visible(Game.Instance.PlayerNumber(player), x, y);
 	}
 }

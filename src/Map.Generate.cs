@@ -566,6 +566,11 @@ namespace CivOne
 			Log("Generating map (Land Mass: {0}, Temperature: {1}, Climate: {2}, Age: {3})", _landMass, _temperature, _climate, _age);
 			
 			_tiles = new ITile[WIDTH, HEIGHT];
+			for (int i = 0; i < _playerExplored.Length; i++)
+			{
+				_playerExplored[i] = new bool[Map.WIDTH, Map.HEIGHT];
+				_playerVisible[i] = new bool[Map.WIDTH, Map.HEIGHT];
+			}
 			
 			int[,] elevation = GenerateLandMass();
 			int[,] latitude = TemperatureAdjustments();

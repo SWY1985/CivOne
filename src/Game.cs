@@ -28,6 +28,8 @@ namespace CivOne
 {
 	public partial class Game : BaseInstance
 	{
+		internal const int MAX_PLAYER_COUNT = 8;
+
 		private readonly int _difficulty, _competition;
 		private readonly PlayerCollection _players = new PlayerCollection();
 		private readonly List<City> _cities;

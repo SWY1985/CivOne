@@ -15,10 +15,8 @@ namespace CivOne.Players
 {
 	internal class PlayerCollection : IEnumerable<IPlayer>
 	{
-		private const int MAX_PLAYER_COUNT = 8;
-
-		private readonly IPlayer[] _players = new IPlayer[MAX_PLAYER_COUNT];
-		private readonly bool[] _playerActive = new bool[MAX_PLAYER_COUNT];
+		private readonly IPlayer[] _players = new IPlayer[Game.MAX_PLAYER_COUNT];
+		private readonly bool[] _playerActive = new bool[Game.MAX_PLAYER_COUNT];
 
 		private int _currentPlayer = 0;
 
@@ -26,7 +24,7 @@ namespace CivOne.Players
 
 		public event Action<IPlayer> OnNextPlayer;
 
-		public int Length => MAX_PLAYER_COUNT;
+		public int Length => Game.MAX_PLAYER_COUNT;
 
 		public IPlayer CurrentPlayer => _players[_currentPlayer];
 
@@ -57,7 +55,7 @@ namespace CivOne.Players
 		{
 			do
 			{
-				if (++_currentPlayer >= MAX_PLAYER_COUNT)
+				if (++_currentPlayer >= Game.MAX_PLAYER_COUNT)
 				{
 					_currentPlayer = 0;
 					OnNextTurn?.Invoke();
@@ -94,7 +92,7 @@ namespace CivOne.Players
 
 		public PlayerCollection()
 		{
-			for (int i = 0; i < MAX_PLAYER_COUNT; i++) _players[i] = null;
+			for (int i = 0; i < Game.MAX_PLAYER_COUNT; i++) _players[i] = null;
 		}
 	}
 }

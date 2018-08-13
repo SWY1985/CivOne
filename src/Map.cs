@@ -28,9 +28,40 @@ namespace CivOne
 		private int _terrainMasterWord;
 		private int _landMass, _temperature, _climate, _age;
 		private ITile[,] _tiles;
+		private readonly bool[][,] _playerExplored = new bool[Game.MAX_PLAYER_COUNT][,];
+		private readonly bool[][,] _playerVisible = new bool[Game.MAX_PLAYER_COUNT][,];
 		
 		public bool Ready { get; private set; }
 		public bool FixedStartPositions { get; private set; }
+
+		public void Explore(int playerIndex, int x, int y, int range, bool sea)
+		{
+			if (y < 0 || y >= Map.HEIGHT) return;
+			while (x < 0) x += Map.WIDTH;
+			while (x >= Map.WIDTH) x -= Map.WIDTH;
+
+			_playerExplored[playerIndex][x, y] = true;
+			for (int relX = -range; relX <= range; relX++)
+			for (int relY = -range; relY <= range; relY++)
+			{
+				int xx = x + relX;
+				int yy = y + relY;
+				if (yy < 0 || yy >= Map.HEIGHT) continue;
+				while (xx < 0) xx += Map.WIDTH;
+				while (xx >= Map.WIDTH) xx -= Map.WIDTH;
+				if (sea && !_tiles[xx, yy].IsOcean && (Math.Abs(relX) > 1 || Math.Abs(relY) > 1))
+					continue;
+				_playerVisible[playerIndex][xx, yy] = true;
+			}
+		}
+
+		public bool Visible(int playerIndex, int x, int y)
+		{
+			if (y < 0 || y >= Map.HEIGHT) return false;
+			while (x < 0) x += Map.WIDTH;
+			while (x >= Map.WIDTH) x -= Map.WIDTH;
+			return _playerVisible[playerIndex][x, y];
+		}
 
 		public IEnumerable<ITile> QueryMapPart(int x, int y, int width, int height)
 		{

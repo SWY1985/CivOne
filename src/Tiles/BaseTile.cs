@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using CivOne.Enums;
 using CivOne.Graphics;
+using CivOne.Players;
 using CivOne.Units;
 
 using static CivOne.Enums.Direction;

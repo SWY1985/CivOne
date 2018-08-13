@@ -40,7 +40,5 @@ namespace CivOne.Players
 		void ChooseGovernment();
 		void DeleteAdvance(IAdvance advance);
 		void EstablishEmbassy(IPlayer player);
-		void Explore(int x, int y, int range = 1, bool sea = false);
-		bool Visible(int x, int y);
 	}
 }

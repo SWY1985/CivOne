@@ -55,6 +55,11 @@ namespace CivOne
 			using (Bytemap bitmap = Resources[filename].Bitmap)
 			{
 				_tiles = new ITile[WIDTH, HEIGHT];
+				for (int i = 0; i < _playerExplored.Length; i++)
+				{
+					_playerExplored[i] = new bool[Map.WIDTH, Map.HEIGHT];
+					_playerVisible[i] = new bool[Map.WIDTH, Map.HEIGHT];
+				}
 				
 				LoadMap(bitmap);
 				PlaceHuts();
