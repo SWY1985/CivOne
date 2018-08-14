@@ -15,7 +15,7 @@ using CivOne.Wonders;
 
 namespace CivOne
 {
-	public partial class Game : IGameData
+	internal partial class Game : IGameData
 	{
 		ushort IGameData.GameTurn { get; set; }
 		ushort IGameData.HumanPlayer

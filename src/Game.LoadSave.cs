@@ -19,7 +19,7 @@ using CivOne.Wonders;
 
 namespace CivOne
 {
-	public partial class Game : BaseInstance
+	internal partial class Game : BaseInstance
 	{
 		public static void LoadGame(string sveFile, string mapFile)
 		{
