@@ -852,7 +852,7 @@ namespace CivOne
 					// Plague
 					bool hasMedicine = Player.HasAdvance<Medicine>();
 					bool hasAqueduct = HasBuilding<Aqueduct>();
-					bool hasConstruction = Player.Advances.Any(a => a is Construction);
+					bool hasConstruction = Player.Advances().Any(a => a is Construction);
 
 					if (!hasMedicine && !hasAqueduct && hasConstruction)
 					{

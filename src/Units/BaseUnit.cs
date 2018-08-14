@@ -394,8 +394,8 @@ namespace CivOne.Units
 			return false;
 		}
 		
-		private IList<IAdvance> GetAdvancesToSteal(IPlayer victim) => victim.Advances
-			.Where(p => !Player.Advances.Any(p2 => p2.Id == p.Id))
+		private IList<IAdvance> GetAdvancesToSteal(IPlayer victim) => victim.Advances()
+			.Where(p => !Player.Advances().Any(p2 => p2.Id == p.Id))
 			.OrderBy(a => Common.Random.Next(0, 1000))
 			.Take(3)
 			.ToList();

@@ -45,7 +45,7 @@ namespace CivOne.Screens.Reports
 			}
 
 			int c = 0;
-			foreach (IAdvance advance in Human.Advances.OrderBy(a => a.Id))
+			foreach (IAdvance advance in Human.Advances().OrderBy(a => a.Id))
 			{
 				bool first = Game.GetAdvanceOrigin(advance, Human);
 				int xx = 8 + ((c % 3) * 100);

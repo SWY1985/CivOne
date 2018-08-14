@@ -207,7 +207,7 @@ namespace CivOne.Screens
 				}
 				StringBuilder sb = new StringBuilder();
 				int i = 0;
-				foreach (IAdvance advance in Human.Advances.OrderBy(a => a.Id))
+				foreach (IAdvance advance in Human.Advances().OrderBy(a => a.Id))
 				{
 					sb.Append($"{advance.Name}, ");
 					i++;

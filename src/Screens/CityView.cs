@@ -468,7 +468,7 @@ namespace CivOne.Screens
 					DrawBuilding<Aqueduct>(_overlay);
 			}
 
-			int stage = (int)Math.Floor((double)(Game.GetPlayer(_city.Owner).Advances.Count() - 9) / 2);
+			int stage = (int)Math.Floor((double)(Game.GetPlayer(_city.Owner).Advances().Count() - 9) / 2);
 			for (int xx = 0; xx < 18; xx++)
 			for (int yy = 10; yy >= 0; yy--)
 			{

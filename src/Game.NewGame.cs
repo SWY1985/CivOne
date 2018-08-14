@@ -7,6 +7,7 @@
 // You should have received a copy of the CC0 legalcode along with this
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CivOne.Advances;
@@ -139,17 +140,29 @@ namespace CivOne
 				bonus -= 3;
 			}
 
+			Func<List<byte>> getAvailableResearch = () =>
+			{
+				List<byte> output = new List<byte>();
+				foreach (IAdvance advance in Common.Advances.Where(a => !_playerAdvances[player][a.Id]))
+				{
+					if (advance.RequiredTechs.Length > 0 && !advance.RequiredTechs.All(a => _playerAdvances[player][a.Id])) continue;
+					output.Add(advance.Id);
+				}
+				return output;
+			};
+
 			// If the Bonus value is (still) greater than zero, then the civ gains a number of technologies equal to the Bonus value.
 			while (bonus > 0)
 			{
-				IAdvance[] available = _players[player].AvailableResearch().ToArray();
+				// IAdvance[] available = _players[player].AvailableResearch().ToArray();
+				byte[] available = getAvailableResearch().ToArray();
 				int advanceId = Common.Random.Next(0, 72);
 				for (int i = 0; i < 1000; i++)
 				{
-					if (!available.Any(a => a.Id == (advanceId + i) % 72)) continue;
-					IAdvance advance = available.First(a => a.Id == (advanceId + i) % 72);
-					SetAdvanceOrigin(advance, null);
-					_players[player].AddAdvance(advance, false);
+					if (!available.Any(a => a == (advanceId + i) % 72)) continue;
+					byte id = available.First(a => a == (advanceId + i) % 72);
+					if (!_advanceOrigin.ContainsKey(id)) _advanceOrigin.Add(id, 0);
+					_playerAdvances[player][id] = true;
 					break;
 				}
 				bonus--;

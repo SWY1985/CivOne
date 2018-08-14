@@ -38,6 +38,7 @@ namespace CivOne
 		private readonly List<ReplayData> _replayData = new List<ReplayData>();
 		private readonly short[] _playerGold = new short[MAX_PLAYER_COUNT];
 		private readonly short[] _playerScience = new short[MAX_PLAYER_COUNT];
+		private readonly bool[][] _playerAdvances = new bool[MAX_PLAYER_COUNT][];
 		
 		internal readonly string[] CityNames = Common.AllCityNames.ToArray();
 		
@@ -420,6 +421,36 @@ namespace CivOne
 			_playerScience[playerIndex] = value;
 		}
 
+		public IEnumerable<IAdvance> GetAdvances(int playerIndex)
+		{
+			if (playerIndex < _playerAdvances.GetLowerBound(0) || playerIndex > _playerAdvances.GetUpperBound(0)) yield break;
+			foreach (IAdvance advance in Common.Advances)
+			{
+				if (!_playerAdvances[playerIndex][advance.Id]) continue;
+				yield return advance;
+			}
+		}
+
+		public bool HasAdvance(int playerIndex, byte id)
+		{
+			if (playerIndex < _playerAdvances.GetLowerBound(0) || playerIndex > _playerAdvances.GetUpperBound(0)) return false;
+			if (id < _playerAdvances[playerIndex].GetLowerBound(0) || id > _playerAdvances[playerIndex].GetUpperBound(0)) return false;
+			return _playerAdvances[playerIndex][id];
+		}
+
+		public void SetAdvance(int playerIndex, byte id, bool discovered, bool setOrigin = true)
+		{
+			if (playerIndex < _playerAdvances.GetLowerBound(0) || playerIndex > _playerAdvances.GetUpperBound(0)) return;
+			if (id < _playerAdvances[playerIndex].GetLowerBound(0) || id > _playerAdvances[playerIndex].GetUpperBound(0)) return;
+			_playerAdvances[playerIndex][id] = discovered;
+			
+			if (Game.CurrentPlayer.CurrentResearch?.Id == id)
+				GameTask.Enqueue(new TechSelect(Game.Instance.CurrentPlayer));
+			
+			if (!discovered || !setOrigin) return;
+			Game.Instance.SetAdvanceOrigin(Common.Advances.First(x => x.Id == id), GetPlayer((byte)playerIndex));
+		}
+
 		public City[] GetCities() => _cities.ToArray();
 
 		public IWonder[] BuiltWonders => _cities.SelectMany(c => c.Wonders).ToArray();
@@ -532,6 +563,8 @@ namespace CivOne
 		{
 			_players.OnNextTurn += NextTurn;
 			_players.OnNextPlayer += NextPlayer;
+
+			for (int i = 0; i < _players.Length; i++) _playerAdvances[i] = new bool[Common.Advances.Max(x => x.Id) + 1];
 		}
 	}
 }

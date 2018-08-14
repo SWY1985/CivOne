@@ -42,7 +42,6 @@ namespace CivOne.Players
 			get => _player.Government;
 			set => _player.Government = value;
 		}
-		public IEnumerable<IAdvance> Advances => _player.Advances;
 		public IEnumerable<IPlayer> Embassies => _player.Embassies;
 		public IAdvance CurrentResearch
 		{

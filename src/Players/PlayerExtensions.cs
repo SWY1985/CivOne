@@ -43,13 +43,19 @@ namespace CivOne.Players
 
 		public static bool HasWonder<T>(this IPlayer player, bool checkObsolete = false) where T : IWonder, new() => (!checkObsolete || !Game.Instance.WonderObsolete<T>()) && player.GetCities().Any(c => c.HasWonder<T>());
 
-		public static bool HasAdvance<T>(this IPlayer player) where T : IAdvance => player.Advances.Any(a => a is T);
+		public static bool HasAdvance<T>(this IPlayer player) where T : IAdvance, new() => Game.Instance.HasAdvance(Game.Instance.PlayerNumber(player), new T().Id);
 
-		public static bool HasAdvance(this IPlayer player, IAdvance advance) => (advance == null || player.Advances.Any(a => a.Id == advance.Id));
+		public static bool HasAdvance(this IPlayer player, IAdvance advance) => (advance == null || Game.Instance.HasAdvance(Game.Instance.PlayerNumber(player), advance.Id));
+
+		public static void AddAdvance(this IPlayer player, IAdvance advance, bool setOrigin = true) => Game.Instance.SetAdvance(Game.Instance.PlayerNumber(player), advance.Id, true, setOrigin);
+
+		public static void DeleteAdvance(this IPlayer player, IAdvance advance) => Game.Instance.SetAdvance(Game.Instance.PlayerNumber(player), advance.Id, false);
 
 		public static bool HasEmbassy(this IPlayer player, IPlayer checkPlayer) => player.Embassies.Any(p => p == checkPlayer);
 
 		public static City GetCapital(this IPlayer player) => player.GetCities().FirstOrDefault(c => c.HasBuilding<Palace>());
+
+		public static IEnumerable<IAdvance> Advances(this IPlayer player) => Game.Instance.GetAdvances(Game.Instance.PlayerNumber(player));
 
 		public static IEnumerable<IAdvance> AvailableResearch(this IPlayer player)
 		{
@@ -72,7 +78,7 @@ namespace CivOne.Players
 
 		public static short ScienceCost(this IPlayer player)
 		{
-			short cost = (short)((Game.Instance.Difficulty + 3) * 2 * (player.Advances.Count() + 1) * (Common.TurnToYear(Game.Instance.GameTurn) > 0 ? 2 : 1));
+			short cost = (short)((Game.Instance.Difficulty + 3) * 2 * (player.Advances().Count() + 1) * (Common.TurnToYear(Game.Instance.GameTurn) > 0 ? 2 : 1));
 			if (cost < 12)
 				return 12;
 			return cost;

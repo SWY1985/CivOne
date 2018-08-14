@@ -22,7 +22,6 @@ namespace CivOne.Players
 		ICivilization Civilization { get; }
 		ILeader Leader { get; }
 		IGovernment Government { get; set; }
-		IEnumerable<IAdvance> Advances { get; }
 		IEnumerable<IPlayer> Embassies { get; }
 		IAdvance CurrentResearch { get; set; }
 		PalaceData Palace { get; }
@@ -34,9 +33,7 @@ namespace CivOne.Players
 		short StartX { get; set; }
 		int CityNamesSkipped { get; set; }
 
-		void AddAdvance(IAdvance advance, bool setOrigin = true);
 		void ChooseGovernment();
-		void DeleteAdvance(IAdvance advance);
 		void EstablishEmbassy(IPlayer player);
 	}
 }

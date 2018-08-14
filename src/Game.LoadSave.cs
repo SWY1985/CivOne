@@ -56,7 +56,7 @@ namespace CivOne
 				gameData.CurrentResearch = HumanPlayer.CurrentResearch?.Id ?? 0;
 				byte[][] discoveredAdvanceIDs = new byte[_players.Length][];
 				for (int p = 0; p < _players.Length; p++)
-					discoveredAdvanceIDs[p] = _players[p]?.Advances.Select(x => x.Id).ToArray();
+					discoveredAdvanceIDs[p] = _players[p]?.Advances().Select(x => x.Id).ToArray();
 				gameData.DiscoveredAdvanceIDs = discoveredAdvanceIDs;
 				gameData.LeaderNames = _players.Select(x => x.Leader.Name).ToArray();
 				gameData.CivilizationNames = _players.Select(x => x.Civilization.NamePlural).ToArray();
@@ -152,12 +152,8 @@ namespace CivOne
 				}
 
 				byte[] advanceIds = gameData.DiscoveredAdvanceIDs[i];
-				Common.Advances.Where(x => advanceIds.Any(id => x.Id == id)).ToList().ForEach(x =>
-				{
-					player.AddAdvance(x, false);
-					if (advanceFirst[x.Id] != player.Civilization.Id) return;
-					SetAdvanceOrigin(x, player);
-				});
+				foreach (byte id in advanceIds)
+					_playerAdvances[i][id] = true;
 
 				_players[i] = player;
 			}

@@ -39,7 +39,7 @@ namespace CivOne.Units
 
 		public IAdvance GetAdvanceToSteal(IPlayer victim)
 		{
-			IList<IAdvance> possible = victim.Advances.Where(p => !Player.Advances.Any(p2 => p2.Id == p.Id)).ToList();
+			IList<IAdvance> possible = victim.Advances().Where(p => !Player.Advances().Any(p2 => p2.Id == p.Id)).ToList();
 
 			if (!possible.Any())
 				return null;

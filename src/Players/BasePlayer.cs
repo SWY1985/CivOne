@@ -21,7 +21,6 @@ namespace CivOne.Players
 {
 	internal abstract class BasePlayer : BaseInstance, IPlayer
 	{
-		private readonly List<byte> _advances = new List<byte>();
 		private readonly List<byte> _embassies = new List<byte>();
 
 		public ICivilization Civilization { get; }
@@ -29,7 +28,6 @@ namespace CivOne.Players
 		public virtual IGovernment Government { get; set; } = new Despotism();
 		public PalaceData Palace { get; } = new PalaceData();
 
-		public IEnumerable<IAdvance> Advances => _advances.Select(a => Common.Advances.First(x => x.Id == a));
 		public IEnumerable<IPlayer> Embassies => _embassies.OrderBy(x => x).Select(e => Game.Instance.GetPlayer(e));
 
 		public IAdvance CurrentResearch { get; set; }
@@ -61,18 +59,7 @@ namespace CivOne.Players
 
 		public int CityNamesSkipped { get; set; }
 
-		public void AddAdvance(IAdvance advance, bool setOrigin = true)
-		{
-			if (Game.Started && Game.CurrentPlayer.CurrentResearch?.Id == advance.Id)
-				GameTask.Enqueue(new TechSelect(Game.Instance.CurrentPlayer));
-			_advances.Add(advance.Id);
-			if (!setOrigin) return;
-			Game.Instance.SetAdvanceOrigin(advance, this);
-		}
-
 		public abstract void ChooseGovernment();
-
-		public void DeleteAdvance(IAdvance advance) => _advances.RemoveAll(x => advance.Id == x);
 
 		public void EstablishEmbassy(IPlayer player)
 		{
@@ -93,7 +80,6 @@ namespace CivOne.Players
 		{
 			Civilization = player.Civilization;
 
-			_advances.AddRange(player._advances);
 			_embassies.AddRange(player._embassies);
 			
 			Government = player.Government;

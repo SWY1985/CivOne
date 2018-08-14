@@ -11,6 +11,7 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.Graphics;
 using CivOne.IO;
+using CivOne.Players;
 
 namespace CivOne.Screens
 {
@@ -54,7 +55,7 @@ namespace CivOne.Screens
 			// Load text and replace strings
 			_textLines = TextFile.Instance.GetGameText("KING/ARCH");
 			for (int i = 0; i < _textLines.Length; i++)
-				_textLines[i] = _textLines[i].Replace("$RPLC1", Human.Advances.LastOrDefault()?.Name ?? "Irrigation").Replace("$US", Human.Leader.Name.ToUpper()).Replace("^", "");
+				_textLines[i] = _textLines[i].Replace("$RPLC1", Human.Advances().LastOrDefault()?.Name ?? "Irrigation").Replace("$US", Human.Leader.Name.ToUpper()).Replace("^", "");
 		}
 	}
 }
