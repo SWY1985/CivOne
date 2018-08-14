@@ -39,7 +39,7 @@ namespace CivOne
 
 				Map.Instance.LoadMap(mapFile, adapter.RandomSeed);
 				_instance = new Game(adapter);
-				Log($"Game instance loaded (difficulty: {_instance._difficulty}, competition: {_instance._competition}");
+				Log($"Game instance loaded (difficulty: {_instance.Difficulty}, competition: {_instance._competition}");
 			}
 		}
 
@@ -47,66 +47,35 @@ namespace CivOne
 		{
 			using (IGameData gameData = new SaveDataAdapter())
 			{
-				gameData.GameTurn = GameTurn;
-				gameData.HumanPlayer = (ushort)PlayerNumber(HumanPlayer);
-				gameData.RandomSeed = Map.Instance.SaveMap(mapFile);
-				gameData.Difficulty = (ushort)_difficulty;
-				gameData.ActiveCivilizations = _players.Select(x => (x.Civilization is Barbarian) || (x.GetCities().Any(c => c.Size > 0) || x.GetUnits().Any())).ToArray();
-				gameData.CivilizationIdentity = _players.Select(x => (byte)(x.Civilization.Id > 7 ? 1 : 0)).ToArray();
-				gameData.CurrentResearch = HumanPlayer.CurrentResearch?.Id ?? 0;
-				byte[][] discoveredAdvanceIDs = new byte[_players.Length][];
-				for (int p = 0; p < _players.Length; p++)
-					discoveredAdvanceIDs[p] = _players[p]?.Advances().Select(x => x.Id).ToArray();
-				gameData.DiscoveredAdvanceIDs = discoveredAdvanceIDs;
-				gameData.LeaderNames = _players.Select(x => x.Leader.Name).ToArray();
-				gameData.CivilizationNames = _players.Select(x => x.Civilization.NamePlural).ToArray();
-				gameData.CitizenNames = _players.Select(x => x.Civilization.Name).ToArray();
+				Map.Instance.SaveMap(mapFile);
+
+				gameData.GameTurn = Data.GameTurn;
+				gameData.HumanPlayer = Data.HumanPlayer;
+				gameData.RandomSeed = Data.RandomSeed;
+				gameData.Difficulty = Data.Difficulty;
+				gameData.ActiveCivilizations = Data.ActiveCivilizations;
+				gameData.CivilizationIdentity = Data.CivilizationIdentity;
+				gameData.CurrentResearch = Data.CurrentResearch;
+				gameData.DiscoveredAdvanceIDs = Data.DiscoveredAdvanceIDs;
+				gameData.LeaderNames = Data.LeaderNames;
+				gameData.CivilizationNames = Data.CivilizationNames;
+				gameData.CitizenNames = Data.CitizenNames;
 				gameData.CityNames = CityNames;
-				gameData.PlayerGold = _playerGold.ToArray();
-				gameData.ResearchProgress = _playerScience.ToArray();
-				gameData.TaxRate = _players.Select(x => (ushort)x.TaxesRate).ToArray();
-				gameData.ScienceRate = _players.Select(x => (ushort)(10 - x.ScienceRate - x.TaxesRate)).ToArray();
-				gameData.StartingPositionX = _players.Select(x => (ushort)x.StartX).ToArray();
-				gameData.Government = _players.Select(x => (ushort)x.Government.Id).ToArray();
-				gameData.Cities = _cities.GetCityData().ToArray();
-				gameData.Units = _players.Select(p => _units.Where(u => p.Is(u.Owner)).GetUnitData().ToArray()).ToArray();
-				ushort[] wonders = Enumerable.Repeat(ushort.MaxValue, 22).ToArray();
-				for (byte i = 0; i < _cities.Count(); i++)
-				foreach (IWonder wonder in _cities[i].Wonders)
-				{
-					wonders[wonder.Id] = i;
-				}
-				gameData.Wonders = wonders;
-				bool[][,] visibility = new bool[_players.Length][,];
-				for (int p = 0; p < visibility.Length; p++)
-				{
-					visibility[p] = new bool[80, 50];
-					for (int xx = 0; xx < 80; xx++)
-					for (int yy = 0; yy < 50; yy++)
-					{
-						if (!_players[p].Visible(xx, yy)) continue;
-						visibility[p][xx, yy] = true;
-					}
-				}
-				gameData.TileVisibility = visibility;
-				ushort[] firstDiscovery = new ushort[72];
-				foreach (byte key in _advanceOrigin.Keys)
-					firstDiscovery[key] = _advanceOrigin[key];
-				gameData.AdvanceFirstDiscovery = firstDiscovery;
-				gameData.GameOptions = new bool[]
-				{
-					InstantAdvice,
-					AutoSave,
-					EndOfTurn,
-					Animations,
-					Sound,
-					EnemyMoves,
-					CivilopediaText,
-					Palace
-				};
-				gameData.NextAnthologyTurn = _anthologyTurn;
+				gameData.PlayerGold = Data.PlayerGold;
+				gameData.ResearchProgress = Data.ResearchProgress;
+				gameData.TaxRate = Data.TaxRate;
+				gameData.ScienceRate = Data.ScienceRate;
+				gameData.StartingPositionX = Data.StartingPositionX;
+				gameData.Government = Data.Government;
+				gameData.Cities = Data.Cities;
+				gameData.Units = Data.Units;
+				gameData.Wonders = Data.Wonders;
+				gameData.TileVisibility = Data.TileVisibility;
+				gameData.AdvanceFirstDiscovery = Data.AdvanceFirstDiscovery;
+				gameData.GameOptions = Data.GameOptions;
+				gameData.NextAnthologyTurn = Data.NextAnthologyTurn;
 				gameData.OpponentCount = (ushort)(_players.Length - 2);
-				gameData.ReplayData = _replayData.ToArray();
+				gameData.ReplayData = Data.ReplayData;
 				File.WriteAllBytes(sveFile, gameData.GetBytes());
 			}
 		}
@@ -122,47 +91,38 @@ namespace CivOne
 
 		private Game(IGameData gameData) : this()
 		{
-			_difficulty = gameData.Difficulty;
+			Data.Difficulty = gameData.Difficulty;
 			_competition = (gameData.OpponentCount + 1);
 			_cities = new List<City>();
 			_units = new List<IUnit>();
 
 			ushort[] advanceFirst = gameData.AdvanceFirstDiscovery;
-			bool[][,] visibility = gameData.TileVisibility;
+			Data.TileVisibility = gameData.TileVisibility;
 			for (int i = 0; i < _players.Length; i++)
 			{
 				ICivilization[] civs = Common.Civilizations.Where(c => c.PreferredPlayerNumber == i).ToArray();
 				ICivilization civ = civs[gameData.CivilizationIdentity[i] % civs.Length];
 				IPlayer player = (_players[i] = CreatePlayer(civ, gameData.LeaderNames[i], gameData.CitizenNames[i], gameData.CivilizationNames[i], (i == gameData.HumanPlayer)));
-				_playerGold[i] = gameData.PlayerGold[i];
-				_playerScience[i] = gameData.ResearchProgress[i];
 				player.Government = Reflect.GetGovernments().FirstOrDefault(x => x.Id == gameData.Government[i]);
 
 				player.TaxesRate = gameData.TaxRate[i];
 				player.LuxuriesRate = 10 - gameData.ScienceRate[i] - player.TaxesRate;
 				player.StartX = (short)gameData.StartingPositionX[i];
-				
-				// Set map visibility
-				for (int xx = 0; xx < 80; xx++)
-				for (int yy = 0; yy < 50; yy++)
-				{
-					if (!visibility[i][xx, yy]) continue;
-					if (i == 0 && Map[xx, yy].Hut) Map[xx, yy].Hut = false;
-					player.Explore(xx, yy, 0);
-				}
-
-				byte[] advanceIds = gameData.DiscoveredAdvanceIDs[i];
-				foreach (byte id in advanceIds)
-					_playerAdvances[i][id] = true;
 
 				_players[i] = player;
 			}
 
-			GameTurn = gameData.GameTurn;
-			CityNames = gameData.CityNames;
+			Data.DiscoveredAdvanceIDs = gameData.DiscoveredAdvanceIDs;
+			Data.PlayerGold = gameData.PlayerGold;
+			Data.ResearchProgress = gameData.ResearchProgress;
+			Data.AdvanceFirstDiscovery = gameData.AdvanceFirstDiscovery;
+			Data.TileVisibility = gameData.TileVisibility;
+
+			Data.GameTurn = gameData.GameTurn;
+			Data.CityNames = gameData.CityNames;
 			HumanPlayer.CurrentResearch = Common.Advances.FirstOrDefault(a => a.Id == gameData.CurrentResearch);
 		
-			_anthologyTurn = gameData.NextAnthologyTurn;
+			Data.NextAnthologyTurn = gameData.NextAnthologyTurn;
 
 			Dictionary<byte, City> cityList = new Dictionary<byte, City>();
 			foreach (CityData cityData in gameData.Cities)
@@ -227,27 +187,9 @@ namespace CivOne
 				}
 			}
 
-			_replayData.AddRange(gameData.ReplayData);
+			Data.ReplayData = gameData.ReplayData;
 
-			// Game Settings
-			InstantAdvice = (Settings.InstantAdvice == GameOption.On);
-			AutoSave = (Settings.AutoSave != GameOption.Off);
-			EndOfTurn = (Settings.EndOfTurn == GameOption.On);
-			Animations = (Settings.Animations != GameOption.Off);
-			Sound = (Settings.Sound != GameOption.Off);
-			EnemyMoves = (Settings.EnemyMoves != GameOption.Off);
-			CivilopediaText = (Settings.CivilopediaText != GameOption.Off);
-			Palace = (Settings.Palace != GameOption.Off);
-
-			bool[] options = gameData.GameOptions;
-			if (Settings.InstantAdvice == GameOption.Default) InstantAdvice = options[0];
-			if (Settings.AutoSave == GameOption.Default) AutoSave = options[1];
-			if (Settings.EndOfTurn == GameOption.Default) EndOfTurn = options[2];
-			if (Settings.Animations == GameOption.Default) Animations = options[3];
-			if (Settings.Sound == GameOption.Default) Sound = options[4];
-			if (Settings.EnemyMoves == GameOption.Default) EnemyMoves = options[5];
-			if (Settings.CivilopediaText == GameOption.Default) CivilopediaText = options[6];
-			if (Settings.Palace == GameOption.Default) Palace = options[7];
+			Data.GameOptions = gameData.GameOptions;
 
 			_players.SetCurrentPlayer(gameData.HumanPlayer);
 			for (int i = 0; i < _units.Count(); i++)

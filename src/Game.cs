@@ -30,30 +30,58 @@ namespace CivOne
 	{
 		internal const int MAX_PLAYER_COUNT = 8;
 
-		private readonly int _difficulty, _competition;
+		private readonly int _competition;
 		private readonly PlayerCollection _players = new PlayerCollection();
 		private readonly List<City> _cities;
 		private readonly List<IUnit> _units;
-		private readonly Dictionary<byte, byte> _advanceOrigin = new Dictionary<byte, byte>();
 		private readonly List<ReplayData> _replayData = new List<ReplayData>();
-		private readonly short[] _playerGold = new short[MAX_PLAYER_COUNT];
-		private readonly short[] _playerScience = new short[MAX_PLAYER_COUNT];
-		private readonly bool[][] _playerAdvances = new bool[MAX_PLAYER_COUNT][];
 		
-		internal readonly string[] CityNames = Common.AllCityNames.ToArray();
+		internal string[] CityNames => Data.CityNames;
 		
 		private int _activeUnit;
 
-		private ushort _anthologyTurn = 0;
+		internal IGameData Data => (this as IGameData);
 
-		public bool Animations { get; set; }
-		public bool Sound { get; set; }
-		public bool CivilopediaText { get; set; }
-		public bool EndOfTurn { get; set; }
-		public bool InstantAdvice { get; set; }
-		public bool AutoSave { get; set; }
-		public bool EnemyMoves { get; set; }
-		public bool Palace { get; set; }
+		public bool InstantAdvice
+		{
+			get => Data.GameOptions[0];
+			set => Data.GameOptions[0] = value;
+		}
+		public bool AutoSave
+		{
+			get => Data.GameOptions[1];
+			set => Data.GameOptions[1] = value;
+		}
+		public bool EndOfTurn
+		{
+			get => Data.GameOptions[2];
+			set => Data.GameOptions[2] = value;
+		}
+		public bool Animations
+		{
+			get => Data.GameOptions[3];
+			set => Data.GameOptions[3] = value;
+		}
+		public bool Sound
+		{
+			get => Data.GameOptions[4];
+			set => Data.GameOptions[4] = value;
+		}
+		public bool EnemyMoves
+		{
+			get => Data.GameOptions[5];
+			set => Data.GameOptions[5] = value;
+		}
+		public bool CivilopediaText
+		{
+			get => Data.GameOptions[6];
+			set => Data.GameOptions[6] = value;
+		}
+		public bool Palace
+		{
+			get => Data.GameOptions[7];
+			set => Data.GameOptions[7] = value;
+		}
 
 		internal bool CheckGameOver(IPlayer player)
 		{
@@ -69,25 +97,24 @@ namespace CivOne
 
 		internal void SetAdvanceOrigin(IAdvance advance, IPlayer player)
 		{
-			if (_advanceOrigin.ContainsKey(advance.Id))
+			if (Data.AdvanceFirstDiscovery[advance.Id] != 0)
 				return;
 			byte playerNumber = 0;
 			if (player != null)
 				playerNumber = PlayerNumber(player);
-			_advanceOrigin.Add(advance.Id, playerNumber);
+			Data.AdvanceFirstDiscovery[advance.Id] = playerNumber;
 		}
-		internal bool GetAdvanceOrigin(IAdvance advance, IPlayer player)
-		{
-			if (_advanceOrigin.ContainsKey(advance.Id))
-				return (_advanceOrigin[advance.Id] == PlayerNumber(player));
-			return false;
-		}
+		internal bool GetAdvanceOrigin(IAdvance advance, IPlayer player) => Data.AdvanceFirstDiscovery[advance.Id] == PlayerNumber(player);
 
-		public int Difficulty => _difficulty;
+		public int Difficulty => Data.Difficulty;
 
 		public bool HasUpdate => false;
 		
-		internal ushort GameTurn { get; set; }
+		internal ushort GameTurn
+		{
+			get => Data.GameTurn;
+			set => Data.GameTurn = value;
+		}
 
 		internal void SetHumanPlayer(IPlayer player)
 		{
@@ -138,10 +165,10 @@ namespace CivOne
 				GameTask.Enqueue(Show.AutoSave);
 			}
 
-			if (_anthologyTurn >= GameTurn)
+			if (Data.NextAnthologyTurn >= GameTurn)
 			{
 				//TODO: Show anthology
-				_anthologyTurn = (ushort)(GameTurn + 20 + Common.Random.Next(40));
+				Data.NextAnthologyTurn = (ushort)(GameTurn + 20 + Common.Random.Next(40));
 			}
 
 			IEnumerable<City> disasterCities = _cities.OrderBy(o => Common.Random.Next(0,1000)).Take(2).AsEnumerable();
@@ -393,59 +420,55 @@ namespace CivOne
 
 		public short GetGold(int playerIndex)
 		{
-			if (playerIndex < _playerGold.GetLowerBound(0) || playerIndex > _playerGold.GetUpperBound(0)) return -1;
-			return _playerGold[playerIndex];
+			if (playerIndex < Data.PlayerGold.GetLowerBound(0) || playerIndex > Data.PlayerGold.GetUpperBound(0)) return -1;
+			return Data.PlayerGold[playerIndex];
 		}
 
 		public void SetGold(int playerIndex, short value)
 		{
-			if (playerIndex < _playerGold.GetLowerBound(0) || playerIndex > _playerGold.GetUpperBound(0)) return;
+			if (playerIndex < Data.PlayerGold.GetLowerBound(0) || playerIndex > Data.PlayerGold.GetUpperBound(0)) return;
 			if (value < 0)
 			{
 				//TODO: Implement sold improvements task
 				value = 0;
 			}
 			if (value > 30000) value = 30000;
-			_playerGold[playerIndex] = value;
+			Data.PlayerGold[playerIndex] = value;
 		}
 
 		public short GetScience(int playerIndex)
 		{
-			if (playerIndex < _playerScience.GetLowerBound(0) || playerIndex > _playerScience.GetUpperBound(0)) return -1;
-			return _playerScience[playerIndex];
+			if (playerIndex < Data.ResearchProgress.GetLowerBound(0) || playerIndex > Data.ResearchProgress.GetUpperBound(0)) return -1;
+			return Data.ResearchProgress[playerIndex];
 		}
 
 		public void SetScience(int playerIndex, short value)
 		{
-			if (playerIndex < _playerScience.GetLowerBound(0) || playerIndex > _playerScience.GetUpperBound(0)) return;
-			_playerScience[playerIndex] = value;
+			if (playerIndex < Data.ResearchProgress.GetLowerBound(0) || playerIndex > Data.ResearchProgress.GetUpperBound(0)) return;
+			Data.ResearchProgress[playerIndex] = value;
 		}
 
 		public IEnumerable<IAdvance> GetAdvances(int playerIndex)
 		{
-			if (playerIndex < _playerAdvances.GetLowerBound(0) || playerIndex > _playerAdvances.GetUpperBound(0)) yield break;
-			foreach (IAdvance advance in Common.Advances)
+			if (playerIndex < Data.DiscoveredAdvanceIDs.GetLowerBound(0) || playerIndex > Data.DiscoveredAdvanceIDs.GetUpperBound(0)) yield break;
+			foreach (byte advanceId in Data.DiscoveredAdvanceIDs[playerIndex])
 			{
-				if (!_playerAdvances[playerIndex][advance.Id]) continue;
+				IAdvance advance = Common.Advances.FirstOrDefault(x => x.Id == advanceId);
+				if (advance == null) continue;
 				yield return advance;
 			}
 		}
 
-		public bool HasAdvance(int playerIndex, byte id)
-		{
-			if (playerIndex < _playerAdvances.GetLowerBound(0) || playerIndex > _playerAdvances.GetUpperBound(0)) return false;
-			if (id < _playerAdvances[playerIndex].GetLowerBound(0) || id > _playerAdvances[playerIndex].GetUpperBound(0)) return false;
-			return _playerAdvances[playerIndex][id];
-		}
+		public bool HasAdvance(int playerIndex, byte id) => GetAdvances(playerIndex).Any(a => a.Id == id);
 
 		public void SetAdvance(int playerIndex, byte id, bool discovered, bool setOrigin = true)
 		{
-			if (playerIndex < _playerAdvances.GetLowerBound(0) || playerIndex > _playerAdvances.GetUpperBound(0)) return;
-			if (id < _playerAdvances[playerIndex].GetLowerBound(0) || id > _playerAdvances[playerIndex].GetUpperBound(0)) return;
-			_playerAdvances[playerIndex][id] = discovered;
-			
-			if (Game.CurrentPlayer.CurrentResearch?.Id == id)
-				GameTask.Enqueue(new TechSelect(Game.Instance.CurrentPlayer));
+			if (playerIndex < Data.DiscoveredAdvanceIDs.GetLowerBound(0) || playerIndex > Data.DiscoveredAdvanceIDs.GetUpperBound(0)) return;
+			if (!Common.Advances.Any(a => a.Id == id)) return;
+
+			List<byte> advances = new List<byte>(Data.DiscoveredAdvanceIDs[playerIndex].Where(x => x != id));
+			if (discovered) advances.Add(id);
+			Data.DiscoveredAdvanceIDs[playerIndex] = advances.ToArray();
 			
 			if (!discovered || !setOrigin) return;
 			Game.Instance.SetAdvanceOrigin(Common.Advances.First(x => x.Id == id), GetPlayer((byte)playerIndex));
@@ -564,7 +587,10 @@ namespace CivOne
 			_players.OnNextTurn += NextTurn;
 			_players.OnNextPlayer += NextPlayer;
 
-			for (int i = 0; i < _players.Length; i++) _playerAdvances[i] = new bool[Common.Advances.Max(x => x.Id) + 1];
+			for (int i = 0; i < MAX_PLAYER_COUNT; i++)
+			{
+				Data.TileVisibility[i] = new bool[Map.WIDTH, Map.HEIGHT];
+			}
 		}
 	}
 }

@@ -16,7 +16,6 @@ namespace CivOne.Players
 	internal class PlayerCollection : IEnumerable<IPlayer>
 	{
 		private readonly IPlayer[] _players = new IPlayer[Game.MAX_PLAYER_COUNT];
-		private readonly bool[] _playerActive = new bool[Game.MAX_PLAYER_COUNT];
 
 		private int _currentPlayer = 0;
 
@@ -48,9 +47,9 @@ namespace CivOne.Players
 			}
 			return -1;
 		}
-		public bool IsActive(IPlayer player) => _playerActive[GetIndex(player)];
+		public bool IsActive(IPlayer player) => Game.Instance.Data.ActiveCivilizations[GetIndex(player)];
 
-		public void SetInactive(IPlayer player) => _playerActive[GetIndex(player)] = false;
+		public void SetInactive(IPlayer player) => Game.Instance.Data.ActiveCivilizations[GetIndex(player)] = false;
 
 		public void Next()
 		{
@@ -74,7 +73,7 @@ namespace CivOne.Players
 			{
 				if (index < _players.GetLowerBound(0) || index > _players.GetUpperBound(0)) return;
 				_players[index] = value;
-				_playerActive[index] = true;
+				if (Game.Started) Game.Instance.Data.ActiveCivilizations[index] = true;
 			}
 		}
 

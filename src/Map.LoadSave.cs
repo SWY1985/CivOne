@@ -58,7 +58,6 @@ namespace CivOne
 				for (int i = 0; i < _playerExplored.Length; i++)
 				{
 					_playerExplored[i] = new bool[Map.WIDTH, Map.HEIGHT];
-					_playerVisible[i] = new bool[Map.WIDTH, Map.HEIGHT];
 				}
 				
 				LoadMap(bitmap);

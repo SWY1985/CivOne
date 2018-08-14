@@ -140,29 +140,15 @@ namespace CivOne
 				bonus -= 3;
 			}
 
-			Func<List<byte>> getAvailableResearch = () =>
-			{
-				List<byte> output = new List<byte>();
-				foreach (IAdvance advance in Common.Advances.Where(a => !_playerAdvances[player][a.Id]))
-				{
-					if (advance.RequiredTechs.Length > 0 && !advance.RequiredTechs.All(a => _playerAdvances[player][a.Id])) continue;
-					output.Add(advance.Id);
-				}
-				return output;
-			};
-
 			// If the Bonus value is (still) greater than zero, then the civ gains a number of technologies equal to the Bonus value.
 			while (bonus > 0)
 			{
-				// IAdvance[] available = _players[player].AvailableResearch().ToArray();
-				byte[] available = getAvailableResearch().ToArray();
 				int advanceId = Common.Random.Next(0, 72);
 				for (int i = 0; i < 1000; i++)
 				{
-					if (!available.Any(a => a == (advanceId + i) % 72)) continue;
-					byte id = available.First(a => a == (advanceId + i) % 72);
-					if (!_advanceOrigin.ContainsKey(id)) _advanceOrigin.Add(id, 0);
-					_playerAdvances[player][id] = true;
+					if (!Data.DiscoveredAdvanceIDs[player].Any(a => a == (advanceId + i) % 72)) continue;
+					byte id = Data.DiscoveredAdvanceIDs[player].First(a => a == (advanceId + i) % 72);
+					Data.DiscoveredAdvanceIDs[player] = Data.DiscoveredAdvanceIDs[player].Concat(new [] { id }).ToArray();
 					break;
 				}
 				bonus--;
@@ -186,9 +172,9 @@ namespace CivOne
 
 		private Game(int difficulty, int competition, ICivilization tribe, string leaderName, string tribeName, string tribeNamePlural) : this()
 		{
-			_difficulty = difficulty;
+			Data.Difficulty = (ushort)difficulty;
 			_competition = competition;
-			Log("Game instance created (difficulty: {0}, competition: {1})", _difficulty, _competition);
+			Log("Game instance created (difficulty: {0}, competition: {1})", Difficulty, _competition);
 
 			InstantAdvice = (Settings.InstantAdvice == GameOption.On || (Settings.InstantAdvice == GameOption.Default && difficulty == 0));
 			AutoSave = (Settings.AutoSave != GameOption.Off);
@@ -203,13 +189,15 @@ namespace CivOne
 			_units = new List<IUnit>();
 			for (int i = 0; i <= competition; i++)
 			{
+				Data.ActiveCivilizations[i] = true;
+
 				if (i == tribe.PreferredPlayerNumber)
 				{
 					_players[i] = new HumanPlayer(tribe, leaderName, tribeName, tribeNamePlural);
 					if (difficulty == 0)
 					{
 						// Chieftain starts with 50 Gold
-						_playerGold[i] = 50;
+						Data.PlayerGold[i] = 50;
 					}
 					Log("- Player {0} is {1} of the {2} (human)", i, _players[i].Leader.Name, _players[i].Civilization.NamePlural);
 					continue;
@@ -241,7 +229,7 @@ namespace CivOne
 			GameTurn = 0;
 
 			// Number of turns to next anthology needs to be checked
-			_anthologyTurn = (ushort)Common.Random.Next(1, 128);
+			Data.NextAnthologyTurn = (ushort)Common.Random.Next(1, 128);
 		}
 	}
 }

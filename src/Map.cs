@@ -29,13 +29,16 @@ namespace CivOne
 		private int _landMass, _temperature, _climate, _age;
 		private ITile[,] _tiles;
 		private readonly bool[][,] _playerExplored = new bool[Game.MAX_PLAYER_COUNT][,];
-		private readonly bool[][,] _playerVisible = new bool[Game.MAX_PLAYER_COUNT][,];
+		// private readonly bool[][,] _playerVisible = new bool[Game.MAX_PLAYER_COUNT][,];
 		
 		public bool Ready { get; private set; }
 		public bool FixedStartPositions { get; private set; }
+		public int TerrainMasterWord => _terrainMasterWord;
 
 		public void Explore(int playerIndex, int x, int y, int range, bool sea)
 		{
+			if (!Game.Started) return;
+
 			if (y < 0 || y >= Map.HEIGHT) return;
 			while (x < 0) x += Map.WIDTH;
 			while (x >= Map.WIDTH) x -= Map.WIDTH;
@@ -51,7 +54,7 @@ namespace CivOne
 				while (xx >= Map.WIDTH) xx -= Map.WIDTH;
 				if (sea && !_tiles[xx, yy].IsOcean && (Math.Abs(relX) > 1 || Math.Abs(relY) > 1))
 					continue;
-				_playerVisible[playerIndex][xx, yy] = true;
+				Game.Instance.Data.TileVisibility[playerIndex][xx, yy] = true;
 			}
 		}
 
@@ -60,7 +63,7 @@ namespace CivOne
 			if (y < 0 || y >= Map.HEIGHT) return false;
 			while (x < 0) x += Map.WIDTH;
 			while (x >= Map.WIDTH) x -= Map.WIDTH;
-			return _playerVisible[playerIndex][x, y];
+			return Game.Instance.Data.TileVisibility[playerIndex][x, y];
 		}
 
 		public IEnumerable<ITile> QueryMapPart(int x, int y, int width, int height)
