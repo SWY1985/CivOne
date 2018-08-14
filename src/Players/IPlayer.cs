@@ -21,7 +21,6 @@ namespace CivOne.Players
 	{
 		ICivilization Civilization { get; }
 		ILeader Leader { get; }
-		IGovernment Government { get; set; }
 		IEnumerable<IPlayer> Embassies { get; }
 		IAdvance CurrentResearch { get; set; }
 		PalaceData Palace { get; }

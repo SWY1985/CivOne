@@ -14,7 +14,7 @@ namespace CivOne.Players
 {
 	internal class ComputerPlayer : BasePlayer
 	{
-		public override void ChooseGovernment() => Government = new Despotism();
+		public override void ChooseGovernment() => this.SetGovernment<Despotism>();
 
 		public ComputerPlayer(ICivilization civilization, string leaderName = null, string civilizationName = null, string citizenName = null) : base(civilization, leaderName, civilizationName, citizenName)
 		{

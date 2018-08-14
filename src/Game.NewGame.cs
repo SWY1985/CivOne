@@ -13,6 +13,7 @@ using System.Linq;
 using CivOne.Advances;
 using CivOne.Civilizations;
 using CivOne.Enums;
+using CivOne.Governments;
 using CivOne.Players;
 using CivOne.Tiles;
 using CivOne.Units;
@@ -163,6 +164,12 @@ namespace CivOne
 				return;
 			}
 			_instance = new Game(difficulty, competition, tribe, leaderName, tribeName, tribeNamePlural);
+
+			foreach (Player player in _instance.Players)
+			{
+				if (player.InnerPlayer is Barbarian) continue;
+				player.SetGovernment<Despotism>();
+			}
 			
 			foreach (IUnit unit in _instance._units)
 			{

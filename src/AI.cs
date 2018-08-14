@@ -268,7 +268,7 @@ namespace CivOne
 			{
 				if (city.Units.Length < 4)
 				{
-					if (Player.Government is Republic || Player.Government is Democratic)
+					if (Player.RepublicDemocratic())
 					{
 						if (Player.HasAdvance<Writing>()) production = new Diplomat();
 					}

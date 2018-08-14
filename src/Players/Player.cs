@@ -39,8 +39,8 @@ namespace CivOne.Players
 		public ILeader Leader => _player.Leader;
 		public IGovernment Government
 		{
-			get => _player.Government;
-			set => _player.Government = value;
+			get => _player.GetGovernment();
+			set => _player.SetGovernment(value);
 		}
 		public IEnumerable<IPlayer> Embassies => _player.Embassies;
 		public IAdvance CurrentResearch

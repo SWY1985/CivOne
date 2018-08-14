@@ -25,7 +25,6 @@ namespace CivOne.Players
 
 		public ICivilization Civilization { get; }
 		public ILeader Leader => Civilization.Leader;
-		public virtual IGovernment Government { get; set; } = new Despotism();
 		public PalaceData Palace { get; } = new PalaceData();
 
 		public IEnumerable<IPlayer> Embassies => _embassies.OrderBy(x => x).Select(e => Game.Instance.GetPlayer(e));
@@ -82,7 +81,6 @@ namespace CivOne.Players
 
 			_embassies.AddRange(player._embassies);
 			
-			Government = player.Government;
 			Palace = player.Palace;
 
 			CurrentResearch = player.CurrentResearch;

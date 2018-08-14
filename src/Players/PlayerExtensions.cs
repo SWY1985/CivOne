@@ -136,8 +136,14 @@ namespace CivOne.Players
 				return player.WonderAvailable(production as IWonder);
 			return true;
 		}
+		
+		public static IGovernment GetGovernment(this IPlayer player) => Reflect.GetGovernments().FirstOrDefault(x => x.Id == Game.Instance.Data.Government[Game.Instance.PlayerNumber(player)]) ?? new Anarchy();
 
-		public static bool HasGovernment<T>(this IPlayer player) where T : IGovernment => player.Government is T;
+		public static void SetGovernment(this IPlayer player, IGovernment government) => Game.Instance.Data.Government[Game.Instance.PlayerNumber(player)] = (ushort)(government?.Id ?? 0);
+
+		public static void SetGovernment<T>(this IPlayer player) where T : IGovernment, new() => player.SetGovernment(new T());
+
+		public static bool HasGovernment<T>(this IPlayer player) where T : IGovernment => player.GetGovernment() is T;
 
 		public static bool AnarchyDespotism(this IPlayer player) => player.HasGovernment<Anarchy>() || player.HasGovernment<Despotism>();
 
@@ -145,7 +151,7 @@ namespace CivOne.Players
 
 		public static bool RepublicDemocratic(this IPlayer player) => player.HasGovernment<Republic>() || player.HasGovernment<CivOne.Governments.Democracy>();
 
-		public static void Revolt(this IPlayer player) => player.Government = new Anarchy();
+		public static void Revolt(this IPlayer player) => player.SetGovernment<Anarchy>();
 
 		public static void Explore(this IPlayer player, int x, int y, int range = 1, bool sea = false) => Map.Instance.Explore(Game.Instance.PlayerNumber(player), x, y, range, sea);
 

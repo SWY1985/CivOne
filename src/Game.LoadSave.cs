@@ -103,7 +103,6 @@ namespace CivOne
 				ICivilization[] civs = Common.Civilizations.Where(c => c.PreferredPlayerNumber == i).ToArray();
 				ICivilization civ = civs[gameData.CivilizationIdentity[i] % civs.Length];
 				IPlayer player = (_players[i] = CreatePlayer(civ, gameData.LeaderNames[i], gameData.CitizenNames[i], gameData.CivilizationNames[i], (i == gameData.HumanPlayer)));
-				player.Government = Reflect.GetGovernments().FirstOrDefault(x => x.Id == gameData.Government[i]);
 
 				player.TaxesRate = gameData.TaxRate[i];
 				player.LuxuriesRate = 10 - gameData.ScienceRate[i] - player.TaxesRate;
@@ -117,6 +116,7 @@ namespace CivOne
 			Data.ResearchProgress = gameData.ResearchProgress;
 			Data.AdvanceFirstDiscovery = gameData.AdvanceFirstDiscovery;
 			Data.TileVisibility = gameData.TileVisibility;
+			Data.Government = gameData.Government;
 
 			Data.GameTurn = gameData.GameTurn;
 			Data.CityNames = gameData.CityNames;

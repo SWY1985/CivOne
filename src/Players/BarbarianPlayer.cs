@@ -14,28 +14,14 @@ namespace CivOne.Players
 {
 	internal class BarbarianPlayer : BasePlayer
 	{
-		public override IGovernment Government
-		{
-			get => new Anarchy();
-			set
-			{
-				// Do nothing, always Anarchy
-			}
-		}
-
-		public override void ChooseGovernment()
-		{
-			// Do nothing, always Anarchy
-		}
+		public override void ChooseGovernment() => this.SetGovernment<Anarchy>();
 
 		public BarbarianPlayer() : base(new Barbarian())
 		{
-			Government = new Anarchy();
 		}
 
 		public BarbarianPlayer(HumanPlayer humanPlayer) : base(humanPlayer)
 		{
-			Government = new Anarchy();
 		}
 	}
 }

@@ -19,7 +19,7 @@ namespace CivOne.Screens
 {
 	internal class King : BaseScreen
 	{
-		private readonly IPlayer _player;
+		private readonly Player _player;
 
 		private readonly Picture _background;
 
@@ -44,7 +44,7 @@ namespace CivOne.Screens
 			return true;
 		}
 		
-		public King(IPlayer player)
+		public King(Player player)
 		{
 			_player = player;
 

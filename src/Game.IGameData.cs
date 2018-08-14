@@ -104,14 +104,7 @@ namespace CivOne
 				// read-only
 			}
 		}
-		ushort[] IGameData.Government
-		{
-			get => _players.Select(x => (ushort)x.Government.Id).ToArray();
-			set
-			{
-				// read-only
-			}
-		}
+		ushort[] IGameData.Government { get; set; } = new ushort[MAX_PLAYER_COUNT];
 		CityData[] IGameData.Cities
 		{
 			get => _cities.GetCityData().ToArray();
