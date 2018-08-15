@@ -203,24 +203,50 @@ namespace CivOne
 			{
 				if (unit != null && !unit.Goto.IsEmpty)
 				{
-					int distance = unit.Tile.DistanceTo(unit.Goto);
+
 					ITile[] tiles = (unit as BaseUnit).MoveTargets.OrderBy(x => x.DistanceTo(unit.Goto)).ThenBy(x => x.Movement).ToArray();
-					if (tiles.Length == 0 || tiles[0].DistanceTo(unit.Goto) > distance)
+
+					if (unit.Class == UnitClass.Land)
 					{
-						// No valid tile to move to, cancel goto
-						unit.Goto = Point.Empty;
-						return;
-					}
-					else if (tiles[0].DistanceTo(unit.Goto) == distance)
-					{
-						// Distance is unchanged, 50% chance to cancel goto
-						if (Common.Random.Next(0, 100) < 50)
-						{
+						/*  Try AStar */
+						AStar.sPosition Destination, Pos;
+						Destination.iX = unit.Goto.X;
+						Destination.iY = unit.Goto.Y;
+						Pos.iX = unit.X;
+						Pos.iY = unit.Y;
+
+						AStarInterface AStarInterface = new AStarInterface();
+
+						AStarInterface.sPosition NextPosition = AStarInterface.FindPath(Pos, Destination);
+						if (NextPosition.iX < 0)
+						{         // if no path found
 							unit.Goto = Point.Empty;
 							return;
 						}
-					}
+						unit.MoveTo(NextPosition.iX - Pos.iX, NextPosition.iY - Pos.iY);
+						return;
 
+					}
+					else
+					{
+
+						int distance = unit.Tile.DistanceTo(unit.Goto);
+						if (tiles.Length == 0 || tiles[0].DistanceTo(unit.Goto) > distance)
+						{
+							// No valid tile to move to, cancel goto
+							unit.Goto = Point.Empty;
+							return;
+						}
+						else if (tiles[0].DistanceTo(unit.Goto) == distance)
+						{
+							// Distance is unchanged, 50% chance to cancel goto
+							if (Common.Random.Next(0, 100) < 50)
+							{
+								unit.Goto = Point.Empty;
+								return;
+							}
+						}
+					}
 					unit.MoveTo(tiles[0].X - unit.X, tiles[0].Y - unit.Y);
 					return;
 				}

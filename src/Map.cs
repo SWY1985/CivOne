@@ -168,5 +168,31 @@ namespace CivOne
 			
 			Log("Map instance created");
 		}
+
+		public float GetMoveCost( int x, int y )			// Used by AStar
+		{
+			float fCost = 3;		// plain etc...
+
+			if ( x < 0 || x >= WIDTH ) return float.PositiveInfinity; ;
+			if ( y < 0 || y >= HEIGHT ) return float.PositiveInfinity;
+			
+			bool road = _tiles[ x, y ].Road;
+			bool railRoad = _tiles[ x, y ].RailRoad;
+			if( road || railRoad ) return 1f ;
+
+			switch( _tiles[ x, y ].Type )
+			{
+				case Terrain.Forest: fCost = 6; break;
+				case Terrain.Swamp: fCost = 6; break;
+				case Terrain.Jungle: fCost = 6; break;
+				case Terrain.Hills: fCost = 6; break;
+				case Terrain.Mountains: fCost = 9; break;
+				case Terrain.Arctic: fCost = 6; break;
+				case Terrain.Ocean: fCost = float.PositiveInfinity; break;
+			}
+
+			return fCost;
+
+		}
 	}
 }
