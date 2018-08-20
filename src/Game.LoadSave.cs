@@ -104,8 +104,6 @@ namespace CivOne
 				ICivilization civ = civs[gameData.CivilizationIdentity[i] % civs.Length];
 				IPlayer player = (_players[i] = CreatePlayer(civ, gameData.LeaderNames[i], gameData.CitizenNames[i], gameData.CivilizationNames[i], (i == gameData.HumanPlayer)));
 
-				player.TaxesRate = gameData.TaxRate[i];
-				player.LuxuriesRate = 10 - gameData.ScienceRate[i] - player.TaxesRate;
 				player.StartX = (short)gameData.StartingPositionX[i];
 
 				_players[i] = player;
@@ -113,6 +111,8 @@ namespace CivOne
 
 			Data.DiscoveredAdvanceIDs = gameData.DiscoveredAdvanceIDs;
 			Data.PlayerGold = gameData.PlayerGold;
+			Data.TaxRate = gameData.TaxRate;
+			Data.ScienceRate = gameData.ScienceRate;
 			Data.ResearchProgress = gameData.ResearchProgress;
 			Data.AdvanceFirstDiscovery = gameData.AdvanceFirstDiscovery;
 			Data.TileVisibility = gameData.TileVisibility;

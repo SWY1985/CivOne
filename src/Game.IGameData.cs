@@ -80,22 +80,8 @@ namespace CivOne
 		string[] IGameData.CityNames { get; set; } = Common.AllCityNames.ToArray();
 		short[] IGameData.PlayerGold { get; set; } = new short[MAX_PLAYER_COUNT];
 		short[] IGameData.ResearchProgress { get; set; } = new short[MAX_PLAYER_COUNT];
-		ushort[] IGameData.TaxRate
-		{
-			get => _players.Select(x => (ushort)x.TaxesRate).ToArray();
-			set
-			{
-				// read-only
-			}
-		}
-		ushort[] IGameData.ScienceRate
-		{
-			get => _players.Select(x => (ushort)x.ScienceRate).ToArray();
-			set
-			{
-				// read-only
-			}
-		}
+		ushort[] IGameData.TaxRate { get; set; } = Enumerable.Repeat((ushort)5, MAX_PLAYER_COUNT).ToArray();
+		ushort[] IGameData.ScienceRate { get; set; } = Enumerable.Repeat((ushort)5, MAX_PLAYER_COUNT).ToArray();
 		ushort[] IGameData.StartingPositionX
 		{
 			get => _players.Select(x => (ushort)x.StartX).ToArray();

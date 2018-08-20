@@ -31,29 +31,6 @@ namespace CivOne.Players
 
 		public IAdvance CurrentResearch { get; set; }
 		
-		private int _luxuriesRate = 0, _taxesRate = 5, _scienceRate = 5;
-		public int LuxuriesRate
-		{
-			get => _luxuriesRate;
-			set
-			{
-				int diff = _luxuriesRate - value;
-				_luxuriesRate = value;
-				_scienceRate += diff;
-			}
-		}
-		public int TaxesRate
-		{
-			get => _taxesRate;
-			set
-			{
-				int diff = _taxesRate - value;
-				_taxesRate = value;
-				_scienceRate += diff;
-			}
-		}
-		public int ScienceRate => _scienceRate;
-		
 		public short StartX { get; set; }
 
 		public int CityNamesSkipped { get; set; }
@@ -84,10 +61,6 @@ namespace CivOne.Players
 			Palace = player.Palace;
 
 			CurrentResearch = player.CurrentResearch;
-
-			_luxuriesRate = player._luxuriesRate;
-			_scienceRate = player._scienceRate;
-			_taxesRate = player._taxesRate;
 
 			StartX = player.StartX;
 			CityNamesSkipped = player.CityNamesSkipped;

@@ -25,10 +25,6 @@ namespace CivOne.Players
 		IAdvance CurrentResearch { get; set; }
 		PalaceData Palace { get; }
 
-		int LuxuriesRate { get; set; }
-		int TaxesRate { get; set; }
-		int ScienceRate { get; }
-
 		short StartX { get; set; }
 		int CityNamesSkipped { get; set; }
 

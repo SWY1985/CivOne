@@ -50,17 +50,21 @@ namespace CivOne.Players
 		}
 		public PalaceData Palace => _player.Palace;
 
-		public int LuxuriesRate
-		{
-			get => _player.LuxuriesRate;
-			set => _player.LuxuriesRate = value;
-		}
 		public int TaxesRate
 		{
-			get => _player.TaxesRate;
-			set => _player.TaxesRate = value;
+			get => _player.GetTaxRate();
+			set => _player.SetTaxRate(value);
 		}
-		public int ScienceRate => _player.ScienceRate;
+		public int ScienceRate
+		{
+			get => _player.GetScienceRate();
+			set => _player.SetScienceRate(value);
+		}
+		public int LuxuriesRate
+		{
+			get => _player.GetLuxuryRate();
+			set => _player.SetLuxuryRate(value);
+		}
 
 		public short StartX
 		{

@@ -474,6 +474,51 @@ namespace CivOne
 			Game.Instance.SetAdvanceOrigin(Common.Advances.First(x => x.Id == id), GetPlayer((byte)playerIndex));
 		}
 
+		public int GetTaxRate(int playerIndex)
+		{
+			if (playerIndex < Data.TaxRate.GetLowerBound(0) || playerIndex > Data.TaxRate.GetUpperBound(0)) return -1;
+			return (int)Game.Data.TaxRate[playerIndex];
+		}
+
+		public void SetTaxRate(int playerIndex, int taxRate)
+		{
+			if (playerIndex < Data.TaxRate.GetLowerBound(0) || playerIndex > Data.TaxRate.GetUpperBound(0) ||
+				playerIndex < Data.ScienceRate.GetLowerBound(0) || playerIndex > Data.ScienceRate.GetUpperBound(0)) return;
+			int diff = taxRate - GetTaxRate(playerIndex);
+			if ((GetScienceRate(playerIndex) - diff) < 0 || (GetScienceRate(playerIndex) - diff) > 10) return;
+			Game.Data.ScienceRate[playerIndex] = (ushort)(GetScienceRate(playerIndex) - diff);
+			Game.Data.TaxRate[playerIndex] = (ushort)taxRate;
+		}
+
+		public int GetScienceRate(int playerIndex)
+		{
+			if (playerIndex < Data.TaxRate.GetLowerBound(0) || playerIndex > Data.TaxRate.GetUpperBound(0) ||
+				playerIndex < Data.ScienceRate.GetLowerBound(0) || playerIndex > Data.ScienceRate.GetUpperBound(0)) return -1;
+			return (int)Game.Data.ScienceRate[playerIndex];
+		}
+
+		public void SetScienceRate(int playerIndex, int scienceRate)
+		{
+			if (playerIndex < Data.TaxRate.GetLowerBound(0) || playerIndex > Data.TaxRate.GetUpperBound(0) ||
+				playerIndex < Data.ScienceRate.GetLowerBound(0) || playerIndex > Data.ScienceRate.GetUpperBound(0)) return;
+			if (scienceRate < 0 || (GetTaxRate(playerIndex) + scienceRate) > 10) return;
+			Game.Data.ScienceRate[playerIndex] = (ushort)scienceRate;
+		}
+
+		public int GetLuxuryRate(int playerIndex)
+		{
+			if (playerIndex < Data.TaxRate.GetLowerBound(0) || playerIndex > Data.TaxRate.GetUpperBound(0) ||
+				playerIndex < Data.ScienceRate.GetLowerBound(0) || playerIndex > Data.ScienceRate.GetUpperBound(0)) return -1;
+			return (10 - Game.Data.TaxRate[playerIndex] - Game.Data.ScienceRate[playerIndex]);
+		}
+
+		public void SetLuxuryRate(int playerIndex, int luxuryRate)
+		{
+			if (playerIndex < Data.TaxRate.GetLowerBound(0) || playerIndex > Data.TaxRate.GetUpperBound(0) ||
+				playerIndex < Data.ScienceRate.GetLowerBound(0) || playerIndex > Data.ScienceRate.GetUpperBound(0)) return;
+			SetScienceRate(playerIndex, 10 - GetTaxRate(playerIndex) - luxuryRate);
+		}
+
 		public City[] GetCities() => _cities.ToArray();
 
 		public IWonder[] BuiltWonders => _cities.SelectMany(c => c.Wonders).ToArray();

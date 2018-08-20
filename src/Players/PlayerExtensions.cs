@@ -160,6 +160,18 @@ namespace CivOne.Players
 		public static short GetGold(this IPlayer player) => Game.Instance.GetGold(Game.Instance.PlayerNumber(player));
 
 		public static void SetGold(this IPlayer player, short value) => Game.Instance.SetGold(Game.Instance.PlayerNumber(player), value);
+
+		public static int GetTaxRate(this IPlayer player) => Game.Instance.GetTaxRate(Game.Instance.PlayerNumber(player));
+		
+		public static void SetTaxRate(this IPlayer player, int value) => Game.Instance.SetTaxRate(Game.Instance.PlayerNumber(player), value);
+		
+		public static int GetScienceRate(this IPlayer player) => Game.Instance.GetScienceRate(Game.Instance.PlayerNumber(player));
+		
+		public static void SetScienceRate(this IPlayer player, int value) => Game.Instance.SetScienceRate(Game.Instance.PlayerNumber(player), value);
+		
+		public static int GetLuxuryRate(this IPlayer player) => Game.Instance.GetLuxuryRate(Game.Instance.PlayerNumber(player));
+		
+		public static void SetLuxuryRate(this IPlayer player, int value) => Game.Instance.SetLuxuryRate(Game.Instance.PlayerNumber(player), value);
 		
 		public static short GetScience(this IPlayer player) => Game.Instance.GetScience(Game.Instance.PlayerNumber(player));
 		
