@@ -418,8 +418,18 @@ namespace CivOne.Graphics
 			resource
 				.ColourReplace(3, 0)
 				.ColourReplace(5, Common.ColourDark[city.Owner]);
-			output.AddLayer(resource, 0, 0)
-				.DrawText($"{city.Size}", (smallFont ? 1 : 0), 5, 9, 5, TextAlign.Center);
+				
+			if (city.IsInDisorder)
+			{
+				output.AddLayer(resource, 0, 0)
+					.AddLayer(Icons.Citizen(Enums.Citizen.UnhappyMale), 5, 1);
+			}
+			else
+			{
+				output.AddLayer(resource, 0, 0)
+					.DrawText($"{city.Size}", (smallFont ? 1 : 0), 5, 9, 5, TextAlign.Center);
+			}
+
 			resource?.Dispose();
 
 			if (city.HasBuilding<CityWalls>())
