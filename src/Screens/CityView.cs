@@ -832,7 +832,7 @@ namespace CivOne.Screens
 					.As<Picture>();
  				_background.AddLayer(dialog, 80, 8);
 			}
-			
+
  			if (_weLovePresidentDay = weLovePresidentDay)
 			{
 				Picture marchers;
@@ -853,7 +853,7 @@ namespace CivOne.Screens
 					_invadersOrRevolters[ii] = marchers[xx + (frameX * (ww + 1)), yy + (frameY * (hh + 1)), ww, hh];
 				}
 				_x = 0;
- 				string[] lines =  new [] { $"'We Love the President'", $"day celebrated in", "{city.Name}!" };
+ 				string[] lines =  new [] { $"'We Love the President'", $"day celebrated in", $"{city.Name}!" };
 				int width = lines.Max(l => Resources.GetTextSize(5, l).Width) + 12;
 				Picture dialog = new Picture(width, 54)
 					.Tile(Pattern.PanelGrey, 1, 1)
