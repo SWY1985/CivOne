@@ -196,6 +196,12 @@ namespace CivOne
 					unit.Owner = city.Owner;
 					unit.SetHome(city);
 					_units.Add(unit);
+
+				/*if (city.IsInDisorder)
+				{
+					city.WasInDisorder = true;
+				}*/
+
 				}
 
 				cityList.Add(cityData.Id, city);

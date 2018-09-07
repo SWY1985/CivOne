@@ -35,6 +35,8 @@ namespace CivOne.Screens
 		private readonly bool _founded;
 		private readonly bool _firstView;
 		private readonly bool _captured;
+		private readonly bool _disorder;
+		private readonly bool _weLovePresidentDay;
 		private readonly byte[,] _noiseMap;
 		
 		private int _noiseCounter = NOISE_COUNT + 15;
@@ -42,7 +44,7 @@ namespace CivOne.Screens
 		private int _houseType = 0;
 
 		private readonly Picture _overlay;
-		private readonly Picture[] _invaders;
+		private readonly Picture[] _invadersOrRevolters;
 
 		private bool _update = true;
 		
@@ -80,7 +82,7 @@ namespace CivOne.Screens
 				_update = true;
 			}
 
-			if (_captured)
+			if (_captured || _disorder)
 			{
 				this.AddLayer(_background);
 				int frame = (_x % 30) / 3;
@@ -88,7 +90,21 @@ namespace CivOne.Screens
 				{
 					int xx = (_x - 65) - (48 * i);
 					if (xx + 78 <= 0) continue;
-					this.AddLayer(_invaders[frame], xx, _y);
+					this.AddLayer(_invadersOrRevolters[frame], xx, _y);
+				}
+				_x++;
+				return true;
+			}
+ 			if (_weLovePresidentDay)
+			{
+				// todo: make this go backwards
+				this.AddLayer(_background);
+				int frame = (_x % 30) / 3;
+				for (int i = 7; i >= 0; i--)
+				{
+					int xx = (_x - 65) - (48 * i);
+					if (xx + 78 <= 0) continue;
+					this.AddLayer(_invadersOrRevolters[frame], xx, _y);
 				}
 				_x++;
 				return true;
@@ -696,7 +712,17 @@ namespace CivOne.Screens
 			return new CityView(city, captured: true);
 		}
 		
-		public CityView(City city, bool founded = false, bool firstView = false, IProduction production = null, bool captured = false)
+		public static CityView Disorder(City city)
+		{
+			return new CityView(city, disorder: true);
+		}
+
+		public static CityView WeLovePresidentDay(City city)
+		{
+			return new CityView(city, weLovePresidentDay: true);
+		}
+
+		public CityView(City city, bool founded = false, bool firstView = false, IProduction production = null, bool captured = false, bool disorder = false, bool weLovePresidentDay = false)
 		{
 			_dialogText = TextSettings.ShadowText(15, 5);
 			_dialogText.FontId = 5;
@@ -737,12 +763,12 @@ namespace CivOne.Screens
 					_y = 133;
 				}
 
-				_invaders = new Picture[10];
+				_invadersOrRevolters = new Picture[10];
 				for (int ii = 0; ii < 10; ii++)
 				{
 					int frameX = (ii % 4);
 					int frameY = (ii - frameX) / 4;
-					_invaders[ii] = invaders[xx + (frameX * (ww + 1)), yy + (frameY * (hh + 1)), ww, hh];
+					_invadersOrRevolters[ii] = invaders[xx + (frameX * (ww + 1)), yy + (frameY * (hh + 1)), ww, hh];
 				}
 				_x = 0;
 
@@ -768,6 +794,76 @@ namespace CivOne.Screens
 					.As<Picture>();
 
 				_background.AddLayer(dialog, 80, 8);
+			}
+
+			if (_disorder = disorder)
+			{
+				Picture revolters;
+				int xx = 1, yy = 1, ww, hh;
+				if (Game.CurrentPlayer.HasAdvance<Conscription>())
+				{
+					ww = 78;
+					hh = 63;
+					revolters = Resources["RIOT"];
+				}
+				else
+				{
+					ww = 74;
+					hh = 65;
+					revolters = Resources["RIOT2"];
+				}
+ 				_invadersOrRevolters = new Picture[10];
+				for (int ii = 0; ii < 10; ii++)
+				{
+					int frameX = (ii % 4);
+					int frameY = (ii - frameX) / 4;
+					_invadersOrRevolters[ii] = revolters[xx + (frameX * (ww + 1)), yy + (frameY * (hh + 1)), ww, hh];
+				}
+				_x = 0;
+ 				string[] lines =  new [] { $"Civil disorder in", $"{city.Name}! Mayor", "flees in panic." };
+				int width = lines.Max(l => Resources.GetTextSize(5, l).Width) + 12;
+				Picture dialog = new Picture(width, 54)
+					.Tile(Pattern.PanelGrey, 1, 1)
+					.DrawRectangle()
+					.DrawRectangle3D(1, 1, width - 2, 52)
+					.DrawText(lines[0], 5, 6, _dialogText)
+					.DrawText(lines[1], 5, 21, _dialogText)
+					.DrawText(lines[2], 5, 36, _dialogText)
+					.As<Picture>();
+ 				_background.AddLayer(dialog, 80, 8);
+			}
+			
+ 			if (_weLovePresidentDay = weLovePresidentDay)
+			{
+				Picture marchers;
+				int xx = 1, yy = 1, ww = 78, hh = 63;
+				if (Game.CurrentPlayer.HasAdvance<Conscription>())
+				{
+					marchers = Resources["LOVE2"];
+				}
+				else
+				{
+					marchers = Resources["LOVE1"];
+				}
+ 				_invadersOrRevolters = new Picture[10];
+				for (int ii = 0; ii < 10; ii++)
+				{
+					int frameX = (ii % 4);
+					int frameY = (ii - frameX) / 4;
+					_invadersOrRevolters[ii] = marchers[xx + (frameX * (ww + 1)), yy + (frameY * (hh + 1)), ww, hh];
+				}
+				_x = 0;
+ 				string[] lines =  new [] { $"'We Love the President'", $"day celebrated in", "{city.Name}!" };
+				int width = lines.Max(l => Resources.GetTextSize(5, l).Width) + 12;
+				Picture dialog = new Picture(width, 54)
+					.Tile(Pattern.PanelGrey, 1, 1)
+					.DrawRectangle()
+					.DrawRectangle3D(1, 1, width - 2, 52)
+					.DrawText(lines[0], 5, 6, _dialogText)
+					.DrawText(lines[1], 5, 21, _dialogText)
+					.DrawText(lines[2], 5, 36, _dialogText)
+					.As<Picture>();
+ 				_background.AddLayer(dialog, 80, 8);
 			}
 
 			if (production != null)

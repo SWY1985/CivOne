@@ -115,6 +115,10 @@ namespace CivOne.Tasks
 
 		public static Show CaptureCity(City city) => new Show(CityView.Capture(city));
 
+		public static Show DisorderCity(City city) => new Show(CityView.Disorder(city));
+
+ 		public static Show WeLovePresidentDayCity(City city) => new Show(CityView.WeLovePresidentDay(city));
+
 		public static Show BuildPalace() => new Show(new PalaceView(true));
 
 		public static Show CaravanChoice(Caravan unit, City city) => new Show(new CaravanChoice(unit, city));

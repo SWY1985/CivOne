@@ -23,15 +23,13 @@ namespace CivOne.Screens.Debug
 
 		private Menu _citySelect;
 
-		private Input _input;
-
 		private int _index = 0;
 
 		private City _selectedCity = null;
 
 		public string Value { get; private set; }
 
-		public event EventHandler Accept, Cancel;
+		public event EventHandler Cancel;
 
 		private void CitiesMenu()
 		{
@@ -123,7 +121,7 @@ namespace CivOne.Screens.Debug
 			}
 			else if (_selectedCity != null && Common.TopScreen.GetType() != typeof(Input))
 			{
-				Common.AddScreen(_input);
+				Common.AddScreen(null);
 			}
 			return false;
 		}

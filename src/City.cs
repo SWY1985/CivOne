@@ -86,6 +86,10 @@ namespace CivOne
 		public int HappyCitizens => Citizens.Count(c => c == Citizen.HappyMale || c == Citizen.HappyFemale);
 		public int UnhappyCitizens => Citizens.Count(c => c == Citizen.UnhappyMale || c == Citizen.UnhappyFemale);
 
+		public int ContentCitizens => Citizens.Count(c => c == Citizen.ContentFemale || c == Citizen.ContentMale);
+ 		public bool IsInDisorder => _size > 0 && UnhappyCitizens > HappyCitizens;
+		public bool WasInDisorder {get; set;} = false;
+
 		internal int ShieldCosts
 		{
 			get
@@ -675,7 +679,61 @@ namespace CivOne
 		{
 			UpdateResources();
 
-			Food += FoodIncome;
+			if (IsInDisorder)
+			{
+				if (Common.Random.Next(20) == 1 && HasBuilding<Buildings.NuclearPlant>() && !Player.HasAdvance<Advances.FusionPower>())
+				{
+					// todo: meltdown
+				}
+ 				if (WasInDisorder)
+				{
+					if (Player == Human)
+						GameTask.Insert(Message.Advisor(Advisor.Domestic, true, "Civil Disorder in", $"{Name}! Mayor", "flees in panic."));
+				}
+				else
+				{
+					if (Player == Human)
+						{
+							Show disorderCity = Show.DisorderCity(this);
+ 							GameTask.Insert(disorderCity);
+						}
+					
+					Log($"City {Name} belonging to {Player.TribeName} has gone into disorder");
+				}
+ 				if (WasInDisorder && Player.Government is Advances.Democracy)
+				{
+					// todo: Force revolution
+				}
+ 				WasInDisorder = true;
+			}
+			else
+			{
+				if (WasInDisorder)
+				{
+					if (Player == Human)
+						GameTask.Insert(Message.Advisor(Advisor.Domestic, true, "Order restored", $" in{Name}."));
+ 					Log($"City {Name} belonging to {Player.TribeName} is no longer in disorder");
+				}
+ 				WasInDisorder = false;
+			}
+ 			if (UnhappyCitizens == 0 && HappyCitizens >= ContentCitizens)
+			{
+				// we love the president day
+				if (Player.Government is Governments.Democracy || Player.Government is Republic)
+				{ 
+					if (Food > 0)
+					{
+						Size++;
+					}
+				}
+				else
+				{
+					// we love the king day
+				}
+ 				GameTask.Insert(Show.WeLovePresidentDayCity(this));
+			}
+ 			Food += IsInDisorder ? 0 : FoodIncome;
+
 			if (Food < 0)
 			{
 				Food = 0;
@@ -727,7 +785,7 @@ namespace CivOne
 			}
 			else if (ShieldIncome > 0)
 			{
-				Shields += ShieldIncome;
+				Shields +=  IsInDisorder ? 0 : ShieldIncome;
 			}
 
 			if (Shields >= (int)CurrentProduction.Price * 10)
@@ -806,7 +864,7 @@ namespace CivOne
 			}
 
 			// TODO: Handle luxuries
-			Player.Gold += Taxes;
+			Player.Gold +=  IsInDisorder ? (short)0 : Taxes;
 			Player.Gold -= TotalMaintenance;
 			Player.Science += Science;
 			BuildingSold = false;
