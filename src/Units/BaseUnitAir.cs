@@ -25,12 +25,14 @@ namespace CivOne.Units
 
 		private void HandleFuel()
 		{
+            // If landing
 			if (Map[X, Y].City != null || Map[X, Y].Units.Any(u => u is Carrier))
 			{
 				MovesLeft = 0;
 				FuelLeft = TotalFuel;
 				return;
 			}
+            // if still in air with fuel
 			if (MovesLeft > 0 || FuelLeft > 0) return;
 			
 			// Air unit is out of fuel
@@ -83,7 +85,16 @@ namespace CivOne.Units
 			return (tile != null);
 		}
 
-		protected BaseUnitAir(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1) : base(price, attack, defense, move)
+        public override bool MoveTo(int relX, int relY)
+        {
+            BaseUnitAir unit = this;
+            int fuel = unit.FuelLeft;
+            bool _o = base.MoveTo( relX, relY );
+            return _o;
+        }
+
+
+        protected BaseUnitAir(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1) : base(price, attack, defense, move)
 		{
 			Class = UnitClass.Air;
 			TotalFuel = move;
