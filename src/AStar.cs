@@ -358,8 +358,9 @@ public class AStar
             uint j = ( i + ii ) % 8;
             NewPosition.iX = CurPosition.iX + aiRelPos[ j, 0 ];
 			NewPosition.iX = ( NewPosition.iX + Map.WIDTH ) % Map.WIDTH;
-			NewPosition.iY = CurPosition.iY + aiRelPos[ j, 1 ];
-			Node NewNode = new Node();
+            NewPosition.iY = CurPosition.iY + aiRelPos[ j, 1 ];
+            if( NewPosition.iY < 0 || NewPosition.iY >= Map.HEIGHT ) continue; 
+            Node NewNode = new Node();
 			NewNode.Position = NewPosition;
 			NewNode.IsClosed = false;
 			NewNode.PreviousPosition = CurPosition;
