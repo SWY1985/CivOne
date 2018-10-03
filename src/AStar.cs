@@ -302,9 +302,10 @@ public class AStar
                     continue;
 				}
 
-				// If position is not passable, ignore step 
 				float cost = Cost( currentNode.Position, NeighborNode.Position, currentNode.Steps );
-				if (cost == float.PositiveInfinity)
+
+                // If position is not passable, ignore step 
+                if( cost == float.PositiveInfinity)
 				{
 					continue;
 				}
@@ -349,7 +350,7 @@ public class AStar
 	{
 		int[,] aiRelPos = new int[,] { { -1, -1 }, { -1, 0 }, { -1, 1 }, { 0, -1 }, { 0, 1 }, { 1, -1 }, { 1, 0 }, { 1, 1 } };
 
-        ii = ++ii;          // just to make som variation in sea and air routing
+ //       ii = ++ii;          // just to make som variation in sea and air routing
         for ( uint i = 0; i < 8; i++)
 		{
 			sPosition CurPosition = CurrNode.Position;
@@ -401,13 +402,14 @@ public class AStar
 
 	protected float Cost(sPosition Positition, sPosition NextPosition, int iDistance )
 	{
-        // Try Avoide nmys for the first 9 steps by doing a detour
-        ITile _tile = Map[NextPosition.iX, NextPosition.iY];
         float _cost = 1f;
 
-        if ( iDistance <= 9 && ( _unit.Class == UnitClass.Land || _unit.Class == UnitClass.Water))
+        ITile _tile = Map[NextPosition.iX, NextPosition.iY];
+
+        // Try Avoide nmys for the first steps by doing a detour
+        if( iDistance <= 9 && ( _unit.Class == UnitClass.Land || _unit.Class == UnitClass.Water))
 		{
-			if ( ChecknNighbours( NextPosition ) ) _cost = 3.0f;		// increase cost if close to nmy Land/sea
+			if ( ChecknNighbours( NextPosition ) ) _cost = 5.0f;		// increase cost if close to nmy Land/sea unit
 		}
 
         if (_unit.Class == UnitClass.Land)
@@ -510,19 +512,33 @@ public class AStar
     /*  ******************************************************************************************************** */
     private int Distance( sPosition P1, sPosition P2 )
     {
-        return Common.DistanceToTile( P1.iX, P1.iY, P2.iX, P2.iY );
+        return Distance( P1.iX, P1.iY, P2.iX, P2.iY );
     }
 
     /*  ******************************************************************************************************** */
     private int Distance( City C, sPosition P2 )
     {
-        return Common.DistanceToTile( C.X, C.Y, P2.iX, P2.iY );
+        return Distance( C.X, C.Y, P2.iX, P2.iY );
     }
 
     /*  ******************************************************************************************************** */
     private int Distance( IUnit U, sPosition P2 )
     {
-        return Common.DistanceToTile( U.X, U.Y, P2.iX, P2.iY );
+        return Distance( U.X, U.Y, P2.iX, P2.iY );
+    }
+    /*  ******************************************************************************************************** */
+
+    private int Distance( int X1, int Y1, int X2, int Y2 )
+    {
+        int X = Math.Abs( X1 - X2 );
+        int Y = Math.Abs( Y1 - Y2 );
+
+        if( X > Map.WIDTH / 2 )
+        {
+            X = Map.WIDTH - X;
+        }
+        if( X > Y ) return X;
+        return Y;
     }
 
     /*  ******************************************************************************************************** */
@@ -535,11 +551,11 @@ public class AStar
     }
 
     /*  ******************************************************************************************************** */
-    private sPosition Position( City U )
+    private sPosition Position( City C )
     {
         sPosition position;
-        position.iX = U.X;
-        position.iY = U.Y;
+        position.iX = C.X;
+        position.iY = C.Y;
         return position;
     }
 
@@ -549,16 +565,8 @@ public class AStar
 		int iX, iY;
 		byte _owner = _unit.Owner;
 
-		if ( position.iX < 0 )
-		{
-			iX = _unit.X;
-			iY = _unit.Y;
-		}
-		else
-		{
-			iX = position.iX;
-			iY = position.iY;
-		}
+		iX = position.iX;
+		iY = position.iY;
 
 		for ( int iYY = -1; iYY <= 1; iYY++ )
 			for ( int iXX = -1; iXX <= 1; iXX++ )
@@ -566,7 +574,7 @@ public class AStar
 				int iXXX = ( iXX + iX + Map.WIDTH ) % Map.WIDTH;
 
 				ITile Nighbour = Map[ iXXX, iYY + iY ];
-				if ( Nighbour == null ) continue;
+				if ( Nighbour == null ) continue;           // Ever happens ??
 				if ( Nighbour.Units.Any( u => u.Owner != _owner ))
 					return true;		// enemy close
 			}
@@ -608,8 +616,8 @@ public class AStar
 
             int _CarrierDistance = 1000;              // "inpossible" distance
             int _CityDistance = 1000;              // "inpossible" distance
-            // Check for carriers
 
+            // Check for carriers
             IUnit[] _OwnCarriers = Game.GetUnits().Where( u => u.Owner == unit.Owner && u.Type == UnitType.Carrier ).ToArray();
             if( _OwnCarriers.Length > 0 )
             {
