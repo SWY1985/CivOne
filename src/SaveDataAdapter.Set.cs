@@ -47,14 +47,14 @@ namespace CivOne
 		private void SetArray(string fieldName, params short[] values)
 		{
 			byte[] bytes = new byte[values.Length * 2];
-			Buffer.BlockCopy(values, 0, bytes, 0, values.Length);
+			Buffer.BlockCopy(values, 0, bytes, 0, bytes.Length);
 			SetArray(fieldName, bytes);
 		}
 
 		private void SetArray(string fieldName, params ushort[] values)
 		{
 			byte[] bytes = new byte[values.Length * 2];
-			Buffer.BlockCopy(values, 0, bytes, 0, values.Length);
+			Buffer.BlockCopy(values, 0, bytes, 0, bytes.Length);
 			SetArray(fieldName, bytes);
 		}
 
