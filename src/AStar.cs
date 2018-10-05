@@ -513,33 +513,19 @@ public class AStar
     /*  ******************************************************************************************************** */
     private int Distance( sPosition P1, sPosition P2 )
     {
-        return Distance( P1.iX, P1.iY, P2.iX, P2.iY );
+        return Common.Distance( P1.iX, P1.iY, P2.iX, P2.iY );
     }
 
     /*  ******************************************************************************************************** */
     private int Distance( City C, sPosition P2 )
     {
-        return Distance( C.X, C.Y, P2.iX, P2.iY );
+        return Common.Distance( C.X, C.Y, P2.iX, P2.iY );
     }
 
     /*  ******************************************************************************************************** */
     private int Distance( IUnit U, sPosition P2 )
     {
-        return Distance( U.X, U.Y, P2.iX, P2.iY );
-    }
-    /*  ******************************************************************************************************** */
-
-    private int Distance( int X1, int Y1, int X2, int Y2 )
-    {
-        int X = Math.Abs( X1 - X2 );
-        int Y = Math.Abs( Y1 - Y2 );
-
-        if( X > Map.WIDTH / 2 )
-        {
-            X = Map.WIDTH - X;
-        }
-        if( X > Y ) return X;
-        return Y;
+        return Common.Distance( U.X, U.Y, P2.iX, P2.iY );
     }
 
     /*  ******************************************************************************************************** */

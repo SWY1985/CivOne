@@ -210,8 +210,23 @@ namespace CivOne
 		public static bool InCityRange(int x1, int y1, int x2, int y2) => new Rectangle(x2 - 2, y2 - 2, 5, 5).IntersectsWith(new Rectangle(x1, y1, 1, 1));
 		
 		public static int DistanceToTile(int x1, int y1, int x2, int y2) => Math.Max(Math.Min(Math.Abs(x2 - x1), Math.Abs(Map.WIDTH - (x2 - x1))), Math.Abs(y2 - y1));
-		
-		public static byte BinaryReadByte(BinaryReader reader, int position)
+
+        // The above function do not work properly at "dateline"  ( methink is is just a "Math.Abs" that is missing ? )   I use the one below.   JR
+        /*  ******************************************************************************************************** */
+        public static int Distance( int X1, int Y1, int X2, int Y2 )
+        {
+            int X = Math.Abs( X1 - X2 );
+            int Y = Math.Abs( Y1 - Y2 );
+
+            if( X > Map.WIDTH / 2 )
+            {
+                X = Map.WIDTH - X;
+            }
+            if( X > Y ) return X;
+            return Y;
+        }
+
+        public static byte BinaryReadByte(BinaryReader reader, int position)
 		{
 			if (reader.BaseStream.Position != position)
 				reader.BaseStream.Seek(position, SeekOrigin.Begin);
