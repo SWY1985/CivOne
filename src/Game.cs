@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using CivOne.Advances;
 using CivOne.Buildings;
 using CivOne.Civilizations;
@@ -203,21 +205,52 @@ namespace CivOne
 			{
 				if (unit != null && !unit.Goto.IsEmpty)
 				{
-					int distance = unit.Tile.DistanceTo(unit.Goto);
+
 					ITile[] tiles = (unit as BaseUnit).MoveTargets.OrderBy(x => x.DistanceTo(unit.Goto)).ThenBy(x => x.Movement).ToArray();
-					if (tiles.Length == 0 || tiles[0].DistanceTo(unit.Goto) > distance)
-					{
-						// No valid tile to move to, cancel goto
-						unit.Goto = Point.Empty;
-						return;
-					}
-					else if (tiles[0].DistanceTo(unit.Goto) == distance)
-					{
-						// Distance is unchanged, 50% chance to cancel goto
-						if (Common.Random.Next(0, 100) < 50)
-						{
+
+                    if( Settings.Instance.PathFinding )
+                    {
+                        /*  Use AStar  */
+                        AStar.sPosition Destination, Pos;
+                        Destination.iX = unit.Goto.X;
+                        Destination.iY = unit.Goto.Y;
+                        Pos.iX = unit.X;
+                        Pos.iY = unit.Y;
+
+                        if( Destination.iX == Pos.iX && Destination.iY == Pos.iY )
+                        {
+                            unit.Goto = Point.Empty;   // eh... never mind
+                            return;
+                        }
+                        AStar AStar = new AStar();
+                        AStar.sPosition NextPosition = AStar.FindPath( Destination, unit );
+                        if (NextPosition.iX < 0)
+						{         // if no path found
 							unit.Goto = Point.Empty;
 							return;
+						}
+						unit.MoveTo(NextPosition.iX - Pos.iX, NextPosition.iY - Pos.iY);
+                        return;
+
+					}
+					else
+					{
+
+						int distance = unit.Tile.DistanceTo(unit.Goto);
+						if (tiles.Length == 0 || tiles[0].DistanceTo(unit.Goto) > distance)
+						{
+							// No valid tile to move to, cancel goto
+							unit.Goto = Point.Empty;
+							return;
+						}
+						else if (tiles[0].DistanceTo(unit.Goto) == distance)
+						{
+							// Distance is unchanged, 50% chance to cancel goto
+							if (Common.Random.Next(0, 100) < 50)
+							{
+								unit.Goto = Point.Empty;
+								return;
+							}
 						}
 					}
 
@@ -442,7 +475,8 @@ namespace CivOne
 					_activeUnit = 0;
 					
 				// Does the current unit still have moves left?
-				if (_units[_activeUnit].Owner == _currentPlayer && (_units[_activeUnit].MovesLeft > 0 || _units[_activeUnit].PartMoves > 0) && !_units[_activeUnit].Sentry && !_units[_activeUnit].Fortify)
+				if (_units[_activeUnit].Owner == _currentPlayer && (_units[_activeUnit].MovesLeft > 0 || _units[_activeUnit].PartMoves > 0) 
+                    && !_units[_activeUnit].Sentry && !_units[_activeUnit].Fortify)
 					return _units[_activeUnit];
 
 				// Task busy, don't change the active unit
@@ -460,7 +494,8 @@ namespace CivOne
 				}
 				
 				// Loop through units
-				while (_units[_activeUnit].Owner != _currentPlayer || (_units[_activeUnit].MovesLeft == 0 && _units[_activeUnit].PartMoves == 0) || (_units[_activeUnit].Sentry || _units[_activeUnit].Fortify))
+				while (_units[_activeUnit].Owner != _currentPlayer || (_units[_activeUnit].MovesLeft == 0 && _units[_activeUnit].PartMoves == 0) 
+                    || (_units[_activeUnit].Sentry || _units[_activeUnit].Fortify))
 				{
 					_activeUnit++;
 					if (_activeUnit >= _units.Count)

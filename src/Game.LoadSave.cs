@@ -192,10 +192,17 @@ namespace CivOne
 				foreach (byte fortifiedUnit in cityData.FortifiedUnits)
 				{
 					IUnit unit = CreateUnit((UnitType)fortifiedUnit, city.X, city.Y);
-					unit.Status = (byte)(1 << 3);
-					unit.Owner = city.Owner;
-					unit.SetHome(city);
-					_units.Add(unit);
+					if ( unit != null )
+					{
+						unit.Status = ( byte )( 1 << 3 );
+						unit.Owner = city.Owner;
+						unit.SetHome( city );
+						_units.Add( unit );
+					}
+					else
+					{
+						Log( "Unknown fortified unit found: {0}", fortifiedUnit );
+					}
 				}
 
 				cityList.Add(cityData.Id, city);

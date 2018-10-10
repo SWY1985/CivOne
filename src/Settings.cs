@@ -33,6 +33,7 @@ namespace CivOne
 		private bool _deityEnabled = false;
 		private bool _arrowHelper = false;
 		private bool _customMapSize = false;
+		private bool _pathFinding = false;
 		private CursorType _cursorType = CursorType.Default;
 		private DestroyAnimation _destroyAnimation = DestroyAnimation.Sprites;
 		private GameOption _instantAdvice, _autoSave, _endOfTurn, _animations, _sound, _enemyMoves, _civilopediaText, _palace;
@@ -197,7 +198,19 @@ namespace CivOne
 				Common.ReloadSettings = true;
 			}
 		}
-		
+
+		internal bool PathFinding
+		{
+			get => _pathFinding;
+			set
+			{
+				_pathFinding = value;
+				SetSetting("PathFindingAlgorithm", _pathFinding ? "1" : "0");
+				Common.ReloadSettings = true;
+			}
+		}
+
+
 		public CursorType CursorType
 		{
 			get
@@ -411,6 +424,7 @@ namespace CivOne
 			GetSetting("DeityEnabled", ref _deityEnabled);
 			GetSetting("ArrowHelper", ref _arrowHelper);
 			GetSetting("CustomMapSize", ref _customMapSize);
+			GetSetting("PathFindingAlgorithm", ref _pathFinding);
 			GetSetting<CursorType>("CursorType", ref _cursorType);
 			GetSetting<DestroyAnimation>("DestroyAnimation", ref _destroyAnimation);
 			GetSetting<GameOption>("GameInstantAdvice", ref _instantAdvice);

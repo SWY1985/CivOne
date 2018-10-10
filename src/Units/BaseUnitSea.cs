@@ -58,8 +58,8 @@ namespace CivOne.Units
 			
 			if (Map[X, Y].City != null)
 			{
-				// End turn when entering city
-				MovesLeft = 0;
+                // End turn when entering city   Why ?  I think the sea-unit should keep is MovesLeft when entering city /JR
+                MovesLeft = 0;
 				return;
 			}
 		}

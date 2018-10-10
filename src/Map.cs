@@ -13,6 +13,7 @@ using System.Linq;
 using CivOne.Enums;
 using CivOne.Graphics;
 using CivOne.Tiles;
+using CivOne.Units;
 
 namespace CivOne
 {

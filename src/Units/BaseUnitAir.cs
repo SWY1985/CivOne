@@ -8,6 +8,8 @@
 // work. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 using System.Collections.Generic;
+using System;
+using System.Drawing;
 using System.Linq;
 using CivOne.Enums;
 using CivOne.IO;
@@ -25,12 +27,14 @@ namespace CivOne.Units
 
 		private void HandleFuel()
 		{
+            // If landing
 			if (Map[X, Y].City != null || Map[X, Y].Units.Any(u => u is Carrier))
 			{
 				MovesLeft = 0;
 				FuelLeft = TotalFuel;
 				return;
 			}
+            // if still in air with fuel
 			if (MovesLeft > 0 || FuelLeft > 0) return;
 			
 			// Air unit is out of fuel
@@ -83,11 +87,81 @@ namespace CivOne.Units
 			return (tile != null);
 		}
 
-		protected BaseUnitAir(byte price = 1, byte attack = 1, byte defense = 1, byte move = 1) : base(price, attack, defense, move)
-		{
-			Class = UnitClass.Air;
-			TotalFuel = move;
-			FuelLeft = move;
-		}
-	}
+        public override bool MoveTo(int relX, int relY)
+        {
+            BaseUnitAir unit = this;
+            int fuel = unit.FuelLeft;
+            bool _o = base.MoveTo( relX, relY );
+            return _o;
+        }
+
+        /*  ******************************************************************************************************** */
+        public override void SetHome()
+        {
+            if( Map[ X, Y ].City == null )
+            {
+                Point point;
+                int _CarrierDistance = 100;
+                IUnit _nearestCarrier = null;
+
+                City nearestCity = Game.GetCities().Where( c => c.Owner == Owner ).OrderBy( c => Common.Distance( c.X, c.Y, _x, _y ) ).First();
+                int _Citydistance = Common.Distance( nearestCity.X, nearestCity.Y, _x, _y );
+
+                // Check for carriers
+                IUnit[] _OwnCarriers = Game.GetUnits().Where( u => u.Owner == Owner && u.Type == UnitType.Carrier ).ToArray();
+                if( _OwnCarriers.Length > 0 )
+                {
+                    _nearestCarrier = _OwnCarriers.OrderBy( c => Common.Distance( c.X, c.Y, _x, _y ) ).First();
+                    _CarrierDistance = Common.Distance( _nearestCarrier.X, _nearestCarrier.Y, _x, _y );
+                }
+                if( _Citydistance < _CarrierDistance || _nearestCarrier == null )
+                {
+                    point.X = nearestCity.X;
+                    point.Y = nearestCity.Y;
+                }
+                else
+                {
+                    point.X = _nearestCarrier.X;
+                    point.Y = _nearestCarrier.Y;
+                }
+                this.Goto = point;
+            }
+            else
+            {
+                Home = Map[ X, Y ].City;
+            }
+        }
+
+        private bool _sentry;
+        public override bool Sentry
+        {
+            get
+            {
+                return _sentry;
+            }
+            set
+            {
+                // No sentry for air unit unless in city or on carrier
+                ITile Tile = Map[ X, Y ];
+                if( Tile.Units.Any( u => u.Type == UnitType.Carrier ) || Tile.City != null )
+                {
+                    if( _sentry == value ) return;
+                    if( !( _sentry = value ) || !Game.Started ) return;
+                    MovesLeft = 0;
+                    PartMoves = 0;
+                    MovementDone( Map[ X, Y ] );
+                    return;
+                }
+                _sentry = false;
+            }
+        }
+
+        protected BaseUnitAir( byte price = 1, byte attack = 1, byte defense = 1, byte move = 1 ) : base( price, attack, defense, move )
+        {
+            Class = UnitClass.Air;
+            TotalFuel = move;
+            FuelLeft = move;
+        }
+
+    }
 }

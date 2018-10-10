@@ -182,6 +182,7 @@ namespace CivOne.Screens
 			MenuItem.Create($"Enable Deity difficulty: {Settings.DeityEnabled.YesNo()}").OnSelect(GotoMenu(DeityEnabledMenu)),
 			MenuItem.Create($"Enable (no keypad) arrow helper: {Settings.ArrowHelper.YesNo()}").OnSelect(GotoMenu(ArrowHelperMenu)),
 			MenuItem.Create($"Custom map sizes (experimental): {Settings.CustomMapSize.YesNo()}").OnSelect(GotoMenu(CustomMapSizeMenu)),
+			MenuItem.Create($"Use smart PathFinding for \"goto\": {Settings.PathFinding.YesNo()}").OnSelect(GotoMenu(PathFindingeMenu)),
 			MenuItem.Create("Back").OnSelect(GotoMenu(MainMenu, 1))
 		);
 
@@ -231,6 +232,13 @@ namespace CivOne.Screens
 		private void CustomMapSizeMenu() => CreateMenu("Custom map sizes (experimental)", GotoMenu(PatchesMenu, 7),
 			MenuItem.Create($"{false.YesNo()} (default)").OnSelect((s, a) => Settings.CustomMapSize = false).SetActive(() => !Settings.CustomMapSize),
 			MenuItem.Create(true.YesNo()).OnSelect((s, a) => Settings.CustomMapSize = true).SetActive(() => Settings.CustomMapSize),
+			MenuItem.Create("Back")
+		);
+
+
+		private void PathFindingeMenu() => CreateMenu("Use smart PathFinding for \"goto\"", GotoMenu(PatchesMenu, 8),
+		MenuItem.Create($"{false.YesNo()} (default)").OnSelect((s, a) => Settings.PathFinding = false).SetActive(() => !Settings.PathFinding),
+			MenuItem.Create(true.YesNo()).OnSelect((s, a) => Settings.PathFinding = true).SetActive(() => Settings.PathFinding),
 			MenuItem.Create("Back")
 		);
 
