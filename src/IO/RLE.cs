@@ -59,8 +59,8 @@ namespace CivOne.IO
 					if (repeat == 1) continue;
 					ms.WriteByte(RLE_REPEAT);
 					ms.WriteByte(repeat);
-					if (repeat == RLE_REPEAT) ms.WriteByte(RLE_ESCAPE);
-					i += (repeat - 1);
+//					if (repeat == RLE_REPEAT) ms.WriteByte(RLE_ESCAPE);         Never RLE_ESCAPE after repeat byte
+                    i += (repeat - 1);
 				}
 
 				return ms.ToArray();
