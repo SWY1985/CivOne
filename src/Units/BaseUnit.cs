@@ -64,7 +64,7 @@ namespace CivOne.Units
         }
 
         private bool _sentry;
-        public bool Sentry
+        public virtual bool Sentry
         {
             get
             {
@@ -414,7 +414,6 @@ namespace CivOne.Units
 
             // Check for nmy nearby, if so exit goto
 
-
             ITile moveTarget = Map[X, Y][relX, relY];
             if (moveTarget == null) return false;
             if (moveTarget.Units.Any(u => u.Owner != Owner))
@@ -436,10 +435,12 @@ namespace CivOne.Units
                     IUnit[] targetUnits = moveTarget.GetBorderTiles().SelectMany(t => t.Units).Where(u => u.Owner != Owner).ToArray();
                     IUnit[] borderUnits = Map[X, Y].GetBorderTiles().SelectMany(t => t.Units).Where(u => u.Owner != Owner).ToArray();
 
-                    if (borderUnits.Any(u => targetUnits.Any(t => t.X == u.X && t.Y == u.Y)))
+                    if( borderUnits.Any( u => targetUnits.Any( t => t.X == u.X && t.Y == u.Y ) ) )
                     {
-                        if (Human == Owner)
-                            GameTask.Enqueue(Message.Error("-- Civilization Note --", TextFile.Instance.GetGameText($"ERROR/ZOC")));
+                        if( Human == Owner ) {
+                           Goto = Point.Empty;             // Cancel any goto mode ( maybe for AI too ?? )
+                           GameTask.Enqueue( Message.Error( "-- Civilization Note --", TextFile.Instance.GetGameText( $"ERROR/ZOC" ) ) );
+                        }
                         return false;
                     }
                 }
@@ -733,46 +734,11 @@ namespace CivOne.Units
         }
 
 // ****************************************************************************************************
-        public void SetHome()
+        public virtual void SetHome()
         {
-            if (Map[X, Y].City == null)
-            {
-                if (this is Bomber || this is Fighter )     // Maybe move this code to BaseUnitAir.cs
-                {
-                    Point point;
-                    int _CarrierDistance = 100;
-                    IUnit _nearestCarrier = null;
-
-                    City nearestCity = Game.GetCities().Where(c => c.Owner == Owner).OrderBy(c => Common.DistanceToTile( c.X, c.Y, _x, _y)).First();
-                    int _Citydistance = Common.DistanceToTile( nearestCity.X, nearestCity.Y, _x, _y );
-
-                    // Check for carriers
-                    IUnit[] _OwnCarriers = Game.GetUnits().Where( u => u.Owner == Owner && u.Type == UnitType.Carrier ).ToArray();
-                    if( _OwnCarriers.Length > 0 )
-                    {
-                        _nearestCarrier = _OwnCarriers.OrderBy( c => Common.DistanceToTile( c.X, c.Y, _x, _y ) ).First();
-                        _CarrierDistance = Common.DistanceToTile( _nearestCarrier.X, _nearestCarrier.Y, _x, _y );
-                    }
-                    if( _Citydistance < _CarrierDistance || _nearestCarrier == null )
-                    {
-                        point.X = nearestCity.X;
-                        point.Y = nearestCity.Y;
-                    }
-                    else
-                    {
-                        point.X = _nearestCarrier.X;
-                        point.Y = _nearestCarrier.Y;
-                    }
-                    this.Goto = point;
-                }
-                else return;
-            }
-            else
-            {
-                if (Map[X, Y].City == null) return;
-                Home = Map[X, Y].City;
-            }
-		}
+            if (Map[X, Y].City == null) return;
+            Home = Map[X, Y].City;
+        }
 
 		public void SetHome(City city) => Home = city;
 		
