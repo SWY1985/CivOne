@@ -555,7 +555,7 @@ namespace CivOne
 						if (Player.HasWonder<Oracle>() && !Game.WonderObsolete<Oracle>()) templeEffect <<= 1;
 						unhappyCount -= templeEffect;
 					}
-					if (Map.ContentCities(Tile.ContinentId).Any(x => x.Size > 0 && x.Owner == Owner && x.HasWonder<JSBachsCathedral>()))
+					if (Tile != null && Map.ContentCities(Tile.ContinentId).Any(x => x.Size > 0 && x.Owner == Owner && x.HasWonder<JSBachsCathedral>()))
 					{
 						unhappyCount -= 2;
 					}
@@ -716,7 +716,7 @@ namespace CivOne
 				}
  				WasInDisorder = false;
 			}
- 			if (UnhappyCitizens == 0 && HappyCitizens >= ContentCitizens)
+ 			if (UnhappyCitizens == 0 && HappyCitizens >= ContentCitizens && Size >= 3)
 			{
 				// we love the president day
 				if (Player.Government is Governments.Democracy || Player.Government is Republic)

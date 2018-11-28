@@ -836,7 +836,7 @@ namespace CivOne.Screens
  			if (_weLovePresidentDay = weLovePresidentDay)
 			{
 				Picture marchers;
-				int xx = 1, yy = 1, ww = 78, hh = 63;
+				int xx = 1, yy = 1, ww = 78, hh = 65;
 				if (Game.CurrentPlayer.HasAdvance<Conscription>())
 				{
 					marchers = Resources["LOVE2"];
@@ -851,6 +851,8 @@ namespace CivOne.Screens
 					int frameX = (ii % 4);
 					int frameY = (ii - frameX) / 4;
 					_invadersOrRevolters[ii] = marchers[xx + (frameX * (ww + 1)), yy + (frameY * (hh + 1)), ww, hh];
+					var g = new Graphics.ImageFormats.GifFile( _invadersOrRevolters[ii]);
+					System.IO.File.WriteAllBytes($@"c:\temp\{ii}.gif", g.GetBytes());
 				}
 				_x = 0;
  				string[] lines =  new [] { $"'We Love the President'", $"day celebrated in", $"{city.Name}!" };
