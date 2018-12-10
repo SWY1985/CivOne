@@ -91,22 +91,24 @@ namespace CivOne.Screens
 					int xx = (_x - 65) - (48 * i);
 					if (xx + 78 <= 0) continue;
 					this.AddLayer(_invadersOrRevolters[frame], xx, _y);
+					Log($"i {i}, _x {_x}, xx {xx}, _y {_y}");
 				}
 				_x++;
 				return true;
 			}
+			
  			if (_weLovePresidentDay)
 			{
-				// todo: make this go backwards
 				this.AddLayer(_background);
-				int frame = (_x % 30) / 3;
-				for (int i = 7; i >= 0; i--)
+				int frame = ((_x + 600) % 30) / 3;
+				for (int i = 0; i <= 7; i++)
 				{
-					int xx = (_x - 65) - (48 * i);
-					if (xx + 78 <= 0) continue;
+					int xx = (_x + 65) + (48 * i);
+					//if (xx <= 0) continue;
 					this.AddLayer(_invadersOrRevolters[frame], xx, _y);
 				}
-				_x++;
+				_x--;
+
 				return true;
 			}
 
@@ -854,7 +856,7 @@ namespace CivOne.Screens
 					var g = new Graphics.ImageFormats.GifFile( _invadersOrRevolters[ii]);
 					System.IO.File.WriteAllBytes($@"c:\temp\{ii}.gif", g.GetBytes());
 				}
-				_x = 0;
+				_x = 240;
  				string[] lines =  new [] { $"'We Love the President'", $"day celebrated in", $"{city.Name}!" };
 				int width = lines.Max(l => Resources.GetTextSize(5, l).Width) + 12;
 				Picture dialog = new Picture(width, 54)
