@@ -57,5 +57,11 @@ namespace CivOne.UserInterface
 			menuItem.RightClick += eventMethod;
 			return menuItem;
 		}
+
+		public static MenuItem<T> OnHelp<T>(this MenuItem<T> menuItem, MenuItemEventHandler<T> eventMethod)
+		{
+			menuItem.GetHelp += eventMethod;
+			return menuItem;
+		}
 	}
 }

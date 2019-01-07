@@ -59,7 +59,8 @@ namespace CivOne.Screens
 				{
 					menu.Items.Add(advance.Name, advance)
 						.OnSelect(AdvanceChoice)
-						.OnContext(AdvanceContext);
+						.OnContext(AdvanceContext)
+						.OnHelp(AdvanceContext);
 				}
 				AddMenu(menu);
 				return true;

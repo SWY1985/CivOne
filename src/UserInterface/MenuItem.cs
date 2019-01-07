@@ -18,6 +18,7 @@ namespace CivOne.UserInterface
 
 		public event MenuItemEventHandler<T> Selected;
 		public event MenuItemEventHandler<T> RightClick;
+		public event MenuItemEventHandler<T> GetHelp;
 		public T Value { get; private set; }
 		public bool Enabled { get; set; }
 		public string Text { get; set; }
@@ -28,6 +29,12 @@ namespace CivOne.UserInterface
 		{
 			if (Selected == null) return;
 			Selected(this, _args);
+		}
+
+		internal void Help()
+		{
+			if (Selected == null) return;
+			GetHelp(this, _args);
 		}
 
 		internal void Context()
