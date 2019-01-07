@@ -60,6 +60,8 @@ namespace CivOne.Screens
 			}
 		}
 
+		public MenuItem<T> SelectedItem => Items[ActiveItem];
+
 		private void SelectDefault(object sender, EventArgs args)
 		{
 			for (int i = 0; i < Items.Count; i++)
@@ -134,6 +136,13 @@ namespace CivOne.Screens
 					}
 					break;
 			}
+
+			if (args.Alt && (args.KeyChar == 'h' || args.KeyChar == 'H'))
+			{
+				Items[_activeItem].Help();
+				return true;
+			}
+
 			return false;
 		}
 		
