@@ -23,15 +23,13 @@ namespace CivOne.Screens.Debug
 
 		private Menu _citySelect;
 
-		private Input _input;
-
 		private int _index = 0;
 
 		private City _selectedCity = null;
 
 		public string Value { get; private set; }
 
-		public event EventHandler Accept, Cancel;
+		public event EventHandler Cancel;
 
 		private void CitiesMenu()
 		{
@@ -56,7 +54,7 @@ namespace CivOne.Screens.Debug
 
 			this.FillRectangle(xx - 1, yy - 1, ww + 2, hh + 2, 5)
 				.AddLayer(menuGfx, xx, yy)
-				.DrawText("Set City Size...", 0, 15, xx + 8, yy + 3);
+				.DrawText("Cause disaster...", 0, 15, xx + 8, yy + 3);
 
 			_citySelect = new Menu(Palette, menuBackground)
 			{
@@ -121,10 +119,7 @@ namespace CivOne.Screens.Debug
 				AddMenu(_citySelect);
 				return false;
 			}
-			else if (_selectedCity != null && Common.TopScreen.GetType() != typeof(Input))
-			{
-				Common.AddScreen(_input);
-			}
+
 			return false;
 		}
 
