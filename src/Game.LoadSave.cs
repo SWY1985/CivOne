@@ -64,7 +64,7 @@ namespace CivOne
 				gameData.PlayerGold = _players.Select(x => x.Gold).ToArray();
 				gameData.ResearchProgress = _players.Select(x => x.Science).ToArray();
 				gameData.TaxRate = _players.Select(x => (ushort)x.TaxesRate).ToArray();
-				gameData.ScienceRate = _players.Select(x => (ushort)(10 - x.ScienceRate - x.TaxesRate)).ToArray();
+				gameData.ScienceRate = _players.Select(p => (ushort)p.ScienceRate).ToArray();
 				gameData.StartingPositionX = _players.Select(x => (ushort)x.StartX).ToArray();
 				gameData.Government = _players.Select(x => (ushort)x.Government.Id).ToArray();
 				gameData.Cities = _cities.GetCityData().ToArray();
@@ -196,6 +196,12 @@ namespace CivOne
 					unit.Owner = city.Owner;
 					unit.SetHome(city);
 					_units.Add(unit);
+
+				/*if (city.IsInDisorder)
+				{
+					city.WasInDisorder = true;
+				}*/
+
 				}
 
 				cityList.Add(cityData.Id, city);
