@@ -349,127 +349,10 @@ namespace CivOne
             }
         }
 
-        /* ******************************************************************************************************/
-        private void CalculateContinentSize()
-        {
-            CalculateContinentSizeRs();
-                        return;
-            }
-#if false
-            // TODO: This function needs to be been checked against the original function. It does not yet work as intended.
-
-            // I made a new version of this.
-            // Used an algorith I once wrote for checking bad areas on IR-FPA detectors. Methink it works fine for this job  //JR( "enock nitti" )
-            // I keept old code so I could run both and compare result
-
-
-            Log( "Map: Calculate continent and ocean sizes" );
-
-            for( int y = 0; y < HEIGHT; y++ )       // todo  remove
-                for( int x = 0; x < WIDTH; x++ )
-                    this[ x, y ].ContinentId = 0;
-
-            // Initial continents
-            byte continentId = 0;
-            for( int y = 0; y < HEIGHT; y++ )
-                for( int x = 0; x < WIDTH; x++ )
-                {
-                    ITile tile = this[ x, y ], north = this[ x, y - 1 ], west = this[ x - 1, y ];
-
-                    if( north != null && ( north.IsOcean == tile.IsOcean ) && north.ContinentId > 0 )
-                    {
-                        tile.ContinentId = north.ContinentId;
-                    }
-                    else if( west != null && ( west.IsOcean == tile.IsOcean ) && west.ContinentId > 0 )
-                    {
-                        tile.ContinentId = west.ContinentId;
-                    }
-                    else
-                    {
-                        tile.ContinentId = ++continentId;
-                    }
-
-                    if( north == null || west == null ) continue;
-                    if( north.IsOcean != west.IsOcean ) continue;
-
-                    // Merge continents
-                    if( north.ContinentId != west.ContinentId && north.ContinentId > 0 && west.ContinentId > 0 )
-                    {
-                        int northCount = AllTiles().Count( t => t.ContinentId == north.ContinentId );
-                        int westCount = AllTiles().Count( t => t.ContinentId == west.ContinentId );
-                        if( northCount > westCount )
-                        {
-                            foreach( ITile westTile in AllTiles().Where( t => t.ContinentId == west.ContinentId ) )
-                            {
-                                westTile.ContinentId = north.ContinentId;
-                            }
-                            continue;
-                        }
-                        foreach( ITile northTile in AllTiles().Where( t => t.ContinentId == north.ContinentId ) )
-                        {
-                            northTile.ContinentId = west.ContinentId;
-                        }
-                    }
-                }
-
-            for( int x = 0; x < WIDTH; x++ )
-                for( int y = 0; y < HEIGHT; y++ )
-                {
-                    ITile tile = this[ x, y ], north = this[ x, y - 1 ], west = this[ x - 1, y ];
-
-                    if( north == null || west == null ) continue;
-                    if( north.IsOcean != west.IsOcean ) continue;
-
-                    // Merge continents
-                    if( north.ContinentId != west.ContinentId && north.ContinentId > 0 && west.ContinentId > 0 )
-                    {
-                        int northCount = AllTiles().Count( t => t.ContinentId == north.ContinentId );
-                        int westCount = AllTiles().Count( t => t.ContinentId == west.ContinentId );
-                        if( northCount > westCount )
-                        {
-                            foreach( ITile westTile in AllTiles().Where( t => t.ContinentId == west.ContinentId ) )
-                            {
-                                westTile.ContinentId = north.ContinentId;
-                            }
-                            continue;
-                        }
-                        foreach( ITile northTile in AllTiles().Where( t => t.ContinentId == north.ContinentId ) )
-                        {
-                            northTile.ContinentId = west.ContinentId;
-                        }
-                    }
-                }
-
-            List<ITile[]> continents = new List<ITile[]>();
-            for( int i = 0; i <= 255; i++ )
-            {
-                if( !AllTiles().Any( x => x.ContinentId == i ) ) continue;
-                continents.Add( AllTiles().Where( x => x.ContinentId == i ).ToArray() );
-            }
-            for( byte i = 1; i < 15; i++ )
-            {
-                ITile[] continent = continents.OrderByDescending( x => x.Length ).FirstOrDefault();
-                if( continent == null ) break;
-
-                continents.Remove( continent );
-                foreach( ITile tile in continent )
-                {
-                    tile.ContinentId = i;
-                }
-            }
-            foreach( ITile[] continent in continents )   //
-                foreach( ITile tile in continent )
-                {
-                    tile.ContinentId = 15;
-                }
-        }
-#endif
-        /* ***********************************************************************************************/
-
         // This is a recursive function used to mark all tiles in a continent with a continent/ocean number. That
         // number will then be corrected so continents/ocans are numberd in size order
 
-        int[,] aiRelPos = new int[,] { { -1, 0 }, { 0, -1 }, { 0, 1 }, { 1, 0 } };  // Check "Manhattan" conections only
+        readonly int[,] aiRelPos = { { -1, 0 }, { 0, -1 }, { 0, 1 }, { 1, 0 } };  // Check "Manhattan" conections only
 
         private byte ContinentId;
         private ulong ContinetSize;
@@ -489,21 +372,21 @@ namespace CivOne
                 ContinetSize++;
                 CountContinent( XX, YY, oOcean );
             }
-            return;
         }
 
         /* ***********************************************************************************************************/
 
-        public struct Continent
+
+        private struct Continent
         {
             public byte ContinentId;
             public ulong ContinetSize;
         };
 
-        protected List<Continent> Continents = new List<Continent>();
-        protected List<Continent> ContinentsSorted = new List<Continent>();
+        private readonly List<Continent> Continents = new List<Continent>();
+        private List<Continent> ContinentsSorted = new List<Continent>();
 
-        protected void CalculateContinentSizeRs()
+        private void CalculateContinentSize()
         {
             Log( "Map: Calculate continent/ocean sizes and give continents a number in size order" );
 
@@ -514,7 +397,7 @@ namespace CivOne
             int nTiles = 0;
             bool oOcean = false;
             for( int j = 0; j < 2; j++ )
-             {
+            {
                 Continents.Clear();
                 ContinentId = 0;
                 for( int y = 0; y < HEIGHT; y++ )
@@ -532,19 +415,22 @@ namespace CivOne
 
                         }
                 ContinentsSorted = Continents.OrderByDescending( x => x.ContinetSize ).ToList();
-                for( int i = 0; i < ContinentsSorted.LongCount(); i++ )
+                int[] _iConvTbl = new int[ ContinentsSorted.LongCount() + 1 ];
+
+                for ( int i = 0; i < ContinentsSorted.LongCount(); i++ )
                 {
                     if( oOcean ) Log( "Map: ocean Nr = {0}, Size {1}", ContinentsSorted[ i ].ContinentId, ContinentsSorted[ i ].ContinetSize );
                     else Log( "Map: Continent Nr = {0}, Size {1}", ContinentsSorted[ i ].ContinentId, ContinentsSorted[ i ].ContinetSize );
+                    _iConvTbl[ ContinentsSorted[ i ].ContinentId ] = i + 1;
                 }
 
                 // Give all ITiles there correct continent/ocean number
-                for( int y = 0; y < HEIGHT; y++ )
+                for ( int y = 0; y < HEIGHT; y++ )
                     for( int x = 0; x < WIDTH; x++ )
                     {
                         if( this[ x, y ].IsOcean != oOcean ) continue;
                         {
-                            this[ x, y ].ContinentId = Math.Min( (byte)ContinentsSorted[ this[ x, y ].ContinentId - 1 ].ContinentId, (byte)15 );
+                            this[ x, y ].ContinentId = (byte)( Math.Min( _iConvTbl[ this[ x, y ].ContinentId ], 15 ) );
                             nTiles++;       // Just a check
                         }
 
@@ -560,13 +446,13 @@ namespace CivOne
 			Log("Map: Creating poles");
 			
 			for (int x = 0; x < WIDTH; x++)
-			foreach (int y in new int[] { 0, (HEIGHT - 1) })
+			foreach (int y in new[] { 0, (HEIGHT - 1) })
 			{
 				_tiles[x, y] = new Arctic(x, y, false);
 			}
 			
 			for (int i = 0; i < (WIDTH / 4); i++)
-			foreach (int y in new int[] { 0, 1, (HEIGHT - 2), (HEIGHT - 1) })
+			foreach (int y in new[] { 0, 1, (HEIGHT - 2), (HEIGHT - 1) })
 			{
 				int x = Common.Random.Next(WIDTH);
 				_tiles[x, y] = new Tundra(x, y, false);
