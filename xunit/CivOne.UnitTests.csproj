@@ -10,13 +10,13 @@
 -->
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>netcoreapp2.1</TargetFramework>
+		<TargetFramework>netcoreapp3.0</TargetFramework>
 		<AssemblyName>CivOne.UnitTests</AssemblyName>
 		<RootNamespace>CivOne</RootNamespace>
 		<OutputType>Exe</OutputType>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-		<LangVersion>7.1</LangVersion>
+		<LangVersion>8.0</LangVersion>
 		<RuntimeIdentifiers>win-x86;win-x64;osx-x64;linux-x64</RuntimeIdentifiers>
 	</PropertyGroup>
 	<ItemGroup>
