@@ -41,23 +41,6 @@
 			}
 		},
 		{
-			"label": "test",
-			"type": "shell",
-			"group": {
-				"kind": "test",
-				"isDefault": true
-			},
-			"command": "dotnet",
-			"args": [
-				"test",
-				"${workspaceRoot}/xunit/CivOne.UnitTests.csproj"
-			],
-			"presentation": {
-				"focus": true,
-				"panel": "dedicated"
-			}
-		},
-		{
 			"label": "build-api",
 			"type": "shell",
 			"group": "build",
