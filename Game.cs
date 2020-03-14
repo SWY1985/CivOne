@@ -206,9 +206,9 @@ namespace CivOne
 
 					ITile[] tiles = (unit as BaseUnit).MoveTargets.OrderBy(x => x.DistanceTo(unit.Goto)).ThenBy(x => x.Movement).ToArray();
 
-					if (unit.Class == UnitClass.Land)
+					if (unit.Class == UnitClass.Land && Settings.Instance.PathFinding )
 					{
-						/*  Try AStar */
+						/*  Use AStar */
 						AStar.sPosition Destination, Pos;
 						Destination.iX = unit.Goto.X;
 						Destination.iY = unit.Goto.Y;
