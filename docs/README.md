@@ -11,5 +11,5 @@
 4. Open the civone folder in vs code: cd CivOne && code .
 5. You should be able to run it now
 
-## Move information
+## More information
 - Discussion thread: https://forums.civfanatics.com/threads/civone-an-open-source-remake-of-civilization-1.535036/
