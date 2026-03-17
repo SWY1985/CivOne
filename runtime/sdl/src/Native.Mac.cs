@@ -9,39 +9,36 @@
 
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
-using System.Runtime.InteropServices;
 
 namespace CivOne
 {
 	internal partial class Native
 	{
+		private static string EscapeAppleScriptString(string input)
+		{
+			return (input ?? string.Empty).Replace("\\", "\\\\").Replace("\"", "\\\"");
+		}
+
 		private static string MacFolderBrowser(string caption)
 		{
-			string scriptPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "OpenFolder.sh");
-			using (StreamWriter sw = new StreamWriter(scriptPath, false))
-			{
-				sw.WriteLine("!#/bin/bash");
-				sw.WriteLine($@"osascript -e 'set getPath to choose folder with prompt ""{caption}""' -e 'set output to POSIX path of getPath'");
-				sw.Flush();
-			}
-
-			Process.Start("chmod", $@"+x ""{scriptPath}""");
-
 			Process process = new Process();
 			process.StartInfo = new ProcessStartInfo()
 			{
-				FileName = "/bin/sh",
-				Arguments = scriptPath,
+				FileName = "osascript",
+				ArgumentList =
+				{
+					"-e",
+					$@"POSIX path of (choose folder with prompt ""{EscapeAppleScriptString(caption)}"")"
+				},
 				RedirectStandardOutput = true,
 				UseShellExecute = false
 			};
 			
 			process.Start();
-			string output = process.StandardOutput.ReadToEnd().Trim(new [] { '\n', '"' });
+			string output = process.StandardOutput.ReadToEnd().Trim(new [] { '\n', '\r', '"' });
 			process.WaitForExit();
 
-			if (output.Length == 0 || !Directory.Exists(output)) return null;
+			if (process.ExitCode != 0 || output.Length == 0 || !Directory.Exists(output)) return null;
 
 			return output;
 		}
